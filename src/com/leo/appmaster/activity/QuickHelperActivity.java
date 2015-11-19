@@ -32,7 +32,6 @@ import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.videohide.VideoHideMainActivity;

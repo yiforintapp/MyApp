@@ -27,8 +27,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.home.GooglePlayGuideActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -49,7 +48,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     private final static int MSG_NOTIFY_LAYOUT = 2;
 
     private boolean mForce = false;
-    
+
     private boolean mUserCancel = false;
 
     public UpdateActivity() {
@@ -78,14 +77,14 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             mManager.onCancelUpdate();
         }
         // send progress when downloading
-        switch (mUIType){
+        switch (mUIType) {
             case IUIHelper.TYPE_DOWNLOADING:
-                if(!mUserCancel){
+                if (!mUserCancel) {
                     mUIHelper.sendDownloadNotification(mUIHelper.getProgress());
                 }
                 break;
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
-                if(!mUserCancel){
+                if (!mUserCancel) {
                     mUIHelper.sendDownloadFailedNotification();
                 }
                 break;
@@ -142,9 +141,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
-        // case IUIHelper.BACK_DOWNLOAD_DONE:
-        // showNeedUpdate();
-        // break;
+            // case IUIHelper.BACK_DOWNLOAD_DONE:
+            // showNeedUpdate();
+            // break;
         }
     }
 
@@ -157,27 +156,21 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvMsg.setText(getString(R.string.download_error));
         TextView tvRetry = (TextView) findViewById(R.id.dlg_right_btn);
         tvRetry.setText(getString(R.string.retry));
-        RippleView RvRetry = (RippleView) findViewById(R.id.rv_dialog_blue_button);
-        RvRetry.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+        RippleView1 RvRetry = (RippleView1) findViewById(R.id.rv_dialog_blue_button);
+        RvRetry.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 mManager.onRetryDownload();
+                // finish();
             }
         });
-//        tvRetry.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                mManager.onRetryDownload();
-//                // finish();
-//            }
-//        });
         TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
         tvCancel.setText(getString(R.string.cancel));
-        
-        RippleView RvCancel = (RippleView) findViewById(R.id.rv_dialog_whitle_button);
-        RvCancel.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+
+        RippleView1 RvCancel = (RippleView1) findViewById(R.id.rv_dialog_whitle_button);
+        RvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 mUserCancel = true;
                 mManager.onCancelDownload();
                 mLockManager.filterAll(1000);
@@ -189,20 +182,6 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 }
             }
         });
-//        tvCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                mUserCancel = true;
-//                mManager.onCancelDownload();
-//                mLockManager.filterAll(1000);
-//                if (mParam == UpdateManager.FORCE_UPDATE) {
-//                    finish();
-//                    AppMasterApplication.getInstance().exitApplication();
-//                } else {
-//                    finish();
-//                }
-//            }
-//        });
     }
 
     private void showForceUpdate() {
@@ -221,27 +200,17 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
         TextView tvYes = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvYes.setText(getString(R.string.do_update));
-        RippleView rvBlue = (RippleView) findViewById(R.id.rv_blue);
-        rvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+        RippleView1 rvBlue = (RippleView1) findViewById(R.id.rv_blue);
+        rvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
-                // TODO Auto-generated method stub
+            public void onClick(View v) {
+                /* sdk mark */
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "sure");
                 mManager.onConfirmDownload();
             }
         });
-        
-//        tvYes.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                /* sdk mark */
-//                SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "sure");
-//                mManager.onConfirmDownload();
-//                // finish(); DO NOT finish here, download UI need it
-//            }
-//        });
     }
+
     ///
     private void showDownloading() {
         mProgress = mUIHelper.getProgress();
@@ -271,11 +240,10 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
         TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
         tvCancel.setText(getString(R.string.cancel_download));
-        RippleView rvCancel = (RippleView) findViewById(R.id.rv_white);
-        rvCancel.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+        RippleView1 rvCancel = (RippleView1) findViewById(R.id.rv_white);
+        rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 mUIHelper.cancelDownloadNotification();
                 mManager.onCancelDownload();
                 mLockManager.filterAll(1000);
@@ -283,24 +251,12 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 finish();
             }
         });
-//        tvCancel.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                mUIHelper.cancelDownloadNotification();
-//                mManager.onCancelDownload();
-//                mLockManager.filterAll(1000);
-//                mUserCancel = true;
-//                finish();
-//            }
-//        });
         TextView tvHide = (TextView) findViewById(R.id.dlg_right_btn);
         tvHide.setText(getString(R.string.hide_download_window));
-        RippleView rvHide = (RippleView) findViewById(R.id.rv_blue);
-        rvHide.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+        RippleView1 rvHide = (RippleView1) findViewById(R.id.rv_blue);
+        rvHide.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 LeoLog.d(TAG,
                         "sendDownloadNotification in showDownloading, click hide window");
                 mUIHelper.sendDownloadNotification(mProgress);
@@ -308,17 +264,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 finish();
             }
         });
-//        tvHide.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                LeoLog.d(TAG,
-//                        "sendDownloadNotification in showDownloading, click hide window");
-//                mUIHelper.sendDownloadNotification(mProgress);
-//                mLockManager.filterAll(1000);
-//                finish();
-//            }
-//        });
     }
+
     ///
     private void showForceDownloading() {
         mUIHelper.cancelDownloadNotification();
@@ -343,31 +290,20 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
         TextView tvCancel = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvCancel.setText(getString(R.string.cancel_download));
-        
-        RippleView rvCancel = (RippleView) findViewById(R.id.rv_blue);
-        rvCancel.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+
+        RippleView1 rvCancel = (RippleView1) findViewById(R.id.rv_blue);
+        rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 mUserCancel = true;
                 mUIHelper.cancelDownloadNotification();
                 mManager.onCancelDownload();
                 finish();
                 AppMasterApplication.getInstance().exitApplication();
-                
             }
         });
-//        tvCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                mUserCancel = true;
-//                mUIHelper.cancelDownloadNotification();
-//                mManager.onCancelDownload();
-//                finish();
-//                AppMasterApplication.getInstance().exitApplication();
-//            }
-//        });
     }
+
     ///
     private void showNoUpdate() {
         setContentView(R.layout.dialog_message_single_done);
@@ -376,42 +312,30 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_no_need));
         TextView tv = (TextView) findViewById(R.id.dlg_bottom_btn);
-        RippleView rvBlue = (RippleView) findViewById(R.id.rv_blue);
-        rvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+        RippleView1 rvBlue = (RippleView1) findViewById(R.id.rv_blue);
+        rvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 finish();
             }
         });
-//        tv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                finish();
-//            }
-//        });
     }
+
     ///
     private void showNoNetwork() {
         setContentView(R.layout.dialog_message_single_done);
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.network_error_msg));
         TextView tvBtn = (TextView) findViewById(R.id.dlg_bottom_btn);
-        RippleView rvBlue = (RippleView) findViewById(R.id.rv_blue);
-        rvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+        RippleView1 rvBlue = (RippleView1) findViewById(R.id.rv_blue);
+        rvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 finish();
             }
         });
-//        tvBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                finish();
-//            }
-//        });
     }
+
     ///
     private void showCheckFailed() {
         setContentView(R.layout.dialog_alarm);
@@ -421,40 +345,25 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvMsg.setText(getString(R.string.network_busy_msg));
         TextView retry = (TextView) findViewById(R.id.dlg_right_btn);
         retry.setText(getString(R.string.retry));
-        
-        RippleView rvRetry = (RippleView) findViewById(R.id.rv_dialog_blue_button);
-        rvRetry.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+
+        RippleView1 rvRetry = (RippleView1) findViewById(R.id.rv_dialog_blue_button);
+        rvRetry.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 SDKWrapper.checkUpdate();
             }
         });
-        
-//        retry.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                SDKWrapper.checkUpdate();
-//            }
-//        });
         TextView cancel = (TextView) findViewById(R.id.dlg_left_btn);
-        RippleView rvCancel = (RippleView) findViewById(R.id.rv_dialog_whitle_button);
+        RippleView1 rvCancel = (RippleView1) findViewById(R.id.rv_dialog_whitle_button);
         cancel.setText(getString(R.string.cancel));
-        rvCancel.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+        rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View arg0) {
                 finish();
             }
         });
-        
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                finish();
-//            }
-//        });
     }
+
     ///
     private void showChecking() {
         setContentView(R.layout.dialog_progress_sdk);
@@ -463,25 +372,18 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvContent = (TextView) findViewById(R.id.dlg_content);
         tvContent.setText(getString(R.string.checking_update_msg));
         TextView tvCancel = (TextView) findViewById(R.id.dlg_bottom_btn);
-        RippleView rvCancel = (RippleView) findViewById(R.id.rv_blue);
-        rvCancel.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+        RippleView1 rvCancel = (RippleView1) findViewById(R.id.rv_blue);
+        rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View v) {
                 mUserCancel = true;
                 mManager.onCancelCheck();
                 finish();
             }
         });
-//        tvCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mUserCancel = true;
-//                mManager.onCancelCheck();
-//                finish();
-//            }
-//        });
     }
-                ///
+
+    ///
     private void showNeedUpdate() {
         /* sdk mark */
         SDKWrapper.addEvent(this, SDKWrapper.P1, "update", "pop_up");
@@ -501,11 +403,11 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
-        
-        RippleView rvBlue = (RippleView) findViewById(R.id.rv_blue);
-        rvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+
+        RippleView1 rvBlue = (RippleView1) findViewById(R.id.rv_blue);
+        rvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View v) {
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "sure");
                 if (AppUtil.appInstalled(UpdateActivity.this,
                         Constants.GP_PACKAGE)) {
@@ -514,48 +416,20 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 mManager.onConfirmDownload();
             }
         });
-//        tvYes.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                /* sdk mark */
-//                SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "sure");
-//                if (AppUtil.appInstalled(UpdateActivity.this,
-//                        Constants.GP_PACKAGE)) {
-//                    mLockManager.filterSelfOneMinites();
-//                }
-//                mManager.onConfirmDownload();
-//                // finish(); do not finish, downloading UI need the activity
-////                updateTipFilterLock();
-//            }
-//        });
         TextView tvNo = (TextView) findViewById(R.id.dlg_left_btn);
         tvNo.setText(getString(R.string.ignore_update));
-        RippleView rvWhite = (RippleView) findViewById(R.id.rv_white);
-        rvWhite.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+        RippleView1 rvWhite = (RippleView1) findViewById(R.id.rv_white);
+        rvWhite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View v) {
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "cancel");
-              mUserCancel = true;
-              mManager.onCancelUpdate();
-              LeoLog.i("UpdateActivity", "加锁应用："+mLockManager.getLastPackage());
-              mLockManager.filterAll(1000);
-              finish();
-                
+                mUserCancel = true;
+                mManager.onCancelUpdate();
+                LeoLog.i("UpdateActivity", "加锁应用："+mLockManager.getLastPackage());
+                mLockManager.filterAll(1000);
+                finish();
             }
         });
-//        tvNo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                /* sdk mark */
-//                SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "cancel");
-//                mUserCancel = true;
-//                mManager.onCancelUpdate();
-//                LeoLog.i("UpdateActivity", "加锁应用："+mLockManager.getLastPackage());
-//                mLockManager.filterAll(1000);
-//                finish();
-//            }
-//        });
     }
 
     @Override
@@ -683,7 +557,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                     break;
             }
         }
-    };
+    }
+
+    ;
 
     @Override
     public void onProgress(int progress, int total) {

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res-auto"  
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginLeft="13dp"
-    android:paddingBottom="12dp"
     android:layout_marginRight="13dp"
     android:background="@drawable/common_dialog_bg"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="12dp">
 
     <RelativeLayout
         android:id="@+id/info_area"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:maxHeight="247dp"
         android:minHeight="60dp"
         android:paddingBottom="12dp"
         android:paddingLeft="12dp"
-        android:layout_marginBottom="10dp"
-        android:paddingRight="12dp" >
+        android:paddingRight="12dp">
 
         <TextView
             android:id="@+id/dlg_title"
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/dlg_title"
-            android:paddingTop="22dp" >
+            android:paddingTop="22dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -93,26 +93,26 @@
     <!-- 双btn -->
 
     <LinearLayout
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
         android:id="@+id/dlg_2btn_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/info_area"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
-        <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
+        <com.leo.appmaster.ui.RippleView1
+            android:id="@+id/rv_white"
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            app:rv_rippleDuration="@integer/ripple_btn_duration" 
-            android:id="@+id/rv_white"
             android:layout_weight="1"
-            app:rv_alpha="255"
-            app:rv_color="@color/button_gray_ripple" >
+            app:rippleColor="@color/button_gray_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
             <TextView
                 android:id="@+id/dlg_left_btn"
@@ -121,19 +121,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/cancel" />
-        </com.leo.appmaster.ui.RippleView>
+        </com.leo.appmaster.ui.RippleView1>
 
-        <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
+        <com.leo.appmaster.ui.RippleView1
+            android:id="@+id/rv_blue"
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:id="@+id/rv_blue"
-            app:rv_rippleDuration="@integer/ripple_btn_duration" 
             android:layout_weight="1"
-            app:rv_alpha="255"
-            app:rv_color="@color/button_blue_ripple" >
+            app:rippleColor="@color/button_blue_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
             <TextView
                 android:id="@+id/dlg_right_btn"
@@ -142,7 +142,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/makesure" />
-        </com.leo.appmaster.ui.RippleView>
+        </com.leo.appmaster.ui.RippleView1>
     </LinearLayout>
 
 </RelativeLayout>
