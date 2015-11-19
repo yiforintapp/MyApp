@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="20dp"
@@ -24,10 +24,11 @@
                      />
 
         <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/textView3"
             android:id="@+id/grade_bt"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
@@ -97,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_centerHorizontal="true"
-            android:maxLines="2"
+            android:maxLines="3"
             android:gravity="center"
             android:paddingLeft="34dp"
             android:paddingRight="34dp"
