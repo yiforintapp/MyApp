@@ -30,6 +30,7 @@ public class MsgUtil {
             return;
         }
 
+//        boolean hasFb = AppUtil.isInstallPkgName(context, Constants.PKG_FACEBOOK);
         Intent intent = new Intent();
         if (schema.equals("fb")) {
             if (AppUtil.isInstallPkgName(context, Constants.PKG_FACEBOOK)) {
