@@ -28,7 +28,10 @@ public class FiveStarsLayout extends FrameLayout{
     private ImageView mFiveStar;
     private ImageView mGradeGesture;
     private float mGestureY;
+    private float mFifthStarCenterX;
     private Context mContext;
+    private float mGestureDeltaY;
+    private FrameLayout mFlFifthStar;
     private boolean mHasShowed = false;
     
     public FiveStarsLayout(Context context, AttributeSet attrs) {
@@ -54,6 +57,7 @@ public class FiveStarsLayout extends FrameLayout{
         mFourStar = (ImageView) findViewById(R.id.four_star);
         mFiveStar = (ImageView) findViewById(R.id.five_star);
         mGradeGesture = (ImageView) findViewById(R.id.grade_gesture);
+        mFlFifthStar = (FrameLayout) findViewById(R.id.fl_fifthStar);
     }
     
     @Override
@@ -61,10 +65,11 @@ public class FiveStarsLayout extends FrameLayout{
         super.onWindowFocusChanged(hasWindowFocus);
         int height = getHeight();
         int width = getWidth();
-        
-        LeoLog.i("tttt", "getHeight = "+height+"....getWidth = "+width + "    focus ="+hasWindowFocus);
         if(!mHasShowed) {
             mGestureY = mGradeGesture.getY();
+//            mFifthStarCenterX = mFlFifthStar.getLeft();
+            mGestureDeltaY = height / 2 - mGradeGesture.getHeight();
+//            mGradeGesture.setLeft((int) mFifthStarCenterX);
             showStarAnimation();
         }
     }
@@ -79,61 +84,17 @@ public class FiveStarsLayout extends FrameLayout{
         ObjectAnimator threeStar = getObjectAnimator(mThreeStar);
         ObjectAnimator fourStar = getObjectAnimator(mFourStar);
         ObjectAnimator fiveStar = getObjectAnimator(mFiveStar);
-        LeoLog.i("test222", "Y = "+mGradeGesture.getY()+".....TranslationY = "+mGradeGesture.getTranslationY()+"....Top = "+mGradeGesture.getTop());
         
-//        ObjectAnimator gMoveIn = ObjectAnimator.ofFloat(mGradeGesture, "y", mGestureY, mGestureY - 50);
-//        gMoveIn.setDuration(2000);
-//        
-//        ObjectAnimator gMoveOut = ObjectAnimator.ofFloat(mGradeGesture, "y", mGestureY - 50, mGestureY);
-//        gMoveOut.setDuration(2000);
-//        
-//        ObjectAnimator gestureHide = ObjectAnimator.ofFloat(mGradeGesture, "alpha", 1f, 0f);
-//        gestureHide.setDuration(1000);
-        
-        
-        PropertyValuesHolder gInY = PropertyValuesHolder.ofFloat("y", mGestureY, mGestureY - 50);
+        PropertyValuesHolder gInY = PropertyValuesHolder.ofFloat("y", mGestureY, mGestureY - mGestureDeltaY);
         PropertyValuesHolder gInAlpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1.0f);
         
-        PropertyValuesHolder gOutY = PropertyValuesHolder.ofFloat("y", mGestureY - 50, mGestureY);
+        PropertyValuesHolder gOutY = PropertyValuesHolder.ofFloat("y", mGestureY - mGestureDeltaY, mGestureY);
         PropertyValuesHolder gOutAlpha = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0f);
         
         final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(mGradeGesture, gInY, gInAlpha);
         animatorI.setDuration(2000);
         final ObjectAnimator animatorO = ObjectAnimator.ofPropertyValuesHolder(mGradeGesture, gOutY, gOutAlpha);
         animatorO.setDuration(2000);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-//        float currentY = mGradeGesture.getTop();
-//        ObjectAnimator gestureMoveIn = ObjectAnimator.ofFloat(mGradeGesture,
-//                "translationY", currentY + DipPixelUtil.dip2px(mContext, 160), currentY);
-//        gestureMoveIn.setDuration(2000);
-//
-//        ObjectAnimator gestureMoveOut =  ObjectAnimator.ofFloat(mGradeGesture,
-//                "translationY",currentY , currentY + DipPixelUtil.dip2px(mContext, 160));
-//
-//        ObjectAnimator gestureHide = ObjectAnimator.ofFloat(mGradeGesture, "alpha", 1f, 0f);
-//
-//        gestureMoveOut.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                super.onAnimationEnd(animation);
-//                mGradeGesture.setVisibility(View.INVISIBLE);
-//            }
-//        });
-//
-//        AnimatorSet gestureAnimator = new AnimatorSet();
-//        gestureAnimator.playTogether(gestureMoveOut, gestureHide);
-//        gestureAnimator.setDuration(1000);
-
-
 
         AnimatorSet starAnimator = new AnimatorSet();
         starAnimator.playSequentially(oneStar, twoStar, threeStar, fourStar, fiveStar);
