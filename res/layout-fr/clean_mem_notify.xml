@@ -70,7 +70,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/noti_spe_fr_content_m_left"
                     android:layout_toRightOf="@id/appwallDescTV"
-                    android:background="@drawable/botton_noti_fast" >
+                    android:background="@drawable/clr_mem_noti_bt" >
 
                     <TextView
                         android:id="@+id/free_bg"

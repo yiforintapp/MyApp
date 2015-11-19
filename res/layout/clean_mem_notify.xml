@@ -65,7 +65,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/noti_spe_content_m_left"
-            android:background="@drawable/botton_noti_fast" >
+            android:background="@drawable/clr_mem_noti_bt" >
 
             <TextView
                 android:id="@+id/free_bg"

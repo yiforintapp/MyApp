@@ -220,6 +220,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 //                    finish();
                     startActivity(shareIntent);
                     mIsToFacebk = true;
+                    mSplaFacRt.setOnClickListener(null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
