@@ -664,7 +664,7 @@ public class IntruderprotectionActivity extends Activity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( mImanager.getIsIntruderSecurityAvailable()){
+                if( !mImanager.getIsIntruderSecurityAvailable()){
                     showForbitDialog();
 //                    Toast.makeText(IntruderprotectionActivity.this, getResources().getString(R.string.unavailable), Toast.LENGTH_SHORT).show();
                     return;
