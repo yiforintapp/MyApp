@@ -214,8 +214,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static boolean interupAinimation = false;
     private boolean clickShakeIcon = false;
 
-    private MobvistaEngine mAdEngine;
-
     private static final boolean DBG = false;
     /* 用于测试时，指定显示的广告形式 */
     private static final int TEST_AD_NUMBER = 6;
@@ -933,10 +931,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mLockFragment.setShowText(false);
 
         try {
-            if(mAdEngine!=null) {
-                for (String id : mBannerAdids) {
-                    mAdEngine.release(id);
-                }
+            for (String id : mBannerAdids) {
+                MobvistaEngine.getInstance(this).release(id);
             }
             for (String key : mAdBitmapMap.keySet()) {
                 Bitmap image = mAdBitmapMap.get(key);
