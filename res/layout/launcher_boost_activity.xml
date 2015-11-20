@@ -21,7 +21,7 @@
 
         <FrameLayout
             android:id="@+id/resuilt_with_ad"
-            android:layout_width="310dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone">
@@ -33,18 +33,19 @@
                 android:textSize="18dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/accelerate_circle_corner_textview_bg"
                 android:text="5"
                 android:layout_gravity="right|top"/>
 
             <RelativeLayout
                 android:id="@+id/rl_ad_bg"
-                android:layout_width="285dp"
+                android:layout_width="305dp"
                 android:layout_height="158dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="left"
-                android:layout_marginTop="80dp">
+                android:layout_marginTop="98dp">
 
                 <ImageView
                     android:id="@+id/iv_ad_bg"
@@ -55,11 +56,11 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="285dp"
+                android:layout_width="305dp"
                 android:layout_height="50dp"
                 android:layout_gravity="left"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="238dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginTop="256dp"
                 android:orientation="horizontal"
                 android:background="#ffffff">
 
@@ -132,11 +133,11 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:layout_width="285dp"
+                android:layout_width="305dp"
                 android:layout_height="44dp"
                 android:background="@drawable/ad_top_bg"
                 android:layout_gravity="left"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="53dp">
 
             </RelativeLayout>
@@ -145,18 +146,19 @@
                 android:id="@+id/tv_accelerat_result"
                 android:layout_width="198dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="53dp"
-                android:layout_marginLeft="87dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="100dp"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:textColor="#ffffff"
-                android:textSize="15dp" />
+                android:textSize="15dp"/>
 
             <View
-                android:layout_width="300dp"
-                android:layout_height="266dp"
+                android:layout_width="320dp"
+                android:layout_height="284dp"
                 android:layout_gravity="top"
                 android:layout_marginTop="38dp"
+                android:layout_marginLeft="15dp"
                 android:background="@drawable/ad_bg"/>
 
 
@@ -172,13 +174,12 @@
                 android:src="@drawable/ad_bottom_line"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="45dp"/>
+                android:layout_marginLeft="60dp"/>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="38dp"
+                android:layout_marginTop="40dp"
                 android:src="@drawable/ad_top_line"
                 android:layout_gravity="right|top"/>
 
@@ -192,6 +193,8 @@
                 android:visibility="gone"/>
 
         </FrameLayout>
+
+
 
         <ImageView
             android:id="@+id/iv_line"

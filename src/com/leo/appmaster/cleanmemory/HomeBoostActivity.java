@@ -314,10 +314,10 @@ public class HomeBoostActivity extends Activity {
         cloudScaleYToFifthy.setDuration(120);
 
         ObjectAnimator cloudScaleYToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0.5f, 1f);
-        cloudScaleYToHundred.setDuration(480);
+        cloudScaleYToHundred.setDuration(380);
 
         ObjectAnimator cloudScaleToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0.3f, 1f);
-        cloudScaleToHundred.setDuration(480);
+        cloudScaleToHundred.setDuration(380);
         ObjectAnimator cloudAlphaHide = ObjectAnimator.ofFloat(mIvCloud, "alpha", 1f, 0f);
         cloudAlphaHide.setDuration(200);
         ObjectAnimator cloudScaleToLarge = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 1f, 1.1f);
@@ -335,7 +335,7 @@ public class HomeBoostActivity extends Activity {
         AnimatorSet cloudAnimator =  new AnimatorSet();
         cloudAnimator.playSequentially(cloudStartAnimator,
                 cloudToHundredAnimator, cloudFinishAnimator);
-        cloudAnimator.setStartDelay(200);
+        cloudAnimator.setStartDelay(600);
 
         /** 尾部火动画 */
         mFire.setPivotX(mFire.getWidth()/2);
@@ -354,7 +354,7 @@ public class HomeBoostActivity extends Activity {
                 "translationY", mFire.getTranslationY(),
                 -mScreenH - DipPixelUtil.dip2px(HomeBoostActivity.this, 130));
 
-        fireMoveOut.setDuration(720);
+        fireMoveOut.setDuration(780);
 
         AnimatorSet fireAnimator = new AnimatorSet();
         fireAnimator.playTogether(fireScale, fireMoveOut);
@@ -387,16 +387,6 @@ public class HomeBoostActivity extends Activity {
         lineAnimator.play(lineAlphaHide).after(520).after(lineMoveIn);
         lineAnimator.setStartDelay(720);
 
-//        AnimatorSet as = new AnimatorSet();
-//        as.playTogether(cloudAnimator, rocketShowAnimator,
-//                rocketAnimator2, fireAnimator, lineAnimator);
-//        as.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                showCleanResault();
-//            }
-//        });
-//        as.start();
         cloudAnimator.start();
         rocketShowAnimator.start();
         fireAnimator.start();
@@ -484,7 +474,7 @@ public class HomeBoostActivity extends Activity {
             tv_clean_rocket.setText(Html.fromHtml(mToast));
             Toast toast = new Toast(this);
             toast.setGravity(Gravity.CENTER, 0, -100);
-            
+
             toast.setView(view);
             toast.setDuration(0);
             int marginTop = 0;
@@ -499,38 +489,67 @@ public class HomeBoostActivity extends Activity {
             }
 //            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
             toast.show();
+            mCdt = new CountDownTimer(2000, 1000) {
+
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    HomeBoostActivity.this.finish();
+
+                }
+            };
+            mCdt.start();
             isClean = true;
         }
 
     }
 
+    /** 广告界面动画 */
     private void adShowAnimation() {
-        ObjectAnimator adScaleLarge = ObjectAnimator.ofFloat(mRlResultWithAD, "scaleX", 0f , 1.1f);
-        adScaleLarge.setDuration(320);
-        adScaleLarge.addListener(new AnimatorListenerAdapter() {
+        ObjectAnimator adScaleXLarge = ObjectAnimator.ofFloat(mRlResultWithAD, "scaleX", 0f , 1.1f);
+        ObjectAnimator adScaleYLarge = ObjectAnimator.ofFloat(mRlResultWithAD, "scaleY", 0f , 1.1f);
+        adScaleXLarge.setDuration(320);
+        adScaleYLarge.setDuration(320);
+        adScaleXLarge.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 mRlResultWithAD.setVisibility(View.VISIBLE);
             }
         });
+
+        AnimatorSet adScaleLarge = new AnimatorSet();
+        adScaleLarge.playTogether(adScaleXLarge, adScaleYLarge);
+
         ObjectAnimator adAlpha = ObjectAnimator.ofFloat(mRlResultWithAD, "alpha", 0f , 1f);
         adAlpha.setDuration(320);
-        ObjectAnimator adScaleNormal = ObjectAnimator.ofFloat(mRlResultWithAD, "scaleX", 1.1f, 1f);
-        adScaleNormal.setDuration(200);
+        ObjectAnimator adScaleXNormal = ObjectAnimator.ofFloat(mRlResultWithAD, "scaleX", 1.1f, 1f);
+        ObjectAnimator adScaleYNormal = ObjectAnimator.ofFloat(mRlResultWithAD, "scaleY", 1.1f, 1f);
+        adScaleXNormal.setDuration(200);
+        adScaleYNormal.setDuration(200);
+
+        AnimatorSet adScaleNormal = new AnimatorSet();
+        adScaleNormal.playTogether(adScaleXNormal, adScaleYNormal);
+
+        AnimatorSet adAnimator = new AnimatorSet();
+        adAnimator.play(adScaleLarge).with(adAlpha);
+        adAnimator.play(adScaleNormal).after(adScaleLarge);
+        adAnimator.setStartDelay(280);
+
+        AnimatorSet adLightAnimator = adLightAnimation();
 
         AnimatorSet adAnimatorSet = new AnimatorSet();
-        adAnimatorSet.play(adScaleLarge).with(adAlpha);
-        adAnimatorSet.play(adScaleNormal).after(adScaleLarge);
-        adAnimatorSet.setStartDelay(280);
-
-        AnimatorSet adLightAnimatorSet = adLightAnimation();
-
+        adAnimatorSet.play(adLightAnimator).after(200).after(adAnimator);
         adAnimatorSet.start();
-        adLightAnimatorSet.start();
+
 
     }
 
+    /** 光圈动画 */
     private AnimatorSet adLightAnimation() {
         ObjectAnimator adLightAlphaShow = ObjectAnimator.ofFloat(mSpeedAdLight, "alpha", 0f, 1f);
         adLightAlphaShow.setDuration(400);
@@ -555,7 +574,6 @@ public class HomeBoostActivity extends Activity {
 
         AnimatorSet adLightAnimator = new AnimatorSet();
         adLightAnimator.play(adLightAlphaHide).with(adLightTranslate).after(adLightAlphaShow);
-        adLightAnimator.setStartDelay(480);
 
         return  adLightAnimator;
     }

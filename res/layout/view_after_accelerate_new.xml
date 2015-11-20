@@ -1,51 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="326dp"
+    android:layout_height="wrap_content"
     android:gravity="center_horizontal" >
 
-    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/ad_bg"
+        android:layout_gravity="left|top"
+        android:layout_marginTop="34dp"/>
 
-<!--         android:layout_below="@id/iv_dial" -->
-    <RelativeLayout
-        android:layout_marginTop="60dp"
-        android:layout_width="272dp"              	
-        android:layout_height="wrap_content"
-        android:background="@drawable/accelerate_circle_corner_bg" >
-		
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="#ffffff"
-            android:layout_marginTop="20dp"
-           android:layout_marginBottom="10dp"
-            android:textSize="16dp" 
-            android:gravity="center_horizontal"
-            android:id="@+id/tv_accelerat_result"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent" />
-        <View 
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
-            android:layout_below="@id/tv_accelerat_result"
-            />
-    </RelativeLayout>
+
+
+
+
     <ImageView
-        android:id="@+id/iv_dial"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="80dp"
-        android:layout_width="111dp"      
-        android:layout_height="64dp" 
-        android:src="@drawable/accelerate_result_dial" />
-    
-  <!--   <ImageView
-        android:layout_marginLeft="123dp"
-        android:layout_marginTop="47dp"
-        android:layout_width="44dp"      
-        android:layout_height="27dp"
-        android:src="@drawable/acclerate_result_zhizhen" /> -->
-    
-</RelativeLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:src="@drawable/ad_top_line"
+        android:layout_marginTop="36dp"
+        android:layout_marginRight="11dp"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:layout_width="214dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ad_bottom_line"
+        android:layout_marginLeft="45dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerCrop"/>
+
+
+    <ImageView
+        android:layout_width="295dp"
+        android:layout_height="39dp"
+        android:layout_gravity="top"
+        android:background="@drawable/ad_top_bg"
+        android:layout_marginTop="49dp"
+        android:layout_marginLeft="11dp"/>
+
+    <TextView
+        android:id="@+id/tv_accelerat_result"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="85dp"
+        android:layout_marginRight="15dp"
+        android:layout_gravity="top|left"
+        android:layout_marginTop="49dp"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:gravity="center_vertical"/>
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|top"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ad_toast_rocket"/>
+
+
+</FrameLayout>
 
 
 
