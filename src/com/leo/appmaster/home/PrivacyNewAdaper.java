@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-
 /**
  * 隐私等级适配器基类
  * Created by Jasper on 2015/10/15.
