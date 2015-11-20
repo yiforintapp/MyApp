@@ -17,6 +17,7 @@ import com.leo.appmaster.ui.RippleView;
  */
 public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
     private static final String TAG = "FolderPicAdapter";
+    private static final int COLOMN = 3;
 
     public FolderPicAdapter() {
         super();
@@ -30,8 +31,8 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
             ItemsWrapper wrapper = mDataList.get(i);
             mGroupIndexArray.put(i, index);
 
-            int remind = wrapper.items.size() % 3;
-            index += wrapper.items.size() / 3 + (remind > 0 ? 1 : 0) + 1;
+            int remind = wrapper.items.size() % COLOMN;
+            index += wrapper.items.size() / COLOMN + (remind > 0 ? 1 : 0) + 1;
         }
     }
 
@@ -180,8 +181,8 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
     public int getFirstVisibleGroupPosition(int firstVisibleItem) {
         int index = 0;
         for (int i = 0; i < getGroupCount(); i++) {
-            int rowCount = getChildrenCount(i) / 3;
-            rowCount += getChildrenCount(i) % 3 != 0 ? 1 : 0;
+            int rowCount = getChildrenCount(i) / COLOMN;
+            rowCount += getChildrenCount(i) % COLOMN != 0 ? 1 : 0;
             index += rowCount + 1;
             if (firstVisibleItem <= index) {
                 return i;

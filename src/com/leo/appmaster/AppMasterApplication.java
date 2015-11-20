@@ -75,9 +75,9 @@ public class AppMasterApplication extends Application {
         // Use old sort
         try {
             System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
-        } catch (Exception e){
+        } catch (Exception e) {
         }
-        
+
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String lastVer = pref.getLastVersion();
         try {
@@ -109,7 +109,7 @@ public class AppMasterApplication extends Application {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-	private String getUserSerial() {
+    private String getUserSerial() {
         String userSerial = null;
         if (PhoneInfo.getAndroidVersion() >= 17) {
             try {
@@ -124,6 +124,7 @@ public class AppMasterApplication extends Application {
         }
         return userSerial;
     }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
@@ -134,39 +135,12 @@ public class AppMasterApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
         ImageLoader.getInstance().clearMemoryCache();
-        // mBackupManager.onDestory(this);
-        // unregisterReceiver(mAppsEngine);
-        // mAppsEngine.onDestroyed();
-        // LockManager.getInstatnce().unInit();
         SDKWrapper.endSession(this);
-        // unregisterReceiver(mPrivacyReceiver);
-        // ContentResolver cr = getContentResolver();
-        // if (cr != null) {
-        // cr.unregisterContentObserver(mCallLogObserver);
-        // cr.unregisterContentObserver(mMessageObserver);
-        // cr.unregisterContentObserver(mContactObserver);
-        // }
     }
 
     public static AppMasterApplication getInstance() {
         return sInstance;
     }
-
-//    public void postInAppThreadPool(Runnable runable) {
-//        mExecutorService.execute(runable);
-//    }
-//
-//    public void postInAppThreadPool(Runnable runable, long delay) {
-//        mExecutorService.schedule(runable, delay, TimeUnit.MILLISECONDS);
-//    }
-
-//    public void postInMainThread(Runnable runnable) {
-//        mHandler.post(runnable);
-//    }
-
-//    public boolean isUiThread() {
-//        return Thread.currentThread() == mUiThread;
-//    }
 
     // for force update strategy to exit application completely
     public synchronized void addActivity(Activity activity) {
@@ -210,9 +184,10 @@ public class AppMasterApplication extends Application {
         }
 
     }
-    
+
     /**
      * 添加resumed过的Activity
+     *
      * @param activity
      */
     public synchronized void resumeActivity(Activity activity) {
@@ -230,7 +205,7 @@ public class AppMasterApplication extends Application {
 
         sResumedList.add(new WeakReference<Activity>(activity));
     }
-    
+
     public synchronized void pauseActivity(Activity activity) {
         Iterator<WeakReference<Activity>> iterator = sResumedList.iterator();
         while (iterator.hasNext()) {
@@ -242,9 +217,10 @@ public class AppMasterApplication extends Application {
             }
         }
     }
-    
+
     /**
      * 是否在前台
+     *
      * @return
      */
     public boolean isForeground() {
@@ -253,24 +229,28 @@ public class AppMasterApplication extends Application {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     /**
-     * 当前是否是Home
+     * home是否在栈顶，即只有Home还存活, 用户在首页点击home键回桌面
+     *
      * @return
      */
-    public boolean isCurrentHome() {
-        if (sResumedList.isEmpty()) return false;
+    public boolean isHomeOnTopAndBackground() {
+        if (!sResumedList.isEmpty() // resume list 不为空，说明在前台
+                || sActivityList.isEmpty() || sActivityList.size() > 1) {
+            return false;
+        }
 
-        WeakReference<Activity> weakReference = sResumedList.get(0);
-        if (weakReference == null || weakReference.get() == null) return false;
+        WeakReference<Activity> reference = sActivityList.get(0);
+        Activity activity = reference.get();
+        if (activity != null && (activity instanceof HomeActivity)) {
+            return true;
+        }
 
-        Activity activity = weakReference.get();
-
-        boolean result = (activity instanceof HomeActivity);
-        return result;
+        return false;
     }
 
     public static void setSharedPreferencesValue(String lockerTheme) {
@@ -286,7 +266,8 @@ public class AppMasterApplication extends Application {
 
     /**
      * 是否是升级
-     *  注意：进程起来后，此接口会一直有效，除非进程挂掉
+     * 注意：进程起来后，此接口会一直有效，除非进程挂掉
+     *
      * @return
      */
     public static boolean isAppUpgrade() {

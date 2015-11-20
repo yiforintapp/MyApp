@@ -148,8 +148,8 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     /**
      * 执行一次扫描
      */
-    public void scanOneTime() {
-        LeoLog.i(TAG, "scanOneTime......");
+    public void scanOneTimeSilenty() {
+        LeoLog.i(TAG, "scanOneTimeSilenty......");
         long lastScanTs = mLastScanTs;
         long currentTs = System.currentTimeMillis();
         if (currentTs - lastScanTs > CHECK_TIME || currentTs < lastScanTs) {
@@ -159,7 +159,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             }
             ThreadManager.executeOnAsyncThread(mCheckScoreTask);
         } else {
-            LeoLog.i(TAG, "scanOneTime, interval not hit, so donot scan......");
+            LeoLog.i(TAG, "scanOneTimeSilenty, interval not hit, so donot scan......");
         }
     }
 
@@ -237,6 +237,10 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         @Override
         public void run() {
             LeoLog.i(TAG, "ScoreTimerTask, start to check.");
+            if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
+                LeoLog.i(TAG, "home is ontop and background, so donot scan.");
+                return;
+            }
             long currentTs = System.currentTimeMillis();
             mLastScanTs = currentTs;
             for (String mgr : SCORE_MGR) {
