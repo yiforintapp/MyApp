@@ -51,6 +51,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -64,7 +65,7 @@ public class AppLockListActivity extends BaseActivity implements
     public final static int DEFAULT_SORT = 0;
     public final static String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
     private View mHeadView;
-    private RippleView mLockModeView, mWeiZhuangView, mLockThemeView;
+    private RippleView1 mLockModeView, mWeiZhuangView, mLockThemeView;
     private View mBarView;
     //    private View mClickView;
     private ImageView mRedDot, mGuideHelpTipBt;
@@ -175,14 +176,18 @@ public class AppLockListActivity extends BaseActivity implements
 
         mHeadView = layoutInflater.inflate(R.layout.list_lockapp_headview, null);
 
-        mLockModeView = (RippleView) mHeadView.findViewById(R.id.lock_mode_type);
-        mLockModeView.setOnRippleCompleteListener(this);
+        mLockModeView = (RippleView1) mHeadView.findViewById(R.id.lock_mode_type);
+        mLockModeView.setOnClickListener(this);
+//        mLockModeView.setOnRippleCompleteListener(this);
 
-        mWeiZhuangView = (RippleView) mHeadView.findViewById(R.id.weizhuang_type);
-        mWeiZhuangView.setOnRippleCompleteListener(this);
+        mWeiZhuangView = (RippleView1) mHeadView.findViewById(R.id.weizhuang_type);
+        mWeiZhuangView.setOnClickListener(this);
+//        mWeiZhuangView.setOnRippleCompleteListener(this);
 
-        mLockThemeView = (RippleView) mHeadView.findViewById(R.id.lock_theme_type);
-        mLockThemeView.setOnRippleCompleteListener(this);
+        mLockThemeView = (RippleView1) mHeadView.findViewById(R.id.lock_theme_type);
+        mLockThemeView.setOnClickListener(this);
+//        mLockThemeView.setOnRippleCompleteListener(this);
+
         mRedDot = (ImageView) mHeadView.findViewById(R.id.theme_red_dot);
         mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_lockapp);
 
@@ -487,24 +492,19 @@ public class AppLockListActivity extends BaseActivity implements
 
     @Override
     public void onRippleComplete(RippleView rippleView) {
-        if (mLockModeView == rippleView) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "modes");
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "modes");
-            enterLockMode();
-        } else if (mWeiZhuangView == rippleView) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "appcover");
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "appcover");
-            enterWeiZhuang();
-        } else if (mLockThemeView == rippleView) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "theme");
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "theme");
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "theme_enter", "home");
-            enterLockTheme();
-        }
-//        else if (mBarView == rippleView) {
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "locksetting");
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "locksetting");
-//            enterLockSetting();
+//        if (mLockModeView == rippleView) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "modes");
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "modes");
+//            enterLockMode();
+//        } else if (mWeiZhuangView == rippleView) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "appcover");
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "appcover");
+//            enterWeiZhuang();
+//        } else if (mLockThemeView == rippleView) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "theme");
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "theme");
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "theme_enter", "home");
+//            enterLockTheme();
 //        }
     }
 
@@ -677,6 +677,22 @@ public class AppLockListActivity extends BaseActivity implements
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "locksetting");
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "locksetting");
                 enterLockSetting();
+                break;
+            case R.id.lock_mode_type:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "modes");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "modes");
+                enterLockMode();
+                break;
+            case R.id.weizhuang_type:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "appcover");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "appcover");
+                enterWeiZhuang();
+                break;
+            case R.id.lock_theme_type:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "theme");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "theme");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theme_enter", "home");
+                enterLockTheme();
                 break;
         }
     }
