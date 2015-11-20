@@ -227,7 +227,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             });
         }
         String title = getString(R.string.advance_protect_open_success_tip_title);
-        String content = getString(R.string.advance_protect_open_success_tip_content);
+        String content = getString(R.string.adv_prot_open_suc_tip_cnt);
         mMessageDialog.setTitle(title);
         mMessageDialog.setContent(content);
         mMessageDialog.show();

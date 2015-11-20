@@ -842,4 +842,8 @@
     <string name="phone_security_instruct_alert_off_description">關閉警報聲</string>
     <string name="alert_off_name">關閉警報</string>
     <string name="secur_send_msm_no_location"> 【LEOMASTER】無法獲取。 http://www.leomaster.com</string>
+
+    <!--3.1-->
+    <string name="adv_prot_open_suc_tip_cnt">開啓後無法在軟件外部卸載隱私衛士。如需卸載，您需要先在應用鎖設置中取消高級保護設置。</string>
+
 </resources>

@@ -878,4 +878,5 @@
     <string name="fb_item_btn">关注</string>
 
     <string name="intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
+    <string name="adv_prot_open_suc_tip_cnt">Under advanced protection nobody can uninstall LEO Privacy Guard. So, please go to AppLock page, disenable "Advanced Protection" in AppLock Settings first.</string>
 </resources>

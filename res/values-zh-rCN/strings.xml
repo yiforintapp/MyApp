@@ -849,4 +849,7 @@
     <string name="mi_op_tip">请在“授权管理”的“应用权限管理”项中选中“应用管理TAB”，选择“隐私卫士”，授予“读取短信，发送短信”权限。</string>
     <string name="huawei6_op_tip">请在“权限管理”项中选择“信息”，并授权给“隐私卫士”</string>
     <string name="huawei7pl_op_tip">请在“权限管理”的“应用”项中选择“隐私卫士”，授予“读取短信/彩信，发送短信”权限。</string>
+
+    <!-- 3.1 -->
+    <string name="adv_prot_open_suc_tip_cnt">开启后无法在软件外部卸载隐私卫士。如需卸载，您需要先在应用锁设置中取消高级保护设置。</string>
 </resources>
