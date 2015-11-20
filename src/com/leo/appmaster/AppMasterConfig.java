@@ -24,7 +24,7 @@ public class AppMasterConfig {
     public static final long TRAFFIC_INTERNAL = 5 * 60 * 1000;
 
     // 区分国内外渠道
-    public static final boolean IS_FOR_MAINLAND_CHINA = true;
+    public static final boolean IS_FOR_MAINLAND_CHINA = false;
 
     /*-----    Debug configurations  end  ------ */
 

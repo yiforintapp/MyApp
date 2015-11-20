@@ -2782,7 +2782,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getADWifiScan() {
-        return mPref.getInt(PREF_AD_WIFI_SCAN_RESULT, 0);
+        return mPref.getInt(PREF_AD_WIFI_SCAN_RESULT,
+                AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
     }
 
     //隐私防护出现广告的开关
