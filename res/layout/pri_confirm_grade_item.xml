@@ -177,16 +177,19 @@
             android:layout_height="1px"
             android:background="@color/c4" />
 
-        <com.leo.appmaster.ui.RippleView
+        <com.leo.appmaster.ui.RippleView1
             android:id="@+id/item_btn_rv"
             style="@style/SecurityItemBtn"
-            leo:rv_color="@color/home_tab_pressed" >
+            leo:rippleColor="@color/button_gray_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="true"
+            leo:rippleOverlay="true" >
 
             <TextView
                 android:id="@+id/item_btn_tv"
                 style="@style/ItemBtnText"
                 android:text="@string/grade_item_btn"/>
-        </com.leo.appmaster.ui.RippleView>
+        </com.leo.appmaster.ui.RippleView1>
     </LinearLayout>
 
 </RelativeLayout>

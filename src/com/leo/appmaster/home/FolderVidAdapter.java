@@ -204,7 +204,6 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
                 return i;
             }
         }
-
         return 0;
     }
 }

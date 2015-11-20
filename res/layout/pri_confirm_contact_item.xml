@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="22dp"
-            android:paddingRight="22dp"></LinearLayout>
+            android:paddingRight="22dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -80,18 +80,21 @@
                 android:layout_marginRight="19dp"
                 android:background="@color/c4" />
 
-            <com.leo.appmaster.ui.RippleView
+            <com.leo.appmaster.ui.RippleView1
                 android:id="@+id/item_btn_rv"
                 style="@style/SecurityItemBtn"
-                leo:rv_color="@color/home_tab_pressed">
+                leo:rippleColor="@color/button_gray_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true">
 
                 <TextView
                     android:id="@+id/item_btn_tv"
                     style="@style/ItemBtnText"
                     android:drawablePadding="@dimen/add_priv_cont_pad"
                     android:drawableRight="@drawable/arrow_button_right"
-                    android:textColor="@color/contact_no_select"/>
-            </com.leo.appmaster.ui.RippleView>
+                    android:textColor="@color/contact_no_select" />
+            </com.leo.appmaster.ui.RippleView1>
 
             <TextView
                 android:id="@+id/imp_item_btn_rv"
@@ -106,11 +109,12 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <View
         android:id="@+id/contact_containor_disab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent"
         android:clickable="true"
-        android:visibility="gone"></View>
+        android:visibility="gone" />
 </FrameLayout>

@@ -49,10 +49,10 @@
         android:id="@+id/item_middle_fixed_rl"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_below="@id/item_header_ll"
+        android:layout_marginTop="-16dp"
         android:paddingLeft="19dp"
         android:paddingRight="19dp"
-        android:layout_marginTop="-16dp"
-        android:layout_below="@id/item_header_ll"
         android:visibility="gone">
 
         <ImageView
@@ -91,31 +91,33 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/item_middle_ll"
-        >
+        android:orientation="vertical">
 
         <View
             android:id="@+id/item_btn_divider"
-            android:layout_marginLeft="19dp"
-            android:layout_marginRight="19dp"
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:layout_marginLeft="19dp"
+            android:layout_marginRight="19dp"
             android:background="@color/c4" />
 
-        <com.leo.appmaster.ui.RippleView
+        <com.leo.appmaster.ui.RippleView1
             android:id="@+id/item_btn_rv"
             style="@style/SecurityItemBtn"
-            leo:rv_color="@color/home_tab_pressed" >
+            leo:rippleColor="@color/button_gray_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="true"
+            leo:rippleOverlay="true">
 
             <TextView
                 android:id="@+id/item_btn_tv"
+                style="@style/ItemBtnText"
                 android:drawablePadding="7dp"
-                android:drawableRight="@drawable/arrow_button_right"
-                style="@style/ItemBtnText" />
-        </com.leo.appmaster.ui.RippleView>
+                android:drawableRight="@drawable/arrow_button_right" />
+        </com.leo.appmaster.ui.RippleView1>
     </LinearLayout>
 
 </RelativeLayout>

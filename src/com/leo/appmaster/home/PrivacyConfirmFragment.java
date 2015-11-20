@@ -3,7 +3,6 @@ package com.leo.appmaster.home;
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.transition.ChangeBounds;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +29,6 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -43,10 +40,9 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.MessageCallLogBean;
-import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -74,8 +70,7 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/10/18.
  */
-public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRippleCompleteListener,
-        View.OnClickListener {
+public class PrivacyConfirmFragment extends Fragment implements View.OnClickListener {
 
     private static final String KEY_SHOW_CONTACT = "SHOW_CONTACT";
     private View mRootView;
@@ -83,7 +78,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
     private TextView mLostSummary;
     private TextView mLostBtnTv;
-    private RippleView mLostBtnLt;
+    private RippleView1 mLostBtnLt;
     private View mLostBtnDiv;
     private View mLostMiddleLt;
     private View mLostFixedLt;
@@ -92,7 +87,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private TextView mIntruderSummary;
     private TextView mIntruderBtnTv;
     private View mIntruderBtnDiv;
-    private RippleView mIntruderBtnLt;
+    private RippleView1 mIntruderBtnLt;
     private View mIntruderMiddleLt;
     private View mIntruderFixedLt;
     private TextView mIntruderFixedTv;
@@ -101,7 +96,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private TextView mWifiSubSummary;
     private TextView mWifiBtnTv;
     private View mWifiBtnDiv;
-    private RippleView mWifiBtnLt;
+    private RippleView1 mWifiBtnLt;
     private ImageView mWifiSummaryImg;
     private View mWifiFixedLt;
     private View mWifiMiddleLt;
@@ -109,7 +104,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private View mWifiFixedSummaryLt;
 
     private TextView mContactBtnTv;
-    private RippleView mContactBtnLt;
+    private RippleView1 mContactBtnLt;
     private View mContactBtnDiv;
     private LinearLayout mContactContainor;
     private ImageView mContactArrowIv;
@@ -124,7 +119,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private ImageView mHighFourStar;
     private ImageView mHighFiveStar;
     private ImageView mHighGradeGesture;
-    private RippleView mHighGradeBtnLt;
+    private RippleView1 mHighGradeBtnLt;
     private FrameLayout mHighGrageFrame;
 
     private ImageView mOneStar;
@@ -133,20 +128,20 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private ImageView mFourStar;
     private ImageView mFiveStar;
     private ImageView mGradeGesture;
-    private RippleView mGradeBtnLt;
+    private RippleView1 mGradeBtnLt;
     private FrameLayout mGrageFrame;
 
     /**
      * 前往FaceBook
      */
-    private RippleView mFbBtnLt;
+    private RippleView1 mFbBtnLt;
 
     /**
      * Swifty
      */
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
-    private RippleView mSwiftyBtnLt;
+    private RippleView1 mSwiftyBtnLt;
 
     private CheckBox mSelectAllCb;
     private List<View> mContactViews;
@@ -461,9 +456,10 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         }
 
         mContactBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
-        mContactBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+        mContactBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
         mContactBtnDiv = include.findViewById(R.id.item_btn_divider);
-        mContactBtnLt.setOnRippleCompleteListener(this);
+        mContactBtnLt.setOnClickListener(this);
+//        mContactBtnLt.setOnRippleCompleteListener(this);
 
         mContactBtnTv.setText(R.string.pri_pro_contact_btn);
         mImpTv = (TextView) include.findViewById(R.id.imp_item_btn_rv);
@@ -482,58 +478,6 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_privacy_confirm, container, false);
-    }
-
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        if (rippleView == mLostBtnLt) {
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "theft_enable");
-            Intent intent = new Intent(getActivity(), PhoneSecurityGuideActivity.class);
-            startActivity(intent);
-        } else if (mIntruderBtnLt == rippleView) {
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "intruder_enable");
-            Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
-            startActivity(intent);
-        } else if (mWifiBtnLt == rippleView) {
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "wifi_scan");
-            Intent intent = new Intent(getActivity(), WifiSecurityActivity.class);
-            startActivity(intent);
-        } else if (mContactBtnLt == rippleView) {
-            final PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-            if (!mSelectData.isEmpty()) {
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "contact_enable");
-                setAddPrivacyText(true);
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mMessageCallBean = pcm.addPrivacyContact(mSelectData);
-                        mAddedData.addAll(mSelectData);
-                        mSelectData.clear();
-                        onAddContactFinish();
-                    }
-                });
-            } else {
-                Toast.makeText(getActivity(), getActivity().getString(R.string.pri_contact_empty), Toast.LENGTH_SHORT).show();
-            }
-            ChangeContactColor();
-        } else if (mGradeBtnLt == rippleView) { // 五星好评
-            lockManager.filterSelfOneMinites();
-            Utilities.goFiveStar(mActivity);
-        } else if (mFbBtnLt == rippleView) {  // FaceBook分享
-            lockManager.filterSelfOneMinites();
-            goFaceBook();
-        } else if (mSwiftyBtnLt == rippleView) {
-            lockManager.filterSelfOneMinites();
-            gotoGpOrBrowser();
-        } else if (mHighGradeBtnLt == rippleView) {
-            lockManager.filterSelfOneMinites();
-            Utilities.goFiveStar(mActivity);
-        }
-//        else if (mProcessBtn == rippleView) {
-//            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
-//            mActivity.onBackPressed();
-//        }
     }
 
     /**
@@ -726,8 +670,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             mLostSummary = (TextView) include.findViewById(R.id.item_summary);
             mLostBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
             mLostBtnDiv = include.findViewById(R.id.item_btn_divider);
-            mLostBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-            mLostBtnLt.setOnRippleCompleteListener(this);
+            mLostBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+            mLostBtnLt.setOnClickListener(this);
+//            mLostBtnLt.setOnRippleCompleteListener(this);
 
             String text = getActivity().getString(R.string.pri_pro_btn, manager.getMaxScore());
             mLostBtnTv.setText(text);
@@ -745,8 +690,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         mIntruderSummary = (TextView) include.findViewById(R.id.item_summary);
         mIntruderBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
         mIntruderBtnDiv = include.findViewById(R.id.item_btn_divider);
-        mIntruderBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-        mIntruderBtnLt.setOnRippleCompleteListener(this);
+        mIntruderBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+        mIntruderBtnLt.setOnClickListener(this);
+//        mIntruderBtnLt.setOnRippleCompleteListener(this);
 
         String text = getActivity().getString(R.string.pri_pro_btn, manager.getMaxScore());
         mIntruderBtnTv.setText(text);
@@ -762,8 +708,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         mWifiSubSummary = (TextView) include.findViewById(R.id.item_summary_subject);
         mWifiBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
         mWifiBtnDiv = include.findViewById(R.id.item_btn_divider);
-        mWifiBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-        mWifiBtnLt.setOnRippleCompleteListener(this);
+        mWifiBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+        mWifiBtnLt.setOnClickListener(this);
+//        mWifiBtnLt.setOnRippleCompleteListener(this);
 
         mWifiSummaryImg = (ImageView) include.findViewById(R.id.item_summary_iv);
         mWifiMiddleLt = include.findViewById(R.id.item_middle_ll);
@@ -780,8 +727,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         View include = view.findViewById(R.id.swifty_security);
         mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
         mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
-        mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-        mSwiftyBtnLt.setOnRippleCompleteListener(this);
+        mSwiftyBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+        mSwiftyBtnLt.setOnClickListener(this);
+//        mSwiftyBtnLt.setOnRippleCompleteListener(this);
 
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
 
@@ -821,8 +769,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
     private void initFbLayout(View view) {
         View include = view.findViewById(R.id.fb_security);
-        mFbBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-        mFbBtnLt.setOnRippleCompleteListener(this);
+        mFbBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+        mFbBtnLt.setOnClickListener(this);
+//        mFbBtnLt.setOnRippleCompleteListener(this);
     }
 
     private void initGradeLayout(View view) {
@@ -839,8 +788,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             mHighFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
             mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
             mHighGrageFrame = (FrameLayout) highInclude.findViewById(R.id.grade_frame);
-            mHighGradeBtnLt = (RippleView) highInclude.findViewById(R.id.item_btn_rv);
-            mHighGradeBtnLt.setOnRippleCompleteListener(this);
+            mHighGradeBtnLt = (RippleView1) highInclude.findViewById(R.id.item_btn_rv);
+            mHighGradeBtnLt.setOnClickListener(this);
+//            mHighGradeBtnLt.setOnRippleCompleteListener(this);
 
 //            FrameLayout.LayoutParams highFrameParams =
 //                    (FrameLayout.LayoutParams)mHighGrageFrame.getLayoutParams();
@@ -862,8 +812,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             mFiveStar = (ImageView) include.findViewById(R.id.five_star);
             mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
             mGrageFrame = (FrameLayout) include.findViewById(R.id.grade_frame);
-            mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-            mGradeBtnLt.setOnRippleCompleteListener(this);
+            mGradeBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+            mGradeBtnLt.setOnClickListener(this);
+//            mGradeBtnLt.setOnRippleCompleteListener(this);
 
 //            FrameLayout.LayoutParams frameParams =
 //                    (FrameLayout.LayoutParams)mGrageFrame.getLayoutParams();
@@ -986,6 +937,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
     @Override
     public void onClick(View v) {
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         if (v == mContactArrowIv) {
             if (mContactContainor.getChildCount() > 1) {
                 collapseContact();
@@ -1006,6 +958,48 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         } else if (v.getId() == R.id.pp_process_rv_click) {
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
             mActivity.onBackPressed();
+        } else if (mContactBtnLt == v) {
+            final PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+            if (!mSelectData.isEmpty()) {
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "contact_enable");
+                setAddPrivacyText(true);
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMessageCallBean = pcm.addPrivacyContact(mSelectData);
+                        mAddedData.addAll(mSelectData);
+                        mSelectData.clear();
+                        onAddContactFinish();
+                    }
+                });
+            } else {
+                Toast.makeText(getActivity(), getActivity().getString(R.string.pri_contact_empty), Toast.LENGTH_SHORT).show();
+            }
+            ChangeContactColor();
+        } else if (mWifiBtnLt == v) {
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "wifi_scan");
+            Intent intent = new Intent(getActivity(), WifiSecurityActivity.class);
+            startActivity(intent);
+        } else if (mIntruderBtnLt == v) {
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "intruder_enable");
+            Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
+            startActivity(intent);
+        } else if (mFbBtnLt == v) {  // FaceBook分享
+            lockManager.filterSelfOneMinites();
+            goFaceBook();
+        } else if (mHighGradeBtnLt == v) {
+            lockManager.filterSelfOneMinites();
+            Utilities.goFiveStar(mActivity);
+        } else if (mLostBtnLt == v) {
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "theft_enable");
+            Intent intent = new Intent(getActivity(), PhoneSecurityGuideActivity.class);
+            startActivity(intent);
+        } else if (mGradeBtnLt == v) { // 五星好评
+            lockManager.filterSelfOneMinites();
+            Utilities.goFiveStar(mActivity);
+        } else if (mSwiftyBtnLt == v) {
+            lockManager.filterSelfOneMinites();
+            gotoGpOrBrowser();
         }
     }
 
