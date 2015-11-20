@@ -2,7 +2,16 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="326dp"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal" >
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="39dp"
+        android:layout_gravity="top"
+        android:src="@drawable/ad_top_bg"
+        android:scaleType="fitXY"
+        android:layout_marginTop="49dp"
+        android:layout_marginLeft="11dp"/>
 
     <View
         android:layout_width="match_parent"
@@ -34,13 +43,7 @@
         android:scaleType="centerCrop"/>
 
 
-    <ImageView
-        android:layout_width="295dp"
-        android:layout_height="39dp"
-        android:layout_gravity="top"
-        android:background="@drawable/ad_top_bg"
-        android:layout_marginTop="49dp"
-        android:layout_marginLeft="11dp"/>
+
 
     <TextView
         android:id="@+id/tv_accelerat_result"

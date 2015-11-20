@@ -314,10 +314,10 @@ public class HomeBoostActivity extends Activity {
         cloudScaleYToFifthy.setDuration(120);
 
         ObjectAnimator cloudScaleYToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0.5f, 1f);
-        cloudScaleYToHundred.setDuration(380);
+        cloudScaleYToHundred.setDuration(180);
 
         ObjectAnimator cloudScaleToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0.3f, 1f);
-        cloudScaleToHundred.setDuration(380);
+        cloudScaleToHundred.setDuration(180);
         ObjectAnimator cloudAlphaHide = ObjectAnimator.ofFloat(mIvCloud, "alpha", 1f, 0f);
         cloudAlphaHide.setDuration(200);
         ObjectAnimator cloudScaleToLarge = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 1f, 1.1f);
