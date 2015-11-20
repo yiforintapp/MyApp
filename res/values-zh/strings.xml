@@ -543,7 +543,7 @@
     <string name="advance_protect_open_success_tip_title">高級保護設置成功</string>
     <string name="splash_guide_page_msg_title">消息中心</string>
     <string name="splash_guide_page_msg_content">眾多精彩活動，實用小技巧，一網打盡</string>
-    <string name="advance_protect_open_success_tip_content">高級保護成功啟動！您可以在應用鎖設置中停用高級保護。開啟高級保護時無法在應用鎖外部卸載隱私衛士</string>
+    <string name="advance_protect_open_success_tip_content">開啓後無法在軟件外部卸載隱私衛士。如需卸載，您需要先在應用鎖設置中取消高級保護設置。</string>
     <string name="auto_start_tip_xiaomi4_and_letv">為了保證持續保護，請點擊“自啟動管理”，將隱私衛士加入到自啟動列表</string>
     <string name="auto_start_tip_redmi">為了保證持續保護，請進入“自啟動應用管理”，選擇“添加自啟動應用”，將隱私衛士加入到自啟動列表</string>
     <string name="auto_start_tip_huawei">為了保證持續保護，請進入“受保護應用”，將PG加入受保護名單中</string>

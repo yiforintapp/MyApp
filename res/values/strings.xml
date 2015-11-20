@@ -548,7 +548,7 @@
     <string name="advace_protect_dialog_content_text">Congrats! Applock applied successfully.Tips: Enable "Advanced Protection", then no one can peek at your secrets by uninstalling Privacy Guard. But if really want uninstall our app, please check the side bar.</string>
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">Succeed!</string>
-    <string name="advance_protect_open_success_tip_content">Succeed! You can deactivate Advanced Protection in Applock settings. Unable to uninstall our app from outside under this Advanced Protection</string>
+    <string name="advance_protect_open_success_tip_content">Under advanced protection nobody can uninstall LEO Privacy Guard. So, please go to AppLock page, disenable "Advanced Protection" in AppLock Settings first.</string>
     <string name="auto_start_tip_xiaomi4_and_letv">For better privacy protection, please click "Autostart", choose LEO Privacy Guard to add to Autostart List</string>
     <string name="auto_start_tip_redmi">For better privacy protection, please go to"Permissions", add Privacy Guard to Autostart Applications</string>
     <string name="auto_start_tip_huawei">For better privacy protection, please go to"Protected Apps", add PG to protected list</string>
@@ -856,7 +856,7 @@
 
     <!-- 3.1 -->
     <string name="feedback_tell_us_title">联系我们</string>
-     <string name="toast_getscore_text">恭喜您！您的分数增加啦</string>
+    <string name="toast_getscore_text">恭喜您！您的分数增加啦</string>
     <string name="feedback_tell_us_content">如果您有其他的问题或需要，欢迎随时联系我们！我们的facebook、whatsapp群组也随时在线哦！</string>
     <string name="feedback_tell_us_contact_type_title">联系方式</string>
     <string name="feedback_tell_us_contact_type_1">Email:suppport@leomaster.com</string>
@@ -877,5 +877,5 @@
     <string name="fb_item_content">想要知道更多隐私卫士有趣的和官方的新闻吗？还在等什么，赶紧关注我们的Facebook主页吧</string>
     <string name="fb_item_btn">关注</string>
 
-    <string name= "intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
+    <string name="intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
 </resources>
