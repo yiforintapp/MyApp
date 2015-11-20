@@ -18,8 +18,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-
-
 public class FiveStarsLayout extends FrameLayout{
 
     /** 评分星星 */
@@ -28,6 +26,7 @@ public class FiveStarsLayout extends FrameLayout{
     private ImageView mThreeStar;
     private ImageView mFourStar;
     private ImageView mFiveStar;
+    private ImageView mFiveStarBg;
     private ImageView mGradeGesture;
     private float mGestureY;
     private float mGestureX;
@@ -58,6 +57,7 @@ public class FiveStarsLayout extends FrameLayout{
         mTwoStar = (ImageView) findViewById(R.id.two_star);
         mThreeStar = (ImageView) findViewById(R.id.three_star);
         mFourStar = (ImageView) findViewById(R.id.four_star);
+        mFiveStarBg = (ImageView) findViewById(R.id.five_star_bg);
         mFiveStar = (ImageView) findViewById(R.id.five_star);
         mGradeGesture = (ImageView) findViewById(R.id.grade_gesture);
         mFlFifthStar = (FrameLayout) findViewById(R.id.fl_fifthStar);
@@ -118,6 +118,11 @@ public class FiveStarsLayout extends FrameLayout{
         final ObjectAnimator animatorO = ObjectAnimator.ofPropertyValuesHolder(mGradeGesture, gOutY, gOutX, gOutAlpha);
         animatorO.setDuration(2000);
 
+        PropertyValuesHolder starScaleXAnim = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.7f, 1.0f);
+        PropertyValuesHolder starScaleYAnim = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.7f, 1.0f);
+        final ObjectAnimator animatorScale = ObjectAnimator.ofPropertyValuesHolder(mFiveStarBg, starScaleXAnim, starScaleYAnim);
+        animatorScale.setDuration(500);
+        
         AnimatorSet starAnimator = new AnimatorSet();
         starAnimator.playSequentially(oneStar, twoStar, threeStar, fourStar, fiveStar);
 
@@ -129,6 +134,7 @@ public class FiveStarsLayout extends FrameLayout{
         }
 //        animatorSet.playSequentially(starAnimator);
         mAsMain.play(animatorI).before(starAnimator);
+        mAsMain.play(animatorScale).after(animatorI);
         mAsMain.play(starAnimator).with(animatorO);
         mAsMain.play(emptyObjectAnimator).after(starAnimator);
         

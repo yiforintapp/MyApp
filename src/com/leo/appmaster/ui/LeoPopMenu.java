@@ -245,10 +245,7 @@ public class LeoPopMenu {
             }
         }
 
-        // newLongWidth=Math.min( W/2, mMaxLength);
-
         Log.e("hehe", "最长字符占的宽度px=" + mMaxLength);
-
         
         newSmallWidth = W / 4;
         newLongWidth = W / 2;
