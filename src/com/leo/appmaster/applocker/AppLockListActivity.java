@@ -50,7 +50,6 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -59,7 +58,7 @@ import com.leo.appmaster.utils.LeoLog;
  * Created by qili on 15-10-9.
  */
 public class AppLockListActivity extends BaseActivity implements
-        AppChangeListener, OnClickListener, OnItemClickListener, RippleView.OnRippleCompleteListener {
+        AppChangeListener, OnClickListener, OnItemClickListener {
     public final static int INIT_UI_DONE = 111;
     public final static int LOAD_DATA_DONE = 112;
     public final static int DEFAULT_SORT = 0;
@@ -490,8 +489,8 @@ public class AppLockListActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
+//    @Override
+//    public void onRippleComplete(RippleView rippleView) {
 //        if (mLockModeView == rippleView) {
 //            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "modes");
 //            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "modes");
@@ -506,7 +505,7 @@ public class AppLockListActivity extends BaseActivity implements
 //            SDKWrapper.addEvent(this, SDKWrapper.P1, "theme_enter", "home");
 //            enterLockTheme();
 //        }
-    }
+//    }
 
     private class LockedAppComparator implements Comparator<AppInfo> {
         List<String> sortBase;

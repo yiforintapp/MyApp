@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:rippleAlpha="1"
-    app:rippleColor="@color/home_tab_pressed"
+    app:rippleAlpha="0.5"
+    app:rippleColor="@color/button_gray_ripple"
     app:rippleHover="true"
     app:rippleInAdapter="true"
     app:rippleOverlay="false">
