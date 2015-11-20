@@ -6,6 +6,16 @@
     android:layout_centerInParent="true"
     android:background="@drawable/ad_large_banner_bg">
 
+    <View
+        android:id="@+id/left_click_area"
+        android:layout_width="@dimen/fragment_lock_large_banner_image_top"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"/>
+    <View
+        android:id="@+id/right_click_area"
+        android:layout_width="@dimen/fragment_lock_large_banner_image_top"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"/>
     <RelativeLayout
         android:id="@+id/click_area"
         android:layout_width="match_parent"

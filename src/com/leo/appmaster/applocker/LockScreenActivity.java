@@ -2111,12 +2111,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (list != null) {
                 mViews = new LinkedList<View>();
                 RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
+                view.setTag(mViews.size());
                 mViews.add(view);
                 view.setVisibility(View.INVISIBLE);
 
                     for (String unitId : mList) {
                         view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
                         setItemViewContent(view, unitId);
+                        view.setTag(mViews.size());
                         mViews.add(view);
                     }
 
@@ -2163,6 +2165,32 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             ((TextView)view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             View clickArea = view.findViewById(R.id.click_area);
             MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, clickArea/*, mMobvistaListenerList.get(dataIndex)*/);
+            View leftArea = view.findViewById(R.id.left_click_area);
+            leftArea.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snapforClick((ViewGroup)v.getParent());
+                }
+            });
+
+            View rightArea = view.findViewById(R.id.right_click_area);
+            rightArea.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snapforClick((ViewGroup)v.getParent());
+                }
+            });
+        }
+
+        private void snapforClick(View v) {
+            try {
+                int index = ((Integer) v.getTag());
+                if (mViewPager.getCurrentItem() != index) {
+                    mViewPager.setCurrentItem(index,true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // 实现ViewPager.OnPageChangeListener接口
@@ -2215,6 +2243,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mList.add(unitId);
             RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
             setItemViewContent(view, unitId);
+            view.setTag(mViews.size());
             mViews.add(view);
             notifyDataSetChanged();
         }
