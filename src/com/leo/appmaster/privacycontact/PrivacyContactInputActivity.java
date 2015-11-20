@@ -137,11 +137,17 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             /*查看是否存在短信*/
 //                            Cursor msmCur = cr.query(PrivacyContactUtils.SMS_INBOXS, null, null, null, "_id asc LIMIT " + PhoneSecurityConstants.TYY_READ_MSM_COUNT);
 //                            int resultMsm = msmCur.getCount();
-                            mMsmCount = pm.getSystemMessages("address LIKE ? ", new String[]{"%" + tempNumber}).getCount();
+                            Cursor curMsm = pm.getSystemMessages("address LIKE ? ", new String[]{"%" + tempNumber});
+                            if (curMsm != null) {
+                                mMsmCount = curMsm.getCount();
+                            }
                             /*查询是否存在通话*/
 //                            Cursor callCur = cr.query(PrivacyContactUtils.CALL_LOG_URI, null, null, null, "_id asc LIMIT " + PhoneSecurityConstants.TYY_READ_MSM_COUNT);
 //                            int resultCall = callCur.getCount();
-                            mCallCount = pm.getSystemCalls("number LIKE ?", new String[]{"%" + tempNumber}).getCount();
+                            Cursor callCur = pm.getSystemCalls("number LIKE ?", new String[]{"%" + tempNumber});
+                            if (callCur != null) {
+                                mCallCount = callCur.getCount();
+                            }
                             if (!mIsOtherLogs) {
                                 if (mMsmCount > 0 || mCallCount > 0) {
                                     mIsOtherLogs = true;

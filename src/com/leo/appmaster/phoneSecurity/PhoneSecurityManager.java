@@ -121,7 +121,7 @@ public class PhoneSecurityManager {
     /**
      * 手机防盗功能,短信广播中处理
      */
-    public boolean securityPhoneReceiverHandler( SmsMessage message) {
+    public boolean securityPhoneReceiverHandler(SmsMessage message) {
         if (!isDbReceiverTimeBefor()) {
             setDbChangeTimeBefor(true);
             LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
@@ -451,10 +451,12 @@ public class PhoneSecurityManager {
         Cursor cur = null;
         try {
             cur = cr.query(PrivacyContactUtils.SMS_INBOXS, null, null, null, "_id asc LIMIT " + PhoneSecurityConstants.TYY_READ_MSM_COUNT);
-            int result = cur.getCount();
-            LeoLog.i(TAG, "是否有短信权限：" + result);
-            if (result > 0) {
-                return true;
+            if (cur != null) {
+                int result = cur.getCount();
+                LeoLog.i(TAG, "是否有短信权限：" + result);
+                if (result > 0) {
+                    return true;
+                }
             }
         } catch (Exception e) {
         } finally {

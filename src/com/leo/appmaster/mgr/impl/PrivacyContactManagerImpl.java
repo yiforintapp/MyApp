@@ -166,24 +166,43 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
 
     @Override
     public Cursor getSystemContacts(String selection, String[] selectionArgs) {
-        ContentResolver cr = mContext.getContentResolver();
-        Cursor cursor = cr.query(PrivacyContactUtils.CONTACT_PHONE_URL,
-                null, selection, selectionArgs, "sort_key");
+        Cursor cursor = null;
+        try {
+            ContentResolver cr = mContext.getContentResolver();
+            cursor = cr.query(PrivacyContactUtils.CONTACT_PHONE_URL,
+                    null, selection, selectionArgs, "sort_key");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
         return cursor;
     }
 
     @Override
     public Cursor getSystemCalls(String selection, String[] selectionArgs) {
-        ContentResolver cr = mContext.getContentResolver();
-        Cursor cursor = cr.query(CALL_LOG_URI, null, selection, selectionArgs,
-                CallLog.Calls.DEFAULT_SORT_ORDER);
+        Cursor cursor = null;
+        try {
+            ContentResolver cr = mContext.getContentResolver();
+            cursor = cr.query(CALL_LOG_URI, null, selection, selectionArgs,
+                    CallLog.Calls.DEFAULT_SORT_ORDER);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
         return cursor;
     }
 
     @Override
     public Cursor getSystemMessages(String selection, String[] selectionArgs) {
-        ContentResolver cr = mContext.getContentResolver();
-        Cursor cur = cr.query(SMS_INBOXS, null, selection, selectionArgs, "_id desc");
+
+        Cursor cur = null;
+        try {
+            ContentResolver cr = mContext.getContentResolver();
+            cur = cr.query(SMS_INBOXS, null, selection, selectionArgs, "_id desc");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
         return cur;
     }
 
