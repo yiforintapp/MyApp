@@ -359,12 +359,23 @@ public class SplashBootstrap extends Bootstrap {
 
     /* 加载闪屏图 */
     private static void getSplashImage(String url) {
+        if (Utilities.isEmpty(url)) {
+            return;
+        }
         final AppMasterApplication mApp = AppMasterApplication.getInstance();
         final SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         final AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
         Date currentDate = new Date(System.currentTimeMillis());
         final String failDate = dateFormate.format(currentDate);
         String dir = FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME;
+
+        /*拉取到闪屏图链接,在拉去图片时失败，防止显示上次图片该处，删除上次获取到的图片*/
+        String path = FileOperationUtil.getSplashPath();
+        //闪屏图
+        SplashBootstrap.deleteShareSplashImage(path + Constants.SPLASH_NAME);
+        //闪屏分享图
+        SplashBootstrap.deleteShareSplashImage(path + Constants.SPL_SHARE_QR_NAME);
+
         HttpRequestAgent.getInstance(mApp).loadSplashImage(url, dir, new Listener<File>() {
 
             @Override
@@ -415,5 +426,21 @@ public class SplashBootstrap extends Bootstrap {
         sbShar.append(Constants.SPL_SHARE_QR_NAME);
         boolean isOutPutSuc = AppUtil.outPutImage(sbShar.toString(), result);
         return isOutPutSuc;
+    }
+
+    /*删除闪屏分享图*/
+    public static boolean deleteShareSplashImage(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            return false;
+        }
+        try {
+            file.delete();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 }

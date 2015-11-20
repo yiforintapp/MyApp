@@ -177,7 +177,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
             LeoLog.i(TAG, "splash_end&start_time：No time!");
             LeoLog.i(TAG, "使用默认闪屏!");
         }
-        // clearSpSplashFlagDate();
+
         if (mSplashIcon.getVisibility() == View.INVISIBLE) {
             mSplashIcon.setVisibility(View.VISIBLE);
         }

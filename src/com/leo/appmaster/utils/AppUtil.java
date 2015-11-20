@@ -348,10 +348,15 @@ public class AppUtil {
         int inSampleSize = 1;
         if ((height > reqHeight && height / reqHeight >= 2) || (width > reqWidth && width / reqWidth >= 2)) {
             /*计算出实际宽高和目标宽高的比率*/
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            final float heightRatio = (float) height / (float) reqHeight;
+            final float widthRatio = (float) width / (float) reqWidth;
             /*选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高 一定都会大于等于目标的宽和高。*/
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+            float tempInSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+            if (tempInSampleSize < 2) {
+                inSampleSize = 1;
+            } else {
+                inSampleSize = Math.round(tempInSampleSize);
+            }
         }
         return inSampleSize;
     }
