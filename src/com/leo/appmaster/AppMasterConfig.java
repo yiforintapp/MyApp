@@ -8,8 +8,8 @@ import android.util.Log;
 public class AppMasterConfig {
 
     /*-----    Debug configurations   ------ */
-    public static final boolean LOGGABLE = true;
-    public static final int SDK_LOG_LEVEL = Log.DEBUG;
+//    public static final boolean LOGGABLE = true;
+//    public static final int SDK_LOG_LEVEL = Log.DEBUG;
     /*
     * RECOMMEND URL
     */
@@ -29,8 +29,8 @@ public class AppMasterConfig {
     /*-----    Debug configurations  end  ------ */
 
 	/*-----     Release configurations   ------*/
-//	public static final boolean LOGGABLE = false;
-//	public static final int SDK_LOG_LEVEL = Log.ERROR;
+	public static final boolean LOGGABLE = false;
+	public static final int SDK_LOG_LEVEL = Log.ERROR;
 //	/*
 //	 * RECOMMEND URL
 //	 */
