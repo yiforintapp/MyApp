@@ -718,7 +718,7 @@
         <!-- 您从百度网站获取的APP KEY -->
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
-            android:value="88ce739ea6" /> <!-- debug key -->
+            android:value="c7881de475" /> <!-- debug key -->
         <!-- <meta-data android:name="BaiduMobAd_STAT_ID" android:value="1004e462a2" /> -->
         <!-- release key -->
         <!-- 渠道商编号 -->
