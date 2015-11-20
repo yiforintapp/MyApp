@@ -101,15 +101,7 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         });
     }
 
-    protected void initGroupIndexArray() {
-        mGroupIndexArray.clear();
-        int index = 0;
-        for (int i = 0; i < mDataList.size(); i++) {
-            ItemsWrapper wrapper = mDataList.get(i);
-            mGroupIndexArray.put(i, index);
-            index += wrapper.items.size() + 1;
-        }
-    }
+    protected abstract void initGroupIndexArray();
 
     public List<T> getSelectData() {
         return mSelectData;

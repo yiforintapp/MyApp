@@ -8,16 +8,12 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.ui.ExpandableGridView;
-import com.leo.appmaster.ui.FloatingExpandableListView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
 import java.util.Dictionary;

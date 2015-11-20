@@ -38,6 +38,17 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
     }
 
     @Override
+    protected void initGroupIndexArray() {
+        mGroupIndexArray.clear();
+        int index = 0;
+        for (int i = 0; i < mDataList.size(); i++) {
+            ItemsWrapper wrapper = mDataList.get(i);
+            mGroupIndexArray.put(i, index);
+            index += wrapper.items.size() + 1;
+        }
+    }
+
+    @Override
     protected String getPath(VideoItemBean data) {
         if (data == null) return null;
 
@@ -176,16 +187,10 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
 
     @Override
     public Object getFirstVisibleGroup(int firstVisibleItem) {
-        int index = 0;
-        for (int i = 0; i < getGroupCount(); i++) {
-            int rowCount = getChildrenCount(i) / 3;
-            rowCount += getChildrenCount(i) % 3 != 0 ? 1 : 0;
-            index += rowCount + 1;
-            if (firstVisibleItem <= index) {
-                return getGroup(i);
-            }
+        int group = getFirstVisibleGroupPosition(firstVisibleItem);
+        if (group >= 0 && group < getGroupCount()) {
+            return getGroup(group);
         }
-
         return null;
     }
 

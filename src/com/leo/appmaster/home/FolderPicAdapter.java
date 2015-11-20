@@ -193,15 +193,10 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
 
     @Override
     public Object getFirstVisibleGroup(int firstVisibleItem) {
-        int index = 0;
-        for (int i = 0; i < getGroupCount(); i++) {
-            int rowCount = getChildrenCount(i);
-            index += rowCount + 1;
-            if (firstVisibleItem <= index) {
-                return getGroup(i);
-            }
+        int group = getFirstVisibleGroupPosition(firstVisibleItem);
+        if (group >= 0 && group < getGroupCount()) {
+            return getGroup(group);
         }
-
         return null;
     }
 }
