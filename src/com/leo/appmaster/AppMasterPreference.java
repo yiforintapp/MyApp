@@ -16,6 +16,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
 import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.db.LockRecommentTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.utils.LeoLog;
@@ -2710,7 +2711,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getADShowType() {
         if (mADShowType < 0) {
-            mADShowType = mPref.getInt(PREF_AD_SHOW_TYPE, 3);
+            mADShowType = mPref.getInt(PREF_AD_SHOW_TYPE,
+                    AppMasterConfig.IS_FOR_MAINLAND_CHINA?
+                            ADShowTypeRequestManager.CLOSE_LOCK_AD_SHOW:
+                            ADShowTypeRequestManager.DEFAULT_AD_SHOW_TYPE);
         }
         return mADShowType;
     }
@@ -2734,7 +2738,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getUFOAnimType() {
-        return mPref.getInt(PREF_UFO_ANIM_TYPE, 1);
+        return mPref.getInt(PREF_UFO_ANIM_TYPE, AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
     }
 
     //roll出主题的概率 X分之一
@@ -2789,7 +2793,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAtLockThemeOpen() {
-        return mPref.getInt(PREF_AD_AT_THEME, 2);
+        return mPref.getInt(PREF_AD_AT_THEME, AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:2);
     }
 
     //push时是否需要更新礼物盒状态，只在push时有效
@@ -3046,7 +3050,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsLockAppWallOpen() {
-        return mPref.getInt(PREF_AD_LOCK_WALL, 1);
+        return mPref.getInt(PREF_AD_LOCK_WALL, AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
     }
 
     public boolean getAdvanceProtectOpenSuccessDialogTip() {
