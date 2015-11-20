@@ -34,11 +34,6 @@ import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactManager {
     public static final String TAG = "PrivacyContactManager";
-    /* 接受隐私联系人存在未读广播的权限 */
-    private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
-    private static final String RECEIVER_TO_SWIPE_ACTION = "com.leo.appmaster.ACTION_PRIVACY_CONTACT";
-    private static final String RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP = "com.leo.appmaster.ACTION_CANCEL_PRIVACY_TIP";
-    private static final String PRIVACY_MSM_OR_CALL = "privacy_msm_or_call";
     public static final String PRIVACY_MSM = "privacy_msm";
     public static final String PRIVACY_CALL = "privacy_call";
     public static final String PRIVACYCONTACT_TO_IWIPE_KEY = "privacycontact_to_iswipe";
@@ -51,14 +46,13 @@ public class PrivacyContactManager {
     public static final String[] filterPhoneMode = {
             "SM-N9150", "SM-G9250"
     };
-    private static PrivacyContactManager sInstance;
-    private Context mContext;
-    private ArrayList<ContactBean> mContacts;
-    private MessageBean mMessage;
-    private MessageBean mLastMessage;
-    private ContactBean mLastCallContact;
-    private ContactBean mLastMessageContact;
-    private boolean mContactLoaded = false;
+    /* 当前页是否为PrivacyContactActivity */
+    public boolean mIsOpenPrivacyContact;
+    /* 用来做测试 */
+    public boolean testValue;
+    public static volatile int mNoReadCalls;
+    /*发送短信失败提示标志*/
+    public volatile boolean mSendMsmFail = false;
     /* 用来做隐私联系人通话删除时的通话标志 */
     public boolean deleteCallLogDatebaseFlag;
     /* 用来做隐私联系人短信删除时的标志 */
@@ -67,15 +61,21 @@ public class PrivacyContactManager {
     public int messageSize;
     /* 对不能接受来电广播未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false */
     public int mUnCalls;
+    /* 接受隐私联系人存在未读广播的权限 */
+    private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
+    private static final String RECEIVER_TO_SWIPE_ACTION = "com.leo.appmaster.ACTION_PRIVACY_CONTACT";
+    private static final String RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP = "com.leo.appmaster.ACTION_CANCEL_PRIVACY_TIP";
+    private static final String PRIVACY_MSM_OR_CALL = "privacy_msm_or_call";
+    private static PrivacyContactManager sInstance;
+    private Context mContext;
+    private ArrayList<ContactBean> mContacts;
+    private MessageBean mMessage;
+    private MessageBean mLastMessage;
+    private ContactBean mLastCallContact;
+    private ContactBean mLastMessageContact;
+    private boolean mContactLoaded = false;
     private boolean mCallsLoaded;
     private ArrayList<ContactCallLog> mSysCalls;
-    /* 当前页是否为PrivacyContactActivity */
-    public boolean mIsOpenPrivacyContact;
-    /* 用来做测试 */
-    public boolean testValue;
-    public static volatile int mNoReadCalls;
-    /*发送短信失败提示标志*/
-    public volatile boolean mSendMsmFail = false;
 
     private PrivacyContactManager(Context context) {
         this.mContext = context.getApplicationContext();

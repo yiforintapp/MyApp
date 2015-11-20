@@ -45,7 +45,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -1074,14 +1073,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
         mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
         mBannerContainer.setOffscreenPageLimit(2);
-        mBannerContainer.setClipChildren(false);
         mBannerContainer.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        mBannerParent.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return mBannerContainer.dispatchTouchEvent(event);
-            }
-        });
 
         mImageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ad_def_pic)
@@ -1171,10 +1163,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      * @return 是否添加新的数据
      */
     private boolean deleteRedundant(String unitId, Campaign campaign) {
-        LeoLog.i("asyncLoadAd","ad title = "+campaign.getAppName());
+        LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
         for (String key : mAdMap.keySet()) {
             Campaign data = mAdMap.get(key);
-            if (data.getAppName().equals(campaign.getAppName())) {
+            if (data.getAppName().equals(campaign.getAppName())
+                    || data.getImageUrl().equals(campaign.getImageUrl())
+                    || data.getAppDesc().equals(campaign.getAppDesc())) {
                 return false;
             }
         }
@@ -2167,13 +2161,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             ((TextView)view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
             ((TextView)view.findViewById(R.id.ad_details)).setText(campaign.getAppDesc());
             ((TextView)view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
-            MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, view/*, mMobvistaListenerList.get(dataIndex)*/);
+            View clickArea = view.findViewById(R.id.click_area);
+            MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, clickArea/*, mMobvistaListenerList.get(dataIndex)*/);
         }
 
         // 实现ViewPager.OnPageChangeListener接口
         @Override
         public void onPageSelected(int position) {
-            LeoLog.i("onPageSelected","position="+position);
+            LeoLog.i("onPageSelected", "position=" + position);
             if (position == 0) {
                 mHandler.removeMessages(LARGE_BANNER_HIDE);
             }
@@ -2206,10 +2201,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
 
-            //解决刷新不良的问题
-            if (mBannerParent != null) {
-                mBannerParent.invalidate();
-            }
+//            //解决刷新不良的问题
+//            if (mBannerParent != null) {
+//                mBannerParent.invalidate();
+//            }
         }
 
         @Override

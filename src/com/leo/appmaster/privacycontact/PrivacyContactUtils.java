@@ -46,6 +46,15 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactUtils {
+    public static final int MSG_CALL = 10000;
+    public static final int MSG_CONTACT = 10001;
+    public static final int MSG_MESSAGE = 10002;
+    public static final int MSG_ADD_CALL = 10005;
+    public static final int MSG_ADD_CONTACT = 10006;
+    public static final int MSG_ADD_MSM = 10007;
+    public static final int MSG_ADD_SECURITY_CONTACT = 10008;
+
+
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
     // public static final Uri SMS_INBOXS = Uri.parse("content://sms/inbox");
     public static final Uri SYS_SMS = Uri.parse("content://sms/inbox");

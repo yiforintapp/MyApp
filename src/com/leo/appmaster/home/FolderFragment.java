@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by Jasper on 2015/11/13.
  */
 public abstract class FolderFragment<T> extends Fragment implements AbsListView.OnScrollListener,
-        ExpandableListView.OnGroupClickListener, FolderAdapter.OnFolderClickListener, RippleView.OnRippleCompleteListener ,
+        ExpandableListView.OnGroupClickListener, FolderAdapter.OnFolderClickListener, RippleView.OnRippleCompleteListener,
         View.OnClickListener {
     private static final String TAG = "FolderFragment";
     private Dictionary<Integer, Integer> mItemHeights = new Hashtable<Integer, Integer>();
@@ -45,8 +46,11 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
     protected CheckBox mFloatingCb;
     private RippleView mFloatingRv;
 
-    private RippleView mProcessBtn;
-    private RippleView mIgnoreBtn;
+    private MaterialRippleLayout mProcessBtn;
+    private View mProcessClick;
+    private MaterialRippleLayout mIgnoreBtn;
+    private View mIgnoreClick;
+
     protected LEOAlarmDialog mIgnoreDlg;
 
     private View mOffsetBg;
@@ -95,12 +99,20 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         mFloatingRv.setOnRippleCompleteListener(this);
         mFloatingCb.setOnClickListener(this);
 
-        mProcessBtn = (RippleView) view.findViewById(R.id.pp_process_rv);
-        mIgnoreBtn = (RippleView) view.findViewById(R.id.pp_process_ignore_rv);
+        mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
+        mProcessBtn.setRippleOverlay(true);
+        mProcessClick = view.findViewById(R.id.pp_process_rv_click);
+        mIgnoreBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_ignore_rv);
+        mIgnoreBtn.setRippleOverlay(true);
+        mIgnoreClick = view.findViewById(R.id.pp_process_ignore_rv_click);
         mProcessTv = (TextView) view.findViewById(R.id.pp_process_tv);
 
-        mProcessBtn.setOnRippleCompleteListener(this);
-        mIgnoreBtn.setOnRippleCompleteListener(this);
+        mProcessClick.setOnClickListener(this);
+        mIgnoreClick.setOnClickListener(this);
+
+        mProcessBtn.setEnabled(false);
+        mProcessClick.setEnabled(false);
+
         mOffsetBg = view.findViewById(R.id.pri_offset_bg);
     }
 
@@ -200,9 +212,11 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
     public void onSelectionChange(boolean selectAll, int selectedCount) {
         if (selectedCount > 0) {
             mProcessBtn.setEnabled(true);
+            mProcessClick.setEnabled(true);
             mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
         } else {
             mProcessBtn.setEnabled(false);
+            mProcessClick.setEnabled(false);
             mProcessBtn.setBackgroundResource(R.drawable.green_radius_shape_disable);
         }
     }
@@ -220,17 +234,22 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
                     }
                 }, 100);
             }
-        } else if (mProcessBtn == rippleView) {
-            onProcessClick();
-        } else if (mIgnoreBtn == rippleView) {
-            onIgnoreClick();
         }
+//        else if (mProcessBtn == rippleView) {
+//            onProcessClick();
+//        } else if (mIgnoreBtn == rippleView) {
+//            onIgnoreClick();
+//        }
     }
 
     @Override
     public void onClick(View v) {
         if (v == mFloatingCb) {
             onFloatingCheckClick();
+        } else if (v.getId() == R.id.pp_process_rv_click) {
+            onProcessClick();
+        } else if (v.getId() == R.id.pp_process_ignore_rv_click) {
+            onIgnoreClick();
         }
     }
 
@@ -259,10 +278,13 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
     }
 
     protected abstract int getListViewId();
+
     protected abstract void onIgnoreClick();
+
     protected abstract void onProcessClick();
 
     protected abstract void onIgnoreConfirmClick();
+
     protected abstract void onIgnoreCancelClick();
 
     protected abstract void onFloatingCheckClick();

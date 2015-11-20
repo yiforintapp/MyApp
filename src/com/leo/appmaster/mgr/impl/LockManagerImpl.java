@@ -606,7 +606,7 @@ public class LockManagerImpl extends LockManager {
     }
 
     @Override
-    public void removePkgFromMode(List<String> pkgs, LockMode mode) {
+    public void removePkgFromMode(List<String> pkgs, LockMode mode, boolean notifyChange) {
         long a = System.currentTimeMillis();
         synchronized (this) {
             long c = System.currentTimeMillis();
@@ -626,18 +626,16 @@ public class LockManagerImpl extends LockManager {
         }
         long b = System.currentTimeMillis();
         LeoLog.d("testWhoNull", "part 123 : " + (b - a));
-        if (mode.isCurrentUsed) {
-//            PrivacyHelper.getInstance(mContext).computePrivacyLevel(PrivacyHelper.VARABLE_APP_LOCK);
+
+        updateMode(mode);
+        if (notifyChange && mode.isCurrentUsed) {
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     notifySecurityChange();
                 }
             });
-//            notifySecurityChange();
         }
-
-        updateMode(mode);
     }
 
     @Override

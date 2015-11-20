@@ -390,7 +390,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                         }
                     } else {
                         if (appInfoList != null) {
-                            lockManager.removePkgFromMode(addLockList, mode);
+                            lockManager.removePkgFromMode(addLockList, mode, false);
                         }
                         LeoLog.i(TAG, "清空所有模式的锁列表");
                     }

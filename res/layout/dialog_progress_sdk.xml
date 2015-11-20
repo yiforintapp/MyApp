@@ -32,7 +32,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:text="Title"></TextView>
+            android:text="Title"/>
 
         <TextView
             android:id="@+id/dlg_content"

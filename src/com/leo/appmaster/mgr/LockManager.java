@@ -66,8 +66,9 @@ public abstract class LockManager extends Manager {
      * 从加锁模式中移除
      * @param pkgs
      * @param mode
+     * @param notifyChange 是否通知变更
      */
-    public abstract void removePkgFromMode(List<String> pkgs, LockMode mode);
+    public abstract void removePkgFromMode(List<String> pkgs, LockMode mode, boolean notifyChange);
 
     /**
      * 更新LockMode

@@ -352,6 +352,7 @@
     <dimen name="fragment_lock_large_banner_title_size">12dp</dimen>
     <dimen name="fragment_lock_large_banner_msg_size">10dp</dimen>
     <dimen name="fragment_lock_large_banner_spacing">27.5dp</dimen>
+    <dimen name="fragment_lock_large_banner_pading">38.5dp</dimen>
     <dimen name="wifi_acti_big_icon_width">178dp</dimen>
     <dimen name="wifi_acti_big_icon_height">186dp</dimen>
     <dimen name="wifi_acti_line_height">20dp</dimen>

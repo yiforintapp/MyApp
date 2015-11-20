@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -45,6 +46,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class PrivacyContactFragment extends BaseFragment {
 
+    private static final String TAG = "PrivacyContactFragment";
     private TextView mTextView;
     private LinearLayout mDefaultText;
     private ListView mContactCallLog;
@@ -61,6 +63,7 @@ public class PrivacyContactFragment extends BaseFragment {
     private boolean mIsChecked = true;
     private boolean mRestorMessagesFlag = false;
     private boolean mRestorCallLogsFlag = false;
+    private PrivacyContactHandler mContactHandler = new PrivacyContactHandler();
 
     @Override
     protected int layoutResourceId() {
@@ -124,9 +127,11 @@ public class PrivacyContactFragment extends BaseFragment {
                 return true;
             }
         });
-
-        PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
-        task.execute("");
+//
+//        PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
+//        task.execute("");
+//        task.setDefaultExecutor(ThreadManager.getAsyncExecutor());
+        sendMsgHandler();
     }
 
     // 更新TitleBar
@@ -162,8 +167,9 @@ public class PrivacyContactFragment extends BaseFragment {
             }
         } else if (PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE
                 .equals(event.editModel)) {
-            PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
-            task.execute("");
+//            PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
+//            task.execute("");
+            sendMsgHandler();
         }
     }
 
@@ -284,7 +290,7 @@ public class PrivacyContactFragment extends BaseFragment {
 //                    vh.bottomLine.setVisibility(View.VISIBLE);
 //                }
             }
-           
+
             return convertView;
         }
     }
@@ -368,7 +374,7 @@ public class PrivacyContactFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 mPCDialog.cancel();
-                String[] bundleData = new String[] {
+                String[] bundleData = new String[]{
                         contact.getContactName(), contact.getContactNumber()
                 };
                 Bundle bundle = new Bundle();
@@ -459,8 +465,7 @@ public class PrivacyContactFragment extends BaseFragment {
     }
 
     // 删除隐私联系人
-    private class PrivacyContactTask extends AsyncTask<String, Boolean, String>
-    {
+    private class PrivacyContactTask extends AsyncTask<String, Boolean, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -486,14 +491,14 @@ public class PrivacyContactFragment extends BaseFragment {
                             PrivacyContactUtils.formatePhoneNumber(contact.getContactNumber());
                     if (mRestorMessages == null) {
                         mRestorMessages = PrivacyContactUtils.queryMySelfMessageTable(cr,
-                                "contact_phone_number LIKE ? ", new String[] {
-                                    "%" + tempNumber
+                                "contact_phone_number LIKE ? ", new String[]{
+                                        "%" + tempNumber
                                 });
                     }
                     if (mRestorCallLogs == null) {
                         mRestorCallLogs = PrivacyContactUtils.queryMySelfCallLogTable(cr,
-                                "call_log_phone_number LIKE ?", new String[] {
-                                    "%" + tempNumber
+                                "call_log_phone_number LIKE ?", new String[]{
+                                        "%" + tempNumber
                                 });
                     }
                     if (!"have_log".equals(isOtherLogs) || isOtherLogs == null
@@ -568,8 +573,8 @@ public class PrivacyContactFragment extends BaseFragment {
                                                             Constants.PRIVACY_MESSAGE_URI,
                                                             Constants.COLUMN_MESSAGE_PHONE_NUMBER
                                                                     + " LIKE ?",
-                                                            new String[] {
-                                                                "%" + formateNumber
+                                                            new String[]{
+                                                                    "%" + formateNumber
                                                             });
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -621,8 +626,8 @@ public class PrivacyContactFragment extends BaseFragment {
                                                         Constants.PRIVACY_CALL_LOG_URI,
                                                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER
                                                                 + " LIKE ?",
-                                                        new String[] {
-                                                            "%" + formateNumber
+                                                        new String[]{
+                                                                "%" + formateNumber
                                                         });
                                     }
                                 }
@@ -678,8 +683,8 @@ public class PrivacyContactFragment extends BaseFragment {
     }
 
     public void showContactDialog(final ContactBean contact, String title, String content,
-            int checkText,
-            final String flag, final int model) {
+                                  int checkText,
+                                  final String flag, final int model) {
         if (mAddCallLogDialog == null) {
             mAddCallLogDialog = new PrivacyContactDeleteAlarmDialog(mContext);
         }
@@ -703,8 +708,7 @@ public class PrivacyContactFragment extends BaseFragment {
                             int currentValue = msg.what;
                             if (currentValue >= mDeleteCount) {
 
-                                if (mProgressDialog != null)
-                                {
+                                if (mProgressDialog != null) {
                                     mProgressDialog.cancel();
                                     if (mContacts == null || mContacts.size() == 0) {
                                         mDefaultText.setVisibility(View.VISIBLE);
@@ -766,6 +770,48 @@ public class PrivacyContactFragment extends BaseFragment {
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
+    }
+
+    private class PrivacyContactHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case PrivacyContactUtils.MSG_CONTACT:
+                    if (msg.obj != null) {
+                        LeoLog.i(TAG, "load privacy contacts finish !");
+                        List<ContactBean> contacts = (List<ContactBean>) msg.obj;
+                        if (mContacts != null) {
+                            mContacts.clear();
+                        }
+                        mContacts = contacts;
+                        if (mContacts == null || mContacts.size() == 0) {
+                            mDefaultText.setVisibility(View.VISIBLE);
+                        } else {
+                            mDefaultText.setVisibility(View.GONE);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendMsgHandler() {
+        if (mContactHandler != null) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                 @Override
+                 public void run() {
+                     List<ContactBean> contacts = PrivacyContactManager.getInstance(mActivity).getPrivateContacts();
+                     Message msg = new Message();
+                     msg.what = PrivacyContactUtils.MSG_CONTACT;
+                     msg.obj = contacts;
+                     mContactHandler.sendMessage(msg);
+                 }
+             });
+        }
     }
 
     private class PrivacyContactMyDateTask extends AsyncTask<String, Boolean, Boolean> {
@@ -869,8 +915,8 @@ public class PrivacyContactFragment extends BaseFragment {
                         if (contact != null) {
                             messages = PrivacyContactUtils.queryMySelfMessageTable(
                                     mContext.getContentResolver(),
-                                    "contact_phone_number LIKE ? ", new String[] {
-                                        "%" + formateNumber
+                                    "contact_phone_number LIKE ? ", new String[]{
+                                            "%" + formateNumber
                                     });
                         }
                         if (messages != null) {
@@ -899,8 +945,8 @@ public class PrivacyContactFragment extends BaseFragment {
                                         Constants.PRIVACY_MESSAGE_URI,
                                         Constants.COLUMN_MESSAGE_PHONE_NUMBER
                                                 + " LIKE ?",
-                                        new String[] {
-                                            "%" + number
+                                        new String[]{
+                                                "%" + number
                                         });
                         int deleteCallLog = PrivacyContactUtils
                                 .deleteMessageFromMySelf(
@@ -908,8 +954,8 @@ public class PrivacyContactFragment extends BaseFragment {
                                         Constants.PRIVACY_CALL_LOG_URI,
                                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER
                                                 + " LIKE ?",
-                                        new String[] {
-                                            "%" + number
+                                        new String[]{
+                                                "%" + number
                                         });
                         if (deleteCallLog > 0) {
                             LeoEventBus

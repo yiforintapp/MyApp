@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
@@ -39,6 +40,7 @@ import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactSideBar;
 import com.leo.appmaster.privacycontact.ContactSideBar.OnTouchingLetterChangedListener;
+import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -46,12 +48,15 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AddSecurityNumberActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
+    private static final String TAG = "AddSecurityNumberActivity";
     private ListView mListContact;
     private ContactAdapter mContactAdapter;
     private List<ContactBean> mPhoneContact;
@@ -67,6 +72,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     private Button mAddButton;
     private EditText mInputEdit;
     private RippleView mAddRip;
+    private SecurAddFromMsmHandler mSecurNumHandler = new SecurAddFromMsmHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -355,7 +361,56 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         }
     }
 
+    private class SecurAddFromMsmHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
 
+            switch (msg.what) {
+                case PrivacyContactUtils.MSG_ADD_SECURITY_CONTACT:
+                    if (msg.obj != null) {
+                        LeoLog.i(TAG, "load  contacts list finish !");
+                        List<ContactBean> calls = (List<ContactBean>) msg.obj;
+                        if (mPhoneContact != null) {
+                            mPhoneContact.clear();
+                        }
+                        mPhoneContact = calls;
+                        try {
+                            if (mPhoneContact != null && mPhoneContact.size() > 0) {
+                                mDefaultText.setVisibility(View.GONE);
+                                mContactSideBar.setVisibility(View.VISIBLE);
+                            } else {
+                                mDefaultText.setVisibility(View.VISIBLE);
+
+                            }
+                            mProgressBar.setVisibility(View.GONE);
+                            mContactAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendMsgHandler() {
+        if (mSecurNumHandler != null) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mContactSideBar.setVisibility(View.GONE);
+                    List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(AddSecurityNumberActivity.this, null, null, false);
+                    Message msg = new Message();
+                    msg.what = PrivacyContactUtils.MSG_ADD_SECURITY_CONTACT;
+                    msg.obj = contactsList;
+                    mSecurNumHandler.sendMessage(msg);
+                }
+            });
+        }
+    }
     private class AddContactAsyncTask extends AsyncTask<Boolean, Integer, Integer> {
         @Override
         protected void onPreExecute() {
