@@ -6,61 +6,68 @@
     android:layout_centerInParent="true"
     android:background="@drawable/ad_large_banner_bg">
 
-    <ImageView
-        android:id="@+id/ad_image"
-        android:layout_width="@dimen/fragment_lock_large_banner_image_width"
-        android:layout_height="@dimen/fragment_lock_large_banner_image_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/fragment_lock_large_banner_image_top"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ad_def_pic" />
+    <RelativeLayout
+        android:id="@+id/click_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/fragment_lock_large_banner_image_top"
+        android:layout_marginRight="@dimen/fragment_lock_large_banner_image_top">
 
-    <TextView
-        android:id="@+id/ad_install_button"
-        android:layout_width="@dimen/fragment_lock_large_banner_button_width"
-        android:layout_height="@dimen/fragment_lock_large_banner_button_height"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/ad_image"
-        android:layout_marginRight="@dimen/fragment_lock_large_banner_image_top"
-        android:layout_marginTop="@dimen/fragment_lock_large_banner_button_top"
-        android:background="@drawable/ad_install_bg"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/fragment_lock_large_banner_button_text_size" />
+        <ImageView
+            android:id="@+id/ad_image"
+            android:layout_width="@dimen/fragment_lock_large_banner_image_width"
+            android:layout_height="@dimen/fragment_lock_large_banner_image_height"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/fragment_lock_large_banner_image_top"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ad_def_pic" />
 
-    <TextView
-        android:id="@+id/ad_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/ad_image"
-        android:layout_below="@id/ad_image"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/ad_install_button"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="@dimen/fragment_lock_large_banner_title_size" />
+        <TextView
+            android:id="@+id/ad_install_button"
+            android:layout_width="@dimen/fragment_lock_large_banner_button_width"
+            android:layout_height="@dimen/fragment_lock_large_banner_button_height"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/ad_image"
+            android:layout_marginTop="@dimen/fragment_lock_large_banner_button_top"
+            android:background="@drawable/ad_install_bg"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fragment_lock_large_banner_button_text_size" />
 
-    <TextView
-        android:id="@+id/ad_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/ad_title"
-        android:layout_below="@id/ad_title"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="0dp"
-        android:layout_toLeftOf="@id/ad_install_button"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="@dimen/fragment_lock_large_banner_msg_size" />
+        <TextView
+            android:id="@+id/ad_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/ad_image"
+            android:layout_below="@id/ad_image"
+            android:layout_marginTop="4dp"
+            android:layout_toLeftOf="@id/ad_install_button"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fragment_lock_large_banner_title_size" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@id/ad_image"
-        android:layout_alignTop="@id/ad_image"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="6dp"
-        android:src="@drawable/ad_icon" />
+        <TextView
+            android:id="@+id/ad_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/ad_title"
+            android:layout_below="@id/ad_title"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_toLeftOf="@id/ad_install_button"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fragment_lock_large_banner_msg_size" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/ad_image"
+            android:layout_alignTop="@id/ad_image"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="6dp"
+            android:src="@drawable/ad_icon" />
+    </RelativeLayout>
 </RelativeLayout>

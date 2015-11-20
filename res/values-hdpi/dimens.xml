@@ -327,7 +327,7 @@
     <dimen name="fragment_lock_large_banner_title_size">10dp</dimen>
     <dimen name="fragment_lock_large_banner_msg_size">8dp</dimen>
     <dimen name="fragment_lock_large_banner_spacing">42dp</dimen>
-
+    <dimen name="fragment_lock_large_banner_pading">50dp</dimen>
 
 
     <dimen name="wifi_acti_big_icon_width">165dp</dimen>
