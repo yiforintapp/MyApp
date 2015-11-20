@@ -865,7 +865,6 @@
     <string name="feedback_tell_us_contact_type_4">Skype:cmenglan</string>
     <string name="feedback_tell_us_contact_type_5">Facebook:LEO Privacy Guard/LEO Privacy Guard Q"&amp;"A </string>
     <string name="dialog_fivestars_content_text">觉得还不错？请给我们5星吧！</string>
-
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
     <string name="elect_empty_content">抱歉，暂未获取到电池信息</string>
     <string name="swifty_item_btn">去开启</string>
@@ -876,7 +875,6 @@
     <string name="fb_item_title">关注我们Facebook主页</string>
     <string name="fb_item_content">想要知道更多隐私卫士有趣的和官方的新闻吗？还在等什么，赶紧关注我们的Facebook主页吧</string>
     <string name="fb_item_btn">关注</string>
-
     <string name="intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
-    <string name="adv_prot_open_suc_tip_cnt">Under advanced protection nobody can uninstall LEO Privacy Guard. So, please go to AppLock page, disenable "Advanced Protection" in AppLock Settings first.</string>
+    <string name="adv_prot_open_suc_tip_cnt">开启后无法在软件外部卸载隐私卫士。如需卸载，您需要先在应用锁设置中取消高级保护设置。</string>
 </resources>
