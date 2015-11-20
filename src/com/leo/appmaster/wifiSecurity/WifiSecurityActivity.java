@@ -389,13 +389,15 @@ public class WifiSecurityActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void setWifiName(boolean connectWifi) {
-        String wifiName = mWifiManager.getWifiName();
         if (connectWifi) {
-            if (wifiName.startsWith("\"")) {
+            String wifiName = mWifiManager.getWifiName();
+            if (wifiName != null && wifiName.startsWith("\"")) {
                 //去除双引号
                 wifiName = wifiName.substring(wifiName.indexOf("\"") + 1, wifiName.lastIndexOf("\""));
             }
-            mWifiName.setText(wifiName);
+            if(wifiName != null) {
+                mWifiName.setText(wifiName);
+            }
         } else {
             mWifiName.setText(this.getString(R.string.no_wifi_now));
         }

@@ -163,7 +163,10 @@ public class IntruderprotectionActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         if (mImageLoader != null) {
-            mImageLoader.clearMemoryCache();
+            try {
+                mImageLoader.clearMemoryCache();
+            } catch (Exception e) {
+            }
         }
     }
 
