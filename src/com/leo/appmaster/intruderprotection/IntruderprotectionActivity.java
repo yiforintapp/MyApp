@@ -487,7 +487,7 @@ public class IntruderprotectionActivity extends Activity {
         mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (mInfosSorted != null || mInfosSorted.size() != 0) {
+                if (mInfosSorted == null || mInfosSorted.size() == 0) {
                     int height = mLvPhotos.getHeight();
                     int height2 = mHeader.getHeight();
                     // TODO 注意以后布局更改后，mNoPic
