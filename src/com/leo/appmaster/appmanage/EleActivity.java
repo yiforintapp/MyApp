@@ -86,6 +86,13 @@ public class EleActivity extends BaseFragmentActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getBatteryStats(); //回到界面更新list
+    }
+
+
     private void getBatteryStats() {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
