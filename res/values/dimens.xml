@@ -338,5 +338,4 @@
     <dimen name="secur_list_height">400dp</dimen>
     <dimen name="secur_ckb_hgt">35dp</dimen>
     <dimen name="secur_btm_hgt">95dp</dimen>
-    <dimen name="contact_icon_size">48dip</dimen>
 </resources>
