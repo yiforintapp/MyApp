@@ -73,7 +73,6 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         initEmails();
         initUi();
         // check if any data not submitted
-        handleIntent();
         checkPendingData();
     }
 
@@ -254,6 +253,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
+        handleIntent();
         checkCommitable();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "setting", "fb_enter");
     }

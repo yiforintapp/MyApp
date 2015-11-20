@@ -856,7 +856,7 @@
 
     <!-- 3.1 -->
     <string name="feedback_tell_us_title">联系我们</string>
-     <string name="toast_getscore_text">您的隐私分数上升啦</string>
+     <string name="toast_getscore_text">恭喜您！您的分数增加啦</string>
     <string name="feedback_tell_us_content">如果您有其他的问题或需要，欢迎随时联系我们！我们的facebook、whatsapp群组也随时在线哦！</string>
     <string name="feedback_tell_us_contact_type_title">联系方式</string>
     <string name="feedback_tell_us_contact_type_1">Email:suppport@leomaster.com</string>
