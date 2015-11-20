@@ -45,6 +45,7 @@ import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.MessageCallLogBean;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
@@ -113,7 +114,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private LinearLayout mContactContainor;
     private ImageView mContactArrowIv;
 
-    /** 评分星星 */
+    /**
+     * 评分星星
+     */
 
     private ImageView mHighOneStar;
     private ImageView mHighTwoStar;
@@ -133,10 +136,14 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private RippleView mGradeBtnLt;
     private FrameLayout mGrageFrame;
 
-    /**前往FaceBook*/
+    /**
+     * 前往FaceBook
+     */
     private RippleView mFbBtnLt;
 
-    /** Swifty */
+    /**
+     * Swifty
+     */
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
     private RippleView mSwiftyBtnLt;
@@ -147,8 +154,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private List<ContactBean> mAddedData;
     private HashMap<CheckBox, ContactBean> mDataMap;
 
-    private RippleView mIgnoreBtn;
-    private RippleView mProcessBtn;
+    private View mIgnoreBtn;
+    private MaterialRippleLayout mProcessBtn;
+    private View mProcessClick;
     private TextView mProcessTv;
 
     private List<ContactBean> mContactList;
@@ -209,11 +217,13 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         // AM-3143: add animation for advertise cell
         ((ViewGroup) mRootView.findViewById(R.id.list_parent_layout)).setLayoutTransition(new LayoutTransition());
 
-        mProcessBtn = (RippleView) view.findViewById(R.id.pp_process_rv);
-        mIgnoreBtn = (RippleView) view.findViewById(R.id.pp_process_ignore_rv);
+        mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
+        mProcessBtn.setRippleOverlay(true);
+        mProcessClick = view.findViewById(R.id.pp_process_rv_click);
+        mProcessClick.setOnClickListener(this);
+        mIgnoreBtn = view.findViewById(R.id.pp_process_ignore_rv);
         mProcessTv = (TextView) view.findViewById(R.id.pp_process_tv);
 
-        mProcessBtn.setOnRippleCompleteListener(this);
         mIgnoreBtn.setVisibility(View.GONE);
         mProcessTv.setText(R.string.pri_pro_complete);
         mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
@@ -247,7 +257,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         WeakReference<PrivacyConfirmFragment> mFragment;
         Campaign mCampaign;
 
-        public AdPreviewLoaderListener (PrivacyConfirmFragment fragment, final Campaign campaign) {
+        public AdPreviewLoaderListener(PrivacyConfirmFragment fragment, final Campaign campaign) {
             mFragment = new WeakReference<PrivacyConfirmFragment>(fragment);
             mCampaign = campaign;
         }
@@ -277,6 +287,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
         }
     }
+
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void loadAd(final View view) {
@@ -506,9 +517,6 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
                 Toast.makeText(getActivity(), getActivity().getString(R.string.pri_contact_empty), Toast.LENGTH_SHORT).show();
             }
             ChangeContactColor();
-        } else if (mProcessBtn == rippleView) {
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
-            mActivity.onBackPressed();
         } else if (mGradeBtnLt == rippleView) { // 五星好评
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity);
@@ -522,9 +530,15 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity);
         }
+//        else if (mProcessBtn == rippleView) {
+//            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
+//            mActivity.onBackPressed();
+//        }
     }
 
-    /** 前往Gp或亚马逊云 */
+    /**
+     * 前往Gp或亚马逊云
+     */
     private void gotoGpOrBrowser() {
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         String gpUrl;
@@ -560,7 +574,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         }
     }
 
-    /** 使用Gp,没有Gp用浏览器 */
+    /**
+     * 使用Gp,没有Gp用浏览器
+     */
     private void gotoGp(String gpUrl, String browserUrl) {
         Intent intent = null;
         if (AppUtil.appInstalled(mActivity,
@@ -584,7 +600,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         }
     }
 
-    /**是使用浏览器 */
+    /**
+     * 是使用浏览器
+     */
     private void gotoBrowser(String url) {
         Intent intent;
         intent = new Intent(Intent.ACTION_VIEW);
@@ -597,7 +615,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         }
     }
 
-    /** 前往FaceBook */
+    /**
+     * 前往FaceBook
+     */
     private void goFaceBook() {
         Intent intentLikeUs = null;
         if (AppUtil.appInstalled(mActivity.getApplicationContext(),
@@ -807,7 +827,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
     private void initGradeLayout(View view) {
         int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
-        LeoLog.i("loadSwiftySecurity", "score："+ score);
+        LeoLog.i("loadSwiftySecurity", "score：" + score);
         View highInclude = view.findViewById(R.id.grade_high_security);
         View include = view.findViewById(R.id.grade_security);
         if (score == 100) {  // 等于100分
@@ -831,7 +851,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             include.setVisibility(View.GONE);
 
             showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
-                              mHighFourStar, mHighFiveStar, mHighGradeGesture);
+                    mHighFourStar, mHighFiveStar, mHighGradeGesture);
 
         } else {
 
@@ -859,14 +879,13 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     }
 
     private double getLayoutHeight() {
-        double height  = (Utilities.getScreenSize(mActivity)[0] -
-                            DipPixelUtil.dip2px(mActivity, 38)) / 0.52 ;
+        double height = (Utilities.getScreenSize(mActivity)[0] -
+                DipPixelUtil.dip2px(mActivity, 38)) / 0.52;
         LeoLog.i("loadSwiftySecurity", "setLayoutHeight:" + height);
         return height;
 
 
     }
-
 
 
     /***
@@ -886,8 +905,8 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
                 "translationY", currentY + DipPixelUtil.dip2px(mActivity, 16), currentY);
         gestureMoveIn.setDuration(2000);
 
-        ObjectAnimator gestureMoveOut =  ObjectAnimator.ofFloat(gradeGesture,
-                "translationY",currentY , currentY + DipPixelUtil.dip2px(mActivity, 16));
+        ObjectAnimator gestureMoveOut = ObjectAnimator.ofFloat(gradeGesture,
+                "translationY", currentY, currentY + DipPixelUtil.dip2px(mActivity, 16));
 
         ObjectAnimator gestureHide = ObjectAnimator.ofFloat(gradeGesture, "alpha", 1f, 0f);
 
@@ -902,7 +921,6 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         AnimatorSet gestureAnimator = new AnimatorSet();
         gestureAnimator.playTogether(gestureMoveOut, gestureHide);
         gestureAnimator.setDuration(1000);
-
 
 
         AnimatorSet starAnimator = new AnimatorSet();
@@ -938,12 +956,14 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         animatorSet.start();
     }
 
-    /**每个星星动画开始监听*/
+    /**
+     * 每个星星动画开始监听
+     */
     private class ObjectAnimStartListener extends AnimatorListenerAdapter {
 
         private ImageView theView;
 
-        public ObjectAnimStartListener (ImageView imageView) {
+        public ObjectAnimStartListener(ImageView imageView) {
             this.theView = imageView;
         }
 
@@ -961,7 +981,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         objectAnimator.setDuration(250);
         objectAnimator.addListener(new ObjectAnimStartListener(img));
 
-        return  objectAnimator;
+        return objectAnimator;
     }
 
     @Override
@@ -983,6 +1003,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             }
 
             resetContact();
+        } else if (v.getId() == R.id.pp_process_rv_click) {
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
+            mActivity.onBackPressed();
         }
     }
 
