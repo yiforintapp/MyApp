@@ -12,8 +12,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.mgr.LockManager;
@@ -40,6 +44,7 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.ValueAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
@@ -57,12 +62,13 @@ public class HomeBoostActivity extends Activity {
     private int mScreenH;
     private int mCountDownNum = 5;
     private boolean mIsADLoaded = false;
-    private RelativeLayout mRlResultWithAD;
+    private FrameLayout mRlResultWithAD;
     private CountDownTimer mCdt;
 
     private View mParent;
     private ImageView mFire;
     private ImageView mLine;
+    private ImageView mSpeedAdLight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +105,7 @@ public class HomeBoostActivity extends Activity {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                if (code == MobvistaEngine.ERR_OK && mRlResultWithAD != null && campaign != null) {
+                if (code == MobvistaEngine.ERR_OK  && campaign != null) {
                     sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaign);
                     ImageLoader.getInstance().loadImage(campaign.getImageUrl(),
                             new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 262),
@@ -167,22 +173,22 @@ public class HomeBoostActivity extends Activity {
                 new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
                         DipPixelUtil
                                 .dip2px(HomeBoostActivity.this, 48)),
-                (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_icon));
+                (ImageView) findViewById(R.id.iv_ad_icon));
 
-        ImageView previewImageView = (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg);
+        ImageView previewImageView = (ImageView) findViewById(R.id.iv_ad_bg);
         previewImageView.setImageBitmap(previewBitmap);
 
-        TextView appname = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appname);
+        TextView appname = (TextView) findViewById(R.id.tv_ad_appname);
         if(appname != null) {
             appname.setText(campaign.getAppName());
         }
 
-        TextView appdesc = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appdesc);
+        TextView appdesc = (TextView) findViewById(R.id.tv_ad_appdesc);
         if(appdesc != null) {
             appdesc.setText(campaign.getAppDesc());
         }
 
-        Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ad_appcall);
+        Button call = (Button) findViewById(R.id.btn_ad_appcall);
         if(call != null) {
             call.setText(campaign.getAdCall());
             mAdEngine.registerView(Constants.UNIT_ID_62, call);
@@ -248,10 +254,12 @@ public class HomeBoostActivity extends Activity {
     private void initUI() {
         Display mDisplay = getWindowManager().getDefaultDisplay();
         mScreenH = mDisplay.getHeight();
-        mRlResultWithAD = (RelativeLayout) findViewById(R.id.rl_withAD);
+
         mStatusBar = findViewById(R.id.bg_statusbar);
         mIvRocket = (ImageView) findViewById(R.id.iv_rocket);
         mIvCloud = (ImageView) findViewById(R.id.iv_cloud);
+        mRlResultWithAD = (FrameLayout) findViewById(R.id.resuilt_with_ad);
+        mSpeedAdLight = (ImageView) findViewById(R.id.speed_ad_light);
 
         mParent = (View) findViewById(R.id.parent);
         mFire = (ImageView) findViewById(R.id.iv_rocket_fire);
@@ -274,21 +282,23 @@ public class HomeBoostActivity extends Activity {
 
         mRocketHeight = mIvRocket.getMeasuredHeight();
         ObjectAnimator rocketAnimator1 = ObjectAnimator.ofFloat(mIvRocket, "translationY",
-                mRocketHeight, mRocketHeight * 0.10f, mRocketHeight * 0.18f, mRocketHeight * 0.22f);
+                       mScreenH , mIvRocket.getTranslationY());
         rocketAnimator1.setDuration(400);
 
         AnimatorSet rocketShowAnimator = new AnimatorSet();
         rocketShowAnimator.playTogether(BgAlphaAnimator, rocketAnimator1);
 
-        ObjectAnimator rocketAnimator2 = ObjectAnimator.ofFloat(mIvRocket,
-                "translationY",
-                mRocketHeight * 0.22f, -mScreenH);
-        rocketAnimator2.setDuration(720);
-
-
         /** 烟雾动画 */
         ObjectAnimator cloudAlphaShow = ObjectAnimator.ofFloat(mIvCloud, "alpha", 0f, 1f);
         cloudAlphaShow.setDuration(120);
+
+        cloudAlphaShow.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        });
+
         ObjectAnimator cloudScaleToThirty = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0f, 0.3f);
         cloudScaleToThirty.setDuration(120);
         cloudAlphaShow.addListener(new AnimatorListenerAdapter() {
@@ -296,8 +306,15 @@ public class HomeBoostActivity extends Activity {
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 mIvCloud.setVisibility(View.VISIBLE);
+
             }
         });
+        ObjectAnimator cloudScaleYToFifthy = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0f, 0.5f);
+        cloudScaleYToFifthy.setDuration(120);
+
+        ObjectAnimator cloudScaleYToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0.5f, 1f);
+        cloudScaleYToHundred.setDuration(480);
+
         ObjectAnimator cloudScaleToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0.3f, 1f);
         cloudScaleToHundred.setDuration(480);
         ObjectAnimator cloudAlphaHide = ObjectAnimator.ofFloat(mIvCloud, "alpha", 1f, 0f);
@@ -306,75 +323,91 @@ public class HomeBoostActivity extends Activity {
         cloudScaleToLarge.setDuration(200);
 
         AnimatorSet cloudStartAnimator = new AnimatorSet();
-        cloudStartAnimator.playTogether(cloudAlphaShow, cloudScaleToThirty);
+        cloudStartAnimator.playTogether(cloudAlphaShow, cloudScaleToThirty,cloudScaleYToFifthy);
+
+        AnimatorSet cloudToHundredAnimator = new AnimatorSet();
+        cloudToHundredAnimator.playTogether(cloudScaleYToHundred, cloudScaleToHundred);
 
         AnimatorSet cloudFinishAnimator = new AnimatorSet();
         cloudFinishAnimator.playTogether(cloudAlphaHide, cloudScaleToLarge);
 
         AnimatorSet cloudAnimator =  new AnimatorSet();
-        cloudAnimator.playSequentially(cloudStartAnimator, cloudScaleToHundred, cloudFinishAnimator);
+        cloudAnimator.playSequentially(cloudStartAnimator,
+                cloudToHundredAnimator, cloudFinishAnimator);
+        cloudAnimator.setStartDelay(200);
 
         /** 尾部火动画 */
-        ObjectAnimator fireAnimator = ObjectAnimator.ofFloat(mFire, "scaleY", 0f, 1f);
-
-
-        /** 背景线条动画 */
-        ObjectAnimator lineMoveIn = ObjectAnimator.ofFloat(mLine,
-                "translationY", -mScreenH, mLine.getMeasuredHeight());
-
-
-        AnimatorSet as = new AnimatorSet();
-        as.play(cloudAnimator).after(200).after(rocketShowAnimator);
-        as.start();
-        as.setInterpolator(new LinearInterpolator());
-        as.addListener(new AnimatorListenerAdapter() {
+        mFire.setPivotX(mFire.getWidth()/2);
+        mFire.setPivotY(mFire.getTop());
+        ObjectAnimator fireScale = ObjectAnimator.ofFloat(mFire, "scaleY", 0f, 1f);
+        fireScale.setDuration(320);
+        fireScale.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                showCleanResault();
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mFire.setVisibility(View.VISIBLE);
             }
         });
 
-//        rocketAnimator2.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationStart(Animator animation) {
-//                mIvCloud.setVisibility(View.VISIBLE);
-//                ObjectAnimator cloudAlphaAnimator1 = ObjectAnimator.ofFloat(mIvCloud,
-//                        "alpha", 0f,
-//                        1f);
-//                cloudAlphaAnimator1.setDuration(300);
-//                ObjectAnimator cloudScaleXAnimator = ObjectAnimator.ofFloat(mIvCloud,
-//                        "scaleX", 1f,
-//                        1.2f);
-//                ObjectAnimator cloudAlphaAnimator2 = ObjectAnimator.ofFloat(mIvCloud,
-//                        "alpha", 1f,
-//                        0f);
-//                cloudScaleXAnimator.setDuration(1200);
-//                cloudAlphaAnimator2.setDuration(1200);
-//                cloudAlphaAnimator2.addListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        if(!mIsADLoaded){
-//                            HomeBoostActivity.this.finish();
-//                        }
-//                    }
-//                });
-//                AnimatorSet cloudAnimatorSet = new AnimatorSet();
-//                cloudAnimatorSet.play(cloudScaleXAnimator).with(cloudAlphaAnimator2)
-//                        .after(cloudAlphaAnimator1);
-//                cloudAnimatorSet.start();
-//            }
-//
-//        });
+        ObjectAnimator fireMoveOut = ObjectAnimator.ofFloat(mFire,
+                "translationY", mFire.getTranslationY(),
+                -mScreenH - DipPixelUtil.dip2px(HomeBoostActivity.this, 130));
+
+        fireMoveOut.setDuration(720);
+
+        AnimatorSet fireAnimator = new AnimatorSet();
+        fireAnimator.playTogether(fireScale, fireMoveOut);
+        fireAnimator.setStartDelay(720);
+
+        /** 火箭上升动画 */
+        ObjectAnimator rocketAnimator2 = ObjectAnimator.ofFloat(mIvRocket,
+                "translationY",
+                mIvRocket.getTranslationY(), -mScreenH);
+        rocketAnimator2.setInterpolator(new AccelerateDecelerateInterpolator());
+        rocketAnimator2.setDuration(720);
+        rocketAnimator2.setStartDelay(720);
+
+        /** 背景线条动画 */
+        ObjectAnimator lineMoveIn = ObjectAnimator.ofFloat(mLine,
+                "translationY", -mScreenH, mLine.getTranslationY());
+        lineMoveIn.setDuration(720);
+        lineMoveIn.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mLine.setVisibility(View.VISIBLE);
+            }
+        });
+
+        ObjectAnimator lineAlphaHide = ObjectAnimator.ofFloat(mLine, "alpha", 1f, 0f);
+        lineAlphaHide.setDuration(200);
+
+        AnimatorSet lineAnimator = new AnimatorSet();
+        lineAnimator.play(lineAlphaHide).after(520).after(lineMoveIn);
+        lineAnimator.setStartDelay(720);
+
 //        AnimatorSet as = new AnimatorSet();
-//        as.play(rocketAnimator2).after(300).after(rocketShowAnimator);
-//        as.start();
-//        as.setInterpolator(new LinearInterpolator());
+//        as.playTogether(cloudAnimator, rocketShowAnimator,
+//                rocketAnimator2, fireAnimator, lineAnimator);
 //        as.addListener(new AnimatorListenerAdapter() {
 //            @Override
 //            public void onAnimationEnd(Animator animation) {
 //                showCleanResault();
 //            }
 //        });
+//        as.start();
+        cloudAnimator.start();
+        rocketShowAnimator.start();
+        fireAnimator.start();
+        rocketAnimator2.start();
+        lineAnimator.start();
+        fireAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                showCleanResault();
+            }
+        });
+
     }
 
     private void cleanMemory() {
@@ -418,15 +451,14 @@ public class HomeBoostActivity extends Activity {
         } else {
             mToast = getString(R.string.the_best_status_toast);
         }
-
         if (mIsADLoaded) {
             SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1, "ad_act",
                     "adv_shws_bst");
-            mRlResultWithAD.setVisibility(View.VISIBLE);
-            TextView resultText = (TextView) mRlResultWithAD.findViewById(R.id.tv_accelerat_result);
+            adShowAnimation();
+            TextView resultText = (TextView) findViewById(R.id.tv_accelerat_result);
             resultText.setText(mToast);
             isClean = true;
-            final TextView counter = (TextView) mRlResultWithAD.findViewById(R.id.tv_counter);
+            final TextView counter = (TextView) findViewById(R.id.tv_counter);
             mCdt = new CountDownTimer(4000, 1000) {
                
                 @Override
@@ -439,11 +471,11 @@ public class HomeBoostActivity extends Activity {
                 public void onFinish() {
                     counter.setText(0+"");
                     HomeBoostActivity.this.finish();
+
                 }
             };
             mCdt.start();
-        }
-        else {
+        }  else {
             LayoutInflater inflater = LayoutInflater.from(this);
             // View view = inflater.inflate(R.layout.toast_self_make, null);
             View view = inflater.inflate(R.layout.view_after_accelerate_new, null);
@@ -469,6 +501,62 @@ public class HomeBoostActivity extends Activity {
             isClean = true;
         }
 
+    }
+
+    private void adShowAnimation() {
+        ObjectAnimator adScaleLarge = ObjectAnimator.ofFloat(mRlResultWithAD, "scaleX", 0f , 1.1f);
+        adScaleLarge.setDuration(320);
+        adScaleLarge.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mRlResultWithAD.setVisibility(View.VISIBLE);
+            }
+        });
+        ObjectAnimator adAlpha = ObjectAnimator.ofFloat(mRlResultWithAD, "alpha", 0f , 1f);
+        adAlpha.setDuration(320);
+        ObjectAnimator adScaleNormal = ObjectAnimator.ofFloat(mRlResultWithAD, "scaleX", 1.1f, 1f);
+        adScaleNormal.setDuration(200);
+
+        AnimatorSet adAnimatorSet = new AnimatorSet();
+        adAnimatorSet.play(adScaleLarge).with(adAlpha);
+        adAnimatorSet.play(adScaleNormal).after(adScaleLarge);
+        adAnimatorSet.setStartDelay(280);
+
+        AnimatorSet adLightAnimatorSet = adLightAnimation();
+
+        adAnimatorSet.start();
+        adLightAnimatorSet.start();
+
+    }
+
+    private AnimatorSet adLightAnimation() {
+        ObjectAnimator adLightAlphaShow = ObjectAnimator.ofFloat(mSpeedAdLight, "alpha", 0f, 1f);
+        adLightAlphaShow.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mSpeedAdLight.setVisibility(View.VISIBLE);
+            }
+        });
+        adLightAlphaShow.setDuration(400);
+        ObjectAnimator adLightAlphaHide = ObjectAnimator.ofFloat(mSpeedAdLight, "alpha", 1f, 0f);
+        adLightAlphaHide.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mSpeedAdLight.setVisibility(View.GONE);
+            }
+        });
+        adLightAlphaHide.setDuration(800);
+        ObjectAnimator adLightTranslate = ObjectAnimator.ofFloat(mSpeedAdLight, "rotation", 0f, 45f);
+        adLightTranslate.setDuration(800);
+
+        AnimatorSet adLightAnimator = new AnimatorSet();
+        adLightAnimator.play(adLightAlphaHide).with(adLightTranslate).after(adLightAlphaShow);
+        adLightAnimator.setStartDelay(480);
+
+        return  adLightAnimator;
     }
 
     private void tryTransStatusbar() {

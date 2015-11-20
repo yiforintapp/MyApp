@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/item_title"
             style="@style/ItemTitle"
-            android:text="@string/Swifty_item_title" />
+            android:text="@string/hp_helper_iswipe" />
     </LinearLayout>
 
     <ImageView
