@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Html;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -456,7 +457,7 @@ public class HomeBoostActivity extends Activity {
                     "adv_shws_bst");
             adShowAnimation();
             TextView resultText = (TextView) findViewById(R.id.tv_accelerat_result);
-            resultText.setText(mToast);
+            resultText.setText(Html.fromHtml(mToast));
             isClean = true;
             final TextView counter = (TextView) findViewById(R.id.tv_counter);
             mCdt = new CountDownTimer(4000, 1000) {
@@ -480,7 +481,7 @@ public class HomeBoostActivity extends Activity {
             // View view = inflater.inflate(R.layout.toast_self_make, null);
             View view = inflater.inflate(R.layout.view_after_accelerate_new, null);
             TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_accelerat_result);
-            tv_clean_rocket.setText(mToast);
+            tv_clean_rocket.setText(Html.fromHtml(mToast));
             Toast toast = new Toast(this);
             toast.setGravity(Gravity.CENTER, 0, -100);
             

@@ -345,8 +345,8 @@
     <string name="month_triffic">Bu ay</string>
     <string name="flow_charts_this_month">Günlük durum</string>
     <string name="home_app_manager_apps_delete">Kaldırılan Uygulamalar </string>
-    <string name="home_app_manager_mem_clean">%1$s Belleği  temizlendi</string>
-    <string name="home_app_manager_mem_clean_one">1MB Belleği  temizlendi</string>
+    <string name="home_app_manager_mem_clean"><Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data> Belleği  temizlendi</string>
+    <string name="home_app_manager_mem_clean_one"><Data><![CDATA[<font color="#00eaff">1MB</font>]]></Data> Belleği  temizlendi</string>
 
     <!-- What\'s Hot -->
     <string name="hot_app_free">Ücretsiz</string>

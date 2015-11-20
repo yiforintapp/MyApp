@@ -346,8 +346,8 @@
     <string name="month_triffic">本月已用</string>
     <string name="flow_charts_this_month">日流量使用情况</string>
     <string name="home_app_manager_apps_delete">应用卸载</string>
-    <string name="home_app_manager_mem_clean">为您清理了%1$s内存</string>
-    <string name="home_app_manager_mem_clean_one">为您清理了1MB内存</string>
+    <string name="home_app_manager_mem_clean">为您清理了<Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data>内存</string>
+    <string name="home_app_manager_mem_clean_one">为您清理了<Data><![CDATA[<font color="#00eaff">1MB</font>]]></Data>内存</string>
 
     <!-- What's Hot -->
     <string name="hot_app_free">免费</string>

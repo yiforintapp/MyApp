@@ -354,8 +354,8 @@
     <string name="month_triffic">This month</string>
     <string name="flow_charts_this_month">Daily Usage</string>
     <string name="home_app_manager_apps_delete">Apps Uninstall</string>
-    <string name="home_app_manager_mem_clean">Clearing memory %1$s</string>
-    <string name="home_app_manager_mem_clean_one">Clearing memory 1MB</string>
+    <string name="home_app_manager_mem_clean">Clearing memory <Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data></string>
+    <string name="home_app_manager_mem_clean_one">Clearing memory <Data><![CDATA[<font color="#00eaff">1MB</font>]]></Data></string>
 
     <!-- What's Hot -->
     <string name="hot_app_free">Free</string>

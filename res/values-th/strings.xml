@@ -376,8 +376,8 @@
     <string name="choose_ssid">กรุณาเลือกที่ตั้ง WiFi Hotspot</string>
     <string name="choose_enter_mode">เปิดใช้งานเมื่ออยู่ใกล้ WiFi</string>
     <string name="choose_quit_mode">เปิดใช้งานเมื่ออยู่ไกลจาก WiFi</string>
-    <string name="home_app_manager_mem_clean">ให้คุณทำความสะอาดหน่วยความจำ%1$s</string>
-    <string name="home_app_manager_mem_clean_one">กำลังทำความสะอาดหน่วยความจำ 1MB</string>
+    <string name="home_app_manager_mem_clean">ให้คุณทำความสะอาดหน่วยความจำ<Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data></string>
+    <string name="home_app_manager_mem_clean_one">กำลังทำความสะอาดหน่วยความจำ <Data><![CDATA[<font color="#00eaff">1MB</font>]]></Data></string>
     <string name="the_best_status_toast">เป็นสถานะที่เหมาะสมโปรดลองใหม่อีกครั้ง</string>
     <string name="battery_cannot_do">ฟังก์ชันนี้ไม่สามารถปิด</string>
     <!-- guide page begin -->

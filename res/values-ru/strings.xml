@@ -334,8 +334,8 @@
     <string name="month_triffic">месячный трафик</string>
     <string name="flow_charts_this_month">ежедневный расход трафика</string>
     <string name="home_app_manager_apps_delete">удаление</string>
-    <string name="home_app_manager_mem_clean">память устройства очищена на %1$S</string>
-    <string name="home_app_manager_mem_clean_one">очищен 1Мб памяти</string>
+    <string name="home_app_manager_mem_clean">память устройства очищена на <Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data></string>
+    <string name="home_app_manager_mem_clean_one">очищен <Data><![CDATA[<font color="#00eaff">1Мб</font>]]></Data> памяти</string>
     <!-- What's Hot -->
     <string name="hot_app_free"> бесплатно </string>
 

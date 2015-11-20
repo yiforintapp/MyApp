@@ -435,7 +435,7 @@
     <string name="home_app_manager_mem_clean"> تم تنظيف<xliff:g>%1$s</xliff:g></string>
     <!--  -->
 
-    <string name="home_app_manager_mem_clean_one">تم تنظيف 1MB</string>
+    <string name="home_app_manager_mem_clean_one">تم تنظيف <Data><![CDATA[<font color="#00eaff">1MB</font>]]></Data></string>
 
     <!-- What's Hot -->
     <string name="hot_app_free">مجانا</string>

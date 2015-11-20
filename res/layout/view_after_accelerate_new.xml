@@ -16,7 +16,7 @@
         <TextView
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textColor="#333333"
+            android:textColor="#ffffff"
             android:layout_marginTop="20dp"
            android:layout_marginBottom="10dp"
             android:textSize="16dp" 

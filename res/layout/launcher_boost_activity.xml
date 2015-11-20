@@ -149,8 +149,8 @@
                 android:layout_marginLeft="87dp"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:textColor="#333333"
-                android:textSize="14dp" />
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
 
             <View
                 android:layout_width="300dp"
