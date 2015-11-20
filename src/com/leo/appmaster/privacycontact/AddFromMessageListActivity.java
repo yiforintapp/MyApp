@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
@@ -48,12 +49,14 @@ import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
+    private static final String TAG = "AddFromMessageListActivity";
     private ListView mListMessage;
     private MyMessageAdapter mAdapter;
     private List<MessageBean> mMessageList;
-    private CommonToolbar  mTtileBar;
+    private CommonToolbar mTtileBar;
     private List<MessageBean> mAddPrivacyMessage;
     private LEOAlarmDialog mAddMessageDialog;
     private Handler mHandler;
@@ -66,6 +69,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
     private LinearLayout mDefaultText;
     private Button mAutoDddBtn;
     private RippleView1 rippleView;
+    private AddFromMsmHandler mAddFromMsmHandler = new AddFromMsmHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +89,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                 startActivity(intent);
             }
         });
-        mAutoDddBtn = (Button)mDefaultText.findViewById(R.id.moto_add_btn);
+        mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
 //        mAutoDddBtn.setOnClickListener(new OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -147,8 +151,9 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         mAddPrivacyMessage = new ArrayList<MessageBean>();
         mListMessage = (ListView) findViewById(R.id.add_messageLV);
         mListMessage.setOnItemClickListener(this);
-        AddMessageAsyncTask messgeTask = new AddMessageAsyncTask();
-        messgeTask.execute(true);
+//        AddMessageAsyncTask messgeTask = new AddMessageAsyncTask();
+//        messgeTask.execute(true);
+        sendMsgHandler();
     }
 
     @Override
@@ -581,6 +586,56 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
             mProgressDialog.show();
         } catch (Exception e) {
 
+        }
+    }
+
+    private class AddFromMsmHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case PrivacyContactUtils.MSG_ADD_MSM:
+                    if (msg.obj != null) {
+                        LeoLog.i(TAG, "load  messages list finish !");
+                        List<MessageBean> msms = (List<MessageBean>) msg.obj;
+                        if (mMessageList != null) {
+                            mMessageList.clear();
+                        }
+                        mMessageList = msms;
+                        if (mMessageList != null && mMessageList.size() > 0) {
+                            mDefaultText.setVisibility(View.GONE);
+                        } else {
+                            mDefaultText.setVisibility(View.VISIBLE);
+                        }
+                        mProgressBar.setVisibility(View.GONE);
+                        mAdapter = new MyMessageAdapter(mMessageList);
+                        mListMessage.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendMsgHandler() {
+        if (mAddFromMsmHandler != null) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    List<MessageBean> messageList =
+                            PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this, null, null, false, false);
+                    if (messageList != null && messageList.size() > 0) {
+                        Collections.sort(messageList, PrivacyContactUtils.mMessageCamparator);
+                    }
+                    Message msg = new Message();
+                    msg.what = PrivacyContactUtils.MSG_ADD_MSM;
+                    msg.obj = messageList;
+                    mAddFromMsmHandler.sendMessage(msg);
+                }
+            });
         }
     }
 

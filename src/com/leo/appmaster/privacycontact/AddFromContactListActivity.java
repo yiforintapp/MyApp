@@ -2,6 +2,7 @@
 package com.leo.appmaster.privacycontact;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -44,8 +46,11 @@ import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AddFromContactListActivity extends BaseActivity implements OnItemClickListener {
+    public static final String TAG = "AddFromContactListActivity";
+
     private ListView mListContact;
     private ContactAdapter mContactAdapter;
     private List<ContactBean> mPhoneContact;
@@ -65,6 +70,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     private LinearLayout mDefaultText;
     private Button mAutoDddBtn;
     private RippleView1 rippleView;
+    private AddFromContactHandler mAddFromContactHandler = new AddFromContactHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,8 +169,9 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 }
             }
         });
-        AddContactAsyncTask addContacctTask = new AddContactAsyncTask();
-        addContacctTask.execute(true);
+//        AddContactAsyncTask addContacctTask = new AddContactAsyncTask();
+//        addContacctTask.execute(true);
+        sendMsgHandler();
 
     }
 
@@ -629,6 +636,57 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         }
     }
 
+    private class AddFromContactHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case PrivacyContactUtils.MSG_ADD_CONTACT:
+                    if (msg.obj != null) {
+                        LeoLog.i(TAG, "load  contacts list finish !");
+                        List<ContactBean> calls = (List<ContactBean>) msg.obj;
+                        if (mPhoneContact != null) {
+                            mPhoneContact.clear();
+                        }
+                        mPhoneContact = calls;
+                        try {
+                            if (mPhoneContact != null && mPhoneContact.size() > 0) {
+                                mDefaultText.setVisibility(View.GONE);
+                                mContactSideBar.setVisibility(View.VISIBLE);
+                            } else {
+                                mDefaultText.setVisibility(View.VISIBLE);
+
+                            }
+                            mProgressBar.setVisibility(View.GONE);
+                            mContactAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendMsgHandler() {
+        if (mAddFromContactHandler != null) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mContactSideBar.setVisibility(View.GONE);
+                    List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(AddFromContactListActivity.this, null, null, false);
+                    Message msg = new Message();
+                    msg.what = PrivacyContactUtils.MSG_ADD_CONTACT;
+                    msg.obj = contactsList;
+                    mAddFromContactHandler.sendMessage(msg);
+                }
+            });
+        }
+    }
+
     private class AddContactAsyncTask extends AsyncTask<Boolean, Integer, Integer> {
         @Override
         protected void onPreExecute() {
@@ -643,7 +701,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 boolean flag = arg0[0];
                 if (flag) {
                     mPhoneContact =
-                            PrivacyContactUtils.getSysContact(AddFromContactListActivity.this, null, null,false);
+                            PrivacyContactUtils.getSysContact(AddFromContactListActivity.this, null, null, false);
                     // mPhoneContact =
                     // PrivacyContactManager.getInstance(AddFromContactListActivity.this)
                     // .getSysContacts();

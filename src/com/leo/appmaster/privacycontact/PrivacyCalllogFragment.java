@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -54,7 +56,7 @@ import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 
 public class PrivacyCalllogFragment extends BaseFragment {
-
+    public static final String TAG = "PrivacyCalllogFragment";
     private TextView mTextView;
     private LinearLayout mDefaultText;
     private ListView mContactCallLog;
@@ -68,6 +70,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
     private Handler mHandler;
     private LEORoundProgressDialog mProgressDialog;
     private SimpleDateFormat mSimpleDateFormate;
+    private PrivacyCallHandler mCallHandler = new PrivacyCallHandler();
 
     @Override
     protected int layoutResourceId() {
@@ -150,6 +153,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
 //                return true;
 //            }
 //        });
+
     }
 
     // 更新TitleBar
@@ -183,20 +187,24 @@ public class PrivacyCalllogFragment extends BaseFragment {
             }
         } else if (PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT.equals(event.editModel)
                 || PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_CALL_LOG_LIST
-                        .equals(event.editModel)) {
-            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-            task.execute("");
+                .equals(event.editModel)) {
+//            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+//            task.execute("");
+            sendMsgHandler();
         } else if (PrivacyContactUtils.PRIVACY_INTERCEPT_CONTACT_EVENT.equals(event.editModel)) {
-            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-            task.execute("");
+//            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+//            task.execute("");
+            sendMsgHandler();
         } else if (PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP
                 .equals(event.editModel)) {
-            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-            task.execute("");
+//            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+//            task.execute("");
+            sendMsgHandler();
         } else if (PrivacyContactUtils.PRIVACY_EDIT_NAME_UPDATE_CALL_LOG_EVENT
                 .equals(event.editModel)) {
-            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-            task.execute("");
+//            PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+//            task.execute("");
+            sendMsgHandler();
         }
     }
 
@@ -217,8 +225,9 @@ public class PrivacyCalllogFragment extends BaseFragment {
 
     @Override
     public void onResume() {
-        PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-        task.execute("");
+//        PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+//        task.execute("");
+        sendMsgHandler();
         super.onResume();
     }
 
@@ -308,7 +317,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         RippleBean ripp = (RippleBean) v.getTag();
                         int position = ripp.position;
                         View convertView = ripp.view;
-                        onItemLongClick(convertView,position);
+                        onItemLongClick(convertView, position);
                         return true;
                     }
                 });
@@ -400,6 +409,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
             return convertView;
         }
     }
+
     public boolean onItemLongClick(View arg1, int arg2) {
         LeoEventBus.getDefaultBus().post(
                 new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
@@ -459,7 +469,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
 
     /**
      * getCallLog
-     *
      *
      * @return
      */
@@ -528,7 +537,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
         } catch (Exception e) {
 
         } finally {
-            if(cursor != null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
@@ -625,25 +634,25 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             if (temp > 0) {
                                 temp = temp - 1;
                                 pre.setCallLogNoReadCount(temp);
-                            if (temp <= 0) {
+                                if (temp <= 0) {
                                 /* ISwipe处理：通知没有未读 */
-                                PrivacyContactManager.getInstance(mContext)
-                                        .cancelPrivacyTipFromPrivacyCall();
-                                // 没有未读去除隐私通知
-                                if (pre.getMessageNoReadCount() <= 0) {
-                                    NotificationManager notificationManager = (NotificationManager) getActivity()
-                                            .getSystemService(
-                                                    Context.NOTIFICATION_SERVICE);
-                                    notificationManager.cancel(20140902);
-                                }
+                                    PrivacyContactManager.getInstance(mContext)
+                                            .cancelPrivacyTipFromPrivacyCall();
+                                    // 没有未读去除隐私通知
+                                    if (pre.getMessageNoReadCount() <= 0) {
+                                        NotificationManager notificationManager = (NotificationManager) getActivity()
+                                                .getSystemService(
+                                                        Context.NOTIFICATION_SERVICE);
+                                        notificationManager.cancel(20140902);
+                                    }
 
-                                LeoEventBus
-                                        .getDefaultBus()
-                                        .post(
-                                                new PrivacyEditFloatEvent(
-                                                        PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
+                                    LeoEventBus
+                                            .getDefaultBus()
+                                            .post(
+                                                    new PrivacyEditFloatEvent(
+                                                            PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
+                                }
                             }
-                        }
                         }
                     }
                 }
@@ -651,6 +660,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " = ? ",
                         calllog.getCallLogNumber(),
                         mContext);
+                mContactCallLogs.remove(calllog);
                 if (flagNumber != -1 && mHandler != null) {
                     // mContactCallLogs.remove(calllog);
                     deleteCallLog.add(calllog);
@@ -666,15 +676,15 @@ public class PrivacyCalllogFragment extends BaseFragment {
         @Override
         protected void onPostExecute(List<ContactCallLog> result) {
             for (ContactCallLog calllog : result) {
-                mContactCallLogs.remove(calllog);
+
             }
             mIsEditModel = false;
             mCallLogCount = 0;
-            mAdapter.notifyDataSetChanged();
             mDeleteCallLog.clear();
             LeoEventBus.getDefaultBus().post(
                     new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
                             PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
+            mAdapter.notifyDataSetChanged();
             super.onPostExecute(result);
         }
     }
@@ -686,7 +696,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
 
     // 通话记录标记为已读
     public static void updateCallLogMyselfIsRead(int read, String selection,
-            String[] selectionArgs, Context context) {
+                                                 String[] selectionArgs, Context context) {
         ContentValues values = new ContentValues();
         values.put("call_log_is_read", read);
         int count = context.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
@@ -698,16 +708,16 @@ public class PrivacyCalllogFragment extends BaseFragment {
             int temp = pre.getCallLogNoReadCount();
             for (int i = 0; i < count; i++) {
                 if (temp > 0) {
-                    temp=temp-1;
+                    temp = temp - 1;
                     pre.setCallLogNoReadCount(temp);
                     LeoLog.i("MessagePrivacyReceiver", "temp=" + temp);
                     if (temp <= 0) {
                         LeoEventBus
-                        .getDefaultBus()
-                        .post(
-                                new PrivacyEditFloatEvent(
-                                        PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
-                LeoLog.i("MessagePrivacyReceiver", "通知红点结束！");
+                                .getDefaultBus()
+                                .post(
+                                        new PrivacyEditFloatEvent(
+                                                PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
+                        LeoLog.i("MessagePrivacyReceiver", "通知红点结束！");
                         /* ISwipe处理：通知没有未读 */
                         PrivacyContactManager.getInstance(context)
                                 .cancelPrivacyTipFromPrivacyCall();
@@ -720,6 +730,49 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     }
                 }
             }
+        }
+    }
+
+    private class PrivacyCallHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case PrivacyContactUtils.MSG_CALL:
+                    if (msg.obj != null) {
+                        LeoLog.i(TAG, "load privacy calls finish!");
+                        ArrayList<ContactCallLog> calls = (ArrayList<ContactCallLog>) msg.obj;
+                        if (mContactCallLogs != null) {
+                            mContactCallLogs.clear();
+                        }
+                        mContactCallLogs = calls;
+                        if (mContactCallLogs == null || mContactCallLogs.size() == 0) {
+                            mDefaultText.setVisibility(View.VISIBLE);
+                        } else {
+                            mDefaultText.setVisibility(View.GONE);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendMsgHandler() {
+        if (mCallHandler != null) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
+                    calllogs = getCallLog();
+                    Message msg = new Message();
+                    msg.what = PrivacyContactUtils.MSG_CALL;
+                    msg.obj = calllogs;
+                    mCallHandler.sendMessage(msg);
+                }
+            });
         }
     }
 

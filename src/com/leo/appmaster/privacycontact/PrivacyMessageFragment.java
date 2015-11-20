@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -55,6 +56,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class PrivacyMessageFragment extends BaseFragment implements OnItemClickListener,
         OnItemLongClickListener {
 
+    private static final String TAG = "PrivacyMessageFragment";
     private static final String QUERY_SQL_TABLE_MESSAGE_LIST_MODEL = "query_list_model";
     private static final String QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL = "query_item_model";
     private LinearLayout mDefaultText;
@@ -75,6 +77,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     private SimpleDateFormat mSimpleDateFormate;
     private RelativeLayout mButtomTip;
     private boolean mButtomTipIsShow = false;
+    private PrivacyMsmHandler mMsmHandler = new PrivacyMsmHandler();
 
     @Override
     protected int layoutResourceId() {
@@ -96,8 +99,9 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         mAdapter = new MyMessageAdapter(mMessageList);
         mListMessage.setAdapter(mAdapter);
         LeoEventBus.getDefaultBus().register(this);
-        PrivacyContactDateTask task = new PrivacyContactDateTask();
-        task.execute("");
+//        PrivacyContactDateTask task = new PrivacyContactDateTask();
+//        task.execute("");
+        sendMsgHandler();
     }
 
     public void onEventMainThread(PrivacyEditFloatEvent event) {
@@ -121,18 +125,21 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             }
         } else if (PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT.equals(mEditModelOperaction)
                 || PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG_UPDATE_MESSAGE_LIST
-                        .equals(mEditModelOperaction)) {
-            PrivacyContactDateTask task = new PrivacyContactDateTask();
-            task.execute("");
+                .equals(mEditModelOperaction)) {
+//            PrivacyContactDateTask task = new PrivacyContactDateTask();
+//            task.execute("");
+            sendMsgHandler();
         } else if (PrivacyContactUtils.MESSAGE_PRIVACY_INTERCEPT_NOTIFICATION
                 .equals(mEditModelOperaction)) {
             mButtomTipIsShow = true;
-            PrivacyContactDateTask task = new PrivacyContactDateTask();
-            task.execute("");
+//            PrivacyContactDateTask task = new PrivacyContactDateTask();
+//            task.execute("");
+            sendMsgHandler();
         } else if (PrivacyContactUtils.PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT
                 .equals(mEditModelOperaction)) {
-            PrivacyContactDateTask task = new PrivacyContactDateTask();
-            task.execute("");
+//            PrivacyContactDateTask task = new PrivacyContactDateTask();
+//            task.execute("");
+            sendMsgHandler();
         }
     }
 
@@ -210,8 +217,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 String number = PrivacyContactUtils.formatePhoneNumber(mb.getPhoneNumber());
                 PrivacyContactUtils.updateMessageMyselfIsRead(1,
                         "contact_phone_number LIKE ? and message_is_read = 0",
-                        new String[] {
-                            "%" + number
+                        new String[]{
+                                "%" + number
                         }, mContext);
             } catch (Exception e) {
             }
@@ -294,7 +301,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             }
         } catch (Exception e) {
         } finally {
-            if(cur != null) {
+            if (cur != null) {
                 cur.close();
             }
         }
@@ -518,8 +525,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                     mRestoremessgeLists = getMessages(
                             QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL,
                             Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ? ",
-                            new String[] {
-                                "%" + fromateNumber
+                            new String[]{
+                                    "%" + fromateNumber
                             });
                     // delete message cancel red tip
                     if (temp > 0) {
@@ -574,8 +581,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                             int flag = PrivacyContactUtils.deleteMessageFromMySelf(cr,
                                     Constants.PRIVACY_MESSAGE_URI,
                                     Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ? ",
-                                    new String[] {
-                                        "%" + formateNumber
+                                    new String[]{
+                                            "%" + formateNumber
                                     });
                         } catch (Exception e) {
                         }
@@ -598,8 +605,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                     mRestoremessgeLists = getMessages(
                             QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL,
                             Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ? ",
-                            new String[] {
-                                "%" + fromateNumber
+                            new String[]{
+                                    "%" + fromateNumber
                             });
                     // delete message cancel red tip
                     if (temp > 0) {
@@ -631,8 +638,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                     for (MessageBean messages : mRestoremessgeLists) {
                         int flagNumber = PrivacyContactUtils.deleteMessageFromMySelf(cr,
                                 Constants.PRIVACY_MESSAGE_URI,
-                                Constants.COLUMN_MESSAGE_PHONE_NUMBER + " = ? ", new String[] {
-                                    messages.getPhoneNumber()
+                                Constants.COLUMN_MESSAGE_PHONE_NUMBER + " = ? ", new String[]{
+                                        messages.getPhoneNumber()
                                 });
                         if (flagNumber != -1 && mHandler != null) {
                             Message messge = new Message();
@@ -666,6 +673,48 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                             PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL));
             isShowDefaultImage();
             mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class PrivacyMsmHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case PrivacyContactUtils.MSG_MESSAGE:
+                    if (msg.obj != null) {
+                        LeoLog.i(TAG, "load privacy messages ");
+                        List<MessageBean> msms = (List<MessageBean>) msg.obj;
+                        if (mMessageList != null) {
+                            mMessageList.clear();
+                        }
+                        mMessageList = msms;
+                        if (mMessageList == null || mMessageList.size() == 0) {
+                            mDefaultText.setVisibility(View.VISIBLE);
+                        } else {
+                            mDefaultText.setVisibility(View.GONE);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendMsgHandler() {
+        if (mMsmHandler != null) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    List<MessageBean> messageList = getMessages(QUERY_SQL_TABLE_MESSAGE_LIST_MODEL, null, null);
+                    Message msg = new Message();
+                    msg.what = PrivacyContactUtils.MSG_MESSAGE;
+                    msg.obj = messageList;
+                    mMsmHandler.sendMessage(msg);
+                }
+            });
         }
     }
 

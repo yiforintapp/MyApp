@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -43,8 +44,10 @@ import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AddFromCallLogListActivity extends BaseActivity {
+    private static final String TAG = "AddFromCallLogListActivity";
     private List<ContactCallLog> mCallLogList;
     private CommonToolbar mComBar;
     private CallLogAdapter mCallLogAdapter;
@@ -61,6 +64,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
     private LinearLayout mDefaultText;
     private Button mAutoDddBtn;
     private RippleView1 moto_add_btn_ripp;
+    private AddFromCallHandler mAddFromCallHandler = new AddFromCallHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,8 +166,9 @@ public class AddFromCallLogListActivity extends BaseActivity {
         mCallLogList = new ArrayList<ContactCallLog>();
         mAddPrivacyCallLog = new ArrayList<ContactCallLog>();
         // 加载数据
-        PrivacyContactCallLogTask callLogTask = new PrivacyContactCallLogTask();
-        callLogTask.execute(PrivacyContactUtils.ADD_CONTACT_MODEL);
+//        PrivacyContactCallLogTask callLogTask = new PrivacyContactCallLogTask();
+//        callLogTask.execute(PrivacyContactUtils.ADD_CONTACT_MODEL);
+        sendMsgHandler();
     }
 
     @Override
@@ -557,6 +562,58 @@ public class AddFromCallLogListActivity extends BaseActivity {
             mAddCallLogDialog.show();
         } catch (Exception e) {
 
+        }
+    }
+
+    private class AddFromCallHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case PrivacyContactUtils.MSG_ADD_CALL:
+                    if (msg.obj != null) {
+                        LeoLog.i(TAG, "load  calls finish !");
+                        List<ContactCallLog> calls = (List<ContactCallLog>) msg.obj;
+                        if (mCallLogList != null) {
+                            mCallLogList.clear();
+                        }
+                        mCallLogList = calls;
+                        try {
+                            if (mCallLogList != null && mCallLogList.size() > 0) {
+                                mDefaultText.setVisibility(View.GONE);
+                            } else {
+                                mDefaultText.setVisibility(View.VISIBLE);
+                            }
+                            mProgressBar.setVisibility(View.GONE);
+                            mCallLogAdapter = new CallLogAdapter(mCallLogList);
+                            mListCallLog.setAdapter(mCallLogAdapter);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendMsgHandler() {
+        if (mAddFromCallHandler != null) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    List<ContactCallLog> callLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this, null, null, false, false);
+                    if (callLogList != null && callLogList.size() > 0) {
+                        Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
+                    }
+                    Message msg = new Message();
+                    msg.what = PrivacyContactUtils.MSG_ADD_CALL;
+                    msg.obj = callLogList;
+                    mAddFromCallHandler.sendMessage(msg);
+                }
+            });
         }
     }
 
