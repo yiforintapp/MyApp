@@ -89,6 +89,8 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
         // 获取头像
         Bitmap icon = PrivacyContactUtils.getContactIcon(this, mCallLogNumber);
         if (icon != null) {
+            int size = (int) this.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+            icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
             mContactImage.setImageBitmap(icon);
         } else {
             mContactImage.setImageResource(R.drawable.default_user_avatar);

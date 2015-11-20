@@ -262,6 +262,8 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                     String time = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_DATE));
                     Bitmap icon = PrivacyContactUtils.getContactIcon(mContext, number);
                     if (icon != null) {
+                        int size = (int) getActivity().getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                        icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
                         mb.setContactIcon(icon);
                     } else {
                         mb.setContactIcon(((BitmapDrawable) mContext.getResources().getDrawable(

@@ -33,7 +33,7 @@ import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactManager {
-    public static final String TAG="PrivacyContactManager";
+    public static final String TAG = "PrivacyContactManager";
     /* 接受隐私联系人存在未读广播的权限 */
     private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
     private static final String RECEIVER_TO_SWIPE_ACTION = "com.leo.appmaster.ACTION_PRIVACY_CONTACT";
@@ -91,7 +91,7 @@ public class PrivacyContactManager {
     }
 
     public int getAllContactsCount() {
-        List<ContactBean> contacts = PrivacyContactUtils.getSysContact(mContext, null, null,false);
+        List<ContactBean> contacts = PrivacyContactUtils.getSysContact(mContext, null, null, false);
         int count = 0;
         if (contacts != null) {
             count = contacts.size();
@@ -158,9 +158,11 @@ public class PrivacyContactManager {
                             byte[] icon = cur.getBlob(cur.getColumnIndex(Constants.COLUMN_ICON));
                             if (icon != null) {
                                 Bitmap contactIcon = PrivacyContactUtils.getBmp(icon);
+                                int size = (int) mContext.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                                contactIcon = PrivacyContactUtils.getScaledContactIcon(contactIcon, size);
                                 mb.setContactIcon(contactIcon);
                             }
-                        } catch (Error e) {                     
+                        } catch (Error e) {
                         }
                         if (mb.getContactIcon() == null) {
                             BitmapDrawable drawable = (BitmapDrawable) mContext.getResources()
@@ -173,9 +175,9 @@ public class PrivacyContactManager {
                     }
                 }
             } catch (Exception e) {
-                
+
             } finally {
-                if(cur != null) {
+                if (cur != null) {
                     cur.close();
                 }
             }
@@ -212,7 +214,7 @@ public class PrivacyContactManager {
 
     /* 拦截短信处理 */
     public synchronized void synMessage(SimpleDateFormat sdf, MessageBean message,
-            Context mContext, Long sendDate) {
+                                        Context mContext, Long sendDate) {
         AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
         boolean messageItemRuning = pre.getMessageItemRuning();
         int count = pre.getMessageNoReadCount();
@@ -333,15 +335,15 @@ public class PrivacyContactManager {
         mMessage = message;
         mLastMessage = message;
         /* 隐私联系人有未读短信时发送广播 */
-       privacyContactSendReceiverToSwipe(
-                PRIVACY_MSM,0,mLastMessage.getPhoneNumber());
+        privacyContactSendReceiverToSwipe(
+                PRIVACY_MSM, 0, mLastMessage.getPhoneNumber());
     }
 
 
     /* 通话记录预加载 */
     private synchronized void loadCallLogs() {
         if (!mCallsLoaded) {
-            mSysCalls = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,null, null,false,false);
+            mSysCalls = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext, null, null, false, false);
             if (mSysCalls != null && mSysCalls.size() > 0) {
                 Collections.sort(mSysCalls, PrivacyContactUtils.mCallLogCamparator);
             }
@@ -430,6 +432,7 @@ public class PrivacyContactManager {
         return BuildProperties.checkPhoneModel(ZTEU817)
                 || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
     }
+
     /* 隐私联系人有未读发送广播到iswipe */
     public void privacyContactSendReceiverToSwipe(final String flag, int actiontype, String number) {
         Intent privacyIntent = null;
@@ -500,6 +503,7 @@ public class PrivacyContactManager {
             privacyContactSendReceiverToSwipe(null, 1, null);
         }
     }
+
     /*快捷隐私通话处理*/
     public void noReadCallPrivacyCallTipForQuickGesture() {
         AppMasterPreference mPreference = AppMasterPreference.getInstance(mContext);
@@ -511,7 +515,10 @@ public class PrivacyContactManager {
             }
         }
     }
-    /**快捷手势未读通话处理*/
+
+    /**
+     * 快捷手势未读通话处理
+     */
     public void noReadCallForQuickGesture(final ContactBean call) {
         ThreadManager.executeOnAsyncThread(new Runnable() {
 
@@ -552,12 +559,15 @@ public class PrivacyContactManager {
             }
         });
     }
-    /**快捷手势未读短信处理*/
+
+    /**
+     * 快捷手势未读短信处理
+     */
     public void noReadMsmTipForQuickGesture() {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                ContentResolver cr=mContext.getContentResolver();
+                ContentResolver cr = mContext.getContentResolver();
                 if (AppMasterPreference.getInstance(mContext).getSwitchOpenNoReadMessageTip()) {
                     ArrayList<MessageBean> messages = (ArrayList<MessageBean>) PrivacyContactUtils
                             .getSysMessage(mContext, "read=0 AND type=1", null, false, false);
@@ -601,7 +611,10 @@ public class PrivacyContactManager {
             }
         });
     }
-    /**快捷手势未读通话红点恢复处理*/
+
+    /**
+     * 快捷手势未读通话红点恢复处理
+     */
     private void restoreRedTipValueForCall() {
         if (PrivacyContactManager.getInstance(mContext).checkPhoneModelForCallRestoreRedTip()) {
             String selection = CallLog.Calls.TYPE + "=? and " + CallLog.Calls.NEW + "=?";

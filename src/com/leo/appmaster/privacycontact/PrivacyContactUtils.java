@@ -21,7 +21,10 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
@@ -30,6 +33,7 @@ import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -160,11 +164,13 @@ public class PrivacyContactUtils {
                     } else {
                         number = cur.getString(cur.getColumnIndex("address"));
                     }
-                    LeoLog.i("caocao","号码："+number);
+                    LeoLog.i("caocao", "号码：" + number);
 
                     Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
                             context, number);
                     if (icon != null) {
+                        int size = (int) context.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                        icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
                         mb.setContactIcon(icon);
                     } else {
                         mb.setContactIcon(((BitmapDrawable) context.getResources().getDrawable(
@@ -287,6 +293,8 @@ public class PrivacyContactUtils {
                                     cr,
                                     uri);
                             contactPhoto = BitmapFactory.decodeStream(input);
+                            int size = (int) context.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                            contactPhoto = PrivacyContactUtils.getScaledContactIcon(contactPhoto, size);
                         }
                     } catch (Error e) {
 
@@ -444,6 +452,8 @@ public class PrivacyContactUtils {
                     Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
                             context, number);
                     if (icon != null) {
+                        int size = (int) context.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                        icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
                         callLog.setContactIcon(icon);
                     } else {
                         callLog.setContactIcon(((BitmapDrawable) context.getResources()
@@ -639,7 +649,8 @@ public class PrivacyContactUtils {
         }
         return reverseStr;
     }
-    public static String formatePhNumberFor4(String number){
+
+    public static String formatePhNumberFor4(String number) {
         String temp = deleteOtherNumber(number);
         String reverseStr = null;
         if (temp != null) {
@@ -1448,6 +1459,22 @@ public class PrivacyContactUtils {
             }
         }
         return count;
+    }
+
+    /**
+     * 缩放联系人头像到指定大小
+     *
+     * @param bitmap
+     * @return
+     */
+    public static Bitmap getScaledContactIcon(Bitmap bitmap, int size) {
+        if (bitmap == null) {
+            return null;
+        }
+        if (bitmap.getWidth() > size || bitmap.getHeight() > size) {
+            bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
+        }
+        return bitmap;
     }
 
 }
