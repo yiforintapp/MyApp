@@ -855,15 +855,16 @@
     <string name="huawei7pl_op_tip">Please choose "Application" in Permission Manager and select Privacy Guard , then assign the "Access SMS/MMS"&amp;"Send SMS" to us.</string>
 
     <!-- 3.1 -->
-    <string name="feedback_tell_us_title">联系我们</string>
-    <string name="toast_getscore_text">恭喜您！您的分数增加啦</string>
-    <string name="feedback_tell_us_content">如果您有其他的问题或需要，欢迎随时联系我们！我们的facebook、whatsapp群组也随时在线哦！</string>
-    <string name="feedback_tell_us_contact_type_title">联系方式</string>
     <string name="feedback_tell_us_contact_type_1">Email:suppport@leomaster.com</string>
     <string name="feedback_tell_us_contact_type_2">Whatsapp:+86 15915881391 </string>
     <string name="feedback_tell_us_contact_type_3">Wechat:+86 15915881391</string>
     <string name="feedback_tell_us_contact_type_4">Skype:cmenglan</string>
     <string name="feedback_tell_us_contact_type_5">Facebook:LEO Privacy Guard/LEO Privacy Guard Q"&amp;"A </string>
+
+    <string name="feedback_tell_us_title">联系我们</string>
+    <string name="toast_getscore_text">恭喜您！您的分数增加啦</string>
+    <string name="feedback_tell_us_content">如果您有其他的问题或需要，欢迎随时联系我们！我们的facebook、whatsapp群组也随时在线哦！</string>
+    <string name="feedback_tell_us_contact_type_title">联系方式</string>
     <string name="dialog_fivestars_content_text">觉得还不错？请给我们5星吧！</string>
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
     <string name="elect_empty_content">抱歉，暂未获取到电池信息</string>
