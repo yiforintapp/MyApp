@@ -868,16 +868,14 @@
 
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
     <string name="elect_empty_content">抱歉，暂未获取到电池信息</string>
-    <string name="Swifty_item_title">Swifty</string>
     <string name="swifty_item_btn">去开启</string>
-    <string name="grade_item_title">喜欢我们</string>
-    <string name="grade_item_content">您的五星好评可以帮助我们更好地提供服务！</string>
-    <string name="grade_item_btn">去好评</string>
+    <string name="grade_item_title">喜欢隐私卫士吗？</string>
+    <string name="grade_item_btn">去评5星</string>
     <string name="change_wifi_toast_unsafe">存在风险</string>
     <string name="change_wifi_toast_safe">安全</string>
-    <string name="fb_item_title">Follow Us on Facebook</string>
-    <string name="fb_item_content">Enjoying Privacy Guard?5-Star ratings from you help us provide better services!</string>
-    <string name="fb_item_btn">follow</string>
+    <string name="fb_item_title">关注我们Facebook主页</string>
+    <string name="fb_item_content">想要知道更多隐私卫士有趣的和官方的新闻吗？还在等什么，赶紧关注我们的Facebook主页吧</string>
+    <string name="fb_item_btn">关注</string>
 
     <string name= "intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
 </resources>

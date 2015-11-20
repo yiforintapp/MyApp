@@ -532,6 +532,7 @@ public class HomeBoostActivity extends Activity {
 
     private AnimatorSet adLightAnimation() {
         ObjectAnimator adLightAlphaShow = ObjectAnimator.ofFloat(mSpeedAdLight, "alpha", 0f, 1f);
+        adLightAlphaShow.setDuration(400);
         adLightAlphaShow.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -539,7 +540,6 @@ public class HomeBoostActivity extends Activity {
                 mSpeedAdLight.setVisibility(View.VISIBLE);
             }
         });
-        adLightAlphaShow.setDuration(400);
         ObjectAnimator adLightAlphaHide = ObjectAnimator.ofFloat(mSpeedAdLight, "alpha", 1f, 0f);
         adLightAlphaHide.addListener(new AnimatorListenerAdapter() {
             @Override

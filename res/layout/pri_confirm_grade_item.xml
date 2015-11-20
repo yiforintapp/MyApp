@@ -157,7 +157,7 @@
         android:layout_below="@+id/grade_frame"
         android:layout_alignLeft="@+id/grade_frame"
         android:layout_alignRight="@+id/grade_frame"
-        android:text="@string/grade_item_content"
+        android:text="@string/dialog_fivestars_content_text"
         android:textSize="14dp"
         android:textColor="@color/c2"/>
 
