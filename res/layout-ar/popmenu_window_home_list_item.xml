@@ -8,32 +8,38 @@
     app:rippleColor="@color/home_tab_pressed"
     app:rippleDuration="250"
     app:rippleHover="true"
-    app:rippleInAdapter="true">
+    app:rippleInAdapter="true" >
 
-    <TextView
-
-        android:id="@+id/menu_text"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/menu_icon"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="3"
-        android:maxWidth="158dp"
-        android:paddingRight="7dp"
-        android:text="test"
-        android:textColor="#969696"
-        android:textSize="14dp" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/new_list_selecter"
+        android:padding="10dp" >
 
-    <ImageView
-        android:id="@+id/menu_icon"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/reset_pasword_icon" />
+        <TextView
+            android:id="@+id/menu_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/menu_icon"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="3"
+            android:maxWidth="158dp"
+            android:paddingRight="7dp"
+            android:text="test"
+            android:textColor="#969696"
+            android:textSize="14dp" />
 
-    <!-- android:layout_marginLeft="16dp" -->
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/reset_pasword_icon" />
+
+        <!-- android:layout_marginLeft="16dp" -->
+    </RelativeLayout>
 
 </com.leo.appmaster.ui.MaterialRippleLayout>
