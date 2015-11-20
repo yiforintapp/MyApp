@@ -981,7 +981,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                 if (AppMasterPreference.getInstance(mContext).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                     LinkedList<String> list = new LinkedList<String>();
                     list.add(packageName);
-                    mLockManager.removePkgFromMode(list, mLockManager.getCurLockMode());
+                    mLockManager.removePkgFromMode(list, mLockManager.getCurLockMode(), false);
                 }
 
             }

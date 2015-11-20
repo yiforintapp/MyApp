@@ -423,7 +423,7 @@ public class AppLockListActivity extends BaseActivity implements
 
             List<String> list = new LinkedList<String>();
             list.add(info.packageName);
-            mLockManager.removePkgFromMode(list, mLockManager.getCurLockMode());
+            mLockManager.removePkgFromMode(list, mLockManager.getCurLockMode(), true);
 
             long d = System.currentTimeMillis();
             LeoLog.d("testWhoNull", "part c : " + (d - c));
