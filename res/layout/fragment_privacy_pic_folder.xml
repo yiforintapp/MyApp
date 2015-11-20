@@ -29,6 +29,8 @@
         xmlns:ripple="http://schemas.android.com/apk/res-auto"
         ripple:horizontalSpacing="@dimen/pri_new_list_padding"
         ripple:verticalSpacing="@dimen/pri_new_list_padding"
+        ripple:columnWidth="109dp"
+        ripple:stretchMode="columnWidth"
         android:id="@+id/expand_video_gv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -433,7 +433,7 @@ public class ExpandableGridView extends ExpandableListView {
             if (row.getLayoutParams() == null) {
                 row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                         LayoutParams.WRAP_CONTENT, AbsListView.ITEM_VIEW_TYPE_IGNORE));
-                row.setPadding(0, mVerticalSpacing / 2, 0, mVerticalSpacing / 2);
+                row.setPadding(mHorizontalSpacing / 2, mVerticalSpacing / 2, mHorizontalSpacing / 2, mVerticalSpacing / 2);
                 row.setGravity(Gravity.CENTER_HORIZONTAL);
             }
 
