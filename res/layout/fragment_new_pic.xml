@@ -31,13 +31,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
+        android:columnWidth="109dp"
         android:divider="@null"
-        android:numColumns="3"
         android:headerDividersEnabled="false"
+        android:horizontalSpacing="8dp"
         android:listSelector="@null"
+        android:numColumns="3"
         android:overScrollMode="never"
         android:paddingBottom="63dp"
-        android:scrollbars="none" />
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="8dp" />
 
     <!-- 全选、取消全选 -->
     <include

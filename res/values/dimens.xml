@@ -202,7 +202,7 @@
     <dimen name="home_tab_height">244dp</dimen>
     <dimen name="home_shield_top_margin">80dp</dimen>
     <dimen name="home_shield_bg_circle_margin">40dp</dimen>
-    <dimen name="home_shield_score">47dp</dimen>
+    <dimen name="home_shield_score">50dp</dimen>
     <dimen name="home_shield_status">12dp</dimen>
     <dimen name="home_anim_progress">4dp</dimen>
     <dimen name="home_arrow_gap">3dp</dimen>
