@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
@@ -117,7 +118,9 @@ public class MobvistaEngine {
         if (sInstance == null) {
             initMobvista();
             sInstance = new MobvistaEngine(ctx);
-            sInstance.preloadMobvistaAds();
+            if (!AppMasterConfig.IS_FOR_MAINLAND_CHINA) {
+                sInstance.preloadMobvistaAds();
+            }
         }
         
         return sInstance;
