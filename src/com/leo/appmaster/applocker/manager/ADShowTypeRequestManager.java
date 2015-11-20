@@ -143,7 +143,8 @@ public class ADShowTypeRequestManager {
                     // 中国大陆总开关
                     boolean forceClose = false;
                     if (AppMasterConfig.IS_FOR_MAINLAND_CHINA) {
-                        forceClose = (getJSIntValue(response, AD_MAIN_SWITCHER, 0) == 0);
+                        sp.setADMainlandSwticher(getJSIntValue(response, AD_MAIN_SWITCHER, 0));
+                        forceClose = (sp.getADMainlandSwticher()==0);
                         LeoLog.d(TAG, "Switcher for Mainland, forceClose = " + forceClose);
                     } else {
                         LeoLog.i(TAG, "Global user, use normal switchers");

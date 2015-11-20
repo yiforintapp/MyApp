@@ -118,7 +118,8 @@ public class MobvistaEngine {
         if (sInstance == null) {
             initMobvista();
             sInstance = new MobvistaEngine(ctx);
-            if (!AppMasterConfig.IS_FOR_MAINLAND_CHINA) {
+            if (!(AppMasterConfig.IS_FOR_MAINLAND_CHINA
+                    && sInstance.mPref.getADMainlandSwticher()==0)) {
                 sInstance.preloadMobvistaAds();
             }
         }
