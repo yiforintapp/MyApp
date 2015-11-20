@@ -4,14 +4,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.ListAppLockAdapter;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.ui.RippleView;
 
 import java.util.List;
 
@@ -76,13 +74,14 @@ public class PrivacyNewAppAdapter extends PrivacyNewAdaper<AppItemInfo> {
         }
         holder.checkBox.setClickable(false);
 
-        RippleView view = (RippleView) convertView;
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View rippleView) {
-                toggle(info);
-            }
-        });
+//        RippleView view = (RippleView) convertView;
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View rippleView) {
+//                toggle(info);
+//            }
+//        });
+
         mItemsView.put(convertView, info);
         return convertView;
     }

@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -22,6 +23,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 /**
@@ -29,7 +31,7 @@ import com.leo.appmaster.utils.PrefConst;
  *
  * @author Jasper
  */
-public class PrivacyNewAppFragment extends PrivacyNewFragment {
+public class PrivacyNewAppFragment extends PrivacyNewFragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "PrivacyNewAppFragment";
 
     private ListView mAppList;
@@ -150,7 +152,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment {
         super.onViewCreated(view, savedInstanceState);
         mAppList = (ListView) view.findViewById(R.id.app_lv);
         mAppList.setOnScrollListener(this);
-
+        mAppList.setOnItemClickListener(this);
         mAppList.addHeaderView(getEmptyHeader());
         mAppList.setAdapter(mAdaper);
 
@@ -184,5 +186,11 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment {
             str += " (" + selectedCount + ")";
         }
         setProcessContent(str);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        AppItemInfo info = mDataList.get(i - 1);
+        mAdaper.toggle(info);
     }
 }
