@@ -57,7 +57,6 @@ import com.leo.imageloader.core.PauseOnScrollListener;
 
 public class IntruderprotectionActivity extends Activity {
     private ListView mLvPhotos;
-    // private IntruderPhotoTable mIpt;
     private CommonToolbar mctb;
     private BaseAdapter mAdapter;
     private ArrayList<IntruderPhotoInfo> mInfos;
@@ -168,11 +167,24 @@ public class IntruderprotectionActivity extends Activity {
         }
     }
 
+    private void protectHeaderViewIfError() {
+        ListAdapter adapter = mLvPhotos.getAdapter();
+        if (adapter == null) {
+            mLvPhotos.setAdapter(null);
+            mctb.setOptionClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mImanager.clearAllPhotos();
+                    mInfosSorted.clear();
+                }
+            });
+        }
+    }
+
     /**
      * 更新数据，从数据库查询，
      */
     private void updateData() {
-        LeoLog.i("poha", "initData!!!");
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
@@ -184,18 +196,7 @@ public class IntruderprotectionActivity extends Activity {
                             // 做与数据库查询结果有关的操作
                             onQueryFinished();
                             // 保证头布局的显示 保证数据的清空，
-                            ListAdapter adapter = mLvPhotos.getAdapter();
-                            if (adapter == null) {
-                                mLvPhotos.setAdapter(null);
-                                mctb.setOptionClickListener(new OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        mImanager.clearAllPhotos();
-                                        mInfosSorted.clear();
-                                    }
-                                }
-                                        );
-                            }
+                            protectHeaderViewIfError();
                         }
                     });
                 }
@@ -229,6 +230,80 @@ public class IntruderprotectionActivity extends Activity {
     static class ViewWithoutTimeStampHolder {
         BottomCropImage ivIntruderPic;
         RelativeLayout rlMask;
+    }
+
+    private void initListViewItemWithTimeStamp(final int position, ViewWithTimeStampHolder holder1) {
+        // 时间戳
+        String timeStamp = mInfosSorted.get(position).getTimeStamp();
+        String ymdFomatString = toYMDFomatString(timeStamp);
+        holder1.tvTimeStamp.setText(ymdFomatString);
+        // 加载照片
+        String filePath = mInfosSorted.get(position).getFilePath();
+        final ImageView pic1 = holder1.ivIntruderPic;
+        mImageLoader.displayImage("file:///" + filePath, pic1, mImageOptions);
+        pic1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 照片在点击后将进入大图浏览
+                Intent intent = new Intent(IntruderprotectionActivity.this,
+                        IntruderGalleryActivity.class);
+                intent.putExtra("current_position", position);
+                SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+                        "intruder", "intruder_view_timeline");
+                startActivity(intent);
+            }
+        });
+        // 图片加入显示图标和应用名的UI
+        PackageManager pm = getPackageManager();
+        try {
+            Drawable applicationIcon = AppUtil.getAppIcon(pm,
+                    mInfosSorted.get(position).getFromAppPackage());
+            ImageView iv2 = (ImageView) (holder1.rlMask
+                    .findViewById(R.id.iv_intruder_appicon));
+            iv2.setImageDrawable(applicationIcon);
+            TextView tv2 = (TextView) (holder1.rlMask
+                    .findViewById(R.id.tv_intruder_apptimestamp));
+            String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(position)
+                    .getTimeStamp());
+            tv2.setText(timeStampToAMPM);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initListViewItem(final int position, ViewWithoutTimeStampHolder holder2) {
+        // 显示照片
+        String filePath = mInfosSorted.get(position).getFilePath();
+        final ImageView pic2 = holder2.ivIntruderPic;
+        mImageLoader.displayImage("file:///" + filePath, pic2, mImageOptions);
+        pic2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 照片在点击后将进入大图浏览
+                Intent intent = new Intent(IntruderprotectionActivity.this,
+                        IntruderGalleryActivity.class);
+                intent.putExtra("current_position", position);
+                SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+                        "intruder", "intruder_view_timeline");
+                startActivity(intent);
+            }
+        });
+        // 图标和应用名
+        PackageManager pm = getPackageManager();
+        try {
+            Drawable applicationIcon = AppUtil.getAppIcon(pm,
+                    mInfosSorted.get(position).getFromAppPackage());
+            ImageView iv2 = (ImageView) (holder2.rlMask
+                    .findViewById(R.id.iv_intruder_appicon));
+            iv2.setImageDrawable(applicationIcon);
+            TextView tv2 = (TextView) (holder2.rlMask
+                    .findViewById(R.id.tv_intruder_apptimestamp));
+            String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(position)
+                    .getTimeStamp());
+            tv2.setText(timeStampToAMPM);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -265,42 +340,7 @@ public class IntruderprotectionActivity extends Activity {
                         } else {
                             holder1 = (ViewWithTimeStampHolder) convertView.getTag();
                         }
-                        // 时间戳
-                        String timeStamp = mInfosSorted.get(position).getTimeStamp();
-                        String ymdFomatString = toYMDFomatString(timeStamp);
-                        holder1.tvTimeStamp.setText(ymdFomatString);
-                        // 加载照片
-                        String filePath = mInfosSorted.get(position).getFilePath();
-                        final ImageView pic1 = holder1.ivIntruderPic;
-                        mImageLoader.displayImage("file:///" + filePath, pic1, mImageOptions);
-                        pic1.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // 照片在点击后将进入大图浏览
-                                Intent intent = new Intent(IntruderprotectionActivity.this,
-                                        IntruderGalleryActivity.class);
-                                intent.putExtra("current_position", position);
-                                SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
-                                        "intruder", "intruder_view_timeline");
-                                startActivity(intent);
-                            }
-                        });
-                        // 图片加入显示图标和应用名的UI
-                        PackageManager pm = getPackageManager();
-                        try {
-                            Drawable applicationIcon = AppUtil.getAppIcon(pm,
-                                    mInfosSorted.get(position).getFromAppPackage());
-                            ImageView iv2 = (ImageView) (holder1.rlMask
-                                    .findViewById(R.id.iv_intruder_appicon));
-                            iv2.setImageDrawable(applicationIcon);
-                            TextView tv2 = (TextView) (holder1.rlMask
-                                    .findViewById(R.id.tv_intruder_apptimestamp));
-                            String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(position)
-                                    .getTimeStamp());
-                            tv2.setText(timeStampToAMPM);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        initListViewItemWithTimeStamp(position, holder1);
                         // ------------------------不带时间戳的item布局------------------------------
                     } else if (itemViewType == VIEW_TYPE_WITHOUT_TIMESTAMP) {
                         ViewWithoutTimeStampHolder holder2 = null;
@@ -319,38 +359,7 @@ public class IntruderprotectionActivity extends Activity {
                         } else {
                             holder2 = (ViewWithoutTimeStampHolder) convertView.getTag();
                         }
-                        // 显示照片
-                        String filePath = mInfosSorted.get(position).getFilePath();
-                        final ImageView pic2 = holder2.ivIntruderPic;
-                        mImageLoader.displayImage("file:///" + filePath, pic2, mImageOptions);
-                        pic2.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // 照片在点击后将进入大图浏览
-                                Intent intent = new Intent(IntruderprotectionActivity.this,
-                                        IntruderGalleryActivity.class);
-                                intent.putExtra("current_position", position);
-                                SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
-                                        "intruder", "intruder_view_timeline");
-                                startActivity(intent);
-                            }
-                        });
-                        // 图标和应用名
-                        PackageManager pm = getPackageManager();
-                        try {
-                            Drawable applicationIcon = AppUtil.getAppIcon(pm,
-                                    mInfosSorted.get(position).getFromAppPackage());
-                            ImageView iv2 = (ImageView) (holder2.rlMask
-                                    .findViewById(R.id.iv_intruder_appicon));
-                            iv2.setImageDrawable(applicationIcon);
-                            TextView tv2 = (TextView) (holder2.rlMask
-                                    .findViewById(R.id.tv_intruder_apptimestamp));
-                            String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(position)
-                                    .getTimeStamp());
-                            tv2.setText(timeStampToAMPM);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        initListViewItem(position, holder2);
                     }
                     LeoLog.i("poha", "position = " + position + "size = " + mInfosSorted.size());
                     if (position == mInfosSorted.size() - 1) {
@@ -391,8 +400,10 @@ public class IntruderprotectionActivity extends Activity {
                     }
                 }
             };
+            mLvPhotos.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
         }
-        mLvPhotos.setAdapter(mAdapter);
         mLvPhotos.setOnScrollListener(new PauseOnScrollListener(mImageLoader, true, false));
         // 显示木有图片时的UI
         showUiWhenNoPic();
@@ -421,8 +432,9 @@ public class IntruderprotectionActivity extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String s =  new StringBuilder(year+"").append("/").append(month+"").append("/").append(day+"").toString();
-//        String s = year + "/" + month + "/" + day;
+        String s = new StringBuilder(year + "").append("/").append(month + "").append("/")
+                .append(day + "").toString();
+        // String s = year + "/" + month + "/" + day;
         return s;
     }
 
@@ -435,13 +447,15 @@ public class IntruderprotectionActivity extends Activity {
             public void onClick(View v) {
                 SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_clear");
-                if(mCleanConfirmDialog == null) {
+                if (mCleanConfirmDialog == null) {
                     mCleanConfirmDialog = new LEOAlarmDialog(IntruderprotectionActivity.this);
                 }
                 String askforsure = getString(R.string.sure_clean);
                 mCleanConfirmDialog.setContent(askforsure);
-                mCleanConfirmDialog.setRightBtnStr(IntruderprotectionActivity.this.getString(R.string.makesure));
-                mCleanConfirmDialog.setLeftBtnStr(IntruderprotectionActivity.this.getString(R.string.cancel));
+                mCleanConfirmDialog.setRightBtnStr(IntruderprotectionActivity.this
+                        .getString(R.string.makesure));
+                mCleanConfirmDialog.setLeftBtnStr(IntruderprotectionActivity.this
+                        .getString(R.string.cancel));
                 mCleanConfirmDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
