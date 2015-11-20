@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.cleanmemory;
 
+import java.lang.ref.WeakReference;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,12 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnimationSet;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +27,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.mgr.LockManager;
@@ -36,6 +34,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
@@ -45,15 +44,11 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-import com.leo.tools.animator.ValueAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
-
-import java.lang.ref.WeakReference;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
     private View mStatusBar;
-    private int mRocketHeight;
     private MobvistaEngine mAdEngine;
     private boolean isClean = false;
     private ProcessCleaner mCleaner;
@@ -86,14 +81,8 @@ public class HomeBoostActivity extends Activity {
         overridePendingTransition(0, 0);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "boost", "launcher");
         
-        AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        long currentTime = System.currentTimeMillis();
-        long lastBoostWithADTime = amp.getLastBoostWithADTime();
-        LeoLog.e("poha", "currentTime - lastBoostWithADTime="+(currentTime - lastBoostWithADTime)+"=====24小时=8640000=====开关值="+amp.getADChanceAfterAccelerating());
-        
-        if (/*(currentTime - lastBoostWithADTime) > 1000 * 60 * 60 * 24
-                && */amp.getADChanceAfterAccelerating()==1)
-        {
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);       
+        if (NetWorkUtil.isNetworkAvailable(getApplicationContext()) && amp.getADChanceAfterAccelerating() == 1) {
             LeoLog.e("poha", "to load");
             loadAD();
         }
@@ -177,8 +166,9 @@ public class HomeBoostActivity extends Activity {
                 (ImageView) findViewById(R.id.iv_ad_icon));
 
         ImageView previewImageView = (ImageView) findViewById(R.id.iv_ad_bg);
-        previewImageView.setImageBitmap(previewBitmap);
-
+        if(previewImageView != null) {
+            previewImageView.setImageBitmap(previewBitmap);
+        }
         TextView appname = (TextView) findViewById(R.id.tv_ad_appname);
         if(appname != null) {
             appname.setText(campaign.getAppName());
@@ -281,7 +271,6 @@ public class HomeBoostActivity extends Activity {
         ObjectAnimator BgAlphaAnimator = ObjectAnimator.ofFloat(mParent, "alpha", 0f, 0.5f);
         BgAlphaAnimator.setDuration(400);
 
-        mRocketHeight = mIvRocket.getMeasuredHeight();
         ObjectAnimator rocketAnimator1 = ObjectAnimator.ofFloat(mIvRocket, "translationY",
                        mScreenH , mIvRocket.getTranslationY());
         rocketAnimator1.setDuration(400);
@@ -450,7 +439,7 @@ public class HomeBoostActivity extends Activity {
             resultText.setText(Html.fromHtml(mToast));
             isClean = true;
             final TextView counter = (TextView) findViewById(R.id.tv_counter);
-            mCdt = new CountDownTimer(4000, 1000) {
+            mCdt = new CountDownTimer(5000, 1000) {
                
                 @Override
                 public void onTick(long millisUntilFinished) {
