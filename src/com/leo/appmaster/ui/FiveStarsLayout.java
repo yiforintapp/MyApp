@@ -8,6 +8,8 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
+import com.leo.tools.animator.ValueAnimator;
+import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -28,11 +30,13 @@ public class FiveStarsLayout extends FrameLayout{
     private ImageView mFiveStar;
     private ImageView mGradeGesture;
     private float mGestureY;
+    private float mGestureX;
     private float mFifthStarCenterX;
-    private Context mContext;
+    private float mGRightX;
     private float mGestureDeltaY;
     private FrameLayout mFlFifthStar;
     private boolean mHasShowed = false;
+    private AnimatorSet mAsMain;
     
     public FiveStarsLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -44,7 +48,6 @@ public class FiveStarsLayout extends FrameLayout{
 
     public FiveStarsLayout(Context context) {
         this(context, null);
-        mContext = context;
     }
     
     @Override
@@ -67,9 +70,15 @@ public class FiveStarsLayout extends FrameLayout{
         int width = getWidth();
         if(!mHasShowed) {
             mGestureY = mGradeGesture.getY();
-//            mFifthStarCenterX = mFlFifthStar.getLeft();
+            mGestureX = mGradeGesture.getX();
+            mFifthStarCenterX = mFlFifthStar.getLeft() + mFlFifthStar.getWidth() / 2 - DipPixelUtil.dip2px(mContext, 7);
             mGestureDeltaY = height / 2 - mGradeGesture.getHeight();
-//            mGradeGesture.setLeft((int) mFifthStarCenterX);
+            float dx = (float)DipPixelUtil.dip2px(mContext, 12);
+            mGRightX = mFifthStarCenterX + dx;
+            mGradeGesture.setX(mGRightX);
+            LeoLog.i("testtt", "before mGRightX = "+mGRightX);
+            LeoLog.i("testtt", "before mFifthStarCenterX = "+mFifthStarCenterX);
+            LeoLog.i("testtt", "before dx = "+dx);
             showStarAnimation();
         }
     }
@@ -85,15 +94,28 @@ public class FiveStarsLayout extends FrameLayout{
         ObjectAnimator fourStar = getObjectAnimator(mFourStar);
         ObjectAnimator fiveStar = getObjectAnimator(mFiveStar);
         
-        PropertyValuesHolder gInY = PropertyValuesHolder.ofFloat("y", mGestureY, mGestureY - mGestureDeltaY);
+        PropertyValuesHolder gInY = PropertyValuesHolder.ofFloat("y", mGestureY, mGestureY - mGestureDeltaY / 2, mGestureY - mGestureDeltaY, mGestureY - mGestureDeltaY);
+        PropertyValuesHolder gInX = PropertyValuesHolder.ofFloat("x", mGRightX, mGRightX / 2 + mFifthStarCenterX / 2, mFifthStarCenterX, mFifthStarCenterX);
+        
+        LeoLog.i("testtt", "mGRightX = "+mGRightX);
+        LeoLog.i("testtt", "mFifthStarCenterX = "+mFifthStarCenterX);
+        
         PropertyValuesHolder gInAlpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1.0f);
         
         PropertyValuesHolder gOutY = PropertyValuesHolder.ofFloat("y", mGestureY - mGestureDeltaY, mGestureY);
+        PropertyValuesHolder gOutX = PropertyValuesHolder.ofFloat("x", mFifthStarCenterX, mGRightX);
         PropertyValuesHolder gOutAlpha = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0f);
         
-        final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(mGradeGesture, gInY, gInAlpha);
+        final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(mGradeGesture, gInY, gInX, gInAlpha);
         animatorI.setDuration(2000);
-        final ObjectAnimator animatorO = ObjectAnimator.ofPropertyValuesHolder(mGradeGesture, gOutY, gOutAlpha);
+        animatorI.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                LeoLog.i("testing", " running!!  ");
+            }
+        });
+        
+        final ObjectAnimator animatorO = ObjectAnimator.ofPropertyValuesHolder(mGradeGesture, gOutY, gOutX, gOutAlpha);
         animatorO.setDuration(2000);
 
         AnimatorSet starAnimator = new AnimatorSet();
@@ -102,13 +124,15 @@ public class FiveStarsLayout extends FrameLayout{
         ObjectAnimator emptyObjectAnimator = ObjectAnimator.ofFloat(mFiveStar, "alpha", 1f, 1f);
         emptyObjectAnimator.setDuration(1000);
 
-        final AnimatorSet animatorSet = new AnimatorSet();
+        if(mAsMain == null) {
+            mAsMain = new AnimatorSet();
+        }
 //        animatorSet.playSequentially(starAnimator);
-        animatorSet.play(animatorI).before(starAnimator);
-        animatorSet.play(starAnimator).with(animatorO);
-        animatorSet.play(emptyObjectAnimator).after(starAnimator);
-
-        animatorSet.addListener(new AnimatorListenerAdapter() {
+        mAsMain.play(animatorI).before(starAnimator);
+        mAsMain.play(starAnimator).with(animatorO);
+        mAsMain.play(emptyObjectAnimator).after(starAnimator);
+        
+        mAsMain.addListener(new AnimatorListenerAdapter() {
 
             @Override
             public void onAnimationStart(Animator animation) {
@@ -120,10 +144,10 @@ public class FiveStarsLayout extends FrameLayout{
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 changeStarInvisible();
-                animatorSet.start();
+                mAsMain.start();
             }
         });
-        animatorSet.start();
+        mAsMain.start();
     }
     
     private ObjectAnimator getObjectAnimator(ImageView img) {
