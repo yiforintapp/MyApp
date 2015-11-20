@@ -2773,7 +2773,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getADChanceAfterAccelerating() {
-        return mPref.getInt(PREF_AD_AFTER_ACCELERATING, 0);
+        return mPref.getInt(PREF_AD_AFTER_ACCELERATING,
+                AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
     }
     
     //wifi扫描页广告开关
