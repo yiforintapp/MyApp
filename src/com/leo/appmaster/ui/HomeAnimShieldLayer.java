@@ -180,13 +180,10 @@ public class HomeAnimShieldLayer extends AnimLayer {
     @Override
     protected void onSizeChanged() {
         super.onSizeChanged();
-        //AM-3251
-//        int outCir = (int) mParent.getResources().getDimension(R.dimen.out_circle_adpt);
-//        int inCir = (int) mParent.getResources().getDimension(R.dimen.in_circle_adpt);
-//        mOutCircleDrawable.setBounds(getLeft() + outCir, getTop() + outCir, getRight() - outCir, getBottom() - outCir);
-//        mInCircleDrawable.setBounds(getLeft() + inCir, getTop() + inCir, getRight() - inCir, getBottom() - inCir);
+
         mOutCircleDrawable.setBounds(getLeft(), getTop(), getRight(), getBottom());
         mInCircleDrawable.setBounds(getLeft(), getTop(), getRight(), getBottom());
+
         mCirclePx = (getLeft() + getRight()) / 2;
         mCirclePy = (getTop() + getBottom()) / 2;
 
