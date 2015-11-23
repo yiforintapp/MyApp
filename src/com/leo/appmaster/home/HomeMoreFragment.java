@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
@@ -93,7 +94,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         mSlidingLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
-                Log.i(TAG, "onPanelSlide, offset " + slideOffset);
+                Log.i(TAG, "onPanelSlide, offset " + slideOffset + " | state: " + mSlidingLayout.getPanelState());
                 int apha = Color.alpha(DEFAULT_FADE_COLOR);
                 int r = Color.red(DEFAULT_FADE_COLOR);
                 int g = Color.green(DEFAULT_FADE_COLOR);
@@ -102,15 +103,13 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                 int color = Color.argb(apha, r, g, b);
                 mRootView.setBackgroundColor(color);
 
-//                int alpha = Color.alpha(HomeUpArrow.FULL_COLOR);
-//                alpha *= slideOffset;
                 mUpArrow.setBgAlpha(255);
             }
 
             @Override
             public void onPanelExpanded(View panel) {
                 // 打开
-                Log.i(TAG, "onPanelExpanded");
+                Log.i(TAG, "onPanelExpanded, state: " + mSlidingLayout.getPanelState());
                 mTouchDelegate.setVisibility(View.VISIBLE);
                 mUpArrow.reverse();
                 mUpArrow.cancelUpAnimation();
@@ -128,7 +127,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
             @Override
             public void onPanelCollapsed(View panel) {
                 // 关闭
-                Log.i(TAG, "onPanelCollapsed");
+                Log.i(TAG, "onPanelCollapsed, state: " + mSlidingLayout.getPanelState());
                 mRootView.setBackgroundColor(Color.TRANSPARENT);
                 mTouchDelegate.setVisibility(View.INVISIBLE);
 

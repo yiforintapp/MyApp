@@ -185,9 +185,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
                     }
                 }
 
-                boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
-                        PrefConst.KEY_INTRUDER_ADDED, false);
-                if (!ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && intruderAdded) {
+                if (addIntruderSocreAutoly()) {
                     // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
                     totalScore += ism.getMaxScore();
                     mScoreMap.put(MgrContext.MGR_INTRUDE_SECURITY, ism.getMaxScore());
@@ -233,6 +231,13 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         }
     }
 
+    private boolean addIntruderSocreAutoly() {
+        boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
+                PrefConst.KEY_INTRUDER_ADDED, false);
+        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        return !ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && intruderAdded;
+    }
+
     private class ScoreTimerTask implements Runnable {
         @Override
         public void run() {
@@ -247,6 +252,10 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
                 Manager manager = MgrContext.getManager(mgr);
                 if (manager != null) {
                     int score = manager.getSecurityScore();
+                    if (mgr.equals(MgrContext.MGR_INTRUDE_SECURITY) && addIntruderSocreAutoly()) {
+                        IntrudeSecurityManager ism = (IntrudeSecurityManager) manager;
+                        score = ism.getMaxScore();
+                    }
                     LeoLog.i(TAG, "ScoreTimerTask, " + mgr + " score is changed.");
                     onSecurityChange(mgr, score);
                 }

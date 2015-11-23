@@ -981,28 +981,11 @@ public class SlidingUpPanelLayout extends ViewGroup {
         return mDragHelper.shouldInterceptTouchEvent(ev);
     }
 
-    public void setTapRect(Rect rect) {
-        mTapRect = rect;
-    }
-
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent ev) {
         if (!isEnabled() || !isTouchEnabled() || mTouchOutSize || mTouchTapLeftOrRight) {
             return super.onTouchEvent(ev);
         }
-
-//        if (mTapRectFunction != null) {
-//            Rect rect = mTapRectFunction.getTapRect();
-//            int x = (int) ev.getX();
-//            int y = (int) ev.getY();
-//            if (rect != null && rect.contains(x, y) && !isExpanded()) {
-//                return super.onTouchEvent(ev);
-//            }
-//        }
-//        mGesture.onTouchEvent(ev);
-//        if (ev.getAction() == MotionEvent.ACTION_UP && mHitSingleTapRectOutside) {
-//            return super.onTouchEvent(ev);
-//        }
 
         try {
             mDragHelper.processTouchEvent(ev);
