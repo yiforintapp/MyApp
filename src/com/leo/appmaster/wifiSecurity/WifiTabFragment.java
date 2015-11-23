@@ -1,7 +1,7 @@
 package com.leo.appmaster.wifiSecurity;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;

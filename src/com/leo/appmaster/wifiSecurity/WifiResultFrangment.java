@@ -5,7 +5,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;

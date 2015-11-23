@@ -7,13 +7,15 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.WifiSecurityManager;
-import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.OneButtonDialog;
@@ -27,7 +29,7 @@ import com.leo.tools.animator.ObjectAnimator;
 /**
  * Created by qili on 15-10-16.
  */
-public class WifiSecurityActivity extends BaseActivity implements View.OnClickListener {
+public class WifiSecurityActivity extends BaseFragmentActivity implements View.OnClickListener {
     private static final int SHOWANIMATION = 33;
     private static final int SHOW_START_ANIMATION = 34;
     public final static int WIFI_CHANGE = 1;
@@ -131,9 +133,9 @@ public class WifiSecurityActivity extends BaseActivity implements View.OnClickLi
         animationDrawable = (AnimationDrawable) mSmallView.getDrawable();
         animationDrawable.start();
 
-        wifiFragment = (WifiTabFragment) getFragmentManager().
+        wifiFragment = (WifiTabFragment) getSupportFragmentManager().
                 findFragmentById(R.id.wifi_scan_tab);
-        wifiResultFrangment = (WifiResultFrangment) getFragmentManager().
+        wifiResultFrangment = (WifiResultFrangment) getSupportFragmentManager().
                 findFragmentById(R.id.wifi_scan_result);
         mWifiName = (TextView) findViewById(R.id.wifi_name);
         mLineView = (ImageView) findViewById(R.id.scan_line);
@@ -395,7 +397,7 @@ public class WifiSecurityActivity extends BaseActivity implements View.OnClickLi
                 //去除双引号
                 wifiName = wifiName.substring(wifiName.indexOf("\"") + 1, wifiName.lastIndexOf("\""));
             }
-            if(wifiName != null) {
+            if (wifiName != null) {
                 mWifiName.setText(wifiName);
             }
         } else {
