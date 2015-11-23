@@ -332,8 +332,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     public void onExitScanning() {
         if (mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
             getSupportFragmentManager().popBackStack();
-            mTabFragment.showTab();
-            mMoreFragment.setEnable(true);
+            mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
+                @Override
+                public void onShowTabListener() {
+                    mMoreFragment.setEnable(true);
+                }
+            });
             mPrivacyFragment.reset();
 
             mToolbar.setVisibility(View.VISIBLE);

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -26,6 +27,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
 /**
@@ -53,6 +55,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         super.onAttach(activity);
 
         mActivity = (HomeActivity) activity;
+    }
+    public interface OnShowTabListener{
+        void onShowTabListener();
     }
 
     @Override
@@ -149,7 +154,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         return mAnimating;
     }
 
-    public void showTab() {
+    public void showTab(final OnShowTabListener listener) {
         if (isRemoving() || isDetached() || getActivity() == null
                 || mRootView.getVisibility() == View.VISIBLE) {
             return;
@@ -167,6 +172,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 mRootView.setVisibility(View.VISIBLE);
                 mActivity.onTabAnimationFinish();
                 mAnimating = false;
+                listener.onShowTabListener();
             }
 
             @Override
