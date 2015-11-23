@@ -65,6 +65,9 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     private Handler mHandler = new Handler();
     private MediaStoreChangeObserver mMediaStoreChangeObserver;
     private static int mScore = 0;
+    private int mScanAddPicNum = 0;
+    private int mScanAddVidNum = 0;
+
 
     @Override
     public void onDestory() {
@@ -541,11 +544,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                         }
                     }
                 }
-
+                if (cursor.getCount() != 0) {
+                    LeoLog.d("checkPicId", "getAddPic save id is : " + picNum);
+                    PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, picNum);
+                }
             }
-            LeoLog.d("checkPicId", "save id is : " + picNum);
-            PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, picNum);
-
         } catch (Exception e) {
 
         } finally {
@@ -553,7 +556,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 IoUtils.closeSilently(cursor);
             }
         }
-
+        mScanAddPicNum = aibumList.size();
         LeoLog.d("checkPicId", "final size is : " + aibumList.size());
         return aibumList;
     }
@@ -584,9 +587,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
             if (cursor != null) {
                 while (cursor.moveToNext()) {
+
                     if (picNum > getMaxPicNum()) {
                         break;
                     }
+
                     int id = cursor.getInt
                             (cursor.getColumnIndex(MediaStore.MediaColumns._ID));
 
@@ -627,11 +632,13 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
                     picNum++;
                 }
+                if (cursor.getCount() != 0) {
+                    LeoLog.d("checkPicId", "getAddPicNum save id is : " + record);
+                    PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, record);
+                }
             }
             long c = System.currentTimeMillis();
             LeoLog.d("testGetAddPicNum", "part 2 : " + (c - b));
-            LeoLog.d("checkPicId", "save id is : " + record);
-            PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, record);
         } catch (Exception e) {
 
         } finally {
@@ -648,13 +655,25 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     @Override
     public int haveCheckedPic() {
         int i = getAddPicNum();
+        LeoLog.d("testHidePic", "haveCheckedPic : " + i);
         int lastRecord = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_PIC, 0);
+        LeoLog.d("testHidePic", "lastRecord : " + lastRecord);
         PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_ADD_PIC, lastRecord);
-        if (i < getMaxPicNum()) {
-            return i * SPA_PIC;
+
+        if (mScanAddPicNum != 0) {
+            if (mScanAddPicNum > 30) {
+                return MAX_PIC_SCORE;
+            } else {
+                if (i != mScanAddPicNum) {
+                    return mScanAddPicNum * SPA_PIC;
+                } else {
+                    return i * SPA_PIC;
+                }
+            }
         } else {
-            return MAX_PIC_SCORE;
+            return 0;
         }
+
     }
 
 
@@ -724,8 +743,10 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
                     }
                 }
-                LeoLog.d("checkVidId", "save id is : " + vidNum);
-                PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_VID, vidNum);
+                if (cursor.getCount() != 0) {
+                    LeoLog.d("checkVidId", "save id is : " + vidNum);
+                    PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_VID, vidNum);
+                }
             }
 
         } catch (Exception e) {
@@ -736,6 +757,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             }
         }
         LeoLog.d("checkVidId", "final size is : " + videoBeans.size());
+        mScanAddVidNum = videoBeans.size();
         return videoBeans;
     }
 
@@ -793,8 +815,10 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
                     vidNum++;
                 }
-                LeoLog.d("checkVidId", "save id is : " + record);
-                PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_VID, record);
+                if (cursor.getCount() != 0) {
+                    LeoLog.d("checkVidId", "save id is : " + record);
+                    PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_VID, record);
+                }
             }
 
         } catch (Exception e) {
@@ -886,11 +910,21 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         int i = getAddVidNum();
         int lastRecord = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);
         PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, lastRecord);
-        if (i < getMaxVidNum()) {
-            return i * SPA_VID;
+
+        if (mScanAddVidNum != 0) {
+            if (mScanAddVidNum > 4) {
+                return MAX_VID_SCORE;
+            } else {
+                if (i != mScanAddVidNum) {
+                    return mScanAddVidNum * SPA_VID;
+                } else {
+                    return i * SPA_VID;
+                }
+            }
         } else {
-            return MAX_VID_SCORE;
+            return 0;
         }
+
     }
 
     //耗时操作
