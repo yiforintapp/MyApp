@@ -53,7 +53,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
     public static void startImmediately() {
         LeoLog.i(TAG, "startImmediately.....");
-        if (BuildProperties.isApiLevel14()) return;
+//        if (BuildProperties.isApiLevel14()) return;
         MsgCenterFetchJob job = new MsgCenterFetchJob();
         FetchScheduleListener listener = job.newJsonArrayListener();
         Context ctx = AppMasterApplication.getInstance();

@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * 消息中心数据库表
- *  插入列表、删除列表、获取未读计数、获取列表、标记已读
+ * 插入列表、删除列表、获取未读计数、获取列表、标记已读
  * Created by Jasper on 2015/9/10.
  */
 public class MsgCenterTable extends BaseTable {
@@ -54,7 +54,7 @@ public class MsgCenterTable extends BaseTable {
 
     @Override
     public void createTable(SQLiteDatabase db) {
-        if (BuildProperties.isApiLevel14()) return;
+//        if (BuildProperties.isApiLevel14()) return;
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                 "( _id INTEGER PRIMARY KEY," +
@@ -140,6 +140,7 @@ public class MsgCenterTable extends BaseTable {
 
     /**
      * 获取消息列表
+     *
      * @param includeNoCacheMsg 强制返回所有数据, 包含更新日志没有cache的
      * @return
      */
@@ -170,7 +171,9 @@ public class MsgCenterTable extends BaseTable {
         } catch (Throwable e) {
             LeoLog.e(TAG, "queryMsgList ex.", e);
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
         // 删除已下线的活动
         deleteMsgList(offlineList, null);
@@ -180,6 +183,7 @@ public class MsgCenterTable extends BaseTable {
 
     /**
      * 标记消息为已读
+     *
      * @param msg
      */
     public void readMessage(Message msg) {
@@ -191,7 +195,7 @@ public class MsgCenterTable extends BaseTable {
         try {
             ContentValues values = new ContentValues();
             values.put(COL_UNREAD, READED);
-            db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { msg.msgId + "" });
+            db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[]{msg.msgId + ""});
 
             msg.unread = false;
         } catch (Throwable e) {
@@ -208,7 +212,7 @@ public class MsgCenterTable extends BaseTable {
         db.beginTransaction();
         try {
             for (Message message : delList) {
-                db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[] { message.msgId + "" });
+                db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[]{message.msgId + ""});
                 if (list == null || !message.isCategoryUpdate()) continue;
 
                 if (list == null) continue;
@@ -285,6 +289,7 @@ public class MsgCenterTable extends BaseTable {
 
     /**
      * 获取更新日志
+     *
      * @return
      */
     public List<Message> getUpdateMessage() {
@@ -308,7 +313,9 @@ public class MsgCenterTable extends BaseTable {
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
 
         return result;
@@ -316,6 +323,7 @@ public class MsgCenterTable extends BaseTable {
 
     /**
      * 获取未读计数
+     *
      * @return
      */
     public int getUnreadCount() {
@@ -326,7 +334,7 @@ public class MsgCenterTable extends BaseTable {
         Cursor cursor = null;
         try {
             cursor = db.query(TABLE_NAME, null,
-                    COL_UNREAD + " = ?", new String[] { UNREADED + "" }, null, null, null);
+                    COL_UNREAD + " = ?", new String[]{UNREADED + ""}, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 int result = cursor.getCount();
                 cursor.moveToFirst();
@@ -345,7 +353,9 @@ public class MsgCenterTable extends BaseTable {
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
         // 删除已经下线的活动
         deleteMsgList(offlineList, null);

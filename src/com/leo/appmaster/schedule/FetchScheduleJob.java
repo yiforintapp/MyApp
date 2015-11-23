@@ -65,9 +65,9 @@ public abstract class FetchScheduleJob extends ScheduleJob {
                 Object object = clazz.newInstance();
 
                 if (object instanceof ScheduleJob) {
-                    if (object instanceof MsgCenterFetchJob && BuildProperties.isApiLevel14()) {
-                        continue;
-                    }
+//                    if (object instanceof MsgCenterFetchJob && BuildProperties.isApiLevel14()) {
+//                        continue;
+//                    }
                     final ScheduleJob job = (ScheduleJob) object;
                     job.start();
                 }
