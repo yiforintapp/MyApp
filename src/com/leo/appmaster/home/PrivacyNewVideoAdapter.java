@@ -7,12 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
-
-import java.util.HashMap;
 
 /**
  * Created by Jasper on 2015/10/16.

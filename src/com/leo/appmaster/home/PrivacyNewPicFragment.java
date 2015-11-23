@@ -32,7 +32,7 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
     private HeaderGridView mPicList;
     private PrivacyDataManager mLockMgr;
 
-    private List<PhotoItem> mDataList = new ArrayList<PhotoItem>();;
+    private List<PhotoItem> mDataList = new ArrayList<PhotoItem>();
 
     private boolean mHidingTimeout;
     private boolean mHidingFinish;

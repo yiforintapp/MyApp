@@ -192,7 +192,7 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment {
         mVideoList.addHeaderView(getEmptyHeader());
         mVideoList.setAdapter(mAdaper);
 
-        setLabelCount(mDataList.size());
+        setLabelCount(mDataList == null ? 0 : mDataList.size());
         setProcessContent(R.string.pri_pro_hide_vid);
     }
 

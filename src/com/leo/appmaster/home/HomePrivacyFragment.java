@@ -15,8 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -122,7 +122,7 @@ public class HomePrivacyFragment extends Fragment {
      */
     public void startLoadingRiseAnim(final int increaseScore) {
         mHomeAnimView.getLoadingLayer().setRiseHeight(0);
-        int height = getActivity().getResources().getDimensionPixelSize(R.dimen.home_loading_rise);
+        int height = AppMasterApplication.getInstance().getResources().getDimensionPixelSize(R.dimen.home_loading_rise);
         ObjectAnimator riseAnim = ObjectAnimator.ofInt(mHomeAnimView.getLoadingLayer(), "riseHeight", 0, height);
         riseAnim.setDuration(320);
         riseAnim.setInterpolator(new LinearInterpolator());

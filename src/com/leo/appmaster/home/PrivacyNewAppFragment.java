@@ -23,7 +23,6 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 /**
@@ -161,7 +160,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         if (!processed) {
             stringId = R.string.pri_pro_scan_app;
         }
-        String content = AppMasterApplication.getInstance().getString(stringId, mDataList.size());
+        String content = AppMasterApplication.getInstance().getString(stringId, mDataList == null ? 0 : mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));
         setProcessContent(R.string.pri_pro_lock_app);
     }
