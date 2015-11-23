@@ -86,10 +86,12 @@ public class HomeAnimBgLayer extends AnimLayer {
         int tabH = mParent.getResources().getDimensionPixelSize(R.dimen.home_tab_height);
         mProgressBottom = getHeight() - tabH;
 
-        int score = 100;
-        mColorPair = mPrivacyHelper.getColorPairByScore(score);
-        mBgShader = new LinearGradient(getLeft(), getTop(), getLeft(), getBottom(),
-                mColorPair.first, mColorPair.second, Shader.TileMode.REPEAT);
+        if (mBgShader == null) {
+            int score = 100;
+            mColorPair = mPrivacyHelper.getColorPairByScore(score);
+            mBgShader = new LinearGradient(getLeft(), getTop(), getLeft(), getBottom(),
+                    mColorPair.first, mColorPair.second, Shader.TileMode.REPEAT);
+        }
 
         int progressH = mParent.getContext().getResources().getDimensionPixelSize(R.dimen.home_anim_progress);
         mProgressBounds.set(getLeft(), mProgressBottom - progressH, getRight(), mProgressBottom);

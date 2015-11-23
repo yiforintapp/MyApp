@@ -548,6 +548,7 @@ public class HomePrivacyFragment extends Fragment {
         if (mAnimatorSet != null) {
             mAnimatorSet.start();
         }
+        mHomeAnimView.startAfterLayout(null);
     }
 
     private void endWaveAnim() {

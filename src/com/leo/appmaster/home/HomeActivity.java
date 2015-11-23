@@ -147,6 +147,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LeoLog.d(TAG, "onCreate...");
         removeFragments();
 
         setContentView(R.layout.activity_home_main);
@@ -610,6 +611,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        LeoLog.d(TAG, "onResume...");
 
         /* 获取是否从iswipe通知进入 */
         checkIswipeNotificationTo();
