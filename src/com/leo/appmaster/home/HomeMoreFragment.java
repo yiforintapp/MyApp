@@ -62,6 +62,10 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
     private HomeMoreAdapter mAdapter;
     private IswipUpdateTipDialog mAppManagerIswipDialog;
 
+    public HomeMoreFragment() {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

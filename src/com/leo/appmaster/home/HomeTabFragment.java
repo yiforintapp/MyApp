@@ -50,6 +50,10 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 
     private boolean mAnimating;
 
+    public HomeTabFragment() {
+
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

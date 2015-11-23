@@ -66,6 +66,10 @@ public class HomePrivacyFragment extends Fragment {
 
     private int mCurrentPercent;
 
+    public HomePrivacyFragment() {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
