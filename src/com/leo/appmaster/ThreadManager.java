@@ -71,8 +71,10 @@ public class ThreadManager {
      * 如文件读写、图片解码等等
      */
     private static Handler sFileThreadHandler;
-
     private static HandlerThread sFileThread;
+
+    private static Handler sSubThreadHandler;
+    private static HandlerThread sSubThread;
 
     private static Handler sUiHandler;
 
@@ -140,6 +142,17 @@ public class ThreadManager {
         return sFileThreadHandler;
     }
 
+    public static Handler getSubThreadHandler() {
+        if (sSubThreadHandler == null) {
+            sSubThread = new HandlerThread("sub_thread");
+            sSubThread.start();
+
+            sSubThreadHandler = new Handler(sSubThread.getLooper());
+        }
+
+        return sSubThreadHandler;
+    }
+
     public static Handler getUiThreadHandler() {
         if (sUiHandler == null) {
             sUiHandler = new Handler(Looper.getMainLooper());
@@ -153,6 +166,18 @@ public class ThreadManager {
 
     public static ScheduledExecutorService getNetworkExecutor() {
         return sNetworkExecutor;
+    }
+
+    /**
+     *  一些比较耗时且不能在ui线程中执行的操作, 不占用线程池资源
+     * @param runnable
+     */
+    public static void executeOnSubThread(Runnable runnable) {
+        if (AppMasterConfig.LOGGABLE) {
+            getSubThreadHandler().post(new WrapRunnable(runnable));
+        } else {
+            getSubThreadHandler().post(runnable);
+        }
     }
 
     /**

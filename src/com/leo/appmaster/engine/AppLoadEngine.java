@@ -466,7 +466,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                     final AppItemInfo appInfo = new AppItemInfo();
                     appInfo.type = BaseInfo.ITEM_TYPE_NORMAL_APP;
                     appInfo.packageName = packageName;
-                    ThreadManager.executeOnFileThread(new Runnable() {
+                    ThreadManager.executeOnSubThread(new Runnable() {
                         @Override
                         public void run() {
                             loadAppInfoOfPackage(packageName, resolveInfo.activityInfo.name, applicationInfo, appInfo);
