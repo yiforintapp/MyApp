@@ -283,7 +283,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             NotificationUtil.setBigIcon(notification,
                     R.drawable.ic_launcher_notification_big);
             notification.when = System.currentTimeMillis();
-            notificationManager.notify(20140902, notification);
+            notificationManager.notify(PrivacyContactUtils.CALL_NOTIFI_NUMBER, notification);
             /* 隐私联系人有未读 通话时发送广播 */
             PrivacyContactManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
                     PrivacyContactManager.PRIVACY_CALL, 0, number);

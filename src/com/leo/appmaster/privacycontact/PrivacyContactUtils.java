@@ -53,6 +53,9 @@ public class PrivacyContactUtils {
     public static final int MSG_ADD_CONTACT = 10006;
     public static final int MSG_ADD_MSM = 10007;
     public static final int MSG_ADD_SECURITY_CONTACT = 10008;
+    /*隐私短信，通话未读通知id*/
+    public static final int MSM_NOTIFI_NUMBER = 20140901;
+    public static final int CALL_NOTIFI_NUMBER = 20140902;
 
 
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
@@ -1211,7 +1214,7 @@ public class PrivacyContactUtils {
         return count;
     }
 
-    // 标记为已读
+    /*隐私短信标记为已读*/
     public static void updateMessageMyselfIsRead(int read, String selection,
                                                  String[] selectionArgs, Context context) {
         ContentValues values = new ContentValues();
@@ -1221,26 +1224,20 @@ public class PrivacyContactUtils {
                 selectionArgs);
         if (count > 0) {
             AppMasterPreference pre = AppMasterPreference.getInstance(context);
-
             for (int i = 0; i < count; i++) {
                 int temp = pre.getMessageNoReadCount();
                 if (temp > 0) {
-                    pre.setMessageNoReadCount(temp - 1);
-                    if (temp - 1 <= 0) {
+                    temp = temp - 1;
+                    pre.setMessageNoReadCount(temp);
+                    if (temp <= 0) {
+                        /* 没有未读去除隐私通知*/
+                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.cancel(PrivacyContactUtils.MSM_NOTIFI_NUMBER);
+                        String eventId = PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT;
+                        PrivacyEditFloatEvent editEvent = new PrivacyEditFloatEvent(eventId);
+                        LeoEventBus.getDefaultBus().post(editEvent);
                         /* ISwipe处理：通知没有未读 */
                         PrivacyContactManager.getInstance(context).cancelPrivacyTipFromPrivacyMsm();
-                        // 没有未读去除隐私通知
-                        if (pre.getCallLogNoReadCount() <= 0) {
-                            NotificationManager notificationManager = (NotificationManager)
-                                    context
-                                            .getSystemService(Context.NOTIFICATION_SERVICE);
-                            notificationManager.cancel(20140901);
-                        }
-                        LeoEventBus
-                                .getDefaultBus()
-                                .post(
-                                        new PrivacyEditFloatEvent(
-                                                PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT));
                     }
                 }
             }

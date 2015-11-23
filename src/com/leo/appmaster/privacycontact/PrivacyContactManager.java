@@ -270,7 +270,7 @@ public class PrivacyContactManager {
                     NotificationUtil.setBigIcon(notification,
                             R.drawable.ic_launcher_notification_big);
                     notification.when = System.currentTimeMillis();
-                    notificationManager.notify(20140901, notification);
+                    notificationManager.notify(PrivacyContactUtils.MSM_NOTIFI_NUMBER, notification);
                     AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
                 }
                 String dateFrom = sdf.format(new Date(sendDate));
@@ -319,7 +319,7 @@ public class PrivacyContactManager {
                 NotificationUtil.setBigIcon(notification,
                         R.drawable.ic_launcher_notification_big);
                 notification.when = System.currentTimeMillis();
-                notificationManager.notify(20140901, notification);
+                notificationManager.notify(PrivacyContactUtils.MSM_NOTIFI_NUMBER, notification);
                 AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
             }
         }

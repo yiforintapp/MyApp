@@ -215,11 +215,9 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 startActivity(intent);
                 // 标记为已读
                 String number = PrivacyContactUtils.formatePhoneNumber(mb.getPhoneNumber());
-                PrivacyContactUtils.updateMessageMyselfIsRead(1,
-                        "contact_phone_number LIKE ? and message_is_read = 0",
-                        new String[]{
-                                "%" + number
-                        }, mContext);
+                String selection = "contact_phone_number LIKE ? and message_is_read = 0";
+                String[] selectionArgs = new String[]{"%" + number};
+                PrivacyContactUtils.updateMessageMyselfIsRead(1, selection, selectionArgs, mContext);
             } catch (Exception e) {
             }
         } else {

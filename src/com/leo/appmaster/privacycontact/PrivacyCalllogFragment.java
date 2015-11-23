@@ -702,7 +702,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
         int count = context.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
                 values, selection,
                 selectionArgs);
-        LeoLog.i("MessagePrivacyReceiver", "消除未读的标记：" + count);
         if (count > 0) {
             AppMasterPreference pre = AppMasterPreference.getInstance(context);
             int temp = pre.getCallLogNoReadCount();
@@ -710,23 +709,17 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 if (temp > 0) {
                     temp = temp - 1;
                     pre.setCallLogNoReadCount(temp);
-                    LeoLog.i("MessagePrivacyReceiver", "temp=" + temp);
                     if (temp <= 0) {
-                        LeoEventBus
-                                .getDefaultBus()
-                                .post(
-                                        new PrivacyEditFloatEvent(
-                                                PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
-                        LeoLog.i("MessagePrivacyReceiver", "通知红点结束！");
+                        String eventId = PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT;
+                        PrivacyEditFloatEvent editEvent = new PrivacyEditFloatEvent(eventId);
+                        LeoEventBus.getDefaultBus().post(editEvent);
+                          /*没有未读去除隐私通知*/
+                        NotificationManager notificationManager = (NotificationManager) context
+                                .getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.cancel(PrivacyContactUtils.CALL_NOTIFI_NUMBER);
                         /* ISwipe处理：通知没有未读 */
                         PrivacyContactManager.getInstance(context)
                                 .cancelPrivacyTipFromPrivacyCall();
-                        // 没有未读去除隐私通知
-                        if (pre.getMessageNoReadCount() <= 0) {
-                            NotificationManager notificationManager = (NotificationManager) context
-                                    .getSystemService(Context.NOTIFICATION_SERVICE);
-                            notificationManager.cancel(20140902);
-                        }
                     }
                 }
             }
