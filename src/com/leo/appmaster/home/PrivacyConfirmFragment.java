@@ -15,9 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,7 +121,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mHighGradeGesture;
     private RippleView1 mHighGradeBtnLt;
     private ImageView mHighFiveEmptyStar;
-    private FrameLayout mHighGrageFrame;
+    private RelativeLayout mHighGrageFrame;
 
     private ImageView mOneStar;
     private ImageView mTwoStar;
@@ -131,7 +131,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mGradeGesture;
     private RippleView1 mGradeBtnLt;
     private ImageView mFiveEmptyStar;
-    private FrameLayout mGrageFrame;
+    private RelativeLayout mGrageFrame;
 
     private AnimatorSet mAnimatorSet;
 
@@ -791,7 +791,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mHighFourStar = (ImageView) highInclude.findViewById(R.id.four_star);
             mHighFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
             mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
-            mHighGrageFrame = (FrameLayout) highInclude.findViewById(R.id.grade_frame);
+            mHighGrageFrame = (RelativeLayout) highInclude.findViewById(R.id.grade_frame);
             mHighGradeBtnLt = (RippleView1) highInclude.findViewById(R.id.item_btn_rv);
             mHighFiveEmptyStar = (ImageView) highInclude.findViewById(R.id.five_star_empty);
             mHighGradeBtnLt.setOnClickListener(this);
@@ -816,7 +816,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mFourStar = (ImageView) include.findViewById(R.id.four_star);
             mFiveStar = (ImageView) include.findViewById(R.id.five_star);
             mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
-            mGrageFrame = (FrameLayout) include.findViewById(R.id.grade_frame);
+            mGrageFrame = (RelativeLayout) include.findViewById(R.id.grade_frame);
             mGradeBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
             mFiveEmptyStar = (ImageView) include.findViewById(R.id.five_star_empty);
             mGradeBtnLt.setOnClickListener(this);
