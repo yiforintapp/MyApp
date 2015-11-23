@@ -40,19 +40,15 @@ import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactSideBar;
 import com.leo.appmaster.privacycontact.ContactSideBar.OnTouchingLetterChangedListener;
-import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AddSecurityNumberActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
@@ -71,7 +67,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     private LinearLayout mDefaultText;
     private Button mAddButton;
     private EditText mInputEdit;
-    private RippleView mAddRip;
+    private View mAddRip;
     private SecurAddFromMsmHandler mSecurNumHandler = new SecurAddFromMsmHandler();
 
     @Override
@@ -97,12 +93,13 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         mListContact.setAdapter(mContactAdapter);
         mListContact.setOnItemClickListener(this);
         mAddButton = (Button) findViewById(R.id.sec_add_number_BT);
-        MaterialRippleLayout.on(mAddButton)
-                .rippleColor(getResources().getColor(R.color.button_blue_ripple))
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
-        mAddRip = (RippleView) findViewById(R.id.sec_add_number_RP);
+//        MaterialRippleLayout.on(mAddButton)
+//                .rippleColor(getResources().getColor(R.color.button_blue_ripple))
+//                .rippleAlpha(0.1f)
+//                .rippleHover(true)
+//                .create();
+        mAddRip =  findViewById(R.id.sec_add_number_RP);
+
         mInputEdit = (EditText) findViewById(R.id.sec_input_numberEV);
         LostSecurityManagerImpl securityManager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         /*是否添加了防盗号码*/
@@ -122,12 +119,14 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             mInputEdit.setClickable(true);
             mAddButton.setTextColor(getResources().getColor(R.color.white));
             mAddRip.setClickable(true);
+            mAddRip.setEnabled(true);
         } else {
             mAddButton.setBackgroundResource(R.drawable.grey_btn_selector);
             mAddButton.setClickable(false);
             mInputEdit.setClickable(false);
             mAddButton.setTextColor(getResources().getColor(R.color.c5));
             mAddRip.setClickable(false);
+            mAddRip.setEnabled(false);
         }
 
         mHandler = new Handler() {
@@ -178,6 +177,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                     mInputEdit.setClickable(false);
                     mAddButton.setTextColor(getResources().getColor(R.color.c5));
                     mAddRip.setClickable(false);
+                    mAddRip.setEnabled(false);
                 } else {
                     mAddButton.setClickable(true);
                     mAddButton.setOnClickListener(AddSecurityNumberActivity.this);
@@ -185,6 +185,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                     mInputEdit.setClickable(true);
                     mAddButton.setTextColor(getResources().getColor(R.color.white));
                     mAddRip.setClickable(true);
+                    mAddRip.setEnabled(true);
                 }
             }
 

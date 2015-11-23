@@ -1,7 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:leo="http://schemas.android.com/apk/res-auto"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -156,9 +154,9 @@
         android:layout_height="1px"
         android:layout_above="@+id/security_guide_RV"
         android:layout_marginBottom="11.5dp"
-        android:background="@color/c5"></View>
+        android:background="@color/c5"/>
 
-    <com.leo.appmaster.ui.RippleView
+    <com.leo.appmaster.ui.MaterialRippleLayout
         android:id="@+id/security_guide_RV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -167,8 +165,11 @@
         android:layout_marginBottom="11.5dp"
         android:layout_marginTop="@dimen/security_guide_rv_top"
         android:clickable="true"
-        leo:rv_color="@color/green_button_ripple"
-        leo:rv_rippleDuration="100">
+        leo:rippleAlpha="0.5"
+        leo:rippleColor="@color/button_green_ripple"
+        leo:rippleDuration="250"
+        leo:rippleHover="true"
+        leo:rippleOverlay="true">
 
         <Button
             android:id="@+id/security_guide_BT"
@@ -178,5 +179,5 @@
             android:text="@string/security_guide_button_text"
             android:textColor="@color/white"
             android:textSize="16dp" />
-    </com.leo.appmaster.ui.RippleView>
+    </com.leo.appmaster.ui.MaterialRippleLayout>
 </RelativeLayout>

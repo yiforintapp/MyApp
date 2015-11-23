@@ -1,6 +1,5 @@
 package com.leo.appmaster.phoneSecurity;
 
-import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -9,11 +8,8 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -26,7 +22,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
@@ -39,14 +34,11 @@ import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -252,6 +244,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 }
             }
         });
+
         mBottonNumberView1 = (SecurityNumberView) findViewById(R.id.phone_security_operation_one);
         mBottonNumberView2 = (SecurityNumberView) findViewById(R.id.phone_security_operation_two);
         mInstructLV = (ListView) findViewById(R.id.secur_instr_LV);
@@ -259,11 +252,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mNoOpenSucLV = (GridView) findViewById(R.id.no_open_suc_LV);
         mButton = (Button) findViewById(R.id.secur_bottom_BT);
         mButton.setOnClickListener(this);
-        MaterialRippleLayout.on(mButton)
-                .rippleColor(getResources().getColor(R.color.green_button))
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
+
+
         mAddNumberBt = (Button) findViewById(R.id.phone_security_add_number_BT);
         mCheckBox = (CheckBox) findViewById(R.id.phone_security_number_backup_CB);
         mCheckBox.setOnCheckedChangeListener(this);
@@ -288,10 +278,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         /*修改号码按钮*/
         mModityNumberBt = (Button) findViewById(R.id.modify_secur_number_BT);
         mModityNumberBt.setOnClickListener(this);
-        MaterialRippleLayout.on(mModityNumberBt)
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
+
         /*步骤1的点图*/
         mOperOnePoint = (ImageView) findViewById(R.id.secur_oper_one_point);
         /*步骤2的点图*/
@@ -312,20 +299,13 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mOpenSecurNumberTv = (TextView) findViewById(R.id.secur_number_TV);
         mOpenSecurModifyBt = (Button) findViewById(R.id.secur_modify_bt);
         mOpenSecurModifyBt.setOnClickListener(this);
-        MaterialRippleLayout.on(mOpenSecurModifyBt)
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
+
         mButPointLt = (LinearLayout) findViewById(R.id.security_number_LT);
         mDayTv = (TextView) findViewById(R.id.secur_day_TV);
         mHourTv = (TextView) findViewById(R.id.secur_hour_TV);
         mOpenSecurAdvBt = (Button) findViewById(R.id.open_sucur_adv_bt);
         mOpenSecurAdvBt.setOnClickListener(this);
-        MaterialRippleLayout.on(mOpenSecurAdvBt)
-                .rippleColor(getResources().getColor(R.color.blue_button_click))
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
+
         mNoAdvFinishTimeLt = (LinearLayout) findViewById(R.id.secur_open_tip_adv_LT);
         /*完成界面提示ui*/
         mFinishTipTv = (TextView) findViewById(R.id.secur_open_tip_TV);
@@ -335,11 +315,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mShowProtTimeLt = (ImageView) findViewById(R.id.show_time_anim);
         /*手机防盗帮助页面，按钮UI*/
         mHelpBt = (Button) findViewById(R.id.help_bt);
-        MaterialRippleLayout.on(mHelpBt)
-                .rippleColor(getResources().getColor(R.color.blue_button_click))
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
         mHelpBt.setOnClickListener(this);
         /*帮助页显示*/
         mHelpRt = (RelativeLayout) findViewById(R.id.secur_help_RL);
@@ -350,10 +325,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mHelpMsmPerRT = (RelativeLayout) findViewById(R.id.no_know_model_help_tip_RT);
         mHelpFeedbackBt = (Button) findViewById(R.id.know_feekback_bt);
         mHelpFeedbackBt.setOnClickListener(this);
-        MaterialRippleLayout.on(mHelpFeedbackBt)
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
         //已知需要手动打开短信权限机型提示UI
         mKnowModelRt = (LinearLayout) findViewById(R.id.secur_know_msm_LT);
         mKnowMdContent = (TextView) findViewById(R.id.secur_know_msm_content);

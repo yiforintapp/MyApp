@@ -79,10 +79,6 @@ public class InstructListAdapter extends BaseAdapter {
                 vh.content = (TextView) convertView.findViewById(R.id.content);
                 vh.selectImage = (ImageView) convertView.findViewById(R.id.image_tip_icon);
                 vh.openBt = (Button) convertView.findViewById(R.id.sec_add_number_BT);
-                MaterialRippleLayout.on(vh.openBt)
-                        .rippleAlpha(0.1f)
-                        .rippleHover(true)
-                        .create();
             } else if (FLAG_OPEN_SUC_INSTR_LIST.equals(mFlag)
                     || FLAG_NO_OPEN_SUC_INSTR_LIST.equals(mFlag)) {
                 convertView = mInflate.inflate(R.layout.phone_secur_oper_item, null);

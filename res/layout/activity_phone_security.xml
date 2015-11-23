@@ -1,7 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:leo="http://schemas.android.com/apk/res-auto"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -9,7 +7,7 @@
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/phone_security_commonbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.leo.appmaster.ui.CommonToolbar>
+        android:layout_height="wrap_content" />
     <!--2-0-->
     <ScrollView
         android:id="@+id/secur_phone_nub_sc"
@@ -18,140 +16,400 @@
         android:layout_above="@+id/phone_security_bottom_button_RL"
         android:layout_below="@id/phone_security_commonbar"
         android:overScrollMode="never">
-    <LinearLayout
-        android:id="@+id/security_phone_number_LT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f7f7f7"
-        android:orientation="vertical">
-        <!--3-0手机防盗顶部布局-->
-        <RelativeLayout
-            android:id="@+id/phone_security_top_RL"
+
+        <LinearLayout
+            android:id="@+id/security_phone_number_LT"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <!--1-0添加手机防盗号码布局-->
+            android:layout_height="wrap_content"
+            android:background="#f7f7f7"
+            android:orientation="vertical">
+            <!--3-0手机防盗顶部布局-->
             <RelativeLayout
-                android:id="@+id/phone_security_phone_number_RL"
+                android:id="@+id/phone_security_top_RL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-                <!--1-0-0未添加防盗手机号UI-->
-                <LinearLayout
-                    android:id="@+id/phone_security_no_add_number_LT"
+                android:layout_height="wrap_content">
+                <!--1-0添加手机防盗号码布局-->
+                <RelativeLayout
+                    android:id="@+id/phone_security_phone_number_RL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/phone_security_add_number_TV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginTop="@dimen/ph_sec_add_nb_tv_tp"
-                        android:text="@string/phone_security_no_add_number_text"
-                        android:textColor="@color/c3"
-                        android:textSize="@dimen/phone_security_add_number_TV_size" />
-
-                    <RelativeLayout
-                        android:id="@+id/secur_add_number_RT"
+                    android:gravity="center">
+                    <!--1-0-0未添加防盗手机号UI-->
+                    <LinearLayout
+                        android:id="@+id/phone_security_no_add_number_LT"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/phone_secur_add_bt_height"
-                        android:layout_below="@id/phone_security_add_number_TV"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginTop="7dp"
-                        android:background="@drawable/grey_bule_btn_selector">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                        <Button
-                            android:id="@+id/phone_security_add_number_BT"
+                        <TextView
+                            android:id="@+id/phone_security_add_number_TV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="18dp"
-                            android:background="@color/transparent"
-                            android:clickable="false"
-                            android:drawableLeft="@drawable/theft_add_number"
-                            android:drawablePadding="9dp"
-                            android:text="@string/phone_security_no_add_number_bt_text"
-                            android:textColor="@color/cb"
-                            android:textSize="16dp" />
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginTop="@dimen/ph_sec_add_nb_tv_tp"
+                            android:text="@string/phone_security_no_add_number_text"
+                            android:textColor="@color/c3"
+                            android:textSize="@dimen/phone_security_add_number_TV_size" />
 
-                        <ImageView
-                            android:id="@+id/phone_security_add_number_IV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
+                        <RelativeLayout
+                            android:id="@+id/secur_add_number_RT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/phone_secur_add_bt_height"
+                            android:layout_below="@id/phone_security_add_number_TV"
+                            android:layout_marginLeft="12dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/wifi_error"
-                            android:visibility="gone" />
+                            android:layout_marginTop="7dp"
+                            android:background="@drawable/grey_bule_btn_selector">
 
-                    </RelativeLayout>
-                </LinearLayout>
-                <!--1-0-1已经添加了防盗手机号码后的UI-->
-                <LinearLayout
-                    android:id="@+id/phone_security_add_number_LT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                            <Button
+                                android:id="@+id/phone_security_add_number_BT"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="18dp"
+                                android:background="@color/transparent"
+                                android:clickable="false"
+                                android:drawableLeft="@drawable/theft_add_number"
+                                android:drawablePadding="9dp"
+                                android:text="@string/phone_security_no_add_number_bt_text"
+                                android:textColor="@color/cb"
+                                android:textSize="16dp" />
 
-                    <TextView
-                        android:id="@+id/phone_security_add_number_title_TV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="12dp"
-                        android:paddingTop="@dimen/ph_sec_add_nb_til_tv"
-                        android:text="@string/phone_security_add_number_title"
-                        android:textColor="#666666"
-                        android:textSize="14dp" />
+                            <ImageView
+                                android:id="@+id/phone_security_add_number_IV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="12dp"
+                                android:src="@drawable/wifi_error"
+                                android:visibility="gone" />
 
-                    <RelativeLayout
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <!--1-0-1已经添加了防盗手机号码后的UI-->
+                    <LinearLayout
+                        android:id="@+id/phone_security_add_number_LT"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/sec_nub_hi"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="7dp"
-                        android:background="@color/white"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="12dp">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/phone_security_add_number_title_TV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="12dp"
+                            android:paddingTop="@dimen/ph_sec_add_nb_til_tv"
+                            android:text="@string/phone_security_add_number_title"
+                            android:textColor="#666666"
+                            android:textSize="14dp" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_toLeftOf="@+id/secur_numb_rp">
+                            android:layout_height="@dimen/sec_nub_hi"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="7dp"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="12dp">
 
-                            <LinearLayout
-                                android:id="@+id/secur_exitst_name"
-                                android:layout_width="wrap_content"
+                            <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
+                                android:layout_toLeftOf="@+id/secur_numb_rp">
+
+                                <LinearLayout
+                                    android:id="@+id/secur_exitst_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/secur_name"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:ellipsize="end"
+                                        android:singleLine="true"
+                                        android:text="Run"
+                                        android:textColor="#333333"
+                                        android:textSize="@dimen/secur_number_name_size" />
+
+                                    <TextView
+                                        android:id="@+id/secur_number"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/secur_number_tp"
+                                        android:ellipsize="end"
+                                        android:singleLine="true"
+                                        android:text="18790729990"
+                                        android:textColor="#999999"
+                                        android:textSize="@dimen/secur_number_size" />
+
+                                </LinearLayout>
 
                                 <TextView
-                                    android:id="@+id/secur_name"
+                                    android:id="@+id/secur_no_name"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
                                     android:ellipsize="end"
                                     android:singleLine="true"
                                     android:text="Run"
                                     android:textColor="#333333"
-                                    android:textSize="@dimen/secur_number_name_size" />
+                                    android:textSize="16dp"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+
+                            <com.leo.appmaster.ui.MaterialRippleLayout
+                                android:id="@+id/secur_numb_rp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toLeftOf="@+id/add_secur_number_suc_IV"
+                                leo:rippleAlpha="0.5"
+                                leo:rippleColor="@color/white_list_item_ripple"
+                                leo:rippleDuration="250"
+                                leo:rippleHover="true"
+                                leo:rippleOverlay="true">
+
+                                <Button
+                                    android:id="@+id/modify_secur_number_BT"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="32dp"
+                                    android:layout_centerVertical="true"
+                                    android:adjustViewBounds="true"
+                                    android:background="@drawable/blue_btn_selector"
+                                    android:maxWidth="90dp"
+                                    android:minWidth="58dp"
+                                    android:text="@string/phone_security_add_number_button"
+                                    android:textColor="#2674f6" />
+                            </com.leo.appmaster.ui.MaterialRippleLayout>
+
+                            <ImageView
+                                android:id="@+id/add_secur_number_suc_IV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:src="@drawable/wifi_complete" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/phone_security_number_sim_tip_TV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/phone_security_no_add_number_LT"
+                        android:layout_marginTop="@dimen/ph_sec_nb_sim_tip_top"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:text="@string/phone_security_number_sim_tip"
+                        android:textColor="#999999"
+                        android:textSize="12dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/secur_ckb_hgt"
+                        android:layout_below="@id/phone_security_number_sim_tip_TV"
+                        android:layout_marginTop="@dimen/ph_sec_nu_bkup_cb_top"
+                        android:background="@color/white">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/c5" />
+
+                        <CheckBox
+                            android:id="@+id/phone_security_number_backup_CB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="12dp"
+                            android:button="@drawable/send_msm_selector"
+                            android:checked="true"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="@dimen/ph_sec_nu_bkup_cb_pd_left"
+                            android:text="@string/phone_security_number_backup_text"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/ph_sec_nu_bkup_cb" />
+                        <!--                    android:paddingLeft="10dp"-->
+                    </RelativeLayout>
+                </RelativeLayout>
+                <!--3-1手机防盗'打开'后顶部UI-->
+                <RelativeLayout
+                    android:id="@+id/secur_open_suc_RL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <!-- android:visibility="gone"-->
+                    <LinearLayout
+                        android:id="@+id/secur_open_suc_top_RL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/cb"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:id="@+id/show_time_LT"
+                            android:layout_width="126dp"
+                            android:layout_height="126dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/show_time_anim"
+                                android:layout_width="126dp"
+                                android:layout_height="126dp"
+                                android:padding="6dp"
+                                android:src="@drawable/theft_circle" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:gravity="center">
 
                                 <TextView
-                                    android:id="@+id/secur_number"
+                                    android:id="@+id/secur_open_suc_IV"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/secur_number_tp"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
-                                    android:text="18790729990"
-                                    android:textColor="#999999"
-                                    android:textSize="@dimen/secur_number_size" />
+                                    android:text="@string/secur_suc_top_image_content"
+                                    android:textColor="#aac2fb"
+                                    android:textSize="12dp" />
+                                <!--保护的时间xx天xx小时-->
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/secur_open_suc_IV"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true">
 
-                            </LinearLayout>
+                                    <RelativeLayout
+                                        android:id="@+id/r1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerHorizontal="true">
+
+                                        <TextView
+                                            android:id="@+id/secur_day_TV"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="xxxxxxx"
+                                            android:textColor="@color/white"
+                                            android:textSize="18dp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_toRightOf="@id/secur_day_TV"
+                                            android:text="@string/secur_suc_day"
+                                            android:textColor="@color/white"
+                                            android:textSize="18dp" />
+                                    </RelativeLayout>
+
+                                    <RelativeLayout
+                                        android:id="@+id/r2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/r1"
+                                        android:layout_centerHorizontal="true">
+
+                                        <TextView
+                                            android:id="@+id/secur_hour_TV"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="xx"
+                                            android:textColor="@color/white"
+                                            android:textSize="16dp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_toRightOf="@id/secur_hour_TV"
+                                            android:text="@string/secur_suc_hour"
+                                            android:textColor="@color/white"
+                                            android:textSize="16dp" />
+                                    </RelativeLayout>
+                                </RelativeLayout>
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/secur_open_tip_adv_LT"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+                            <!--   android:visibility="gone"-->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/secur_protect_time_tip"
+                                android:textColor="@color/white"
+                                android:textSize="12dp" />
+
+                            <com.leo.appmaster.ui.MaterialRippleLayout
+                                android:id="@+id/op_secu_rip_rv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                leo:rippleAlpha="0.5"
+                                leo:rippleColor="@color/white_list_item_ripple"
+                                leo:rippleDuration="250"
+                                leo:rippleHover="true"
+                                leo:rippleOverlay="true">
+
+                                <Button
+                                    android:id="@+id/open_sucur_adv_bt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:background="@drawable/white_bg"
+                                    android:paddingLeft="12dp"
+                                    android:paddingRight="12dp"
+                                    android:text="@string/security_guide_button_text"
+                                    android:textColor="#2674f6"
+                                    android:textSize="14dp" />
+                            </com.leo.appmaster.ui.MaterialRippleLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/secur_suc_number_tip_TV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/secur_open_suc_top_RL"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="7dp"
+                        android:text="@string/secur_suc_number_tip"
+                        android:textColor="#999999"
+                        android:textSize="14dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/secur_open_suc_number_LT"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/sec_op_suc_numb_lt"
+                        android:layout_below="@id/secur_suc_number_tip_TV"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="6dp">
+
+                        <LinearLayout
+                            android:id="@+id/secur_open_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/rip_btn"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/secur_no_name"
+                                android:id="@+id/secur_number_name_TV"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
@@ -159,331 +417,89 @@
                                 android:singleLine="true"
                                 android:text="Run"
                                 android:textColor="#333333"
-                                android:textSize="16dp"
-                                android:visibility="gone" />
+                                android:textSize="@dimen/sec_num_name_tv_size" />
 
-                        </RelativeLayout>
-
-                        <com.leo.appmaster.ui.RippleView
-                            android:id="@+id/secur_numb_rp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            leo:rv_rippleDuration="100"
-                            android:layout_toLeftOf="@+id/add_secur_number_suc_IV">
-
-                            <Button
-                                android:id="@+id/modify_secur_number_BT"
+                            <TextView
+                                android:id="@+id/secur_number_TV"
                                 android:layout_width="wrap_content"
-                                android:layout_height="32dp"
-                                android:layout_centerVertical="true"
-                                android:adjustViewBounds="true"
-                                android:background="@drawable/blue_btn_selector"
-                                android:maxWidth="90dp"
-                                android:minWidth="58dp"
-                                android:text="@string/phone_security_add_number_button"
-                                android:textColor="#2674f6" />
-                        </com.leo.appmaster.ui.RippleView>
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/secur_number_name_TV"
+                                android:layout_marginTop="@dimen/sec_nub_tv"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="18790729990"
+                                android:textColor="#666666"
+                                android:textSize="@dimen/sec_nub_size" />
+                        </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/add_secur_number_suc_IV"
+                        <com.leo.appmaster.ui.MaterialRippleLayout
+                            android:id="@+id/rip_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:src="@drawable/wifi_complete" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/phone_security_number_sim_tip_TV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/phone_security_no_add_number_LT"
-                    android:layout_marginTop="@dimen/ph_sec_nb_sim_tip_top"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:text="@string/phone_security_number_sim_tip"
-                    android:textColor="#999999"
-                    android:textSize="12dp" />
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/secur_ckb_hgt"
-                android:layout_below="@id/phone_security_number_sim_tip_TV"
-                android:layout_marginTop="@dimen/ph_sec_nu_bkup_cb_top"
-                android:background="@color/white">
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/c5"/>
-                <CheckBox
-                    android:id="@+id/phone_security_number_backup_CB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:button="@drawable/send_msm_selector"
-                    android:checked="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/ph_sec_nu_bkup_cb_pd_left"
-                    android:text="@string/phone_security_number_backup_text"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/ph_sec_nu_bkup_cb" />
-                <!--                    android:paddingLeft="10dp"-->
-            </RelativeLayout>
-            </RelativeLayout>
-            <!--3-1手机防盗'打开'后顶部UI-->
-            <RelativeLayout
-                android:id="@+id/secur_open_suc_RL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-                <!-- android:visibility="gone"-->
-                <LinearLayout
-                    android:id="@+id/secur_open_suc_top_RL"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/cb"
-                    android:gravity="center">
-
-                    <RelativeLayout
-                        android:id="@+id/show_time_LT"
-                        android:layout_width="126dp"
-                        android:layout_height="126dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/show_time_anim"
-                            android:layout_width="126dp"
-                            android:layout_height="126dp"
-                            android:padding="6dp"
-                            android:src="@drawable/theft_circle"></ImageView>
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:gravity="center">
-
-                            <TextView
-                                android:id="@+id/secur_open_suc_IV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/secur_suc_top_image_content"
-                                android:textColor="#aac2fb"
-                                android:textSize="12dp" />
-                            <!--保护的时间xx天xx小时-->
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/secur_open_suc_IV"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true">
-
-                                <RelativeLayout
-                                    android:id="@+id/r1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerHorizontal="true">
-
-                                    <TextView
-                                        android:id="@+id/secur_day_TV"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="xxxxxxx"
-                                        android:textColor="@color/white"
-                                        android:textSize="18dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_toRightOf="@id/secur_day_TV"
-                                        android:text="@string/secur_suc_day"
-                                        android:textColor="@color/white"
-                                        android:textSize="18dp" />
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/r2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/r1"
-                                    android:layout_centerHorizontal="true">
-
-                                    <TextView
-                                        android:id="@+id/secur_hour_TV"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="xx"
-                                        android:textColor="@color/white"
-                                        android:textSize="16dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_toRightOf="@id/secur_hour_TV"
-                                        android:text="@string/secur_suc_hour"
-                                        android:textColor="@color/white"
-                                        android:textSize="16dp" />
-                                </RelativeLayout>
-                            </RelativeLayout>
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:id="@+id/secur_open_tip_adv_LT"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="50dp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-                        <!--   android:visibility="gone"-->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/secur_protect_time_tip"
-                            android:textColor="@color/white"
-                            android:textSize="12dp" />
-
-                        <com.leo.appmaster.ui.RippleView
-                            android:id="@+id/op_secu_rip_rv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            leo:rv_rippleDuration="100">
+                            leo:rippleAlpha="0.5"
+                            leo:rippleColor="@color/white_list_item_ripple"
+                            leo:rippleDuration="250"
+                            leo:rippleHover="true"
+                            leo:rippleOverlay="true">
 
                             <Button
-                                android:id="@+id/open_sucur_adv_bt"
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:background="@drawable/white_bg"
-                                android:text="@string/security_guide_button_text"
+                                android:id="@+id/secur_modify_bt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:background="@drawable/blue_btn_selector"
+                                android:maxWidth="90dp"
+                                android:minWidth="58dp"
+                                android:text="@string/phone_security_add_number_button"
                                 android:textColor="#2674f6"
                                 android:textSize="14dp" />
-                        </com.leo.appmaster.ui.RippleView>
-                    </LinearLayout>
-                </LinearLayout>
+                        </com.leo.appmaster.ui.MaterialRippleLayout>
+                    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/secur_suc_number_tip_TV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/secur_open_suc_top_RL"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginTop="7dp"
-                    android:text="@string/secur_suc_number_tip"
-                    android:textColor="#999999"
-                    android:textSize="14dp" />
-
-                <RelativeLayout
-                    android:id="@+id/secur_open_suc_number_LT"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/sec_op_suc_numb_lt"
-                    android:layout_below="@id/secur_suc_number_tip_TV"
-                    android:background="@color/white"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="6dp">
-
-                    <LinearLayout
-                        android:id="@+id/secur_open_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/rip_btn"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/secur_number_name_TV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:text="Run"
-                            android:textColor="#333333"
-                            android:textSize="@dimen/sec_num_name_tv_size" />
-
-                        <TextView
-                            android:id="@+id/secur_number_TV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/secur_number_name_TV"
-                            android:layout_marginTop="@dimen/sec_nub_tv"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:text="18790729990"
-                            android:textColor="#666666"
-                            android:textSize="@dimen/sec_nub_size" />
-                    </LinearLayout>
-
-                    <com.leo.appmaster.ui.RippleView
-                        android:id="@+id/rip_btn"
+                    <TextView
+                        android:id="@+id/secur_suc_instr_tip_TV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="16dp"
-                        leo:rv_rippleDuration="100">
-
-                        <Button
-                            android:id="@+id/secur_modify_bt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="32dp"
-                            android:background="@drawable/blue_btn_selector"
-                            android:maxWidth="90dp"
-                            android:minWidth="58dp"
-                            android:text="@string/phone_security_add_number_button"
-                            android:textColor="#2674f6"
-                            android:textSize="14dp" />
-                    </com.leo.appmaster.ui.RippleView>
+                        android:layout_below="@id/secur_open_suc_number_LT"
+                        android:layout_marginTop="@dimen/sec_suc_instr_tip_tp"
+                        android:paddingLeft="6dp"
+                        android:text="@string/secur_suc_instr_tip"
+                        android:textColor="#999999"
+                        android:textSize="14dp" />
                 </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/secur_suc_instr_tip_TV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/secur_open_suc_number_LT"
-                    android:layout_marginTop="@dimen/sec_suc_instr_tip_tp"
-                    android:paddingLeft="6dp"
-                    android:text="@string/secur_suc_instr_tip"
-                    android:textColor="#999999"
-                    android:textSize="14dp" />
             </RelativeLayout>
-        </RelativeLayout>
-        <!--手机防盗中间指令列表布局-->
-        <RelativeLayout
-            android:id="@+id/phone_security_center_RL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/phone_security_top_RL"
-            android:background="@color/white">
-
-            <View
-                android:id="@+id/phone_security_divider"
+            <!--手机防盗中间指令列表布局-->
+            <RelativeLayout
+                android:id="@+id/phone_security_center_RL"
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/c5" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phone_security_top_RL"
+                android:background="@color/white">
 
-            <ListView
-                android:id="@+id/secur_instr_LV"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/secur_list_height"
-                android:layout_below="@id/phone_security_divider"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:clickable="false"
-                android:divider="@null"
-                android:listSelector="#00000000"
-                android:overScrollMode="never"
-                android:paddingTop="8dp"
-                android:scrollbars="none"></ListView>
+                <View
+                    android:id="@+id/phone_security_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/c5" />
 
-        </RelativeLayout>
-    </LinearLayout>
+                <ListView
+                    android:id="@+id/secur_instr_LV"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/secur_list_height"
+                    android:layout_below="@id/phone_security_divider"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:clickable="false"
+                    android:divider="@null"
+                    android:listSelector="#00000000"
+                    android:overScrollMode="never"
+                    android:paddingTop="8dp"
+                    android:scrollbars="none"></ListView>
+
+            </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
     <!--2-1高级功能-->
     <ScrollView
@@ -690,8 +706,8 @@
             android:layout_alignParentTop="true"
             android:background="#f7f7f7"
             android:gravity="center"
-            android:paddingTop="14dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="14dp">
 
             <com.leo.appmaster.phoneSecurity.SecurityNumberView
                 android:id="@+id/phone_security_operation_one"
@@ -722,6 +738,7 @@
                 android:src="@drawable/theft_step_dis" />
 
         </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/secur_bt_RT"
             android:layout_width="match_parent"
@@ -730,13 +747,16 @@
             android:background="#f7f7f7"
             android:gravity="center">
 
-            <com.leo.appmaster.ui.RippleView
+            <com.leo.appmaster.ui.MaterialRippleLayout
                 android:id="@+id/secur_bt_rv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                leo:rv_color="@color/green_button_ripple"
-                leo:rv_rippleDuration="100">
+                leo:rippleAlpha="0.5"
+                leo:rippleColor="@color/button_green_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true">
 
                 <Button
                     android:id="@+id/secur_bottom_BT"
@@ -746,7 +766,7 @@
                     android:background="@drawable/green_radius_btn_shape"
                     android:text="@string/secur_bottom_bt_text"
                     android:textColor="@color/white" />
-            </com.leo.appmaster.ui.RippleView>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
         </RelativeLayout>
     </RelativeLayout>
     <!--2.3手机防盗帮助页面-->
@@ -779,15 +799,18 @@
             android:textColor="#666666"
             android:textSize="14dp" />
 
-        <com.leo.appmaster.ui.RippleView
+        <com.leo.appmaster.ui.MaterialRippleLayout
             android:id="@+id/secur_help_rp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/help_tv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/secur_help_rp_margin_top"
-            leo:rv_rippleDuration="100"
-            ripple:rv_color="@color/blue_button_click">
+            leo:rippleAlpha="0.5"
+            leo:rippleColor="@color/button_blue_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="true"
+            leo:rippleOverlay="true">
 
             <Button
                 android:id="@+id/help_bt"
@@ -798,7 +821,7 @@
                 android:text="@string/secur_help_bt"
                 android:textColor="@color/white"
                 android:textSize="14dp" />
-        </com.leo.appmaster.ui.RippleView>
+        </com.leo.appmaster.ui.MaterialRippleLayout>
 
         <RelativeLayout
             android:id="@+id/no_know_model_help_tip_RT"
@@ -831,14 +854,18 @@
                     android:textSize="16dp" />
             </RelativeLayout>
 
-            <com.leo.appmaster.ui.RippleView
+            <com.leo.appmaster.ui.MaterialRippleLayout
                 android:id="@+id/know_feekback_RV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="22dp"
-                leo:rv_rippleDuration="100">
+                leo:rippleAlpha="0.5"
+                leo:rippleColor="@color/white_list_item_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true">
 
                 <Button
                     android:id="@+id/know_feekback_bt"
@@ -848,7 +875,7 @@
                     android:text="@string/secur_help_feedback_tip_button"
                     android:textColor="#15c937"
                     android:textSize="14dp" />
-            </com.leo.appmaster.ui.RippleView>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
         </RelativeLayout>
         <!--已知需要短信权限的机型提示-->
         <LinearLayout

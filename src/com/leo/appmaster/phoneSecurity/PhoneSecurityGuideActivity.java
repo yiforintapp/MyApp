@@ -1,29 +1,21 @@
 package com.leo.appmaster.phoneSecurity;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
-import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.BuildProperties;
-import com.leo.appmaster.utils.LeoLog;
 
 public class PhoneSecurityGuideActivity extends Activity implements View.OnClickListener {
     private static final boolean DBG = false;
@@ -60,11 +52,6 @@ public class PhoneSecurityGuideActivity extends Activity implements View.OnClick
     private void initUI() {
         mOpenBt = (Button) findViewById(R.id.security_guide_BT);
         mOpenBt.setOnClickListener(this);
-        MaterialRippleLayout.on(mOpenBt)
-                .rippleColor(getResources().getColor(R.color.green_button))
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
         mCommonBar = (CommonToolbar) findViewById(R.id.phone_security_guide_commonbar);
         mCommonBar.setToolbarTitle(R.string.home_tab_lost);
         mCommonBar.setToolbarColorResource(R.color.cb);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -66,13 +66,17 @@
                 android:textSize="12dp" />
         </LinearLayout>
 
-        <com.leo.appmaster.ui.RippleView
+        <com.leo.appmaster.ui.MaterialRippleLayout
             android:id="@+id/rip_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            app:rv_rippleDuration="100">
+            leo:rippleAlpha="0.5"
+            leo:rippleColor="@color/white_list_item_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="true"
+            leo:rippleOverlay="true">
 
             <Button
                 android:id="@+id/sec_add_number_BT"
@@ -85,10 +89,8 @@
                 android:minWidth="58dp"
                 android:text="@string/secur_instr_open_bt"
                 android:textColor="#15c937"
-                android:textSize="14dp"
-
-                />
-        </com.leo.appmaster.ui.RippleView>
+                android:textSize="14dp" />
+        </com.leo.appmaster.ui.MaterialRippleLayout>
     </RelativeLayout>
 
     <View
