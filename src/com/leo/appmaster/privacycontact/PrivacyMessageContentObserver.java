@@ -60,9 +60,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
         boolean isOpenNoReadCallLogTip = pref.getSwitchOpenRecentlyContact();
-        if (privateContacts == 0 && !isOpenNoReadMessageTip && !isOpenNoReadCallLogTip) {
-            return;
-        }
+//        if (privateContacts == 0 && !isOpenNoReadMessageTip && !isOpenNoReadCallLogTip) {
+//            return;
+//        }
         final ContentResolver cr = mContext.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(mContext);
         if (MESSAGE_MODEL.equals(mFlag)) {
@@ -105,9 +105,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     /* 测试来新短信或者来电能否触发系统数据库变化 */
     private void printTestObserverLog() {
         if (MESSAGE_MODEL.equals(mFlag)) {
-            LeoLog.d(Constants.RUN_TAG, "短信变化引起系统短信数据库改变!");
+            LeoLog.i(Constants.RUN_TAG, "短信变化引起系统短信数据库改变!");
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
-            LeoLog.d(Constants.RUN_TAG, "有来电引起系统通话数据库改变!");
+            LeoLog.i(Constants.RUN_TAG, "有来电引起系统通话数据库改变!");
         }
 
         boolean flag = PrivacyContactManager.getInstance(mContext).testValue;

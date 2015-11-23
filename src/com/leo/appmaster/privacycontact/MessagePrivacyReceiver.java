@@ -65,15 +65,14 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (mSimpleDateFormate == null) {
             mSimpleDateFormate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         }
-        // 拦截信息
+        /*短信监听*/
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
             PrivacyContactManager.getInstance(mContext).testValue = true;
-            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
-                return;
-            }
-
+//            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+//                return;
+//            }
             // Crash from feedback
             try {
                 Bundle bundle = intent.getExtras();
@@ -210,9 +209,9 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
-            Log.e(Constants.RUN_TAG, "接收到新短信广播");
+            LeoLog.i(Constants.RUN_TAG, "接收到新短信广播");
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
-            Log.e(Constants.RUN_TAG, "接收到来电广播");
+            LeoLog.i(Constants.RUN_TAG, "接收到来电广播");
         }
     }
 

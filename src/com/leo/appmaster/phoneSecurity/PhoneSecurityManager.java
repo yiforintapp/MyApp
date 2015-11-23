@@ -123,7 +123,7 @@ public class PhoneSecurityManager {
      */
     public boolean securityPhoneReceiverHandler(SmsMessage message) {
         if (!isDbReceiverTimeBefor()) {
-            setDbChangeTimeBefor(true);
+            setDbReceiverTimeBefor(true);
             LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
             String number = message.getOriginatingAddress();
             String body = message.getMessageBody();
