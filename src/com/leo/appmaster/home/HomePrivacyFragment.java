@@ -56,13 +56,15 @@ public class HomePrivacyFragment extends Fragment {
     private boolean mFistAnimFinished;
     private int mCurrentScore;
 
-    private Animator mScanningAnimator;
+    private ObjectAnimator mScanningAnimator;
 
     private HomeActivity mActivity;
     private AnimatorSet mFinalAnim;
     private boolean mProgressAnimating = true;
     private Runnable mScoreChangeRunnable;
     private ObjectAnimator mCircleRotateAnim;
+
+    private int mCurrentPercent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -417,7 +419,50 @@ public class HomePrivacyFragment extends Fragment {
             mScanningAnimator.setDuration(duration);
             mScanningAnimator.setInterpolator(new LinearInterpolator());
             mScanningAnimator.start();
+            mScanningAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Integer integer = (Integer) animation.getAnimatedValue();
+                    if (integer != null) {
+                        mCurrentPercent = integer;
+                    }
+                }
+            });
         }
+    }
+
+    /**
+     * 显示进度百分比动画
+     * @param duration 时常，-1则不显示
+     */
+    public void showScanningPercent(int duration, int from, int to) {
+        if (duration == -1) {
+            if (mScanningAnimator != null) {
+                mScanningAnimator.cancel();
+            }
+            mHomeAnimView.setScanningPercent(-1);
+        } else {
+            if (mScanningAnimator != null) {
+                mScanningAnimator.end();
+            }
+            mScanningAnimator = ObjectAnimator.ofInt(mHomeAnimView, "scanningPercent", from, to);
+            mScanningAnimator.setDuration(duration);
+            mScanningAnimator.setInterpolator(new LinearInterpolator());
+            mScanningAnimator.start();
+            mScanningAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Integer integer = (Integer) animation.getAnimatedValue();
+                    if (integer != null) {
+                        mCurrentPercent = integer;
+                    }
+                }
+            });
+        }
+    }
+
+    public int getScanningPercent() {
+        return mCurrentPercent;
     }
 
     /**

@@ -323,6 +323,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mPrivacyFragment.showScanningPercent(duration);
     }
 
+    public void scanningPercent(int duration, int from, int to) {
+        mPrivacyFragment.showScanningPercent(duration, from, to);
+    }
+
+    public int getScanningPercent() {
+        return mPrivacyFragment.getScanningPercent();
+    }
+
     public void onScanningFinish(List<AppItemInfo> appList, List<PhotoItem> photoItems, List<VideoItemBean> videoItemBeans) {
         mAppList = appList;
         mPhotoList = photoItems;

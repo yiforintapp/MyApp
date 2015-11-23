@@ -83,6 +83,7 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
     private List<PhotoItem> mPhotoList;
     private List<VideoItemBean> mVideoList;
 
+    private boolean mAppScanFinish;
     private boolean mPhotoScanFinish;
     private boolean mVideoScanFinish;
 
@@ -90,6 +91,8 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
     private int mScanningDuration;
 
     private PrivacyHelper mPrivacyHelper;
+    private HomeScanningController mController;
+    private int mPicScore;
 
     @Override
     public void onAttach(Activity activity) {
@@ -135,7 +138,10 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
         mPicCountIv = (ImageView) view.findViewById(R.id.scan_pic_count_iv);
         mVidCountIv = (ImageView) view.findViewById(R.id.scan_vid_count_iv);
 
-        startScan();
+        mController = new HomeScanningController(mActivity, this, mNewAppIv, mNewAppText,
+                mNewPhotoIv, mNewPhotoText, mNewVideoIv, mNewVideoText, mNewPrivacyIv, mNewPrivacyText);
+//        startScan();
+        startScanController();
     }
 
     @Nullable
@@ -177,6 +183,7 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
                 LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                 long start = SystemClock.elapsedRealtime();
                 mAppList = lm.getNewAppList();
+                mAppScanFinish = true;
                 int appScore = lm.getSecurityScore(mAppList);
                 mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, appScore);
                 LeoLog.i(TAG, "appList, cost: " + (SystemClock.elapsedRealtime() - start));
@@ -233,6 +240,29 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
                 }
             }
         });
+    }
+
+    private void startScanController() {
+        if (mScanning) return;
+
+        mProgressTv.setText(R.string.pri_pro_scanning);
+        mCancelBtn.setVisibility(View.VISIBLE);
+        mProcessBtn.setVisibility(View.GONE);
+        LeoLog.i(TAG, "start to scaning.");
+        mController.startScanning();
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                long start = SystemClock.elapsedRealtime();
+                mAppList = lm.getNewAppList();
+                mAppScanFinish = true;
+                int appScore = lm.getSecurityScore(mAppList);
+                mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, appScore);
+                LeoLog.i(TAG, "appList, cost: " + (SystemClock.elapsedRealtime() - start));
+            }
+        });
+        loadContacts();
     }
 
     private void startScanAnim() {
@@ -316,6 +346,70 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
     public void onAnimationStart(Animator animation) {
         if (animation == mAppAnimator) {
             mActivity.onScanningStart(7200);
+        }
+    }
+
+    public void onAnimatorEnd(ScanningImageView imageView) {
+        updateUIOnAnimEnd(imageView);
+        if (imageView == mNewAppIv) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    long start = SystemClock.elapsedRealtime();
+                    PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                    mPhotoList = pdm.getAddPic();
+                    mPhotoScanFinish = true;
+                    mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.size());
+                    LeoLog.i(TAG, "photoItems, cost: " + (SystemClock.elapsedRealtime() - start));
+                }
+            });
+        } else if (imageView == mNewPhotoIv) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    long start = SystemClock.elapsedRealtime();
+                    PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                    mVideoList = pdm.getAddVid();
+                    mVideoScanFinish = true;
+                    int vidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
+                    LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
+
+                    mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + vidScore);
+                }
+            });
+        }
+    }
+
+    private void updateUIOnAnimEnd(ScanningImageView imageView) {
+        if (isDetached() || isRemoving() || getActivity() == null) return;
+
+        Context context = AppMasterApplication.getInstance();
+        if (imageView == mNewAppIv) {
+            updateAppList();
+            int count = mAppList == null ? 0 : mAppList.size();
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "app_cnts_" + count);
+        } else if (imageView == mNewPhotoIv) {
+            updatePhotoList();
+            int count = mPhotoList == null ? 0 : mPhotoList.size();
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "pic_cnts_" + count);
+        } else if (imageView == mNewVideoIv) {
+            updateVideoList();
+            int count = mVideoList == null ? 0 : mVideoList.size();
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "vid_cnts_" + count);
+        } else if (imageView == mNewPrivacyIv) {
+            LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            boolean lostOpen = lsm.isUsePhoneSecurity();
+            IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+            boolean intruderOpen = ism.getIntruderMode();
+            boolean result = lostOpen && intruderOpen;
+            mPrivacyCountIv.setImageResource(result ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
+            mPrivacyCountIv.setVisibility(View.VISIBLE);
+
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+            onScannigFinish(mAppList, mPhotoList, mVideoList);
         }
     }
 
@@ -417,5 +511,25 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "instant");
                 break;
         }
+    }
+
+    public boolean isScanFinish(ScanningImageView imageView) {
+        if (imageView == mNewAppIv) {
+            return mAppScanFinish;
+        } else if (imageView == mNewPhotoIv) {
+            return mPhotoScanFinish;
+        } else if (imageView == mNewVideoIv) {
+            return mVideoScanFinish;
+        }
+
+        return false;
+    }
+
+    public void scanningPercent(int duration, int from, int to) {
+        mActivity.scanningPercent(duration, from, to);
+    }
+
+    public int getScanningPercent() {
+        return mActivity.getScanningPercent();
     }
 }
