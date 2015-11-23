@@ -13,11 +13,12 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.BuildProperties;
 
-public class PhoneSecurityGuideActivity extends Activity implements View.OnClickListener {
+public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnClickListener {
     private static final boolean DBG = false;
     private Button mOpenBt;
     private CommonToolbar mCommonBar;

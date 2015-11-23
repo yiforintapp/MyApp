@@ -42,6 +42,7 @@ import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView1;
@@ -55,7 +56,7 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.PauseOnScrollListener;
 
-public class IntruderprotectionActivity extends Activity {
+public class IntruderprotectionActivity extends BaseActivity {
     private ListView mLvPhotos;
     private CommonToolbar mctb;
     private BaseAdapter mAdapter;
