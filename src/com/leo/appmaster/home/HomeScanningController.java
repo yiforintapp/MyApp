@@ -5,6 +5,7 @@ import android.view.animation.LinearInterpolator;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ui.ScanningImageView;
 import com.leo.appmaster.ui.ScanningTextView;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
@@ -14,6 +15,7 @@ import com.leo.tools.animator.ValueAnimator;
  * Created by Jasper on 2015/11/20.
  */
 public class HomeScanningController {
+    private static final String TAG = "HomeScanningController";
     private static final int PER_APP = 30;
     private static final int PER_PIC = 70;
     private static final int PER_VID = 90;
@@ -153,6 +155,7 @@ public class HomeScanningController {
     }
 
     public void startScanning() {
+        LeoLog.d(TAG, "startScanning...");
         mAppAnim = createScanningAnim(mAppImg, mAppText);
 
         mAppAnim.totalAnim.start();
@@ -160,6 +163,9 @@ public class HomeScanningController {
     }
 
     private void onAnimatorEnd(Animator animation) {
+        if (mFragment.isRemoving() || mFragment.isDetached()) return;
+
+        LeoLog.d(TAG, "onAnimatorEnd...");
         if (animation == mAppAnim.innerScaleAnim) {
             mFragment.onAnimatorEnd(mAppImg);
 
@@ -187,6 +193,9 @@ public class HomeScanningController {
     }
 
     private void onAnimatorRepeat(Animator animator) {
+        if (mFragment.isRemoving() || mFragment.isDetached()) return;
+
+        LeoLog.d(TAG, "onAnimatorRepeat...");
         if (animator == mAppAnim.rotateAnim) {
             if (mFragment.isScanFinish(mAppImg)) {
                 cancelAnimatorDelay(animator);
@@ -212,6 +221,34 @@ public class HomeScanningController {
                 animator.end();
             }
         }, 100);
+    }
+
+    public void detachController() {
+        AnimEntry entry = mAppAnim;
+        endAnimEntry(entry);
+
+        entry = mPicAnim;
+        endAnimEntry(entry);
+
+        entry = mVidAnim;
+        endAnimEntry(entry);
+
+        entry = mPrivacyAnim;
+        endAnimEntry(entry);
+    }
+
+    private void endAnimEntry(AnimEntry entry) {
+        if (entry != null) {
+            if (entry.totalAnim != null) {
+                entry.totalAnim.end();
+            }
+            if (entry.rotateAnim != null) {
+                entry.rotateAnim.end();
+            }
+            if (entry.innerScaleAnim != null) {
+                entry.innerScaleAnim.end();
+            }
+        }
     }
 
     private class AnimEntry {

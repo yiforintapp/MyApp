@@ -149,6 +149,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         return inflater.inflate(R.layout.fragment_home_scanning, container, false);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mController.detachController();
+    }
 //    @Override
 //    public void onRippleComplete(RippleView rippleView) {
 //        switch (rippleView.getId()) {
