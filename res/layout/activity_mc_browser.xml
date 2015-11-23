@@ -26,6 +26,7 @@
         android:layout_below="@id/layout_title_bar"
         android:background="@color/ms_error_bg"
         android:orientation="vertical"
+        android:visibility="gone"
        >
 
         <ImageView
