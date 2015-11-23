@@ -146,9 +146,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        removeFragments();
         super.onCreate(savedInstanceState);
         LeoLog.d(TAG, "onCreate...");
-        removeFragments();
 
         setContentView(R.layout.activity_home_main);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
@@ -523,6 +523,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        LeoLog.d(TAG, "onSaveInstanceState...");
         try {
             super.onSaveInstanceState(outState);
         } catch (Exception e) {
@@ -531,6 +532,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        LeoLog.d(TAG, "onRestoreInstanceState...");
         try {
             super.onRestoreInstanceState(savedInstanceState);
         } catch (Exception e) {
@@ -542,18 +544,13 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         try {
-            Field field = fm.getClass().getDeclaredField("mActive");
-            field.setAccessible(true);
-            Object object = field.get(fm);
-            ArrayList<Fragment> list = (ArrayList<Fragment>) object;
+            List<Fragment> list = fm.getFragments();
             if (list != null) {
                 for (Fragment f : list) {
                     ft.remove(f);
                 }
             }
             ft.commit();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

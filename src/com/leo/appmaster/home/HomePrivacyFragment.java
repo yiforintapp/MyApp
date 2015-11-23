@@ -181,6 +181,9 @@ public class HomePrivacyFragment extends Fragment {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mProgressAnimating = false;
+                if (mScoreChangeRunnable != null) {
+                    mScoreChangeRunnable.run();
+                }
             }
         });
         firstAnimSet.playTogether(timeAnim, progressAnim);
