@@ -21,20 +21,18 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class Traffic {
-    private static final String TRAFFICNOTIFICATION = "traffic_notification";
-    private static final int NON_SAVE = 0;
-    private static final int DAY_OF_THREE = 1;
-    private static final int FINISH_THREE_DAY_AVG = 2;
-    private static final int SHOWNOTI_IF_OVER_AVG = 3;
-    private static final String FIRSTDAY = "first_day";
-    private static final String FIRSTDAYTRAFFIC = "first_day_traffic";
-    private static final String SECONDDAY = "second_day";
-    private static final String SECONDDAYTRAFFIC = "second_day_traffic";
-    private static final String THREEDAY = "three_day";
-    private static final String THREEDAYTRAFFIC = "three_day_traffic";
-    private static final String TRAFFIC_AVG = "traffic_avg";
-//    private static final String LAST_SHOW_DAY = "last_show_day";
-//    private static final String IS_TODAY_SHOW = "is_today_show";
+    private final static String TRAFFICNOTIFICATION = "traffic_notification";
+    private final static int NON_SAVE = 0;
+    private final static int DAY_OF_THREE = 1;
+    private final static int FINISH_THREE_DAY_AVG = 2;
+    private final static int MIN_SHOW_NOTI_TRAFFIC = 3500;
+    private final static String FIRSTDAY = "first_day";
+    private final static String FIRSTDAYTRAFFIC = "first_day_traffic";
+    private final static String SECONDDAY = "second_day";
+    private final static String SECONDDAYTRAFFIC = "second_day_traffic";
+    private final static String THREEDAY = "three_day";
+    private final static String THREEDAYTRAFFIC = "three_day_traffic";
+    private final static String TRAFFIC_AVG = "traffic_avg";
 
 
     private static final String STATE_WIFI = "wifi";
@@ -135,9 +133,10 @@ public class Traffic {
             PreferenceTable.getInstance().putFloat(TRAFFIC_AVG, avg);
 
             //morenzhi
-            if (avg == 0) {
-                avg = 3500;
+            if (avg < 1024) {
+                avg = MIN_SHOW_NOTI_TRAFFIC;
             }
+
             float dayTraffic = mDeviceManager.getTodayUsed() / 1024;//KB
             LeoLog.d("testTrafficNoti", "dayTraffic : " + dayTraffic);
             if (avg < dayTraffic) {
@@ -210,7 +209,7 @@ public class Traffic {
             }
         } catch (Exception e) {
         } finally {
-            if(Testcursor != null) {
+            if (Testcursor != null) {
                 Testcursor.close();
             }
         }
@@ -363,7 +362,7 @@ public class Traffic {
             }
         } catch (Exception e) {
         } finally {
-            if(mCursor != null) {
+            if (mCursor != null) {
                 mCursor.close();
             }
         }
