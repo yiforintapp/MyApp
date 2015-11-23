@@ -200,6 +200,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            return true;
         } else if (MsgConsts.PATH_GOOGLEPLAY.equals(path)) {
             // googleplay
             try {
@@ -208,6 +209,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            return true;
         }
         return super.shouldOverrideUrlLoading(view, url);
     }
