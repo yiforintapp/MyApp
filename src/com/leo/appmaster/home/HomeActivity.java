@@ -1162,8 +1162,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
      * @param increaseScore
      */
     private void startProcessFinishAnim(int increaseScore) {
-        if ((getFragmentManager().getBackStackEntryCount() > 0 || mTabFragment.isTabDismiss())
-                && !mMoreFragment.isEnable()) {
+        if ((getFragmentManager().getBackStackEntryCount() > 0 || mTabFragment.isTabDismiss())) {
             mPrivacyFragment.startLoadingRiseAnim(increaseScore);
         } else {
             mPrivacyFragment.startIncreaseSocreAnim(increaseScore);

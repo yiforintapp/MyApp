@@ -132,6 +132,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
+        mRootView.setVisibility(View.GONE);
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_up_to_down);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -141,7 +142,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mRootView.setVisibility(View.GONE);
                 mActivity.onTabAnimationFinish();
                 mAnimating = false;
             }
@@ -164,6 +164,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
+        mRootView.setVisibility(View.VISIBLE);
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_down_to_up);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -173,7 +174,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mRootView.setVisibility(View.VISIBLE);
                 mActivity.onTabAnimationFinish();
                 mAnimating = false;
                 listener.onShowTabListener();
