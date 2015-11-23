@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -17,6 +18,8 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -168,16 +171,30 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
 
         holder.checkBox.setClickable(false);
         final CheckBox checkBox = holder.checkBox;
-        RippleView view = (RippleView) convertView;
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View rippleView) {
-                toggle(info);
-                checkBox.setChecked(isChildChecked(info));
-            }
-        });
+
+        RippleView1 view = (RippleView1) convertView;
+        view.setCheckBox(checkBox);
+
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View rippleView) {
+//                toggle(info);
+//                checkBox.setChecked(isChildChecked(info));
+//            }
+//        });
+
+
         mItemViews.put(convertView, info);
         return convertView;
+    }
+
+    public void setCheck(View view, boolean childChecked) {
+        LeoLog.d("testsetcheck", "son setcheckF");
+        RippleView1 view2 = (RippleView1) view;
+        CheckBox checkBox = view2.getCheckBox();
+        if (checkBox != null) {
+            checkBox.setChecked(childChecked);
+        }
     }
 
     @Override

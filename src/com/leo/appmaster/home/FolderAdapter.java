@@ -15,6 +15,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ui.MaskImageView;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.appmaster.home.PrivacyNewAdaper.PrivacyNewHolder;
@@ -33,9 +34,12 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
 
     private static final int GROUP_EXPANDED = 1;
 
+
     public interface OnFolderClickListener {
         public void onGroupClick(int groupPosition, boolean isExpanded);
+
         public void onGroupCheckChanged(int groupPosition, boolean checked);
+
         public void onSelectionChange(boolean selectAll, int selectedCount);
     }
 
@@ -129,6 +133,10 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         return wrapper.items.get(childPosition);
     }
 
+    public void setCheck(View view, boolean childChecked) {
+        LeoLog.d("testsetcheck", "father setcheckF");
+    }
+
     @Override
     public long getGroupId(int groupPosition) {
         return groupPosition;
@@ -158,6 +166,7 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
     }
 
     public abstract Object getFirstVisibleGroup(int firstVisibleItem);
+
     public abstract int getFirstVisibleGroupPosition(int firstVisibleItem);
 
     public int getGroupPosition(T data) {
@@ -250,6 +259,7 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         if (mListener != null) {
             mListener.onSelectionChange(mSelectData.size() == mSrcList.size(), mSelectData.size());
         }
+        notifyDataSetChanged();
     }
 
     public void deselectAll(int groupPosition) {
@@ -275,6 +285,7 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         if (mListener != null) {
             mListener.onSelectionChange(mSelectData.size() == mSrcList.size(), mSelectData.size());
         }
+        notifyDataSetChanged();
     }
 
     protected DisplayImageOptions getMediaOptions() {
@@ -294,7 +305,9 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
     }
 
     protected abstract String getPath(T data);
+
     protected abstract int getChildTagId();
+
     protected abstract int getGroupTagId();
 
     public List<ItemsWrapper> format(List<T> list) {

@@ -23,6 +23,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
@@ -98,6 +99,16 @@ public class RippleView1 extends RelativeLayout {
     public RippleView1(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         childView = this;
+    }
+
+    CheckBox mCheckBox;
+
+    public void setCheckBox(CheckBox checkBox) {
+        mCheckBox = checkBox;
+    }
+
+    public CheckBox getCheckBox() {
+        return mCheckBox;
     }
 
     public RippleView1(Context context, AttributeSet attrs, int defStyle) {
@@ -573,7 +584,9 @@ public class RippleView1 extends RelativeLayout {
             } else {
                 // otherwise, just perform click on child
 //                childView.performClick();
+                LeoLog.d("testClickEvent", "PerformClickEvent");
                 if (listener != null) {
+                    LeoLog.d("testClickEvent", "click!");
                     listener.onClick(RippleView1.this);
                 }
             }

@@ -2,6 +2,7 @@ package com.leo.appmaster.home;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,21 +50,21 @@ public class PrivacyNewVideoAdapter extends PrivacyNewAdaper<VideoItemBean> {
         }
         holder.checkBox.setClickable(false);
 
-//        MaterialRippleLayout view = (MaterialRippleLayout) convertView;
-//        View clickView = view.findViewById(R.id.rv_click_view);
-//        clickView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View rippleView) {
-//                toggle(info);
-//            }
-//        });
-
+//        RippleView1 view = (RippleView1) convertView;
 //        view.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View rippleView) {
 //                toggle(info);
 //            }
 //        });
+//
+//        if (view.getParent() instanceof AdapterView) {
+//            final AdapterView adapterView = (AdapterView) view.getParent();
+//            final long id = adapterView.getItemIdAtPosition(position);
+//            if (adapterView.getOnItemClickListener() != null)
+//                adapterView.getOnItemClickListener().onItemClick(adapterView, view, position, id);
+//        }
+
         mItemsView.put(convertView, info);
         return convertView;
     }

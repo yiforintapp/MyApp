@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/10/22.
  */
-public class FolderVidFragment extends FolderFragment<VideoItemBean> {
+public class FolderVidFragment extends FolderFragment<VideoItemBean> implements ExpandableListView.OnChildClickListener {
     private static final String TAG = "FolderVidFragment";
 
     public static FolderVidFragment newInstance() {
@@ -45,6 +46,7 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mProcessTv.setText(R.string.pri_pro_hide_vid);
+        mListView.setOnChildClickListener(this);
     }
 
     private void hideAllVidBackground(final List<String> photoItems, final int incScore) {
@@ -152,5 +154,13 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> {
             str += " (" + selectedCount + ")";
         }
         mProcessTv.setText(str);
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+        VideoItemBean info = (VideoItemBean) mAdapter.getChild(i, i1);
+        mAdapter.toggle(info);
+        mAdapter.setCheck(view,mAdapter.isChildChecked(info));
+        return false;
     }
 }
