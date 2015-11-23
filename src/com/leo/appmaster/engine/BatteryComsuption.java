@@ -152,7 +152,6 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 	/**
 	 * Sets name and icon
 	 * 
-	 * @param uid
 	 *            Uid of the application
 	 */
 	private void getNameIcon() {

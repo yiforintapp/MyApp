@@ -32,19 +32,19 @@ public class UninstallActivity extends BaseActivity implements View.OnClickListe
     private AppDeleteAdapter mDeleteAdapter;
     private CommonToolbar mTitleBar;
     private Handler mHandler = new Handler();
-
+    private View mNothingToShowView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uninstall);
-        
-        if(getIntent().getBooleanExtra("from_quickhelper", false)){
-          SDKWrapper.addEvent(this, SDKWrapper.P1,
-                  "assistant", "uninstall_cnts");
-      }
-        
+
+        if (getIntent().getBooleanExtra("from_quickhelper", false)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "assistant", "uninstall_cnts");
+        }
+
         initUI();
         loadData();
     }
@@ -62,6 +62,8 @@ public class UninstallActivity extends BaseActivity implements View.OnClickListe
         mListview = (ListView) findViewById(R.id.list_uninstall);
         mDeleteAdapter = new AppDeleteAdapter(mDeleteManager, this);
         mListview.setAdapter(mDeleteAdapter);
+
+        mNothingToShowView = findViewById(R.id.content_show_nothing);
     }
 
     private void loadData() {
@@ -146,5 +148,10 @@ public class UninstallActivity extends BaseActivity implements View.OnClickListe
 
         }
 
+    }
+
+    public void showNothing() {
+        mListview.setVisibility(View.GONE);
+        mNothingToShowView.setVisibility(View.VISIBLE);
     }
 }
