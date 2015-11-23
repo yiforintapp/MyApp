@@ -2,4 +2,6 @@
 <resources>
     <dimen name="home_menu_divider_left">0dp</dimen>
     <dimen name="home_menu_divider_right">50dp</dimen>
+    <dimen name="out_circle_adpt">0dp</dimen>
+    <dimen name="in_circle_adpt">0dp</dimen>
 </resources>

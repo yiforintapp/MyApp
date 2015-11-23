@@ -338,4 +338,6 @@
     <dimen name="secur_list_height">400dp</dimen>
     <dimen name="secur_ckb_hgt">35dp</dimen>
     <dimen name="secur_btm_hgt">95dp</dimen>
+    <dimen name="out_circle_adpt">0dp</dimen>
+    <dimen name="in_circle_adpt">0dp</dimen>
 </resources>

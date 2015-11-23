@@ -409,4 +409,6 @@
 
     <dimen name="applock_text_title_size">16dp</dimen>
     <dimen name="applock_text_desc_size">12dp</dimen>
+    <dimen name="out_circle_adpt">20dp</dimen>
+    <dimen name="in_circle_adpt">10dp</dimen>
 </resources>

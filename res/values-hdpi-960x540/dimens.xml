@@ -275,4 +275,6 @@
     <dimen name="wifi_scaning_fragment_height">200dp</dimen>
     <dimen name="wifi_scaning_loading_size">24dp</dimen>
     <dimen name="wifi_result_trans_content">165dp</dimen>
+    <dimen name="out_circle_adpt">0dp</dimen>
+    <dimen name="in_circle_adpt">0dp</dimen>
 </resources>

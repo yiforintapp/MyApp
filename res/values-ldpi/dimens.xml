@@ -268,4 +268,6 @@
     <dimen name="wifi_fragment_padding">15dp</dimen>
     <dimen name="privacy_input_cb_pd_lf">24dp</dimen>
     <dimen name="sec_gde_content_pd">18dp</dimen>
+    <dimen name="out_circle_adpt">0dp</dimen>
+    <dimen name="in_circle_adpt">0dp</dimen>
 </resources>
