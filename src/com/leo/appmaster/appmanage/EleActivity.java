@@ -117,10 +117,13 @@ public class EleActivity extends BaseFragmentActivity {
                     pb_loading_ele.setVisibility(View.GONE);
                     if (mList != null && mList.size() > 0) {
 
+                        mEmptyBg.setVisibility(View.GONE);
                         listview_ele.setVisibility(View.VISIBLE);
                         adapter.setData(mList);
                     } else {
+
                         mEmptyBg.setVisibility(View.VISIBLE);
+                        listview_ele.setVisibility(View.GONE);
                     }
                     break;
             }
