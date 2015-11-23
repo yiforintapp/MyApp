@@ -156,7 +156,7 @@ public class HomeScanningController {
         mAppAnim = createScanningAnim(mAppImg, mAppText);
 
         mAppAnim.totalAnim.start();
-        mFragment.scanningPercent(UP_LIMIT_APP, 0, PER_APP);
+        mActivity.scanningFromPercent(UP_LIMIT_APP, 0, PER_APP);
     }
 
     private void onAnimatorEnd(Animator animation) {
@@ -165,21 +165,21 @@ public class HomeScanningController {
 
             mPicAnim = createScanningAnim(mPicImg, mPicText);
             int currPct = mActivity.getScanningPercent();
-            mFragment.scanningPercent(UP_LIMIT_PIC, currPct, PER_PIC);
+            mActivity.scanningFromPercent(UP_LIMIT_PIC, currPct, PER_PIC);
             mPicAnim.totalAnim.start();
         } else if (animation == mPicAnim.innerScaleAnim) {
             mFragment.onAnimatorEnd(mPicImg);
 
             mVidAnim = createScanningAnim(mVidImg, mVidText);
             int currPct = mActivity.getScanningPercent();
-            mFragment.scanningPercent(UP_LIMIT_VID, currPct, PER_VID);
+            mActivity.scanningFromPercent(UP_LIMIT_VID, currPct, PER_VID);
             mVidAnim.totalAnim.start();
         } else if (animation == mVidAnim.innerScaleAnim) {
             mFragment.onAnimatorEnd(mVidImg);
 
             mPrivacyAnim = createPrivacyAnim(mPrivacyImg, mPrivacyText);
             int currPct = mActivity.getScanningPercent();
-            mFragment.scanningPercent(mDurationPrivacy, currPct, PER_PRI + 1);
+            mActivity.scanningFromPercent(mDurationPrivacy, currPct, PER_PRI + 1);
             mPrivacyAnim.totalAnim.start();
         } else {
             mFragment.onAnimatorEnd(mPrivacyImg);

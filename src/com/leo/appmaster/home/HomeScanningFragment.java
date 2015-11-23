@@ -40,7 +40,7 @@ import com.leo.tools.animator.ObjectAnimator;
 /**
  * Created by Jasper on 2015/10/18.
  */
-public class HomeScanningFragment extends Fragment implements Animator.AnimatorListener, View.OnClickListener {
+public class HomeScanningFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
 
@@ -140,7 +140,6 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
 
         mController = new HomeScanningController(mActivity, this, mNewAppIv, mNewAppText,
                 mNewPhotoIv, mNewPhotoText, mNewVideoIv, mNewVideoText, mNewPrivacyIv, mNewPrivacyText);
-//        startScan();
         startScanController();
     }
 
@@ -165,83 +164,6 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
 //        }
 //    }
 
-
-    public void startScan() {
-        if (mScanning) return;
-
-        startScanAnim();
-        mProgressTv.setText(R.string.pri_pro_scanning);
-        mCancelBtn.setVisibility(View.VISIBLE);
-        mProcessBtn.setVisibility(View.GONE);
-        LeoLog.i(TAG, "start to scaning.");
-        mScanning = true;
-        int score = mPrivacyHelper.getSecurityScore();
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_" + score);
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                long start = SystemClock.elapsedRealtime();
-                mAppList = lm.getNewAppList();
-                mAppScanFinish = true;
-                int appScore = lm.getSecurityScore(mAppList);
-                mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, appScore);
-                LeoLog.i(TAG, "appList, cost: " + (SystemClock.elapsedRealtime() - start));
-            }
-        });
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                long start = SystemClock.elapsedRealtime();
-                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                mPhotoList = pdm.getAddPic();
-                mPhotoScanFinish = true;
-                int picScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.size());
-                LeoLog.i(TAG, "photoItems, cost: " + (SystemClock.elapsedRealtime() - start));
-                if (!mAppAnimator.isRunning() && !mPhotoAnimator.isRunning()) {
-                    ThreadManager.getUiThreadHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            updatePhotoList();
-                        }
-                    });
-                }
-
-                start = SystemClock.elapsedRealtime();
-                mVideoList = pdm.getAddVid();
-                mVideoScanFinish = true;
-                int vidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
-                LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
-                if (!mAppAnimator.isRunning() && !mPhotoAnimator.isRunning() && !mVideoAnimator.isRunning()) {
-                    ThreadManager.getUiThreadHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            updateVideoList();
-                            if (!mPrivacyAnimator.isRunning()) {
-                                onScannigFinish(mAppList, mPhotoList, mVideoList);
-                            }
-                        }
-                    });
-                }
-
-                int dataScore = picScore + vidScore;
-                mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, dataScore);
-
-                if ((mAppList == null || mAppList.isEmpty())
-                        && (mPhotoList == null || mPhotoList.isEmpty())
-                        && (mVideoList == null || mVideoList.isEmpty())) {
-                    start = SystemClock.elapsedRealtime();
-                    PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-                    List<ContactBean> contactBeans = pcm.getFrequentContacts();
-                    mActivity.setContactList(contactBeans);
-                    LeoLog.i(TAG, "contactBeans, cost: " + (SystemClock.elapsedRealtime() - start));
-                } else {
-                    loadContacts();
-                }
-            }
-        });
-    }
-
     private void startScanController() {
         if (mScanning) return;
 
@@ -263,53 +185,6 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
             }
         });
         loadContacts();
-    }
-
-    private void startScanAnim() {
-        mAppAnimator = getAnimtion(mNewAppIv, mNewAppText, 3);
-        mPhotoAnimator = getAnimtion(mNewPhotoIv, mNewPhotoText, 3);
-        mVideoAnimator = getAnimtion(mNewVideoIv, mNewVideoText, 1);
-        mPrivacyAnimator = getAnimtion(mNewPrivacyIv, mNewPrivacyText, 1);
-
-        AnimatorSet allAnim = new AnimatorSet();
-        allAnim.playSequentially(mAppAnimator, mPhotoAnimator, mVideoAnimator, mPrivacyAnimator);
-        mScanningDuration = (int) allAnim.getDuration();
-
-        allAnim.start();
-    }
-
-    private AnimatorSet getAnimtion(ScanningImageView scanningImageView,
-                                    ScanningTextView scanningTextView,
-                                    int repeatCount) {
-        AnimatorSet appAnimSet = new AnimatorSet();
-        // 外环放大
-        ObjectAnimator scaleImgAnim = ObjectAnimator.ofFloat(scanningImageView, "scaleRatio", 0f, 1f);
-        scaleImgAnim.setInterpolator(new LinearInterpolator());
-        scaleImgAnim.setDuration(300);
-
-        ObjectAnimator scaleTextAnim = ObjectAnimator.ofFloat(scanningTextView, "scaleRatio", 0f, 1f);
-        scaleTextAnim.setInterpolator(new LinearInterpolator());
-        scaleTextAnim.setDuration(300);
-
-        AnimatorSet scaleAnim = new AnimatorSet();
-        scaleAnim.playTogether(scaleImgAnim, scaleTextAnim);
-
-        float maxRotateDegree = 360 * (repeatCount + 1);
-        scanningImageView.setMaxRotate(maxRotateDegree);
-
-        int duration = 400 * (repeatCount + 1);
-        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(scanningImageView, "rotateDegree", 1f, maxRotateDegree);
-        rotateAnim.setInterpolator(new LinearInterpolator());
-        rotateAnim.setDuration(duration);
-
-        ObjectAnimator innerScaleAnim = ObjectAnimator.ofFloat(scanningImageView, "innerDrawableScale",
-                ScanningImageView.INNER_SCALE, 1f);
-        innerScaleAnim.setInterpolator(new LinearInterpolator());
-        innerScaleAnim.setDuration(300);
-        appAnimSet.playSequentially(scaleAnim, rotateAnim, innerScaleAnim);
-
-        appAnimSet.addListener(this);
-        return appAnimSet;
     }
 
     private void loadContacts() {
@@ -340,13 +215,6 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
                 mActivity.onScanningFinish(appList, photoItems, videoItemBeans);
             }
         });
-    }
-
-    @Override
-    public void onAnimationStart(Animator animation) {
-        if (animation == mAppAnimator) {
-            mActivity.onScanningStart(7200);
-        }
     }
 
     public void onAnimatorEnd(ScanningImageView imageView) {
@@ -413,39 +281,6 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
         }
     }
 
-    @Override
-    public void onAnimationEnd(Animator animation) {
-        if (isDetached() || isRemoving() || getActivity() == null) return;
-        Context context = AppMasterApplication.getInstance();
-        if (animation == mAppAnimator) {
-            updateAppList();
-            int count = mAppList == null ? 0 : mAppList.size();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "app_cnts_" + count);
-        } else if (animation == mPhotoAnimator) {
-            updatePhotoList();
-            int count = mPhotoList == null ? 0 : mPhotoList.size();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "pic_cnts_" + count);
-        } else if (animation == mVideoAnimator) {
-            updateVideoList();
-            int count = mVideoList == null ? 0 : mVideoList.size();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "vid_cnts_" + count);
-        } else if (animation == mPrivacyAnimator) {
-            LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            boolean lostOpen = lsm.isUsePhoneSecurity();
-            IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-            boolean intruderOpen = ism.getIntruderMode();
-            boolean result = lostOpen && intruderOpen;
-            mPrivacyCountIv.setImageResource(result ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
-            mPrivacyCountIv.setVisibility(View.VISIBLE);
-
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
-            onScannigFinish(mAppList, mPhotoList, mVideoList);
-        }
-    }
-
     private void updateAppList() {
         int count = mAppList == null ? 0 : mAppList.size();
         if (count == 0) {
@@ -485,20 +320,6 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
     }
 
     @Override
-    public void onAnimationCancel(Animator animation) {
-
-    }
-
-    @Override
-    public void onAnimationRepeat(Animator animation) {
-
-    }
-
-    public boolean isScanning() {
-        return mScanning;
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_cancel_tv:
@@ -525,11 +346,4 @@ public class HomeScanningFragment extends Fragment implements Animator.AnimatorL
         return false;
     }
 
-    public void scanningPercent(int duration, int from, int to) {
-        mActivity.scanningPercent(duration, from, to);
-    }
-
-    public int getScanningPercent() {
-        return mActivity.getScanningPercent();
-    }
 }

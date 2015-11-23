@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,35 +195,7 @@ public class HomeMoreAdapter extends BaseAdapter {
         int stringId = mStrArray.get(position);
         holder.textView.setText(stringId);
         if (getItemViewType(position) != ITEM_LABEL) {
-            int drawableId = mDrawableArray.get(stringId);
-            if (holder.imageView != null) {
-                holder.imageView.setImageResource(drawableId);
-            }
-
-            Context context = AppMasterApplication.getInstance();
-            AppMasterPreference preference = AppMasterPreference.getInstance(context);
-            if (drawableId == ID_RES_CONTACT_CALL) {
-                int callCount = preference.getCallLogNoReadCount();
-                if (callCount > 0) {
-                    holder.readTip.setVisibility(View.VISIBLE);
-                } else {
-                    holder.readTip.setVisibility(View.GONE);
-                }
-            } else {
-                holder.readTip.setVisibility(View.GONE);
-            }
-
-            if (drawableId == ID_RES_CONTACT_SMS) {
-                int msgCount = preference.getMessageNoReadCount();
-                if (msgCount > 0) {
-                    holder.readTip.setVisibility(View.VISIBLE);
-                } else {
-                    holder.readTip.setVisibility(View.GONE);
-                }
-            }
-//            else {
-//                holder.readTip.setVisibility(View.GONE);
-//            }
+            checkReddotVisibility(position, holder);
         }
         if (!isLabel(position)) {
             if (isLabel(position + 1)) {
@@ -231,6 +205,34 @@ public class HomeMoreAdapter extends BaseAdapter {
             }
         }
         return convertView;
+    }
+
+    private void checkReddotVisibility(int position, MoreHolder holder) {
+        int stringId = mStrArray.get(position);
+        int drawableId = mDrawableArray.get(stringId);
+        if (holder.imageView != null) {
+            holder.imageView.setImageResource(drawableId);
+        }
+
+        Context context = AppMasterApplication.getInstance();
+        AppMasterPreference preference = AppMasterPreference.getInstance(context);
+        if (drawableId == ID_RES_CONTACT_CALL) {
+            int callCount = preference.getCallLogNoReadCount();
+            holder.readTip.setVisibility(callCount > 0 ? View.VISIBLE : View.GONE);
+        } else if (drawableId == ID_RES_CONTACT_SMS) {
+            int msgCount = preference.getMessageNoReadCount();
+            holder.readTip.setVisibility(msgCount > 0 ? View.VISIBLE : View.GONE);
+        } else if (drawableId == ID_RES_HIDE_IMG) {
+            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+            boolean picReddotExist = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+            holder.readTip.setVisibility(picReddotExist ? View.VISIBLE : View.GONE);
+        } else if (drawableId == ID_RES_HIDE_VIDEO) {
+            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+            boolean vidReddotExist = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+            holder.readTip.setVisibility(vidReddotExist ? View.VISIBLE : View.GONE);
+        } else {
+            holder.readTip.setVisibility(View.GONE);
+        }
     }
 
     private boolean isLabel(int position) {

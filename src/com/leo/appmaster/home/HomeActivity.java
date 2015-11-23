@@ -36,7 +36,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -59,7 +58,6 @@ import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
-import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -72,7 +70,6 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
-import com.leo.appmaster.ui.LinearRippleView;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
@@ -323,7 +320,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mPrivacyFragment.showScanningPercent(duration);
     }
 
-    public void scanningPercent(int duration, int from, int to) {
+    public void scanningFromPercent(int duration, int from, int to) {
         mPrivacyFragment.showScanningPercent(duration, from, to);
     }
 
@@ -1091,14 +1088,28 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mProcessedMgr = null;
         mProcessAlreadyTimeout = false;
         getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
         if (fragment instanceof PrivacyNewAppFragment) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
         } else if ((fragment instanceof PrivacyNewPicFragment)
                 || (fragment instanceof FolderPicFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_PIC);
+            boolean picConsumed = preferenceTable.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
+            if (!picConsumed) {
+                preferenceTable.putBoolean(PrefConst.KEY_PIC_COMSUMED, true);
+                preferenceTable.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, true);
+                mMoreFragment.updateHideRedTip();
+            }
         } else if ((fragment instanceof PrivacyNewVideoFragment)
                 || (fragment instanceof FolderVidFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_VID);
+            boolean vidConsumed = preferenceTable.getBoolean(PrefConst.KEY_VID_COMSUMED, false);
+            if (!vidConsumed) {
+                preferenceTable.putBoolean(PrefConst.KEY_VID_COMSUMED, true);
+                preferenceTable.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, true);
+                mMoreFragment.updateHideRedTip();
+            }
         }
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override

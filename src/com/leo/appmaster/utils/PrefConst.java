@@ -74,4 +74,10 @@ public class PrefConst {
     public static final String KEY_SWIFTY_TITLE = "swifty_title";
     public static final String KEY_SWIFTY_TYPE = "swifty_type";
     public static final String KEY_SWIFTY_URL = "swifty_url";
+
+    // 隐私扫描处理图片、视频处理，小红点消费记录
+    public static final String KEY_PIC_COMSUMED = "pic_comsumed";
+    public static final String KEY_PIC_REDDOT_EXIST = "pic_dot_exist";
+    public static final String KEY_VID_COMSUMED = "vid_comsumed";
+    public static final String KEY_VID_REDDOT_EXIST = "vid_dot_exist";
 }
