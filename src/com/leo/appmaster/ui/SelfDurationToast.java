@@ -2,6 +2,7 @@ package com.leo.appmaster.ui;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
@@ -82,20 +83,10 @@ public class SelfDurationToast {
         contentView.setVisibility(View.VISIBLE);
 
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.anim_left_to_right);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
+        animation.setAnimationListener(new AnimationListenerAdapter() {
             @Override
             public void onAnimationEnd(Animation animation) {
                 showResult();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
             }
         });
         contentView.startAnimation(animation);
@@ -152,6 +143,7 @@ public class SelfDurationToast {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.wifi_change_toast, null);
         view.setBackgroundResource(R.color.transparent);
+
         mArrow = (ImageView) view.findViewById(R.id.iv_arrow);
         realLoading = (ImageView) view.findViewById(R.id.loding_iv);
         realLoading.setImageResource(R.drawable.real_loading);
@@ -173,8 +165,9 @@ public class SelfDurationToast {
                 wifiIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 try {
                     mContext.startActivity(wifiIntent);
+                    handleHide();
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         });
@@ -211,10 +204,10 @@ public class SelfDurationToast {
     private int mX, mY;
     private float mHorizontalMargin;
     private float mVerticalMargin;
-    private View mView;
+    private static View mView;
     private View mNextView;
 
-    private WindowManager mWM;
+    private static WindowManager mWM;
     private final WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
 
 
@@ -328,7 +321,7 @@ public class SelfDurationToast {
      * schedule handleShow into the right thread
      */
     public void show() {
-        setGravity(Gravity.LEFT | Gravity.TOP, DipPixelUtil.dip2px(mContext, 7), DipPixelUtil.dip2px(mContext, 32));
+        setGravity(Gravity.LEFT | Gravity.TOP, DipPixelUtil.dip2px(mContext, 10), DipPixelUtil.dip2px(mContext, 40));
         mHandler.post(mShow);
         if (mDuration > 0) {
             mHandler.postDelayed(mHide, mDuration);
@@ -358,10 +351,6 @@ public class SelfDurationToast {
         final WindowManager.LayoutParams params = mParams;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
-
-//        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-//                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-//                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
 
         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
@@ -406,7 +395,7 @@ public class SelfDurationToast {
         }
     }
 
-    private void handleHide() {
+    private static void handleHide() {
         if (mView != null) {
             if (mView.getParent() != null) {
                 mWM.removeView(mView);

@@ -1,28 +1,13 @@
 package com.leo.appmaster.mgr.impl;
 
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -30,23 +15,15 @@ import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.ui.SelfDurationToast;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.TextFormater;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.utils.WifiAdmin;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.appmaster.wifiSecurity.WifiSettingActivity;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 
 public class WifiSecurityManagerImpl extends WifiSecurityManager {
@@ -55,22 +32,21 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
     private static final String ACTIVITYNAME = "WifiSecurityActivity";
     private static final String SCAN_WIFI_NAME = "scan_wifi_name";
     private WifiAdmin wifiManager;
-    private Map<String, Float> mAvailableURLs;
     private boolean mLastScanState = false;
     private long lastTimeIn;
     private long wifiToastLastIn;
-    private boolean isStartPG = false;
+//    private boolean isStartPG = false;
 
 
-    private android.os.Handler mHandler = new android.os.Handler() {
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case DONT_SHOW_PG_START:
-                    isStartPG = false;
-                    break;
-            }
-        }
-    };
+//    private android.os.Handler mHandler = new android.os.Handler() {
+//        public void handleMessage(android.os.Message msg) {
+//            switch (msg.what) {
+//                case DONT_SHOW_PG_START:
+//                    isStartPG = false;
+//                    break;
+//            }
+//        }
+//    };
 
     public WifiSecurityManagerImpl() {
         wifiManager = WifiAdmin.getInstance(mContext);
@@ -81,7 +57,7 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         LeoLog.d("testwifiBor", "onCreate");
-        isStartPG = true;
+//        isStartPG = true;
         mContext.registerReceiver(new ConnectionChangeReceiver(), filter);
 
         lastTimeIn = System.currentTimeMillis();
@@ -284,14 +260,16 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
                 }
 
                 //first time start PG do not go this
-                if (needToHandle && !isStartPG) {
+//                if (needToHandle && !isStartPG) {
+                if (needToHandle) {
                     handleWifiChange();
-                } else {
-                    mHandler.sendEmptyMessageDelayed(DONT_SHOW_PG_START, 1500);
                 }
+//                else {
+//                    mHandler.sendEmptyMessageDelayed(DONT_SHOW_PG_START, 1500);
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
-                isStartPG = false;
+//                isStartPG = false;
             }
         }
     }
@@ -338,7 +316,6 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
             boolean isWifiScaned = isScanAlready(wifiName);
 
             if (nowIn - wifiToastLastIn > 5000 && !isWifiScaned) {
-//            if (nowIn - wifiToastLastIn > 5000) {
                 if (wifiState == NOT_SAFE) {
                     LeoLog.d("testWifiPart", "wifiState is :" + wifiState + " , show NOT_SAFE");
                     SelfDurationToast.makeText(mContext, wifiName, TOAST_SHOW_TIME, wifiState).show();

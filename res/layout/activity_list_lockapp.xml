@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -38,41 +39,29 @@
             </RelativeLayout>
         </com.leo.appmaster.ui.MaterialRippleLayout>
 
-        <ImageView
-            android:id="@+id/tip_help"
+        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/tip_help0"
             android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/lock_setting0"
-            android:background="@drawable/title_bar_option_selector"
-            android:padding="16dp"
-            android:src="@drawable/help_icon_n" />
+            app:rippleColor="@color/menu_ripple"
+            app:rippleDuration="150"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
-        <!--<com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/lock_tip_help0"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_toLeftOf="@+id/lock_setting0"-->
-        <!--app:rippleColor="@color/menu_ripple"-->
-        <!--app:rippleDelayClick="false"-->
-        <!--app:rippleDuration="250"-->
-        <!--app:rippleHover="true"-->
-        <!--app:rippleOverlay="true">-->
+            <RelativeLayout
+                android:id="@+id/tip_help_click"
+                style="@style/ToolbarIcon">
 
-        <!--<RelativeLayout-->
-        <!--android:id="@+id/lock_tip_help"-->
-        <!--style="@style/ToolbarIcon">-->
-
-        <!--<ImageView-->
-        <!--android:id="@+id/tip_help"-->
-        <!--android:layout_width="22dp"-->
-        <!--android:layout_height="22dp"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:adjustViewBounds="true"-->
-        <!--android:background="@drawable/help_icon_n" />-->
-        <!--</RelativeLayout>-->
-        <!--</com.leo.appmaster.ui.MaterialRippleLayout>-->
-
+                <ImageView
+                    android:id="@+id/tip_help"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/help_icon_n" />
+            </RelativeLayout>
+        </com.leo.appmaster.ui.MaterialRippleLayout>
     </RelativeLayout>
 
     <ListView
@@ -111,14 +100,26 @@
             android:layout_alignParentBottom="true"
             android:gravity="center">
 
-            <Button
-                android:id="@+id/finish"
-                android:layout_width="200dp"
+            <com.leo.appmaster.ui.RippleView1
+                android:id="@+id/rv_finish"
+                android:layout_width="210dp"
                 android:layout_height="40dp"
-                android:background="@drawable/manager_done_button_selecter"
-                android:text="@string/applock_guide_set_finish"
-                android:textColor="#ffffff"
-                android:textSize="18dp" />
+                android:layout_gravity="center"
+                android:background="@drawable/blue_radius_btn_shape"
+                app:rippleColor="@color/button_blue_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
+
+                <Button
+                    android:id="@+id/finish"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/blue_radius_btn_shape"
+                    android:text="@string/applock_guide_set_finish"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+            </com.leo.appmaster.ui.RippleView1>
         </RelativeLayout>
 
         <ScrollView

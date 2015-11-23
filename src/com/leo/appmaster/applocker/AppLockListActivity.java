@@ -68,8 +68,11 @@ public class AppLockListActivity extends BaseActivity implements
     private View mBarView;
     //    private View mClickView;
     private ImageView mRedDot, mGuideHelpTipBt;
+    private View mGuideHelpTipBtClick;
+    private View mGuideHelpTip;
     private TextView mSecurityGuideBt, mAutoGuideBt, mBackageGroundBt;
     private Button mFinishBt;
+    private RippleView1 mFinishBtClick;
     private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL;
     private TextView mSecurityText, mAutoText, mBackGroudText;
     private View mGuideTip;
@@ -177,15 +180,12 @@ public class AppLockListActivity extends BaseActivity implements
 
         mLockModeView = (RippleView1) mHeadView.findViewById(R.id.lock_mode_type);
         mLockModeView.setOnClickListener(this);
-//        mLockModeView.setOnRippleCompleteListener(this);
 
         mWeiZhuangView = (RippleView1) mHeadView.findViewById(R.id.weizhuang_type);
         mWeiZhuangView.setOnClickListener(this);
-//        mWeiZhuangView.setOnRippleCompleteListener(this);
 
         mLockThemeView = (RippleView1) mHeadView.findViewById(R.id.lock_theme_type);
         mLockThemeView.setOnClickListener(this);
-//        mLockThemeView.setOnRippleCompleteListener(this);
 
         mRedDot = (ImageView) mHeadView.findViewById(R.id.theme_red_dot);
         mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_lockapp);
@@ -211,13 +211,16 @@ public class AppLockListActivity extends BaseActivity implements
         mSecurityRL = (RelativeLayout) findViewById(R.id.security_guide);
         mAutoRL = (RelativeLayout) findViewById(R.id.auto_guide);
         mBackgroundRL = (RelativeLayout) findViewById(R.id.background_guide);
-        mFinishBt = (Button) findViewById(R.id.finish);
-        mFinishBt.setOnClickListener(this);
 
-//        mClickView = findViewById(R.id.lock_tip_help);
-//        mClickView.setOnClickListener(this);
+        mFinishBt = (Button) findViewById(R.id.finish);
+        mFinishBtClick = (RippleView1) findViewById(R.id.rv_finish);
+        mFinishBtClick.setOnClickListener(this);
+
+
+        mGuideHelpTip = findViewById(R.id.tip_help0);
         mGuideHelpTipBt = (ImageView) findViewById(R.id.tip_help);
-        mGuideHelpTipBt.setOnClickListener(this);
+        mGuideHelpTipBtClick = findViewById(R.id.tip_help_click);
+        mGuideHelpTipBtClick.setOnClickListener(this);
 
         mSecurityText = (TextView) findViewById(R.id.security_guide_text);
         mAutoText = (TextView) findViewById(R.id.auto_guide_text);
@@ -239,6 +242,7 @@ public class AppLockListActivity extends BaseActivity implements
         }
         boolean needAppGuide = needAppGuide();
         if (mWhiteMode != -1 || needAppGuide) {
+            mGuideHelpTip.setVisibility(View.VISIBLE);
             mGuideHelpTipBt.setVisibility(View.VISIBLE);
             if (needAppGuide && mGuideTip.getVisibility() == View.VISIBLE) {
                 mSecurityRL.setVisibility(View.VISIBLE);
@@ -246,6 +250,7 @@ public class AppLockListActivity extends BaseActivity implements
                 mSecurityRL.setVisibility(View.GONE);
             }
         } else {
+            mGuideHelpTip.setVisibility(View.GONE);
             mGuideHelpTipBt.setVisibility(View.GONE);
             mGuideTip.setVisibility(View.GONE);
             mLockList.setVisibility(View.VISIBLE);
@@ -643,7 +648,7 @@ public class AppLockListActivity extends BaseActivity implements
                 new AutoStartGuideList().executeGuide();
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_back");
                 break;
-            case R.id.finish:
+            case R.id.rv_finish:
                 if (mGuideTip.getVisibility() == View.VISIBLE) {
                     openHelp(false, true);
                     Animation animation = AnimationUtils.loadAnimation(AppLockListActivity.this,
@@ -653,7 +658,7 @@ public class AppLockListActivity extends BaseActivity implements
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_finish");
                 break;
-            case R.id.tip_help:
+            case R.id.tip_help_click:
                 if (mGuideTip.getVisibility() == View.GONE) {
                     openHelp(true, true);
                 } else if (mGuideTip.getVisibility() == View.VISIBLE) {
@@ -661,14 +666,6 @@ public class AppLockListActivity extends BaseActivity implements
                 }
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
-//            case R.id.lock_tip_help:
-//                if (mGuideTip.getVisibility() == View.GONE) {
-//                    openHelp(true, true);
-//                } else if (mGuideTip.getVisibility() == View.VISIBLE) {
-//                    openHelp(false, true);
-//                }
-//                AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
-//                break;
             case R.id.ct_back_rl:
                 onBackPressed();
                 break;
