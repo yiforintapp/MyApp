@@ -118,13 +118,14 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/fifthStar"
                 android:layout_width="37dp"
                 android:layout_height="37dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/five_star_bg"
+                    android:id="@+id/five_star_empty"
                     android:src="@drawable/star_empty"/>
 
                 <ImageView
@@ -132,7 +133,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/five_star"
                     android:src="@drawable/star_full_last"
-                    android:visibility="invisible"/>
+                    android:visibility="gone"/>
 
             </FrameLayout>
 

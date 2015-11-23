@@ -120,6 +120,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mHighFiveStar;
     private ImageView mHighGradeGesture;
     private RippleView1 mHighGradeBtnLt;
+    private ImageView mHighFiveEmptyStar;
     private FrameLayout mHighGrageFrame;
 
     private ImageView mOneStar;
@@ -129,7 +130,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mFiveStar;
     private ImageView mGradeGesture;
     private RippleView1 mGradeBtnLt;
+    private ImageView mFiveEmptyStar;
     private FrameLayout mGrageFrame;
+
+    private AnimatorSet mAnimatorSet;
 
     /**
      * 前往FaceBook
@@ -789,6 +793,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
             mHighGrageFrame = (FrameLayout) highInclude.findViewById(R.id.grade_frame);
             mHighGradeBtnLt = (RippleView1) highInclude.findViewById(R.id.item_btn_rv);
+            mHighFiveEmptyStar = (ImageView) highInclude.findViewById(R.id.five_star_empty);
             mHighGradeBtnLt.setOnClickListener(this);
 //            mHighGradeBtnLt.setOnRippleCompleteListener(this);
 
@@ -801,7 +806,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             include.setVisibility(View.GONE);
 
             showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
-                    mHighFourStar, mHighFiveStar, mHighGradeGesture);
+                    mHighFourStar, mHighFiveStar ,mHighFiveEmptyStar, mHighGradeGesture);
 
         } else {
 
@@ -813,6 +818,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
             mGrageFrame = (FrameLayout) include.findViewById(R.id.grade_frame);
             mGradeBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+            mFiveEmptyStar = (ImageView) include.findViewById(R.id.five_star_empty);
             mGradeBtnLt.setOnClickListener(this);
 //            mGradeBtnLt.setOnRippleCompleteListener(this);
 
@@ -824,7 +830,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             highInclude.setVisibility(View.GONE);
             include.setVisibility(View.VISIBLE);
 
-            showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar, mFiveStar, mGradeGesture);
+            showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar,
+                    mFiveStar ,mFiveEmptyStar, mGradeGesture);
         }
 
     }
@@ -844,24 +851,46 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
      */
     private void showStarAnimation(final ImageView theOne, final ImageView theTwo,
                                    final ImageView theThree, final ImageView theFour,
-                                   final ImageView theFive, final ImageView gradeGesture) {
+                                   final ImageView theFive, ImageView theEmptyFive,
+                                   final ImageView gradeGesture) {
         ObjectAnimator oneStar = getObjectAnimator(theOne);
         ObjectAnimator twoStar = getObjectAnimator(theTwo);
         ObjectAnimator threeStar = getObjectAnimator(theThree);
         ObjectAnimator fourStar = getObjectAnimator(theFour);
         ObjectAnimator fiveStar = getObjectAnimator(theFive);
 
-        float currentY = gradeGesture.getTop();
-        ObjectAnimator gestureMoveIn = ObjectAnimator.ofFloat(gradeGesture,
+        /** 手势移入 */
+        float currentY = gradeGesture.getTranslationY();
+        ObjectAnimator gestureIn = ObjectAnimator.ofFloat(gradeGesture,
                 "translationY", currentY + DipPixelUtil.dip2px(mActivity, 16), currentY);
-        gestureMoveIn.setDuration(2000);
+        gestureIn.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                gradeGesture.setVisibility(View.VISIBLE);
+            }
+        });
+        ObjectAnimator gestureShow = ObjectAnimator.ofFloat(gradeGesture, "alpha", 0f, 1f);
 
-        ObjectAnimator gestureMoveOut = ObjectAnimator.ofFloat(gradeGesture,
+        AnimatorSet gestureMoveIn = new AnimatorSet();
+        gestureMoveIn.playTogether(gestureIn, gestureShow);
+        gestureMoveIn.setDuration(1000);
+
+        /** 第五颗星星缩小放大 */
+        ObjectAnimator starScaleX = ObjectAnimator.ofFloat(theEmptyFive, "scaleX", 1f, 0.7f, 1f);
+        ObjectAnimator starScaleY = ObjectAnimator.ofFloat(theEmptyFive, "scaleY", 1f, 0.7f, 1f);
+
+        AnimatorSet fiveStarScale = new AnimatorSet();
+        fiveStarScale.playTogether(starScaleX, starScaleY);
+        fiveStarScale.setDuration(500);
+
+        /** 星星填充和手势移出 */
+        ObjectAnimator gestureOut = ObjectAnimator.ofFloat(gradeGesture,
                 "translationY", currentY, currentY + DipPixelUtil.dip2px(mActivity, 16));
 
         ObjectAnimator gestureHide = ObjectAnimator.ofFloat(gradeGesture, "alpha", 1f, 0f);
 
-        gestureMoveOut.addListener(new AnimatorListenerAdapter() {
+        gestureOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
@@ -870,28 +899,24 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         });
 
         AnimatorSet gestureAnimator = new AnimatorSet();
-        gestureAnimator.playTogether(gestureMoveOut, gestureHide);
+        gestureAnimator.playTogether(gestureOut, gestureHide);
         gestureAnimator.setDuration(1000);
 
 
         AnimatorSet starAnimator = new AnimatorSet();
         starAnimator.playSequentially(oneStar, twoStar, threeStar, fourStar, fiveStar);
 
-        ObjectAnimator emptyObjectAnimator = ObjectAnimator.ofFloat(theFive, "alpha", 1f, 1f);
-        emptyObjectAnimator.setDuration(1000);
+        AnimatorSet gestureMoveOut = new AnimatorSet();
+        gestureMoveOut.playTogether(gestureAnimator, starAnimator);
 
-        final AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(gestureMoveIn).before(starAnimator);
-        animatorSet.play(starAnimator).with(gestureAnimator);
-        animatorSet.play(emptyObjectAnimator).after(starAnimator);
 
-        animatorSet.addListener(new AnimatorListenerAdapter() {
+        ObjectAnimator emptyAnimator = ObjectAnimator.ofFloat(theFive, "alpha", 1f, 1f);
+        emptyAnimator.setDuration(1000);
 
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                gradeGesture.setVisibility(View.VISIBLE);
-            }
+        mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.playSequentially(gestureMoveIn, fiveStarScale, gestureMoveOut, emptyAnimator);
+
+        mAnimatorSet.addListener(new AnimatorListenerAdapter() {
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -901,10 +926,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 theThree.setVisibility(View.INVISIBLE);
                 theFour.setVisibility(View.INVISIBLE);
                 theFive.setVisibility(View.INVISIBLE);
-                animatorSet.start();
+                mAnimatorSet.start();
             }
         });
-        animatorSet.start();
+
+        mAnimatorSet.start();
     }
 
     /**
@@ -929,7 +955,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ObjectAnimator getObjectAnimator(ImageView img) {
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(img, "alpha", 0f, 1f);
-        objectAnimator.setDuration(250);
+        objectAnimator.setDuration(200);
         objectAnimator.addListener(new ObjectAnimStartListener(img));
 
         return objectAnimator;

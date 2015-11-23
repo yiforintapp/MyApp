@@ -1,15 +1,6 @@
 
 package com.leo.appmaster;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -32,6 +23,15 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Http request Proxy, use volley framework <br>
@@ -474,7 +474,7 @@ public class HttpRequestAgent {
                 .append(channelCode)
                 .append(".html");
         String url = stringBuilder.toString();
-        LeoLog.i("loadSwiftySecurity", "load url: " + url);
+        LeoLog.i("SwiftyFetchJob", "load url: " + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);
