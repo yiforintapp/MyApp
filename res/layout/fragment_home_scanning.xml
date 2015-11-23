@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
@@ -259,7 +259,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <com.leo.appmaster.ui.RippleView
+    <com.leo.appmaster.ui.MaterialRippleLayout
         android:id="@+id/scan_cancel_rv"
         android:layout_width="210dp"
         android:layout_height="40dp"
@@ -267,8 +267,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
         android:background="@drawable/scan_cancel_btn"
-        ripple:rv_color="@color/white_list_item_ripple"
-        ripple:rv_rippleDuration="@integer/ripple_btn_duration">
+        leo:rippleAlpha="0.5"
+        leo:rippleColor="@color/white_list_item_ripple"
+        leo:rippleDuration="250"
+        leo:rippleHover="true"
+        leo:rippleOverlay="true">
 
         <TextView
             android:id="@+id/scan_cancel_tv"
@@ -276,13 +279,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:layout_gravity="center"
             android:text="@string/pri_pro_cancel"
             android:textColor="@color/white"
             android:textSize="16dp" />
 
-    </com.leo.appmaster.ui.RippleView>
+    </com.leo.appmaster.ui.MaterialRippleLayout>
 
-    <com.leo.appmaster.ui.RippleView
+    <com.leo.appmaster.ui.MaterialRippleLayout
         android:id="@+id/scan_process_rv"
         android:layout_width="210dp"
         android:layout_height="40dp"
@@ -291,8 +295,11 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/scan_process_btn"
         android:visibility="gone"
-        ripple:rv_color="@color/white_list_item_ripple"
-        ripple:rv_rippleDuration="@integer/ripple_btn_duration">
+        leo:rippleAlpha="0.5"
+        leo:rippleColor="@color/white_list_item_ripple"
+        leo:rippleDuration="250"
+        leo:rippleHover="true"
+        leo:rippleOverlay="true">
 
         <TextView
             android:id="@+id/scan_process_tv"
@@ -300,9 +307,10 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:layout_gravity="center"
             android:text="@string/pri_pro_process"
             android:textColor="@color/white"
             android:textSize="16dp" />
 
-    </com.leo.appmaster.ui.RippleView>
+    </com.leo.appmaster.ui.MaterialRippleLayout>
 </RelativeLayout>

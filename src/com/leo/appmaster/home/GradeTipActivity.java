@@ -8,7 +8,6 @@ import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.FiveStarsLayout;
-import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.AppUtil;
 
 import android.content.Intent;
@@ -23,6 +22,8 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
 
     private TextView mTvMakeSure;
     private TextView mFeedbackSure;
+    private View mTvMakeSureClick;
+    private View mFeedbackSureClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +33,12 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         FiveStarsLayout fivestars = (FiveStarsLayout) findViewById(R.id.fsl_fivestars);
         mTvMakeSure = (TextView) findViewById(R.id.tv_make);
         mFeedbackSure = (TextView) findViewById(R.id.tv_feedback);
-        mFeedbackSure.setOnClickListener(this);
-        MaterialRippleLayout.on(mFeedbackSure)
-                .rippleColor(getResources().getColor(R.color.button_gray_ripple))
-                .rippleAlpha(0.1f)
-                .rippleHover(true)
-                .create();
-        mTvMakeSure.setOnClickListener(this);
+
+        mTvMakeSureClick = findViewById(R.id.tv_make_click);
+        mFeedbackSureClick = findViewById(R.id.tv_feedback_click);
+
+        mTvMakeSureClick.setOnClickListener(this);
+        mFeedbackSureClick.setOnClickListener(this);
     }
 
     @Override
@@ -80,18 +80,18 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 startActivity(intent);
-            } catch (Exception e) {                
+            } catch (Exception e) {
             }
         }
     }
 
     @Override
     public void onClick(View v) {
-        if (v == mTvMakeSure) {
+        if (v == mTvMakeSureClick) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
             openShowGoogleGuide();
             finish();
-        } else if (v == mFeedbackSure) {
+        } else if (v == mFeedbackSureClick) {
             Intent intent = new Intent(GradeTipActivity.this, FeedbackActivity.class);
             startActivity(intent);
             finish();

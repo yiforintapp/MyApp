@@ -29,7 +29,6 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.ScanningImageView;
 import com.leo.appmaster.ui.ScanningTextView;
 import com.leo.appmaster.utils.LeoLog;
@@ -41,15 +40,14 @@ import com.leo.tools.animator.ObjectAnimator;
 /**
  * Created by Jasper on 2015/10/18.
  */
-public class HomeScanningFragment extends Fragment implements RippleView.OnRippleCompleteListener,
-        Animator.AnimatorListener {
+public class HomeScanningFragment extends Fragment implements Animator.AnimatorListener, View.OnClickListener {
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
 
-    private RippleView mCancelBtn;
+    private View mCancelBtn;
     private TextView mCancelTv;
 
-    private RippleView mProcessBtn;
+    private View mProcessBtn;
     private TextView mProcessTv;
 
     private TextView mScannTitleTv;
@@ -107,14 +105,16 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
         mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
         mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
 
-        mCancelBtn = (RippleView) view.findViewById(R.id.scan_cancel_rv);
+        mCancelBtn = view.findViewById(R.id.scan_cancel_rv);
         mCancelTv = (TextView) view.findViewById(R.id.scan_cancel_tv);
 
-        mProcessBtn = (RippleView) view.findViewById(R.id.scan_process_rv);
+        mProcessBtn = view.findViewById(R.id.scan_process_rv);
         mProcessTv = (TextView) view.findViewById(R.id.scan_process_tv);
 
-        mProcessBtn.setOnRippleCompleteListener(this);
-        mCancelBtn.setOnRippleCompleteListener(this);
+        mCancelTv.setOnClickListener(this);
+        mProcessTv.setOnClickListener(this);
+//        mProcessBtn.setOnRippleCompleteListener(this);
+//        mCancelBtn.setOnRippleCompleteListener(this);
 
         mNewAppIv = (ScanningImageView) view.findViewById(R.id.scan_new_app_iv);
         mNewPhotoIv = (ScanningImageView) view.findViewById(R.id.scan_media_iv);
@@ -144,20 +144,20 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
         return inflater.inflate(R.layout.fragment_home_scanning, container, false);
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        switch (rippleView.getId()) {
-            case R.id.scan_cancel_rv:
-                mScanning = false;
-                mActivity.onExitScanning();
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "cancel");
-                break;
-            case R.id.scan_process_rv:
-                mActivity.startProcess();
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "instant");
-                break;
-        }
-    }
+//    @Override
+//    public void onRippleComplete(RippleView rippleView) {
+//        switch (rippleView.getId()) {
+//            case R.id.scan_cancel_rv:
+//                mScanning = false;
+//                mActivity.onExitScanning();
+//                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "cancel");
+//                break;
+//            case R.id.scan_process_rv:
+//                mActivity.startProcess();
+//                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "instant");
+//                break;
+//        }
+//    }
 
 
     public void startScan() {
@@ -402,5 +402,20 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
 
     public boolean isScanning() {
         return mScanning;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.scan_cancel_tv:
+                mScanning = false;
+                mActivity.onExitScanning();
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "cancel");
+                break;
+            case R.id.scan_process_tv:
+                mActivity.startProcess();
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "instant");
+                break;
+        }
     }
 }
