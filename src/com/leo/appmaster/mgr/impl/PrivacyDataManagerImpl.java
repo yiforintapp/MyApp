@@ -218,7 +218,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 //        mMediaStoreChangeObserver.stopObserver();
         try {
             int newAddPicNum = getAddPicNum();
-
             int num = mString.size();
             for (int i = 0; i < num; i++) {
                 String path = mString.get(i);
