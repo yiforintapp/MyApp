@@ -79,7 +79,6 @@ public class HomeAnimView extends View {
         int tabH = getResources().getDimensionPixelSize(R.dimen.home_tab_height);
         int toolbarH = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
         int shieldTotalH = h - tabH - toolbarH;
-
         int left = getLeft() + (w - width) / 2;
         int top = getTop() + toolbarH + (shieldTotalH - height) / 2;
         Rect rect = new Rect(left, top, left + width, top + height);
@@ -87,7 +86,7 @@ public class HomeAnimView extends View {
             int cx = rect.centerX();
             int cy = rect.centerY();
             rect.scale(0.8f);
-            rect.set(cx - rect.width()/2, cy - rect.height()/2, cx + rect.width()/2, cy + rect.height()/2);
+            rect.set(cx - rect.width() / 2, cy - rect.height() / 2, cx + rect.width() / 2, cy + rect.height() / 2);
         }
         mShieldLayer.setBounds(rect.left, rect.top, rect.right, rect.bottom);
         int emptyHeaderH = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
@@ -173,6 +172,7 @@ public class HomeAnimView extends View {
 
     /**
      * 设置盾牌缩放比率
+     *
      * @param shieldScaleRatio
      */
     public void setShieldScaleRatio(float shieldScaleRatio) {
@@ -182,6 +182,7 @@ public class HomeAnimView extends View {
 
     /**
      * 设置外光环缩放比率
+     *
      * @param outCircleScaleRatio
      */
     public void setOutCircleScaleRatio(float outCircleScaleRatio) {
@@ -190,6 +191,7 @@ public class HomeAnimView extends View {
 
     /**
      * 设置内光环缩放比率
+     *
      * @param inCircleScaleRatio
      */
     public void setInCircleScaleRatio(float inCircleScaleRatio) {
@@ -198,6 +200,7 @@ public class HomeAnimView extends View {
 
     /**
      * 设置周围光环旋转比例
+     *
      * @param circleRotateRatio
      */
     public void setCircleRotateRatio(float circleRotateRatio) {
@@ -207,6 +210,7 @@ public class HomeAnimView extends View {
 
     /**
      * 设置内环、外环的透明度
+     *
      * @param circleAlpha
      */
     public void setCircleAlpha(int circleAlpha) {
@@ -215,6 +219,7 @@ public class HomeAnimView extends View {
 
     /**
      * 设置盾牌上的得分
+     *
      * @param securityScore
      */
     public void setSecurityScore(int securityScore) {

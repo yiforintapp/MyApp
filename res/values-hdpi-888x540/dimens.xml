@@ -262,6 +262,4 @@
 
     <!-- 3.1 -->
     <dimen name="home_tab_height">225dp</dimen>
-    <dimen name="out_circle_adpt">0dp</dimen>
-    <dimen name="in_circle_adpt">0dp</dimen>
 </resources>

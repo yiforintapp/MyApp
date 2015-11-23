@@ -181,11 +181,12 @@ public class HomeAnimShieldLayer extends AnimLayer {
     protected void onSizeChanged() {
         super.onSizeChanged();
         //AM-3251
-        int outCir = (int) mParent.getResources().getDimension(R.dimen.out_circle_adpt);
-        int inCir = (int) mParent.getResources().getDimension(R.dimen.in_circle_adpt);
-        mOutCircleDrawable.setBounds(getLeft()+outCir, getTop()+outCir, getRight()-outCir, getBottom()-outCir);
-        mInCircleDrawable.setBounds(getLeft()+inCir, getTop()+inCir, getRight()-inCir, getBottom()-inCir);
-
+//        int outCir = (int) mParent.getResources().getDimension(R.dimen.out_circle_adpt);
+//        int inCir = (int) mParent.getResources().getDimension(R.dimen.in_circle_adpt);
+//        mOutCircleDrawable.setBounds(getLeft() + outCir, getTop() + outCir, getRight() - outCir, getBottom() - outCir);
+//        mInCircleDrawable.setBounds(getLeft() + inCir, getTop() + inCir, getRight() - inCir, getBottom() - inCir);
+        mOutCircleDrawable.setBounds(getLeft(), getTop(), getRight(), getBottom());
+        mInCircleDrawable.setBounds(getLeft(), getTop(), getRight(), getBottom());
         mCirclePx = (getLeft() + getRight()) / 2;
         mCirclePy = (getTop() + getBottom()) / 2;
 
@@ -197,7 +198,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         int hdiff = (getHeight() - h);
 
         int l = getLeft() + wdiffHalf;
-        int t = getTop() + ((int) (topHalfRatio * (float)hdiff));
+        int t = getTop() + ((int) (topHalfRatio * (float) hdiff));
         int r = l + w;
         int b = t + h;
         mShieldDrawable.setBounds(l, t, r, b);
@@ -271,7 +272,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         bounds.left += (areaRect.width() - bounds.right) / 2.0f;
         bounds.top += (areaRect.height() - bounds.bottom) / 2.0f;
 
-        return new float[] { bounds.left, bounds.top - mTextPaint.ascent() };
+        return new float[]{bounds.left, bounds.top - mTextPaint.ascent()};
     }
 
     @Override
@@ -284,7 +285,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         int circleAlpha = mCircleAlpha;
         if (circleAlpha != 0 && shieldOffsetY != mMaxOffseteY) {
             // 绘制外环
-            circleAlpha = (int) (((float)mMaxOffseteY - (float)shieldOffsetY) / (float)mMaxOffseteY * 255f);
+            circleAlpha = (int) (((float) mMaxOffseteY - (float) shieldOffsetY) / (float) mMaxOffseteY * 255f);
             mOutCircleMatrix.setRotate(rotate, mCirclePx, mCirclePy);
             if (shieldOffsetY > 0) {
                 mOutCircleMatrix.postTranslate(0, -shieldOffsetY);
@@ -432,6 +433,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置盾牌缩放比率
+     *
      * @param shieldScale
      */
     public void setShieldScale(float shieldScale) {
@@ -444,6 +446,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置外光环缩放比率
+     *
      * @param outCircleScaleRatio
      */
     public void setOutCircleScaleRatio(float outCircleScaleRatio) {
@@ -452,6 +455,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置内光环缩放比率
+     *
      * @param inCircleScaleRatio
      */
     public void setInCircleScaleRatio(float inCircleScaleRatio) {
@@ -460,6 +464,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置周围光环旋转比例
+     *
      * @param circleRotateRatio
      */
     public void setCircleRotateRatio(float circleRotateRatio) {
@@ -468,6 +473,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置内环、外环的透明度
+     *
      * @param circleAlpha
      */
     public void setCircleAlpha(int circleAlpha) {
@@ -476,6 +482,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置盾牌上的得分
+     *
      * @param securityScore
      */
     public void setSecurityScore(int securityScore) {
@@ -484,6 +491,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置隐私扫描百分比
+     *
      * @param scanningPercent
      */
     public void setScanningPercent(int scanningPercent) {
@@ -534,6 +542,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置盾牌在隐私等级完成页面的比率，从0 ~ 1
+     *
      * @param finalShieldRatio
      */
     public void setFinalShieldRatio(float finalShieldRatio) {
@@ -542,6 +551,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     /**
      * 设置盾牌在隐私等级完成页面的文本比率，从0.76 ~ 1.34 ~ 1.0
+     *
      * @param finalTextRatio
      */
     public void setFinalTextRatio(float finalTextRatio) {

@@ -310,7 +310,7 @@
     <!--3.0-->
     <dimen name="scur_contact_char">10dp</dimen>
     <dimen name="secur_instru_grid_itme_hor_spac">0dp</dimen>
-    <dimen name="home_tab_height">213dp</dimen>
+    <dimen name="home_tab_height">202dp</dimen>
     <dimen name="home_scanning_padding_top">290dp</dimen>
     <dimen name="scanning_icon_margin_top">25dp</dimen>
     <dimen name="fragment_lock_margin_top">50dp</dimen>

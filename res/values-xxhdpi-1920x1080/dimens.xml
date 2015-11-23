@@ -203,6 +203,4 @@
     <dimen name="sec_nub_tv">2dp</dimen>
     <dimen name="sec_nub_size">14dp</dimen>
     <dimen name="sec_suc_instr_tip_tp">9dp</dimen>
-    <dimen name="out_circle_adpt">0dp</dimen>
-    <dimen name="in_circle_adpt">0dp</dimen>
 </resources>

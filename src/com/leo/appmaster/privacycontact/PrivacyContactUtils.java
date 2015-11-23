@@ -173,8 +173,6 @@ public class PrivacyContactUtils {
                     } else {
                         number = cur.getString(cur.getColumnIndex("address"));
                     }
-                    LeoLog.i("caocao", "号码：" + number);
-
                     Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
                             context, number);
                     if (icon != null) {

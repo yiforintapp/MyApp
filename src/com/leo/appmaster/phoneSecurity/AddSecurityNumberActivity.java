@@ -160,8 +160,9 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                 }
             }
         });
-        AddContactAsyncTask addContacctTask = new AddContactAsyncTask();
-        addContacctTask.execute(true);
+//        AddContactAsyncTask addContacctTask = new AddContactAsyncTask();
+//        addContacctTask.execute(true);
+        sendMsgHandler();
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
