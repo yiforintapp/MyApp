@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -26,7 +27,7 @@ import com.leo.appmaster.videohide.VideoItemBean;
 /**
  * Created by Jasper on 2015/10/16.
  */
-public class PrivacyNewVideoFragment extends PrivacyNewFragment {
+public class PrivacyNewVideoFragment extends PrivacyNewFragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "PrivacyNewVideoFragment";
     private static final int FOLDER_VIDEO_COUNT = 35;
 
@@ -188,7 +189,7 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment {
         super.onViewCreated(view, savedInstanceState);
         mVideoList = (ListView) view.findViewById(R.id.video_lv);
         mVideoList.setOnScrollListener(this);
-
+        mVideoList.setOnItemClickListener(this);
         mVideoList.addHeaderView(getEmptyHeader());
         mVideoList.setAdapter(mAdaper);
 
@@ -204,5 +205,13 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment {
             str += " (" + selectedCount + ")";
         }
         setProcessContent(str);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if (view != null && mDataList.size() > 0) {
+            VideoItemBean info = mDataList.get(i - 1);
+            mAdaper.toggle(info);
+        }
     }
 }

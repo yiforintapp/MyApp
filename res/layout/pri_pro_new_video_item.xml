@@ -1,63 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:leo="http://schemas.android.com/apk/res-auto"
+<com.leo.appmaster.ui.RippleView1 xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_tab_selector"
-    android:orientation="vertical"
-    leo:rv_color="@color/white_list_item_ripple">
+    app:rippleAlpha="0.5"
+    app:rippleColor="@color/white_list_item_ripple"
+    app:rippleDuration="250"
+    app:rippleHover="true"
+    app:rippleInAdapter="true"
+    app:rippleOverlay="true">
 
     <RelativeLayout
-        android:id="@+id/pp_video_rl"
-        android:layout_width="66dp"
-        android:layout_height="50dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="18dp">
+        android:id="@+id/rv_click_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/home_tab_selector"
+        android:clickable="true">
 
-        <ImageView
-            android:id="@+id/pp_video_iv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:background="@color/gray"
-            android:scaleType="centerCrop" />
+        <RelativeLayout
+            android:id="@+id/pp_video_rl"
+            android:layout_width="66dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/cm" />
+            <ImageView
+                android:id="@+id/pp_video_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:background="@color/gray"
+                android:scaleType="centerCrop" />
 
-        <ImageView
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/cm" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_pri_video" />
+        </RelativeLayout>
+
+        <CheckBox
+            android:id="@+id/pp_video_item_cb"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_pri_video" />
+            android:layout_height="@dimen/pri_new_app_item"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="26dp"
+            android:button="@drawable/check_box_selector"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/pp_video_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/pp_video_item_cb"
+            android:layout_toRightOf="@id/pp_video_rl"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/c2"
+            android:textSize="17dp" />
+
+        <View style="@style/priAppItem" />
     </RelativeLayout>
-
-    <CheckBox
-        android:id="@+id/pp_video_item_cb"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/pri_new_app_item"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="26dp"
-        android:button="@drawable/check_box_selector"
-        android:clickable="true" />
-
-    <TextView
-        android:id="@+id/pp_video_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/pp_video_item_cb"
-        android:layout_toRightOf="@id/pp_video_rl"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:textColor="@color/c2"
-        android:textSize="17dp" />
-
-    <View style="@style/priAppItem" />
-
-</com.leo.appmaster.ui.RippleView>
+</com.leo.appmaster.ui.RippleView1>

@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 
@@ -50,13 +49,21 @@ public class PrivacyNewVideoAdapter extends PrivacyNewAdaper<VideoItemBean> {
         }
         holder.checkBox.setClickable(false);
 
-        RippleView view = (RippleView) convertView;
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View rippleView) {
-                toggle(info);
-            }
-        });
+//        MaterialRippleLayout view = (MaterialRippleLayout) convertView;
+//        View clickView = view.findViewById(R.id.rv_click_view);
+//        clickView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View rippleView) {
+//                toggle(info);
+//            }
+//        });
+
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View rippleView) {
+//                toggle(info);
+//            }
+//        });
         mItemsView.put(convertView, info);
         return convertView;
     }
