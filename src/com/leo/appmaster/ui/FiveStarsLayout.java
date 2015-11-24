@@ -143,7 +143,8 @@ public class FiveStarsLayout extends FrameLayout{
 //        animatorSet.playSequentially(starAnimator);
         mAsMain.play(animatorI).before(starAnimator);
         mAsMain.play(animatorScale).after(animatorI);
-        mAsMain.play(starAnimator).with(animatorO);
+        
+        mAsMain.play(starAnimator).with(animatorO).after(animatorScale);
         mAsMain.play(emptyObjectAnimator).after(starAnimator);
         
         mAsMain.addListener(new AnimatorListenerAdapter() {
@@ -153,7 +154,6 @@ public class FiveStarsLayout extends FrameLayout{
                 super.onAnimationStart(animation);
                 mGradeGesture.setVisibility(View.VISIBLE);
             }
-
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);

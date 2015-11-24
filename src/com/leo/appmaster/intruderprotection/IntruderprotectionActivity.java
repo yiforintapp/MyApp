@@ -116,6 +116,10 @@ public class IntruderprotectionActivity extends BaseActivity {
                 SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                         "push_refresh", "push_Intruder_cnts");
             }
+            boolean isFromScan = i.getBooleanExtra(Constants.EXTRA_IS_FROM_SCAN, false);
+            if (isFromScan) {
+                mIsFromScan = true;
+            }
         } catch (Exception e) {
 
         }
@@ -159,15 +163,6 @@ public class IntruderprotectionActivity extends BaseActivity {
         super.onResume();
         updateData();// 重新查询数据库，做与数据相关的UI更新
         updateAll();// 更新与数据库无关的UI
-        judgeIsFromScan();
-    }
-
-    private void judgeIsFromScan() {
-        Intent intent = getIntent();
-        boolean isFromScan = intent.getBooleanExtra(Constants.EXTRA_IS_FROM_SCAN, false);
-        if (isFromScan) {
-            mIsFromScan = true;
-        }
     }
 
     @Override
