@@ -36,6 +36,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.service.TaskDetectService;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -53,6 +54,7 @@ import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 /**
  * Created by qili on 15-10-9.
@@ -63,6 +65,8 @@ public class AppLockListActivity extends BaseActivity implements
     public final static int LOAD_DATA_DONE = 112;
     public final static int DEFAULT_SORT = 0;
     public final static String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
+    private static final int IN_LOCK_GUIDE_COUNT = 3;
+
     private View mHeadView;
     private RippleView1 mLockModeView, mWeiZhuangView, mLockThemeView;
     private View mBarView;
@@ -141,8 +145,6 @@ public class AppLockListActivity extends BaseActivity implements
         initUI();
         goCnotR = 1;
         mHandler.sendEmptyMessage(INIT_UI_DONE);
-
-
         LeoLog.i("TsCost", "AppLockListActivity-onCreate: " + (SystemClock.elapsedRealtime() - start));
     }
 
@@ -225,14 +227,23 @@ public class AppLockListActivity extends BaseActivity implements
         mSecurityText = (TextView) findViewById(R.id.security_guide_text);
         mAutoText = (TextView) findViewById(R.id.auto_guide_text);
         mBackGroudText = (TextView) findViewById(R.id.background_guide_text);
+        inLockListGuideTip();
+    }
 
-        AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        boolean isShowLockAutoTip = amp.getLockAndAutoStartGuide();
-        if (!isShowLockAutoTip) {
+    /**
+     * 进入应用锁列表，引导提示
+     */
+    private void inLockListGuideTip() {
+        if (!isGuideEnough()) {
+            int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+            guideCount = guideCount + 1;
+            PreferenceTable.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
+        }
+        boolean isGuideEnough = isGuideEnough();
+        if (!isGuideEnough) {
             if (mWhiteMode != -1 || needAppGuide()) {
                 openHelp(true, false);
             }
-            amp.setLockAndAutoStartGuide(true);
         }
     }
 
@@ -254,6 +265,9 @@ public class AppLockListActivity extends BaseActivity implements
             mGuideHelpTipBt.setVisibility(View.GONE);
             mGuideTip.setVisibility(View.GONE);
             mLockList.setVisibility(View.VISIBLE);
+        }
+        if (DBG) {
+            mSecurityRL.setVisibility(View.VISIBLE);
         }
     }
 
@@ -843,5 +857,11 @@ public class AppLockListActivity extends BaseActivity implements
         } else {
             mRedDot.setVisibility(View.GONE);
         }
+    }
+
+    private boolean isGuideEnough() {
+        int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+        /*进入应用锁，引导强制提示3*/
+        return guideCount > IN_LOCK_GUIDE_COUNT;
     }
 }
