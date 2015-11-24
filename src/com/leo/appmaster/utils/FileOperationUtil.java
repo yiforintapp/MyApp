@@ -31,6 +31,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.leo.appmaster.Constants;
@@ -250,7 +251,7 @@ public class FileOperationUtil {
      * @return
      */
     public static synchronized String hideImageFile(Context ctx,
-                                             String filePath, String newName, long fileSize) {
+                                                    String filePath, String newName, long fileSize) {
 
         String str = FileOperationUtil.getDirPathFromFilepath(filePath);
         String fileName = FileOperationUtil.getNameFromFilepath(filePath);
@@ -266,7 +267,7 @@ public class FileOperationUtil {
             return null;
         }
 
-        for (int i = 0;i<paths.length;i++) {
+        for (int i = 0; i < paths.length; i++) {
             if (filePath.startsWith(paths[i]) && jugdePath(filePath, paths[i])) {
                 position = i;
                 break;
@@ -970,6 +971,9 @@ public class FileOperationUtil {
         if (isSDReady()) {
             String path = Environment.getExternalStorageDirectory()
                     .getAbsolutePath();
+            if (TextUtils.isEmpty(path)) {
+                return null;
+            }
             if (!path.endsWith(File.separator)) {
                 path += File.separator;
             }

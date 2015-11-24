@@ -31,6 +31,7 @@ import com.leo.appmaster.model.AppItemInfo;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class AppUtil {
@@ -302,7 +303,6 @@ public class AppUtil {
         float oneScaleX = SPL_SHARE_SCALE_X;
         matrix.postScale(oneScaleX, oneScaleY);
         /*缩放图1*/
-        //x + width must be <= bitmap.width()
         oneImage = Bitmap.createBitmap(oneImage, 0, 0, oneImage.getWidth(), oneImage.getHeight(), matrix, true);
          /*创建拼接Bitmap*/
         int resultWidth = oneImage.getWidth();
@@ -320,6 +320,7 @@ public class AppUtil {
 
     /*保存图片到指定路径*/
     public static boolean outPutImage(String path, Bitmap bitmap) {
+        FileOutputStream fout = null;
         try {
             File file = new File(path);
             if (!file.exists()) {
@@ -329,13 +330,22 @@ public class AppUtil {
                 }
                 file.createNewFile();
             }
-            FileOutputStream fout = new FileOutputStream(path);
+            fout = new FileOutputStream(path);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
             fout.flush();
             fout.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (fout != null) {
+                try {
+                    fout.flush();
+                    fout.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return false;
     }
