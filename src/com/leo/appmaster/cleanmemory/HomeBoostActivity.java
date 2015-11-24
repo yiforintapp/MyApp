@@ -587,7 +587,7 @@ public class HomeBoostActivity extends Activity {
         }
         if (mRocketAnim != null) {
             mRocketAnim.cancel();
-            mRocketAnim
+            mRocketAnim = null;
         }
     }
 
