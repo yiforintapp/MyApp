@@ -941,7 +941,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 theThree.setVisibility(View.INVISIBLE);
                 theFour.setVisibility(View.INVISIBLE);
                 theFive.setVisibility(View.INVISIBLE);
-                mAnimatorSet.start();
+                if (mAnimatorSet != null) {
+                    mAnimatorSet.start();
+                }
             }
         });
 

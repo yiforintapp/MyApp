@@ -270,17 +270,101 @@ public class HomeBoostActivity extends Activity {
             }
         });
 
+        mRocketAnim = new AnimatorSet();
+        mRocketAnim.playTogether(getCloudAnim(), getRocketShowAnim(), getFireAnim(),
+                getRocketUpAnim(), getLineMoveInAnim(), getLineAlphaHideAnim());
+        mRocketAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                showCleanResault();
+            }
+        });
+        mRocketAnim.start();
+
+    }
+
+    /** 背景线条消失动画 */
+    private ObjectAnimator getLineAlphaHideAnim() {
+        ObjectAnimator lineAlphaHide = ObjectAnimator.ofFloat(mLine, "alpha", 1f, 0f);
+        lineAlphaHide.setDuration(200);
+        lineAlphaHide.setStartDelay(1220);
+
+        return lineAlphaHide;
+    }
+
+    /** 背景线条进入动画 */
+    private ObjectAnimator getLineMoveInAnim() {
+        ObjectAnimator lineMoveIn = ObjectAnimator.ofFloat(mLine,
+                "translationY", -mScreenH, mLine.getTranslationY());
+        lineMoveIn.setDuration(720);
+        lineMoveIn.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mLine.setVisibility(View.VISIBLE);
+            }
+        });
+        lineMoveIn.setStartDelay(720);
+
+        return lineMoveIn;
+    }
+
+    /** 火箭上升动画 */
+    private ObjectAnimator getRocketUpAnim() {
+        ObjectAnimator rocketUpAnimator = ObjectAnimator.ofFloat(mIvRocket,
+                "translationY",
+                mIvRocket.getTranslationY(), -mScreenH);
+        rocketUpAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        rocketUpAnimator.setDuration(820);
+        rocketUpAnimator.setStartDelay(720);
+
+        return rocketUpAnimator;
+    }
+
+    /** 尾部火动画 */
+    private AnimatorSet getFireAnim() {
+        mFire.setPivotX(mFire.getWidth()/2);
+        mFire.setPivotY(mFire.getTop());
+        ObjectAnimator fireScale = ObjectAnimator.ofFloat(mFire, "scaleY", 0f, 1f);
+        fireScale.setDuration(320);
+        fireScale.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mFire.setVisibility(View.VISIBLE);
+            }
+        });
+
+        ObjectAnimator fireMoveOut = ObjectAnimator.ofFloat(mFire,
+                "translationY", mFire.getTranslationY(),
+                -mScreenH - DipPixelUtil.dip2px(HomeBoostActivity.this, 130));
+
+        fireMoveOut.setDuration(880);
+
+        AnimatorSet fireAnimator = new AnimatorSet();
+        fireAnimator.playTogether(fireScale, fireMoveOut);
+        fireAnimator.setStartDelay(720);
+
+        return  fireAnimator;
+    }
+
+    /** 火箭上升 */
+    private AnimatorSet getRocketShowAnim() {
         ObjectAnimator bgAlphaAnimator = ObjectAnimator.ofFloat(mParent, "alpha", 0f, 0.5f);
         bgAlphaAnimator.setDuration(400);
 
         ObjectAnimator rocketAnimator1 = ObjectAnimator.ofFloat(mIvRocket, "translationY",
-                       mScreenH , mIvRocket.getTranslationY());
+                mScreenH , mIvRocket.getTranslationY());
         rocketAnimator1.setDuration(400);
 
         AnimatorSet rocketShowAnimator = new AnimatorSet();
         rocketShowAnimator.playTogether(bgAlphaAnimator, rocketAnimator1);
 
-        /** 烟雾动画 */
+        return  rocketShowAnimator;
+    }
+
+    /** 烟雾动画 */
+    private AnimatorSet getCloudAnim() {
         ObjectAnimator cloudAlphaShow = ObjectAnimator.ofFloat(mIvCloud, "alpha", 0f, 1f);
         cloudAlphaShow.setDuration(120);
 
@@ -329,65 +413,7 @@ public class HomeBoostActivity extends Activity {
                 cloudToHundredAnimator, cloudFinishAnimator);
         cloudAnimator.setStartDelay(600);
 
-        /** 尾部火动画 */
-        mFire.setPivotX(mFire.getWidth()/2);
-        mFire.setPivotY(mFire.getTop());
-        ObjectAnimator fireScale = ObjectAnimator.ofFloat(mFire, "scaleY", 0f, 1f);
-        fireScale.setDuration(320);
-        fireScale.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mFire.setVisibility(View.VISIBLE);
-            }
-        });
-
-        ObjectAnimator fireMoveOut = ObjectAnimator.ofFloat(mFire,
-                "translationY", mFire.getTranslationY(),
-                -mScreenH - DipPixelUtil.dip2px(HomeBoostActivity.this, 130));
-
-        fireMoveOut.setDuration(880);
-
-        AnimatorSet fireAnimator = new AnimatorSet();
-        fireAnimator.playTogether(fireScale, fireMoveOut);
-        fireAnimator.setStartDelay(720);
-
-        /** 火箭上升动画 */
-        ObjectAnimator rocketAnimator2 = ObjectAnimator.ofFloat(mIvRocket,
-                "translationY",
-                mIvRocket.getTranslationY(), -mScreenH);
-        rocketAnimator2.setInterpolator(new AccelerateDecelerateInterpolator());
-        rocketAnimator2.setDuration(820);
-        rocketAnimator2.setStartDelay(720);
-
-        /** 背景线条动画 */
-        ObjectAnimator lineMoveIn = ObjectAnimator.ofFloat(mLine,
-                "translationY", -mScreenH, mLine.getTranslationY());
-        lineMoveIn.setDuration(720);
-        lineMoveIn.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mLine.setVisibility(View.VISIBLE);
-            }
-        });
-        lineMoveIn.setStartDelay(720);
-
-        ObjectAnimator lineAlphaHide = ObjectAnimator.ofFloat(mLine, "alpha", 1f, 0f);
-        lineAlphaHide.setDuration(200);
-        lineAlphaHide.setStartDelay(1220);
-
-        mRocketAnim = new AnimatorSet();
-        mRocketAnim.playTogether(cloudAnimator, rocketShowAnimator, fireAnimator,
-                rocketAnimator2, lineMoveIn, lineAlphaHide);
-        mRocketAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                showCleanResault();
-            }
-        });
-        mRocketAnim.start();
-
+        return  cloudAnimator;
     }
 
     private void cleanMemory() {
