@@ -109,6 +109,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private LinearLayout mContactContainor;
     private ImageView mContactArrowIv;
 
+    private static final int AD_DELAY_TIME = 1000;
+
     /**
      * 评分星星
      */
@@ -278,8 +280,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             PrivacyConfirmFragment fragment = mFragment.get();
+            LeoLog.d("MobvistaEngine", "[PrivacyConfirmFragment] onLoadingComplete -> "
+                    + imageUri + ";  fragment=" + fragment);
             if (loadedImage != null && fragment != null) {
-                LeoLog.d("MobvistaEngine", "[PrivacyConfirmFragment] onLoadingComplete -> " + imageUri);
                 fragment.initAdLayout(mCampaign, fragment.mRootView, Constants.UNIT_ID_67, loadedImage);
                 SDKWrapper.addEvent(fragment.mActivity, SDKWrapper.P1, "ad_act", "adv_shws_scanRST");
             }
@@ -299,10 +302,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_67, new MobvistaListener() {
 
                 @Override
-                public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
-                        sAdImageListener = new AdPreviewLoaderListener(PrivacyConfirmFragment.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                sAdImageListener = new AdPreviewLoaderListener(PrivacyConfirmFragment.this, campaign);
+                                ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                            }
+                        }, AD_DELAY_TIME);
+
                     }
                 }
 
