@@ -319,15 +319,13 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void startDoingBack() {
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+        pdm.unregisterMediaListener();
         String filepath = mPicturesList.get(mListPos);
-
         long totalSize = new File(filepath).length();
         int isSuccess = 3;
-
         String newPaht = ((PrivacyDataManager) MgrContext.getManager
                 (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
-
-
         if (newPaht == null) {
             isSuccess = 2;
         } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
@@ -351,7 +349,8 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             FileOperationUtil.saveImageMediaEntry(newPaht, this);
             FileOperationUtil.deleteFileMediaEntry(filepath, this);
         }
-
+        pdm.registerMediaListener();
+        pdm.notifySecurityChange();
         readyDoingDone(isSuccess);
     }
 

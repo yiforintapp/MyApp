@@ -813,6 +813,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
 
     private void startDoingBack(boolean isHide) {
         LeoLog.d("testnewLoad", "isHide:" + isHide);
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         int isSuccess = 3;
         try {
             if (mClickList != null && mClickList.size() > 0) {
@@ -820,8 +821,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                 Iterator<PhotoItem> iterator = list.iterator();
                 PhotoItem item;
                 ArrayList<PhotoItem> deleteList = new ArrayList<PhotoItem>();
-                ((PrivacyDataManager) MgrContext.getManager
-                        (MgrContext.MGR_PRIVACY_DATA)).unregisterMediaListener();
+                pdm.unregisterMediaListener();
                 if (isHide) {
                     while (iterator.hasNext()) {
                         item = iterator.next();
@@ -899,9 +899,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
 
                     }
                 }
-                ((PrivacyDataManager) MgrContext.getManager
-                        (MgrContext.MGR_PRIVACY_DATA)).registerMediaListener();
-                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+
+                pdm.registerMediaListener();
                 pdm.notifySecurityChange();
             }
         } catch (Exception e) {

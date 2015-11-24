@@ -18,16 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.videohide.VideoHideDialog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
