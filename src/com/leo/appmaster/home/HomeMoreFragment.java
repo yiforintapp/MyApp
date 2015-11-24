@@ -118,6 +118,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                 boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
                 if (!pulledEver) {
                     preferenceTable.putBoolean(PrefConst.KEY_MORE_PULLED, true);
+                    updateHideRedTip();
                 }
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_listup");
                 mSlidingLayout.setDragClickEnable(true);
@@ -177,10 +178,10 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
         boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
         LeoLog.i(TAG+1,"隐私通话："+callCount);
-        if (msgCount > 0 || callCount > 0 || picReddot || vidReddot) {
+        if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver) {
             mAdapter.notifyDataSetInvalidated();
             mUpArrow.showRedTip(true);
-        } else if (pulledEver) {
+        } else {
             mAdapter.notifyDataSetInvalidated();
             mUpArrow.showRedTip(false);
         }
@@ -189,23 +190,9 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
+        updateHideRedTip();
+
         boolean pulledEver = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_MORE_PULLED, false);
-
-        AppMasterPreference preference = AppMasterPreference.getInstance(getActivity());
-        int msgCount = preference.getMessageNoReadCount();
-        int callCount = preference.getCallLogNoReadCount();
-
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        boolean picDotExist = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
-        boolean vidDotExist = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-        LeoLog.i(TAG,"msgCount = "+msgCount+",callCount = "+callCount);
-        if (msgCount > 0 || callCount > 0 || picDotExist || vidDotExist) {
-            mUpArrow.showRedTip(true);
-            mAdapter.notifyDataSetInvalidated();
-        } else {
-            mUpArrow.showRedTip(false);
-            mAdapter.notifyDataSetInvalidated();
-        }
         if (!pulledEver) {
             mUpArrow.startUpAnimation();
         } else {
