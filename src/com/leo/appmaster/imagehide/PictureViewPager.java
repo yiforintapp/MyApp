@@ -5,13 +5,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
+
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -65,6 +66,28 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
     private final int UNHIDE_DIALOG_TYPE = 0;
     private final int DELETE_DIALOG_TYPE = 1;
+    public final static int CANCEL_HIDE = 26;
+    public final static int CANCEL_HIDE_FINISH = 27;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(final android.os.Message msg) {
+            switch (msg.what) {
+                case CANCEL_HIDE:
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            startDoingBack();
+                        }
+                    });
+                    break;
+                case CANCEL_HIDE_FINISH:
+                    int isSuccess = (Integer) msg.obj;
+                    onPostDo(isSuccess);
+                    break;
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +113,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mPicturesList = mIntent.getStringArrayListExtra("list");
             int maxSize = mPicturesList.size() - 1;
             mListPos = mIntent.getIntExtra("pos", 0);
-            
+
             // AM-533, add protect
             if (mListPos > maxSize) {
                 mListPos = maxSize;
@@ -290,120 +313,64 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void unhidePicture() {
-        BackgoundTask task = new BackgoundTask(this);
-        task.execute();
+//        BackgoundTask task = new BackgoundTask(this);
+//        task.execute();
+        doingBackGround();
     }
 
-    private class BackgoundTask extends AsyncTask<Boolean, Integer, Integer> {
-        private Context context;
-
-        BackgoundTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected Integer doInBackground(Boolean... params) {
-            String filepath = mPicturesList.get(mListPos);
-
-            long totalSize = new File(filepath).length();
-            int isSuccess = 3;
-
-            String newPaht = ((PrivacyDataManager) MgrContext.getManager
-                    (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
-//            String newPaht = FileOperationUtil.unhideImageFile(
-//                    PictureViewPager.this, filepath, totalSize);
-
-
-            if (newPaht == null) {
-                isSuccess = 2;
-            } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
-                isSuccess = 2;
-//                Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
-//                        "Copy Hide  image fail!");
-            } else if ("0".equals(newPaht)) {
-                isSuccess = 3;
-                ContentValues values = new ContentValues();
-                String dirPath = FileOperationUtil.getDirPathFromFilepath(filepath);
-                values.put("image_dir", dirPath);
-                values.put("image_path", filepath);
-                try {
-                    getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
-                } catch (Exception e) {                   
-                }
-                mPicturesList.remove(mListPos);
-            } else if ("4".equals(newPaht)) {
-                isSuccess = 4;
-            } else {
-                isSuccess = 3;
-                mPicturesList.remove(mListPos);
-                FileOperationUtil.saveImageMediaEntry(newPaht, context);
-                FileOperationUtil.deleteFileMediaEntry(filepath, context);
-            }
-            return isSuccess;
-        }
-
-        @Override
-        protected void onPostExecute(Integer success) {
-            if (success == 4) {
-                String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
-                String content = getString(R.string.image_unhide_memery_insuficient_dialog_content);
-                String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
-                float width = getResources().getDimension(
-                        R.dimen.memery_dialog_button_width);
-                float height = getResources().getDimension(
-                        R.dimen.memery_dialog_button_height);
-                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
-                        width, height);
-            } else if (success == -1 || success == -2) {
-//                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
-            } else if (success == 2) {
-//                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
-            }
-            if (mPicturesList.size() == 0) {
-                if(mIsFromIntruderMore){
-                    Intent intent = new Intent(PictureViewPager.this,
-                            IntruderCatchedActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("isClear", true);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Intent intent = new Intent(PictureViewPager.this,
-                            ImageHideMainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            } else {
-                if (mListPos == mPicturesList.size()) {
-                    mListPos = 0;
-                }
-                mTtileBar.setTitle(FileOperationUtil
-                        .getNoExtNameFromHideFilepath(mPicturesList
-                                .get(mListPos)));
-                mPagerAdapter.notifyDataSetChanged();
-                mPager.setCurrentItem(mListPos);
-            }
-
-            // image change, recompute privacy level
-//            PrivacyHelper.getInstance(PictureViewPager.this).computePrivacyLevel(
-//                    PrivacyHelper.VARABLE_HIDE_PIC);
-        }
-    }
-
-    private void deletePicture() {
+    private void startDoingBack() {
         String filepath = mPicturesList.get(mListPos);
 
-        boolean isSuccees = ((PrivacyDataManager) MgrContext.
-                getManager(MgrContext.MGR_PRIVACY_DATA)).deleteHidePic(filepath);
+        long totalSize = new File(filepath).length();
+        int isSuccess = 3;
 
-//        if (!FileOperationUtil.deleteFile(filepath))
-        if (!isSuccees)
-            return;
-        mPicturesList.remove(mListPos);
-        FileOperationUtil.deleteFileMediaEntry(filepath, this);
+        String newPaht = ((PrivacyDataManager) MgrContext.getManager
+                (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
 
+
+        if (newPaht == null) {
+            isSuccess = 2;
+        } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
+            isSuccess = 2;
+        } else if ("0".equals(newPaht)) {
+            isSuccess = 3;
+            ContentValues values = new ContentValues();
+            String dirPath = FileOperationUtil.getDirPathFromFilepath(filepath);
+            values.put("image_dir", dirPath);
+            values.put("image_path", filepath);
+            try {
+                getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
+            } catch (Exception e) {
+            }
+            mPicturesList.remove(mListPos);
+        } else if ("4".equals(newPaht)) {
+            isSuccess = 4;
+        } else {
+            isSuccess = 3;
+            mPicturesList.remove(mListPos);
+            FileOperationUtil.saveImageMediaEntry(newPaht, this);
+            FileOperationUtil.deleteFileMediaEntry(filepath, this);
+        }
+
+        readyDoingDone(isSuccess);
+    }
+
+    private void onPostDo(int isSuccess) {
+        if (isSuccess == 4) {
+            String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
+            String content = getString(R.string.image_unhide_memery_insuficient_dialog_content);
+            String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
+            float width = getResources().getDimension(
+                    R.dimen.memery_dialog_button_width);
+            float height = getResources().getDimension(
+                    R.dimen.memery_dialog_button_height);
+            showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
+                    width, height);
+        } else if (isSuccess == -1 || isSuccess == -2) {
+        } else if (isSuccess == 2) {
+        }
         if (mPicturesList.size() == 0) {
-            if(mIsFromIntruderMore){
+            if (mIsFromIntruderMore) {
                 Intent intent = new Intent(PictureViewPager.this,
                         IntruderCatchedActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -411,13 +378,158 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 startActivity(intent);
                 finish();
             } else {
-            
-            Intent intent = new Intent(PictureViewPager.this,
-                    ImageHideMainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-//            setResult(RESULT_OK, intent);
-//            finish();
+                Intent intent = new Intent(PictureViewPager.this,
+                        ImageHideMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        } else {
+            if (mListPos == mPicturesList.size()) {
+                mListPos = 0;
+            }
+            mTtileBar.setTitle(FileOperationUtil
+                    .getNoExtNameFromHideFilepath(mPicturesList
+                            .get(mListPos)));
+            mPagerAdapter.notifyDataSetChanged();
+            mPager.setCurrentItem(mListPos);
+        }
+    }
+
+    private void readyDoingDone(int isSuccess) {
+        if (mHandler != null) {
+            Message msg = new Message();
+            msg.obj = isSuccess;
+            msg.what = CANCEL_HIDE_FINISH;
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    private void doingBackGround() {
+        onPreDo();
+        readyDoingBack();
+    }
+
+    private void readyDoingBack() {
+        if (mHandler != null) {
+            mHandler.sendEmptyMessage(CANCEL_HIDE);
+        }
+    }
+
+    private void onPreDo() {
+
+    }
+
+//    private class BackgoundTask extends AsyncTask<Boolean, Integer, Integer> {
+//        private Context context;
+//
+//        BackgoundTask(Context context) {
+//            this.context = context;
+//        }
+//
+//        @Override
+//        protected Integer doInBackground(Boolean... params) {
+//            String filepath = mPicturesList.get(mListPos);
+//
+//            long totalSize = new File(filepath).length();
+//            int isSuccess = 3;
+//
+//            String newPaht = ((PrivacyDataManager) MgrContext.getManager
+//                    (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
+//
+//
+//            if (newPaht == null) {
+//                isSuccess = 2;
+//            } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
+//                isSuccess = 2;
+//            } else if ("0".equals(newPaht)) {
+//                isSuccess = 3;
+//                ContentValues values = new ContentValues();
+//                String dirPath = FileOperationUtil.getDirPathFromFilepath(filepath);
+//                values.put("image_dir", dirPath);
+//                values.put("image_path", filepath);
+//                try {
+//                    getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
+//                } catch (Exception e) {
+//                }
+//                mPicturesList.remove(mListPos);
+//            } else if ("4".equals(newPaht)) {
+//                isSuccess = 4;
+//            } else {
+//                isSuccess = 3;
+//                mPicturesList.remove(mListPos);
+//                FileOperationUtil.saveImageMediaEntry(newPaht, context);
+//                FileOperationUtil.deleteFileMediaEntry(filepath, context);
+//            }
+//            return isSuccess;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Integer success) {
+//            if (success == 4) {
+//                String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
+//                String content = getString(R.string.image_unhide_memery_insuficient_dialog_content);
+//                String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
+//                float width = getResources().getDimension(
+//                        R.dimen.memery_dialog_button_width);
+//                float height = getResources().getDimension(
+//                        R.dimen.memery_dialog_button_height);
+//                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
+//                        width, height);
+//            } else if (success == -1 || success == -2) {
+//            } else if (success == 2) {
+//            }
+//            if (mPicturesList.size() == 0) {
+//                if (mIsFromIntruderMore) {
+//                    Intent intent = new Intent(PictureViewPager.this,
+//                            IntruderCatchedActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    intent.putExtra("isClear", true);
+//                    startActivity(intent);
+//                    finish();
+//                } else {
+//                    Intent intent = new Intent(PictureViewPager.this,
+//                            ImageHideMainActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(intent);
+//                }
+//            } else {
+//                if (mListPos == mPicturesList.size()) {
+//                    mListPos = 0;
+//                }
+//                mTtileBar.setTitle(FileOperationUtil
+//                        .getNoExtNameFromHideFilepath(mPicturesList
+//                                .get(mListPos)));
+//                mPagerAdapter.notifyDataSetChanged();
+//                mPager.setCurrentItem(mListPos);
+//            }
+//        }
+//    }
+
+    private void deletePicture() {
+        String filepath = mPicturesList.get(mListPos);
+
+        boolean isSuccees = ((PrivacyDataManager) MgrContext.
+                getManager(MgrContext.MGR_PRIVACY_DATA)).deleteHidePic(filepath);
+
+        if (!isSuccees)
+            return;
+        mPicturesList.remove(mListPos);
+        FileOperationUtil.deleteFileMediaEntry(filepath, this);
+
+        if (mPicturesList.size() == 0) {
+            if (mIsFromIntruderMore) {
+                Intent intent = new Intent(PictureViewPager.this,
+                        IntruderCatchedActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("isClear", true);
+                startActivity(intent);
+                finish();
+            } else {
+
+                Intent intent = new Intent(PictureViewPager.this,
+                        ImageHideMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         } else {
             if (mListPos == mPicturesList.size()) {
@@ -429,7 +541,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mPager.setCurrentItem(mListPos);
         }
 
-//        PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
     }
 
     private void showAlarmDialog(String title, String content,

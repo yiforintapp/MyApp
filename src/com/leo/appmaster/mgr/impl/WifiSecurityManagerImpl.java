@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -181,7 +182,8 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
         //time out 6s
         int timeout = 6;
         try {
-            p = Runtime.getRuntime().exec("/system/bin/ping -c " + pingNum + " -w " + timeout + " " + host);
+            p = Runtime.getRuntime().exec("/system/bin/ping -c " + pingNum + " " + host);
+//            p = Runtime.getRuntime().exec("/system/bin/ping -c " + pingNum + " -w " + timeout + " " + host);
             ps.add(p);
             status = p.waitFor();
             if (status == 0) {
