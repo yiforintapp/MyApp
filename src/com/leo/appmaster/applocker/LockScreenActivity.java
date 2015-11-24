@@ -1626,8 +1626,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mAmp.setDoubleCheck(null);
                 // wallAd.clickWall();
                 mAmp.setIsADAppwallNeedUpdate(false);
-                Intent mWallIntent = wallAd.getWallIntent();
                 try {
+                    Intent mWallIntent = wallAd.getWallIntent();
                     startActivity(mWallIntent);
                 } catch (Exception e) {
                 }

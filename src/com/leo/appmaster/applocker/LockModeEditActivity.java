@@ -258,7 +258,10 @@ public class LockModeEditActivity extends BaseActivity implements
                 onBackPressed();
                 break;
             case R.id.iv_edit_finish:
-                saveMode();
+                try {
+                    saveMode();
+                } catch (Exception e) {
+                }
                 break;
             case R.id.iv_edit_mode_name:
                 
