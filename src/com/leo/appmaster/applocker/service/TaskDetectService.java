@@ -321,13 +321,13 @@ public class TaskDetectService extends Service {
             long lastTime = sp_traffic.getLastShowNotifyTime();
             long nowTime = System.currentTimeMillis();
             if (mProgress > MAX_MEMORY && (nowTime - lastTime > SHOW_NOTI_PRE_DAY)) {// 24hours
-                shwoNotify(mProgress);
+                showNotify(mProgress);
                 sp_traffic.setLastShowNotifyTime(nowTime);
             }
         }
     }
 
-    private void shwoNotify(int mProgress) {
+    private void showNotify(int mProgress) {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int notifyId = 101;
         RemoteViews view_custom;

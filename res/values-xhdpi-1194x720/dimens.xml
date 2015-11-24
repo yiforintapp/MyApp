@@ -181,7 +181,7 @@
     <dimen name="noti_spe_ar_butt_width">100dp</dimen>
     <dimen name="noti_spe_ar_butt_height">25dp</dimen>
     <dimen name="noti_spe_ar_content_m_left">10dp</dimen>
-    <dimen name="noti_spe_fr_butt_width">70dp</dimen>
+    <dimen name="noti_spe_fr_butt_width">56dp</dimen>
     <dimen name="noti_spe_fr_content_m_left">12dp</dimen>
     <dimen name="noti_spe_tr_butt_width">124dp</dimen>
     <!-- 2.7 end -->

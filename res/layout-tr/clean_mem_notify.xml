@@ -65,7 +65,11 @@
 
                 <RelativeLayout
                     android:id="@+id/appwall_left"
-                    android:layout_width="@dimen/noti_spe_tr_butt_width"
+                    android:layout_width="wrap_content"
+                    android:maxWidth="76dp"
+                    android:minWidth="@dimen/noti_spe_fr_butt_width"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:layout_height="@dimen/noti_spe_ar_butt_height"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/noti_spe_ar_content_m_left"
@@ -76,7 +80,7 @@
                         android:id="@+id/free_bg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
                         android:text="@string/clean_mem_notify_boost"
                         android:textColor="@color/white"
                         android:textSize="@dimen/noti_spe_content_small_text_size" />
