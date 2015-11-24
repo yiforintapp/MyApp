@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -21,8 +20,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,11 +40,8 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.ui.dialog.LEOBaseDialog;
-import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
-import com.leo.appmaster.wifiSecurity.WifiSettingActivity;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 
 public class TimeLockEditActivity extends BaseActivity implements
         OnClickListener, OnValueChangeListener, Formatter, OnItemClickListener {
@@ -56,7 +50,6 @@ public class TimeLockEditActivity extends BaseActivity implements
     private LEOAlarmDialog mMakeSureChange;
     private LEOChoiceDialog mModeListDialog;
 //    private TextView mTvTitle;
-    private ListView mModeList;
     private EditText mEtTimeLockName;
     private NumberPicker mNpHour, mNpMinitue;
     private TextView mTvRepeat;
@@ -65,7 +58,6 @@ public class TimeLockEditActivity extends BaseActivity implements
     private TextView mTvName;
 //    private View mIvSave;
 //    private View mIvBack;
-    private TextView mNoWifiTv;
 
     private boolean mOpenRepeat = false;
     private boolean mShowModeList;

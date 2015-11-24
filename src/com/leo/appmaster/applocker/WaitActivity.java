@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.TimeView;
 import com.leo.appmaster.utils.BuildProperties;
@@ -23,7 +22,6 @@ public class WaitActivity extends BaseActivity {
     private UpdateTask mTask;
     private TimeView mTimeView;
 
-    private String mPackage;
     private float mInitDegree;
     private boolean returned;
     private ValueAnimator va;
@@ -43,7 +41,6 @@ public class WaitActivity extends BaseActivity {
 
     private void handleIntent() {
         Intent intent = getIntent();
-        mPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         mInitTime = intent.getIntExtra("outcount_time", 0);
         mInitDegree = (mInitTime / 10f) * 360f;
     }

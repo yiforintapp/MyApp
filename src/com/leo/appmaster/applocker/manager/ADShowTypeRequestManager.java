@@ -23,18 +23,13 @@ import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.mgr.IntrudeSecurityManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.schedule.FetchScheduleJob.FetchScheduleListener;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.imageloader.utils.L;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class ADShowTypeRequestManager {
     private static final String TAG = "ADShowTypeRequestManager";
-    /* 是否升级 */
-    private IntrudeSecurityManager mImanager;
 
 //    private static final String AD_SHOW_TYPE = "a";// 广告的展示方式，如半屏广告，banner广告等等
     private static final String UFO_ANIM_TYPE = "b";
@@ -53,7 +48,6 @@ public class ADShowTypeRequestManager {
     /* 2.14以后版本后加速广告位 */
     private static final String AD_NEW_ACCELERATING = "p";
     private static final String PACKAGEDIR = "/system/";
-    private static final String AD_OR_FIVESTAR_IN_CATCH = "o";
     /* 广告展示的形式 */
     private static final String[] LOCAL_AD_SHOW_TYPE = {
             "1", "2", "3", "5", "6"
@@ -84,7 +78,6 @@ public class ADShowTypeRequestManager {
     private ADShowTypeRequestManager(Context context) {
         mContext = context;
         mDateFormate = new SimpleDateFormat("yyyy-MM-dd");
-        mImanager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY); 
     }
 
     public static synchronized ADShowTypeRequestManager getInstance(Context context) {

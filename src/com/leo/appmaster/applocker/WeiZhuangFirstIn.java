@@ -4,7 +4,6 @@ package com.leo.appmaster.applocker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -13,7 +12,6 @@ import com.leo.appmaster.ui.RippleView1;
 
 public class WeiZhuangFirstIn extends BaseActivity implements View.OnClickListener {
 
-    private TextView mTextView;
     private RippleView1 mRvGo;
 
     @Override
@@ -24,7 +22,6 @@ public class WeiZhuangFirstIn extends BaseActivity implements View.OnClickListen
     }
 
     private void init() {
-        mTextView = (TextView) findViewById(R.id.bt_go);
         mRvGo = (RippleView1) findViewById(R.id.rv_know_button);
         mRvGo.setOnClickListener(this);
     }

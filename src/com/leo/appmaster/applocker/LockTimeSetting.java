@@ -3,18 +3,6 @@ package com.leo.appmaster.applocker;
 
 import java.util.Arrays;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
-import com.leo.appmaster.sdk.BasePreferenceActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.dialog.LEOBaseDialog;
-import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,20 +10,22 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.BasePreferenceActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class LockTimeSetting extends BasePreferenceActivity implements OnPreferenceChangeListener,
         OnPreferenceClickListener {
@@ -44,7 +34,6 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
     private CheckBoxPreference mAutoLock;
     private int mHelpSettingCurrent;
     private LEOChoiceDialog mTimeSettingDialog;
-    private ListView mTimeListView;
     private String[] mTimeValue;
 
     @SuppressWarnings("deprecation")

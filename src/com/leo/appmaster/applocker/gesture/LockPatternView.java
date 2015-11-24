@@ -10,7 +10,6 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -69,8 +68,6 @@ public class LockPatternView extends ViewGroup {
     private static final int BUTTON_STATE_NAMAL = 0;
     private static final int BUTTON_STATE_DOWN = 1;
     private static final int BUTTON_STATE_UP = 2;
-    private static final int BUTTON_STATE_MOVE_LEFT = 3;
-    private static final int BUTTON_STATE_MOVE_RIGHT = 4;
 
     private int mGestureState = BUTTON_STATE_NAMAL;
 
@@ -111,7 +108,6 @@ public class LockPatternView extends ViewGroup {
     private boolean mPatternInProgress = false;
 
     private float mDiameterFactor = 0.10f; // TODO: move to attrs
-    private final int mStrokeAlpha = 128;
     private float mHitFactor = 0.6f;
 
     private float mSquareWidth;
@@ -308,11 +304,6 @@ public class LockPatternView extends ViewGroup {
         mBitmapCircleDefault = getBitmapFor(R.drawable.gesture_point_bg);
         mBitmapCircleGreen = getBitmapFor(R.drawable.gesture_point);
         mBitmapCircleRed = getBitmapFor(R.drawable.gesture_pattern_selected_wrong);
-        // bitmaps have the size of the largest bitmap in this group
-        final Bitmap bitmaps[] = {
-                mBitmapCircleDefault, mBitmapCircleGreen,
-                mBitmapCircleRed
-        };
         // for (Bitmap bitmap : bitmaps) {
         // mBitmapWidth = Math.max(mBitmapWidth, bitmap.getWidth());
         // mBitmapHeight = Math.max(mBitmapHeight, bitmap.getHeight());
@@ -1083,7 +1074,6 @@ public class LockPatternView extends ViewGroup {
         }
 
         final float squareWidth = mSquareWidth;
-        final float squareHeight = mSquareHeight;
 
         //dadian
 //        float radius = (squareWidth * mDiameterFactor) * 1.3f;

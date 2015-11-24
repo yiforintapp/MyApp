@@ -28,8 +28,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
@@ -41,7 +39,6 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.cookie.DateUtils;
 
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -56,7 +53,6 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.leo.appmaster.Constants;
 import com.leo.imageloader.utils.IoUtils;
 
 /**

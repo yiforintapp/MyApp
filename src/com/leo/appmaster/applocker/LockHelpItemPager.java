@@ -1,6 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import android.text.SpannableString;
 
 public class LockHelpItemPager {
     private String title;

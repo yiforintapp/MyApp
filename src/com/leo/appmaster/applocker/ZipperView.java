@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Handler;
@@ -24,7 +23,6 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class ZipperView extends View {
     private static final String TAG = "LalianView";
-    private Bitmap mDrawbleBg;
     // 减少内存占用
     // private Bitmap mDrawbleCowBoy;
     // private Bitmap mZipper;
@@ -34,7 +32,6 @@ public class ZipperView extends View {
     private Bitmap mFZipper = null;
     private Bitmap mFLeft = null;
     private Bitmap mFRight = null;
-    private Bitmap mFBg = null;
     private Bitmap mFCowBoy = null;
     private Bitmap mFMask = null;
     private float mScaleW = 1.0f;
@@ -48,11 +45,7 @@ public class ZipperView extends View {
     private int mWidth;
     private int mHeight;
     private float mYp = 0;
-    private Path mPath;
     private long downtime = 0;
-    private int[] bgbyte;
-    private int[] cowbyte;
-    private int[] newbg;
     private Context mContext;
     private DisplayMetrics mDisplayMetrics;
     private OnGestureSuccessListener mSuccess = null;
@@ -109,8 +102,6 @@ public class ZipperView extends View {
         mTooSlow = tooSlow;
     }
 
-    private boolean zipperBeTouched;
-    private boolean isGesture;
     private float px01;
     private float py01;
     private float px02;
@@ -256,7 +247,6 @@ public class ZipperView extends View {
                         }
                     }
                     mIsZipperTouched = false;
-                    isGesture = false;
                 }
                     break;
                 case MotionEvent.ACTION_DOWN: {
@@ -268,7 +258,6 @@ public class ZipperView extends View {
                         mIsZipperTouched = true;
                     }
                     else {
-                        isGesture = true;
                         float preX = event.getX();
                         float preY = event.getY();
                     }

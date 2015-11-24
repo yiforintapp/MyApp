@@ -46,7 +46,6 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private RippleView1 mRvKnow;
     //    private View trffic_setting_iv;
     private LinearLayout mWeizhuangHelp;
-    private TextView mKnowBt;
     private Animation mGuidAnimation;
     private boolean mIsOpenHelp = false;
     private boolean mIsRemoveBeauty = false;
@@ -81,7 +80,6 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         selected = sp_weizhuang.getPretendLock();
 
         mWeizhuangHelp = (LinearLayout) findViewById(R.id.activity_weizhuang_firstin);
-        mKnowBt = (TextView) mWeizhuangHelp.findViewById(R.id.bt_go);
 //        mKnowBt.setOnClickListener(this);
         mRvKnow = (RippleView1) mWeizhuangHelp.findViewById(R.id.rv_know_button);
         mRvKnow.setOnClickListener(this);

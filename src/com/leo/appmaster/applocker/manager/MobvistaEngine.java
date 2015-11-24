@@ -1,14 +1,7 @@
 package com.leo.appmaster.applocker.manager;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,8 +19,6 @@ import com.mobvista.sdk.m.core.MobvistaAd;
 import com.mobvista.sdk.m.core.MobvistaAdNative;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 import com.mobvista.sdk.m.core.entity.Campaign;
-
-import org.w3c.dom.ls.LSException;
 
 /**
  * 广告相关引擎

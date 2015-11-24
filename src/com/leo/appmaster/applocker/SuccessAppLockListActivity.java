@@ -9,14 +9,11 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -80,7 +77,6 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
 //        Collections.sort(mLockList, new LockedAppComparator(lockList));
         Collections.sort(mLockList, new DefalutAppComparator());
         resault = new ArrayList<AppInfo>(mLockList);
-        mListAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
         mListAdapter.setData(resault);
     }
 

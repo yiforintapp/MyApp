@@ -55,7 +55,6 @@ public class ListAppLockAdapter extends BaseAdapter {
         ListLockItem itemView = (ListLockItem) headView.findViewById(R.id.content_item_all);
         if (mFlag.equals("applocklist_activity")) {
             AppInfo info = mList.get(i);
-            itemView.setFlag("applocklist_activity");
             itemView.setIcon(info.icon);
             itemView.setTitle(info.label);
             itemView.setDescEx(info, info.isLocked);
@@ -64,7 +63,6 @@ public class ListAppLockAdapter extends BaseAdapter {
             return headView;
         } else {
             AppInfo info = mList.get(i);
-            itemView.setFlag("recomment_activity");
             itemView.setIcon(info.icon);
             itemView.setTitle(info.label);
             if (info.topPos > -1) {

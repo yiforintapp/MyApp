@@ -15,7 +15,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.LeoLog;
 
 public class GestureRelative extends RelativeLayout {
     private Paint CirPanint;

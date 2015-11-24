@@ -9,14 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.View;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -25,13 +23,11 @@ import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 public class LockOptionActivity extends BasePreferenceActivity implements

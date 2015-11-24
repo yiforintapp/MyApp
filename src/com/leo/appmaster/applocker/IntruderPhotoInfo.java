@@ -1,8 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import android.graphics.Bitmap;
-
-import com.leo.appmaster.privacycontact.ContactCallLog;
 
 public class IntruderPhotoInfo {
     private String filePath;

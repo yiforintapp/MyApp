@@ -16,20 +16,19 @@
 
 package com.leo.imageloader.core;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.util.Log;
 
 import com.leo.imageloader.core.ImageDownloader.Scheme;
 import com.leo.imageloader.utils.ImageSizeUtils;
 import com.leo.imageloader.utils.IoUtils;
 import com.leo.imageloader.utils.L;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Decodes images to {@link Bitmap}, scales them to needed size

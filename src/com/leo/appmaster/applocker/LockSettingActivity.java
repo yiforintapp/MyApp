@@ -2,7 +2,6 @@
 package com.leo.appmaster.applocker;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -51,7 +50,6 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private TextView mSwitchBottom;
     private View switch_bottom_content;
     private ImageView iv_reset_icon;
-    private Resources res;
 
     private boolean mResetFlag;
     private boolean mIsRotateFragment = false;
@@ -182,8 +180,6 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
-        res = getResources();
-
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         if (mResetFlag) {
 //            mTitleBar.openBackView();

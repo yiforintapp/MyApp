@@ -5,12 +5,10 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,11 +19,8 @@ import com.leo.appmaster.model.AppInfo;
 
 
 public class ListLockItem extends RelativeLayout {
-    private View contentview;
     private ImageView iconview, lockview;
     private TextView apptitle, applocknums;
-    private SpannableStringBuilder mSpan;
-    private String mFlag;
     private AppInfo mInfo;
 
     public ListLockItem(Context context) {
@@ -219,9 +214,6 @@ public class ListLockItem extends RelativeLayout {
         return styledText;
     }
 
-    public void setFlag(String fromAdapter) {
-        mFlag = fromAdapter;
-    }
 
     public void setDefaultRecommendApp(boolean isLocked) {
         if (isLocked) {

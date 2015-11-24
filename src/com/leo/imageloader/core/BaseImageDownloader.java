@@ -16,22 +16,6 @@
 
 package com.leo.imageloader.core;
 
-import android.annotation.TargetApi;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.ContactsContract;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.webkit.MimeTypeMap;
-
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.utils.IoUtils;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,6 +27,20 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+
+import android.content.ContentResolver;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.ContactsContract;
+import android.provider.MediaStore;
+import android.webkit.MimeTypeMap;
+
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.utils.IoUtils;
 
 /**
  * Provides retrieving of {@link InputStream} of image by URI from network or

@@ -122,9 +122,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
-import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.tools.animator.Animator;
@@ -172,7 +170,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     /**
      * 大banner
      */
-    private int mAdItemCount = 0; //三个广告加一个空白页
     private FrameLayout mBannerParent;
     private ViewPager mBannerContainer;
     private AdBannerAdapter mAdapterCycle;
@@ -180,11 +177,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
-    private DisplayImageOptions mImageOptions;
-    private int mBannerItemWidth;
     private String[] mBannerAdids = {Constants.UNIT_ID_59, Constants.UNIT_ID_178, Constants.UNIT_ID_179};
 
-    private boolean mNewTheme;
     private RelativeLayout mPretendLayout;
     private PretendFragment mPretendFragment;
     private IntrudeSecurityManager mISManager;
@@ -690,30 +684,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
     }
 
-    private boolean checkNewTheme() {
-        String locSerial = AppMasterPreference.getInstance(this)
-                .getLocalThemeSerialNumber();
-        String onlineSerial = AppMasterPreference.getInstance(this)
-                .getOnlineThemeSerialNumber();
-        boolean lockThemeGuid = AppMasterPreference.getInstance(this)
-                .getLockerScreenThemeGuid();
-        if (!locSerial.equals(onlineSerial)) {
-            mNewTheme = true;
-        } else {
-            mNewTheme = false;
-        }
-
-        // if (mNewTheme) {
-        // mThemeView.setImageDrawable(this.getResources().getDrawable(
-        // R.drawable.theme_active_icon));
-        // } else {
-        // mThemeView.setImageDrawable(this.getResources().getDrawable(
-        // R.drawable.theme_icon));
-        // }
-
-        return lockThemeGuid;
-    }
-
     @Override
     protected void onPause() {
         PushUIHelper.getInstance(getApplicationContext())
@@ -1069,20 +1039,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     /* 初始化广告UI */
     private void initAD() {
         mBannerParent = (FrameLayout)findViewById(R.id.large_adbanner_parent);
-        mBannerItemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
         mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
         mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
         mBannerContainer.setOffscreenPageLimit(2);
         mBannerContainer.setOverScrollMode(View.OVER_SCROLL_NEVER);
-
-        mImageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ad_def_pic)
-                .showImageForEmptyUri(R.drawable.ad_def_pic)
-                .showImageOnFail(R.drawable.ad_def_pic)
-                .displayer(new FadeInBitmapDisplayer(200))
-                .cacheInMemory(true).cacheOnDisk(true)
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
 
     private void loadAD() {

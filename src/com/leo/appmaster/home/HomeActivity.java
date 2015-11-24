@@ -1,6 +1,5 @@
 package com.leo.appmaster.home;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,6 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
-import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -82,7 +80,6 @@ import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
-import com.leo.push.BootupReceiver;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {

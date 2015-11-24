@@ -1,5 +1,8 @@
 package com.leo.appmaster.applocker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,24 +10,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppInfo;
-import com.leo.appmaster.ui.MaterialRippleLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by qili on 15-10-10.
  */
 public class ListSuccessAdapter extends BaseAdapter {
     private List<AppInfo> mList;
-    private String mFlag;
-    private Context mContext;
     private LayoutInflater layoutInflater;
 
     public ListSuccessAdapter(Context mContext) {
-        this.mContext = mContext;
         mList = new ArrayList<AppInfo>();
         layoutInflater = LayoutInflater.from(mContext);
     }
@@ -54,7 +49,6 @@ public class ListSuccessAdapter extends BaseAdapter {
         }
 
         AppInfo info = mList.get(i);
-        itemView.setFlag("recomment_activity");
         itemView.setIcon(info.icon);
         itemView.setTitle(info.label);
 //        if (info.topPos > -1) {
@@ -74,10 +68,6 @@ public class ListSuccessAdapter extends BaseAdapter {
         mList = resault;
 
         notifyDataSetChanged();
-    }
-
-    public void setFlag(String fromDefaultRecommentActivity) {
-        mFlag = fromDefaultRecommentActivity;
     }
 
 }
