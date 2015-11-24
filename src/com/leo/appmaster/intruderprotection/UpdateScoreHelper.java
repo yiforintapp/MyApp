@@ -23,7 +23,7 @@ public class UpdateScoreHelper {
         View view = View.inflate(context, R.layout.toast_get_score, null);
         toast.setView(view);
         final TextView tvScore = (TextView) view.findViewById(R.id.tv_score);
-        tvScore.setText(score+"");
+        tvScore.setText("1");
         int[] scores = new int[score];
         for(int i = 0; i < scores.length; i++) {
             scores[i] = i + 1;
