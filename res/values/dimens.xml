@@ -340,4 +340,8 @@
     <dimen name="secur_btm_hgt">95dp</dimen>
     <dimen name="out_circle_adpt">0dp</dimen>
     <dimen name="in_circle_adpt">0dp</dimen>
+    
+    <dimen name="ad_parent_width">330dp</dimen>
+    <dimen name="ad_content_width">305dp</dimen>
+    <dimen name="ad_view_width">320dp</dimen>
 </resources>

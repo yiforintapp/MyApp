@@ -268,15 +268,15 @@ public class HomeBoostActivity extends Activity {
             }
         });
 
-        ObjectAnimator BgAlphaAnimator = ObjectAnimator.ofFloat(mParent, "alpha", 0f, 0.5f);
-        BgAlphaAnimator.setDuration(400);
+        ObjectAnimator bgAlphaAnimator = ObjectAnimator.ofFloat(mParent, "alpha", 0f, 0.5f);
+        bgAlphaAnimator.setDuration(400);
 
         ObjectAnimator rocketAnimator1 = ObjectAnimator.ofFloat(mIvRocket, "translationY",
                        mScreenH , mIvRocket.getTranslationY());
         rocketAnimator1.setDuration(400);
 
         AnimatorSet rocketShowAnimator = new AnimatorSet();
-        rocketShowAnimator.playTogether(BgAlphaAnimator, rocketAnimator1);
+        rocketShowAnimator.playTogether(bgAlphaAnimator, rocketAnimator1);
 
         /** 烟雾动画 */
         ObjectAnimator cloudAlphaShow = ObjectAnimator.ofFloat(mIvCloud, "alpha", 0f, 1f);

@@ -411,4 +411,8 @@
     <dimen name="applock_text_desc_size">12dp</dimen>
     <dimen name="out_circle_adpt">20dp</dimen>
     <dimen name="in_circle_adpt">10dp</dimen>
+
+    <dimen name="ad_parent_width">310dp</dimen>
+    <dimen name="ad_content_width">285dp</dimen>
+    <dimen name="ad_view_width">300dp</dimen>
 </resources>

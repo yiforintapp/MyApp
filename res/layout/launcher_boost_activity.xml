@@ -21,7 +21,7 @@
 
         <FrameLayout
             android:id="@+id/resuilt_with_ad"
-            android:layout_width="330dp"
+            android:layout_width="@dimen/ad_parent_width"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone">
@@ -40,7 +40,7 @@
 
             <RelativeLayout
                 android:id="@+id/rl_ad_bg"
-                android:layout_width="305dp"
+                android:layout_width="@dimen/ad_content_width"
                 android:layout_height="158dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="5dp"
@@ -56,7 +56,7 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="305dp"
+                android:layout_width="@dimen/ad_content_width"
                 android:layout_height="50dp"
                 android:layout_gravity="left"
                 android:layout_marginLeft="17dp"
@@ -133,7 +133,7 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:layout_width="305dp"
+                android:layout_width="@dimen/ad_content_width"
                 android:layout_height="44dp"
                 android:background="@drawable/ad_top_bg"
                 android:layout_gravity="left"
@@ -154,7 +154,7 @@
                 android:textSize="15dp"/>
 
             <View
-                android:layout_width="320dp"
+                android:layout_width="@dimen/ad_view_width"
                 android:layout_height="284dp"
                 android:layout_gravity="top"
                 android:layout_marginTop="38dp"
