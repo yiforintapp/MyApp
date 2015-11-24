@@ -171,7 +171,7 @@
 
     <dimen name="noti_spe_icon_height">54dp</dimen>
     <dimen name="noti_spe_icon_m_left">11dp</dimen>
-    <dimen name="noti_spe_content_m_left">15dp</dimen>
+    <dimen name="noti_spe_content_m_left">10dp</dimen>
     <dimen name="noti_spe_content_big_text_size">16dp</dimen>
     <dimen name="noti_spe_content_des_m_top">4dp</dimen>
     <dimen name="noti_spe_content_small_text_size">13dp</dimen>

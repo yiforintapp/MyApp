@@ -218,10 +218,20 @@ public class HomeMoreAdapter extends BaseAdapter {
         AppMasterPreference preference = AppMasterPreference.getInstance(context);
         if (drawableId == ID_RES_CONTACT_CALL) {
             int callCount = preference.getCallLogNoReadCount();
-            holder.readTip.setVisibility(callCount > 0 ? View.VISIBLE : View.GONE);
-        } else if (drawableId == ID_RES_CONTACT_SMS) {
             int msgCount = preference.getMessageNoReadCount();
-            holder.readTip.setVisibility(msgCount > 0 ? View.VISIBLE : View.GONE);
+            if (callCount > 0) {
+                holder.readTip.setVisibility(View.VISIBLE);
+            } else if (msgCount <= 0) {
+                holder.readTip.setVisibility(View.GONE);
+            }
+        } else if (drawableId == ID_RES_CONTACT_SMS) {
+            int callCount = preference.getCallLogNoReadCount();
+            int msgCount = preference.getMessageNoReadCount();
+            if (msgCount > 0) {
+                holder.readTip.setVisibility(View.VISIBLE);
+            } else if (callCount <= 0) {
+                holder.readTip.setVisibility(View.GONE);
+            }
         } else if (drawableId == ID_RES_HIDE_IMG) {
             PreferenceTable preferenceTable = PreferenceTable.getInstance();
             boolean picReddotExist = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
