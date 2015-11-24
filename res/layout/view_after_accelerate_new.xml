@@ -5,19 +5,20 @@
     android:gravity="center_horizontal">
 
     <ImageView
-        android:layout_width="300dp"
+        android:layout_width="295dp"
         android:layout_height="39dp"
         android:layout_gravity="top"
         android:src="@drawable/ad_top_bg"
         android:scaleType="fitXY"
         android:layout_marginTop="49dp"
-        android:layout_marginLeft="11dp"/>
+        android:layout_marginLeft="14dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@drawable/ad_bg"
         android:layout_gravity="left|top"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="34dp"/>
 
 
@@ -30,14 +31,14 @@
         android:layout_gravity="top|right"
         android:src="@drawable/ad_top_line"
         android:layout_marginTop="36dp"
-        android:layout_marginRight="11dp"
+        android:layout_marginRight="5dp"
         android:scaleType="centerCrop"/>
 
     <ImageView
         android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ad_bottom_line"
-        android:layout_marginLeft="45dp"
+        android:layout_marginLeft="50dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="10dp"
         android:scaleType="centerCrop"/>
@@ -49,8 +50,8 @@
         android:id="@+id/tv_accelerat_result"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="85dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="90dp"
+        android:layout_marginRight="20dp"
         android:layout_gravity="top|left"
         android:layout_marginTop="49dp"
         android:textColor="#ffffff"

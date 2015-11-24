@@ -247,6 +247,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     public void onDestroy() {
         super.onDestroy();
         MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_67);
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+            mAnimatorSet = null;
+        }
     }
 
     /**
