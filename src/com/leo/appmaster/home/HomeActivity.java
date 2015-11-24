@@ -609,7 +609,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
-
+        judgeShowGradeTip();
         /* 获取是否从iswipe通知进入 */
         checkIswipeNotificationTo();
         /* 分析是否需要升级红点显示 */
@@ -619,7 +619,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         /* check if there is force update when showing HomeActivityOld */
         SDKWrapper.checkForceUpdate();
 
-        judgeShowGradeTip();
 
         // tryIsFromLockMore();
 
