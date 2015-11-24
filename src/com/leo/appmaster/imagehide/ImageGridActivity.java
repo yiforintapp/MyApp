@@ -41,6 +41,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -457,6 +458,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
 
         @Override
         protected Integer doInBackground(Boolean... params) {
+            long a = System.currentTimeMillis();
+            LeoLog.d("testPicLoadTime", "doInBackground");
+
             String newFileName;
             int isSuccess = 3;
             boolean isHide = params[0];
@@ -525,23 +529,27 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                             }
                         }
                     } else {
+                        long b = System.currentTimeMillis();
+                        LeoLog.d("testPicLoadTime", "ready cancel hide : " + (b - a));
                         while (iterator.hasNext()) {
+                            long a1 = System.currentTimeMillis();
+                            LeoLog.d("testPicLoadTime", "ready operation");
                             item = iterator.next();
                             if (!mIsBackgoundRunning)
                                 break;
 
                             String filepath = item.getPath();
-//                            String newPaht = FileOperationUtil.unhideImageFile(
-//                                    ImageGridActivity.this, filepath, mTotalSize);
                             String newPaht = ((PrivacyDataManager) MgrContext.getManager
                                     (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
+
+                            long a2 = System.currentTimeMillis();
+                            LeoLog.d("testPicLoadTime", "operation1:" + (a2 - a1));
 
                             if (newPaht == null) {
                                 isSuccess = 2;
                             } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
+                                //Copy Hide image fail!
                                 isSuccess = 2;
-//                                Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
-//                                        "Copy Hide  image fail!");
                             } else if ("0".equals(newPaht)) {
 
                                 isSuccess = 3;
@@ -562,7 +570,11 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                                 // mAllListPath.remove(item.getPath());
                                 deleteList.add(item);
                             }
+                            long a3 = System.currentTimeMillis();
+                            LeoLog.d("testPicLoadTime", "operation2:" + (a3 - a2));
                         }
+                        long c = System.currentTimeMillis();
+                        LeoLog.d("testPicLoadTime", "finish operation : " + (c - b));
                         if (deleteList.size() > 0) {
                             mPicturesList.removeAll(deleteList);
                             for (PhotoItem photoItem : deleteList) {
@@ -577,6 +589,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                     PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
                     pdm.notifySecurityChange();
                 }
+                long d = System.currentTimeMillis();
+                LeoLog.d("testPicLoadTime", "total cost : " + (d - a));
             } catch (Exception e) {
             }
             return isSuccess;

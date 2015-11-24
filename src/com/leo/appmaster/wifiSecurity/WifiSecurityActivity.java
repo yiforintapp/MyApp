@@ -319,7 +319,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     public void showSelectWifiDialog(String text) {
         SDKWrapper.addEvent(this, SDKWrapper.P1, "wifi_scan", "wifi_none_dlg");
         if (selectWifiDialog == null) {
-            selectWifiDialog = new OneButtonDialog(getParent());
+            selectWifiDialog = new OneButtonDialog(this);
         }
 
         if (!selectWifiDialog.isShowing()) {

@@ -127,14 +127,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
             }
         });
-//        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-//
-//            @Override
-//            public void onRippleComplete(RippleView rippleView) {
-//                Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE_OPTION);
-//            }
-//        });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
     }
 
