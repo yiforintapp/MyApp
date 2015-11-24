@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="19dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -42,11 +42,11 @@
 
             <com.leo.appmaster.ui.RippleView1
                 android:id="@+id/rv_close"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:padding="4dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
                 android:layout_marginLeft="27dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="12dp"
                 app:rippleColor="@color/button_blue_ripple"
                 app:rippleDuration="250"
                 app:rippleHover="true"
