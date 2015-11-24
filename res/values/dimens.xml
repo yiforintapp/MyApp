@@ -344,4 +344,5 @@
     <dimen name="ad_parent_width">330dp</dimen>
     <dimen name="ad_content_width">305dp</dimen>
     <dimen name="ad_view_width">320dp</dimen>
+    <dimen name="contact_icon_scale_size">50dp</dimen>
 </resources>

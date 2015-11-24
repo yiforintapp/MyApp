@@ -158,7 +158,7 @@ public class PrivacyContactManager {
                             byte[] icon = cur.getBlob(cur.getColumnIndex(Constants.COLUMN_ICON));
                             if (icon != null) {
                                 Bitmap contactIcon = PrivacyContactUtils.getBmp(icon);
-                                int size = (int) mContext.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                                int size = (int) mContext.getResources().getDimension(R.dimen.contact_icon_scale_size);
                                 contactIcon = PrivacyContactUtils.getScaledContactIcon(contactIcon, size);
                                 mb.setContactIcon(contactIcon);
                             }

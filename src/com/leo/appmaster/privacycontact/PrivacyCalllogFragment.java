@@ -497,7 +497,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     callLog.setClallLogType(type);
                     Bitmap icon = PrivacyContactUtils.getContactIcon(mContext, number);
                     if (icon != null) {
-                        int size = (int) getActivity().getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                        int size = (int) getActivity().getResources().getDimension(R.dimen.contact_icon_scale_size);
                         icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
                         callLog.setContactIcon(icon);
                     } else {

@@ -179,7 +179,7 @@ public class PrivacyContactUtils {
                     Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
                             context, number);
                     if (icon != null) {
-                        int size = (int) context.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                        int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
                         icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
                         mb.setContactIcon(icon);
                     } else {
@@ -303,7 +303,7 @@ public class PrivacyContactUtils {
                                     cr,
                                     uri);
                             contactPhoto = BitmapFactory.decodeStream(input);
-                            int size = (int) context.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                            int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
                             contactPhoto = PrivacyContactUtils.getScaledContactIcon(contactPhoto, size);
                         }
                     } catch (Error e) {
@@ -462,7 +462,7 @@ public class PrivacyContactUtils {
                     Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
                             context, number);
                     if (icon != null) {
-                        int size = (int) context.getResources().getDimension(R.dimen.privacy_contact_icon_size);
+                        int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
                         icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
                         callLog.setContactIcon(icon);
                     } else {
