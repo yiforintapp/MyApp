@@ -45,8 +45,8 @@ import java.util.List;
 
 public class PhoneSecurityActivity extends BaseActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "PhoneSecurityActivity";
-    private static final int SCROLL_X=0;
-    private static final int SCROLL_Y=0;
+    private static final int SCROLL_X = 0;
+    private static final int SCROLL_Y = 0;
 
     /*底部进度数字*/
     public String[] mBottomNumber = new String[]{"1", "2", "3"};
@@ -189,6 +189,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             LeoLog.i(TAG, "默认防盗");
             toProcOne();
         }
+        mSecurPhNumCv.smoothScrollTo(SCROLL_X, SCROLL_Y);
     }
 
     /*进入设置第一步*/
@@ -332,7 +333,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mKnowModelClick.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mKnowModelClick.setOnClickListener(this);
         mSecurPhNumCv = (ScrollView) findViewById(R.id.secur_phone_nub_sc);
-        mSecurPhNumCv.smoothScrollTo(SCROLL_X,SCROLL_Y);
     }
 
     /*完全开启指令*/
@@ -573,7 +573,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                         }
                     } else if (mBottomNumber[2].equals(mCurrentProcNumber)) {
                         /**第三步*/
-                        mSecurPhNumCv.smoothScrollTo(SCROLL_X,SCROLL_Y);
+                        mSecurPhNumCv.smoothScrollTo(SCROLL_X, SCROLL_Y);
                         boolean isOpenAdv = lostMgr.isOpenAdvanceProtect();
                         if (!isOpenAdv) {
                             loadInstructListData(true);
@@ -715,7 +715,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
 
     /*进入完成页面*/
     private void toSecurFinish() {
-        UpdateScoreHelper.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE,this);
+        UpdateScoreHelper.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE, this);
         LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         boolean isOpenAdvan = lostMgr.isOpenAdvanceProtect();
         if (isOpenAdvan) {
