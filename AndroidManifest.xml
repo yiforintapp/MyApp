@@ -699,12 +699,7 @@
             android:name=".quickgestures.receiver.QuickSwitchReceiver"
             android:exported="true" >
             <intent-filter android:priority="10000" >
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
-                <action android:name="android.bluetooth.a2dp.profile.action.CONNECTION_STATE_CHANGED" />
                 <action android:name="android.intent.action.AIRPLANE_MODE" />
-                <action android:name="android.intent.action.ANY_DATA_STATE" />
-                <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
         </receiver>
 
