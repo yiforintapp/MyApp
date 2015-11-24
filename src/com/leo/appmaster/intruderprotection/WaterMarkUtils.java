@@ -87,11 +87,11 @@ public class WaterMarkUtils {
             return photoBitmap;
         }
         if (appIcon != null) {
-            iconBitmap = Bitmap.createBitmap((int) (30f * fitRate), (int) (30f * fitRate),
+            iconBitmap = Bitmap.createBitmap((int) (25f * fitRate), (int) (25f * fitRate),
                     Config.RGB_565);
             canvas = new Canvas(iconBitmap);
             try{
-                appIcon.setBounds(0, 0, (int) (30f * fitRate), (int) (30f * fitRate));
+                appIcon.setBounds(0, (int) (2f * fitRate), (int) (25f * fitRate), (int) (25f * fitRate));
             }
             catch(Exception e){
             }
@@ -101,7 +101,7 @@ public class WaterMarkUtils {
         Paint p1 = new Paint();
         p1.setColor(0x000000);
         p1.setAlpha(50);
-        canvas2.drawRect(0, 0, photoBitmap.getWidth(), 32f * fitRate, p1);
+        canvas2.drawRect(0, 0, photoBitmap.getWidth(), 29f * fitRate, p1);
         Paint p = new Paint();
         p.setAlpha(150);
         p.setXfermode(new PorterDuffXfermode(Mode.LIGHTEN));
@@ -138,7 +138,6 @@ public class WaterMarkUtils {
             // appIcon.draw(canvas);
             pgiconBitmap.recycle();
             iconBitmap.recycle();
-            System.gc();
         }
         return photoBitmap;
     }
