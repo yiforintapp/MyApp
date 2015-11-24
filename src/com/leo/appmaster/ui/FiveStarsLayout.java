@@ -154,6 +154,7 @@ public class FiveStarsLayout extends FrameLayout{
                 super.onAnimationStart(animation);
                 mGradeGesture.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);

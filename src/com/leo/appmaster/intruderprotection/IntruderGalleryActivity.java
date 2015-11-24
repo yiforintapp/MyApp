@@ -56,6 +56,18 @@ public class IntruderGalleryActivity extends BaseActivity {
         mCtb.setOptionMenuVisible(true);
 //        mTvPosition = (TextView) findViewById(R.id.tv_position);
         mVPPhotos = (ViewPager) findViewById(R.id.vp_photos);
+        mVPPhotos.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                int visibility = mCtb.getVisibility();
+                if(visibility == View.VISIBLE) {
+                    mCtb.setVisibility(View.GONE);
+                }else {
+                    mCtb.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         mISManager = (IntrudeSecurityManager) MgrContext
                 .getManager(MgrContext.MGR_INTRUDE_SECURITY);
         mInflater = LayoutInflater.from(this);
@@ -102,6 +114,17 @@ public class IntruderGalleryActivity extends BaseActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view = mInflater.inflate(R.layout.item_intruder_gallery, null);
+            view.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int visibility = mCtb.getVisibility();
+                    if (visibility == View.VISIBLE) {
+                        mCtb.setVisibility(View.GONE);
+                    } else {
+                        mCtb.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
             ImageView iv = (ImageView) view.findViewById(R.id.iv_IGitem_main);
             ImageLoader.getInstance().displayImage(
                     "file:///" + mInfosSorted.get(position).getFilePath(), iv);

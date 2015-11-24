@@ -37,16 +37,8 @@
             />
     </RelativeLayout> -->
     
-    <com.leo.appmaster.ui.CommonToolbar 
-        android:id="@+id/ctb_intruder_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/cb"
-        ></com.leo.appmaster.ui.CommonToolbar>
     
     <android.support.v4.view.ViewPager 
-        android:layout_below="@id/ctb_intruder_gallery"
-        android:layout_margin="10dp"
         android:id="@+id/vp_photos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -54,7 +46,7 @@
 	
      <RelativeLayout 
          android:visibility="gone"
-         android:layout_below="@id/ctb_intruder_gallery"
+         android:layout_below="@+id/ctb_intruder_gallery"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -79,5 +71,10 @@
         
     </RelativeLayout> 
     
-    
+    <com.leo.appmaster.ui.CommonToolbar 
+        android:id="@+id/ctb_intruder_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cb"
+        ></com.leo.appmaster.ui.CommonToolbar>
 </RelativeLayout>
