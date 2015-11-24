@@ -35,6 +35,7 @@ public class FiveStarsLayout extends FrameLayout{
     private float mGestureDeltaY;
     private FrameLayout mFlFifthStar;
     private boolean mHasShowed = false;
+    private boolean mNeedRepeat = true;
     private AnimatorSet mAsMain;
     
     public FiveStarsLayout(Context context, AttributeSet attrs) {
@@ -61,6 +62,13 @@ public class FiveStarsLayout extends FrameLayout{
         mFiveStar = (ImageView) findViewById(R.id.five_star);
         mGradeGesture = (ImageView) findViewById(R.id.grade_gesture);
         mFlFifthStar = (FrameLayout) findViewById(R.id.fl_fifthStar);
+    }
+    
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mNeedRepeat = false;
+        mAsMain.cancel();
     }
     
     @Override
@@ -150,7 +158,9 @@ public class FiveStarsLayout extends FrameLayout{
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 changeStarInvisible();
-                mAsMain.start();
+                if(mNeedRepeat) {
+                    mAsMain.start();
+                }
             }
         });
         mAsMain.start();
@@ -167,7 +177,6 @@ public class FiveStarsLayout extends FrameLayout{
     private class ObjectAnimStartListener extends AnimatorListenerAdapter {
 
         private ImageView theView;
-
         public ObjectAnimStartListener (ImageView imageView) {
             this.theView = imageView;
         }

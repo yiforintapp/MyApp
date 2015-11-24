@@ -400,4 +400,6 @@ public class Constants {
 
     /** Swifty卡片数据请求地址 */
     public static final String SWIFTY_SECURITY_URL = "/appmaster/privacysuggest";
+    
+    public static final String EXTRA_IS_FROM_SCAN = "isFromScan";
 }

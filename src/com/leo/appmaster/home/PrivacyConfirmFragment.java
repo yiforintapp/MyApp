@@ -1009,6 +1009,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mIntruderBtnLt == v) {
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "intruder_enable");
             Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
+            intent.putExtra(Constants.EXTRA_IS_FROM_SCAN, true);
             startActivity(intent);
         } else if (mFbBtnLt == v) {  // FaceBook分享
             lockManager.filterSelfOneMinites();

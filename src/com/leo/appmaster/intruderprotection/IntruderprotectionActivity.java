@@ -77,6 +77,7 @@ public class IntruderprotectionActivity extends BaseActivity {
     private DisplayImageOptions mImageOptions;
     private LEOChoiceDialog mDialog;
     private static final int VIEW_TYPE_ACCOUNT = 2;
+    private boolean mIsFromScan = false;
     private int[] mTimes = {
             1, 2, 3, 5
     };
@@ -158,6 +159,15 @@ public class IntruderprotectionActivity extends BaseActivity {
         super.onResume();
         updateData();// 重新查询数据库，做与数据相关的UI更新
         updateAll();// 更新与数据库无关的UI
+        judgeIsFromScan();
+    }
+
+    private void judgeIsFromScan() {
+        Intent intent = getIntent();
+        boolean isFromScan = intent.getBooleanExtra(Constants.EXTRA_IS_FROM_SCAN, false);
+        if (isFromScan) {
+            mIsFromScan = true;
+        }
     }
 
     @Override
@@ -767,11 +777,13 @@ public class IntruderprotectionActivity extends BaseActivity {
                     needle.startAnimation(animation);
                 } else {
                     mImanager.switchIntruderMode(true);
-                    // Toast.makeText(IntruderprotectionActivity.this,
-                    // getString(R.string.intruder_open),
-                    // Toast.LENGTH_SHORT).show();
-                    UpdateScoreHelper.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE,
-                            IntruderprotectionActivity.this);
+                    if (mIsFromScan) {
+                        UpdateScoreHelper.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE,
+                                IntruderprotectionActivity.this);
+                        mIsFromScan = false;
+                    } else {
+                        Toast.makeText(IntruderprotectionActivity.this, getString(R.string.intruder_open), Toast.LENGTH_SHORT).show();
+                    }
                     final RotateAnimation animation = new RotateAnimation(0f, 180f,
                             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                     animation.setDuration(300);
