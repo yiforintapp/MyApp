@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -47,7 +47,6 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
@@ -752,14 +751,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
 
-        if ((preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT) != null &&
-                preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT).length() > 0) &&
-                (preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL) != null &&
-                        preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL).length() > 0) &&
-                (preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE) != null &&
-                        preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE).length() > 0) &&
-                NetWorkUtil.isNetworkAvailable(AppMasterApplication.getInstance())) {
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT));
 
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL));
+
+        boolean isTypeEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE));
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getSwiftyOptions());
