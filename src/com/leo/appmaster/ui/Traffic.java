@@ -25,7 +25,7 @@ public class Traffic {
     private final static int NON_SAVE = 0;
     private final static int DAY_OF_THREE = 1;
     private final static int FINISH_THREE_DAY_AVG = 2;
-    private final static int MIN_SHOW_NOTI_TRAFFIC = 3500;
+    private final static int MIN_SHOW_NOTI_TRAFFIC = 1024;
     private final static String FIRSTDAY = "first_day";
     private final static String FIRSTDAYTRAFFIC = "first_day_traffic";
     private final static String SECONDDAY = "second_day";
@@ -143,11 +143,7 @@ public class Traffic {
                 showNotification(dayTraffic);
             }
 
-        } else {
-//            int mLastShowDay = PreferenceTable.getInstance().getInt(LAST_SHOW_DAY,0);
-//            boolean isShowToday = PreferenceTable.getInstance().getBoolean(IS_TODAY_SHOW, false);
         }
-
 
     }
 
