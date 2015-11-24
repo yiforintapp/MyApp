@@ -141,6 +141,8 @@
     <integer name="privacy_contact_red_tip_tabTextwdth">6</integer>
     <integer name="privacy_contact_red_tip_tabTexteight">6</integer>
 
+    <dimen name="privacy_contact_high_red_tip_x">164dp</dimen>
+    <dimen name="privacy_contact_high_red_tip_y">8dp</dimen>
     <dimen name="privacy_contact_red_tip_x">94dp</dimen>
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="text_icon_margin">3dp</dimen>

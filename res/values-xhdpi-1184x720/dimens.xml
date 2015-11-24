@@ -139,7 +139,7 @@
     <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <!-- quick gesutre end -->
-
+    <dimen name="privacy_contact_high_red_tip_x">175dp</dimen>
     <dimen name="privacy_contact_red_tip_x">105dp</dimen>
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="text_icon_margin">10dp</dimen>

@@ -137,6 +137,8 @@
     <dimen name="privacy_contact_icon_size">40dp</dimen>
     <dimen name="privacy_message_item_message_itemLT_layout_marginRight">50dp</dimen>
     <dimen name="privacy_contact_list_item_layout_marginTop">7dp</dimen>
+    <dimen name="privacy_contact_high_red_tip_x">168dp</dimen>
+    <dimen name="privacy_contact_high_red_tip_y">8dp</dimen>
     <dimen name="privacy_contact_red_tip_x">98dp</dimen>
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="privacy_contact_circleimage_red_tip_x">26dp</dimen>

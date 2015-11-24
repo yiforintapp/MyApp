@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.ui;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,6 +11,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -29,6 +28,9 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator {
     private static final CharSequence EMPTY_TITLE = "";
@@ -351,8 +353,15 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
 
                 TextPaint textPaint = getPaint();
                 Drawable drawable = getCompoundDrawables()[0];
-                float x = res.getDimension(R.dimen.privacy_contact_red_tip_x);
-                float y = res.getDimension(R.dimen.privacy_contact_red_tip_y);
+                float x;
+                float y;
+                if (Build.VERSION.SDK_INT < 19) {
+                    x = res.getDimension(R.dimen.privacy_contact_red_tip_x);
+                    y = res.getDimension(R.dimen.privacy_contact_red_tip_y);
+                } else {
+                    x = res.getDimension(R.dimen.privacy_contact_high_red_tip_x);
+                    y = res.getDimension(R.dimen.privacy_contact_high_red_tip_y);
+                }
                 if (drawable != null) {
                     CharSequence text = getText();
                     if(text != null) {
