@@ -191,17 +191,17 @@ public class BitmapUtils {
     public static Bitmap bytes2BimapWithScale(byte[] data, Context context) {
         BitmapFactory.Options option = new Options();
         option.inJustDecodeBounds = true;
-        Bitmap bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length,option);
+        Bitmap bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length, option);
         int outHeight = option.outHeight;
         int outWidth = option.outWidth;
-        WindowManager wm = (WindowManager) context .getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         int windowW = wm.getDefaultDisplay().getWidth();
         int windowH = wm.getDefaultDisplay().getHeight();
-        float scaleW = (float)outWidth / (float)windowW;
-        float scaleH = (float)outHeight / (float)windowH;
+        float scaleW = (float) outWidth / (float) windowW;
+        float scaleH = (float) outHeight / (float) windowH;
         float maxScale = Math.max(scaleW, scaleH);
-        LeoLog.i("test1", "window W = "+ windowW);
-        LeoLog.i("test1", "window H = "+ windowH +"scaleW = " + scaleW+"...scaleH = " + scaleH +" minScale = " + maxScale);
+        LeoLog.i("test1", "window W = " + windowW);
+        LeoLog.i("test1", "window H = " + windowH + "scaleW = " + scaleW + "...scaleH = " + scaleH + " minScale = " + maxScale);
         option.inJustDecodeBounds = false;
         if (maxScale > 1) {
             option.inSampleSize = (int) maxScale;

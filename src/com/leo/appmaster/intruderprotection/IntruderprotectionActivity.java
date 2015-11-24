@@ -456,6 +456,12 @@ public class IntruderprotectionActivity extends BaseActivity {
             public void onClick(View v) {
                 SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_clear");
+                
+                if(mInfosSorted !=null && mInfosSorted.size() == 0) {
+                    Toast.makeText(IntruderprotectionActivity.this, R.string.intruder_nobody_tips, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
                 if (mCleanConfirmDialog == null) {
                     mCleanConfirmDialog = new LEOAlarmDialog(IntruderprotectionActivity.this);
                 }
