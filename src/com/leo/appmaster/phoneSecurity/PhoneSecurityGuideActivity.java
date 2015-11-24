@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
@@ -37,6 +38,28 @@ public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_security_guide);
         initUI();
+        intentHandler();
+    }
+
+    /**
+     * 跳转过来的Intent处理
+     */
+    private void intentHandler() {
+        Intent intent = getIntent();
+        fromScanIntentHandler(intent);
+    }
+
+    /*来自扫描结果页的Intent处理*/
+    private void fromScanIntentHandler(Intent intent) {
+        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
+        /*进入该Acitity初始化来自数据*/
+        psm.setIsFromScan(false);
+        Boolean isFromScan = intent.getBooleanExtra(Constants.EXTRA_IS_FROM_SCAN, false);
+        boolean isFromScanTmp = psm.getIsFromScan();
+        if (isFromScan != isFromScanTmp) {
+            psm.setIsFromScan(isFromScan);
+        }
+        intent.removeExtra(Constants.EXTRA_IS_FROM_SCAN);
     }
 
     private boolean isFormHome() {

@@ -50,6 +50,7 @@ public class PhoneSecurityManager {
     private volatile boolean mIsExecuteLocate = false;
     private LocationManager mLocationManager;
     private SecurLocateListener mLocationListener;
+    private boolean mIsFromScan;
 
     private PhoneSecurityManager(Context context) {
         mContext = context;
@@ -109,6 +110,15 @@ public class PhoneSecurityManager {
     public void setIsExecuteSecur(boolean mIsExecuteSecur) {
         this.mIsExecuteSecur = mIsExecuteSecur;
     }
+
+    public void setIsFromScan(boolean isFromScan) {
+        mIsFromScan = isFromScan;
+    }
+
+    public boolean getIsFromScan() {
+        return mIsFromScan;
+    }
+
 
     public boolean isStopAlert() {
         return mStopAlert;

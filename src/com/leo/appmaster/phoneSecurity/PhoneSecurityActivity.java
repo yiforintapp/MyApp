@@ -22,6 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
@@ -609,7 +610,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                         mDayTv.setText(String.valueOf(protectTime[0]));
                         mHourTv.setText(String.valueOf(protectTime[1]));
                         if (!mBottomNumber[0].equals(mCurrentProcNumber)) {
-                            mCurrentProcNumber = "1";
+                            mCurrentProcNumber = mBottomNumber[0];
                         }
                         mNoAddSecurNumber.setVisibility(View.GONE);
                         securTimeAnim(mShowProtTimeLt);
@@ -701,7 +702,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         if (flag) {
             /*进入开启设备管理器并且激活才进入开启步骤3,否则为2*/
             if (isOpenAdvan) {
-                mCurrentProcNumber = "3";
+                mCurrentProcNumber = mBottomNumber[2];
             }
         }
         if (isOpenAdvan) {
@@ -715,7 +716,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
 
     /*进入完成页面*/
     private void toSecurFinish() {
-        UpdateScoreHelper.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE, this);
+        frmScanHandler();
         LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         boolean isOpenAdvan = lostMgr.isOpenAdvanceProtect();
         if (isOpenAdvan) {
@@ -724,7 +725,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             loadNoOpenInstructData(false);
         }
         mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.cb));
-        mCurrentProcNumber = "3";
+        mCurrentProcNumber = mBottomNumber[2];
         setSecurShowUI(false, false, false, false, false, false, true, false);
         mOperFinish.setImageResource(R.drawable.theft_step);
         mAdvanChekBox.setVisibility(View.GONE);
@@ -744,6 +745,16 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         /*设置开启保护的时间*/
         mgr.setOpenSecurityTime();
     }
+
+    /*来自扫描页面,加分提示处理*/
+    private void frmScanHandler() {
+        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
+        boolean isFromScanTmp = psm.getIsFromScan();
+        if (isFromScanTmp) {
+            UpdateScoreHelper.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE, this);
+        }
+    }
+
 
     /*保护时间动画*/
     private void securTimeAnim(View view) {

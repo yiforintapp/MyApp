@@ -1020,6 +1020,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mLostBtnLt == v) {
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "theft_enable");
             Intent intent = new Intent(getActivity(), PhoneSecurityGuideActivity.class);
+            intent.putExtra(Constants.EXTRA_IS_FROM_SCAN,true);
             startActivity(intent);
         } else if (mGradeBtnLt == v) { // 五星好评
             lockManager.filterSelfOneMinites();
