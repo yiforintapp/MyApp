@@ -133,10 +133,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private int mScoreBeforeProcess;
     private LEOMessageDialog mMessageDialog;
 
-    private BroadcastReceiver mLocaleReceiver = new BootupReceiver() {
+    private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            super.onReceive(context, intent);
             if (intent == null) return;
 
             String action = intent.getAction();
