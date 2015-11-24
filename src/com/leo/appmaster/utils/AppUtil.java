@@ -346,7 +346,8 @@ public class AppUtil {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
-        if ((height > reqHeight && height / reqHeight >= 2) || (width > reqWidth && width / reqWidth >= 2)) {
+        if ((height > reqHeight && height / reqHeight >= 2)
+                || (width > reqWidth && width / reqWidth >= 2)) {
             /*计算出实际宽高和目标宽高的比率*/
             final float heightRatio = (float) height / (float) reqHeight;
             final float widthRatio = (float) width / (float) reqWidth;

@@ -13,6 +13,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.CallLog;
@@ -39,10 +40,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     private String mFlag;
     private MessageBean mLastMessage;
 
-    public PrivacyMessageContentObserver(Handler handler) {
-        super(handler);
-    }
-
     public PrivacyMessageContentObserver(Context context, Handler handler, String flag) {
         super(handler);
         mContext = context;
@@ -56,13 +53,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             /* 测试打印系统据库变化情况 */
             printTestObserverLog();
         }
-        int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
-        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
-        boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
-        boolean isOpenNoReadCallLogTip = pref.getSwitchOpenRecentlyContact();
-//        if (privateContacts == 0 && !isOpenNoReadMessageTip && !isOpenNoReadCallLogTip) {
-//            return;
-//        }
         final ContentResolver cr = mContext.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(mContext);
         if (MESSAGE_MODEL.equals(mFlag)) {
@@ -75,14 +65,13 @@ public class PrivacyMessageContentObserver extends ContentObserver {
 
                         @Override
                         public void run() {
-                            int count = cr.delete(
-                                    PrivacyContactUtils.SMS_INBOXS,
-                                    "address =  " + "\"" + mLastMessage.getPhoneNumber()
-                                            + "\" and " + "body = \""
-                                            + mLastMessage.getMessageBody() + "\"", null);
-                            if (count > 0) {
-                                LeoLog.i(TAG, "在监控短信时，删除系统短信成功！！");
-                            }
+                            String where = "address =  " + "\""
+                                    + mLastMessage.getPhoneNumber()
+                                    + "\" and " + "body = \""
+                                    + mLastMessage.getMessageBody()
+                                    + "\"";
+                            Uri uri = PrivacyContactUtils.SMS_INBOXS;
+                            cr.delete(uri, "address =  " + "\"" + where, null);
                         }
                     });
                 } catch (Exception e) {

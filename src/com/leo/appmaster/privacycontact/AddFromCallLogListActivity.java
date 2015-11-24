@@ -592,12 +592,15 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         }
                     }
                     break;
+                case PrivacyContactUtils.MSG_CALL_QU:
+
+                    break;
                 default:
                     break;
             }
         }
     }
-
+    /*加载通话通话列表*/
     private void sendMsgHandler() {
         if (mAddFromCallHandler != null) {
             ThreadManager.executeOnAsyncThread(new Runnable() {
