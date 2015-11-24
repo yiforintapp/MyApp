@@ -56,18 +56,6 @@ public class IntruderGalleryActivity extends BaseActivity {
         mCtb.setOptionMenuVisible(true);
 //        mTvPosition = (TextView) findViewById(R.id.tv_position);
         mVPPhotos = (ViewPager) findViewById(R.id.vp_photos);
-        mVPPhotos.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                int visibility = mCtb.getVisibility();
-                if(visibility == View.VISIBLE) {
-                    mCtb.setVisibility(View.GONE);
-                }else {
-                    mCtb.setVisibility(View.VISIBLE);
-                }
-            }
-        });
         mISManager = (IntrudeSecurityManager) MgrContext
                 .getManager(MgrContext.MGR_INTRUDE_SECURITY);
         mInflater = LayoutInflater.from(this);
