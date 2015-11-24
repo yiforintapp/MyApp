@@ -504,7 +504,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         String gpUrl;
         String browserUrl;
-        if ("1".equals(preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE))) { // 使用浏览器
+        if (Constants.BROWSER_URL_TYPE.equals(
+                preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE))) { // 使用浏览器
+
             if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
                     preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
 

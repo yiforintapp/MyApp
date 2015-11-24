@@ -402,4 +402,7 @@ public class Constants {
     public static final String SWIFTY_SECURITY_URL = "/appmaster/privacysuggest";
     
     public static final String EXTRA_IS_FROM_SCAN = "isFromScan";
+
+    /** Swifty使用浏览器 */
+    public static final String BROWSER_URL_TYPE = "1";
 }

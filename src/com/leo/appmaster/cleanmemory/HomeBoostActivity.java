@@ -346,7 +346,7 @@ public class HomeBoostActivity extends Activity {
                 "translationY", mFire.getTranslationY(),
                 -mScreenH - DipPixelUtil.dip2px(HomeBoostActivity.this, 130));
 
-        fireMoveOut.setDuration(780);
+        fireMoveOut.setDuration(880);
 
         AnimatorSet fireAnimator = new AnimatorSet();
         fireAnimator.playTogether(fireScale, fireMoveOut);
