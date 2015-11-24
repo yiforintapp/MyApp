@@ -46,6 +46,7 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
+import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -71,6 +72,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LanguageUtils;
@@ -129,6 +131,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mShowContact;
 
     private int mScoreBeforeProcess;
+    private LEOMessageDialog mMessageDialog;
 
     private BroadcastReceiver mLocaleReceiver = new BootupReceiver() {
         @Override
@@ -169,6 +172,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         /*手机防盗开启人数，在用户没有打开手机防盗时没此进入主页拉取一次*/
         PhoneSecurityFetchJob.startImmediately();
         registerLocaleChange();
+
+        openAdvanceProtectDialogHandler();
     }
 
     @Override
@@ -1260,6 +1265,37 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             this.iconId = iconId;
             this.isRedTip = isRedTip;
         }
+    }
+
+    /*高级保护开启首页提示*/
+    private void openAdvanceProtectDialogHandler() {
+        String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
+        boolean isTip = PreferenceTable.getInstance().getBoolean(key, true);
+
+        if (isAdminActive() && isTip) {
+            openAdvanceProtectDialogTip();
+        }
+    }
+
+    private void openAdvanceProtectDialogTip() {
+        if (mMessageDialog == null) {
+            mMessageDialog = new LEOMessageDialog(this);
+            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mMessageDialog != null) {
+                        mMessageDialog = null;
+                    }
+                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
+                    PreferenceTable.getInstance().putBoolean(key, false);
+                }
+            });
+        }
+        String title = getString(R.string.advance_protect_open_success_tip_title);
+        String content = getString(R.string.adv_prot_open_suc_tip_cnt);
+        mMessageDialog.setTitle(title);
+        mMessageDialog.setContent(content);
+        mMessageDialog.show();
     }
 
 }

@@ -80,4 +80,8 @@ public class PrefConst {
     public static final String KEY_PIC_REDDOT_EXIST = "pic_dot_exist";
     public static final String KEY_VID_COMSUMED = "vid_comsumed";
     public static final String KEY_VID_REDDOT_EXIST = "vid_dot_exist";
+    //高级保护开启首页提示
+    public static final String KEY_OPEN_ADVA_PROTECT = "OPEN_ADVA_PROTECT";
+
+
 }
