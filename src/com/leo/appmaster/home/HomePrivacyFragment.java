@@ -65,6 +65,8 @@ public class HomePrivacyFragment extends Fragment {
     private ObjectAnimator mCircleRotateAnim;
 
     private int mCurrentPercent;
+    private ObjectAnimator mShieldOffsetYAnim;
+    private boolean mInterceptRaise;
 
     public HomePrivacyFragment() {
 
@@ -121,9 +123,10 @@ public class HomePrivacyFragment extends Fragment {
      * @param increaseScore
      */
     public void startLoadingRiseAnim(final int increaseScore) {
+        mInterceptRaise = false;
         mHomeAnimView.getLoadingLayer().setRiseHeight(0);
         int height = AppMasterApplication.getInstance().getResources().getDimensionPixelSize(R.dimen.home_loading_rise);
-        ObjectAnimator riseAnim = ObjectAnimator.ofInt(mHomeAnimView.getLoadingLayer(), "riseHeight", 0, height);
+        final ObjectAnimator riseAnim = ObjectAnimator.ofInt(mHomeAnimView.getLoadingLayer(), "riseHeight", 0, height);
         riseAnim.setDuration(320);
         riseAnim.setInterpolator(new LinearInterpolator());
         riseAnim.addListener(new SimpleAnimatorListener() {
@@ -342,9 +345,11 @@ public class HomePrivacyFragment extends Fragment {
         timeAnim.addListener(new SimpleAnimatorListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                mActivity.jumpToNextFragment();
-                mHomeAnimView.increaseCurrentStep();
-                startStepAnim();
+                if (!mInterceptRaise) {
+                    mActivity.jumpToNextFragment();
+                    mHomeAnimView.increaseCurrentStep();
+                    startStepAnim();
+                }
             }
         });
         return timeAnim;
@@ -486,18 +491,11 @@ public class HomePrivacyFragment extends Fragment {
 
         mHomeAnimView.setTotalStepCount(stepCount);
         int offsetY = mHomeAnimView.getShieldLayer().getMaxOffsetY();
-        ObjectAnimator shieldOffsetYAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetY", 0, offsetY);
+        mShieldOffsetYAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetY", 0, offsetY);
         int duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);
-        shieldOffsetYAnim.setDuration(duration);
-        shieldOffsetYAnim.setInterpolator(new LinearInterpolator());
-        shieldOffsetYAnim.addListener(new SimpleAnimatorListener() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-//                mCircleRotateAnim.cancel();
-            }
-        });
-        shieldOffsetYAnim.start();
+        mShieldOffsetYAnim.setDuration(duration);
+        mShieldOffsetYAnim.setInterpolator(new LinearInterpolator());
+        mShieldOffsetYAnim.start();
     }
 
     /**
@@ -562,19 +560,6 @@ public class HomePrivacyFragment extends Fragment {
         }
     }
 
-    private void initResumedAnim() {
-        // 内环、外环旋转
-        mAnimatorSet = new AnimatorSet();
-        ObjectAnimator outCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
-        outCircleRotateAnim.setDuration(3500);
-        outCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
-        outCircleRotateAnim.setInterpolator(new LinearInterpolator());
-        mAnimatorSet.play(outCircleRotateAnim);
-
-        mHomeAnimView.setCircleAlpha(255);
-        mHomeAnimView.setShieldScaleRatio(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
-    }
-
     private void postFastArrowAnim() {
         // 快速滚动条
         int width = mHomeAnimView.getFastArrowWidth() + mWidth;
@@ -589,15 +574,21 @@ public class HomePrivacyFragment extends Fragment {
         showScanningPercent(-1);
         stopFinalAnim();
         mHomeAnimView.setShowProcessLoading(false, 0);
-        mHomeAnimView.setShieldOffsetY(0);
         mHomeAnimView.getShieldLayer().setFinalShieldRatio(0);
         mHomeAnimView.getShieldLayer().setFinalTextRatio(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
 
-//        mCircleRotateAnim.start();
+        if (mShieldOffsetYAnim != null) {
+            mShieldOffsetYAnim.end();
+        }
+        mHomeAnimView.setShieldOffsetY(0);
     }
 
     public int getToolbarColor() {
         return mHomeAnimView.getToolbarColor();
+    }
+
+    public void setInterceptRaiseAnim() {
+        mInterceptRaise = true;
     }
 
     private static class FastHandler extends Handler {

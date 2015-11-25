@@ -198,7 +198,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "proposals_cnts");
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "proposals_cnts");
         mImageLoader = ImageLoader.getInstance();
         mSelectData = new ArrayList<ContactBean>();
         mAddedData = new ArrayList<ContactBean>();
@@ -368,7 +368,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mIntruderMiddleLt.setVisibility(View.GONE);
             mIntruderFixedLt.setVisibility(View.VISIBLE);
 
-            mIntruderFixedTv.setText(getString(R.string.pri_intruder_fixed_pattern, ism.getCatchTimes()));
+            mIntruderFixedTv.setText(mActivity.getString(R.string.pri_intruder_fixed_pattern, ism.getCatchTimes()));
         }
 
         LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
@@ -379,10 +379,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mLostBtnDiv.setVisibility(View.GONE);
             mLostMiddleLt.setVisibility(View.GONE);
             mLostFixedLt.setVisibility(View.VISIBLE);
-            mLostFixedTv.setText(getString(R.string.pri_pro_lost_fixed_pattern, times[0], times[1]));
+            mLostFixedTv.setText(mActivity.getString(R.string.pri_pro_lost_fixed_pattern, times[0], times[1]));
         }
 
-        if (PrivacyHelper.getInstance(getActivity()).getSecurityScore() == 100) {
+        if (PrivacyHelper.getInstance(mActivity).getSecurityScore() == 100) {
             mHeadView.setText(R.string.pri_pro_summary_confirm);
         } else {
             mHeadView.setText(R.string.pri_pro_summary_not_confirm);
@@ -394,11 +394,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         if (wsm.getWifiState() == WifiSecurityManager.NO_WIFI) {
             include.setVisibility(View.GONE);
         } else {
-            mWifiSummary.setText(getString(R.string.pri_pro_wifi_connect, wsm.getWifiName()));
+            mWifiSummary.setText(mActivity.getString(R.string.pri_pro_wifi_connect, wsm.getWifiName()));
             if (isScnnedEver) {
                 if (wsm.getWifiState() == WifiSecurityManager.SAFE_WIFI) {
                     mWifiFixedLt.setVisibility(View.VISIBLE);
-                    mWifiFixedTitle.setText(getString(R.string.pri_pro_wifi_connect, wsm.getWifiName()));
+                    mWifiFixedTitle.setText(mActivity.getString(R.string.pri_pro_wifi_connect, wsm.getWifiName()));
                     mWifiFixedSummaryLt.setVisibility(View.VISIBLE);
                     mWifiMiddleLt.setVisibility(View.GONE);
                     mWifiBtnLt.setVisibility(View.GONE);
@@ -515,11 +515,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void ChangeContactColor() {
         if (mSelectData.size() > 0) {
             mContactBtnTv.setTextColor(mActivity.getResources().getColor(R.color.cgn));
-            Drawable drawable = getActivity().getResources().getDrawable(R.drawable.arrow_button_right);
+            Drawable drawable = mActivity.getResources().getDrawable(R.drawable.arrow_button_right);
             mContactBtnTv.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
         } else {
             mContactBtnTv.setTextColor(mActivity.getResources().getColor(R.color.contact_no_select));
-            Drawable drawable = getActivity().getResources().getDrawable(R.drawable.arrow_button_right_normal);
+            Drawable drawable = mActivity.getResources().getDrawable(R.drawable.arrow_button_right_normal);
             mContactBtnTv.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
         }
     }
@@ -642,10 +642,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void onAddContactFinish() {
-        getActivity().runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(), getActivity().getString(R.string.pri_contact_succ), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, mActivity.getString(R.string.pri_contact_succ), Toast.LENGTH_SHORT).show();
                 for (View contactView : mContactViews) {
                     CheckBox checkBox = (CheckBox) contactView.findViewById(R.id.contact_single_cb);
                     ContactBean cb = mDataMap.get(checkBox);
@@ -719,7 +719,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mLostBtnLt.setOnClickListener(this);
 //            mLostBtnLt.setOnRippleCompleteListener(this);
 
-            String text = getActivity().getString(R.string.pri_pro_btn, manager.getMaxScore());
+            String text = mActivity.getString(R.string.pri_pro_btn, manager.getMaxScore());
             mLostBtnTv.setText(text);
 
             mLostSummary.setText(R.string.pri_pro_lost_summary);
@@ -739,7 +739,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mIntruderBtnLt.setOnClickListener(this);
 //        mIntruderBtnLt.setOnRippleCompleteListener(this);
 
-        String text = getActivity().getString(R.string.pri_pro_btn, manager.getMaxScore());
+        String text = mActivity.getString(R.string.pri_pro_btn, manager.getMaxScore());
         mIntruderBtnTv.setText(text);
 
         mIntruderSummary.setText(R.string.pri_pro_intruder_summary);
@@ -763,7 +763,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mWifiFixedTitle = (TextView) include.findViewById(R.id.fixed_title);
         mWifiFixedSummaryLt = include.findViewById(R.id.fixed_summary_ll);
 
-        String text = getActivity().getString(R.string.pri_pro_wifi_btn);
+        String text = mActivity.getString(R.string.pri_pro_wifi_btn);
         mWifiBtnTv.setText(text);
     }
 
@@ -1015,12 +1015,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
             resetContact();
         } else if (v.getId() == R.id.pp_process_rv_click) {
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "finish");
             mActivity.onBackPressed();
         } else if (mContactBtnLt == v) {
             final PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
             if (!mSelectData.isEmpty()) {
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "contact_enable");
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "contact_enable");
                 setAddPrivacyText(true);
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
@@ -1032,16 +1032,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     }
                 });
             } else {
-//                Toast.makeText(getActivity(), getActivity().getString(R.string.pri_contact_empty), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mActivity(), mActivity().mActivity.getString(R.string.pri_contact_empty), Toast.LENGTH_SHORT).show();
             }
             ChangeContactColor();
         } else if (mWifiBtnLt == v) {
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "wifi_scan");
-            Intent intent = new Intent(getActivity(), WifiSecurityActivity.class);
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "wifi_scan");
+            Intent intent = new Intent(mActivity, WifiSecurityActivity.class);
             startActivity(intent);
         } else if (mIntruderBtnLt == v) {
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "intruder_enable");
-            Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "intruder_enable");
+            Intent intent = new Intent(mActivity, IntruderprotectionActivity.class);
             intent.putExtra(Constants.EXTRA_IS_FROM_SCAN, true);
             startActivity(intent);
         } else if (mFbBtnLt == v) {  // FaceBook分享
@@ -1051,8 +1051,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity);
         } else if (mLostBtnLt == v) {
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "theft_enable");
-            Intent intent = new Intent(getActivity(), PhoneSecurityGuideActivity.class);
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "theft_enable");
+            Intent intent = new Intent(mActivity, PhoneSecurityGuideActivity.class);
             intent.putExtra(Constants.EXTRA_IS_FROM_SCAN, true);
             startActivity(intent);
         } else if (mGradeBtnLt == v) { // 五星好评
@@ -1103,14 +1103,14 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             return;
         }
 
-        String title = getResources().getString(R.string.privacy_contact_add_log_dialog_title);
-        String content = getResources().getString(R.string.privacy_contact_add_log_dialog_dialog_content);
-        mImportRecordDlg = new LEOAlarmDialog(getActivity());
+        String title = mActivity.getString(R.string.privacy_contact_add_log_dialog_title);
+        String content = mActivity.getString(R.string.privacy_contact_add_log_dialog_dialog_content);
+        mImportRecordDlg = new LEOAlarmDialog(mActivity);
         mImportRecordDlg.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
             @Override
             public void onClick(int which) {
                 if (which == 1) {
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "contact_import");
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "contact_import");
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
@@ -1120,7 +1120,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                         }
                     });
                 } else if (which == 0) {
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "contact_cancel");
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "contact_cancel");
                     mImportRecordDlg.dismiss();
                 }
 

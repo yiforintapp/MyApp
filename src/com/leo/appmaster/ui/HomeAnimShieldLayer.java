@@ -483,15 +483,6 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mShieldOffsetY = shieldOffsetY;
     }
 
-    public int getShieldOffsetY() {
-        int shieldOffsetY = mShieldOffsetY;
-        float finalShieldRatio = mFinalShieldRatio;
-        if (finalShieldRatio > 0 && finalShieldRatio <= 1) {
-            shieldOffsetY += finalShieldRatio * mMaxFinalOffsetY;
-        }
-        return shieldOffsetY;
-    }
-
     public float getShieldOffsetRatio() {
         float shieldOffsetY = mShieldOffsetY;
         float maxShieldOffsetY = mMaxOffseteY;

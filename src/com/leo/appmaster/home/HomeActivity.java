@@ -359,6 +359,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     public void onExitScanning() {
         if (mTabFragment.isTabDismiss()) {
+            LeoLog.d(TAG, "onExitScanning...");
             SDKWrapper.addEvent(this, SDKWrapper.P1, "scan", "cancel");
             mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
                 @Override
@@ -367,6 +368,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 }
             });
             getSupportFragmentManager().popBackStack();
+            mPrivacyFragment.setInterceptRaiseAnim();
             mPrivacyFragment.reset();
 
             mToolbar.setVisibility(View.VISIBLE);
@@ -1192,6 +1194,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mPrivacyFragment.startIncreaseSocreAnim(increaseScore);
             LeoLog.d(TAG, "startProcessFinishAnim, startIncreaseSocreAnim..." + increaseScore);
         }
+    }
+
+    public boolean isTabDismiss() {
+        return mTabFragment.isTabDismiss();
     }
 
     public void onIgnoreClick(int increaseScore, String mgr) {
