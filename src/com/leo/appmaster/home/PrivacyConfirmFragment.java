@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -300,6 +301,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void loadAd(final View view) {
+        LeoLog.d(TAG, "loadAD with thread " + Thread.currentThread().getName());
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         if (amp.getIsADAfterPrivacyProtectionOpen() == 1) {
             MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_67, new MobvistaListener() {
@@ -352,7 +354,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     initSwiftyLayout(mPanelView);
 
                     start = SystemClock.elapsedRealtime();
-                    loadAd(mPanelView);
+                    ThreadManager.executeOnSubThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadAd(mPanelView);
+                        }
+                    });
+
                     LeoLog.d(TAG, "loadAd cost: " + (SystemClock.elapsedRealtime() - start));
 
                     start = SystemClock.elapsedRealtime();
