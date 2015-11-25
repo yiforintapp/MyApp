@@ -654,12 +654,14 @@ public class FileOperationUtil {
                     if (isFilterVideoType) {
                         continue;
                     }
-                    // 过滤闪屏图
-                    if (FileOperationUtil.getSplashPath() != null
-                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
-                            .equals(path)) {
-                        continue;
-                    }
+
+//                    // 过滤闪屏图
+//                    if (FileOperationUtil.getSplashPath() != null
+//                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
+//                            .equals(path)) {
+//                        continue;
+//                    }
+
                     if (!countMap.containsKey(dir_path)) {
                         pa = new PhotoAibum();
                         pa.setName(dir);
@@ -674,7 +676,6 @@ public class FileOperationUtil {
                     }
                 }
             }
-
         } catch (Exception e) {
 
         } finally {
@@ -682,6 +683,20 @@ public class FileOperationUtil {
                 cursor.close();
             }
         }
+
+        //splashPath
+        String splashPath = FileOperationUtil.getSplashPath();
+        if (splashPath != null) {
+            StringBuffer str = new StringBuffer(splashPath);
+            String lastIndex = String.valueOf(str.charAt(str.length() - 1));
+            if ("/".equals(lastIndex)) {
+                int pos = splashPath.lastIndexOf('/');
+                splashPath = splashPath.substring(0, pos);
+                LeoLog.d("testPhotoAlbumTime", "splashPath : " + splashPath);
+            }
+            countMap.remove(splashPath);
+        }
+
         Iterable<String> it = countMap.keySet();
         for (String key : it) {
             aibumList.add(countMap.get(key));
