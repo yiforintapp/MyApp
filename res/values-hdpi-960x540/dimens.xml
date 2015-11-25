@@ -277,4 +277,12 @@
     <dimen name="wifi_scaning_fragment_height">200dp</dimen>
     <dimen name="wifi_scaning_loading_size">24dp</dimen>
     <dimen name="wifi_result_trans_content">165dp</dimen>
+
+    <dimen name="ad_parent_width">345dp</dimen>
+    <dimen name="ad_content_width">318dp</dimen>
+    <dimen name="ad_content_height">158dp</dimen>
+    <dimen name="ad_clean_text_width">218dp</dimen>
+    <dimen name="ad_view_width">335dp</dimen>
+    <dimen name="ad_view_height">284dp</dimen>
+    <dimen name="ad_ll_margin_top">256dp</dimen>
 </resources>

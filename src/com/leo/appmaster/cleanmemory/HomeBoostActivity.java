@@ -34,6 +34,7 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.TextFormater;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -77,7 +78,9 @@ public class HomeBoostActivity extends Activity {
             SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,
                     "assistant", "accelerate_cnts");
         }
-        
+        LeoLog.e("HomeBoostActivity",
+                ""+ Utilities.getScreenSize(this)[0] +":" + Utilities.getScreenSize(this)[1]);
+
         initUI();
         handleIntent();
         overridePendingTransition(0, 0);
