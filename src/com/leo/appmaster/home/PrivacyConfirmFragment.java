@@ -8,6 +8,7 @@ import java.util.List;
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -446,7 +448,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mContactViews = new ArrayList<View>();
         for (int i = 0; i < mContactList.size(); i++) {
             ContactBean contactBean = mContactList.get(i);
-            View v = View.inflate(getActivity(), R.layout.pri_contact_item, null);
+            Context context = AppMasterApplication.getInstance();
+            View v = View.inflate(context, R.layout.pri_contact_item, null);
             ImageView imageView = (ImageView) v.findViewById(R.id.contact_head_iv);
             imageView.setImageBitmap(contactBean.getContactIcon());
 

@@ -358,15 +358,15 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onExitScanning() {
-        if (mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
+        if (mTabFragment.isTabDismiss()) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "scan", "cancel");
-            getSupportFragmentManager().popBackStack();
             mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
                 @Override
                 public void onShowTabListener() {
                     mMoreFragment.setEnable(true);
                 }
             });
+            getSupportFragmentManager().popBackStack();
             mPrivacyFragment.reset();
 
             mToolbar.setVisibility(View.VISIBLE);
