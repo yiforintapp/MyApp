@@ -188,14 +188,7 @@ public class WifiTabFragment extends Fragment {
                 if (type == CONNECT_STATUS) {
                     checkIsConnect();
                 } else if (type == SECOND_CONNECT) {
-//                    boolean checkDone = checkHost();
                     pingAll();
-//                    boolean checkDone = true;
-//                    if (checkDone) {
-//                        checkIsSecondConnect();
-//                    } else {
-//                        stopScan();
-//                    }
                 } else if (type == PASSWORD_TYPE) {
                     checkPassWordType();
                 } else {
@@ -559,7 +552,7 @@ public class WifiTabFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-//                startLoading(SECOND_CONNECT);
+
             }
         });
         anim2.setDuration(900);
@@ -585,7 +578,7 @@ public class WifiTabFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-//                startLoading(PASSWORD_TYPE);
+
             }
         });
         anim3.setDuration(1200);
@@ -611,7 +604,7 @@ public class WifiTabFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-//                startLoading(WIFI_SAFETY);
+
             }
         });
         anim4.setDuration(1500);

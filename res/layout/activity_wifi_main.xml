@@ -66,6 +66,13 @@
                         android:layout_width="@dimen/wifi_acti_big_icon_width"
                         android:layout_height="@dimen/wifi_acti_big_icon_height"
                         android:background="@drawable/wifiscan_1" />
+
+                    <ImageView
+                        android:id="@+id/wifi_flash2"
+                        android:layout_width="@dimen/wifi_acti_big_icon_width"
+                        android:layout_height="@dimen/wifi_acti_big_icon_height"
+                        android:background="@drawable/wifiscan_4" />
+
                 </FrameLayout>
 
                 <!--<ImageView-->
