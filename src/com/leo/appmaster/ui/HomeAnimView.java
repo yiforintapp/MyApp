@@ -79,7 +79,9 @@ public class HomeAnimView extends View {
         int toolbarH = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
         int shieldTotalH = h - tabH - toolbarH;
         int left = getLeft() + (w - width) / 2;
-        int top = getTop() + toolbarH + (shieldTotalH - height) / 2;
+
+        int offsetY = getResources().getDimensionPixelSize(R.dimen.shield_offsetY);
+        int top = getTop() + toolbarH + (shieldTotalH - height) / 2 + offsetY;
         Rect rect = new Rect(left, top, left + width, top + height);
         if (HomePrivacyFragment.sScreenHeight <= 320) {
             int cx = rect.centerX();
@@ -89,8 +91,8 @@ public class HomeAnimView extends View {
         }
         mShieldLayer.setBounds(rect.left, rect.top, rect.right, rect.bottom);
         int emptyHeaderH = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
-        int offsetY = mShieldLayer.centerY() - emptyHeaderH / 2 - toolbarH / 2;
-        mShieldLayer.setMaxOffsetY(offsetY);
+        int maxOffsetY = mShieldLayer.centerY() - emptyHeaderH / 2 - toolbarH / 2;
+        mShieldLayer.setMaxOffsetY(maxOffsetY);
 
         mLoadingLayer.setBounds(getLeft(), getTop(), getRight(), getBottom());
 
