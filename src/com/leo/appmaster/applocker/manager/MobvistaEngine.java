@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -126,8 +127,10 @@ public class MobvistaEngine {
     private static void initMobvista(){
         Context context = AppMasterApplication.getInstance();
         try {
+            long start = SystemClock.elapsedRealtime();
             MobvistaAd.init(context, Constants.MOBVISTA_APPID, Constants.MOBVISTA_APPKEY);
-            LeoLog.i(TAG, "initMobvista module done");
+            LeoLog.i(TAG, "initMobvista module done, cost time="
+                + (SystemClock.elapsedRealtime()-start));
         } catch (Exception e) {
             LeoLog.e(TAG, "static block exception: " + e.getMessage());
             e.printStackTrace();
@@ -171,6 +174,8 @@ public class MobvistaEngine {
         if(mMobvistaNative.get(unitId) != null){
             return;
         }
+
+        long start = SystemClock.elapsedRealtime();
         String placementId = mUnitIdToPlacementIdMap.get(unitId);
         
         // check placement first
@@ -187,7 +192,8 @@ public class MobvistaEngine {
         try {
             // 这个地方执行导致crash，直接catch住
             nativeAd.loadAd(new AdListenerImpl(unitId));
-            LeoLog.i(TAG, "loadSingleMobAd -> ad["+unitId+"]");
+            LeoLog.i(TAG, "loadSingleMobAd -> ad["+unitId+"], cost time = "
+                    + (SystemClock.elapsedRealtime()-start));
             mMobvistaNative.put(unitId, nativeAd);
         } catch (Throwable thr) {
             MobvistaListener listener = mMobvistaListeners.get(unitId);
