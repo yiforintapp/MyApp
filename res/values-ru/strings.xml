@@ -585,7 +585,7 @@
     <string name="pri_pro_wifi_safe">Текущее соединение Wi-Fi безопасное</string>
     <string name="pri_pro_summary_not_confirm">Выполните следующие действия для повышения уровня секрета</string>
     <string name="pri_pro_summary_confirm">Хорошо, все безопасно, так держать!, </string>
-    <string name="pri_pro_btn">Открыть (+%1$d)</string>
+    <!--<string name="pri_pro_btn">Открыть (+%1$d)</string>-->
     <string name="pri_pro_opened">Открыть</string>
     <string name="pri_mobile_privacy">Секрет с.т. %1$d раз под защ.</string>
     <string name="pri_lost_privacy">Секрет %1$d д. %2$d ч.</string>
@@ -822,4 +822,23 @@
     <string name="phone_security_instruct_alert_off_description">Закрыть сирены</string>
     <string name="alert_off_name">Оповещать от</string>
     <string name="secur_send_msm_no_location"> [LEOMASTER] Не удается получить http://www.leomaster.com</string>
+
+    <string name="feedback_tell_us_title">Свяжитесь с нами</string>
+    <string name="toast_getscore_text">Поздравляем! Ваши баллы увеличились</string>
+    <string name="feedback_tell_us_content">Если у вас есть другие вопросы или потребности, пожалуйста, не стесняйтесь обращаться к нам! Наши группы на facebook , WhatsApp поддерживают он-лайн в любое время!</string>
+    <string name="feedback_tell_us_contact_type_title">Контакты</string>
+    <string name="dialog_fivestars_content_text">Наслаждайтесь Privacy Guard?Пожалуйста, дайте нам 5 звезд сейчас!</string>
+    <string name="elect_empty_content">К сожалению, информация о батареи пока не была получена</string>
+    <string name="swifty_item_btn">Выполнять запуск</string>
+    <string name="grade_item_title">Вам нравится Privacy Guard?</string>
+    <string name="grade_item_btn"> Дайте оценку 5 звёзд</string>
+    <string name="change_wifi_toast_unsafe">Существует риск</string>
+    <string name="change_wifi_toast_safe">Безопасность</string>
+    <string name="fb_item_title">Следуйте за нами на Facebook</string>
+    <string name="fb_item_content">Хотите узнать больше интересных официальных новостей о Privacy Guard? Пожалуйста, немедленно следуйте за нами на Facebook</string>
+    <string name="fb_item_btn">следовать за нами</string>
+    <string name="intruderprotection_forbit_content">Из-за ограничений системы, защита от агрессора не может нормально работать</string>
+    <string name="adv_prot_open_suc_tip_cnt">Под улучшенную защиту никто не может удалить Leo Privacy Guard.Если хотите удалить,пожалуйста, перейдите на страницу “Applock”, отменять"расширенную защиту" на настройках “Applock”</string>
+    <string name="pri_pro_btn">Включить (+%1$d балл)</string>
+
 </resources>

@@ -543,18 +543,18 @@
     <string name="auto_start_tip_redmi">ไปที่"การอนุญาตสิทธิ์" และเพิ่ม Privacy Guard</string>
     <string name="auto_start_tip_huawei">ไป "แอพที่ป้องกัน" และเพิ่ม PG ไปรายการป้องกัน</string>
     <string name="auto_start_tip_lenovo">แอพ", "เริ่มอัตโนมัติ" เพิ่ม LEO Privacy Guard</string>
-    
-     <!-- 2.10 end -->
+
+    <!-- 2.10 end -->
     <!-- 2.12 start -->
     <string name="applock_guide_tip_title">ใช้สิทธิ์เพื่อใช้งานปกติ</string>
     <string name="applock_guide_tip_subtitle">ข้อจำกัดของระบบ ต้องเปิดใช้สิทธิ์อนุญาต</string>
     <string name="applock_guide_tip_security_text">ให้สิทธิ์อนุญาตของ Privacy Guard เพื่อใช้แอพ</string>
-    <string  name="auto_start_tip_text_huawei_plus">เปิดใช้สิทธิ์เริ่มอัตโนมัติ ปกป้องหลังรีสตาร์ท</string>
+    <string name="auto_start_tip_text_huawei_plus">เปิดใช้สิทธิ์เริ่มอัตโนมัติ ปกป้องหลังรีสตาร์ท</string>
     <string name="applock_guide_set_text">การตั้งค่า</string>
-     <string name="applock_guide_set_finish">ดำเนินการ</string>
+    <string name="applock_guide_set_finish">ดำเนินการ</string>
     <!-- 2.12 end -->
-    
-     <!-- 3.0 start -->
+
+    <!-- 3.0 start -->
     <string name="home_tab_app_lock">ล็อคแอพ</string>
     <string name="home_tab_wifi">ปลอดภัย WiFi</string>
     <string name="home_tab_lost">กันขโมย</string>
@@ -578,8 +578,8 @@
     <string name="hp_helper_iswipe">Swifty</string>
     <string name="pri_pro_title">สแกนลึก</string>
     <string name="pri_pro_ignore">ข้าม</string>
-    
-        <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> วิดีโอใหม่</string>
+
+    <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> วิดีโอใหม่</string>
     <string name="pri_pro_new_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> ภาพใหม่</string>
     <string name="pri_pro_new_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> แอพใหม่</string>
     <string name="pri_pro_scan_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> พบวิดีโอ</string>
@@ -602,7 +602,7 @@
     <string name="pri_pro_wifi_safe">WiFi ที่เชื่อมต่อปลอดภัย</string>
     <string name="pri_pro_summary_not_confirm">ปรับปรุงระดับความเป็นส่วนตัวโดย:</string>
     <string name="pri_pro_summary_confirm">เยี่ยม ปลอดภัย รักษาไว้</string>
-    <string name="pri_pro_btn">เปิด(+%1$s)</string>
+    <!--<string name="pri_pro_btn">เปิด(+%1$s)</string>-->
     <string name="pri_pro_opened">เปิดใช้งาน</string>
     <string name="pri_mobile_privacy">ปกป้องส่วนตัว %1$d ครั้ง</string>
     <string name="pri_lost_privacy">ปกป้องส่วนตัว %1$d ว. %2$d ชม.</string>
@@ -633,8 +633,6 @@
     <string name="scan_new_media">สื่อใหม่</string>
     <string name="scan_new_mobile">โทรศัพท์ปลอดภัย</string>
     <string name="scan_new_privacy">ปกป้องส่วนตัว</string>
-
-
 
 
     <string name="scan_notify">ระดับส่วนตัวลดลง</string>
@@ -808,37 +806,56 @@
     <string name="advan_secur_text">คุณใช้ฟังก์ชันต่อไปนี้ได้:</string>
     <string name="secur_backup_msm"> [LEOMASTER] คุณเลือกสำรองคำสั่งควบคุมผ่าน SMS: 1. ล็อคโทรศัพท์: #lockmobile 2. ค้นหาตำแหน่ง: #locateposition 3. ส่งแจ้งเตือน: #alert 4. ปลุกออก: #alertoff 5. ลบข้อมูล: #formatdata 6. เปิดใช้ล็อค ติดตาม แจ้งเตือน ลบ: #onekey หากโทรศัพท์หาย ส่งคำสั่งออกไป หากลืมคำสั่ง คลิก "สำรองคำสั่งควบคุมระยะไกล" เพื่อส่ง SMS อีกครั้ง http://www.leomaster.com</string>
     <string name="secur_location_msm"> [LEOMASTER] ตำแหน่งหายถูกค้นหา คลิกดู: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
-<string name="new_ignore">ไม่สน</string>
-<string name="new_increase_pravicy">ฟังก์ชันขั้นสูงปรับความส่วนตัว</string>
-<string name="new_pravicy_todo">ฟังก์ชันขั้นสูงอื่น ๆ ก็ทำได้</string>
-<string name="new_pravicy_healthy">เยี่ยม ปลอดภัย รักษาไว้</string>
-<string name="new_real_ignore">คุณแน่ใจ?</string>
-<string name="pri_pro_ignore_dialog">คุณแน่ใจว่าไม่สนใจผลลัพธ์นี้? หากตกลง คุณจะไม่ได้รับคะแนน</string>
-<string name="new_ok">ตกลง</string>
-<string name="new_cancel">ยกเลิก</string>
+    <string name="new_ignore">ไม่สน</string>
+    <string name="new_increase_pravicy">ฟังก์ชันขั้นสูงปรับความส่วนตัว</string>
+    <string name="new_pravicy_todo">ฟังก์ชันขั้นสูงอื่น ๆ ก็ทำได้</string>
+    <string name="new_pravicy_healthy">เยี่ยม ปลอดภัย รักษาไว้</string>
+    <string name="new_real_ignore">คุณแน่ใจ?</string>
+    <string name="pri_pro_ignore_dialog">คุณแน่ใจว่าไม่สนใจผลลัพธ์นี้? หากตกลง คุณจะไม่ได้รับคะแนน</string>
+    <string name="new_ok">ตกลง</string>
+    <string name="new_cancel">ยกเลิก</string>
 
-<string name="new_cancel_alarm">ยกเลิกแจ้งเตือน</string>
-<string name="scanint_result_app">แอพใหม่</string>
-<string name="scanint_result_pic">รูปภาพใหม่</string>
-<string name="scanint_result_vid">วิดีโอใหม่</string>
-<string name="scanint_result_deep">ความส่วนตัวขั้นสูง</string>
-<string name="scaning_immediate">คลิกสแกน</string>
-<string name="secur_add_self_number_tip">คุณป้อนหมายเลขนี้ โปรดป้อนอีกครั้ง</string>
-<string name="new_arrival">การเดินทางใหม่</string>
-<string name="new_funciton">อินเตอร์เฟสใหม่ ฟังก์ชันใหม่ เริ่มใหม่</string>
-<string name="privacy_scan">สแกนความส่วนตัว</string>
-<string name="one_key_confirm_privacy">คลิกเพื่อเสร็จสิ้นปกป้องความส่วนตัว</string>
-<string name="secur_feedbk_type">กันขโมย</string>
-<string name="monitor_new_app">แอพใหม่</string>
-<string name="monitor_new_pic">รูปภาพใหม่</string>
-<string name="monitor_new_vid">วิดีโอใหม่</string>
-<string name="secur_kno_model_msm_tip">กันขโมยต้องใช้สิทธิ์รูท SMS </string>
-<string name="secur_kno_model_msm_click">อนุญาตตอนนี้>>></string>
-<string name="secur_no_kno_model_msm_tip">กันขโมยต้องรูท SMS ให้สิทธิ์</string>
-<string name="secur_feedbk_content">ไม่เปิดกันขโมย</string>
-<string name="secur_help_feedback_tip_button">ติดต่อเรา</string>
+    <string name="new_cancel_alarm">ยกเลิกแจ้งเตือน</string>
+    <string name="scanint_result_app">แอพใหม่</string>
+    <string name="scanint_result_pic">รูปภาพใหม่</string>
+    <string name="scanint_result_vid">วิดีโอใหม่</string>
+    <string name="scanint_result_deep">ความส่วนตัวขั้นสูง</string>
+    <string name="scaning_immediate">คลิกสแกน</string>
+    <string name="secur_add_self_number_tip">คุณป้อนหมายเลขนี้ โปรดป้อนอีกครั้ง</string>
+    <string name="new_arrival">การเดินทางใหม่</string>
+    <string name="new_funciton">อินเตอร์เฟสใหม่ ฟังก์ชันใหม่ เริ่มใหม่</string>
+    <string name="privacy_scan">สแกนความส่วนตัว</string>
+    <string name="one_key_confirm_privacy">คลิกเพื่อเสร็จสิ้นปกป้องความส่วนตัว</string>
+    <string name="secur_feedbk_type">กันขโมย</string>
+    <string name="monitor_new_app">แอพใหม่</string>
+    <string name="monitor_new_pic">รูปภาพใหม่</string>
+    <string name="monitor_new_vid">วิดีโอใหม่</string>
+    <string name="secur_kno_model_msm_tip">กันขโมยต้องใช้สิทธิ์รูท SMS </string>
+    <string name="secur_kno_model_msm_click">อนุญาตตอนนี้>>></string>
+    <string name="secur_no_kno_model_msm_tip">กันขโมยต้องรูท SMS ให้สิทธิ์</string>
+    <string name="secur_feedbk_content">ไม่เปิดกันขโมย</string>
+    <string name="secur_help_feedback_tip_button">ติดต่อเรา</string>
     <string name="phone_security_instruct_alert_off">ปลุกออก: #alertoff</string>
     <string name="phone_security_instruct_alert_off_description">ปิดไซเรน</string>
     <string name="alert_off_name">แจ้งเตือนออก</string>
     <string name="secur_send_msm_no_location"> [LEOMASTER] ไม่สามารถที่จะได้รับ http://www.leomaster.com</string>
+
+    <string name="feedback_tell_us_title">ติดต่อเรา</string>
+    <string name="toast_getscore_text">ยินดีด้วย คุณได้รับคะแนนเพิ่ม</string>
+    <string name="feedback_tell_us_content">หากมีข้อสงสัยอะไร โปรดติดต่อเราได้เสมอ ทีมงานของเราออน Facebook, Whatsapp ตลอดนะคะ</string>
+    <string name="feedback_tell_us_contact_type_title">วิธีติดต่อ</string>
+    <string name="dialog_fivestars_content_text">ชื่นชอบแอพของเรา โปรดให้คะแนน 5 ดาวนะคะ</string>
+    <string name="elect_empty_content">ขออภัย ไม่สามารถอ่านข้อมูลแบตเตอรรี่ได้</string>
+    <string name="swifty_item_btn">เปิดเดี๋ยวนี้</string>
+    <string name="grade_item_title">ชอบแอพของเราไหม</string>
+    <string name="grade_item_btn">ให้ 5 ดาว</string>
+    <string name="change_wifi_toast_unsafe">มีความเสี่ยง</string>
+    <string name="change_wifi_toast_safe">ปลอดภัย</string>
+    <string name="fb_item_title">ติดตามเพ็จของเราบนFacebook</string>
+    <string name="fb_item_content">อยากทราบข่าวสารและเรื่องราวสนุกเกี่ยวกับLEO Privacy Guard สามารถติดตามเพ็จของเราบนFacebookได้เลย</string>
+    <string name="fb_item_btn">ติดตาม</string>
+    <string name="intruderprotection_forbit_content">ไม่สามารถใช้ระบบป้องกันแฮคเกอร์ได้ เนื่องจากข้อจำกัดของระบบ</string>
+    <string name="adv_prot_open_suc_tip_cnt">เปิดใช้แล้วไม่สามารถถอนการติดตั้งLEO Privacy Guardได้ คุณต้องยกเลิกการตั้งค่าการป้องกันขั้นสูงก่อน</string>
+    <string name="pri_pro_btn">เปิด(+%1$dคะแนน)</string>
+
 </resources>

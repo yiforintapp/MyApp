@@ -704,7 +704,7 @@
     <string name="pri_pro_wifi_safe">شبكة واي فاي المتصلة آمنة</string>
     <string name="pri_pro_summary_not_confirm">تحسين مستوى الخصوصية بواسطة</string>
     <string name="pri_pro_summary_confirm">جيد، الكل آمن، واصل ذلك!</string>
-    <string name="pri_pro_btn">تمكين(+<xliff:g>%1$s</xliff:g>)</string>
+    <!--<string name="pri_pro_btn">تمكين(+<xliff:g>%1$s</xliff:g>)</string>-->
     <string name="pri_pro_opened">تمكين</string>
     <string name="pri_mobile_privacy">الخصوصية محمية لـ<xliff:g>%1$s</xliff:g> مرة</string>
     <string name="pri_lost_privacy">الخصوصية محمية لـ <xliff:g>%1$d</xliff:g> يوم <xliff:g>%2$d</xliff:g> ساعة</string>
@@ -927,4 +927,21 @@
     <string name="alert_off_name">تنبيه قبالة</string>
     <string name="secur_send_msm_no_location"> [LEOMASTER] غير قادر على الحصول http://www.leomaster.com</string>
 
+    <string name="feedback_tell_us_title">اتصل بنا</string>
+    <string name="toast_getscore_text">مبروك! قد زادت النقاط</string>
+    <string name="feedback_tell_us_content">إذا لديك أي أسئلة أو احتياجات، لا تردد في الاتصال بنا وتابعنا في Facebook وWhatsapp.</string>
+    <string name="feedback_tell_us_contact_type_title">جهات الاتصال</string>
+    <string name="dialog_fivestars_content_text">تتمتع بPrivacy Guard؟ تقدير ب5 نجوم منك لمساعدتنا علي توفير أفضل الخدمات! </string>
+    <string name="elect_empty_content">عذرا، معلومات البطارية غير متاحة مؤقتا</string>
+    <string name="swifty_item_btn">تمكين</string>
+    <string name="grade_item_title">تحب Privacy Guard؟</string>
+    <string name="grade_item_btn">تقدير ب5 نجوم</string>
+    <string name="change_wifi_toast_unsafe">المخاطر المحتملة</string>
+    <string name="change_wifi_toast_safe">الأمن</string>
+    <string name="fb_item_title">تابعنا في Facebook</string>
+    <string name="fb_item_content">للحصول علي الأخبار الأكثر إثارة للاهتمام والرسمية لLEO حارس الشيخوخة، تابعنا  فورا في Facebook</string>
+    <string name="fb_item_btn">تابعنا</string>
+    <string name="intruderprotection_forbit_content">بسبب الحد من النظام، لا تعمل وظيفة منع الدخيل</string>
+    <string name="adv_prot_open_suc_tip_cnt">لا يمكن إلغاء تثبيت LEO حارس الشيخوخة. أذهب إلي قفل التطبيق وعطًل حماية متقدمة</string>
+    <string name="pri_pro_btn">تمكين (+%1$d نقطة)</string>
 </resources>

@@ -603,7 +603,7 @@
     <string name="pri_pro_wifi_safe">Bağlanılan WiFi güvenli</string>
     <string name="pri_pro_summary_not_confirm">Gizliliğinizi şu seviyeye kadar artırın:</string>
     <string name="pri_pro_summary_confirm">İyi, tam güvenli, devam!</string>
-    <string name="pri_pro_btn">Etkinleştir (+%1$s)</string>
+    <!--<string name="pri_pro_btn">Etkinleştir (+%1$s)</string>-->
     <string name="pri_pro_opened">Etkin </string>
     <string name="pri_mobile_privacy">%1$d kat gizlilik korumalı</string>
     <string name="pri_lost_privacy">%1$d gün %2$d saat süreyle gizlilik korumalı</string>
@@ -839,4 +839,22 @@
     <string name="phone_security_instruct_alert_off_description">Yakın sirenler</string>
     <string name="alert_off_name">kapalı uyar</string>
     <string name="secur_send_msm_no_location"> [LEOMASTER] Alınamıyor http://www.leomaster.com</string>
+
+    <string name="feedback_tell_us_title">İletişim</string>
+    <string name="toast_getscore_text">Tebrikler! Puan kazandınız</string>
+    <string name="feedback_tell_us_content">Sorularınız ve görüşleriniz için Facebook ve Whatsapp üzerinden bizimle iletişime geçebilirsiniz.</string>
+    <string name="feedback_tell_us_contact_type_title">İletişim:</string>
+    <string name="dialog_fivestars_content_text">Güvenliği sevdiniz mi?  5 Yıldız vererek daha iyi bir destek hizmetine yardımcı olun!</string>
+    <string name="elect_empty_content">Üzgünüz, batarya durum bilgisine ulaşılamıyor.</string>
+    <string name="swifty_item_btn">Aç</string>
+    <string name="grade_item_title">Beğen</string>
+    <string name="grade_item_btn">5 Yıldız</string>
+    <string name="change_wifi_toast_unsafe">Riskli</string>
+    <string name="change_wifi_toast_safe">Güvenli</string>
+    <string name="fb_item_title">Facebook’ta takip edin</string>
+    <string name="fb_item_content">LEO Kişisel Güvenlik resmi duyurularını takip edebilmeniz için Facebook sayfamıza gelin.</string>
+    <string name="fb_item_btn">Takip Et</string>
+    <string name="intruderprotection_forbit_content">Android cihazlardaki sınırlamalardan dolayı Break-in uyarısı çalışmayabilir.</string>
+    <string name="adv_prot_open_suc_tip_cnt">LEO Kişisel Güvenlik programı çalışırken kaldırılamaz. Lütfen, önce AppLock sayfasından “Gelişmiş Koruma” seçeneğini iptal edin.</string>
+    <string name="pri_pro_btn">Aç (+%1$d puan)</string>
 </resources>

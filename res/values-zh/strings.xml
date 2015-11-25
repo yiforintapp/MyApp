@@ -606,7 +606,7 @@
     <string name="pri_pro_wifi_safe">當前連接的WiFi是安全的</string>
     <string name="pri_pro_summary_not_confirm">您還可以完成以下操作來提升隱私等級</string>
     <string name="pri_pro_summary_confirm">您的隱私狀況良好，請繼續保持~</string>
-    <string name="pri_pro_btn">去開啟 (+%1$d分)</string>
+    <!--<string name="pri_pro_btn">去開啟 (+%1$d分)</string>-->
     <string name="pri_pro_opened">已開啟</string>
     <string name="pri_mobile_privacy">已保護手機隱私%1$d次</string>
     <string name="pri_lost_privacy">已經保護您的手機%1$d天%2$d小時</string>
@@ -843,4 +843,21 @@
     <string name="alert_off_name">關閉警報</string>
     <string name="secur_send_msm_no_location"> 【LEOMASTER】無法獲取。 http://www.leomaster.com</string>
 
+    <string name="feedback_tell_us_title">聯繫我們</string>
+    <string name="toast_getscore_text">恭喜您！您的分數增加啦</string>
+    <string name="feedback_tell_us_content">如果您有其他的問題或需要，歡迎隨時聯繫我們！我們的facebook、whatsapp群組也隨時在線哦！</string>
+    <string name="feedback_tell_us_contact_type_title">聯繫方式</string>
+    <string name="dialog_fivestars_content_text">覺得還不錯？請給我們5星吧！</string>
+    <string name="elect_empty_content">抱歉，暫未獲取到電池信息</string>
+    <string name="swifty_item_btn">去開啟</string>
+    <string name="grade_item_title">喜歡隱私衛士嗎？</string>
+    <string name="grade_item_btn">去評5星</string>
+    <string name="change_wifi_toast_unsafe">存在風險</string>
+    <string name="change_wifi_toast_safe">安全</string>
+    <string name="fb_item_title">關注我們Facebook主頁</string>
+    <string name="fb_item_content">想要知道更多隱私衛士有趣的和官方的新聞嗎？還在等什麼，趕緊關注我們的Facebook主頁吧</string>
+    <string name="fb_item_btn">關注</string>
+    <string name="intruderprotection_forbit_content">由於系統限制，入侵者防護功能無法正常使用</string>
+    <string name="adv_prot_open_suc_tip_cnt">開啟後無法在軟件外部卸載隱私衛士。如需卸載，您需要先在應用鎖設置中取消高級保護設置。</string>
+    <string name="pri_pro_btn">去開啟 (+%1$d分)</string>
 </resources>
