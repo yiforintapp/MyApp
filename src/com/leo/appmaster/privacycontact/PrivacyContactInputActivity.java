@@ -185,32 +185,24 @@ public class PrivacyContactInputActivity extends BaseActivity {
         });
     }
 
-    /*查询系统是否有制定号码短信和通话记录*/
-    private void queryCallsMsms(String tempNumber) {
+    /*查询系统是否有指定号码短信和通话记录*/
+    private void queryCallsMsms(String number) {
         // 查询是否存在短信和通话记录
-        if (mAddMessages == null) {
-            mAddMessages = PrivacyContactUtils.getSysMessage(
-                    PrivacyContactInputActivity.this, "address LIKE ? ", new String[]{
-                            "%" + tempNumber
-                    }, true, false);
-        } else {
-            List<MessageBean> addMessages = PrivacyContactUtils.getSysMessage(
-                    PrivacyContactInputActivity.this, "address LIKE ?", new String[]{
-                            "%" + tempNumber
-                    }, true, false);
-            mAddMessages.addAll(addMessages);
+          /*4.4以上去做短信操作*/
+        boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+        if (isLessLeve19) {
+            if (mAddMessages == null) {
+                mAddMessages = PrivacyContactManager.getInstance(this).queryMsmsForNumber(number);
+            } else {
+                List<MessageBean> addMessages = PrivacyContactManager.getInstance(this).queryMsmsForNumber(number);
+                mAddMessages.addAll(addMessages);
+            }
         }
         /*查询通话记录*/
         if (mAddCallLogs == null) {
-            mAddCallLogs = PrivacyContactUtils.getSysCallLog(
-                    PrivacyContactInputActivity.this, "number LIKE ?", new String[]{
-                            "%" + tempNumber
-                    }, true, false);
+            mAddCallLogs = PrivacyContactManager.getInstance(this).queryCallsForNumber(number);
         } else {
-            List<ContactCallLog> addCalllog = PrivacyContactUtils
-                    .getSysCallLog(PrivacyContactInputActivity.this, "number LIKE ?", new String[]{
-                            "%" + tempNumber
-                    }, true, false);
+            List<ContactCallLog> addCalllog = PrivacyContactManager.getInstance(this).queryCallsForNumber(number);
             mAddCallLogs.addAll(addCalllog);
         }
     }
@@ -329,9 +321,8 @@ public class PrivacyContactInputActivity extends BaseActivity {
             int count = 0;
             ContentResolver cr = getContentResolver();
             if (flag) {
-                String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
-                queryCallsMsms(formateNumber);
-                // 导入短信和通话记录
+                queryCallsMsms(mPhoneNumber);
+                /*导入短信和通话记录*/
                 if (mAddMessages != null && mAddMessages.size() != 0) {
                     for (MessageBean message : mAddMessages) {
                         String contactNumber = message.getPhoneNumber();
@@ -372,7 +363,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                         }
                     }
                 }
-                // 导入通话记录
+                /*导入通话记录*/
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                     for (ContactCallLog calllog : mAddCallLogs) {
                         String number = calllog.getCallLogNumber();

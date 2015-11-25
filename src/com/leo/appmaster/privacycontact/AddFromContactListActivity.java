@@ -357,11 +357,15 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                             false, mAnswerType, null, 0, 0, 0));
                                     added = true;
                                     Context context = AddFromContactListActivity.this;
-                                    if (mAddMessages == null) {
-                                        mAddMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(number);
-                                    } else {
-                                        List<MessageBean> addMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(number);
-                                        mAddMessages.addAll(addMessages);
+                                    /*4.4以上去做短信操作*/
+                                    boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+                                    if (isLessLeve19) {
+                                        if (mAddMessages == null) {
+                                            mAddMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(number);
+                                        } else {
+                                            List<MessageBean> addMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(number);
+                                            mAddMessages.addAll(addMessages);
+                                        }
                                     }
                                     if (mAddCallLogs == null) {
                                         mAddCallLogs = PrivacyContactManager.getInstance(context).queryCallsForNumber(number);

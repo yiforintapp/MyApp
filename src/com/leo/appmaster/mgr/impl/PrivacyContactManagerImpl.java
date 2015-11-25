@@ -3,6 +3,7 @@ package com.leo.appmaster.mgr.impl;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -110,32 +111,21 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                 pcm.addContact(new ContactBean(0, name, number, null, contactIcon, null,
                         false, 1, null, 0, 0, 0));
             }
-            if (messages == null) {
-                messages = PrivacyContactUtils.getSysMessage(
-                        mContext,
-                        "address LIKE ? ", new String[]{
-                                "%" + tempNumber
-                        }, true, false);
-            } else {
-                List<MessageBean> addMessages = PrivacyContactUtils.getSysMessage(
-                        mContext,
-                        "address LIKE ?", new String[]{
-                                "%" + tempNumber
-                        }, true, false);
-                messages.addAll(addMessages);
+            com.leo.appmaster.privacycontact.PrivacyContactManager pm = com.leo.appmaster.privacycontact.PrivacyContactManager.getInstance(mContext);
+           /*4.4以上去做短信操作*/
+            boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+            if (isLessLeve19) {
+                if (messages == null) {
+                    messages = pm.queryMsmsForNumber(number);
+                } else {
+                    List<MessageBean> addMessages = pm.queryMsmsForNumber(number);
+                    messages.addAll(addMessages);
+                }
             }
             if (callLogs == null) {
-                callLogs = PrivacyContactUtils.getSysCallLog(
-                        mContext,
-                        "number LIKE ?", new String[]{
-                                "%" + tempNumber
-                        }, true, false);
+                callLogs = pm.queryCallsForNumber(number);
             } else {
-                List<ContactCallLog> addCalllog = PrivacyContactUtils.getSysCallLog(
-                        mContext,
-                        "number LIKE ?", new String[]{
-                                "%" + tempNumber
-                        }, true, false);
+                List<ContactCallLog> addCalllog = pm.queryCallsForNumber(number);
                 callLogs.addAll(addCalllog);
             }
         }

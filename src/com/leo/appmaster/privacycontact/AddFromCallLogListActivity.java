@@ -325,11 +325,15 @@ public class AddFromCallLogListActivity extends BaseActivity {
                                     addContToSelfDb(call);
                                     added = true;
                                     Context context = AddFromCallLogListActivity.this;
-                                    if (mAddMessages == null) {
-                                        mAddMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(contactNumber);
-                                    } else {
-                                        List<MessageBean> addMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(contactNumber);
-                                        mAddMessages.addAll(addMessages);
+                                    /*4.4以上去做短信操作*/
+                                    boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+                                    if (isLessLeve19) {
+                                        if (mAddMessages == null) {
+                                            mAddMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(contactNumber);
+                                        } else {
+                                            List<MessageBean> addMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(contactNumber);
+                                            mAddMessages.addAll(addMessages);
+                                        }
                                     }
 
                                     if (mAddCallLogs == null) {

@@ -26,6 +26,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -1513,6 +1514,14 @@ public class PrivacyContactUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * 当前android系统版本是否<=4.4
+     * @return
+     */
+    public static boolean isLessApiLeve19() {
+        return Build.VERSION.SDK_INT < 19 ? true : false;
     }
 
 }
