@@ -2104,6 +2104,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         private void setItemViewContent(RelativeLayout view, String unitId) {
             Campaign campaign = mAdMap.get(unitId);
+            if (campaign == null) {
+                return;
+            }
             ((ImageView)view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
             ((TextView)view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
             ((TextView)view.findViewById(R.id.ad_details)).setText(campaign.getAppDesc());
