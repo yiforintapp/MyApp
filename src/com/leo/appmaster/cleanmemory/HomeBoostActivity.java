@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.cleanmemory;
 
+import java.lang.ref.WeakReference;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,8 +29,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -44,8 +44,6 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
-
-import java.lang.ref.WeakReference;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
@@ -242,8 +240,8 @@ public class HomeBoostActivity extends Activity {
             mCdt.cancel();
         }
         overridePendingTransition(0, 0);
-        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        lockManager.filterAll(500);
+//        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+//        lockManager.filterAll(500);
         super.finish();
     }
 

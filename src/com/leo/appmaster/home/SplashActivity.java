@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,31 +23,26 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityUtils;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -69,7 +62,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     /* Guide page stuff begin */
     private ViewPager mViewPager, mNewFuncViewPager;
     /* pages */
-    private ArrayList<View> mPageViews, mNewFuncPageViews;
+    private ArrayList<View> mNewFuncPageViews;
     private GuideItemView mPageBackgroundView, mNewPageBackgroundView;
     /* footer indicators */
     private CirclePageIndicator mIndicator;
@@ -682,7 +675,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     private void showNewFuncGuide() {
         mNewFuncPageViews = new ArrayList<View>();
         LayoutInflater inflater = getLayoutInflater();
-        TextView tvTitle, tvContent, tvMoreFunc;
+        TextView tvTitle, tvContent;
         Button enterAppButton;
         ImageView bigImage = null;
         mPageColors[3] = getResources().getColor(R.color.new_guide_page1_background_color);

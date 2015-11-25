@@ -1,5 +1,10 @@
 package com.leo.appmaster.home;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.ComponentName;
@@ -8,7 +13,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,7 +25,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,11 +67,6 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * Created by Jasper on 2015/10/18.
  */
@@ -101,7 +99,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private TextView mWifiBtnTv;
     private View mWifiBtnDiv;
     private RippleView1 mWifiBtnLt;
-    private ImageView mWifiSummaryImg;
     private View mWifiFixedLt;
     private View mWifiMiddleLt;
     private TextView mWifiFixedTitle;
@@ -112,8 +109,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private View mContactBtnDiv;
     private LinearLayout mContactContainor;
     private ImageView mContactArrowIv;
-
-    private static final int AD_DELAY_TIME = 1000;
 
     /**
      * 评分星星
@@ -127,7 +122,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mHighGradeGesture;
     private RippleView1 mHighGradeBtnLt;
     private ImageView mHighFiveEmptyStar;
-    private RelativeLayout mHighGrageFrame;
 
     private ImageView mOneStar;
     private ImageView mTwoStar;
@@ -137,7 +131,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mGradeGesture;
     private RippleView1 mGradeBtnLt;
     private ImageView mFiveEmptyStar;
-    private RelativeLayout mGrageFrame;
 
     private AnimatorSet mAnimatorSet;
 
@@ -703,13 +696,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         }
     }
 
-    private void displayImage(ImageView view, String uri) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .cacheOnDisk(true).build();
-        ImageLoader.getInstance().displayImage(uri, view, options);
-    }
-
     private void initLostLayout(View view) {
         if (view != null) {
             View include = view.findViewById(R.id.lost_security);
@@ -762,7 +748,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mWifiBtnLt.setOnClickListener(this);
 //        mWifiBtnLt.setOnRippleCompleteListener(this);
 
-        mWifiSummaryImg = (ImageView) include.findViewById(R.id.item_summary_iv);
         mWifiMiddleLt = include.findViewById(R.id.item_middle_ll);
         mWifiFixedLt = include.findViewById(R.id.item_middle_fixed_rl);
 
@@ -839,7 +824,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mHighFourStar = (ImageView) highInclude.findViewById(R.id.four_star);
             mHighFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
             mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
-            mHighGrageFrame = (RelativeLayout) highInclude.findViewById(R.id.grade_frame);
             mHighGradeBtnLt = (RippleView1) highInclude.findViewById(R.id.item_btn_rv);
             mHighFiveEmptyStar = (ImageView) highInclude.findViewById(R.id.five_star_empty);
             mHighGradeBtnLt.setOnClickListener(this);
@@ -864,7 +848,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mFourStar = (ImageView) include.findViewById(R.id.four_star);
             mFiveStar = (ImageView) include.findViewById(R.id.five_star);
             mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
-            mGrageFrame = (RelativeLayout) include.findViewById(R.id.grade_frame);
             mGradeBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
             mFiveEmptyStar = (ImageView) include.findViewById(R.id.five_star_empty);
             mGradeBtnLt.setOnClickListener(this);
@@ -881,15 +864,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar,
                     mFiveStar, mFiveEmptyStar, mGradeGesture);
         }
-
-    }
-
-    private double getLayoutHeight() {
-        double height = (Utilities.getScreenSize(mActivity)[0] -
-                DipPixelUtil.dip2px(mActivity, 38)) / 0.52;
-        LeoLog.i("loadSwiftySecurity", "setLayoutHeight:" + height);
-        return height;
-
 
     }
 

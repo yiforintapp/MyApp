@@ -3,10 +3,9 @@ package com.leo.appmaster.applocker.manager;
 
 import java.util.HashMap;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.content.Context;
+
+import com.leo.appmaster.AppMasterPreference;
 
 public class TimeoutRelockPolicy implements ILockPolicy {
 
@@ -31,10 +30,6 @@ public class TimeoutRelockPolicy implements ILockPolicy {
         long curTime = System.nanoTime() / 1000000;
         if (mLockapp.containsKey(pkg)) {
             long lastLockTime = mLockapp.get(pkg).lastUnlockTime;
-
-            LeoLog.d(TAG, " curTime -  lastLockTime = "
-                    + (curTime - lastLockTime) + "       mRelockTimeout =  "
-                    + getRelockTime());
             if ((curTime - lastLockTime) < getRelockTime())
                 return true;
         }
@@ -52,10 +47,6 @@ public class TimeoutRelockPolicy implements ILockPolicy {
         long curTime = System.nanoTime() / 1000000;
         if (mLockapp.containsKey(pkg)) {
             long lastLockTime = mLockapp.get(pkg).lastUnlockTime;
-
-            LeoLog.d(TAG, " curTime -  lastLockTime = "
-                    + (curTime - lastLockTime) + "       mRelockTimeout =  "
-                    + getRelockTime());
             if ((curTime - lastLockTime) < getRelockTime())
                 return true;
         }
