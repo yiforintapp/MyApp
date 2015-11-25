@@ -55,7 +55,9 @@
         android:layout_gravity="top|left"
         android:layout_marginTop="49dp"
         android:textColor="#ffffff"
-        android:textSize="15dp"
+        android:textSize="14dp"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:gravity="center_vertical"/>
 
 

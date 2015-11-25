@@ -24,7 +24,7 @@
             android:layout_width="@dimen/ad_parent_width"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:gravity="center"
@@ -114,7 +114,7 @@
 
 
 
-                    
+
                 </LinearLayout>
 
 
@@ -152,7 +152,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:maxHeight="55dp"
+                    android:maxHeight="40dp"
                     android:id="@+id/tv_accelerat_result"
                     android:layout_centerInParent="true"
                     android:textColor="#ffffff"
