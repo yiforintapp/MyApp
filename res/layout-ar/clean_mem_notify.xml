@@ -38,13 +38,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/clean_mem_notify_big"
                     android:textColor="@color/cool_red"
+                    android:layout_toRightOf="@+id/app_precent"
                     android:textSize="@dimen/noti_spe_content_big_text_size" />
 
                 <TextView
                     android:id="@+id/app_precent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/appwallNameTV"
                     android:text="@string/clean_mem_notify_big_right"
                     android:textColor="@color/cool_red"
                     android:textSize="@dimen/noti_spe_content_big_text_size" />
