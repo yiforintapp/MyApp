@@ -553,9 +553,9 @@
     <string name="applock_guide_tip_title">打开权限保证应用锁完美使用</string>
     <string name="applock_guide_tip_subtitle">检测到您的系统有部分限制，隐私卫士需要开启以下权限以更好的保护您的应用</string>
     <string name="applock_guide_tip_security_text">进入查看应用使用权限设置，将隐私卫士的权限打开</string>
-    <string  name="auto_start_tip_text_huawei_plus">在开机自启权限中，选择打开隐私卫士自启动权限</string>
+    <string name="auto_start_tip_text_huawei_plus">在开机自启权限中，选择打开隐私卫士自启动权限</string>
     <string name="applock_guide_set_text">去设置</string>
-     <string name="applock_guide_set_finish">完成</string>
+    <string name="applock_guide_set_finish">完成</string>
     <!-- 2.12 end -->
 
     <!-- 3.0 -->
@@ -850,4 +850,21 @@
     <string name="huawei6_op_tip">请在“权限管理”项中选择“信息”，并授权给“隐私卫士”</string>
     <string name="huawei7pl_op_tip">请在“权限管理”的“应用”项中选择“隐私卫士”，授予“读取短信/彩信，发送短信”权限。</string>
 
+    <string name="feedback_tell_us_title">联系我们</string>
+    <string name="toast_getscore_text">恭喜您！您的分数增加啦</string>
+    <string name="feedback_tell_us_content">如果您有其他的问题或需要，欢迎随时联系我们！我们的facebook、whatsapp群组也随时在线哦！</string>
+    <string name="feedback_tell_us_contact_type_title">联系方式</string>
+    <string name="dialog_fivestars_content_text">觉得还不错？请给我们5星吧！</string>
+    <string name="change_wifi_toast_title">WiFi:%1$s</string>
+    <string name="elect_empty_content">抱歉，暂未获取到电池信息</string>
+    <string name="swifty_item_btn">去开启</string>
+    <string name="grade_item_title">喜欢隐私卫士吗？</string>
+    <string name="grade_item_btn">去评5星</string>
+    <string name="change_wifi_toast_unsafe">存在风险</string>
+    <string name="change_wifi_toast_safe">安全</string>
+    <string name="fb_item_title">关注我们Facebook主页</string>
+    <string name="fb_item_content">想要知道更多隐私卫士有趣的和官方的新闻吗？还在等什么，赶紧关注我们的Facebook主页吧</string>
+    <string name="fb_item_btn">关注</string>
+    <string name="intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
+    <string name="adv_prot_open_suc_tip_cnt">开启后无法在软件外部卸载隐私卫士。如需卸载，您需要先在应用锁设置中取消高级保护设置。</string>
 </resources>

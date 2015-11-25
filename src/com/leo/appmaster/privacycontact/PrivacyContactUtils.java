@@ -61,6 +61,9 @@ public class PrivacyContactUtils {
     public static final int MSM_NOTIFI_NUMBER = 20140901;
     public static final int CALL_NOTIFI_NUMBER = 20140902;
 
+    public static final int EXIST_LOG = 1;
+    public static final int NO_EXIST_LOG = 0;
+
 
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
     // public static final Uri SMS_INBOXS = Uri.parse("content://sms/inbox");
@@ -1483,6 +1486,33 @@ public class PrivacyContactUtils {
             bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
         }
         return bitmap;
+    }
+
+    /**
+     * 隐私联系人去重
+     *
+     * @param number
+     * @return
+     */
+    public static boolean pryContRemovSame(String number) {
+        String tempNumber = PrivacyContactUtils.formatePhoneNumber(number);
+        if (TextUtils.isEmpty(tempNumber)) {
+            return false;
+        }
+        PrivacyContactManager pcm = PrivacyContactManager.getInstance(AppMasterApplication.getInstance());
+        ArrayList<ContactBean> contacts = pcm.getPrivateContacts();
+        boolean contIsNoEmpty = (contacts != null && contacts.size() > 0);
+        if (contIsNoEmpty) {
+            for (ContactBean contactBean : contacts) {
+                if (contactBean.getContactNumber() != null) {
+                    boolean isSameCont = contactBean.getContactNumber().contains(tempNumber);
+                    if (isSameCont) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 }
