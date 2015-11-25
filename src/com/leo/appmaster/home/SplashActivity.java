@@ -257,7 +257,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     private void showSplash() {
         String path = FileOperationUtil.getSplashPath();
         Bitmap splash = null;
-        LeoLog.i(TAG, "使用后台配置闪屏!");
         if (path != null && !"".equals(path)) {
             BitmapFactory.Options option = new BitmapFactory.Options();
             option.inJustDecodeBounds = true;
@@ -273,10 +272,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                 e.printStackTrace();
             }
         }
-        // mShowSplashFlag = true;
-        // mSkipToPgButton.setVisibility(View.VISIBLE);
-        // mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
-        // showSkipUrlButton();
         if (splash != null) {
             byte[] chunk = splash.getNinePatchChunk();
             if (chunk != null && NinePatch.isNinePatchChunk(chunk)) {

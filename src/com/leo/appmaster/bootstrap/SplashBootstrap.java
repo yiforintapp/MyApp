@@ -414,7 +414,7 @@ public class SplashBootstrap extends Bootstrap {
     }
 
     /*生成闪屏分享图片*/
-    private static boolean shareSplashImage() {
+    public static boolean shareSplashImage() {
         String path = FileOperationUtil.getSplashPath();
         StringBuilder sb = new StringBuilder(path);
         sb.append(Constants.SPLASH_NAME);

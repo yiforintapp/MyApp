@@ -161,6 +161,7 @@ public class AppUtil {
 
     /**
      * 获取app图标Drawble
+     *
      * @param pkg
      * @return
      */
@@ -303,7 +304,10 @@ public class AppUtil {
         BitmapFactory.Options optionOne = new BitmapFactory.Options();
         optionOne.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(onePath, optionOne);
-        optionOne.inSampleSize = 3;
+        int[] pix = AppUtil.getScreenPix(AppMasterApplication.getInstance());
+        int width = pix[0];
+        int height = pix[1];
+        optionOne.inSampleSize = AppUtil.calculateInSampleSize(optionOne, width, height);
         optionOne.inJustDecodeBounds = false;
         Bitmap oneImage = BitmapFactory.decodeFile(onePath, optionOne);
         /*图片2*/
