@@ -30,6 +30,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +66,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.handmark.pulltorefresh.library.internal.Utils;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -124,6 +127,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -157,6 +161,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private int mLockMode;
     private String mLockedPackage;
     private CommonTitleBar mTtileBar;
+    private TextView mLockAppTitleView;
     private LockFragment mLockFragment;
     private Bitmap mAppBaseInfoLayoutbg;
     private LeoHomePopMenu mLeoPopMenu;
@@ -712,7 +717,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockedPackage = getPackageName();
             mTtileBar.setTitle(R.string.change_lock_mode);
         } else {
-            mTtileBar.setTitle(R.string.app_name);
+//            mTtileBar.setTitle(R.string.app_name);
+            setTiltleBarInfo(getPackageName());
         }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
@@ -825,11 +831,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             Drawable bd = AppUtil.getAppIcon(
                     getPackageManager(), mLockedPackage);
             setAppInfoBackground(bd);
-        }
+            if (mLockMode == LockManager.LOCK_MODE_FULL) {
+                if (mTtileBar == null) {
+                    mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+                }
+                if (mQuickLockMode) {
 
+                } else {
+                    setTiltleBarInfo(getPackageName());
+                }
+            }
+        }
         mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
         mLockFragment.setLockMode(mLockMode);
         mLockFragment.setPackage(mLockedPackage);
+        if (!mLockedPackage.equals(getPackageName())) {
+            createLoackAppInfoView(mLockedPackage);
+        }
 
         /* SDK: mark user what to unlock which app */
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -860,6 +878,69 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         }
     }
+
+
+    private void setQuickLockModeTiltleBarInfo(LockMode targetMode) {
+        mTtileBar.setTitle(R.string.change_lock_mode);
+        Drawable iconDraw = targetMode.getModeDrawable();
+        int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
+        iconDraw.setBounds(0, 0, w, w);
+        mTtileBar.getTitleView().setCompoundDrawables(new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable(), null, null, null);
+        mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+    }
+
+    private void setTiltleBarInfo(String pkg) {
+        mTtileBar.setTitle(AppUtil.getAppLabel(getPackageManager(), pkg));
+        Drawable iconDraw = AppUtil.getAppIconDrawble(pkg);
+        int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
+        iconDraw.setBounds(0, 0, w, w);
+        mTtileBar.getTitleView().setCompoundDrawables(new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable(), null, null, null);
+        mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+    }
+
+    private void createLoackAppInfoView(String pkg) {
+        if (mLockAppTitleView == null) {
+            mLockAppTitleView = new TextView(this);
+            mLockAppTitleView.setClickable(false);
+            mLockAppTitleView.setEllipsize(TextUtils.TruncateAt.END);
+            mLockAppTitleView.setGravity(Gravity.CENTER);
+            mLockAppTitleView.setPadding(DipPixelUtil.dip2px(this, 15), 0, DipPixelUtil.dip2px(this, 5), 0);
+            mLockAppTitleView.setSingleLine();
+            mLockAppTitleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+            mLockAppTitleView.setTextColor(getResources().getColor(R.color.white));
+            mTtileBar.getTitleContainer().addView(mLockAppTitleView);
+            mLockAppTitleView.setAlpha(0);
+        }
+
+        mLockAppTitleView.setText(AppUtil.getAppLabel(getPackageManager(), pkg));
+        Drawable iconDraw = AppUtil.getAppIconDrawble(pkg);
+        int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
+        iconDraw.setBounds(0,0,w,w);
+        mLockAppTitleView.setCompoundDrawables(/*new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable()*/iconDraw, null, null, null);
+        mLockAppTitleView.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+    }
+
+    private void setLockAppInfoViewVisible(boolean visible) {
+        if (mLockAppTitleView != null) {
+            if (visible) {
+                mTtileBar.getTitleView().setAlpha(0);
+                mLockAppTitleView.setAlpha(1);
+            } else {
+                mTtileBar.getTitleView().setAlpha(1);
+                mLockAppTitleView.setAlpha(0);
+            }
+        }
+    }
+
+    public void shakeIcon(Animation animation) {
+        if (mLockAppTitleView != null && mBannerContainer.getCurrentItem() > 0) {
+            mLockAppTitleView.startAnimation(animation);
+        }
+        if (mTtileBar.getTitleView().getAlpha() == 1 && mBannerContainer.getCurrentItem() > 0) {
+            mTtileBar.getTitleView().startAnimation(animation);
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -971,12 +1052,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     }
                 }
                 if (targetMode != null) {
-                    mTtileBar.setTitle(R.string.change_lock_mode);
+//                    mTtileBar.setTitle(R.string.change_lock_mode);
+                    setQuickLockModeTiltleBarInfo(targetMode);
                 } else {
-                    mTtileBar.setTitle(R.string.app_name);
+//                    mTtileBar.setTitle(R.string.app_name);
+                    setTiltleBarInfo(getPackageName());
                 }
             } else {
-                mTtileBar.setTitle(R.string.app_name);
+//                mTtileBar.setTitle(R.string.app_name);
             }
         } else {
             mTtileBar.setBackViewListener(this);
@@ -2131,7 +2214,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             rightArea.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    snapforClick((ViewGroup)v.getParent());
+                    snapforClick((ViewGroup) v.getParent());
                 }
             });
         }
@@ -2153,6 +2236,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             LeoLog.i("onPageSelected", "position=" + position);
             if (position == 0) {
                 mHandler.removeMessages(LARGE_BANNER_HIDE);
+                setLockAppInfoViewVisible(false);
+            } else {
+                setLockAppInfoViewVisible(true);
             }
         }
 
@@ -2167,6 +2253,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(alpha);
                     } else {
                         ((GestureLockFragment) mLockFragment).getIconView().setAlpha(alpha);
+                    }
+                    if (mLockAppTitleView != null) {
+                        mTtileBar.getTitleView().setAlpha(alpha);
+                        mLockAppTitleView.setAlpha(1 - alpha);
                     }
                 } else {
                     int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();

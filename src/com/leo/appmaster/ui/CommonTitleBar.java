@@ -22,6 +22,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
 
     private ImageView mIvBackArrow;
     private TextView mTvTitle;
+    private RelativeLayout mTvTitleContainer;
     private TextView mTvOptionText;
     private View mTvOptionImageClick;
     private ImageView mTvOptionImage;
@@ -63,7 +64,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
 //            newBackView.setOnClickListener(this);
 //        }
 
-
+        mTvTitleContainer = (RelativeLayout) findViewById(R.id.title_container);
         mTvTitle = (TextView) findViewById(R.id.tv_title);
 //        mTvSpinner = (TextView) findViewById(R.id.tv_layout_right);
 //        mImgSpinner = (ImageView) findViewById(R.id.img_layout_right);
@@ -106,6 +107,13 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
         mTvTitle.setText(resid);
     }
 
+    public TextView getTitleView() {
+        return mTvTitle;
+    }
+
+    public RelativeLayout getTitleContainer() {
+        return mTvTitleContainer;
+    }
 
     public void setOptionImagePadding(int padding) {
 //        mTvOptionImage.setPadding(padding, padding, padding, padding);

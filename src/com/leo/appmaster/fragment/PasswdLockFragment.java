@@ -1001,7 +1001,12 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mShake = AnimationUtils.loadAnimation(mActivity,
                     R.anim.left_right_shake);
         }
-        mIconLayout.startAnimation(mShake);
+
+        if (mIconLayout.getAlpha() > 0) {
+            mIconLayout.startAnimation(mShake);
+        }
+
+        ((LockScreenActivity) mActivity).shakeIcon(mShake);
     }
 
     @Override

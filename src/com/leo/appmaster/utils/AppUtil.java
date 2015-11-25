@@ -160,12 +160,11 @@ public class AppUtil {
     }
 
     /**
-     * 获取app图标并缩放至app指定大小
-     *
+     * 获取app图标Drawble
      * @param pkg
      * @return
      */
-    public static Drawable loadAppIconDensity(String pkg) {
+    public static Drawable getAppIconDrawble(String pkg) {
         Context ctx = AppMasterApplication.getInstance();
 
         PackageManager pm = ctx.getPackageManager();
@@ -177,6 +176,18 @@ public class AppUtil {
         } catch (Error error) {
 
         }
+
+        return appicon;
+    }
+
+    /**
+     * 获取app图标并缩放至app指定大小
+     *
+     * @param pkg
+     * @return
+     */
+    public static Drawable loadAppIconDensity(String pkg) {
+        Drawable appicon = getAppIconDrawble(pkg);
 
         if (appicon == null) {
             return appicon;
