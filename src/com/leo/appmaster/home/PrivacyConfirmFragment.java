@@ -219,9 +219,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         super.onViewCreated(view, savedInstanceState);
         mRootView = view;
 
-        // AM-3143: add animation for advertise cell
-//        ((ViewGroup) mRootView.findViewById(R.id.list_parent_layout)).setLayoutTransition(new LayoutTransition());
-
         mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
         mProcessBtn.setRippleOverlay(true);
         mProcessClick = view.findViewById(R.id.pp_process_rv_click);
@@ -235,16 +232,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         mHeadView = (TextView) view.findViewById(R.id.pri_con_header);
 
-//        initLostLayout(view);
-//        initIntruderLayout(view);
-//        initWifiLayout(view);
-//
-//        initContactLayout(view);
-//        initGradeLayout(view);
-//        initFbLayout(view);
-//        initSwiftyLayout(view);
-//
-//        loadAd(view);
         mActivity.resetToolbarColor();
     }
 
@@ -309,14 +296,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 @Override
                 public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
-                        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                sAdImageListener = new AdPreviewLoaderListener(PrivacyConfirmFragment.this, campaign);
-                                ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
-                            }
-                        }, AD_DELAY_TIME);
-
+                        sAdImageListener = new AdPreviewLoaderListener(PrivacyConfirmFragment.this, campaign);
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
                     }
                 }
 
@@ -344,16 +325,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     long start = SystemClock.elapsedRealtime();
                     mPanelView = panelViewStub.inflate();
                     LeoLog.d(TAG, "inflate cost: " + (SystemClock.elapsedRealtime() - start));
+
+                    // AM-3143: add animation for advertise cell
+                    ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
+
+                    start = SystemClock.elapsedRealtime();
                     initLostLayout(mPanelView);
                     initIntruderLayout(mPanelView);
                     initWifiLayout(mPanelView);
+                    LeoLog.d(TAG, "init layout cost: " + (SystemClock.elapsedRealtime() - start));
 
-                    initContactLayout(mPanelView);
-                    initGradeLayout(mPanelView);
-                    initFbLayout(mPanelView);
-                    initSwiftyLayout(mPanelView);
-
-                    start = SystemClock.elapsedRealtime();
                     ThreadManager.executeOnSubThread(new Runnable() {
                         @Override
                         public void run() {
@@ -361,13 +342,18 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                         }
                     });
 
-                    LeoLog.d(TAG, "loadAd cost: " + (SystemClock.elapsedRealtime() - start));
-
-                    start = SystemClock.elapsedRealtime();
                     updatePanelVisibility();
-                    LeoLog.d(TAG, "updatepanel cost: " + (SystemClock.elapsedRealtime() - start));
+                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            initContactLayout(mPanelView);
+                            initGradeLayout(mPanelView);
+                            initFbLayout(mPanelView);
+                            initSwiftyLayout(mPanelView);
+                        }
+                    }, 500);
                 }
-            }, 800);
+            }, 500);
         } else {
             updatePanelVisibility();
         }

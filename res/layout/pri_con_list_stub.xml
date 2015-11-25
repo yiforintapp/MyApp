@@ -18,7 +18,8 @@
     <!-- 五星好评100分 -->
     <include
         android:id="@+id/grade_high_security"
-        layout="@layout/pri_confirm_grade_item" />
+        layout="@layout/pri_confirm_grade_item"
+        android:visibility="gone" />
 
     <!-- 手机防盗 -->
     <include
@@ -42,7 +43,8 @@
     <!-- 五星好评 -->
     <include
         android:id="@+id/grade_security"
-        layout="@layout/pri_confirm_grade_item" />
+        layout="@layout/pri_confirm_grade_item"
+        android:visibility="gone" />
 
     <!-- 跳转Facebook -->
     <include

@@ -50,7 +50,7 @@
                 android:background="@color/pri_pro_list_bg"
                 android:layout_below="@id/pri_con_header"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                android:layout_height="600dp" />
 
             <ViewStub
                 android:id="@+id/list_parent_layout_stub"

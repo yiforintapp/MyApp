@@ -338,6 +338,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     public void onExitScanning() {
         if (mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "scan", "cancel");
             getSupportFragmentManager().popBackStack();
             mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
                 @Override

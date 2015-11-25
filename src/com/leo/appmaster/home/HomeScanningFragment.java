@@ -330,7 +330,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             case R.id.scan_cancel_tv:
                 mScanning = false;
                 mActivity.onExitScanning();
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "cancel");
                 break;
             case R.id.scan_process_tv:
                 mActivity.startProcess();
