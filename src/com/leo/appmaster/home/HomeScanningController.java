@@ -3,9 +3,11 @@ package com.leo.appmaster.home;
 import android.view.animation.LinearInterpolator;
 
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.ui.ScanningImageView;
 import com.leo.appmaster.ui.ScanningTextView;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
@@ -23,8 +25,9 @@ public class HomeScanningController {
 
     private static final int DURATION_ROTATE = 400;
 
-    private static final int UP_LIMIT_APP = 1500;
-    private static final int UP_LIMIT_PIC = 3000;
+    private static final int UP_LIMIT_APP = 2000;
+    private static final int UP_LIMIT_PIC = 5000;
+    private static final int UP_LIMIT_PIC_PROCESSED = 3000;
     private static final int UP_LIMIT_VID = 2000;
 
     private ScanningImageView mAppImg;
@@ -171,7 +174,10 @@ public class HomeScanningController {
 
             mPicAnim = createScanningAnim(mPicImg, mPicText);
             int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(UP_LIMIT_PIC, currPct, PER_PIC);
+            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+            boolean picConsumed = preferenceTable.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
+            int duration = picConsumed ? UP_LIMIT_PIC_PROCESSED : UP_LIMIT_PIC;
+            mActivity.scanningFromPercent(duration, currPct, PER_PIC);
             mPicAnim.totalAnim.start();
         } else if (animation == mPicAnim.innerScaleAnim) {
             mFragment.onAnimatorEnd(mPicImg);
