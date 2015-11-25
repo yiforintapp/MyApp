@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.appmanage.FlowActivity;
@@ -107,7 +108,12 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         mThreeImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_ssl_icon);
         mFourImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_pas_type_icon);
 
-        loadAd(mRootView);
+        ThreadManager.executeOnSubThread(new Runnable() {
+            @Override
+            public void run() {
+                loadAd(mRootView);
+            }
+        });
     }
 
     @Override
