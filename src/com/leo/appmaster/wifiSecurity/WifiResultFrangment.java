@@ -286,22 +286,4 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         }
     }
 
-//    @Override
-//    public void onRippleComplete(RippleView rippleView) {
-//        if (mTrafficBtn == rippleView) {
-////            mLockManager.filterPackage(mActivity.getPackageName(), 1000);
-//            Intent intent = new Intent(mActivity, FlowActivity.class);
-//            mActivity.startActivity(intent);
-//            SDKWrapper.addEvent(mActivity,
-//                    SDKWrapper.P1, "wifi_rst", "wifi_rst_safe_dataflow");
-//        } else if (mOtherWifiBtn == rippleView) {
-//            Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-//            try {
-//                startActivity(wifiIntent);
-//            } catch (Exception e) {
-//            }
-//            SDKWrapper.addEvent(mActivity,
-//                    SDKWrapper.P1, "wifi_rst", "wifi_rst_risk_other");
-//        }
-//    }
 }

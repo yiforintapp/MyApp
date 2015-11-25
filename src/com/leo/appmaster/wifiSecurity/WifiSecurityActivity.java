@@ -7,8 +7,6 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -61,6 +59,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case SHOW_START_ANIMATION:
+                    showIconLight();
                     isCheckWifiAlready(true);
                     break;
 //                case SHOWANIMATION:
@@ -311,33 +310,22 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             isScanIng = true;
             wifiFragment.showTab();
             showMoveUp();
-            showIconLight();
             setWifiName(true);
         } else {
             setWifiName(true);
         }
     }
 
+    private AnimatorSet iconFlashSet;
     private ObjectAnimator animFlash;
-
-    private void showIconLight() {
-
-        animFlash = ObjectAnimator.ofFloat(mSmallViewFlash,
-                "alpha", 1f, 0f);
-        animFlash.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                showIconDark();
-            }
-        });
-        animFlash.setDuration(500);
-        animFlash.start();
-    }
-
     private ObjectAnimator animDark;
 
-    private void showIconDark() {
+    private void showIconLight() {
+        iconFlashSet = new AnimatorSet();
+        animFlash = ObjectAnimator.ofFloat(mSmallViewFlash,
+                "alpha", 1f, 0f);
+        animFlash.setDuration(500);
+
         animDark = ObjectAnimator.ofFloat(mSmallViewFlash,
                 "alpha", 0f, 1f);
         animDark.addListener(new AnimatorListenerAdapter() {
@@ -348,10 +336,31 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             }
         });
         animDark.setDuration(500);
-        animDark.start();
+        iconFlashSet.play(animFlash).before(animDark);
+        iconFlashSet.start();
     }
 
+
+//    private void showIconDark() {
+//        animDark = ObjectAnimator.ofFloat(mSmallViewFlash,
+//                "alpha", 0f, 1f);
+//        animDark.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                super.onAnimationEnd(animation);
+//                showIconLight();
+//            }
+//        });
+//        animDark.setDuration(500);
+//        animDark.start();
+//    }
+
     private void cancelIconLightAnimation() {
+        if (iconFlashSet != null) {
+            iconFlashSet.cancel();
+            iconFlashSet = null;
+        }
+
         if (animFlash != null) {
             animFlash.cancel();
             animFlash = null;
@@ -484,20 +493,10 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private ObjectAnimator anim1;
     private ObjectAnimator anim2;
 
-    //bug
-//    private int animationCount = 0;
-
     private void showLineAnimation() {
         animationSet = new AnimatorSet();
         int start = mIconView.getTop() - mLineView.getHeight();
         int end = mIconView.getBottom() + mLineView.getHeight();
-//        int start = mIconView.getTop() + 20;
-//        int end = mIconView.getBottom() - mLineView.getHeight() * 2;
-//        if (animationCount == 0) {
-//            end = end - 70;
-//        } else {
-//            end = end + 15;
-//        }
 
         anim1 = ObjectAnimator.ofFloat(mLineView,
                 "y", start, end);
@@ -528,7 +527,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-//                animationCount++;
                 mLineView2.setVisibility(View.GONE);
                 showLineAnimation();
             }
@@ -692,7 +690,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
                     mOneState, mTwoState, mThreeState, mFourState);
         }
         //3,hide the scanline && change the iconBG
-        cancelLineAnimation();
+//        cancelLineAnimation();
         cancelIconLightAnimation();
         mIconView.setImageResource(R.drawable.wifiscan_bg_2);
     }

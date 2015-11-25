@@ -37,7 +37,6 @@ public class WifiTabFragment extends Fragment {
     public final static int GO_TO_RESULT_PAGE = 5;
     public final static int STOP_SCAN = 6;
     public final static int CHECK_PING_STATE = 7;
-    //    public final static String PING_HOST = "www.baidu.com";
     private static final String PINGHOST = "ping_host";
     String[] PING_DEFAULT_HOST = {
             "www.google.com",
@@ -159,27 +158,27 @@ public class WifiTabFragment extends Fragment {
         if (!isInteruptScan) {
             if (type == CONNECT_STATUS) {
                 rootOne.setVisibility(View.VISIBLE);
-                setLoading(mOneLoad);
+                mOneLoad.setVisibility(View.VISIBLE);
                 loadData(CONNECT_STATUS);
             } else if (type == SECOND_CONNECT) {
                 rootTwo.setVisibility(View.VISIBLE);
-                setLoading(mTwoLoad);
+                mTwoLoad.setVisibility(View.VISIBLE);
                 loadData(SECOND_CONNECT);
             } else if (type == PASSWORD_TYPE) {
                 rootThree.setVisibility(View.VISIBLE);
-                setLoading(mThreeLoad);
+                mThreeLoad.setVisibility(View.VISIBLE);
                 loadData(PASSWORD_TYPE);
             } else {
                 rootFour.setVisibility(View.VISIBLE);
-                setLoading(mFourLoad);
+                mFourLoad.setVisibility(View.VISIBLE);
                 loadData(WIFI_SAFETY);
             }
         }
     }
 
-    public void setLoading(View view) {
-        view.setVisibility(View.VISIBLE);
-    }
+//    public void setLoading(View view) {
+//        view.setVisibility(View.VISIBLE);
+//    }
 
     private void loadData(final int type) {
         ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -360,7 +359,7 @@ public class WifiTabFragment extends Fragment {
         Message msg = new Message();
         msg.what = SECOND_CONNECT;
         msg.obj = isSecondConeect;
-        mHandler.sendMessageDelayed(msg, 1500);
+        mHandler.sendMessageDelayed(msg, 500);
     }
 
     private void checkIsConnect() {
@@ -373,6 +372,7 @@ public class WifiTabFragment extends Fragment {
 
     public void cancelLoading(int type, boolean flag) {
         if (type == CONNECT_STATUS) {
+            mOneLoad.clearAnimation();
             setImage(mOneLoad, mOneLoadDone, flag);
             startLoading(SECOND_CONNECT);
         } else if (type == SECOND_CONNECT) {
@@ -431,10 +431,9 @@ public class WifiTabFragment extends Fragment {
                             addEvent(mActivity,
                                     SDKWrapper.P1, "wifi_scan", "wifi_scan_interupt");
                     mActivity.showMoveDown();
-                    mActivity.cancelLineAnimation();
                     mWifiManger.destoryPing();
                 }
-
+                mActivity.cancelLineAnimation();
             }
 
             @Override
@@ -462,7 +461,7 @@ public class WifiTabFragment extends Fragment {
 
                 mHandler.removeCallbacksAndMessages(null);
                 mActivity.setScanState(false);
-                mRootView.setVisibility(View.INVISIBLE);
+                mRootView.setVisibility(View.GONE);
             }
 
             @Override
