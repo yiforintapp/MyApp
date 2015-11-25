@@ -1,10 +1,6 @@
 
 package com.leo.appmaster.bootstrap;
 
-import java.lang.reflect.Method;
-import java.util.Calendar;
-import java.util.Date;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
@@ -37,6 +33,7 @@ import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.db.AppMasterDBHelper;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.mgr.LockManager;
@@ -45,12 +42,18 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
+
+import java.lang.reflect.Method;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 主线程核心业务初始化
@@ -321,16 +324,22 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void installBoostShortcut() {
-        Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
-        ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
-                R.drawable.qh_speedup_icon);
-        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-        shortcut.putExtra("duplicate", false);
-        shortcut.putExtra("from_shortcut", true);
-        mApp.sendBroadcast(shortcut);
+        boolean isInstalllIswipe = ISwipUpdateRequestManager
+               .isInstallIsiwpe(AppMasterApplication.getInstance());
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        preferenceTable.putBoolean(PrefConst.IS_BOOST_CREAT, isInstalllIswipe);
+        if (!isInstalllIswipe) {
+            Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
+            ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
+                    R.drawable.qh_speedup_icon);
+            Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+            shortcut.putExtra("duplicate", false);
+            shortcut.putExtra("from_shortcut", true);
+            mApp.sendBroadcast(shortcut);
+        }
     }
 
     private void judgeLockAlert() {

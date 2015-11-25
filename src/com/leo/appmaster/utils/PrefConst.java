@@ -86,5 +86,6 @@ public class PrefConst {
     //进入应用锁引导提示
     public static final String KEY_IN_LOCK_GUIDE = "IN_LOCK_GUIDE";
 
-
+    // 加速快捷方式
+    public static final String IS_BOOST_CREAT = "is_boost_creat";
 }

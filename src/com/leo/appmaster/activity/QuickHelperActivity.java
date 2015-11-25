@@ -20,16 +20,17 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
@@ -225,9 +226,11 @@ public class QuickHelperActivity extends BaseActivity {
                             case R.drawable.qh_speedup_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_accelerate");
-                                boolean isInstalllIswipe = ISwipUpdateRequestManager
-                                        .isInstallIsiwpe(AppMasterApplication.getInstance());
-                                if (!isInstalllIswipe) {
+//                                boolean isInstalllIswipe = ISwipUpdateRequestManager
+//                                        .isInstallIsiwpe(AppMasterApplication.getInstance());
+                                PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                                boolean isBoostCreat = preferenceTable.getBoolean(PrefConst.IS_BOOST_CREAT, false);
+                                if (!isBoostCreat) {
                                     intent = new Intent(AppMasterApplication.getInstance(), HomeBoostActivity.class);
                                     intent.putExtra("from_quickhelper", true);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
