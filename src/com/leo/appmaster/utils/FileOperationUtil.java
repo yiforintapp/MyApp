@@ -627,7 +627,6 @@ public class FileOperationUtil {
 
         Cursor cursor = null;
 
-
         Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
         PhotoAibum pa = null;
         try {

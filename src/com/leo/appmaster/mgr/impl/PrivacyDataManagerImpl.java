@@ -147,7 +147,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             LeoLog.d("testPicLoadTime", "rady load cost :" + (b - a));
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-//                    String path = cursor.getString(1);
                     String path = cursor.getString
                             (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
@@ -477,9 +476,22 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         }
     }
 
+    public String getSplashDirPath() {
+        String path = FileOperationUtil.getSplashPath();
+        if (path != null) {
+            StringBuffer str = new StringBuffer(path);
+            String lastIndex = String.valueOf(str.charAt(str.length() - 1));
+            if ("/".equals(lastIndex)) {
+                int pos = path.lastIndexOf('/');
+                path = path.substring(0, pos);
+                return path;
+            }
+        }
+        return "";
+    }
+
     @Override
     public List<PhotoItem> getAddPic() {
-        LeoLog.d("checkPicId", "getAddPic");
         int picNum = 0;
         int mRecordNum;
         int lastPic = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
@@ -487,6 +499,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         List<String> filterVideoTypes = getFilterVideoType();
         List<PhotoItem> aibumList = new ArrayList<PhotoItem>();
         Cursor cursor = null;
+
+        String splashPath = getSplashDirPath();
 
         int currSDK_INT = Build.VERSION.SDK_INT;
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
@@ -498,19 +512,21 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     MediaStore.MediaColumns._ID + ">?",
                     new String[]{String.valueOf(lastPic)},
                     MediaStore.MediaColumns._ID + " desc");
-            LeoLog.d("checkPicId", "new cursor:" + cursor.getCount());
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
                     //record the last pic id
                     mRecordNum = id;
-                    LeoLog.d("checkPicId", "id is : " + id);
                     String path = cursor.getString
                             (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                    LeoLog.d("checkPicId", "path is : " + path);
+                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
 
                     if (picNum == 0) {
                         picNum = id;
+                    }
+
+                    if (splashPath != null && dirPath.equals(splashPath)) {
+                        continue;
                     }
 
                     if (path.startsWith(SYSTEM_PREFIX)) {
@@ -534,12 +550,13 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     if (isFilterVideoType) {
                         continue;
                     }
-                    // 过滤闪屏图
-                    if (FileOperationUtil.getSplashPath() != null
-                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
-                            .equals(path)) {
-                        continue;
-                    }
+
+//                    // 过滤闪屏图
+//                    if (FileOperationUtil.getSplashPath() != null
+//                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
+//                            .equals(path)) {
+//                        continue;
+//                    }
 
                     if (lastPic == 0) {
                         //all in
@@ -547,7 +564,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     } else {
                         //in some
                         if (id > lastPic) {
-                            LeoLog.d("checkPicId", "new path : " + path);
                             aibumList.add(new PhotoItem(path, mRecordNum));
                         } else {
                             break;
@@ -566,26 +582,23 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 IoUtils.closeSilently(cursor);
             }
         }
+
         mScanAddPicNum = aibumList.size();
-        LeoLog.d("checkPicId", "final size is : " + aibumList.size());
         return aibumList;
     }
 
     @Override
     public int getAddPicNum() {
-        LeoLog.d("checkPicId", "getAddPicNum");
-        long a = System.currentTimeMillis();
         int record = 0;
         int picNum = 0;
         int lastPic = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
         List<String> filterVideoTypes = getFilterVideoType();
-        long b = System.currentTimeMillis();
-        LeoLog.d("testGetAddPicNum", "part 1 : " + (b - a));
         Cursor cursor = null;
 
         int currSDK_INT = Build.VERSION.SDK_INT;
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
         String store = externalStorageDirectory.getPath();
+        String splashPath = getSplashDirPath();
 
         try {
             cursor = MediaStore.Images.Media.query(mContext.getContentResolver(),
@@ -593,28 +606,28 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     MediaStore.MediaColumns._ID + ">?",
                     new String[]{String.valueOf(lastPic)},
                     MediaStore.MediaColumns._ID + " desc");
-            LeoLog.d("checkPicId", "new cursor:" + cursor.getCount());
 
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-
                     if (picNum > getMaxPicNum()) {
                         break;
                     }
-
                     int id = cursor.getInt
                             (cursor.getColumnIndex(MediaStore.MediaColumns._ID));
-
                     if (record == 0) {
                         record = id;
                     }
 
                     String path = cursor.getString
                             (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
+
                     if (path.startsWith(SYSTEM_PREFIX)) {
                         continue;
                     }
-
+                    if (splashPath != null && dirPath.equals(splashPath)) {
+                        continue;
+                    }
                     if (currSDK_INT >= API_LEVEL_19) {
                         LeoLog.d("checkVidId", "store is : " + store);
                         if (!path.startsWith(store)) {
@@ -632,13 +645,12 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     if (isFilterVideoType) {
                         continue;
                     }
-
-                    // 过滤闪屏图
-                    if (FileOperationUtil.getSplashPath() != null
-                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
-                            .equals(path)) {
-                        continue;
-                    }
+//                    // 过滤闪屏图
+//                    if (FileOperationUtil.getSplashPath() != null
+//                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
+//                            .equals(path)) {
+//                        continue;
+//                    }
 
                     picNum++;
                 }
@@ -647,8 +659,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, record);
                 }
             }
-            long c = System.currentTimeMillis();
-            LeoLog.d("testGetAddPicNum", "part 2 : " + (c - b));
         } catch (Exception e) {
 
         } finally {
@@ -656,7 +666,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 IoUtils.closeSilently(cursor);
             }
         }
-
 
         return picNum;
     }
