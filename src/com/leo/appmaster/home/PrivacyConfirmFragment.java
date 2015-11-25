@@ -11,6 +11,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -497,6 +498,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         }
 
         mContactBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
+        ChangeContactColor();
         mContactBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
         mContactBtnDiv = include.findViewById(R.id.item_btn_divider);
         mContactBtnLt.setOnClickListener(this);
@@ -510,8 +512,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void ChangeContactColor() {
         if (mSelectData.size() > 0) {
             mContactBtnTv.setTextColor(mActivity.getResources().getColor(R.color.cgn));
+            Drawable drawable = getActivity().getResources().getDrawable(R.drawable.arrow_button_right);
+            mContactBtnTv.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
         } else {
             mContactBtnTv.setTextColor(mActivity.getResources().getColor(R.color.contact_no_select));
+            Drawable drawable = getActivity().getResources().getDrawable(R.drawable.arrow_button_right_normal);
+            mContactBtnTv.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
         }
     }
 
@@ -1023,7 +1029,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     }
                 });
             } else {
-                Toast.makeText(getActivity(), getActivity().getString(R.string.pri_contact_empty), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), getActivity().getString(R.string.pri_contact_empty), Toast.LENGTH_SHORT).show();
             }
             ChangeContactColor();
         } else if (mWifiBtnLt == v) {
