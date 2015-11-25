@@ -74,6 +74,7 @@ public class HomeMoreAdapter extends BaseAdapter {
     private static final int ID_RES_HIDE_VIDEO = R.drawable.ic_up_hide_video;
     private static final int ID_RES_CONTACT_CALL = R.drawable.ic_up_contact_call;
     private static final int ID_RES_CONTACT_SMS = R.drawable.ic_up_contact_sns;
+    private static final int ID_RES_CONTACT = R.drawable.ic_up_contact;
     private static final int ID_RES_APP_DEL = R.drawable.ic_up_del;
     private static final int ID_RES_APP_BACK = R.drawable.ic_up_back;
     private static final int ID_RES_DEVICE_GPRS = R.drawable.ic_up_gprs;
@@ -111,7 +112,7 @@ public class HomeMoreAdapter extends BaseAdapter {
         mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);
         mDrawableArray.put(R.string.hp_hide_video, ID_RES_HIDE_VIDEO);
 //        mDrawableArray.put(R.string.hp_contact_call, ID_RES_CONTACT_CALL);
-        mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT_CALL);
+        mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT);
 //        mDrawableArray.put(R.string.hp_contact_sms, ID_RES_CONTACT_SMS);
         mDrawableArray.put(R.string.hp_app_manage_del, ID_RES_APP_DEL);
         mDrawableArray.put(R.string.hp_app_manage_back, ID_RES_APP_BACK);
