@@ -188,7 +188,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
     /*查询系统是否有指定号码短信和通话记录*/
     private void queryCallsMsms(String number) {
         // 查询是否存在短信和通话记录
-          /*4.4以上去做短信操作*/
+          /*4.4以上不去做短信操作*/
         boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
         if (isLessLeve19) {
             if (mAddMessages == null) {

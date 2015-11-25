@@ -1778,7 +1778,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getMessageNoReadCount() {
         if(mMessageNoReadCount < 0) {
-            mMessageNoReadCount = mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);;
+            mMessageNoReadCount = mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);
         }
         return mMessageNoReadCount;
     }

@@ -325,7 +325,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                                     addContToSelfDb(call);
                                     added = true;
                                     Context context = AddFromCallLogListActivity.this;
-                                    /*4.4以上去做短信操作*/
+                                    /*4.4以上不去做短信操作*/
                                     boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
                                     if (isLessLeve19) {
                                         if (mAddMessages == null) {

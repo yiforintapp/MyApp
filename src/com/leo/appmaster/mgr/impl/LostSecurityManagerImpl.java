@@ -193,7 +193,12 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         String provider = PhoneSecurityUtils.getLocateProvider(locationManager);
         LeoLog.i(TAG, "provider=" + provider);
         if (locationManager.isProviderEnabled(provider)) {
-            location = locationManager.getLastKnownLocation(provider);
+            for (int i = 0; i < 3; i++) {
+                location = locationManager.getLastKnownLocation(provider);
+                if (location != null) {
+                    break;
+                }
+            }
         }
         if (location == null) {
             LeoLog.i(TAG, "location为空");

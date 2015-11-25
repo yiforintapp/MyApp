@@ -357,7 +357,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                             false, mAnswerType, null, 0, 0, 0));
                                     added = true;
                                     Context context = AddFromContactListActivity.this;
-                                    /*4.4以上去做短信操作*/
+                                     /*4.4以上不去做短信操作*/
                                     boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
                                     if (isLessLeve19) {
                                         if (mAddMessages == null) {

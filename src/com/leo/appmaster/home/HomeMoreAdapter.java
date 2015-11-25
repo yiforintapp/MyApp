@@ -17,6 +17,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.privacycontact.PrivacyContactManager;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -217,7 +219,23 @@ public class HomeMoreAdapter extends BaseAdapter {
 
         Context context = AppMasterApplication.getInstance();
         AppMasterPreference preference = AppMasterPreference.getInstance(context);
-        if (drawableId == ID_RES_CONTACT_CALL) {
+        if (drawableId == ID_RES_CONTACT) {
+            int callCount = preference.getCallLogNoReadCount();
+            int msgCount = preference.getMessageNoReadCount();
+           /*4.4以上不去做短信操作*/
+            boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+            if (!isLessLeve19) {
+                if (msgCount > 0) {
+                    msgCount = 0;
+                    preference.setMessageNoReadCount(msgCount);
+                }
+            }
+            if (callCount > 0 || msgCount > 0) {
+                holder.readTip.setVisibility(View.VISIBLE);
+            } else {
+                holder.readTip.setVisibility(View.GONE);
+            }
+        } else if (drawableId == ID_RES_CONTACT_CALL) {
             int callCount = preference.getCallLogNoReadCount();
             int msgCount = preference.getMessageNoReadCount();
             if (callCount > 0) {
