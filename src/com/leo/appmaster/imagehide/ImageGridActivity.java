@@ -199,19 +199,17 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        LeoLog.d("teststartResult", "onActivityResult");
         if (resultCode == RESULT_OK) {
             mAllListPath = data.getStringArrayListExtra("list");
-
+            LeoLog.d("teststartResult", "mAllListPath size : " + mAllListPath.size());
             for (Iterator iterator = mPicturesList.iterator(); iterator
                     .hasNext(); ) {
                 PhotoItem item = (PhotoItem) iterator.next();
-
                 if (!mAllListPath.contains(item.getPath())) {
                     iterator.remove();
                 }
             }
-
             if (mImageAdapter != null) {
                 mImageAdapter.notifyDataSetChanged();
             }
@@ -324,8 +322,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                 intent.putExtra("fromIntruderMore", true);
             }
             intent.putStringArrayListExtra("list", mAllListPath);
+            LeoLog.d("teststartResult", "ready start Activity , list size : " + mAllListPath.size());
             intent.putExtra("pos", position);
-
             startActivityForResult(intent, 0);
             SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1,
                     "hide_pic_operation",

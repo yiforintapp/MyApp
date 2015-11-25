@@ -122,7 +122,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             }
         }
 
-        ;
     };
 
     private void postDeleteDone(boolean isDone) {
@@ -403,9 +402,11 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mAllPath = new ArrayList<String>();
         new ArrayList<View>();
         mResultPath = new ArrayList<String>();
+
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar_video);
         mTtileBar.setTitle("");
         mTtileBar.openBackView();
+
         mUnhideVideo = (Button) findViewById(R.id.unhide_video);
         mCancelVideo = (Button) findViewById(R.id.delete_video);
         initImageLoder();
@@ -566,7 +567,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 }
                 String deleteHideVideoText = getString(R.string.app_delete_dialog_content_video);
                 showAlarmDialog(deleteHideVideoText, DIALOG_DELECTE_VIDEO);
-
                 break;
             default:
                 break;

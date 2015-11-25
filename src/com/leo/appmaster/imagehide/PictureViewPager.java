@@ -36,6 +36,7 @@ import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -97,8 +98,14 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         mContainer = findViewById(R.id.container);
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTtileBar.setTitle("");
-        mTtileBar.openBackView();
-        mTtileBar.setBackViewListener(this);
+
+        mTtileBar.setSelfBackPressListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
         initImageLoader();
         initAnimationRotate();
         mBottomButtonBar = (LinearLayout) findViewById(R.id.bottom_button_bar);
@@ -111,6 +118,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         if (null != mIntent) {
             mIsFromIntruderMore = mIntent.getBooleanExtra("fromIntruderMore", false);
             mPicturesList = mIntent.getStringArrayListExtra("list");
+            LeoLog.d("teststartResult", "come to ViewPager , list size : " + mPicturesList.size());
             int maxSize = mPicturesList.size() - 1;
             mListPos = mIntent.getIntExtra("pos", 0);
 
@@ -166,9 +174,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
     @Override
     public void onBackPressed() {
-
         Intent intent = new Intent();
         intent.putStringArrayListExtra("list", mPicturesList);
+        LeoLog.d("teststartResult", "ViewPager BackPressed, list size : " + mPicturesList.size());
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
@@ -304,9 +312,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                     mContainer.setBackgroundColor(Color.WHITE);
                 }
                 break;
-            case R.id.layout_title_back:
-                onBackPressed();
-                break;
+//            case R.id.layout_title_back:
+//                onBackPressed();
+//                break;
             default:
                 break;
         }

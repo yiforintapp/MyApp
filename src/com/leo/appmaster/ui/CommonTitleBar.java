@@ -175,6 +175,12 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
         mTvOptionImage.startAnimation(animation);
     }
 
+    private OnClickListener mBackViewListener;
+
+    public void setSelfBackPressListener(OnClickListener listener) {
+        mBackViewListener = listener;
+    }
+
     public void openBackView() {
 //        mLayoutBackView.setOnClickListener(this);
         newBackView.setOnClickListener(this);
@@ -243,7 +249,14 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
                 }
                 break;
             case R.id.layout_title_back_arraow:
-                ((Activity) getContext()).finish();
+                if (mBackViewListener != null) {
+                    mBackViewListener.onClick(v);
+                } else {
+                    Context context = getContext();
+                    if (context instanceof Activity) {
+                        ((Activity) context).finish();
+                    }
+                }
                 break;
         }
 
