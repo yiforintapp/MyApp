@@ -415,21 +415,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @SuppressWarnings("deprecation")
     private void setMobvistaIcon() {
-        // In some case, we have no AD
-        if (wallAd != null && AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
-            wallAd.loadWallIcon(new WallIconCallback() {
-
-                @Override
-                public void loaded(Drawable drawable) {
-                    mAdIcon.setImageDrawable(drawable);
-                }
-
-                @Override
-                public void failed() {
-
-                }
-            });
-
+        if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
             if (SHOW_AD_TYPE == AD_TYPE_SHAKE) {
                 mAdIconRedTip.setVisibility(View.VISIBLE);
                 mAdIcon.setBackgroundResource(R.drawable.adanimation2);
@@ -475,7 +461,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         mCanTakePhoto = true;
         whichTypeShow();
-
         LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
 
