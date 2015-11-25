@@ -862,18 +862,21 @@
     <string name="feedback_tell_us_contact_type_5">Facebook:LEO Privacy Guard/LEO Privacy Guard Q"&amp;"A </string>
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
 
-    <string name="feedback_tell_us_contact_type_title">Contact us</string>
-    <string name="dialog_fivestars_content_text">Congratulations!Score has increased</string>
-    <string name="elect_empty_content">If you have any further questions or requirements, please do not hesitate to contact us and follow us on Facebook &amp; Whatsapp.</string>
-    <string name="swifty_item_btn">Contacts:</string>
-    <string name="grade_item_title">Enjoying Privacy Guard? 5-Star ratings from you to help us provide better services!</string>
-    <string name="grade_item_btn">Sorry, the battery information is temporarily unavailable </string>
-    <string name="change_wifi_toast_unsafe">Enable</string>
-    <string name="change_wifi_toast_safe">Like us?</string>
-    <string name="fb_item_title">5-Star Rating</string>
-    <string name="fb_item_content">Potential risks</string>
-    <string name="fb_item_btn">Safe</string>
-    <string name="intruderprotection_forbit_content">Follow us on Facebook</string>
-    <string name="adv_prot_open_suc_tip_cnt">For more interesting and official news of LEO Privacy Guard, please immediately follow us on facebook.</string>
-    <string name="pri_pro_btn">Follow us</string>
+    <string name="feedback_tell_us_title">Contact us</string>
+    <string name="toast_getscore_text">Congratulations!Score has increased</string>
+    <string name="feedback_tell_us_content">If you have any further questions or requirements, please do not hesitate to contact us and follow us on Facebook &amp; Whatsapp.</string>
+    <string name="feedback_tell_us_contact_type_title">Contacts:</string>
+    <string name="dialog_fivestars_content_text">Enjoying Privacy Guard? 5-Star ratings from you to help us provide better services!</string>
+    <string name="elect_empty_content">Sorry, the battery information is temporarily unavailable </string>
+    <string name="swifty_item_btn">Enable</string>
+    <string name="grade_item_title">Like us?</string>
+    <string name="grade_item_btn">5-Star Rating</string>
+    <string name="change_wifi_toast_unsafe">Potential risks</string>
+    <string name="change_wifi_toast_safe">Safe</string>
+    <string name="fb_item_title">Follow us on Facebook</string>
+    <string name="fb_item_content">For more interesting and official news of LEO Privacy Guard, please immediately follow us on facebook.</string>
+    <string name="fb_item_btn">Follow us</string>
+    <string name="intruderprotection_forbit_content">Due to the limitation of Android, the intruder prevention function could not work.</string>
+    <string name="adv_prot_open_suc_tip_cnt">LEO Privacy Guard can not uninstall under advanced protection. If it is needed, please go to AppLock page and disenable "Advanced Protection" in AppLock Settings.</string>
+    <string name="pri_pro_btn">Enable(+%1$d points)</string>
 </resources>
