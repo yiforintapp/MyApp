@@ -56,8 +56,7 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
     private View mOffsetBg;
     protected int mCurrentGroup;
     private int mLastGroup = -1;
-    protected boolean mHidingTimeout;
-    protected boolean mHidingFinish;
+    protected boolean mFinishNotified;
 
     @Override
     public void onAttach(Activity activity) {
@@ -235,11 +234,6 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
                 }, 100);
             }
         }
-//        else if (mProcessBtn == rippleView) {
-//            onProcessClick();
-//        } else if (mIgnoreBtn == rippleView) {
-//            onIgnoreClick();
-//        }
     }
 
     @Override

@@ -50,17 +50,12 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
     }
 
     private void hideAllVidBackground(final List<String> photoItems, final int incScore) {
-        mHidingTimeout = false;
-        mHidingFinish = false;
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
                 pdm.onHideAllVid(photoItems);
-                mHidingFinish = true;
-                if (!mHidingTimeout) {
-                    onProcessFinish(incScore);
-                }
+                onProcessFinish(incScore);
             }
         });
     }
@@ -69,7 +64,10 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mActivity.onProcessFinish(incScore, MgrContext.MGR_PRIVACY_DATA);
+                if (!mFinishNotified) {
+                    mActivity.onProcessFinish(incScore, MgrContext.MGR_PRIVACY_DATA);
+                    mFinishNotified = true;
+                }
             }
         });
     }
@@ -113,10 +111,7 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mHidingTimeout = true;
-                        if (!mHidingFinish) {
-                            onProcessFinish(incScore);
-                        }
+                        onProcessFinish(incScore);
                     }
                 }, 8000);
             }
@@ -160,7 +155,7 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
     public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
         VideoItemBean info = (VideoItemBean) mAdapter.getChild(i, i1);
         mAdapter.toggle(info);
-        mAdapter.setCheck(view,mAdapter.isChildChecked(info));
+        mAdapter.setCheck(view, mAdapter.isChildChecked(info));
         return false;
     }
 }

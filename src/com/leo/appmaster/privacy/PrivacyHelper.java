@@ -219,15 +219,17 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
     @Override
     public void onSecurityChange(final String description, int securityScore) {
-        int oldScore = mScoreMap.get(description);
-        LeoLog.i(TAG, "onSecurityChange, desc: " + description + " | oldScore :" + oldScore + " | score: " + securityScore);
-        checkOrNotifyDecScore(description, securityScore);
-        if (oldScore != securityScore) {
-            mScoreMap.put(description, securityScore);
-            mSecurityScore = calculateScore();
-            logScore();
+        synchronized (mScoreMap) {
+            int oldScore = mScoreMap.get(description);
+            LeoLog.i(TAG, "onSecurityChange, desc: " + description + " | oldScore :" + oldScore + " | score: " + securityScore);
+            checkOrNotifyDecScore(description, securityScore);
+            if (oldScore != securityScore) {
+                mScoreMap.put(description, securityScore);
+                mSecurityScore = calculateScore();
+                logScore();
 
-            LeoEventBus.getDefaultBus().post(new SecurityScoreEvent(mSecurityScore));
+                LeoEventBus.getDefaultBus().post(new SecurityScoreEvent(mSecurityScore));
+            }
         }
     }
 
@@ -540,11 +542,13 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
     public void increaseScore(String mgr, int securityScore) {
         LeoLog.i(TAG, "increaseScore, mgr: " + mgr + " | securityScore: " + securityScore);
-        int newScore = mScoreMap.get(mgr);
-        newScore += securityScore;
+        synchronized (mScoreMap) {
+            int newScore = mScoreMap.get(mgr);
+            newScore += securityScore;
 
-        mScoreMap.put(mgr, newScore);
-        mSecurityScore = calculateScore();
+            mScoreMap.put(mgr, newScore);
+            mSecurityScore = calculateScore();
+        }
         logScore();
     }
 

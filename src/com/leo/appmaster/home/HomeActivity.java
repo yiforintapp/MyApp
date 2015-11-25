@@ -127,7 +127,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mShownIgnoreDlg;
     private boolean mShowContact;
 
-    private int mScoreBeforeProcess;
     private LEOMessageDialog mMessageDialog;
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
@@ -142,6 +141,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             }
         }
     };
+    private int mScoreBeforeProcess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1115,8 +1115,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             @Override
             public void run() {
                 mProcessAlreadyTimeout = true;
-                if (mScanningFragment != null) return;
-
                 if (mProcessedMgr != null) {
                     startProcessFinishAnim(mProcessedScore);
                 }
@@ -1125,13 +1123,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onProcessFinish(int increaseScore, String mgr) {
-        if (mScanningFragment != null) return;
-
+        LeoLog.d(TAG, "onProcessFinish, mgr: " + mgr + " | increaseScore: " + increaseScore);
         int scoreAfterProcess = mPrivacyHelper.getSecurityScore();
-        if (scoreAfterProcess - mScoreBeforeProcess == increaseScore) {
-            // 处理前后分数不一样，说明处理过程中触发了1分钟的逻辑，所以不再加分
-            increaseScore = 0;
+        if (scoreAfterProcess != mScoreBeforeProcess) {
+            // 处理前后分数不一样了，分数不再继续累加
+            increaseScore = scoreAfterProcess - mScoreBeforeProcess;
+            increaseScore = increaseScore < 0 ? 0 : increaseScore;
         }
+        LeoLog.d(TAG, "onProcessFinish, increaseScore again: " + increaseScore);
 
         IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(
                 MgrContext.MGR_INTRUDE_SECURITY);
@@ -1151,10 +1150,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mProcessedMgr = mgr;
         increaseScore += intruderScore;
         mProcessedScore = increaseScore;
+        LeoLog.d(TAG, "onProcessFinish, increaseScore again: " + increaseScore +
+                " | mProcessTimeout:" + mProcessAlreadyTimeout);
         if (mProcessAlreadyTimeout) {
             startProcessFinishAnim(increaseScore);
         }
-        mProcessAlreadyTimeout = true;
     }
 
     /**
@@ -1163,16 +1163,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
      * @param increaseScore
      */
     private void startProcessFinishAnim(int increaseScore) {
-        if ((getFragmentManager().getBackStackEntryCount() > 0 || mTabFragment.isTabDismiss())) {
+        if (mTabFragment.isTabDismiss() && mScanningFragment == null) {
+            // 1、tab消失  2、不处于扫描状态
             mPrivacyFragment.startLoadingRiseAnim(increaseScore);
+            LeoLog.d(TAG, "startProcessFinishAnim, startLoadingRiseAnim..." + increaseScore);
         } else {
             mPrivacyFragment.startIncreaseSocreAnim(increaseScore);
+            LeoLog.d(TAG, "startProcessFinishAnim, startIncreaseSocreAnim..." + increaseScore);
         }
     }
 
     public void onIgnoreClick(int increaseScore, String mgr) {
-//        mPrivacyFragment.startShieldBeatAnim(increaseScore);
-//        mPrivacyHelper.increaseScore(mgr, increaseScore);
         jumpToNextFragment();
         mPrivacyFragment.increaseStepAnim();
     }

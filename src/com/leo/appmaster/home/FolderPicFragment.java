@@ -13,6 +13,7 @@ import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
  * Created by Jasper on 2015/10/30.
  */
 public class FolderPicFragment extends FolderFragment<PhotoItem> {
-    private static final String TAG = "FolderVidFragment";
+    private static final String TAG = "FolderPicFragment";
 
     public static FolderPicFragment newInstance() {
         return new FolderPicFragment();
@@ -53,26 +54,25 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
     }
 
     private void hideAllPicBackground(final List<String> photoItems, final int incScore) {
-        mHidingTimeout = false;
-        mHidingFinish = false;
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
                 pdm.onHideAllPic(photoItems);
-                mHidingFinish = true;
-                if (!mHidingTimeout) {
-                    onProcessFinish(incScore);
-                }
+                onProcessFinish(incScore);
             }
         });
     }
 
     private void onProcessFinish(final int incScore) {
+        LeoLog.d(TAG, "onProcessFinish...");
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mActivity.onProcessFinish(incScore, MgrContext.MGR_PRIVACY_DATA);
+                if (!mFinishNotified) {
+                    mActivity.onProcessFinish(incScore, MgrContext.MGR_PRIVACY_DATA);
+                    mFinishNotified = true;
+                }
             }
         });
     }
@@ -82,6 +82,7 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
         mActivity.onProcessClick(this);
         PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_VID, true);
+        mFinishNotified = false;
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
@@ -97,10 +98,7 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mHidingTimeout = true;
-                        if (!mHidingFinish) {
-                            onProcessFinish(incScore);
-                        }
+                        onProcessFinish(incScore);
                     }
                 }, 8000);
             }
