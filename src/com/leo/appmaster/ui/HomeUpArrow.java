@@ -30,6 +30,7 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
     private static final String TAG ="HomeUpArrow";
 
     public static final int FULL_COLOR = Color.parseColor("#f8f8f8");
+//    public static final int FULL_COLOR = Color.parseColor("#ff00ff");
 
     private BitmapDrawable mUpIcon;
     private Paint mPaint;
@@ -73,7 +74,7 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
         int ih = mUpIcon.getIntrinsicHeight();
 
         int l = getLeft() + (w - iw) / 2;
-        int t = getTop() + (h - ih * 2) / 2;
+        int t = getTop() + (h - ih) / 2;
         mUpIcon.setBounds(l, t, l + iw, t + ih);
 
         Rect rect = mUpIcon.getBounds();

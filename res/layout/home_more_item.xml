@@ -9,7 +9,7 @@
     app:rippleHover="true">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/new_list_selecter"
         android:clickable="true">
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="6dp"
+            android:layout_marginRight="20dp"
             android:src="@drawable/ic_up_right" />
 
         <View
@@ -45,6 +45,7 @@
             android:layout_height="1px"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:background="@color/c5" />
 
         <ImageView

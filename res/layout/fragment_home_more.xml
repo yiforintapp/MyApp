@@ -37,13 +37,6 @@
             android:layout_height="match_parent"
             android:focusable="false"
             android:orientation="vertical">
-            
-           <!-- <com.leo.appmaster.ui.HomeMoreTapView
-                android:id="@+id/more_center_drag_view"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:background="#ff00ff"
-                android:layout_centerHorizontal="true" />-->
 
             <com.leo.appmaster.ui.HomeUpArrow
                 android:id="@+id/more_up_arrow"
