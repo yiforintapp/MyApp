@@ -31,6 +31,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -117,6 +118,8 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 if (currentValue >= mAddPrivacyCallLog.size()) {
                     if (!mLogFlag) {
                         mProgressDialog.cancel();
+                        AddFromContactListActivity
+                                .notificationUpdatePrivacyContactList();
                         AddFromCallLogListActivity.this.finish();
                     } else {
                         if (mProgressDialog != null) {
@@ -137,8 +140,9 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 if (mCallLogList != null && mCallLogList.size() > 0) {
                     if (mAddPrivacyCallLog.size() > 0 && mAddPrivacyCallLog != null) {
                         showProgressDialog(mAddPrivacyCallLog.size(), 0);
-                        PrivacyCallLogTask task = new PrivacyCallLogTask();
-                        task.execute(PrivacyContactUtils.ADD_CONTACT_MODEL);
+//                        PrivacyCallLogTask task = new PrivacyCallLogTask();
+//                        task.execute(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                        sendImpLogHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
                     } else {
                         Toast.makeText(AddFromCallLogListActivity.this,
                                 getResources().getString(R.string.privacy_contact_toast_no_choose),
@@ -299,33 +303,6 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 false, ANSWER_TYPE, null, 0, 0, 0));
     }
 
-    /**
-     * 通过号码查询，对应的短信记录
-     *
-     * @param number
-     */
-    public List<MessageBean> queryMsmsForNumber(String number) {
-        String tempNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        String selection = "address LIKE ? ";
-        String[] selectionArgs = new String[]{"%" + tempNumber};
-        Context context = AddFromCallLogListActivity.this;
-        return PrivacyContactUtils.getSysMessage(context, selection, selectionArgs, true, false);
-    }
-
-    /**
-     * 通过号码查询，对应的通话记录
-     *
-     * @param number
-     * @return
-     */
-    public List<ContactCallLog> queryCallsForNumber(String number) {
-        String tempNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        Context context = AddFromCallLogListActivity.this;
-        String selection = "number LIKE ?";
-        String[] selectionArgs = new String[]{"%" + tempNumber};
-        return PrivacyContactUtils.getSysCallLog(context, selection, selectionArgs, true, false);
-    }
-
     /*加载通话通话列表*/
     private void sendImpLogHandler(final String model) {
         if (mAddFromCallHandler != null) {
@@ -347,17 +324,18 @@ public class AddFromCallLogListActivity extends BaseActivity {
                                 if (!isPryCont) {
                                     addContToSelfDb(call);
                                     added = true;
+                                    Context context = AddFromCallLogListActivity.this;
                                     if (mAddMessages == null) {
-                                        mAddMessages = queryMsmsForNumber(contactNumber);
+                                        mAddMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(contactNumber);
                                     } else {
-                                        List<MessageBean> addMessages = queryMsmsForNumber(contactNumber);
+                                        List<MessageBean> addMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(contactNumber);
                                         mAddMessages.addAll(addMessages);
                                     }
 
                                     if (mAddCallLogs == null) {
-                                        mAddCallLogs = queryCallsForNumber(contactNumber);
+                                        mAddCallLogs = PrivacyContactManager.getInstance(context).queryCallsForNumber(contactNumber);
                                     } else {
-                                        List<ContactCallLog> addCalllog = queryCallsForNumber(contactNumber);
+                                        List<ContactCallLog> addCalllog = PrivacyContactManager.getInstance(context).queryCallsForNumber(contactNumber);
                                         mAddCallLogs.addAll(addCalllog);
                                     }
                                     if (isExistLog == 0) {
@@ -369,16 +347,16 @@ public class AddFromCallLogListActivity extends BaseActivity {
                                     }
                                 } else {
                                     if (mAddPrivacyCallLog.size() == 1 && mAddPrivacyCallLog != null) {
-                                        LeoEventBus
-                                                .getDefaultBus()
-                                                .post(new PrivacyMessageEvent(
-                                                        EventId.EVENT_PRIVACY_EDIT_MODEL,
-                                                        PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT));
+                                        int evenId = EventId.EVENT_PRIVACY_EDIT_MODEL;
+                                        String eventMsg = PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT;
+                                        PrivacyMessageEvent event = new PrivacyMessageEvent(evenId, eventMsg);
+                                        LeoEventBus.getDefaultBus().post(event);
                                         isExistLog = PrivacyContactUtils.NO_EXIST_LOG;
+                                        mLogFlag = false;
                                     }
+
                                 }
-                                /*子线程之前赋值*/
-                                mLogFlag = true;
+//                                mLogFlag = true;
                                 isPryCont = false;
                                 if (mHandler != null) {
                                     Message messge = Message.obtain();
@@ -509,34 +487,34 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         if (!isPryCont) {
                             addContToSelfDb(call);
                             added = true;
-                            if (mAddMessages == null) {
-                                mAddMessages = queryMsmsForNumber(contactNumber);
-                            } else {
-                                List<MessageBean> addMessages = queryMsmsForNumber(contactNumber);
-                                mAddMessages.addAll(addMessages);
-                            }
-
-                            if (mAddCallLogs == null) {
-                                mAddCallLogs = queryCallsForNumber(contactNumber);
-                            } else {
-                                List<ContactCallLog> addCalllog = queryCallsForNumber(contactNumber);
-                                mAddCallLogs.addAll(addCalllog);
-                            }
-                            if (!isOtherLogs) {
-                                if ((mAddMessages != null && mAddMessages.size() != 0)
-                                        || (mAddCallLogs != null && mAddCallLogs.size() != 0)) {
-                                    isOtherLogs = true;
-                                    mLogFlag = isOtherLogs;
-                                }
-                            }
                         } else {
                             if (mAddPrivacyCallLog.size() == 1 && mAddPrivacyCallLog != null) {
-                                LeoEventBus
-                                        .getDefaultBus()
-                                        .post(new PrivacyMessageEvent(
-                                                EventId.EVENT_PRIVACY_EDIT_MODEL,
-                                                PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT));
+                                int evenId = EventId.EVENT_PRIVACY_EDIT_MODEL;
+                                String eventMsg = PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT;
+                                PrivacyMessageEvent event = new PrivacyMessageEvent(evenId, eventMsg);
+                                LeoEventBus.getDefaultBus().post(event);
                                 isOtherLogs = false;
+                            }
+                        }
+                        Context context = AddFromCallLogListActivity.this;
+                        if (mAddMessages == null) {
+                            mAddMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(contactNumber);
+                        } else {
+                            List<MessageBean> addMessages = PrivacyContactManager.getInstance(context).queryMsmsForNumber(contactNumber);
+                            mAddMessages.addAll(addMessages);
+                        }
+
+                        if (mAddCallLogs == null) {
+                            mAddCallLogs = PrivacyContactManager.getInstance(context).queryCallsForNumber(contactNumber);
+                        } else {
+                            List<ContactCallLog> addCalllog = PrivacyContactManager.getInstance(context).queryCallsForNumber(contactNumber);
+                            mAddCallLogs.addAll(addCalllog);
+                        }
+                        if (!isOtherLogs) {
+                            if ((mAddMessages != null && mAddMessages.size() != 0)
+                                    || (mAddCallLogs != null && mAddCallLogs.size() != 0)) {
+                                isOtherLogs = true;
+                                mLogFlag = isOtherLogs;
                             }
                         }
                         /*子线程之前赋值*/
@@ -694,7 +672,14 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         @Override
                         public void handleMessage(Message msg) {
                             int currentValue = msg.what;
-                            if (currentValue >= mAddPrivacyCallLog.size()) {
+                            int totalSize = 0;
+                            if (mAddCallLogs != null) {
+                                totalSize = mAddCallLogs.size();
+                            }
+                            if (mAddMessages != null) {
+                                totalSize = totalSize + mAddMessages.size();
+                            }
+                            if (currentValue >= totalSize) {
                                 if (mProgressDialog != null) {
                                     mProgressDialog.cancel();
                                 }
@@ -706,8 +691,9 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         }
                     };
                     showProgressDialog(mAddMessages.size() + mAddCallLogs.size(), 0);
-                    PrivacyCallLogTask task = new PrivacyCallLogTask();
-                    task.execute(PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL);
+//                    PrivacyCallLogTask task = new PrivacyCallLogTask();
+//                    task.execute(PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL);
+                    sendImpLogHandler(PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL);
                     SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd",
                             "import");
                 } else if (which == 0) {

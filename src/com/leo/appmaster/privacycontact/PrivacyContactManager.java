@@ -21,6 +21,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.CallLog;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -85,7 +86,7 @@ public class PrivacyContactManager {
 
     public static synchronized PrivacyContactManager getInstance(Context context) {
         if (sInstance == null) {
-            sInstance = new PrivacyContactManager(context);
+            sInstance = new PrivacyContactManager(context.getApplicationContext());
         }
         return sInstance;
     }
@@ -629,4 +630,31 @@ public class PrivacyContactManager {
             }
         }
     }
+
+    /**
+     * 通过号码查询，对应的短信记录
+     *
+     * @param number
+     */
+    public List<MessageBean> queryMsmsForNumber(String number) {
+        String tempNumber = PrivacyContactUtils.formatePhoneNumber(number);
+        String selection = "address LIKE ? ";
+        String[] selectionArgs = new String[]{"%" + tempNumber};
+        return PrivacyContactUtils.getSysMessage(mContext, selection, selectionArgs, true, false);
+    }
+
+    /**
+     * 通过号码查询，对应的通话记录
+     *
+     * @param number
+     * @return
+     */
+    public List<ContactCallLog> queryCallsForNumber(String number) {
+        String tempNumber = PrivacyContactUtils.formatePhoneNumber(number);
+        String selection = "number LIKE ?";
+        String[] selectionArgs = new String[]{"%" + tempNumber};
+        return PrivacyContactUtils.getSysCallLog(mContext, selection, selectionArgs, true, false);
+    }
+
+
 }
