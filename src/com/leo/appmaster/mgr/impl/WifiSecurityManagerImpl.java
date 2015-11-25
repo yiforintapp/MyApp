@@ -318,6 +318,7 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
             boolean isWifiScaned = isScanAlready(wifiName);
 
             if (nowIn - wifiToastLastIn > 5000 && !isWifiScaned) {
+//            if (nowIn - wifiToastLastIn > 5000) {
                 if (wifiState == NOT_SAFE) {
                     LeoLog.d("testWifiPart", "wifiState is :" + wifiState + " , show NOT_SAFE");
                     SelfDurationToast.makeText(mContext, wifiName, TOAST_SHOW_TIME, wifiState).show();
