@@ -24,7 +24,7 @@
             android:layout_width="@dimen/ad_parent_width"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:gravity="center"
