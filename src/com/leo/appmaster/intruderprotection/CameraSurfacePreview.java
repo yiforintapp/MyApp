@@ -28,7 +28,8 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
     private boolean mCanTake = true;
     private PictureCallback mPendingCallback;
     private int mCameraOrientation;
-
+    private boolean mIsTimeOut = false;
+    
     public CameraSurfacePreview(Context context) {
         super(context);
         mHolder = getHolder();
@@ -40,10 +41,15 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         //创建时初始化，camera的初始化容易异常，使用try catch
-        try {
-            init();
-        } catch (Exception e) {
-        }
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        init();
+                    } catch (Exception e) {
+                    }
+                }
+            });
     }
 
     public int getCameraOrientation() {
@@ -89,6 +95,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
                     @Override
                     public void run() {
                         try {
+                            LeoLog.i("poha", "take pic after daley");
                             mCamera.takePicture(null, null, mPendingCallback);
                         } catch (Throwable e) {
                             LeoLog.i("poha", "Fail to takePic  :"+e.getMessage());

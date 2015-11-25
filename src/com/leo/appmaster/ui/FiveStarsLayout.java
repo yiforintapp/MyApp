@@ -1,5 +1,14 @@
 package com.leo.appmaster.ui;
 
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -61,6 +70,26 @@ public class FiveStarsLayout extends FrameLayout{
         mFiveStar = (ImageView) findViewById(R.id.five_star);
         mGradeGesture = (ImageView) findViewById(R.id.grade_gesture);
         mFlFifthStar = (FrameLayout) findViewById(R.id.fl_fifthStar);
+        getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            
+            @Override
+            public void onGlobalLayout() {
+                int height = getHeight();
+                if(!mHasShowed) {
+                    mGestureY = mGradeGesture.getY();
+                    mFifthStarCenterX = mFlFifthStar.getLeft() + mFlFifthStar.getWidth() / 2 - DipPixelUtil.dip2px(mContext, 7);
+                    mGestureDeltaY = height / 2 - mGradeGesture.getHeight();
+                    float dx = (float)DipPixelUtil.dip2px(mContext, 12);
+                    mGRightX = mFifthStarCenterX + dx;
+                    mGradeGesture.setX(mGRightX);
+                    LeoLog.i("testtt", "before mGRightX = "+mGRightX);
+                    LeoLog.i("testtt", "before mFifthStarCenterX = "+mFifthStarCenterX);
+                    LeoLog.i("testtt", "before dx = "+dx);
+                    showStarAnimation();
+                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            }
+        });
     }
     
     @Override
@@ -70,23 +99,41 @@ public class FiveStarsLayout extends FrameLayout{
         mAsMain.cancel();
     }
     
+    
+    
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-        int height = getHeight();
-        int width = getWidth();
-        if(!mHasShowed) {
-            mGestureY = mGradeGesture.getY();
-            mFifthStarCenterX = mFlFifthStar.getLeft() + mFlFifthStar.getWidth() / 2 - DipPixelUtil.dip2px(mContext, 7);
-            mGestureDeltaY = height / 2 - mGradeGesture.getHeight();
-            float dx = (float)DipPixelUtil.dip2px(mContext, 12);
-            mGRightX = mFifthStarCenterX + dx;
-            mGradeGesture.setX(mGRightX);
-            LeoLog.i("testtt", "before mGRightX = "+mGRightX);
-            LeoLog.i("testtt", "before mFifthStarCenterX = "+mFifthStarCenterX);
-            LeoLog.i("testtt", "before dx = "+dx);
-            showStarAnimation();
-        }
+//<<<<<<< Upstream, based on branch 'lishuai_dev_3.1' of http://gitlab.leoers.com/leo/appmaster.git
+//        int height = getHeight();
+//        int width = getWidth();
+//        if(!mHasShowed) {
+//            mGestureY = mGradeGesture.getY();
+//            mFifthStarCenterX = mFlFifthStar.getLeft() + mFlFifthStar.getWidth() / 2 - DipPixelUtil.dip2px(mContext, 7);
+//            mGestureDeltaY = height / 2 - mGradeGesture.getHeight();
+//            float dx = (float)DipPixelUtil.dip2px(mContext, 12);
+//            mGRightX = mFifthStarCenterX + dx;
+//            mGradeGesture.setX(mGRightX);
+//            LeoLog.i("testtt", "before mGRightX = "+mGRightX);
+//            LeoLog.i("testtt", "before mFifthStarCenterX = "+mFifthStarCenterX);
+//            LeoLog.i("testtt", "before dx = "+dx);
+//            showStarAnimation();
+//        }
+//=======
+//        int height = getHeight();
+//        if(!mHasShowed) {
+//            mGestureY = mGradeGesture.getY();
+//            mFifthStarCenterX = mFlFifthStar.getLeft() + mFlFifthStar.getWidth() / 2 - DipPixelUtil.dip2px(mContext, 7);
+//            mGestureDeltaY = height / 2 - mGradeGesture.getHeight();
+//            float dx = (float)DipPixelUtil.dip2px(mContext, 12);
+//            mGRightX = mFifthStarCenterX + dx;
+//            mGradeGesture.setX(mGRightX);
+//            LeoLog.i("testtt", "before mGRightX = "+mGRightX);
+//            LeoLog.i("testtt", "before mFifthStarCenterX = "+mFifthStarCenterX);
+//            LeoLog.i("testtt", "before dx = "+dx);
+//            showStarAnimation();
+//        }
+//>>>>>>> 77c465a fix bug
     }
     
     /***
