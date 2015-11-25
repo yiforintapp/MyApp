@@ -41,8 +41,8 @@
             <RelativeLayout
                 android:id="@+id/rl_ad_bg"
                 android:layout_width="@dimen/ad_content_width"
-                android:layout_height="158dp"
-                android:layout_marginLeft="15dp"
+                android:layout_height="@dimen/ad_content_height"
+                android:layout_marginLeft="17dp"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="left"
                 android:layout_marginTop="98dp">
@@ -137,21 +137,30 @@
                 android:layout_height="44dp"
                 android:background="@drawable/ad_top_bg"
                 android:layout_gravity="left"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="17dp"
                 android:layout_marginTop="53dp">
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_accelerat_result"
-                android:layout_width="198dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="60dp"
+            <RelativeLayout
+                android:layout_width="@dimen/ad_clean_text_width"
+                android:layout_height="40dp"
+                android:layout_marginTop="55dp"
                 android:layout_marginLeft="100dp"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:textColor="#ffffff"
-                android:textSize="15dp"/>
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:maxHeight="55dp"
+                    android:id="@+id/tv_accelerat_result"
+                    android:layout_centerInParent="true"
+                    android:textColor="#ffffff"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="14dp"/>
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="@dimen/ad_view_width"

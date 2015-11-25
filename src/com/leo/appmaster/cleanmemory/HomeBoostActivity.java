@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.cleanmemory;
 
-import java.lang.ref.WeakReference;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -45,6 +43,8 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
+
+import java.lang.ref.WeakReference;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
@@ -390,14 +390,14 @@ public class HomeBoostActivity extends Activity {
         cloudScaleYToFifthy.setDuration(120);
 
         ObjectAnimator cloudScaleYToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0.95f, 1f);
-        cloudScaleYToHundred.setDuration(380);
+        cloudScaleYToHundred.setDuration(300);
 
         ObjectAnimator cloudScaleToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0.3f, 1f);
-        cloudScaleToHundred.setDuration(380);
+        cloudScaleToHundred.setDuration(300);
         ObjectAnimator cloudAlphaHide = ObjectAnimator.ofFloat(mIvCloud, "alpha", 1f, 0f);
-        cloudAlphaHide.setDuration(200);
+        cloudAlphaHide.setDuration(150);
         ObjectAnimator cloudScaleToLarge = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 1f, 1.1f);
-        cloudScaleToLarge.setDuration(200);
+        cloudScaleToLarge.setDuration(150);
 
         AnimatorSet cloudStartAnimator = new AnimatorSet();
         cloudStartAnimator.playTogether(cloudAlphaShow, cloudScaleToThirty,cloudScaleYToFifthy);
@@ -491,7 +491,7 @@ public class HomeBoostActivity extends Activity {
             toast.setGravity(Gravity.CENTER, 0, -100);
 
             toast.setView(view);
-            toast.setDuration(0);
+            toast.setDuration(Toast.LENGTH_SHORT);
             int marginTop = 0;
             if (mScreenH >= 1920) {
                 marginTop = 150;
@@ -504,20 +504,21 @@ public class HomeBoostActivity extends Activity {
             }
 //            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
             toast.show();
-            mCdt = new CountDownTimer(2000, 1000) {
-
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    HomeBoostActivity.this.finish();
-
-                }
-            };
-            mCdt.start();
+            HomeBoostActivity.this.finish();
+//            mCdt = new CountDownTimer(2000, 1000) {
+//
+//                @Override
+//                public void onTick(long millisUntilFinished) {
+//
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    HomeBoostActivity.this.finish();
+//
+//                }
+//            };
+//            mCdt.start();
             isClean = true;
         }
 
