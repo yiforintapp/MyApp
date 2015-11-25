@@ -876,4 +876,5 @@
     <string name="intruderprotection_forbit_content">Follow us on Facebook</string>
     <string name="adv_prot_open_suc_tip_cnt">For more interesting and official news of LEO Privacy Guard, please immediately follow us on facebook.</string>
     <string name="pri_pro_btn">Follow us</string>
+     <string name="toast_getscore_text">恭喜您！您的分数增加啦</string>
 </resources>
