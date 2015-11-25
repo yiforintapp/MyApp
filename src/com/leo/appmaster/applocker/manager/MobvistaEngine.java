@@ -107,6 +107,7 @@ public class MobvistaEngine {
     
     public static synchronized MobvistaEngine getInstance(Context ctx) {
         if (sInstance == null) {
+            LeoLog.d(TAG, "MobvistaEngine first touch, init Mobvista");
             initMobvista();
             sInstance = new MobvistaEngine(ctx);
             // Do not preload all advertise when bootup.

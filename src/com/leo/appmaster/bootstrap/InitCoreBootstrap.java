@@ -122,6 +122,13 @@ public class InitCoreBootstrap extends Bootstrap {
         UIHelper.getInstance(mApp).mRandomCount = preference.getUnlockSucessRandom();
 
         PrivacyHelper.getInstance(mApp).caculateSecurityScore();
+
+        start = SystemClock.elapsedRealtime();
+        // init MobVista SDK here
+        MobvistaEngine.getInstance(mApp);
+        LeoLog.d(TAG, "MobvistaEngine init cost: " + (SystemClock.elapsedRealtime() - start));
+
+
         return true;
     }
 
