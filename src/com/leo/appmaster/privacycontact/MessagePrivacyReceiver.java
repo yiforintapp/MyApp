@@ -95,6 +95,11 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                         // 设置每次来的号码，方便在Observer的onChanage中去使用
                         PrivacyContactManager.getInstance(mContext).setLastMessageContact(contact);
                         if (contact != null) {
+                             /*4.4以上去做短信操作*/
+                            boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+                            if (!isLessLeve19) {
+                                return;
+                            }
                             // 拦截短信
                             abortBroadcast();
                             String sendTime = mSimpleDateFormate.format(System.currentTimeMillis());

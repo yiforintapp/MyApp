@@ -60,6 +60,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             PhoneSecurityManager.getInstance(mContext).securityPhoneOberserHandler();
             mLastMessage = pcm.getLastMessage();
             if (mLastMessage != null) {
+               /*4.4以上去做短信操作*/
+                boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+                if (!isLessLeve19) {
+                    return;
+                }
                 try {
                     ThreadManager.executeOnAsyncThread(new Runnable() {
 
