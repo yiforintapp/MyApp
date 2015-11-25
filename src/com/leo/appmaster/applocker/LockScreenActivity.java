@@ -108,6 +108,8 @@ import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoCircleView;
 import com.leo.appmaster.ui.LeoHomePopMenu;
+import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
@@ -161,6 +163,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LeoDoubleLinesInputDialog mDialog;
     private LEOAlarmDialog mTipDialog;
     private EditText mEtQuestion, mEtAnwser;
+    private RippleView1 mMrlGift;
     private String mLockTitle;
     // private ImageView mThemeView;
     private ImageView mAdIcon, mAdIconRedTip;
@@ -999,6 +1002,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mTtileBar.setOptionListener(this);
 
         mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
+        mMrlGift = (RippleView1) findViewById(R.id.mr_gift);
+        mMrlGift.setOnClickListener(this);
+        
         mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
         if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
             ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
@@ -1564,7 +1570,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             // startActivityForResult(intent, 0);
             // amp.setLockerScreenThemeGuide(true);
             // break;
-            case R.id.icon_ad_layout:
+            case R.id.mr_gift:
                 sLockFilterFlag = true;
                 AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
                 mAmp.setUnlocked(true);

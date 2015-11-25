@@ -210,8 +210,8 @@
                 android:background="@drawable/while_bg_blue_line"
                 android:maxWidth="90dp"
                 android:minWidth="52dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="@string/change_times_to_catch"
                 android:textColor="#2674f6"
                 android:textSize="14dp" />
