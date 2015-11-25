@@ -405,4 +405,6 @@ public class Constants {
 
     /** Swifty使用浏览器 */
     public static final String BROWSER_URL_TYPE = "1";
+    /** 判断手机是否为红米Note2 */
+    public static final String RED_MI_TWO_NAME = "Redmi Note 2";
 }

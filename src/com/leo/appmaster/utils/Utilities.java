@@ -1,11 +1,6 @@
 
 package com.leo.appmaster.utils;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -41,6 +36,11 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Utilities {
 
@@ -430,10 +430,19 @@ public final class Utilities {
                 context.startActivity(intent);
                 LeoLog.i("goFiveStar", "intent: " + intent.toURI());
             } catch (Exception e) {
-                goGpBrowser(context);
+                if (isRedMiTwo()) {
+                    goRedMiTwoBrowser(context);
+                } else {
+                    goGpBrowser(context);
+                }
+
             }
         } else {
-            goGpBrowser(context);
+            if (isRedMiTwo()) {
+                goRedMiTwoBrowser(context);
+            } else {
+                goGpBrowser(context);
+            }
         }
     }
     
@@ -448,6 +457,31 @@ public final class Utilities {
             context.startActivity(intent);
             LeoLog.i("goFiveStar", "intent: " + intent.toURI());
         } catch (Exception e) {           
+        }
+    }
+
+    /**  是否为红米Note2手机 */
+    private static boolean isRedMiTwo() {
+        if (Constants.RED_MI_TWO_NAME.equals(android.os.Build.MODEL)) {
+            return true;
+        }
+        return false;
+    }
+
+    /** 红米Note2 进入红米默认浏览器 */
+    private static void goRedMiTwoBrowser(Context context) {
+        Intent intent;
+        intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri
+                .parse(Constants.RATING_ADDRESS_BROWSER);
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setClassName("com.android.browser","com.android.browser.BrowserActivity");
+        try {
+            context.startActivity(intent);
+            LeoLog.i("goFiveStar", "intent: " + intent.toURI());
+        } catch (Exception e) {
+            goGpBrowser(context);
         }
     }
     
