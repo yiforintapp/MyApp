@@ -1,11 +1,5 @@
 package com.leo.appmaster.ui;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -16,6 +10,13 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 public class FiveStarsLayout extends FrameLayout{
 
@@ -51,6 +52,7 @@ public class FiveStarsLayout extends FrameLayout{
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        LayoutInflater.from(getContext()).inflate(R.layout.framelayout_five_stars, this, true);
         mOneStar = (ImageView) findViewById(R.id.one_star);
         mTwoStar = (ImageView) findViewById(R.id.two_star);
         mThreeStar = (ImageView) findViewById(R.id.three_star);
@@ -72,6 +74,7 @@ public class FiveStarsLayout extends FrameLayout{
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
         int height = getHeight();
+        int width = getWidth();
         if(!mHasShowed) {
             mGestureY = mGradeGesture.getY();
             mFifthStarCenterX = mFlFifthStar.getLeft() + mFlFifthStar.getWidth() / 2 - DipPixelUtil.dip2px(mContext, 7);
