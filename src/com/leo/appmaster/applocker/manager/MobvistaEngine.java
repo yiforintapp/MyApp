@@ -109,10 +109,14 @@ public class MobvistaEngine {
         if (sInstance == null) {
             initMobvista();
             sInstance = new MobvistaEngine(ctx);
+            // Do not preload all advertise when bootup.
+            // Load them only if necessary
+            /*
             if (!(AppMasterConfig.IS_FOR_MAINLAND_CHINA
                     && sInstance.mPref.getADMainlandSwticher()==0)) {
                 sInstance.preloadMobvistaAds();
             }
+            */
         }
         
         return sInstance;
