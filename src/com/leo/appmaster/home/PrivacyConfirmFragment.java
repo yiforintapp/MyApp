@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -70,9 +72,11 @@ import java.util.List;
  * Created by Jasper on 2015/10/18.
  */
 public class PrivacyConfirmFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = "PrivacyConfirmFragment";
 
     private static final String KEY_SHOW_CONTACT = "SHOW_CONTACT";
     private View mRootView;
+    private View mPanelView;
     private TextView mHeadView;
 
     private TextView mLostSummary;
@@ -215,7 +219,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mRootView = view;
 
         // AM-3143: add animation for advertise cell
-        ((ViewGroup) mRootView.findViewById(R.id.list_parent_layout)).setLayoutTransition(new LayoutTransition());
+//        ((ViewGroup) mRootView.findViewById(R.id.list_parent_layout)).setLayoutTransition(new LayoutTransition());
 
         mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
         mProcessBtn.setRippleOverlay(true);
@@ -230,16 +234,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         mHeadView = (TextView) view.findViewById(R.id.pri_con_header);
 
-        initLostLayout(view);
-        initIntruderLayout(view);
-        initWifiLayout(view);
-
-        initContactLayout(view);
-        initGradeLayout(view);
-        initFbLayout(view);
-        initSwiftyLayout(view);
-
-        loadAd(view);
+//        initLostLayout(view);
+//        initIntruderLayout(view);
+//        initWifiLayout(view);
+//
+//        initContactLayout(view);
+//        initGradeLayout(view);
+//        initFbLayout(view);
+//        initSwiftyLayout(view);
+//
+//        loadAd(view);
         mActivity.resetToolbarColor();
     }
 
@@ -328,10 +332,45 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
+        LeoLog.d(TAG, "onResume...");
 
+        if (mPanelView == null) {
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ViewStub panelViewStub = (ViewStub) mRootView.findViewById(R.id.list_parent_layout_stub);
+                    long start = SystemClock.elapsedRealtime();
+                    mPanelView = panelViewStub.inflate();
+                    LeoLog.d(TAG, "inflate cost: " + (SystemClock.elapsedRealtime() - start));
+                    initLostLayout(mPanelView);
+                    initIntruderLayout(mPanelView);
+                    initWifiLayout(mPanelView);
+
+                    initContactLayout(mPanelView);
+                    initGradeLayout(mPanelView);
+                    initFbLayout(mPanelView);
+                    initSwiftyLayout(mPanelView);
+
+                    start = SystemClock.elapsedRealtime();
+                    loadAd(mPanelView);
+                    LeoLog.d(TAG, "loadAd cost: " + (SystemClock.elapsedRealtime() - start));
+
+                    start = SystemClock.elapsedRealtime();
+                    updatePanelVisibility();
+                    LeoLog.d(TAG, "updatepanel cost: " + (SystemClock.elapsedRealtime() - start));
+                }
+            }, 800);
+        } else {
+            updatePanelVisibility();
+        }
+
+    }
+
+    private void updatePanelVisibility() {
+        View panelView = mPanelView;
         IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         if (!ism.getIsIntruderSecurityAvailable()) {
-            View include = mRootView.findViewById(R.id.intruder_security);
+            View include = panelView.findViewById(R.id.intruder_security);
             include.setVisibility(View.GONE);
         } else if (ism.getIntruderMode()) {
             mIntruderBtnLt.setVisibility(View.GONE);
@@ -359,7 +398,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mHeadView.setText(R.string.pri_pro_summary_not_confirm);
         }
 
-        View include = mRootView.findViewById(R.id.wifi_security);
+        View include = panelView.findViewById(R.id.wifi_security);
         WifiSecurityManager wsm = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         boolean isScnnedEver = wsm.getLastScanState();
         if (wsm.getWifiState() == WifiSecurityManager.NO_WIFI) {
@@ -391,7 +430,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mWifiBtnDiv.setVisibility(View.VISIBLE);
             }
         }
-
     }
 
     private void initContactLayout(View view) {
@@ -822,7 +860,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             include.setVisibility(View.GONE);
 
             showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
-                    mHighFourStar, mHighFiveStar ,mHighFiveEmptyStar, mHighGradeGesture);
+                    mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
 
         } else {
 
@@ -847,7 +885,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             include.setVisibility(View.VISIBLE);
 
             showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar,
-                    mFiveStar ,mFiveEmptyStar, mGradeGesture);
+                    mFiveStar, mFiveEmptyStar, mGradeGesture);
         }
 
     }
@@ -1038,7 +1076,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mLostBtnLt == v) {
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "theft_enable");
             Intent intent = new Intent(getActivity(), PhoneSecurityGuideActivity.class);
-            intent.putExtra(Constants.EXTRA_IS_FROM_SCAN,true);
+            intent.putExtra(Constants.EXTRA_IS_FROM_SCAN, true);
             startActivity(intent);
         } else if (mGradeBtnLt == v) { // 五星好评
             lockManager.filterSelfOneMinites();

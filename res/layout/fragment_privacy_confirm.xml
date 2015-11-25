@@ -46,63 +46,19 @@
                 android:layout_alignParentBottom="true"
                 android:background="@color/c4" />
 
-            <LinearLayout
-                android:id="@+id/list_parent_layout"
+            <View
+                android:background="@color/pri_pro_list_bg"
+                android:layout_below="@id/pri_con_header"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <ViewStub
+                android:id="@+id/list_parent_layout_stub"
+                android:layout="@layout/pri_con_list_stub"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/pri_con_header"
-                android:background="@color/pri_pro_list_bg"
-                android:orientation="vertical"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
-                
-                <!-- 广告 -->
-                <include
-                    android:id="@+id/advertise_security"
-                    layout="@layout/pri_confirm_ad_item"
-                    android:visibility="gone" />
-
-                <!-- 五星好评100分 -->
-                <include
-                    android:id="@+id/grade_high_security"
-                    layout="@layout/pri_confirm_grade_item" />
-
-                <!-- 手机防盗 -->
-                <include
-                    android:id="@+id/lost_security"
-                    layout="@layout/pri_confirm_lost_item" />
-
-                <!-- 隐私防护 -->
-                <include
-                    android:id="@+id/intruder_security"
-                    layout="@layout/pri_confirm_intruder_item" />
-
-                <include
-                    android:id="@+id/contact_security"
-                    layout="@layout/pri_confirm_contact_item" />
-
-                <!-- wifi安全 -->
-                <include
-                    android:id="@+id/wifi_security"
-                    layout="@layout/pri_confirm_wifi_item" />
-
-                <!-- 五星好评 -->
-                <include
-                    android:id="@+id/grade_security"
-                    layout="@layout/pri_confirm_grade_item" />
-
-                <!-- 跳转Facebook -->
-                <include
-                    android:id="@+id/fb_security"
-                    layout="@layout/pri_confirm_fb_item" />
-
-                <!-- Swifty -->
-                <include
-                    android:id="@+id/swifty_security"
-                    layout="@layout/pri_confirm_swifty_item" />
-
-            </LinearLayout>
-
+                android:background="@color/pri_pro_list_bg"/>
 
         </RelativeLayout>
     </ScrollView>
