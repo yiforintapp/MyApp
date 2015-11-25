@@ -25,7 +25,7 @@ public class HomeScanningController {
 
     private static final int DURATION_ROTATE = 400;
 
-    private static final int UP_LIMIT_APP = 2000;
+    private static final int UP_LIMIT_APP = 3000;
     private static final int UP_LIMIT_PIC = 5000;
     private static final int UP_LIMIT_PIC_PROCESSED = 3000;
     private static final int UP_LIMIT_VID = 2000;

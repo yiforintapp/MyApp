@@ -1,5 +1,6 @@
 package com.leo.appmaster.home;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import android.app.Activity;
@@ -72,11 +73,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private ImageView mPicCountIv;
     private ImageView mVidCountIv;
 
-    private Animator mAppAnimator;
-    private Animator mPhotoAnimator;
-    private Animator mVideoAnimator;
-    private Animator mPrivacyAnimator;
-
     private HomeActivity mActivity;
 
     private List<AppItemInfo> mAppList;
@@ -88,7 +84,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private boolean mVideoScanFinish;
 
     private boolean mScanning;
-    private int mScanningDuration;
 
     private PrivacyHelper mPrivacyHelper;
     private HomeScanningController mController;
@@ -116,8 +111,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         mCancelTv.setOnClickListener(this);
         mProcessTv.setOnClickListener(this);
-//        mProcessBtn.setOnRippleCompleteListener(this);
-//        mCancelBtn.setOnRippleCompleteListener(this);
 
         mNewAppIv = (ScanningImageView) view.findViewById(R.id.scan_new_app_iv);
         mNewPhotoIv = (ScanningImageView) view.findViewById(R.id.scan_media_iv);
@@ -154,20 +147,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         super.onDetach();
         mController.detachController();
     }
-//    @Override
-//    public void onRippleComplete(RippleView rippleView) {
-//        switch (rippleView.getId()) {
-//            case R.id.scan_cancel_rv:
-//                mScanning = false;
-//                mActivity.onExitScanning();
-//                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "cancel");
-//                break;
-//            case R.id.scan_process_rv:
-//                mActivity.startProcess();
-//                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "instant");
-//                break;
-//        }
-//    }
 
     private void startScanController() {
         if (mScanning) return;
@@ -177,32 +156,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mProcessBtn.setVisibility(View.GONE);
         LeoLog.i(TAG, "start to scaning.");
         mController.startScanning();
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                long start = SystemClock.elapsedRealtime();
-                mAppList = lm.getNewAppList();
-                mAppScanFinish = true;
-                int appScore = lm.getSecurityScore(mAppList);
-                mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, appScore);
-                LeoLog.i(TAG, "appList, cost: " + (SystemClock.elapsedRealtime() - start));
-            }
-        });
-        loadContacts();
-    }
-
-    private void loadContacts() {
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                long start = SystemClock.elapsedRealtime();
-                PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-                List<ContactBean> contactBeans = pcm.getFrequentContacts();
-                mActivity.setContactList(contactBeans);
-                LeoLog.i(TAG, "contactBeans, cost: " + (SystemClock.elapsedRealtime() - start));
-            }
-        });
+        ThreadManager.executeOnAsyncThread(mAppRunnable);
+        ThreadManager.executeOnSubThread(mContactRunnable);
     }
 
     private void onScannigFinish(final List<AppItemInfo> appList, final List<PhotoItem> photoItems,
@@ -225,31 +180,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     public void onAnimatorEnd(ScanningImageView imageView) {
         updateUIOnAnimEnd(imageView);
         if (imageView == mNewAppIv) {
-            ThreadManager.executeOnAsyncThread(new Runnable() {
-                @Override
-                public void run() {
-                    long start = SystemClock.elapsedRealtime();
-                    PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                    mPhotoList = pdm.getAddPic();
-                    mPhotoScanFinish = true;
-                    mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.size());
-                    LeoLog.i(TAG, "photoItems, cost: " + (SystemClock.elapsedRealtime() - start));
-                }
-            });
+            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
         } else if (imageView == mNewPhotoIv) {
-            ThreadManager.executeOnAsyncThread(new Runnable() {
-                @Override
-                public void run() {
-                    long start = SystemClock.elapsedRealtime();
-                    PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                    mVideoList = pdm.getAddVid();
-                    mVideoScanFinish = true;
-                    int vidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
-                    LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
-
-                    mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + vidScore);
-                }
-            });
+            ThreadManager.executeOnAsyncThread(mVidRunnable);
         }
     }
 
@@ -348,6 +281,85 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
 
         return false;
+    }
+
+    private WeakRunnable mAppRunnable = new WeakRunnable(this, new Runnable() {
+        @Override
+        public void run() {
+            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            long start = SystemClock.elapsedRealtime();
+            mAppList = lm.getNewAppList();
+            mAppScanFinish = true;
+            int appScore = lm.getSecurityScore(mAppList);
+            mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, appScore);
+            LeoLog.i(TAG, "appList, cost: " + (SystemClock.elapsedRealtime() - start));
+        }
+    });
+
+    private WeakRunnable mPhotoRunnable = new WeakRunnable(this, new Runnable() {
+        @Override
+        public void run() {
+            long start = SystemClock.elapsedRealtime();
+            PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+            mPhotoList = pdm.getAddPic();
+            mPhotoScanFinish = true;
+            mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.size());
+            LeoLog.i(TAG, "photoItems, cost: " + (SystemClock.elapsedRealtime() - start));
+        }
+    });
+
+    private WeakRunnable mVidRunnable = new WeakRunnable(this, new Runnable() {
+        @Override
+        public void run() {
+            long start = SystemClock.elapsedRealtime();
+            PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+            mVideoList = pdm.getAddVid();
+            mVideoScanFinish = true;
+            int vidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
+            LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
+
+            mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + vidScore);
+        }
+    });
+
+    private WeakRunnable mContactRunnable = new WeakRunnable(this, new Runnable() {
+        @Override
+        public void run() {
+            long start = SystemClock.elapsedRealtime();
+            PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+            List<ContactBean> contactBeans = pcm.getFrequentContacts();
+            mActivity.setContactList(contactBeans);
+            LeoLog.i(TAG, "contactBeans, cost: " + (SystemClock.elapsedRealtime() - start));
+        }
+    });
+
+    private static class WeakRunnable implements Runnable {
+        WeakReference<HomeScanningFragment> weakReference;
+        Runnable runnable;
+
+        public WeakRunnable(HomeScanningFragment fragment, Runnable runnable) {
+            weakReference = new WeakReference<HomeScanningFragment>(fragment);
+            this.runnable = runnable;
+        }
+
+        @Override
+        public void run() {
+            HomeScanningFragment fragment = weakReference.get();
+            if (fragment == null) {
+                LeoLog.d(TAG, "before run, fragment is null.");
+                return;
+            }
+
+            if (fragment.isRemoving() || fragment.isDetached()) {
+                LeoLog.d(TAG, "before run, fragment is removing...");
+                fragment.mAppList = null;
+                fragment.mPhotoList = null;
+                fragment.mVideoList = null;
+                return;
+            }
+
+            runnable.run();
+        }
     }
 
 }
