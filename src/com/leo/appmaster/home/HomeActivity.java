@@ -15,6 +15,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,6 +50,7 @@ import com.leo.appmaster.activity.AboutActivity;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.IntruderPhotoTable;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -92,16 +95,15 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private float mDrawerOffset;
     private List<MenuItem> mMenuItems;
     private MenuAdapter mMenuAdapter;
-
+    private boolean mHasRequestCamera = false;
 //    private ImageView mAdIcon;
-
     //    private MobvistaAdWall mWallAd;
     private Handler mHandler = new Handler();
-
+    private PreferenceTable mPt = PreferenceTable.getInstance();
     public static int mHomeAdSwitchOpen = -1;
 
     private IswipUpdateTipDialog mIswipDialog;
-
+    private IntrudeSecurityManager mISManger;
     private boolean mShowIswipeFromNotfi;
 
     private HomeMoreFragment mMoreFragment;
@@ -152,8 +154,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         setContentView(R.layout.activity_home_main);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         mPrivacyHelper = PrivacyHelper.getInstance(this);
+        mISManger =  (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         initUI();
 //        initMobvista();
+        requestCamera();
+        
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         recordEnterHomeTimes();
@@ -170,6 +175,22 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         registerLocaleChange();
 
         openAdvanceProtectDialogHandler();
+    }
+
+    private void requestCamera() {
+        if((!mPt.getBoolean(PrefConst.KEY_HAS_REQUEST_CAMERA, false) && (mISManger.getIsIntruderSecurityAvailable()))) {
+            Camera camera = null;
+            try{
+                camera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
+            }catch(Throwable e) {
+                
+            }finally{
+                if(camera!= null){
+                    camera.release();
+                }
+            }
+        }
+        mPt.putBoolean(PrefConst.KEY_HAS_REQUEST_CAMERA, true);
     }
 
     @Override
