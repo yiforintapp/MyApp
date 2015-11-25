@@ -196,8 +196,8 @@ public class DetectThreadCompat extends Thread {
         }
     }
     
-    private ProcessAdj checkSelfForeground(ProcessAdj needToListenAdj) {
-        if (!mDetector.isOOMScoreMode()/* || needToListenAdj != null*/) return needToListenAdj;
+    private ProcessAdj checkSelfForeground(ProcessDetector detector, ProcessAdj needToListenAdj) {
+        if (!detector.isOOMScoreMode()) return needToListenAdj;
 
         AppMasterApplication context = AppMasterApplication.getInstance();
         if (needToListenAdj == null && context.isForeground()) {
@@ -274,7 +274,7 @@ public class DetectThreadCompat extends Thread {
         // oom_adj为0的列表
         ProcessAdj needToListenAdj = detector.getForegroundProcess();
 
-        needToListenAdj = checkSelfForeground(needToListenAdj);
+        needToListenAdj = checkSelfForeground(detector, needToListenAdj);
         if (needToListenAdj == null) return null;
         
         if (filteredLockList.isEmpty()) {
