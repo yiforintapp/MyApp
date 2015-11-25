@@ -43,7 +43,6 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.utils.LeoLog;
 
 
 /**

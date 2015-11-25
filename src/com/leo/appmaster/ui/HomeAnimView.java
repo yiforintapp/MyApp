@@ -34,7 +34,6 @@ public class HomeAnimView extends View {
     private boolean mClickDownOnShield;
 
     private int mSecurityScore;
-    private int mScanningPercent;
     private PrivacyHelper mPrivacyHelper;
 
     private boolean mShowProcessLoading;
@@ -242,7 +241,6 @@ public class HomeAnimView extends View {
     }
 
     public void setScanningPercent(int scanningPercent) {
-        mScanningPercent = scanningPercent;
         mShieldLayer.setScanningPercent(scanningPercent);
     }
 

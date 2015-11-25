@@ -1,25 +1,16 @@
 package com.leo.appmaster.ui;
 
 import android.content.Context;
-import android.filterfw.core.FinalPort;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.Xfermode;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 
 public class LockImageView extends ImageView {

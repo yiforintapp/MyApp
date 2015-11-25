@@ -1,6 +1,5 @@
 package com.leo.appmaster.ui;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -9,9 +8,7 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
 import android.util.Pair;
-import android.view.WindowManager;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -34,7 +31,6 @@ public class HomeAnimBgLayer extends AnimLayer {
     private Paint mProgressPaint;
     private PrivacyHelper mPrivacyHelper;
 
-    private int mSecurityScore;
     private Pair<Integer, Integer> mColorPair;
 
     private Rect mProgressBounds;
@@ -58,7 +54,6 @@ public class HomeAnimBgLayer extends AnimLayer {
         super(view);
 
         mProgressBounds = new Rect();
-        Context context = view.getContext();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
 
@@ -183,7 +178,6 @@ public class HomeAnimBgLayer extends AnimLayer {
      * @param securityScore
      */
     public void setSecurityScore(int securityScore) {
-        mSecurityScore = securityScore;
         Pair<Integer, Integer> pair = mPrivacyHelper.getColorPairByScore(securityScore);
 
         int fromUp = pair.first;

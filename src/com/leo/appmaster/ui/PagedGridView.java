@@ -3,10 +3,6 @@ package com.leo.appmaster.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.AppInfo;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Parcelable;
@@ -19,9 +15,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.model.AppInfo;
 
 public class PagedGridView extends LinearLayout {
 
@@ -178,11 +177,8 @@ public class PagedGridView extends LinearLayout {
 	private class GridviewAdapter extends BaseAdapter {
 		List<AppInfo> mList;
 
-		private int mPageIndex;
-
 		public GridviewAdapter(List<AppInfo> list, int page) {
 			super();
-			mPageIndex = page;
 			initData(list);
 		}
 

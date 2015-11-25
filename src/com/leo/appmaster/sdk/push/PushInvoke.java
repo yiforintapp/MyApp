@@ -14,7 +14,6 @@ import com.leo.appmaster.bootstrap.CheckNewBootstrap;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;

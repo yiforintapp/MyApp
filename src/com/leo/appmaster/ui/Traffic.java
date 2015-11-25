@@ -15,7 +15,6 @@ import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.push.PushNotification;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
@@ -62,7 +61,6 @@ public class Traffic {
 
     public void checkTraffic() {
         int type = PreferenceTable.getInstance().getInt(TRAFFICNOTIFICATION, 0);
-        int nowMonth = getCurrentTime()[1];
         int nowDay = getCurrentTime()[2];
 
         if (type == NON_SAVE) {

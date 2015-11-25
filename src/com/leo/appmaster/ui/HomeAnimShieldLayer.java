@@ -1,12 +1,7 @@
 package com.leo.appmaster.ui;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -14,12 +9,8 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
-import android.view.View;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -101,19 +92,15 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     private int mPercentBaseY;
 
-    private PrivacyHelper mPrivacyHelper;
-
     private int mScoreSize;
     private int mStatusSize;
 
     private boolean mTouchHit;
     private int mScanningPercent = -1;
 
-    private boolean mProcessingPrivacy;
     private int mShieldOffsetY;
 
     private BitmapDrawable mWaveDrawable;
-    private Rect mWaveBounds;
     // 盾牌周围的波浪，0 ~ 1
     private float mFirstWaveRatio;
     private float mSecondWaveRatio;
@@ -152,8 +139,6 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
         mShieldBgCircleMargin = res.getDimensionPixelSize(R.dimen.home_shield_bg_circle_margin);
 
-        mPrivacyHelper = PrivacyHelper.getInstance(view.getContext());
-
         mScoreSize = res.getDimensionPixelSize(R.dimen.home_shield_score);
         mStatusSize = res.getDimensionPixelSize(R.dimen.home_shield_status);
         mTextPaint = new Paint();
@@ -162,7 +147,6 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mPrivacyStatus = res.getString(R.string.home_privacy_status);
         mMaxOffseteY = res.getDimensionPixelSize(R.dimen.scan_shield_offset);
 
-        mWaveBounds = new Rect();
         mWaveMatrix = new Matrix();
 
         mWhiteColor = res.getColor(R.color.white);

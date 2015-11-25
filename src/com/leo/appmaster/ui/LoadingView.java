@@ -14,7 +14,6 @@ import com.leo.appmaster.utils.LeoLog;
 public class LoadingView extends View {
 
     private LoadingLayer loadingLayer;
-    private HomeAnimLoadingLayer mLoadingLayer;
 
     public LoadingView(Context context) {
         super(context);

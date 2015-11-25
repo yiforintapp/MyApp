@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -25,7 +24,6 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.utils.LeoLog;
 
 public class SlidingUpPanelLayout extends ViewGroup {
     public static interface TapRectFunction {
@@ -33,8 +31,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
     }
 
     private TapRectFunction mTapRectFunction;
-
-    private static final String TAG = SlidingUpPanelLayout.class.getSimpleName();
 
     /**
      * Default peeking out panel height
@@ -95,10 +91,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     private static final int DEFAULT_PARALAX_OFFSET = 0;
 
-    /**
-     * The paint used to dim the main layout when sliding
-     */
-    private final Paint mCoveredFadePaint = new Paint();
 
     /**
      * Drawable used to draw the shadow between panes.
@@ -224,10 +216,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
      */
     private boolean mFirstLayout = true;
 
-    private final Rect mTmpRect = new Rect();
-
     private GestureDetector mGesture;
-    private Rect mTapRect;
     private boolean mSingleTapUp;
 
     /**

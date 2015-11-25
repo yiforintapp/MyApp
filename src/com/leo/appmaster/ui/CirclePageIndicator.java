@@ -17,8 +17,9 @@
 
 package com.leo.appmaster.ui;
 
-import com.leo.appmaster.R;
-
+import static android.graphics.Paint.ANTI_ALIAS_FLAG;
+import static android.widget.LinearLayout.HORIZONTAL;
+import static android.widget.LinearLayout.VERTICAL;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -29,17 +30,11 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 
-import static android.graphics.Paint.ANTI_ALIAS_FLAG;
-import static android.widget.LinearLayout.HORIZONTAL;
-import static android.widget.LinearLayout.VERTICAL;
+import com.leo.appmaster.R;
 
 /**
  * Draws circles (one for each view). The current view position is filled and
@@ -47,7 +42,6 @@ import static android.widget.LinearLayout.VERTICAL;
  */
 @SuppressLint("ClickableViewAccessibility")
 public class CirclePageIndicator extends View implements PagerIndicator {
-    private static final int INVALID_POINTER = -1;
 
     private float mRadius;
     private final Paint mPaintPageFill = new Paint(ANTI_ALIAS_FLAG);
@@ -63,10 +57,6 @@ public class CirclePageIndicator extends View implements PagerIndicator {
     private boolean mCentered;
     private boolean mSnap;
 
-    private int mTouchSlop;
-    private float mLastMotionX = -1;
-    private int mActivePointerId = INVALID_POINTER;
-    private boolean mIsDragging;
 
     public CirclePageIndicator(Context context) {
         this(context, null);
@@ -124,8 +114,6 @@ public class CirclePageIndicator extends View implements PagerIndicator {
 
         a.recycle();
 
-        final ViewConfiguration configuration = ViewConfiguration.get(context);
-        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
     }
 
     public void setCentered(boolean centered) {

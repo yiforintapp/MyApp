@@ -2,13 +2,11 @@ package com.leo.appmaster.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.utils.LeoLog;
 
 /**
  * Created by Jasper on 2015/10/15.

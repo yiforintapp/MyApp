@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import com.leo.appmaster.R;
@@ -21,7 +20,6 @@ public class LoadingLayer extends AnimLayer {
 
     private int mLoadingSize;
     private Rect mLoadingBounds;
-    private int mBaseLine;
 
     private int mRotateAngle;
 
@@ -66,9 +64,6 @@ public class LoadingLayer extends AnimLayer {
         int iconH = getHeight();
 
 //        int iconTop = (int) (((float) iconH) * 0.6f);
-
-        int iconTop = 0;
-        int iconL = 0;
 
 //        int iconW = mLockIcon.getIntrinsicWidth();
 //        int iconH = mLockIcon.getIntrinsicHeight();

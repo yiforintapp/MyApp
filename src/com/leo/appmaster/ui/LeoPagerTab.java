@@ -48,7 +48,6 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
     }
 
     private Runnable mTabSelector;
-    private boolean mIsRedTip;
     private final OnClickListener mTabClickListener = new OnClickListener() {
         public void onClick(View view) {
             TabView tabView = (TabView) view;

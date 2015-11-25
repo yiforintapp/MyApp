@@ -10,11 +10,6 @@ import android.widget.ScrollView;
  * Created by Jasper on 2015/10/16.
  */
 public class AdapterScrollView extends ScrollView {
-    private float mLastY;
-    private float mCurrY;
-    private float mDy;
-    private float mMovedDisY;
-    private float mCurrMovedDisY;
 
     public AdapterScrollView(Context context) {
         super(context);

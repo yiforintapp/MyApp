@@ -1,5 +1,7 @@
 package com.leo.appmaster.ui;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
@@ -13,11 +15,8 @@ import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.WrapperListAdapter;
-
-import com.leo.appmaster.utils.LeoLog;
-
-import java.util.ArrayList;
 
 /**
  * A {@link GridView} that supports adding header rows in a
@@ -25,7 +24,6 @@ import java.util.ArrayList;
  * See {@link HeaderGridView#addHeaderView(View, Object, boolean)}
  */
 public class HeaderGridView extends GridView {
-    private static final String TAG = "HeaderGridView";
 
     /**
      * A class that represents a fixed view in a list, for example a header at the top

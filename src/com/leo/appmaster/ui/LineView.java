@@ -7,10 +7,8 @@ import java.util.Collections;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.PathEffect;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Region;
@@ -21,7 +19,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
@@ -40,13 +37,11 @@ public class LineView extends View {
     private ArrayList<String> bottomTextList = new ArrayList<String>();
 
     private ArrayList<ArrayList<Integer>> dataLists;
-    private ArrayList<Integer> dataList;
 
     private ArrayList<Integer> xCoordinateList = new ArrayList<Integer>();
     private ArrayList<Integer> yCoordinateList = new ArrayList<Integer>();
 
     private ArrayList<ArrayList<Dot>> drawDotLists = new ArrayList<ArrayList<Dot>>();
-    private ArrayList<Dot> drawDotList = new ArrayList<Dot>();
 
     private Paint bottomTextPaint = new Paint();
     private Paint TodayTextPaint = new Paint();
@@ -85,7 +80,6 @@ public class LineView extends View {
     public static final int SHOW_POPUPS_All = 1;
     public static final int SHOW_POPUPS_MAXMIN_ONLY = 2;
     public static final int SHOW_POPUPS_NONE = 3;
-    private static final String TAG = "LineView";
 
     private int showPopupType = SHOW_POPUPS_NONE;
 
@@ -93,9 +87,6 @@ public class LineView extends View {
         this.showPopupType = popupType;
     }
 
-    // 점선표시
-    private Boolean drawDotLine = false;
-    // 라인컬러
     // private String[] colorArray = {
     // "#2980b9", "#e74c3c", "#e74c3c"
     // };
@@ -124,8 +115,6 @@ public class LineView extends View {
     // private int[] popupColorArray = {
     // R.drawable.popup_blue, R.drawable.popup_red, R.drawable.popup_green
     // };
-    private static long MonthTotalTraffic = 0;
-    private AppMasterPreference line_preferences;
 
     // onDraw optimisations
     private final Point tmpPoint = new Point();
@@ -137,7 +126,6 @@ public class LineView extends View {
     public BackUpCallBack mCallBack;
 
     public void setDrawDotLine(Boolean drawDotLine, BackUpCallBack backUpCallBack) {
-        this.drawDotLine = drawDotLine;
         this.mCallBack = backUpCallBack;
     }
 
@@ -201,7 +189,6 @@ public class LineView extends View {
      * @param bottomTextList The String ArrayList in the bottom.
      */
     public void setBottomTextList(ArrayList<String> bottomTextList) {
-        this.dataList = null;
         this.bottomTextList = bottomTextList;
 
         Rect r = new Rect();
@@ -656,10 +643,6 @@ public class LineView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(ManagerFlowUtils.dip2px(getContext(), 1f));
         paint.setColor(BACKGROUND_LINE_COLOR);
-        PathEffect effects = new DashPathEffect(
-                new float[] {
-                        10, 5, 10, 5
-                }, 1);
 
         // draw vertical lines
         for (int i = 0; i < xCoordinateList.size(); i++) {

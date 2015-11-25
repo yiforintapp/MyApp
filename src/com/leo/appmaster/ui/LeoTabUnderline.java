@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.ui;
 
-import com.leo.appmaster.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -11,13 +9,11 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
+
+import com.leo.appmaster.R;
 
 /**
  * Draws a line for each page. The current page line is colored differently than

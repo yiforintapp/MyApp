@@ -29,7 +29,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
     private ImageView mTvLogo;
     private ImageView mHelpSetting;
     private RelativeLayout mHelpSettingParent;
-    private View mLayoutBackView, mLayoutSpiner;
+    private View  mLayoutSpiner;
     private View viewOldLeft, viewNewLeft;
     private View mNewClickArea;
     private TextView mNewText;
@@ -54,7 +54,6 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
         inflater.inflate(R.layout.common_title_bar, this, true);
 
 
-        mLayoutBackView = findViewById(R.id.layout_title_back);
         mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
         newBackView = findViewById(R.id.layout_title_back_arraow);
         newBackView.setOnClickListener(this);

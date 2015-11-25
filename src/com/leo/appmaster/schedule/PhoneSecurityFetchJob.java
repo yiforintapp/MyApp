@@ -1,5 +1,8 @@
 package com.leo.appmaster.schedule;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 
 import com.android.volley.VolleyError;
@@ -9,10 +12,6 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
-import com.leo.appmaster.utils.Utilities;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by runlee on 15-10-23.

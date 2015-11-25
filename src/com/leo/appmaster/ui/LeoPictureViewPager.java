@@ -176,7 +176,6 @@ public class LeoPictureViewPager extends ViewGroup {
 
     private boolean mIsBeingDragged;
     private boolean mIsUnableToDrag;
-    private boolean mIgnoreGutter;
     private int mDefaultGutterSize;
     private int mGutterSize;
     private int mTouchSlop;
@@ -219,7 +218,6 @@ public class LeoPictureViewPager extends ViewGroup {
     private EdgeEffectCompat mRightEdge;
 
     private boolean mFirstLayout = true;
-    private boolean mNeedCalculatePageOffsets = false;
     private boolean mCalledSuper;
     private int mDecorChildCount;
 
@@ -1223,7 +1221,6 @@ public class LeoPictureViewPager extends ViewGroup {
             offset += ii.widthFactor + marginOffset;
         }
 
-        mNeedCalculatePageOffsets = false;
     }
 
     /**

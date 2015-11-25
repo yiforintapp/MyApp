@@ -1,20 +1,16 @@
 package com.leo.appmaster.ui;
 
-import com.leo.appmaster.R;
-
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.os.SystemClock;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.MeasureSpec;
 import android.widget.RelativeLayout;
+
+import com.leo.appmaster.R;
 
 
 /**

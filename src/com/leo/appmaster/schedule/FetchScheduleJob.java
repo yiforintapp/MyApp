@@ -1,21 +1,19 @@
 package com.leo.appmaster.schedule;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * 拉取业务基类
@@ -28,8 +26,6 @@ import org.json.JSONObject;
  */
 public abstract class FetchScheduleJob extends ScheduleJob {
     public static final String KEY_JOB = "key_job";
-
-    private static final String KEY_RETRY_COUNT = "key_retry_count";
 
     /**
      * 默认拉取间隔，12小时

@@ -1,7 +1,5 @@
 package com.leo.appmaster.ui;
 
-import com.leo.appmaster.utils.LeoLog;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class CirCleDongHua extends View {
-    private Context mContext;
     private Paint CirPanint;
     private int mBanjing;
     private int mAlpha;
@@ -27,18 +24,16 @@ public class CirCleDongHua extends View {
     }
 
     private void init(Context context) {
-        mContext = context;
-
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        
         CirPanint = new Paint();
+        
         CirPanint.setStyle(Paint.Style.STROKE);
         CirPanint.setColor(Color.WHITE);
         CirPanint.setAntiAlias(true);
         CirPanint.setAlpha(mAlpha);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
         
         canvas.drawCircle(Yuan_x, Yuan_y, mBanjing, CirPanint);
         

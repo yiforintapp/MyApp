@@ -60,8 +60,6 @@ public class MulticolorRoundProgressBar extends RoundProgressBar {
          * 画圆弧 ，画圆环的进度
          */
         int mOneColor = Color.parseColor(colorArray[0]);
-        int mTwoColor = Color.parseColor(colorArray[1]);
-        int mThreeColor = Color.parseColor(colorArray[2]);
         int mFourColor = Color.parseColor(colorArray[3]);
 
         Paint mPaint = new Paint();

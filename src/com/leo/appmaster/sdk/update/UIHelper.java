@@ -27,7 +27,6 @@ import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
@@ -53,7 +52,6 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private UpdateManager mManager = null;
     private OnStateChangeListener listener = null;
 
-    private UpdateManager mUpdateManager;
     // private static LeoTracker mTracker;
 
     private NotificationManager nm = null;
@@ -651,16 +649,6 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 sendDownloadFailedNotification();
                 break;
         }
-    }
-
-    private void relaunchHome() {
-        LeoLog.d(TAG, "relaunchHome called");
-        Intent i = new Intent();
-        i.setClass(mContext, HomeActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        mContext.startActivity(i);
     }
 
     private void relaunchActivity(int type, int param, boolean needRecord,

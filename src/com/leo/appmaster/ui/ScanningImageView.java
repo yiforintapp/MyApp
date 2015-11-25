@@ -23,7 +23,6 @@ public class ScanningImageView extends ImageView {
 
     private float mInnerDrawableScale = INNER_SCALE;
 
-    private int mSize;
     private float mCenterX;
     private float mCenterY;
 
@@ -34,7 +33,6 @@ public class ScanningImageView extends ImageView {
         super(context, attrs);
 
         mRotateDrawable = context.getResources().getDrawable(R.drawable.ic_scan_rotate);
-        mSize = context.getResources().getDimensionPixelSize(R.dimen.home_scanning_icon);
 
         mCircleDrawable = context.getResources().getDrawable(R.drawable.ic_scanning_circle);
     }

@@ -8,8 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-import junit.framework.Assert;
-
 public class MaskImageView extends ImageView {
     public static final String TAG = "MaskImageView";
     private Handler hander;

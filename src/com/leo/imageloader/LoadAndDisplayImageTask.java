@@ -16,31 +16,30 @@
 
 package com.leo.imageloader;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
+
 import android.graphics.Bitmap;
 import android.os.Handler;
-import android.util.Log;
 
 import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.FailReason.FailType;
 import com.leo.imageloader.core.ImageAware;
 import com.leo.imageloader.core.ImageDecoder;
 import com.leo.imageloader.core.ImageDecodingInfo;
 import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageDownloader.Scheme;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageLoadingProgressListener;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.core.ImageSize;
 import com.leo.imageloader.core.LoadedFrom;
 import com.leo.imageloader.core.ViewScaleType;
-import com.leo.imageloader.core.FailReason.FailType;
-import com.leo.imageloader.core.ImageDownloader.Scheme;
 import com.leo.imageloader.utils.IoUtils;
 import com.leo.imageloader.utils.L;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Presents load'n'display image task. Used to load image from Internet or file

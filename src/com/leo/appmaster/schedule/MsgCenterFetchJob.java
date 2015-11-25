@@ -1,5 +1,21 @@
 package com.leo.appmaster.schedule;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -12,32 +28,15 @@ import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
-import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 消息中心抓取任务
@@ -45,7 +44,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MsgCenterFetchJob extends FetchScheduleJob {
     private static final String TAG = "MsgCenterFetchJob";
-    private static final boolean DBG = true;
 
     private static final int REQUEST_FAIL = -1;
 

@@ -9,7 +9,6 @@ package com.leo.appmaster.sdk;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
