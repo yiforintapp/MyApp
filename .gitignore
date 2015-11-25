@@ -1,4 +1,3 @@
-/libs
 /gen
 /bin
 /project.properties
@@ -10,9 +9,9 @@
 /build.gradle
 /gradlew
 /gradlew.bat
-*.iml
+/*.iml
 /local.properties
 /build
-build.prop
-.DS_Store
+/build.prop
+/.DS_Store
 /out
