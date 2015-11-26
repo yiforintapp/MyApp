@@ -115,7 +115,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
     }
 
     @Override
-    protected void onIgnoreClick() {
+    protected void onIgnoreClick(boolean direct) {
         mActivity.onIgnoreClick(0, MgrContext.MGR_APPLOCKER);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "app_skip_cnts");
     }
