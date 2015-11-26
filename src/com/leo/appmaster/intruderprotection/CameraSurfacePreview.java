@@ -100,7 +100,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
             int tempFitestRateIndex = 0;
             for (int j = 0; j < indexsWhichWidthLessThan1280.size(); j++) {
                 float rate = (float)Sizes.get(indexsWhichWidthLessThan1280.get(j)).width / (float)Sizes.get(indexsWhichWidthLessThan1280.get(j)).height;
-                LeoLog.i("poha", "1280以下： " +indexsWhichWidthLessThan1280.get(j)+ "   height :" + Sizes.get(indexsWhichWidthLessThan1280.get(j)).height + "  width : "+ Sizes.get(indexsWhichWidthLessThan1280.get(j)).width +"rate = "+rate);
+                LeoLog.i("poha", "1280以下： " +indexsWhichWidthLessThan1280.get(j)+ "   height :" + Sizes.get(indexsWhichWidthLessThan1280.get(j)).height + "  width : "+ Sizes.get(indexsWhichWidthLessThan1280.get(j)).width +"rate = "+rate +"HWRate = "+HWRate);
                 if (Math.abs(rate - HWRate) < Math.abs(((float)Sizes.get(tempFitestRateIndex).width / (float)Sizes.get(tempFitestRateIndex).height) - HWRate)) {
                     tempFitestRateIndex = indexsWhichWidthLessThan1280.get(j);
                 }
