@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -97,20 +98,12 @@ public class PrivacyContactInputActivity extends BaseActivity {
                     PrivacyContactManager pcm = PrivacyContactManager
                             .getInstance(PrivacyContactInputActivity.this);
                     ArrayList<ContactBean> contacts = pcm.getPrivateContacts();
-                    // 隐私联系人去重
+
+                    /*隐私联系人去重*/
                     String tempNumber =
                             PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
-                    boolean flagContact = false;
-                    if (contacts != null && contacts.size() != 0
-                            && mPhoneNumber != null && !"".equals(mPhoneNumber)) {
-                        for (ContactBean contactBean : contacts) {
-                            flagContact =
-                                    contactBean.getContactNumber().contains(tempNumber);
-                            if (flagContact) {
-                                break;
-                            }
-                        }
-                    }
+
+                    boolean flagContact = PrivacyContactUtils.pryContRemovSame(mPhoneNumber);
                     if (!flagContact) {
                         ContactBean contact = new ContactBean();
                         contact.setContactName(mPhoneName);
@@ -135,15 +128,11 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             ContentResolver cr = PrivacyContactInputActivity.this.getContentResolver();
                             PrivacyContactManagerImpl pm = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
                             /*查看是否存在短信*/
-//                            Cursor msmCur = cr.query(PrivacyContactUtils.SMS_INBOXS, null, null, null, "_id asc LIMIT " + PhoneSecurityConstants.TYY_READ_MSM_COUNT);
-//                            int resultMsm = msmCur.getCount();
                             Cursor curMsm = pm.getSystemMessages("address LIKE ? ", new String[]{"%" + tempNumber});
                             if (curMsm != null) {
                                 mMsmCount = curMsm.getCount();
                             }
                             /*查询是否存在通话*/
-//                            Cursor callCur = cr.query(PrivacyContactUtils.CALL_LOG_URI, null, null, null, "_id asc LIMIT " + PhoneSecurityConstants.TYY_READ_MSM_COUNT);
-//                            int resultCall = callCur.getCount();
                             Cursor callCur = pm.getSystemCalls("number LIKE ?", new String[]{"%" + tempNumber});
                             if (callCur != null) {
                                 mCallCount = callCur.getCount();
@@ -163,23 +152,20 @@ public class PrivacyContactInputActivity extends BaseActivity {
                                 toContactList();
                             }
                         }
-                        // "添加成功！",
-                        // 通知更新隐私联系人列表
-                        LeoEventBus
-                                .getDefaultBus()
-                                .post(new PrivacyEditFloatEvent(
-                                        PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
+                        /* "添加成功！", 通知更新隐私联系人列表*/
+                        String msg = PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE;
+                        PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(msg);
+                        LeoEventBus.getDefaultBus().post(event);
                     } else {
-                        Toast.makeText(PrivacyContactInputActivity.this,
-                                getResources().getString(R.string.privacy_add_contact_toast),
-                                Toast.LENGTH_SHORT)
-                                .show();
+                        Context context = PrivacyContactInputActivity.this;
+                        String str = getResources().getString(R.string.privacy_add_contact_toast);
+                        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
-                    Toast.makeText(PrivacyContactInputActivity.this,
-                            getResources().getString(R.string.input_toast_no_number_tip),
-                            Toast.LENGTH_SHORT).show();
+                    Context context = PrivacyContactInputActivity.this;
+                    String str = getResources().getString(R.string.input_toast_no_number_tip);
+                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -187,8 +173,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
 
     /*查询系统是否有指定号码短信和通话记录*/
     private void queryCallsMsms(String number) {
-        // 查询是否存在短信和通话记录
-          /*4.4以上不去做短信操作*/
+        /*4.4以上不去做短信操作*/
         boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
         if (isLessLeve19) {
             if (mAddMessages == null) {
@@ -232,13 +217,11 @@ public class PrivacyContactInputActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                // TODO Auto-generated method stub
             }
 
             @Override
@@ -363,6 +346,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                         }
                     }
                 }
+
                 /*导入通话记录*/
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                     for (ContactCallLog calllog : mAddCallLogs) {
@@ -402,15 +386,17 @@ public class PrivacyContactInputActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
+
             if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
-                LeoEventBus.getDefaultBus().post(
-                        new
-                                PrivacyEditFloatEvent(PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
+                String msg = PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT;
+                PrivacyEditFloatEvent editEvent = new PrivacyEditFloatEvent(msg);
+                LeoEventBus.getDefaultBus().post(editEvent);
             }
+
             if (mAddMessages != null && mAddMessages.size() != 0) {
-                LeoEventBus.getDefaultBus().post(
-                        new
-                                PrivacyEditFloatEvent(PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
+                String msg = PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT;
+                PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(msg);
+                LeoEventBus.getDefaultBus().post(event);
             }
         }
     }
