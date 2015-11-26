@@ -167,8 +167,9 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
                     ImageGridActivity.class);
             Bundle bundle = new Bundle();
             PhotoAibum photoAibum = mAlbumList.get(position);
-            if (photoAibum.getBitList().size() < 1000) {
-                bundle.putSerializable("data", mAlbumList.get(position));
+            int size = photoAibum.getBitList().size();
+            if (size < 1000) {
+                bundle.putSerializable("data", photoAibum);
             }
             intent.putExtra("pos", position);
             intent.putExtra("mode", ImageGridActivity.SELECT_HIDE_MODE);

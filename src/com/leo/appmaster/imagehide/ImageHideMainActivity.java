@@ -189,7 +189,13 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         Intent intent = new Intent(ImageHideMainActivity.this,
                 ImageGridActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("data", mAlbumList.get(position));
+
+        PhotoAibum photoAibum = mAlbumList.get(position);
+        int size = photoAibum.getBitList().size();
+        if (size < 1000) {
+            bundle.putSerializable("data", photoAibum);
+        }
+        intent.putExtra("pos", position);
         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);

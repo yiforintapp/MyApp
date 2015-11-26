@@ -82,6 +82,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
     private boolean mIsBackgoundRunning = false;
     private ProgressBar mLoadingBar;
     private Boolean mIsFromIntruderMore = false;
+    private Boolean isLoadDone = false;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -110,6 +111,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
     };
 
     private void loadDone() {
+        isLoadDone = true;
         mLoadingBar.setVisibility(View.GONE);
         mGridView.setVisibility(View.VISIBLE);
         if (mPhotoAibum != null) {
@@ -130,9 +132,14 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                mPhotoAibum = ((PrivacyDataManager) MgrContext.
-                        getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile().get(
-                        mPhotoAibumPos);
+                if (mActicityMode == SELECT_HIDE_MODE) {
+                    mPhotoAibum = ((PrivacyDataManager) MgrContext.
+                            getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile().get(
+                            mPhotoAibumPos);
+                } else {
+                    mPhotoAibum = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
+                            getHidePicAlbum("").get(mPhotoAibumPos);
+                }
                 if (mHandler != null) {
                     mHandler.sendEmptyMessage(LOAD_DATA_DONE);
                 }
@@ -240,6 +247,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
         }
 
         if (mPhotoAibum != null) {
+            isLoadDone = true;
             mPicturesList = ((PrivacyDataManager) MgrContext.
                     getManager(MgrContext.MGR_PRIVACY_DATA)).getHidePicFile(mPhotoAibum);
             mTtileBar.setToolbarTitle(mPhotoAibum.getName());
@@ -264,7 +272,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
 
                 @Override
                 public void onClick(View v) {
-                    if (mActicityMode == CANCEL_HIDE_MODE) {
+                    if (mActicityMode == CANCEL_HIDE_MODE && isLoadDone) {
                         mIsEditmode = !mIsEditmode;
                         if (!mIsEditmode) {
                             cancelEditMode();
