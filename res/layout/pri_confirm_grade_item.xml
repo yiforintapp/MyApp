@@ -157,6 +157,8 @@
         android:layout_width="wrap_content"
         android:layout_height="33dp"
         android:gravity="center_vertical"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/grade_frame"
         android:layout_alignLeft="@+id/grade_frame"
         android:layout_alignRight="@+id/grade_frame"
