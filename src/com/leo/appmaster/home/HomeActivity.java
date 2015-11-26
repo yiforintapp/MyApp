@@ -180,16 +180,22 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void requestCamera() {
         if ((!mPt.getBoolean(PrefConst.KEY_HAS_REQUEST_CAMERA, false) && (mISManger.getIsIntruderSecurityAvailable()))) {
-            Camera camera = null;
-            try {
-                camera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
-            } catch (Throwable e) {
+            
+            ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                @Override
+                public void run() {
+                    Camera camera = null;
+                    try {
+                        camera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
+                    } catch (Throwable e) {
 
-            } finally {
-                if (camera != null) {
-                    camera.release();
+                    } finally {
+                        if (camera != null) {
+                            camera.release();
+                        }
+                    }
                 }
-            }
+            }, 1000);
         }
         mPt.putBoolean(PrefConst.KEY_HAS_REQUEST_CAMERA, true);
     }
