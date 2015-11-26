@@ -491,9 +491,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private int lineEndPlace;
 
     private void showLineAnimation() {
-        if (animationSet == null) {
-            animationSet = new AnimatorSet();
-        }
+        animationSet = new AnimatorSet();
 
         lineStartPlace = mIconView.getTop() - mLineView.getHeight();
         lineEndPlace = mIconView.getBottom() + mLineView.getHeight();
