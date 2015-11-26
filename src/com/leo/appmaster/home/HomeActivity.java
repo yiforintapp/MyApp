@@ -96,7 +96,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private List<MenuItem> mMenuItems;
     private MenuAdapter mMenuAdapter;
     private boolean mHasRequestCamera = false;
-//    private ImageView mAdIcon;
+    //    private ImageView mAdIcon;
     //    private MobvistaAdWall mWallAd;
     private Handler mHandler = new Handler();
     private PreferenceTable mPt = PreferenceTable.getInstance();
@@ -154,11 +154,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         setContentView(R.layout.activity_home_main);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         mPrivacyHelper = PrivacyHelper.getInstance(this);
-        mISManger =  (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        mISManger = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         initUI();
 //        initMobvista();
         requestCamera();
-        
+
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         recordEnterHomeTimes();
@@ -178,14 +178,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void requestCamera() {
-        if((!mPt.getBoolean(PrefConst.KEY_HAS_REQUEST_CAMERA, false) && (mISManger.getIsIntruderSecurityAvailable()))) {
+        if ((!mPt.getBoolean(PrefConst.KEY_HAS_REQUEST_CAMERA, false) && (mISManger.getIsIntruderSecurityAvailable()))) {
             Camera camera = null;
-            try{
+            try {
                 camera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
-            }catch(Throwable e) {
-                
-            }finally{
-                if(camera!= null){
+            } catch (Throwable e) {
+
+            } finally {
+                if (camera != null) {
                     camera.release();
                 }
             }
@@ -1299,6 +1299,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         if (isAdminActive() && isTip) {
             openAdvanceProtectDialogTip();
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
         }
     }
 
