@@ -94,7 +94,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         mSlidingLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
-                Log.i(TAG, "onPanelSlide, offset " + slideOffset + " | state: " + mSlidingLayout.getPanelState());
+//                Log.i(TAG, "onPanelSlide, offset " + slideOffset + " | state: " + mSlidingLayout.getPanelState());
                 int apha = Color.alpha(DEFAULT_FADE_COLOR);
                 int r = Color.red(DEFAULT_FADE_COLOR);
                 int g = Color.green(DEFAULT_FADE_COLOR);

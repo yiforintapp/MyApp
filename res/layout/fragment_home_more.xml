@@ -41,14 +41,14 @@
             <com.leo.appmaster.ui.HomeUpArrow
                 android:id="@+id/more_up_arrow"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/home_more_click_height"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/transparent" />
             
             <View
                 android:id="@+id/more_up_click_view"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/home_more_click_height"
                 android:background="@color/transparent"
                 android:visibility="gone"/>
 

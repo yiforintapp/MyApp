@@ -24,8 +24,11 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.LeoLog;
 
 public class SlidingUpPanelLayout extends ViewGroup {
+    private static final String TAG = "SlidingUpPanelLayout";
+
     public static interface TapRectFunction {
         public Rect getTapRect();
     }
@@ -218,6 +221,8 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     private GestureDetector mGesture;
     private boolean mSingleTapUp;
+    private PanelState mStateBeforeTouchDown;
+    private int mClickHeight;
 
     /**
      * Listener for monitoring events about sliding panes.
@@ -375,10 +380,13 @@ public class SlidingUpPanelLayout extends ViewGroup {
             @Override
             public boolean onDown(MotionEvent e) {
                 mSingleTapUp = false;
+                mStateBeforeTouchDown = mSlideState;
                 return super.onDown(e);
             }
         });
         setDragClickEnable(false);
+
+        mClickHeight = context.getResources().getDimensionPixelSize(R.dimen.home_more_click_height);
     }
 
     /**
@@ -556,6 +564,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
             mDragView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LeoLog.d(TAG, "setDragView, onClick...");
                     if (!isEnabled() || !isTouchEnabled()) return;
                     if (mSlideState != PanelState.EXPANDED && mSlideState != PanelState.ANCHORED) {
                         if (mAnchorPoint < 1.0f) {
@@ -582,6 +591,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
             mDragView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LeoLog.d(TAG, "setDragClickEnable, onClick...");
                     if (!isEnabled() || !isTouchEnabled()) return;
                     if (mSlideState != PanelState.EXPANDED && mSlideState != PanelState.ANCHORED) {
                         if (mAnchorPoint < 1.0f) {
@@ -991,13 +1001,18 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     private boolean mTouchOutSize;
     private boolean mTouchTapLeftOrRight;
+
     @Override
     public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
         int ix = (int) ev.getX();
         int iy = (int) ev.getY();
+//        LeoLog.d(TAG, "dispatchTouchEvent, x: " + ix + " | y: " + iy);
         Rect rect = new Rect(mDragView.getLeft(), mDragView.getTop(), mDragView.getRight(), mDragView.getBottom());
 
         final int action = MotionEventCompat.getActionMasked(ev);
+        if (action == MotionEvent.ACTION_DOWN) {
+            mStateBeforeTouchDown = mSlideState;
+        }
         if (mSlideState == PanelState.COLLAPSED && action == MotionEvent.ACTION_DOWN) {
             mTouchOutSize = false;
             if (!rect.contains(ix, iy)) {
@@ -1013,13 +1028,16 @@ public class SlidingUpPanelLayout extends ViewGroup {
         mGesture.onTouchEvent(ev);
         if (action == MotionEvent.ACTION_UP) {
             boolean clickToExpand = false;
-            if (mSingleTapUp && !mTouchOutSize && !mTouchTapLeftOrRight) {
-//                LeoLog.i(TAG, "dispatchTouchEvent, mSlideState: " + mSlideState + " | mSingleTapUp: " + mSingleTapUp);
-                if (mSlideState != PanelState.EXPANDED) {
-                    mDragHelper.setDragState(ViewDragHelper.STATE_IDLE);
-                    setPanelState(PanelState.EXPANDED);
-                    clickToExpand = true;
-                }
+//            LeoLog.i(TAG, "dispatchTouchEvent, mSlideState: " + mSlideState + " | mSingleTapUp: " + mSingleTapUp
+//                    + " | mTouchOutSize: " + mTouchOutSize + " | mTouchTapLeftOrRight: " + mTouchTapLeftOrRight);
+            if (mSingleTapUp && !mTouchOutSize && !mTouchTapLeftOrRight && mSlideState != PanelState.EXPANDED &&
+                    iy >= (getHeight() - mClickHeight)) {
+                LeoLog.d(TAG, "set panel to expanded.");
+                mDragHelper.setDragState(ViewDragHelper.STATE_IDLE);
+                setPanelState(PanelState.EXPANDED);
+                clickToExpand = true;
+            } else {
+                setPanelState(PanelState.COLLAPSED);
             }
             mTouchOutSize = false;
             mTouchTapLeftOrRight = false;

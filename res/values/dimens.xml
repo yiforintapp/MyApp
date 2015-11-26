@@ -355,4 +355,5 @@
 
     <dimen name="shield_offsetY">3dp</dimen>
     <dimen name="contact_icon_scale_size">98dp</dimen>
+    <dimen name="home_more_click_height">50dp</dimen>
 </resources>
