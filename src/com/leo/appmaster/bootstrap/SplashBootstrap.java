@@ -223,13 +223,13 @@ public class SplashBootstrap extends Bootstrap {
 
                         if (!Utilities.isEmpty(endDate)) {
                             long currentTime = System.currentTimeMillis();
-                            /*如果当前时间>结束时间，则为过期*/
-                            if (currentTime > Long.valueOf(endDate)) {
-                                isShowExpired = true;
-                            }
                             long end = 0;
                             try {
                                 end = dateFormate.parse(endDate).getTime();
+                                  /*如果当前时间>结束时间，则为过期*/
+                                if (currentTime > end) {
+                                    isShowExpired = true;
+                                }
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }

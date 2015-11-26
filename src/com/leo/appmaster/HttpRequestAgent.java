@@ -274,6 +274,7 @@ public class HttpRequestAgent {
                 + requestLanguage + "/" +
                 mContext.getString(R.string.version_name) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
+        LeoLog.i(TAG,"闪屏请求链接："+url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
         request.setShouldCache(false);
