@@ -1181,6 +1181,7 @@ public class LockPatternView extends ViewGroup {
             }
             // chang the line color in different DisplayMode
             if (mPatternDisplayMode == DisplayMode.Wrong) {
+//                LeoLog.i("testWhenRed", "red");
                 mPathPaint.setColor(0x7fbb0000);
             } else {
                 mPathPaint.setColor(mColor);

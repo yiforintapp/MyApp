@@ -81,7 +81,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
         ArrayList<Integer> indexsWhichWidthLessThan1280 = new ArrayList<Integer>();
         
         for (int i = 0; i < Sizes.size(); i++) {
-            if (Sizes.get(i).width <= 1280) {
+            if (Sizes.get(i).width <= 1280 && Sizes.get(i).width >= 800) {
                 indexsWhichWidthLessThan1280.add(i);
             } 
         }

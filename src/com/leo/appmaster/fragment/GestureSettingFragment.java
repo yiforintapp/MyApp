@@ -40,6 +40,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
@@ -136,9 +137,10 @@ public class GestureSettingFragment extends BaseFragment implements
     private void checkGesture(List<Cell> pattern) {
         int patternSize = pattern.size();
         if (mInputCount == 1) {
+            LeoLog.i("testRedLine", " first time ");
             if (patternSize < 4) {
                 mTvPasswdFuncTip.setText(R.string.passwd_set_gesture_tip);
-                shakeGestureTip();
+                shakeGestureTip(true);
                 // mLockPatternView.clearPattern();
                 return;
             }
@@ -151,9 +153,9 @@ public class GestureSettingFragment extends BaseFragment implements
             reset_buton_content_activity.setVisibility(View.INVISIBLE);
             reset_button_content.setVisibility(View.VISIBLE);
         } else {
+            mLockPatternView.setDisplayMode(DisplayMode.Correct);
             mTempGesture2 = LockPatternUtils.patternToString(pattern);
             if (mTempGesture2.equals(mTempGesture1)) {
-                mLockPatternView.setDisplayMode(DisplayMode.Correct);
                 AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
                 if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     SDKWrapper.addEvent(GestureSettingFragment.this.mActivity, SDKWrapper.P1,
@@ -182,11 +184,13 @@ public class GestureSettingFragment extends BaseFragment implements
                     mActivity.finish();
                 }
             } else {
-                shakeGestureTip();
+                mLockPatternView.setDisplayMode(DisplayMode.Correct);
+                shakeGestureTip(false);
                 mLockPatternView.clearPattern();
                 mTvPasswdFuncTip.setText(R.string.tip_no_the_same_pswd);
             }
         }
+//        mLockPatternView.setDisplayMode(DisplayMode.Correct);
     }
 
     private void showResetSuc() {
@@ -216,21 +220,28 @@ public class GestureSettingFragment extends BaseFragment implements
         }
     }
 
-    private void shakeGestureTip() {
+    private void shakeGestureTip(final boolean needRed) {
+        LeoLog.i("testRedLine", "needRed = "+needRed);
         if (mShake == null) {
             mShake = AnimationUtils.loadAnimation(mActivity,
                     R.anim.left_right_shake);
             mShake.setAnimationListener(new AnimationListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    mLockPatternView.setDisplayMode(DisplayMode.Wrong);
+                    boolean newFlag = needRed;
+                    if (newFlag) {
+                        mLockPatternView.setDisplayMode(DisplayMode.Wrong);
+                        LeoLog.i("testRedLine", "if true needRed = "+needRed);
+                    } else {
+                        mLockPatternView.setDisplayMode(DisplayMode.Correct);
+                        LeoLog.i("testRedLine", "if false needRed = "+needRed);
+                    }
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     mLockPatternView.clearPattern();
                 }
-
             });
         }
         mTvPasswdFuncTip.startAnimation(mShake);
