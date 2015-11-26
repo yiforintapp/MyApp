@@ -92,6 +92,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             openShowGoogleGuide();
             finish();
         } else if (v == mFeedbackSureClick) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_later");
             Intent intent = new Intent(GradeTipActivity.this, FeedbackActivity.class);
             startActivity(intent);
             finish();

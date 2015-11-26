@@ -1,6 +1,7 @@
 package com.leo.appmaster.home;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -32,6 +33,7 @@ import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.ScanningImageView;
 import com.leo.appmaster.ui.ScanningTextView;
+import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.tools.animator.Animator;
@@ -76,7 +78,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private HomeActivity mActivity;
 
     private List<AppItemInfo> mAppList;
-    private List<PhotoItem> mPhotoList;
+    private PhotoList mPhotoList;
     private List<VideoItemBean> mVideoList;
 
     private boolean mAppScanFinish;
@@ -160,7 +162,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         ThreadManager.executeOnSubThread(mContactRunnable);
     }
 
-    private void onScannigFinish(final List<AppItemInfo> appList, final List<PhotoItem> photoItems,
+    private void onScannigFinish(final List<AppItemInfo> appList, final PhotoList photoItems,
                                  final List<VideoItemBean> videoItemBeans) {
         if (getActivity() == null || isDetached() || isRemoving()) return;
 
@@ -197,7 +199,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "app_cnts_" + count);
         } else if (imageView == mNewPhotoIv) {
             updatePhotoList();
-            int count = mPhotoList == null ? 0 : mPhotoList.size();
+            int count = mPhotoList == null ? 0 : mPhotoList.photoItems.size();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "pic_cnts_" + count);
         } else if (imageView == mNewVideoIv) {
@@ -232,7 +234,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void updatePhotoList() {
-        int count = mPhotoList == null ? 0 : mPhotoList.size();
+        int count = mPhotoList == null ? 0 : mPhotoList.photoItems.size();
         if (count == 0) {
             mPicCountIv.setVisibility(View.VISIBLE);
             mPicCountTv.setVisibility(View.GONE);
@@ -293,6 +295,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mAppScanFinish = true;
             int appScore = lm.getSecurityScore(mAppList);
             mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, appScore);
+
             LeoLog.i(TAG, "appList, cost: " + (SystemClock.elapsedRealtime() - start));
         }
     });
@@ -302,9 +305,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         public void run() {
             long start = SystemClock.elapsedRealtime();
             PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-            mPhotoList = pdm.getAddPic();
+            List<PhotoItem> photoItems = pdm.getAddPic();
+            mPhotoList = new PhotoList();
+            mPhotoList.photoItems = photoItems;
             mPhotoScanFinish = true;
-            mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.size());
+            mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.photoItems.size());
+
+            mPhotoList.inDifferentDir = DataUtils.differentDirPic(photoItems);
             LeoLog.i(TAG, "photoItems, cost: " + (SystemClock.elapsedRealtime() - start));
         }
     });
@@ -361,6 +368,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
             runnable.run();
         }
+    }
+
+    public static class PhotoList {
+        public List<PhotoItem> photoItems = new ArrayList<PhotoItem>();
+        public boolean inDifferentDir;
     }
 
 }

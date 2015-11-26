@@ -131,7 +131,8 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
                 mListener.onSelectionChange(true, mSelectedList.size());
             }
 
-            updateSelectItem();
+//            updateSelectItem();
+            updateSelectItem(true);
         }
     }
 
@@ -141,7 +142,8 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
             mListener.onSelectionChange(false, 0);
         }
 
-        updateSelectItem();
+//        updateSelectItem();
+        updateSelectItem(false);
     }
 
     private void updateSelectItem() {
@@ -158,6 +160,18 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
                 if (holder.imageView instanceof MaskImageView) {
                     ((MaskImageView) holder.imageView).setChecked(isChecked);
                 }
+            }
+        }
+    }
+
+    private void updateSelectItem(boolean isChecked) {
+        for (View view : mItemsView.keySet()) {
+            PrivacyNewHolder holder = (PrivacyNewHolder) view.getTag();
+            if (holder == null) continue;
+
+            holder.checkBox.setChecked(isChecked);
+            if (holder.imageView instanceof MaskImageView) {
+                ((MaskImageView) holder.imageView).setChecked(isChecked);
             }
         }
     }

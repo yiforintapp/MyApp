@@ -39,10 +39,13 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
     private boolean mHidingFinish;
 
 
-    public static Fragment getFragment(List<PhotoItem> list) {
+    public static Fragment getFragment(HomeScanningFragment.PhotoList list) {
         Fragment fragment = null;
-        if (list.size() > 60) {
-            if (DataUtils.differentDirPic(list)) {
+        if (list == null) {
+            return fragment;
+        }
+        if (list.photoItems.size() > 60) {
+            if (list.inDifferentDir) {
                 fragment = FolderPicFragment.newInstance();
             } else {
                 fragment = PrivacyNewPicFragment.newInstance();
@@ -51,9 +54,9 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
             fragment = PrivacyNewPicFragment.newInstance();
         }
         if (fragment instanceof FolderPicFragment) {
-            ((FolderPicFragment) fragment).setData(list);
+            ((FolderPicFragment) fragment).setData(list.photoItems);
         } else if (fragment instanceof PrivacyNewPicFragment) {
-            ((PrivacyNewPicFragment) fragment).setData(list);
+            ((PrivacyNewPicFragment) fragment).setData(list.photoItems);
         }
 
         return fragment;

@@ -83,6 +83,7 @@ import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
+import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
@@ -123,7 +124,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private Animation mComingOutAnim;
 
     private List<AppItemInfo> mAppList;
-    private List<PhotoItem> mPhotoList;
+    private PhotoList mPhotoList;
     private List<VideoItemBean> mVideoList;
     private List<ContactBean> mContactList;
 
@@ -359,7 +360,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         return mPrivacyFragment.getScanningPercent();
     }
 
-    public void onScanningFinish(List<AppItemInfo> appList, List<PhotoItem> photoItems, List<VideoItemBean> videoItemBeans) {
+    public void onScanningFinish(List<AppItemInfo> appList, PhotoList photoItems, List<VideoItemBean> videoItemBeans) {
         mAppList = appList;
         mPhotoList = photoItems;
         mVideoList = videoItemBeans;
@@ -411,7 +412,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             count++;
         }
 
-        if (mPhotoList != null && mPhotoList.size() > 0) {
+        if (mPhotoList != null && mPhotoList.photoItems.size() > 0) {
             count++;
         }
 
@@ -441,7 +442,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             fragment.setData(mAppList);
             mAppList = null;
             mCurrentFragment = fragment;
-        } else if (mPhotoList != null && mPhotoList.size() > 0) {
+        } else if (mPhotoList != null && mPhotoList.photoItems.size() > 0) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "pic_arv");
             Fragment fragment = PrivacyNewPicFragment.getFragment(mPhotoList);
             ft.replace(R.id.pri_pro_content, fragment);
