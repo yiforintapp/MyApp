@@ -33,7 +33,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     public final static int SCAN_DONE = 3;
     public final static int GO_TO_SETTING = 4;
     private View contentView, resultContentView, mSmallBossView;
-    private ImageView  mLineView, mLineView2, mIconView;
+    private ImageView mLineView, mLineView2, mIconView;
     private ImageView mSmallViewFlash;
     private TextView mWifiName;
     private ImageView resultIconView;
@@ -367,16 +367,22 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         }
     }
 
-    public void showSelectWifiDialog(String text) {
+    public void showSelectWifiDialog(final String text) {
         SDKWrapper.addEvent(this, SDKWrapper.P1, "wifi_scan", "wifi_none_dlg");
         if (selectWifiDialog == null) {
             selectWifiDialog = new OneButtonDialog(this);
         }
 
+        final String makePointString = getString(R.string.can_not_connect_wifi);
         if (!selectWifiDialog.isShowing()) {
             selectWifiDialog.setOnClickListener(new OneButtonDialog.OnWifiDiaogClickListener() {
                 @Override
                 public void onClick() {
+                    if (makePointString.equals(text)) {
+                        SDKWrapper.
+                                addEvent(WifiSecurityActivity.this,
+                                        SDKWrapper.P1, "wifi_rst", "wifi_rst_netbreak_other");
+                    }
                     SDKWrapper.
                             addEvent(WifiSecurityActivity.this,
                                     SDKWrapper.P1, "wifi_scan", "wifi_none_other");

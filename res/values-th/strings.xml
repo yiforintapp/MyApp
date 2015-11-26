@@ -857,5 +857,5 @@
     <string name="intruderprotection_forbit_content">ไม่สามารถใช้ระบบป้องกันแฮคเกอร์ได้ เนื่องจากข้อจำกัดของระบบ</string>
     <string name="adv_prot_open_suc_tip_cnt">เปิดใช้แล้วไม่สามารถถอนการติดตั้งLEO Privacy Guardได้ คุณต้องยกเลิกการตั้งค่าการป้องกันขั้นสูงก่อน</string>
     <string name="pri_pro_btn">เปิด(+%1$dคะแนน)</string>
-
+    <string name="uninstall_empty_page">No any apps could uninstall</string>
 </resources>

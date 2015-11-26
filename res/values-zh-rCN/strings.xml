@@ -867,4 +867,6 @@
     <string name="fb_item_btn">关注</string>
     <string name="intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
     <string name="adv_prot_open_suc_tip_cnt">开启后无法在软件外部卸载隐私卫士。如需卸载，您需要先在应用锁设置中取消高级保护设置。</string>
+
+    <string name="uninstall_empty_page">没有可以卸载的应用</string>
 </resources>

@@ -944,4 +944,5 @@
     <string name="intruderprotection_forbit_content">بسبب الحد من النظام، لا تعمل وظيفة منع الدخيل</string>
     <string name="adv_prot_open_suc_tip_cnt">لا يمكن إلغاء تثبيت LEO حارس الشيخوخة. أذهب إلي قفل التطبيق وعطًل حماية متقدمة</string>
     <string name="pri_pro_btn">تمكين (+%1$d نقطة)</string>
+    <string name="uninstall_empty_page">No any apps could uninstall</string>
 </resources>

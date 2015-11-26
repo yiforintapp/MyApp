@@ -860,4 +860,5 @@
     <string name="intruderprotection_forbit_content">由於系統限制，入侵者防護功能無法正常使用</string>
     <string name="adv_prot_open_suc_tip_cnt">開啟後無法在軟件外部卸載隱私衛士。如需卸載，您需要先在應用鎖設置中取消高級保護設置。</string>
     <string name="pri_pro_btn">去開啟 (+%1$d分)</string>
+    <string name="uninstall_empty_page">沒有可以卸載的應用</string>
 </resources>

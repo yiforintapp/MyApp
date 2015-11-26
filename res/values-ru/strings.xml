@@ -840,5 +840,6 @@
     <string name="intruderprotection_forbit_content">Из-за ограничений системы, защита от агрессора не может нормально работать</string>
     <string name="adv_prot_open_suc_tip_cnt">Под улучшенную защиту никто не может удалить Leo Privacy Guard.Если хотите удалить,пожалуйста, перейдите на страницу “Applock”, отменять"расширенную защиту" на настройках “Applock”</string>
     <string name="pri_pro_btn">Включить (+%1$d балл)</string>
+    <string name="uninstall_empty_page">No any apps could uninstall</string>
 
 </resources>

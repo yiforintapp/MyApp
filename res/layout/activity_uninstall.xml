@@ -42,6 +42,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:gravity="center"
+            android:text="@string/uninstall_empty_page"
             android:textColor="@color/nothing_show_text"
             android:textSize="@dimen/kongbaiye_text_size" />
     </RelativeLayout>

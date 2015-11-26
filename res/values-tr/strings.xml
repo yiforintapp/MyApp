@@ -857,4 +857,5 @@
     <string name="intruderprotection_forbit_content">Android cihazlardaki sınırlamalardan dolayı Break-in uyarısı çalışmayabilir.</string>
     <string name="adv_prot_open_suc_tip_cnt">LEO Kişisel Güvenlik programı çalışırken kaldırılamaz. Lütfen, önce AppLock sayfasından “Gelişmiş Koruma” seçeneğini iptal edin.</string>
     <string name="pri_pro_btn">Aç (+%1$d puan)</string>
+    <string name="uninstall_empty_page">No any apps could uninstall</string>
 </resources>

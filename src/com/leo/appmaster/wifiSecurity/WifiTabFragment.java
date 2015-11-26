@@ -347,6 +347,7 @@ public class WifiTabFragment extends Fragment {
     private void stopScan() {
         dismissTab(WifiSecurityActivity.WIFI_CHANGE);
         mActivity.showSelectWifiDialog(AppMasterApplication.getInstance().getString(R.string.can_not_connect_wifi));
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "wifi_rst", "wifi_rst_netbreak");
 //        Message msg = new Message();
 //        msg.what = STOP_SCAN;
 //        mHandler.sendMessageDelayed(msg, 500);
