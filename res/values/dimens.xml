@@ -77,7 +77,7 @@
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">18dp</dimen>
     <dimen name="fragment_lock_tilte_icon_width">32dp</dimen>
-    <dimen name="fragment_lock_tilte_icon_space">15dp</dimen>
+    <dimen name="fragment_lock_tilte_icon_space">12dp</dimen>
     <dimen name="activity_wait_textView1_marginbottom">165dp</dimen>
     <dimen name="list_item_locktheme_tick_sel_width">64px</dimen>
     <dimen name="list_item_locktheme_tick_sel_height">64px</dimen>
