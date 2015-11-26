@@ -877,7 +877,7 @@
     <string name="fb_item_content">For more interesting and official news of LEO Privacy Guard, please immediately follow us on facebook.</string>
     <string name="fb_item_btn">Follow us</string>
     <string name="intruderprotection_forbit_content">Due to the limitation of Android, the intruder prevention function could not work.</string>
-    <string name="adv_prot_open_suc_tip_cnt">LEO Privacy Guard can not uninstall under advanced protection. If it is needed, please go to AppLock page and disenable "Advanced Protection" in AppLock Settings.</string>
+    <string name="adv_prot_open_suc_tip_cnt">LEO Privacy Guard can not uninstall under advanced protection. If it is needed, please go to AppLock page and disenable \"Advanced Protection\" in AppLock Settings.</string>
     <string name="pri_pro_btn">Enable(+%1$d points)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
 </resources>
