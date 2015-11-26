@@ -272,8 +272,10 @@ public class HomeBoostActivity extends Activity {
         });
 
         mRocketAnim = new AnimatorSet();
-        mRocketAnim.playTogether(getCloudAnim(), getRocketShowAnim(), getFireAnim(),
-                getRocketHideAnim(), getRocketUpAnim(), getLineMoveInAnim(), getLineAlphaHideAnim());
+        mRocketAnim.playTogether(getCloudAnim(),
+                getRocketShowAnim(), getFireScaleAnim(), getRocketHideAnim(), getRocketUpAnim(),
+                getLineMoveInAnim(), getLineAlphaHideAnim(), getFireUpAnim());
+
         mRocketAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -288,7 +290,7 @@ public class HomeBoostActivity extends Activity {
     private ObjectAnimator getLineAlphaHideAnim() {
         ObjectAnimator lineAlphaHide = ObjectAnimator.ofFloat(mLine, "alpha", 1f, 0f);
         lineAlphaHide.setDuration(200);
-        lineAlphaHide.setStartDelay(1490);
+        lineAlphaHide.setStartDelay(1440);
 
         return lineAlphaHide;
     }
@@ -305,7 +307,7 @@ public class HomeBoostActivity extends Activity {
                 mLine.setVisibility(View.VISIBLE);
             }
         });
-        lineMoveIn.setStartDelay(970);
+        lineMoveIn.setStartDelay(920);
 
         return lineMoveIn;
     }
@@ -320,7 +322,7 @@ public class HomeBoostActivity extends Activity {
         AnimatorSet rocketScaleAnim = new AnimatorSet();
         rocketScaleAnim.playTogether(rocketScaleXAnimator, rocketScaleYAnimator);
         rocketScaleAnim.setDuration(540);
-        rocketScaleAnim.setStartDelay(1230);
+        rocketScaleAnim.setStartDelay(1100);
 
         return rocketScaleAnim;
     }
@@ -332,16 +334,16 @@ public class HomeBoostActivity extends Activity {
                 mIvRocket.getTranslationY(), -mScreenH);
         rocketUpAnimator.setInterpolator(new DecelerateInterpolator());
         rocketUpAnimator.setDuration(720);
-        rocketUpAnimator.setStartDelay(1150);
+        rocketUpAnimator.setStartDelay(920);
 
         return rocketUpAnimator;
     }
 
-    /** 尾部火动画 */
-    private AnimatorSet getFireAnim() {
+    /** 尾部火伸缩动画 */
+    private ObjectAnimator getFireScaleAnim() {
         mFire.setPivotX(mFire.getWidth()/2);
-        mFire.setPivotY(mFire.getTop());
-        ObjectAnimator fireScale = ObjectAnimator.ofFloat(mFire, "scaleY", 0f, 1f);
+        mFire.setPivotY(0);
+        ObjectAnimator fireScale = ObjectAnimator.ofFloat(mFire, "scaleY", 0f, 0.8f);
         fireScale.setDuration(320);
         fireScale.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -350,18 +352,20 @@ public class HomeBoostActivity extends Activity {
                 mFire.setVisibility(View.VISIBLE);
             }
         });
+        fireScale.setStartDelay(820);
 
+        return  fireScale;
+    }
+
+    /** 尾部火上升动画 */
+    private ObjectAnimator getFireUpAnim() {
         ObjectAnimator fireMoveOut = ObjectAnimator.ofFloat(mFire,
-                "translationY", mFire.getTranslationY(),
-                -mScreenH - DipPixelUtil.dip2px(HomeBoostActivity.this, 130));
+                "translationY", mFire.getTranslationY(), -mScreenH - DipPixelUtil.dip2px(this, 140));
         fireMoveOut.setInterpolator(new DecelerateInterpolator());
-        fireMoveOut.setDuration(730);
+        fireMoveOut.setDuration(900);
+        fireMoveOut.setStartDelay(920);
 
-        AnimatorSet fireAnimator = new AnimatorSet();
-        fireAnimator.playTogether(fireScale, fireMoveOut);
-        fireAnimator.setStartDelay(1150);
-
-        return  fireAnimator;
+        return  fireMoveOut;
     }
 
     /** 火箭上升 */
@@ -391,8 +395,8 @@ public class HomeBoostActivity extends Activity {
             }
         });
         mIvCloud.setPivotX(mIvCloud.getWidth()/2);
-        mIvCloud.setPivotY(mIvCloud.getBottom());
-        ObjectAnimator cloudScaleToThirty = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0f, 0.6f);
+        mIvCloud.setPivotY(mIvCloud.getHeight());
+        ObjectAnimator cloudScaleToThirty = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0f, 0.3f);
         cloudScaleToThirty.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -400,10 +404,10 @@ public class HomeBoostActivity extends Activity {
                 mIvCloud.setVisibility(View.VISIBLE);
             }
         });
-        ObjectAnimator cloudScaleYToFifthy = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0f, 0.6f);
+        ObjectAnimator cloudScaleYToFifthy = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0f, 0.3f);
 
-        ObjectAnimator cloudScaleYToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0.6f, 1f);
-        ObjectAnimator cloudScaleToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0.6f, 1f);
+        ObjectAnimator cloudScaleYToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleY", 0.3f, 1f);
+        ObjectAnimator cloudScaleToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0.3f, 1f);
 
         ObjectAnimator cloudAlphaHide = ObjectAnimator.ofFloat(mIvCloud, "alpha", 1f, 0f);
         ObjectAnimator cloudScaleToLarge = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 1f, 1.1f);
