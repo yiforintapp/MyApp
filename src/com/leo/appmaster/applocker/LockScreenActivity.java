@@ -218,7 +218,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     //能否拍照，每次进入界面才能够置为true，拍完置为false，保证每次进入界面只能拍一次，避免频繁拍照
     private boolean mCanTakePhoto = true;
     //照片是否已经保存完毕，保存完毕后置为true，true才能进入抓拍结果界面，每次拍照置为false //暂时不用
-    private static boolean mIsPicSaved = false;
+    public static boolean mIsPicSaved = false;
     //是否已经拍了照片，拍了照为true，解锁成功后将进入抓拍界面，然后置为false
     public static boolean mHasTakePic = false;
 
@@ -325,7 +325,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 public void onPictureTaken(final byte[] data, Camera camera) {
                     LeoLog.i("poha", "has taken!!!");
                     mCanTakePhoto = false;
-                    mIsPicSaved = false;
                     LeoLog.i("poha", "pic taken!!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+mHasTakePic+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
                     mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
                     ThreadManager.executeOnAsyncThread(new Runnable() {

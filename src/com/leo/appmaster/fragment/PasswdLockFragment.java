@@ -634,6 +634,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                         }
                         if(mCameraSurPreview != null) {
                             ((LockScreenActivity) mActivity).mHasTakePic = true;
+                            ((LockScreenActivity) mActivity).mIsPicSaved = false;
                             ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                                 @Override
                                 public void run() {

@@ -329,6 +329,7 @@ public class GestureLockFragment extends LockFragment implements
                         }
                         if(mCameraSurPreview != null) {
                            ((LockScreenActivity) mActivity).mHasTakePic = true;
+                           ((LockScreenActivity) mActivity).mIsPicSaved = false;
                             ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                                 @Override
                                 public void run() {
