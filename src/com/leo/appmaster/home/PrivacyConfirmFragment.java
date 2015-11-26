@@ -1,10 +1,5 @@
 package com.leo.appmaster.home;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.ComponentName;
@@ -69,6 +64,11 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Jasper on 2015/10/18.
@@ -1045,9 +1045,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             intent.putExtra(Constants.EXTRA_IS_FROM_SCAN, true);
             startActivity(intent);
         } else if (mFbBtnLt == v) {  // FaceBook分享
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "facebook");
             lockManager.filterSelfOneMinites();
             goFaceBook();
         } else if (mHighGradeBtnLt == v) {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity);
         } else if (mLostBtnLt == v) {
@@ -1056,9 +1058,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             intent.putExtra(Constants.EXTRA_IS_FROM_SCAN, true);
             startActivity(intent);
         } else if (mGradeBtnLt == v) { // 五星好评
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity);
         } else if (mSwiftyBtnLt == v) {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "swifty");
             lockManager.filterSelfOneMinites();
             gotoGpOrBrowser();
         }
