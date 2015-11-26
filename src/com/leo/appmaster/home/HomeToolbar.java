@@ -123,12 +123,17 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
                 getContext().startActivity(msgCenter);
                 break;
             case R.id.hm_tool_more_rl:
+                Activity activity = (Activity) getContext();
+                if (activity instanceof HomeActivity) {
+                    if (((HomeActivity) activity).isTabDismiss()) {
+                        return;
+                    }
+                }
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "home", "password");
                 if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
                     mDrawerLayout.closeDrawer(Gravity.START);
                 }
                 initSettingMenu();
-                Activity activity = (Activity) getContext();
                 mLeoPopMenu.setPopMenuItems(activity, getRightMenuItems(), getRightMenuIcons());
                 mLeoPopMenu.showPopMenu(activity, mMoreRl, null, null);
                 break;
