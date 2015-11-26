@@ -44,11 +44,11 @@
                 android:id="@+id/nohideTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/privacy_default_text_margin_top"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:text="@string/app_no_image_hide"
                 android:textColor="#d3d3d4"
-                android:textSize="18dp" />
+                android:textSize="@dimen/kongbaiye_text_size" />
         </LinearLayout>
     </RelativeLayout>
 

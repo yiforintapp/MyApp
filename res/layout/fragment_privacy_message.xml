@@ -34,11 +34,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/privacy_default_title_margin_top"
+            android:layout_marginTop="15dp"
             android:text="@string/privacy_contact_default_text"
             android:textColor="#d3d3d4"
             android:gravity="center_horizontal"
-            android:textSize="17dp" />
+            android:textSize="@dimen/kongbaiye_text_size" />
 
         <TextView
             android:layout_width="wrap_content"

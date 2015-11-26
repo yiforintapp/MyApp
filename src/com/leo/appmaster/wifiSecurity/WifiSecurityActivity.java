@@ -51,7 +51,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private long lastTimeIn;
     //    private ImageView mExpandView, mExpandView2;
     private boolean isConnect, oneState, twoState, threeState, fourState, isSafe;
-    private int firstCome = 0;
+    private boolean firstCome = true;
 
     //开始首页动画
 //    private int animationShowNow = 0;
@@ -105,9 +105,9 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (firstCome == 0) {
+        if (firstCome) {
             mHandler.sendEmptyMessageDelayed(SHOW_START_ANIMATION, 500);
-            firstCome++;
+            firstCome = false;
         }
     }
 
@@ -492,14 +492,19 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private AnimatorSet animationSet;
     private ObjectAnimator anim1;
     private ObjectAnimator anim2;
+    private int lineStartPlace;
+    private int lineEndPlace;
 
     private void showLineAnimation() {
-        animationSet = new AnimatorSet();
-        int start = mIconView.getTop() - mLineView.getHeight();
-        int end = mIconView.getBottom() + mLineView.getHeight();
+        if (animationSet == null) {
+            animationSet = new AnimatorSet();
+        }
+
+        lineStartPlace = mIconView.getTop() - mLineView.getHeight();
+        lineEndPlace = mIconView.getBottom() + mLineView.getHeight();
 
         anim1 = ObjectAnimator.ofFloat(mLineView,
-                "y", start, end);
+                "y", lineStartPlace, lineEndPlace);
         anim1.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -516,7 +521,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         anim1.setDuration(1000);
 
         anim2 = ObjectAnimator.ofFloat(mLineView2,
-                "y", end, start);
+                "y", lineEndPlace, lineStartPlace);
         anim2.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

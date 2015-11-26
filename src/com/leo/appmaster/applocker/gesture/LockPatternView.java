@@ -971,8 +971,9 @@ public class LockPatternView extends ViewGroup {
         // report pattern detected
         if (!mPattern.isEmpty()) {
             mPatternInProgress = false;
-            notifyPatternDetected();
+            //3.1 , 解锁成功后，没有换图标就解锁成功进入了
             invalidate();
+            notifyPatternDetected();
         }
         if (PROFILE_DRAWING) {
             if (mDrawingProfilingStarted) {

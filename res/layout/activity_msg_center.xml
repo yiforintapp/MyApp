@@ -10,8 +10,8 @@
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cb"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:background="@color/cb" />
 
     <ListView
         android:id="@+id/msg_center_lv"
@@ -43,12 +43,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/mc_empty_tv1_top_margin"
+            android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
             android:includeFontPadding="false"
             android:text="@string/msg_center_empty"
             android:textColor="@color/mc_empty_tips"
-            android:textSize="17dp" />
+            android:textSize="@dimen/kongbaiye_text_size" />
 
         <TextView
             android:layout_width="match_parent"

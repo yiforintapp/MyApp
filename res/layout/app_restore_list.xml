@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/just_nothing_show_iv"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/no_app_backuped"
                 android:textColor="@color/nothing_show_text"
                 android:textSize="@dimen/kongbaiye_text_size" />

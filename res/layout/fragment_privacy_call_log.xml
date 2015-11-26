@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white" >
+    android:background="@color/white">
 
     <ListView
         android:id="@+id/contactLV"
@@ -10,12 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
-        android:overScrollMode="never"
-        android:divider="@null"
         android:clickable="true"
-        android:scrollbars="none"
-        >
-    </ListView>
+        android:divider="@null"
+        android:overScrollMode="never"
+        android:scrollbars="none"></ListView>
 
     <RelativeLayout
         android:id="@+id/message_send_edit_parent"
@@ -24,7 +22,7 @@
         android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
         android:gravity="bottom"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/message_send_edit_text"
@@ -49,8 +47,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/privacy_default_image_width"
@@ -60,19 +57,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/privacy_default_title_margin_top"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
             android:text="@string/privacy_contact_default_text"
             android:textColor="#d3d3d4"
-            android:gravity="center_horizontal"
-            android:textSize="17dp" />
+            android:textSize="@dimen/kongbaiye_text_size" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/privacy_default_text_margin_top"
+            android:gravity="center_horizontal"
             android:text="@string/privacy_call_log_default_text"
             android:textColor="#d3d3d4"
-            android:gravity="center_horizontal"
             android:textSize="15dp" />
     </LinearLayout>
 

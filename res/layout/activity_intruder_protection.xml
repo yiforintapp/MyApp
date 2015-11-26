@@ -66,7 +66,7 @@
                 android:gravity="center"
                 android:text="@string/intruder_nobody_tips"
                 android:textColor="#cbcbcb"
-                android:textSize="12dp" />
+                android:textSize="@dimen/kongbaiye_text_size" />
 
             <ImageView
                 android:id="@+id/iv_nopic"
