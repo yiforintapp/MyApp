@@ -15,8 +15,6 @@
  *******************************************************************************/
 package com.leo.imageloader.utils;
 
-import android.database.Cursor;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;

@@ -28,7 +28,6 @@ import com.leo.tools.animator.ValueAnimator;
  * @author qili
  */
 public class WifiTabFragment extends Fragment {
-    private static final String TAG = "WifiTabFragment";
     private static final int PING_LOST = 30 * 1000;
     public final static int CONNECT_STATUS = 1;
     public final static int SECOND_CONNECT = 2;
@@ -37,7 +36,6 @@ public class WifiTabFragment extends Fragment {
     public final static int GO_TO_RESULT_PAGE = 5;
     public final static int STOP_SCAN = 6;
     public final static int CHECK_PING_STATE = 7;
-    private static final String PINGHOST = "ping_host";
     String[] PING_DEFAULT_HOST = {
             "www.google.com",
             "www.apple.com",

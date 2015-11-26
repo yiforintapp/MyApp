@@ -1,15 +1,13 @@
 package com.leo.appmaster.wifiSecurity;
 
 import java.lang.ref.WeakReference;
-import java.util.Dictionary;
-import java.util.Hashtable;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +29,6 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -41,22 +38,18 @@ import com.mobvista.sdk.m.core.entity.Campaign;
  * Created by qili on 15-10-27.
  */
 public class WifiResultFrangment extends Fragment implements View.OnClickListener {
-    private Dictionary<Integer, Integer> listViewItemHeights = new Hashtable<Integer, Integer>();
     private WifiSecurityActivity mActivity;
     private View mRootView, mSafeView, mUnsafeView, mBottomView;
-    private View mPingView;
     private View mUnsafeViewBottom;
     private RippleView1 mTrafficBtn, mOtherWifiBtn;
     protected LockManager mLockManager;
-    private boolean mZeroLoadState, mOneLoadState, mTwoLoadState, mThridLoadState, mFourLoadState;
+    private boolean  mOneLoadState, mTwoLoadState, mThridLoadState, mFourLoadState;
     private ImageView mOneImg, mTwoImg, mThreeImg, mFourImg;
-    private int mToolbarHeight;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity = (WifiSecurityActivity) activity;
-        mToolbarHeight = activity.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
     }
 
     @Override
@@ -102,7 +95,6 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         mOtherWifiBtn = (RippleView1) mRootView.findViewById(R.id.wifi_resulte_other_wifi);
         mOtherWifiBtn.setOnClickListener(this);
 
-        mPingView = mUnsafeView.findViewById(R.id.unsafe_ping_result);
         mOneImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_is_connect_icon);
         mTwoImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_second_connect_icon);
         mThreeImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_ssl_icon);
@@ -218,13 +210,6 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, adView);
     }
 
-    private void displayImage(ImageView view, String uri) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .cacheOnDisk(true).build();
-        ImageLoader.getInstance().displayImage(uri, view, options);
-    }
-
     public void showTab(boolean isWifiSafe, boolean isWifiConnect) {
         down2Up(isWifiSafe, isWifiConnect);
     }
@@ -232,7 +217,6 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     public void showTab(boolean isWifiSafe, boolean isWifiConnect, boolean mPingOk,
                         boolean mOneState, boolean mTwoState,
                         boolean mThridState, boolean mFourState) {
-        mZeroLoadState = mPingOk;
         down2Up(isWifiSafe, isWifiConnect);
         mOneLoadState = mOneState;
         mTwoLoadState = mTwoState;

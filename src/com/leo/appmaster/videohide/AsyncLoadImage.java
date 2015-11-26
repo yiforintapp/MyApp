@@ -5,7 +5,6 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;

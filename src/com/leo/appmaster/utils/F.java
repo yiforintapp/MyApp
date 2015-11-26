@@ -17,7 +17,6 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Random;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -28,9 +27,7 @@ import android.os.Environment;
 import android.os.StatFs;
 
 public class F {
-	
-	private final static String TAG = "SDKFileUtil";
-	
+		
     /**
      * 判读字符串s是否是null或者长度为0
      * 

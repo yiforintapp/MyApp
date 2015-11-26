@@ -26,8 +26,6 @@ import org.apache.http.params.HttpConnectionParams;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.Tag;
-import android.util.Log;
 
 import com.leo.appmaster.Constants;
 

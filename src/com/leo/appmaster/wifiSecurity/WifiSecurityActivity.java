@@ -1,7 +1,6 @@
 package com.leo.appmaster.wifiSecurity;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -28,14 +27,13 @@ import com.leo.tools.animator.ObjectAnimator;
  * Created by qili on 15-10-16.
  */
 public class WifiSecurityActivity extends BaseFragmentActivity implements View.OnClickListener {
-    private static final int SHOWANIMATION = 33;
     private static final int SHOW_START_ANIMATION = 34;
     public final static int WIFI_CHANGE = 1;
     public final static int BACK_PRESS = 2;
     public final static int SCAN_DONE = 3;
     public final static int GO_TO_SETTING = 4;
     private View contentView, resultContentView, mSmallBossView;
-    private ImageView mSmallView, mLineView, mLineView2, mIconView;
+    private ImageView  mLineView, mLineView2, mIconView;
     private ImageView mSmallViewFlash;
     private TextView mWifiName;
     private ImageView resultIconView;
@@ -47,11 +45,9 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private boolean isScanDone = false;
     private WifiTabFragment wifiFragment;
     private WifiResultFrangment wifiResultFrangment;
-    private AnimationDrawable animationDrawable;
     private long lastTimeIn;
-    //    private ImageView mExpandView, mExpandView2;
-    private boolean isConnect, oneState, twoState, threeState, fourState, isSafe;
     private boolean firstCome = true;
+    private boolean isSafe;
 
     //开始首页动画
 //    private int animationShowNow = 0;
@@ -128,7 +124,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         resultSmallTv = (TextView) resultContentView.findViewById(R.id.wifi_sma_text);
         resultIconView = (ImageView) resultContentView.findViewById(R.id.wifi_result_icon);
 
-        mSmallView = (ImageView) findViewById(R.id.wifi_flash);
         mSmallViewFlash = (ImageView) findViewById(R.id.wifi_flash2);
 //        mSmallView.setImageResource(R.drawable.wifiscan_animation);
 //        animationDrawable = (AnimationDrawable) mSmallView.getDrawable();
@@ -681,11 +676,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     public void scanDone(boolean wifiSafe, boolean isConnect, boolean mPingOk,
                          boolean mOneState, boolean mTwoState,
                          boolean mThreeState, boolean mFourState) {
-        this.isConnect = isConnect;
-        oneState = mOneState;
-        twoState = mTwoState;
-        threeState = mThreeState;
-        fourState = mFourState;
         isSafe = wifiSafe;
         //1,showResultFragment
         if (wifiSafe) {

@@ -9,7 +9,6 @@ import java.util.List;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
-import android.util.Log;
 
 public class ProcessUtils {
 
@@ -20,7 +19,7 @@ public class ProcessUtils {
 		for (RunningAppProcessInfo runningAppProcessInfo : list) {
 			String[] pkgs = runningAppProcessInfo.pkgList;
 			for (String pkg : pkgs) {
-				if (pkgs.equals(name))
+				if (pkg.equals(name))
 					return true;
 			}
 		}

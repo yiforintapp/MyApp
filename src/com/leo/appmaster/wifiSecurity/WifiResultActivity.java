@@ -1,7 +1,6 @@
 package com.leo.appmaster.wifiSecurity;
 
 import android.content.Intent;
-import android.graphics.Shader;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Pair;
@@ -21,17 +20,13 @@ import com.leo.appmaster.ui.dialog.OneButtonDialog;
  * Created by qili on 15-10-21.
  */
 public class WifiResultActivity extends BaseActivity implements View.OnClickListener {
-    private static final int UNSAFEPAGE = 1;
-    private static final int SAFEPAGE = 2;
-    private Shader mBgShader;
-    private TextView bigText, smallText, sureText, otherWiFiClick;
+    private TextView bigText, smallText;
     private boolean isConnect, oneState, twoState, threeState, fourState, isSafe;
     private CommonToolbar mTitleBar;
     private ImageView bigViewIcon;
     private View safeView, unsafeView, mTopViewBackground, unsafeBottomView;
     private ImageView mOneLoad, mTwoLoad, mThreeLoad, mFourLoad;
     private OneButtonDialog selectWifiDialog;
-    private Pair<Integer, Integer> mColorPair;
     private RippleView1 mProcessBtn, mOtherWifiBtn;
 
     @Override
@@ -115,7 +110,6 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
             mFourLoad = (ImageView) unsafeView.findViewById(R.id.unsafe_wifi_pas_type_icon);
 
             setImageState();
-            mColorPair = getColorPairByScore(UNSAFEPAGE);
         } else {
 
             mTopViewBackground.setBackgroundColor(getResources().getColor(R.color.cb));
@@ -125,7 +119,6 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
             bigViewIcon.setImageResource(R.drawable.wifisafety);
             safeView.setVisibility(View.VISIBLE);
             unsafeView.setVisibility(View.GONE);
-            mColorPair = getColorPairByScore(SAFEPAGE);
         }
 
 

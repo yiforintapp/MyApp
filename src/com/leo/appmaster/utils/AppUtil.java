@@ -1,6 +1,11 @@
 
 package com.leo.appmaster.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -20,22 +25,13 @@ import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.android.volley.ParseError;
-import com.android.volley.Response;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-
 public class AppUtil {
-    private static final String TAG = "AppUtil";
     public static final float SPL_SHARE_SCALE_X = 1.0f;
     public static final float SPL_SHARE_SCALE_Y = 1.0f;
 

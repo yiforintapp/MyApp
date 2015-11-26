@@ -16,13 +16,11 @@
 
 package com.leo.imageloader.core;
 
-import android.util.Log;
-
-import com.leo.imageloader.DisplayImageOptions;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
+
+import com.leo.imageloader.DisplayImageOptions;
 
 /**
  * Provides retrieving of {@link InputStream} of image by URI.<br />

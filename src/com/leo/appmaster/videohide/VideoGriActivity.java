@@ -17,7 +17,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
@@ -89,7 +88,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
 
     private mInterface mService;
     private ServiceConnection mConnection;
-    private int mCbVersionCode = -1;
     private boolean isCbHere = false;
     private boolean isServiceDo = false;
     private boolean isBindServiceOK = false;
@@ -258,7 +256,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             String packNameString = packageInfo.packageName;
             if (packNameString.equals(VideoHideMainActivity.CB_PACKAGENAME)) {
                 isCbHere = true;
-                mCbVersionCode = packageInfo.versionCode;
             }
         }
     }

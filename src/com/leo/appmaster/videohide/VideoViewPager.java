@@ -12,7 +12,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -30,10 +29,8 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -73,7 +70,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
     private mInterface mService;
     private ServiceConnection mConnection;
-    private int mCbVersionCode = -1;
     private boolean isCbHere = false;
     private String mLastName;
     private String mSecondName;
@@ -491,7 +487,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             String packNameString = packageInfo.packageName;
             if (packNameString.equals(VideoHideMainActivity.CB_PACKAGENAME)) {
                 isCbHere = true;
-                mCbVersionCode = packageInfo.versionCode;
             }
         }
     }
@@ -573,20 +568,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         }
     }
 
-    /**
-     * There are this App
-     */
-    private boolean isVideo(String packageName) {
-        boolean flag = false;
-        ArrayList<AppItemInfo> appInfo = AppLoadEngine.getInstance(this).getAllPkgInfo();
-        for (AppItemInfo appDetailInfo : appInfo) {
-            String pn = appDetailInfo.packageName;
-            if (pn.equals(packageName)) {
-                return flag = true;
-            }
-        }
-        return flag;
-    }
 
     /**
      * ViewPagerAdapter PagerAdapter
@@ -621,8 +602,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     null);
             ImageView imageView = (ImageView) view.findViewById(R.id.zoom_image_view);
             imageView.setTag(path);
-            ImageView imageViewT = imageView;
-            String pathT = path;
             imageView.setImageDrawable(VideoViewPager.this.getResources()
                     .getDrawable(R.drawable.video_loading));
             String filePath = "voidefile://" + path;

@@ -334,7 +334,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mLockType = LOCK_TYPE_NONE;
 
     private boolean mLaunchOtherApp = false;
-    private boolean mUnlocked = false;
+    private boolean mUnlocked = true;
     private String mDoubleCheck = null;
     private boolean mFromOther = false;
 
