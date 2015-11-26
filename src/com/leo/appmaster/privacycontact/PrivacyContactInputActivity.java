@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.baidu.mobstat.e;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
@@ -46,8 +47,10 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class PrivacyContactInputActivity extends BaseActivity {
+    private static final String TAG = "PrivacyContactInputActivity";
     private CommonToolbar mTtileBar;
     private EditText mNameEt, mNumberEt;
     private int mPhoneState = 1;
@@ -61,6 +64,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private TextView mPhoneNumberShow;
     private Handler mHandler;
     private int mMsmCount, mCallCount;
+    private AddFromContactHandler mAddFromContactHandler = new AddFromContactHandler();
 
     public static final String TO_CONTACT_LIST = "to_contact_list";
     private boolean mToContactList = false;
@@ -273,8 +277,9 @@ public class PrivacyContactInputActivity extends BaseActivity {
                         };
                     }
                     showProgressDialog(privacyTotal, 0);
-                    QueryLogAsyncTask task = new QueryLogAsyncTask();
-                    task.execute(true);
+//                    QueryLogAsyncTask task = new QueryLogAsyncTask();
+//                    task.execute(true);
+                    sendMsgHandler();
                 } else if (which == 0) {
                     /* SDK */
                     SDKWrapper.addEvent(PrivacyContactInputActivity.this, SDKWrapper.P1,
@@ -290,6 +295,121 @@ public class PrivacyContactInputActivity extends BaseActivity {
         mAddCallLogDialog.setTitle(title);
         mAddCallLogDialog.setContent(content);
         mAddCallLogDialog.show();
+    }
+
+    private class AddFromContactHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case PrivacyContactUtils.MSG_AUTO_ADD_QU:
+                    if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
+                        String eventMsg = PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT;
+                        PrivacyEditFloatEvent editEvent = new PrivacyEditFloatEvent(eventMsg);
+                        LeoEventBus.getDefaultBus().post(editEvent);
+                    }
+
+                    if (mAddMessages != null && mAddMessages.size() != 0) {
+                        String eventMsg = PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT;
+                        PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(eventMsg);
+                        LeoEventBus.getDefaultBus().post(event);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendMsgHandler() {
+        if (mAddFromContactHandler != null) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    LeoLog.i(TAG,"import logs !");
+                    int count = 0;
+                    ContentResolver cr = getContentResolver();
+                    queryCallsMsms(mPhoneNumber);
+                    /*导入短信和通话记录*/
+                    if (mAddMessages != null && mAddMessages.size() != 0) {
+                        for (MessageBean message : mAddMessages) {
+                            String contactNumber = message.getPhoneNumber();
+                            String number = PrivacyContactUtils.deleteOtherNumber(contactNumber);
+                            // String name = message.getMessageName();
+                            String name = null;
+                            if (mPhoneName != null && !"".equals(mPhoneName)) {
+                                name = mPhoneName;
+                            } else {
+                                name = mPhoneNumber;
+                            }
+                            String body = message.getMessageBody();
+                            String time = message.getMessageTime();
+                            String threadId = message.getMessageThreadId();
+                            int isRead = 1;// 0未读，1已读
+                            int type = message.getMessageType();// 短信类型1是接收到的，2是已发出
+                            ContentValues values = new ContentValues();
+                            values.put(Constants.COLUMN_MESSAGE_PHONE_NUMBER, number);
+                            values.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, name);
+                            String bodyTrim = body.trim();
+                            values.put(Constants.COLUMN_MESSAGE_BODY, bodyTrim);
+                            values.put(Constants.COLUMN_MESSAGE_DATE, time);
+                            int thread = PrivacyContactUtils.queryContactId(
+                                    PrivacyContactInputActivity.this, message.getPhoneNumber());
+                            values.put(Constants.COLUMN_MESSAGE_THREAD_ID, thread);
+                            values.put(Constants.COLUMN_MESSAGE_IS_READ, isRead);
+                            values.put(Constants.COLUMN_MESSAGE_TYPE, type);
+                            Uri messageFlag = cr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+                            PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
+                                    new String[]{
+                                            number
+                                    }, PrivacyContactInputActivity.this);
+                            if (messageFlag != null) {
+                                Message messge = new Message();
+                                count = count + 1;
+                                messge.what = count;
+                                mHandler.sendMessage(messge);
+                            }
+                        }
+                    }
+
+                    /*导入通话记录*/
+                    if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
+                        for (ContactCallLog calllog : mAddCallLogs) {
+                            String number = calllog.getCallLogNumber();
+                            // String name = calllog.getCallLogName();
+                            String name = null;
+                            if (mPhoneName != null && !"".equals(mPhoneName)) {
+                                name = mPhoneName;
+                            } else {
+                                name = mPhoneNumber;
+                            }
+                            String date = calllog.getClallLogDate();
+                            int type = calllog.getClallLogType();
+                            ContentValues values = new ContentValues();
+                            values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER, number);
+                            values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, name);
+                            values.put(Constants.COLUMN_CALL_LOG_DATE, date);
+                            values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
+                            values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                            values.put(Constants.COLUMN_CALL_LOG_DURATION, calllog.getCallLogDuraction());
+                            Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
+
+                            PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
+                                    PrivacyContactInputActivity.this);
+                            if (callLogFlag != null) {
+                                Message messge = new Message();
+                                count = count + 1;
+                                messge.what = count;
+                                mHandler.sendMessage(messge);
+                            }
+                        }
+                    }
+                    Message msg = new Message();
+                    msg.what = PrivacyContactUtils.MSG_AUTO_ADD_QU;
+                    mAddFromContactHandler.sendMessage(msg);
+                }
+            });
+        }
     }
 
     private class QueryLogAsyncTask extends AsyncTask<Boolean, Integer, Integer> {
