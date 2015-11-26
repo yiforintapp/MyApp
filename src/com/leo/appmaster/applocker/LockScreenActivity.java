@@ -826,21 +826,28 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockFragment = new GestureLockFragment();
         }
 
-        if (!ThemeUtils.checkThemeNeed(this)
-                && (mLockMode == LockManager.LOCK_MODE_FULL)) {
-            Drawable bd = AppUtil.getAppIcon(
-                    getPackageManager(), mLockedPackage);
-            setAppInfoBackground(bd);
-            if (mLockMode == LockManager.LOCK_MODE_FULL) {
-                if (mTtileBar == null) {
-                    mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        if (mLockMode == LockManager.LOCK_MODE_FULL) {
+            if (!ThemeUtils.checkThemeNeed(this)) {
+                Drawable bd = AppUtil.getAppIcon(
+                        getPackageManager(), mLockedPackage);
+                setAppInfoBackground(bd);
+                if (mLockMode == LockManager.LOCK_MODE_FULL) {
+                    if (mTtileBar == null) {
+                        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+                    }
+                    if (!mQuickLockMode) {
+                        setTiltleBarInfo(getPackageName());
+                    }
                 }
-                if (mQuickLockMode) {
-
-                } else {
+            } else {
+                if (!mQuickLockMode) {
+                    if (mTtileBar == null) {
+                        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+                    }
                     setTiltleBarInfo(getPackageName());
                 }
             }
+
         }
         mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
         mLockFragment.setLockMode(mLockMode);
