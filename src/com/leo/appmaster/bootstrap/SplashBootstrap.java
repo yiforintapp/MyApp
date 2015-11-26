@@ -190,8 +190,7 @@ public class SplashBootstrap extends Bootstrap {
                      */
                     String spalshBtText = response.getString(Constants.SPLASH_BUTTON_TEXT);
                     if (spalshBtText != null) {
-                        Log.d(Constants.RUN_TAG, "闪屏Button的文案：" + spalshBtText);
-                        LeoLog.d(TAG, "闪屏Button的文案：" + spalshBtText);
+                        LeoLog.i(TAG, "splash Button text：" + spalshBtText);
                     }
                     StringBuilder stringBuilder = constructionSplashFlag(startDate, imageUrl,
                             endDate, String.valueOf(splashDelayTime), splashSkipUrl,
@@ -218,7 +217,16 @@ public class SplashBootstrap extends Bootstrap {
                         if (prefInt != -1) {
                             pref.setSaveSplashIsMemeryEnough(-1);
                         }
+
+                        /*拉取的闪屏时间是否过期*/
+                        boolean isShowExpired = false;
+
                         if (!Utilities.isEmpty(endDate)) {
+                            long currentTime = System.currentTimeMillis();
+                            /*如果当前时间>结束时间，则为过期*/
+                            if (currentTime > Long.valueOf(endDate)) {
+                                isShowExpired = true;
+                            }
                             long end = 0;
                             try {
                                 end = dateFormate.parse(endDate).getTime();
@@ -227,6 +235,7 @@ public class SplashBootstrap extends Bootstrap {
                             }
                             pref.setSplashEndShowTime(end);
                         }
+
                         if (!Utilities.isEmpty(startDate)) {
                             long start = 0;
                             try {
@@ -236,7 +245,9 @@ public class SplashBootstrap extends Bootstrap {
                             }
                             pref.setSplashStartShowTime(start);
                         }
-                        if (!Utilities.isEmpty(imageUrl)) {
+
+                        if (!Utilities.isEmpty(imageUrl)
+                                && !isShowExpired) {
                             getSplashImage(imageUrl);
                         }
                         /* 闪屏跳转链接 */
