@@ -187,7 +187,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 mButton.setText(getResources().getString(R.string.secur_bottom_bt_text));
             }
         } else {
-            LeoLog.i(TAG, "默认防盗");
             toProcOne();
         }
         mSecurPhNumCv.smoothScrollTo(SCROLL_X, SCROLL_Y);
@@ -202,6 +201,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         }
         setSecurShowUI(true, false, true, false, true, false, false, true);
         mButton.setText(getResources().getString(R.string.secur_bottom_bt_text));
+        LeoLog.i(TAG, "go to 1 !");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_frt_arv");
     }
 
     /*初始化数据*/
@@ -716,6 +717,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
 
     /*进入完成页面*/
     private void toSecurFinish() {
+        LeoLog.i(TAG, "go to finish ！");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_suc_arv");
         frmScanHandler();
         LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         boolean isOpenAdvan = lostMgr.isOpenAdvanceProtect();
@@ -804,6 +807,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 mCurrentProcNumber = "2";
                 mCommonBar.setToolbarTitle(R.string.secur_advan_title);
                 mAdvanChekBox.setVisibility(View.VISIBLE);
+                LeoLog.i(TAG, "go to 2 !");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_snd_arv");
             }
         } else {
             shakeAddSecurButton(mAddNumberBt);
@@ -901,6 +906,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mButton.setText(getResources().getString(R.string.secur_bottom_bt_text));
         mCurrentProcNumber = "1";
         mAdvanChekBox.setVisibility(View.GONE);
+        LeoLog.i(TAG, "go to 1 !");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_frt_arv");
     }
 
     /*未填写防盗号码，摇晃动画*/

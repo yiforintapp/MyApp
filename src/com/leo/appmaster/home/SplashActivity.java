@@ -210,17 +210,16 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                 shareIntent.setPackage(Constants.FACEBOOK_PKG_NAME);
                 shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
-//                    startHome();
                     if (mEventHandler != null) {
                         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
                     }
-//                    finish();
                     startActivity(shareIntent);
                     mIsToFacebk = true;
                     mSplaFacRt.setOnClickListener(null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                SDKWrapper.addEvent(this, SDKWrapper.P1,"screen_cli", "share_cnts");
                 break;
             default:
                 break;
@@ -303,6 +302,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
             mSplaFacRt.setVisibility(View.VISIBLE);
             mSplaFacRt.setOnClickListener(this);
             LeoLog.i(TAG, "install facebook");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "screen_cli", "share_shw");
         } else {
             LeoLog.i(TAG, "no install facebook");
         }
