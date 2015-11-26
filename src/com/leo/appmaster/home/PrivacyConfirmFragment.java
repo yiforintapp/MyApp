@@ -666,6 +666,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     mContactBtnLt.setVisibility(View.GONE);
                     mContactBtnDiv.setVisibility(View.GONE);
                     mImpTv.setVisibility(View.GONE);
+                    ChangeContactColor();
                 } else {
                     setAddPrivacyText(false);
                 }

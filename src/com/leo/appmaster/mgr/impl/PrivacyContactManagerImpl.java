@@ -85,21 +85,9 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
             String number = PrivacyContactUtils.deleteOtherNumber(contact
                     .getContactNumber());
             Bitmap contactIcon = contact.getContactIcon();
-            // 隐私联系人去重
-            String tempNumber =
-                    PrivacyContactUtils.formatePhoneNumber(number);
-            boolean flagContact = false;
-            ArrayList<ContactBean> contacts = pcm.getPrivateContacts();
-            if (contacts != null && contacts.size() != 0
-                    && number != null && !"".equals(number)) {
-                for (ContactBean contactBean : contacts) {
-                    flagContact =
-                            contactBean.getContactNumber().contains(tempNumber);
-                    if (flagContact) {
-                        break;
-                    }
-                }
-            }
+            /*隐私联系人去重*/
+            boolean flagContact = PrivacyContactUtils.pryContRemovSame(number);
+
             if (!flagContact) {
                 ContentValues contactValues = new ContentValues();
                 contactValues.put(Constants.COLUMN_PHONE_NUMBER, number);
