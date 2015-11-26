@@ -274,7 +274,7 @@ public class DetectThreadCompat extends Thread {
         // oom_adj为0的列表
         ProcessAdj needToListenAdj = detector.getForegroundProcess();
 
-        needToListenAdj = checkSelfForeground(detector, needToListenAdj);
+//        needToListenAdj = checkSelfForeground(detector, needToListenAdj);
         if (needToListenAdj == null) return null;
         
         if (filteredLockList.isEmpty()) {
