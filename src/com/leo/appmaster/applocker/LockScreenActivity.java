@@ -2241,8 +2241,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         @Override
         public void onPageSelected(int position) {
             LeoLog.i("onPageSelected", "position=" + position);
-            if (position == 0) {
+            if (position != 1) {
                 mHandler.removeMessages(LARGE_BANNER_HIDE);
+            }
+            if (position == 0) {
                 setLockAppInfoViewVisible(false);
             } else {
                 setLockAppInfoViewVisible(true);
