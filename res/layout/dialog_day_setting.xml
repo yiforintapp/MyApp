@@ -57,6 +57,7 @@
             app:rippleColor="@color/button_blue_ripple"
             app:rippleDuration="250"
             app:rippleHover="true"
+            android:visibility="gone"
             app:rippleOverlay="true">
 
             <TextView
