@@ -278,6 +278,16 @@ public class PhoneSecurityManager {
             int[] protectTime = securMgr.getPhoneProtectTime();
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_use_onekey_$" + protectTime[0] + "d" + protectTime[1] + "h");
         } else if (SecurityInstructSet.LOCATEPOSITION.equals(body)) {
+            /*执行位置指令前，先初始化各个信息*/
+            if (mLocationManager != null) {
+                mLocationManager.removeUpdates(mLocationListener);
+                setLocationManager(null);
+            }
+            if (mLocationListener != null) {
+                mLocationListener = null;
+            }
+            PhoneSecurityManager.getInstance(mContext).setIsExecuteLocate(false);
+
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
@@ -290,14 +300,14 @@ public class PhoneSecurityManager {
             });
             mgr.executeLockLocateposition(null, false);
         } else if (SecurityInstructSet.ALERT.equals(body)) {
-                                                    /*防盗警报灰进入死循环，因此该除需要先删除短信和上报数据在执行*/
+            /*防盗警报灰进入死循环，因此该除需要先删除短信和上报数据在执行*/
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     boolean result = mgr.executeAlert(true);
                 }
             });
-                                                     /*sdk event*/
+            /*sdk event*/
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_use_alarm");
             LostSecurityManagerImpl securMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
             int[] protectTime = securMgr.getPhoneProtectTime();

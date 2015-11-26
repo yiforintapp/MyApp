@@ -274,7 +274,6 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public boolean executeLockLocateposition(String number, boolean isExecuNoMsm) {
-        PhoneSecurityManager.getInstance(mContext).setIsExecuteLocate(false);
         if (!mIsLocation) {
             LeoLog.i(TAG, "执行位置追踪指令");
             mIsLocation = true;
