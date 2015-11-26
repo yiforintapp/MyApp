@@ -733,17 +733,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
 
             // change background
-            if (!ThemeUtils.checkThemeNeed(this)
-                    && (mLockMode == LockManager.LOCK_MODE_FULL)) {
-                Drawable bd = AppUtil.getAppIcon(
-                        getPackageManager(),
-                        mLockedPackage);
-                if (bd == null) {
-                    bd = AppUtil.getAppIcon(
+            if (mLockMode == LockManager.LOCK_MODE_FULL) {
+                if (!ThemeUtils.checkThemeNeed(this)) {
+                    Drawable bd = AppUtil.getAppIcon(
                             getPackageManager(),
-                            getPackageName());
+                            mLockedPackage);
+                    if (bd == null) {
+                        bd = AppUtil.getAppIcon(
+                                getPackageManager(),
+                                getPackageName());
+                    }
+                    setAppInfoBackground(bd);
                 }
-                setAppInfoBackground(bd);
+                if (!mLockedPackage.equals(getPackageName())) {
+                    createLoackAppInfoView(mLockedPackage);
+                }
             }
 
             mLockFragment.onLockPackageChanged(mLockedPackage);
@@ -1175,9 +1179,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                     mBannerContainer.setAdapter(mAdapterCycle);
                                     if ((int) (Math.random() * (10)+1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()){
                                         mBannerContainer.setCurrentItem(1,false);
+                                        mAdapterCycle.setLasterSlectedPage(1);
                                         delayBannerHideAnim();
                                     } else {
                                         mBannerContainer.setCurrentItem(0,false);
+                                        mAdapterCycle.setLasterSlectedPage(0);
                                     }
                                 } else {
                                     mAdapterCycle.addItem(unitId);
@@ -2145,6 +2151,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         private LinkedList<View> mViews; //
         private ArrayList<String> mList; //
         private ViewPager mViewPager; //页面
+        private int lasterSlectedPage = -1; //上一次选择的页面
+
 
         public AdBannerAdapter(Context context, ViewPager viewPager,
                             ArrayList<String> list) {
@@ -2162,8 +2170,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                     for (String unitId : mList) {
                         view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
-                        setItemViewContent(view, unitId);
                         view.setTag(mViews.size());
+                        setItemViewContent(view, unitId);
+                        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
                         mViews.add(view);
                     }
 
@@ -2202,6 +2211,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             return view;
         }
 
+        public void setLasterSlectedPage (int index) {
+            lasterSlectedPage = index;
+        }
+
         private void setItemViewContent(RelativeLayout view, String unitId) {
             Campaign campaign = mAdMap.get(unitId);
             if (campaign == null) {
@@ -2211,8 +2224,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             ((TextView)view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
             ((TextView)view.findViewById(R.id.ad_details)).setText(campaign.getAppDesc());
             ((TextView)view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
-            View clickArea = view.findViewById(R.id.click_area);
-            MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, clickArea/*, mMobvistaListenerList.get(dataIndex)*/);
+            final View clickArea = view.findViewById(R.id.click_area);
+            MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, clickArea, new MobvistaListener() { //这里这个回调只是用来 打个统计点而已
+                @Override
+                public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+
+                }
+
+                @Override
+                public void onMobvistaClick(Campaign campaign) {
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picad" + ((ViewGroup) clickArea.getParent()).getTag());
+                }
+            });
             View leftArea = view.findViewById(R.id.left_click_area);
             leftArea.setOnClickListener(new OnClickListener() {
                 @Override
@@ -2252,7 +2275,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 setLockAppInfoViewVisible(false);
             } else {
                 setLockAppInfoViewVisible(true);
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_picad" + position);
             }
+            if (lasterSlectedPage >= 0) {
+                if (lasterSlectedPage < position) {
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picad_drawL");
+                } else if (lasterSlectedPage > position) {
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picad_drawR");
+                }
+            }
+            lasterSlectedPage = position;
         }
 
         @Override
@@ -2299,8 +2331,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         public void addItem(String unitId) {
             mList.add(unitId);
             RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
-            setItemViewContent(view, unitId);
             view.setTag(mViews.size());
+            setItemViewContent(view, unitId);
+            SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
             mViews.add(view);
             notifyDataSetChanged();
         }
