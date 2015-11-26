@@ -208,6 +208,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         if (args != null) {
             mShowContact = args.getBoolean(KEY_SHOW_CONTACT);
         }
+
+        int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "points", "points_sug_" + score);
     }
 
     @Override

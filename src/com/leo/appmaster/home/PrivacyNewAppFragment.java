@@ -22,6 +22,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
 

@@ -1036,8 +1036,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
                 mDragHelper.setDragState(ViewDragHelper.STATE_IDLE);
                 setPanelState(PanelState.EXPANDED);
                 clickToExpand = true;
-            } else {
-                setPanelState(PanelState.COLLAPSED);
             }
             mTouchOutSize = false;
             mTouchTapLeftOrRight = false;

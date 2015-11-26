@@ -12,6 +12,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -113,6 +114,7 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
         }
         if (mActivity.shownIgnoreDlg()) {
             mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_direct");
         } else {
             mIgnoreDlg.show();
             mActivity.setShownIngoreDlg();

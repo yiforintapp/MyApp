@@ -110,6 +110,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private HomePrivacyFragment mPrivacyFragment;
     private HomeTabFragment mTabFragment;
     private HomeScanningFragment mScanningFragment;
+    private Fragment mCurrentFragment;
     private PrivacyHelper mPrivacyHelper;
     private boolean mProcessAlreadyTimeout;
     private int mProcessedScore;
@@ -335,6 +336,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     } catch (Exception e) {
                     }
                 }
+                mCurrentFragment = mScanningFragment;
             }
         }
     }
@@ -360,7 +362,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     public void onExitScanning() {
         if (mTabFragment.isTabDismiss()) {
             LeoLog.d(TAG, "onExitScanning...");
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "scan", "cancel");
+            reportFragmentExit();
             mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
                 @Override
                 public void onShowTabListener() {
@@ -427,23 +429,30 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         FragmentTransaction ft = fm.beginTransaction();
         ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);
         if (mAppList != null && mAppList.size() > 0) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "app_arv");
             PrivacyNewFragment fragment = PrivacyNewAppFragment.newInstance();
             ft.replace(R.id.pri_pro_content, fragment);
             fragment.setData(mAppList);
             mAppList = null;
+            mCurrentFragment = fragment;
         } else if (mPhotoList != null && mPhotoList.size() > 0) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "pic_arv");
             Fragment fragment = PrivacyNewPicFragment.getFragment(mPhotoList);
             ft.replace(R.id.pri_pro_content, fragment);
             mPhotoList = null;
+            mCurrentFragment = fragment;
         } else if (mVideoList != null && mVideoList.size() > 0) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "vid_arv");
             Fragment fragment = PrivacyNewVideoFragment.getFragment(mVideoList);
             ft.replace(R.id.pri_pro_content, fragment);
             mVideoList = null;
+            mCurrentFragment = fragment;
         } else {
             mPrivacyFragment.startFinalAnim();
             PrivacyConfirmFragment fragment = PrivacyConfirmFragment.newInstance(mShowContact);
             fragment.setDataList(mContactList);
             ft.replace(R.id.pri_pro_content, fragment);
+            mCurrentFragment = fragment;
         }
         ft.addToBackStack(null).commit();
     }
@@ -561,6 +570,23 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         try {
             super.onRestoreInstanceState(savedInstanceState);
         } catch (Exception e) {
+        }
+    }
+
+    private void reportFragmentExit() {
+        int score = mPrivacyHelper.getSecurityScore();
+        if (mCurrentFragment instanceof HomeScanningFragment) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "scan", "cancel");
+        } else if (mCurrentFragment instanceof PrivacyNewAppFragment) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "points", "points_app_" + score);
+        } else if ((mCurrentFragment instanceof PrivacyNewPicFragment) ||
+                (mCurrentFragment instanceof FolderPicFragment)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "points", "points_pic_" + score);
+        } else if ((mCurrentFragment instanceof PrivacyNewVideoFragment ||
+                mCurrentFragment instanceof FolderVidFragment)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "points", "points_vid_" + score);
+        } else if (mCurrentFragment instanceof PrivacyConfirmFragment) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "points", "points_fsh_" + score);
         }
     }
 

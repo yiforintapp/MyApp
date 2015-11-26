@@ -19,6 +19,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.PrefConst;
@@ -173,9 +174,12 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
     }
 
     @Override
-    protected void onIgnoreClick() {
+    protected void onIgnoreClick(boolean direct) {
         mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_cnts");
+        if (direct) {
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_direct");
+        }
     }
 
     @Nullable

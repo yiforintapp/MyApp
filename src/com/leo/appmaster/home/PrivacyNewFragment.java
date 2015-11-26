@@ -125,7 +125,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
 
     }
 
-    protected void onIgnoreClick() {
+    protected void onIgnoreClick(boolean direct) {
         mActivity.onIgnoreClick(0, null);
     }
 
@@ -147,26 +147,6 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
 
         return textView;
     }
-
-//    @Override
-//    public void onRippleComplete(RippleView rippleView) {
-//        switch (rippleView.getId()) {
-//            case R.id.pp_process_rv:
-//                onProcessClick();
-//                break;
-//            case R.id.pp_process_ignore_rv:
-//                if (mIgnoreDlg == null) {
-//                    initIgnoreDlg();
-//                }
-//                if (mActivity.shownIgnoreDlg()) {
-//                    onIgnoreClick();
-//                } else {
-//                    mIgnoreDlg.show();
-//                    mActivity.setShownIngoreDlg();
-//                }
-//                break;
-//        }
-//    }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -196,7 +176,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
                     initIgnoreDlg();
                 }
                 if (mActivity.shownIgnoreDlg()) {
-                    onIgnoreClick();
+                    onIgnoreClick(true);
                 } else {
                     mIgnoreDlg.show();
                     mActivity.setShownIngoreDlg();
@@ -251,7 +231,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", getSkipConfirmDesc());
-                onIgnoreClick();
+                onIgnoreClick(false);
                 mIgnoreDlg.dismiss();
             }
         });

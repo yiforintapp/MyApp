@@ -12,6 +12,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.videohide.VideoItemBean;
@@ -85,6 +86,7 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
         }
         if (mActivity.shownIgnoreDlg()) {
             mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_direct");
         } else {
             mIgnoreDlg.show();
             mActivity.setShownIngoreDlg();
