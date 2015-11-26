@@ -153,6 +153,7 @@ public class GestureSettingFragment extends BaseFragment implements
         } else {
             mTempGesture2 = LockPatternUtils.patternToString(pattern);
             if (mTempGesture2.equals(mTempGesture1)) {
+                mLockPatternView.setDisplayMode(DisplayMode.Correct);
                 AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
                 if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     SDKWrapper.addEvent(GestureSettingFragment.this.mActivity, SDKWrapper.P1,

@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.intruderprotection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.hardware.Camera.Size;
 import android.os.Build;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
@@ -69,16 +71,43 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
 //            }
         }
         
-        int normalQualityLevel = Sizes.size() / 2;
+       // 宽高差距大接近屏幕差距  //尺寸最好在1280以下
         
-        if(Sizes.get(normalQualityLevel).height > 1280 || (Math.max(Sizes.get(normalQualityLevel).height, Sizes.get(normalQualityLevel).width) / Math.min(Sizes.get(normalQualityLevel).height, Sizes.get(normalQualityLevel).width) < 1.5)) {
-            if((normalQualityLevel - 1 >= 0) && (Sizes.get(normalQualityLevel - 1).height < Sizes.get(normalQualityLevel).height)) {
-                normalQualityLevel -- ;
-            } else if ((normalQualityLevel + 1 <= Sizes.size()) && (Sizes.get(normalQualityLevel + 1).height < Sizes.get(normalQualityLevel).height)) {
-                normalQualityLevel ++ ;
-            }
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        int width = wm.getDefaultDisplay().getWidth();
+        int height = wm.getDefaultDisplay().getHeight();
+        float HWRate = (float)height / (float)width;
+        int finalIndex = 0;
+        ArrayList<Integer> indexsWhichWidthLessThan1280 = new ArrayList<Integer>();
+        
+        for (int i = 0; i < Sizes.size(); i++) {
+            if (Sizes.get(i).width <= 1280) {
+                indexsWhichWidthLessThan1280.add(i);
+            } 
         }
-        parameters.setPictureSize(Sizes.get(normalQualityLevel).width,Sizes.get(normalQualityLevel).height);  // 使用中等档次的照相品质
+        
+        if(indexsWhichWidthLessThan1280.size() == 0) {
+            int normalQualityLevel = Sizes.size() / 2;
+            if(Sizes.get(normalQualityLevel).height > 1280 || (Math.max(Sizes.get(normalQualityLevel).height, Sizes.get(normalQualityLevel).width) / Math.min(Sizes.get(normalQualityLevel).height, Sizes.get(normalQualityLevel).width) < 1.5)) {
+                if((normalQualityLevel - 1 >= 0) && (Sizes.get(normalQualityLevel - 1).height < Sizes.get(normalQualityLevel).height)) {
+                    normalQualityLevel -- ;
+                } else if ((normalQualityLevel + 1 <= Sizes.size()) && (Sizes.get(normalQualityLevel + 1).height < Sizes.get(normalQualityLevel).height)) {
+                    normalQualityLevel ++ ;
+                }
+            }
+            finalIndex = normalQualityLevel;
+        } else {
+            int tempFitestRateIndex = 0;
+            for (int j = 0; j < indexsWhichWidthLessThan1280.size(); j++) {
+                float rate = (float)Sizes.get(indexsWhichWidthLessThan1280.get(j)).width / (float)Sizes.get(indexsWhichWidthLessThan1280.get(j)).height;
+                LeoLog.i("poha", "1280以下： " +indexsWhichWidthLessThan1280.get(j)+ "   height :" + Sizes.get(indexsWhichWidthLessThan1280.get(j)).height + "  width : "+ Sizes.get(indexsWhichWidthLessThan1280.get(j)).width +"rate = "+rate);
+                if (Math.abs(rate - HWRate) < Math.abs(((float)Sizes.get(tempFitestRateIndex).width / (float)Sizes.get(tempFitestRateIndex).height) - HWRate)) {
+                    tempFitestRateIndex = indexsWhichWidthLessThan1280.get(j);
+                }
+            }
+            finalIndex = tempFitestRateIndex;
+        }
+        parameters.setPictureSize(Sizes.get(finalIndex).width,Sizes.get(finalIndex).height);  // 使用中等档次的照相品质
         mCamera.setParameters(parameters);
         Size pictureSize = parameters.getPictureSize();
         LeoLog.i("poha", "照相机实际的分辨率： " + "height :" + pictureSize.height + "  width : "+ pictureSize.width);
