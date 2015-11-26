@@ -1,8 +1,5 @@
 package com.leo.appmaster.schedule;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 
 import com.android.volley.VolleyError;
@@ -12,16 +9,19 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * Created by forint on 15-11-18.
  */
 public class SwiftyFetchJob extends FetchScheduleJob {
-
+    private static final String TAG = "SwiftyFetchJob";
 
     @Override
     protected void work() {
-
+        LeoLog.i(getJobKey(), "do work.....");
         Context ctx = AppMasterApplication.getInstance();
 
         FetchScheduleListener listener = newJsonArrayListener();
@@ -31,7 +31,7 @@ public class SwiftyFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchFail(VolleyError error) {
         super.onFetchFail(error);
-        LeoLog.i("loadSwiftySecurity", "onFetchFail");
+        LeoLog.i(getJobKey(), "onFetchFail, error: " + (error == null ? null : error.toString()));
     }
 
     @Override
@@ -39,6 +39,7 @@ public class SwiftyFetchJob extends FetchScheduleJob {
         super.onFetchSuccess(response, noMidify);
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         if (response == null) {
+            LeoLog.i(TAG, "response: " + response);
             preferenceTable.putString(PrefConst.KEY_SWIFTY_CONTENT, "");
             preferenceTable.putString(PrefConst.KEY_SWIFTY_GP_URL, "");
             preferenceTable.putString(PrefConst.KEY_SWIFTY_IMG_URL, "");
