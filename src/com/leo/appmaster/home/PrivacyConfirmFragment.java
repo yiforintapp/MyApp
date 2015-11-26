@@ -352,7 +352,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                         }
                     }, 500);
                 }
-            }, 500);
+            }, 350);
         } else {
             updatePanelVisibility();
         }

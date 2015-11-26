@@ -9,9 +9,9 @@
         android:id="@+id/pri_confirm_sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_height"
         android:background="@color/transparent"
         android:overScrollMode="never"
-        android:layout_marginTop="@dimen/toolbar_height"
         android:paddingBottom="63dp"
         android:scrollbars="none">
 
@@ -47,18 +47,18 @@
                 android:background="@color/c4" />
 
             <View
-                android:background="@color/pri_pro_list_bg"
-                android:layout_below="@id/pri_con_header"
                 android:layout_width="match_parent"
-                android:layout_height="600dp" />
+                android:layout_height="600dp"
+                android:layout_below="@id/pri_con_header"
+                android:background="@color/pri_pro_list_bg" />
 
             <ViewStub
                 android:id="@+id/list_parent_layout_stub"
-                android:layout="@layout/pri_con_list_stub"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/pri_con_header"
-                android:background="@color/pri_pro_list_bg"/>
+                android:background="@color/pri_pro_list_bg"
+                android:layout="@layout/pri_con_list_stub" />
 
         </RelativeLayout>
     </ScrollView>
