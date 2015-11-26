@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
 
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
 import com.leo.appmaster.home.HomeActivity;
@@ -239,15 +240,27 @@ public class AppMasterApplication extends Application {
      * @return
      */
     public boolean isHomeOnTopAndBackground() {
-        if (!sResumedList.isEmpty() // resume list 不为空，说明在前台
-                || sActivityList.isEmpty() || sActivityList.size() > 1) {
+        if (!sResumedList.isEmpty() || sActivityList.isEmpty()) {
+            // resume list 不为空，说明在前台
+            // activity list 为空，说明所有activity被销毁
             return false;
         }
 
-        WeakReference<Activity> reference = sActivityList.get(0);
-        Activity activity = reference.get();
-        if (activity != null && (activity instanceof HomeActivity)) {
-            return true;
+        if (sActivityList.size() == 1) {
+            WeakReference<Activity> reference = sActivityList.get(0);
+            Activity activity = reference.get();
+            if (activity != null && (activity instanceof HomeActivity)) {
+                return true;
+            }
+        } else if (sActivityList.size() > 1) {
+            WeakReference<Activity> reference0 = sActivityList.get(0);
+            WeakReference<Activity> reference1 = sActivityList.get(1);
+            Activity activity0 = reference0.get();
+            Activity activity1 = reference1.get();
+            if (activity0 != null && (activity0 instanceof HomeActivity)
+                    && activity1 != null && (activity1 instanceof LockScreenActivity)) {
+                return true;
+            }
         }
 
         return false;
