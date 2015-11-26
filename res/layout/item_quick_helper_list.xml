@@ -44,18 +44,18 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="13dp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="75dp"
             android:layout_marginRight="100dp"
-            android:orientation="vertical"
-            android:paddingTop="10dp">
+            >
 
             <TextView
+                android:layout_marginTop="12dp"
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
                 android:gravity="bottom"
                 android:text="1dfadfadfa"
                 android:textColor="#333333"
@@ -63,13 +63,14 @@
 
             <TextView
                 android:id="@+id/tv_desc"
+                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="top"
+                android:gravity="center_vertical"
                 android:maxLines="2"
-                android:text="dasfdsafdaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                android:text="dasfdsafddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                 android:textSize="12dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <com.leo.appmaster.ui.RippleView1
             android:id="@+id/rv_add"
