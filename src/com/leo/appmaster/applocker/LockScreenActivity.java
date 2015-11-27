@@ -246,7 +246,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_layout);
-        LeoLog.e("LockScreenActivity", "onCreate");
+        LeoLog.d(TAG, "onCreate...");
         mISManager = (IntrudeSecurityManager) MgrContext
                 .getManager(MgrContext.MGR_INTRUDE_SECURITY);
         mPt = PreferenceTable.getInstance();
@@ -467,10 +467,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onResume() {
+        LeoLog.d(TAG, "onResume...");
         mCanTakePhoto = true;
         whichTypeShow();
-        LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
-                + ":current ad show type");
 
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
@@ -691,7 +690,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      */
     @Override
     protected void onNewIntent(Intent intent) {
-
+        LeoLog.d(TAG, "onNewIntent...");
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
             finish();
@@ -986,7 +985,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LeoLog.d("LockScreenActivity", "onDestroy");
+        LeoLog.d(TAG, "onDestroy...");
         LeoEventBus.getDefaultBus().unregister(this);
         mLockFragment.setShowText(false);
 

@@ -390,9 +390,9 @@ public class HomeAnimShieldLayer extends AnimLayer {
             mScoreMatrix.setScale(finalTextRatio, finalTextRatio, mShieldPx, mShieldPy);
             mScoreMatrix.postTranslate(0, -shieldOffsetY);
             canvas.setMatrix(mScoreMatrix);
-            mTextPaint.setShadowLayer(SHADOW_RADIUS, 0, SHADOW_Y, SHADOW_COLOR);
+//            mTextPaint.setShadowLayer(SHADOW_RADIUS, 0, SHADOW_Y, SHADOW_COLOR);
         } else {
-            mTextPaint.setShadowLayer(0, 0, 0, SHADOW_COLOR);
+//            mTextPaint.setShadowLayer(0, 0, 0, SHADOW_COLOR);
         }
         float[] pointer = null;
         if (score < 10) {
