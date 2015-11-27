@@ -825,7 +825,8 @@
             android:name=".phoneSecurity.PhoneSecurityActivity"
             android:screenOrientation="portrait"
             android:excludeFromRecents="true"
-            android:theme="@style/activity_theme"  >
+            android:theme="@style/activity_theme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
         </activity>
         <activity
             android:name=".phoneSecurity.AddSecurityNumberActivity"
