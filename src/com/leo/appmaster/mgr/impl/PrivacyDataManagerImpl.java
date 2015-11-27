@@ -495,7 +495,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         int picNum = 0;
         int mRecordNum;
         int lastPic = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
-        LeoLog.d("checkPicId", "lastPic is : " + lastPic);
+        LeoLog.d("getAddPic", "lastPic is : " + lastPic);
         List<String> filterVideoTypes = getFilterVideoType();
         List<PhotoItem> aibumList = new ArrayList<PhotoItem>();
         Cursor cursor = null;
@@ -512,6 +512,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     MediaStore.MediaColumns._ID + ">?",
                     new String[]{String.valueOf(lastPic)},
                     MediaStore.MediaColumns._ID + " desc");
+            LeoLog.d("getAddPic", "cursor size : " + cursor.getCount());
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
@@ -534,12 +535,12 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     }
 
                     if (currSDK_INT >= API_LEVEL_19) {
-                        LeoLog.d("checkPicId", "store is : " + store);
+                        LeoLog.d("getAddPic", "store is : " + store);
                         if (!path.startsWith(store)) {
-                            LeoLog.d("checkPicId", "out card");
+                            LeoLog.d("getAddPic", "out card");
                             continue;
                         } else {
-                            LeoLog.d("checkPicId", "inner card");
+                            LeoLog.d("getAddPic", "inner card");
                         }
                     }
 
@@ -571,7 +572,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     }
                 }
                 if (cursor.getCount() != 0) {
-                    LeoLog.d("checkPicId", "getAddPic save id is : " + picNum);
+                    LeoLog.d("getAddPic", "getAddPic save id is : " + picNum);
                     PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, picNum);
                 }
             }

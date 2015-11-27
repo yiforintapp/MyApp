@@ -634,10 +634,11 @@ public class FileOperationUtil {
                     context.getContentResolver(),
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES,
                     null, MediaColumns.DATE_MODIFIED + " desc");
+            LeoLog.d("getPhotoAlbum", "cursor size : " + cursor.getCount());
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     String path = cursor.getString(1);
-                    LeoLog.d("checkPicId", "path is : " + path);
+                    LeoLog.d("getPhotoAlbum", "path is : " + path);
                     String dir = cursor.getString(3);
                     String dir_path = getDirPathFromFilepath(path);
                     if (dir.contains("videoCache")) {
@@ -691,7 +692,6 @@ public class FileOperationUtil {
             if ("/".equals(lastIndex)) {
                 int pos = splashPath.lastIndexOf('/');
                 splashPath = splashPath.substring(0, pos);
-                LeoLog.d("testPhotoAlbumTime", "splashPath : " + splashPath);
             }
             countMap.remove(splashPath);
         }
