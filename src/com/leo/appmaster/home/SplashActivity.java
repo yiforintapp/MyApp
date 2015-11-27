@@ -219,7 +219,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                SDKWrapper.addEvent(this, SDKWrapper.P1,"screen_cli", "share_cnts");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "screen_cli", "share_cnts");
                 break;
             default:
                 break;
@@ -410,6 +410,10 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                             cancelSplashSkipbtAndUrlbt();
                             if (!mIsShowGuide) {
                                 showNewFuncGuide();
+                                /*如果走引导，去除分享按钮*/
+                                if (mSplaFacRt.getVisibility() == View.VISIBLE) {
+                                    mSplaFacRt.setVisibility(View.GONE);
+                                }
                             }
                         }
                     } else {
