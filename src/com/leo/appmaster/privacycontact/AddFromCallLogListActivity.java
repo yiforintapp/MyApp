@@ -671,6 +671,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
         mAddCallLogDialog.setOnClickListener(new OnDiaogClickListener() {
             @Override
             public void onClick(int which) {
+                LeoLog.i("caocao", "laile");
                 if (which == 1) {
                     mHandler = new Handler() {
                         @Override
@@ -694,7 +695,14 @@ public class AddFromCallLogListActivity extends BaseActivity {
                             super.handleMessage(msg);
                         }
                     };
-                    showProgressDialog(mAddMessages.size() + mAddCallLogs.size(), 0);
+                    int totalSize = 0;
+                    if (mAddCallLogs != null) {
+                        totalSize = mAddCallLogs.size();
+                    }
+                    if (mAddMessages != null) {
+                        totalSize = totalSize + mAddMessages.size();
+                    }
+                    showProgressDialog(totalSize, 0);
 //                    PrivacyCallLogTask task = new PrivacyCallLogTask();
 //                    task.execute(PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL);
                     sendImpLogHandler(PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL);
