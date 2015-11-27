@@ -1,7 +1,9 @@
 package com.leo.appmaster.home;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -84,6 +86,7 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
+import com.leo.tools.animator.ValueAnimator;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
@@ -150,11 +153,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         removeFragments();
-        if (BuildProperties.isHuaWeiP8Model()) {
-            super.onCreate(null);
-        } else {
-            super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            // 移除保存的fragment状态
+            savedInstanceState.remove("android:support:fragments");
         }
+        super.onCreate(savedInstanceState);
         LeoLog.d(TAG, "onCreate... savedInstanceState: " + savedInstanceState);
 
         setContentView(R.layout.activity_home_main);
