@@ -746,6 +746,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
                 if (!mLockedPackage.equals(getPackageName())) {
                     createLoackAppInfoView(mLockedPackage);
+                } else {
+                    removeLoackAppInfoView();
                 }
             }
 
@@ -932,6 +934,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         iconDraw.setBounds(0,0,w,w);
         mLockAppTitleView.setCompoundDrawables(iconDraw, null, null, null);
         mLockAppTitleView.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+    }
+
+    private void removeLoackAppInfoView() {
+        if (mLockAppTitleView != null) {
+            if (mTtileBar == null) {
+                mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+            }
+            mTtileBar.getTitleContainer().removeView(mLockAppTitleView);
+            mLockAppTitleView = null;
+        }
     }
 
     private void setLockAppInfoViewVisible(boolean visible) {
