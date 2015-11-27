@@ -140,6 +140,7 @@ public class GestureSettingFragment extends BaseFragment implements
             LeoLog.i("testRedLine", " first time ");
             if (patternSize < 4) {
                 mTvPasswdFuncTip.setText(R.string.passwd_set_gesture_tip);
+                LeoLog.i("testRedLine", " set true ");
                 shakeGestureTip(true);
                 // mLockPatternView.clearPattern();
                 return;
@@ -228,14 +229,6 @@ public class GestureSettingFragment extends BaseFragment implements
             mShake.setAnimationListener(new AnimationListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    boolean newFlag = needRed;
-                    if (newFlag) {
-                        mLockPatternView.setDisplayMode(DisplayMode.Wrong);
-                        LeoLog.i("testRedLine", "if true needRed = "+needRed);
-                    } else {
-                        mLockPatternView.setDisplayMode(DisplayMode.Correct);
-                        LeoLog.i("testRedLine", "if false needRed = "+needRed);
-                    }
                 }
 
                 @Override
@@ -245,6 +238,13 @@ public class GestureSettingFragment extends BaseFragment implements
             });
         }
         mTvPasswdFuncTip.startAnimation(mShake);
+        if (needRed) {
+            mLockPatternView.setDisplayMode(DisplayMode.Wrong);
+            LeoLog.i("testRedLine", "if true needRed = "+needRed);
+        } else {
+            mLockPatternView.setDisplayMode(DisplayMode.Correct);
+            LeoLog.i("testRedLine", "if false needRed = "+needRed);
+        }
     }
 
     @Override
