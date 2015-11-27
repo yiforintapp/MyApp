@@ -479,6 +479,7 @@ public class PrivacyContactUtils {
                                 .getDrawable(
                                         R.drawable.default_user_avatar)).getBitmap());
                     }
+//                    LeoLog.i("caocao","id:"+cursor.getInt(cursor.getColumnIndex(CallLog.Calls._ID)));
                     String name = cursor.getString(cursor.getColumnIndex("name"));
                     Date date = new Date(Long.parseLong(cursor.getString(cursor
                             .getColumnIndex(CallLog.Calls.DATE))));

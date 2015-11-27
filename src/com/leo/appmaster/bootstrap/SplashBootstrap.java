@@ -384,8 +384,8 @@ public class SplashBootstrap extends Bootstrap {
         String path = FileOperationUtil.getSplashPath();
         //闪屏图
         SplashBootstrap.deleteShareSplashImage(path + Constants.SPLASH_NAME);
-        //闪屏分享图
-        SplashBootstrap.deleteShareSplashImage(path + Constants.SPL_SHARE_QR_NAME);
+        //删除闪屏分享图
+//        SplashBootstrap.deleteShareSplashImage(path + Constants.SPL_SHARE_QR_NAME);
 
         HttpRequestAgent.getInstance(mApp).loadSplashImage(url, dir, new Listener<File>() {
 
@@ -393,11 +393,11 @@ public class SplashBootstrap extends Bootstrap {
             public void onResponse(File response, boolean noMidify) {
                 pref.setLastLoadSplashTime(System.currentTimeMillis());
                 /*下载成功后生成二维码图保存*/
-                boolean isSaveShare = shareSplashImage();
+//                boolean isSaveShare = shareSplashImage();
                 /*如果保存失败尝试再次保存一次*/
-                if (!isSaveShare) {
-                    shareSplashImage();
-                }
+//                if (!isSaveShare) {
+//                    shareSplashImage();
+//                }
             }
         }, new ErrorListener() {
             @Override

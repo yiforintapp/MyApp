@@ -204,7 +204,8 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                     return;
                 }
                 StringBuilder sb = new StringBuilder(splashDir);
-                sb.append(Constants.SPL_SHARE_QR_NAME);
+//                sb.append(Constants.SPL_SHARE_QR_NAME);
+                sb.append(Constants.SPLASH_NAME);
                 /*facebook分享闪屏*/
                 Intent shareIntent = AppUtil.shareImageToApp(sb.toString());
                 shareIntent.setPackage(Constants.FACEBOOK_PKG_NAME);
@@ -295,7 +296,8 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         boolean isInslFac = AppUtil.isInstallPkgName(this, Constants.FACEBOOK_PKG_NAME);
         String path = FileOperationUtil.getSplashPath();
         StringBuilder sb = new StringBuilder(path);
-        sb.append(Constants.SPL_SHARE_QR_NAME);
+//        sb.append(Constants.SPL_SHARE_QR_NAME);
+        sb.append(Constants.SPLASH_NAME);
         File file = new File(sb.toString());
         boolean isExistShreFile = file.exists();
         if (isInslFac && isExistShreFile) {
