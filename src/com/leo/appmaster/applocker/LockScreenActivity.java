@@ -943,6 +943,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             mTtileBar.getTitleContainer().removeView(mLockAppTitleView);
             mLockAppTitleView = null;
+            mTtileBar.getTitleView().setAlpha(1);
         }
     }
 
