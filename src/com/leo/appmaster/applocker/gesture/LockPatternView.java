@@ -435,6 +435,12 @@ public class LockPatternView extends ViewGroup {
         }
     }
 
+    private boolean isClearingPattern = false;
+
+    public void setIsClearingPattern(boolean isClearing) {
+        isClearingPattern = isClearing;
+    }
+
     /**
      * Clear the pattern.
      */
@@ -788,6 +794,10 @@ public class LockPatternView extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+//        if (isClearingPattern) {
+//            return false;
+//        }
+
         if (!mInputEnabled || !isEnabled()) {
             mGestureState = BUTTON_STATE_NAMAL;
             return false;
@@ -830,7 +840,6 @@ public class LockPatternView extends ViewGroup {
         // AM-678
         try {
             final int historySize = event.getHistorySize();
-            LeoLog.d("testPattern", "historySize : " + historySize);
             for (int i = 0; i < historySize + 1; i++) {
                 final float x = i < historySize ? event.getHistoricalX(i) : event
                         .getX();

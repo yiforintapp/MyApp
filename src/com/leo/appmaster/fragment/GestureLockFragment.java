@@ -25,6 +25,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
@@ -40,12 +41,14 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
+import com.leo.tools.animator.Animator;
 
 public class GestureLockFragment extends LockFragment implements
         OnPatternListener, OnClickListener {
@@ -69,28 +72,28 @@ public class GestureLockFragment extends LockFragment implements
             mIsCamouflageLockSuccess/* 伪装是否解锁成功 */;
 
     private IntrudeSecurityManager mISManager;
-    
+
     private boolean mCameraReleased = false;
 
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_lock_gesture;
     }
-    
-    
+
+
     @Override
     protected void onInitUI() {
         mFlPreview = (FrameLayout) findViewById(R.id.camera_preview);
-       
+
         mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
         mLockPatternView.setOnPatternListener(this);
         mLockPatternView.setLockMode(mLockMode);
         mLockPatternView.setIsFromLockScreenActivity(true);
 
         mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
-        if(isShowTipFromScreen){
+        if (isShowTipFromScreen) {
             mGestureTip.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mGestureTip.setVisibility(View.GONE);
         }
 
@@ -141,7 +144,7 @@ public class GestureLockFragment extends LockFragment implements
         } else if ("camouflage_lock_success".equals(eventMessage)) {
             mIsCamouflageLockSuccess = true;
             if (mIsLoadAdSuccess) {
-                
+
             }
         }
     }
@@ -152,14 +155,14 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     public void removeCamera() {
-        try{
-            if(mCameraSurPreview != null) {
+        try {
+            if (mCameraSurPreview != null) {
                 mCameraSurPreview.release();
-                if(mFlPreview != null){
+                if (mFlPreview != null) {
                     mFlPreview.removeView(mCameraSurPreview);
                 }
-            }       
-        }catch(Exception e){
+            }
+        } catch (Exception e) {
         }
         mCameraSurPreview = null;
         mCameraReleased = true;
@@ -213,7 +216,7 @@ public class GestureLockFragment extends LockFragment implements
         if (lsa != null && lsa.mQuickLockMode) {
             List<LockMode> modes = mLockManager.getLockMode();
             LockMode targetMode = null;
-            if(modes != null) {
+            if (modes != null) {
                 for (LockMode lockMode : modes) {
                     if (lockMode != null && lockMode.modeId == lsa.mQuiclModeId) {
                         targetMode = lockMode;
@@ -299,6 +302,8 @@ public class GestureLockFragment extends LockFragment implements
 
     @Override
     public void onPatternDetected(List<Cell> pattern) {
+        LeoLog.d("testPattern", "onPatternDetected");
+//        mLockPatternView.setIsClearingPattern(true);
         final String gesture = LockPatternUtils.patternToString(pattern);
         mLockPatternView.postDelayed(new Runnable() {
             @Override
@@ -309,11 +314,12 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     private void checkGesture(String gesture) {
+        LeoLog.d("testPattern", "checkGesture");
         mInputCount++;
         AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
         String savedGesture = pref.getGesture();
         // AM-2936, no gesture, just unlock
-        if (Utilities.isEmpty(savedGesture) ||  savedGesture.equals(gesture)) {
+        if (Utilities.isEmpty(savedGesture) || savedGesture.equals(gesture)) {
             ((LockScreenActivity) mActivity).onUnlockSucceed();
             mIsIntruded = false;
         } else {
@@ -323,13 +329,13 @@ public class GestureLockFragment extends LockFragment implements
                     // 将被入侵标记置为true
                     mIsIntruded = true;
                     if (mActivity instanceof LockScreenActivity) {
-                        if(mCameraSurPreview == null && !mCameraReleased) {
+                        if (mCameraSurPreview == null && !mCameraReleased) {
                             mCameraSurPreview = new CameraSurfacePreview(mActivity);
                             mFlPreview.addView(mCameraSurPreview);
                         }
-                        if(mCameraSurPreview != null) {
-                           ((LockScreenActivity) mActivity).mHasTakePic = true;
-                           ((LockScreenActivity) mActivity).mIsPicSaved = false;
+                        if (mCameraSurPreview != null) {
+                            ((LockScreenActivity) mActivity).mHasTakePic = true;
+                            ((LockScreenActivity) mActivity).mIsPicSaved = false;
                             ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                                 @Override
                                 public void run() {
@@ -354,6 +360,12 @@ public class GestureLockFragment extends LockFragment implements
 //                }
             }
             mLockPatternView.clearPattern();
+//            mLockPatternView.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mLockPatternView.setIsClearingPattern(false);
+//                }
+//            }, 50);
             shakeIcon();
         }
     }
@@ -399,7 +411,7 @@ public class GestureLockFragment extends LockFragment implements
     public void onClick(View arg0) {
 
     }
-    
+
     public View getIconView() {
         return mIconLayout;
     }
