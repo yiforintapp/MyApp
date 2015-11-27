@@ -150,8 +150,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         removeFragments();
-        super.onCreate(savedInstanceState);
-        LeoLog.d(TAG, "onCreate...");
+        if (BuildProperties.isHuaWeiP8Model()) {
+            super.onCreate(null);
+        } else {
+            super.onCreate(savedInstanceState);
+        }
+        LeoLog.d(TAG, "onCreate... savedInstanceState: " + savedInstanceState);
 
         setContentView(R.layout.activity_home_main);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");

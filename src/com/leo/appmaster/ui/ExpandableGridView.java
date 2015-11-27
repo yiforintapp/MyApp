@@ -451,11 +451,12 @@ public class ExpandableGridView extends ExpandableListView {
                     child.setTag(mInnerAdapter.getChild(groupPosition, i));
                 } else {
                     if (cachedChild != null) {
-                        cachedChild.setVisibility(View.INVISIBLE);
+//                        cachedChild.setVisibility(View.INVISIBLE);
                         child = cachedChild;
                     } else {
                         child = mInnerAdapter.getChildView(0, 0, false, null, parent);
                     }
+                    child.setVisibility(View.INVISIBLE);
                 }
 
                 if (!(child.getLayoutParams() instanceof LinearLayout.LayoutParams)) {
