@@ -64,10 +64,16 @@
     </ScrollView>
 
     <!-- 底部操作区域 -->
-    <include
+    <ViewStub
+        android:id="@+id/pri_pro_bottom_stub"
+        android:layout_alignParentBottom="true"
+        android:layout="@layout/pri_pro_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="63dp" />
+    <!--<include
         layout="@layout/pri_pro_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="63dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true" />-->
 </RelativeLayout>
 

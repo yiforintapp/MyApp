@@ -218,16 +218,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         super.onViewCreated(view, savedInstanceState);
         mRootView = view;
 
-        mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
-        mProcessBtn.setRippleOverlay(true);
-        mProcessClick = view.findViewById(R.id.pp_process_rv_click);
-        mProcessClick.setOnClickListener(this);
-        mIgnoreBtn = view.findViewById(R.id.pp_process_ignore_rv);
-        mProcessTv = (TextView) view.findViewById(R.id.pp_process_tv);
-
-        mIgnoreBtn.setVisibility(View.GONE);
-        mProcessTv.setText(R.string.pri_pro_complete);
-        mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
+//        mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
+//        mProcessBtn.setRippleOverlay(true);
+//        mProcessClick = view.findViewById(R.id.pp_process_rv_click);
+//        mProcessClick.setOnClickListener(this);
+//        mIgnoreBtn = view.findViewById(R.id.pp_process_ignore_rv);
+//        mProcessTv = (TextView) view.findViewById(R.id.pp_process_tv);
+//
+//        mIgnoreBtn.setVisibility(View.GONE);
+//        mProcessTv.setText(R.string.pri_pro_complete);
+//        mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
 
         mHeadView = (TextView) view.findViewById(R.id.pri_con_header);
 
@@ -342,6 +342,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     });
 
                     updatePanelVisibility();
+                    updateBottomPanel();
                     ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -352,11 +353,26 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                         }
                     }, 500);
                 }
-            }, 350);
+            }, 220);
         } else {
             updatePanelVisibility();
         }
 
+    }
+
+    private void updateBottomPanel() {
+        ViewStub viewStub = (ViewStub) mRootView.findViewById(R.id.pri_pro_bottom_stub);
+        View view = viewStub.inflate();
+        mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
+        mProcessBtn.setRippleOverlay(true);
+        mProcessClick = view.findViewById(R.id.pp_process_rv_click);
+        mProcessClick.setOnClickListener(this);
+        mIgnoreBtn = view.findViewById(R.id.pp_process_ignore_rv);
+        mProcessTv = (TextView) view.findViewById(R.id.pp_process_tv);
+
+        mIgnoreBtn.setVisibility(View.GONE);
+        mProcessTv.setText(R.string.pri_pro_complete);
+        mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
     }
 
     private void updatePanelVisibility() {
