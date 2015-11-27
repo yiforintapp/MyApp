@@ -1033,6 +1033,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             finish();
             mRestartForThemeChanged = false;
             intent.putExtra("from_theme_change", true);
+            intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
             startActivity(intent);
         }
     }
