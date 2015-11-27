@@ -6,13 +6,14 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingRight="14dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:paddingLeft="5dp" >
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
+    android:paddingLeft="3dp" >
 
     <RelativeLayout
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:paddingLeft="4dp"
         android:paddingRight="3dp"
         android:background="@drawable/green_circle" >
@@ -23,6 +24,7 @@
         android:id="@+id/rl_score" >
         
         <TextView
+            android:layout_marginLeft="2dp"
             android:id="@+id/tv_plus"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -46,9 +48,10 @@
         android:id="@+id/tv_score_tip"
         android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:textSize="15sp"
+        android:textSize="14sp"
+        android:maxLines="2"
         android:textColor="@color/c1"
         android:text="@string/toast_getscore_text" />
 
