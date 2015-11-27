@@ -648,6 +648,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                ChangeContactColor();
                 Toast.makeText(mActivity, mActivity.getString(R.string.pri_contact_succ), Toast.LENGTH_SHORT).show();
                 for (View contactView : mContactViews) {
                     CheckBox checkBox = (CheckBox) contactView.findViewById(R.id.contact_single_cb);
@@ -666,7 +667,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     mContactBtnLt.setVisibility(View.GONE);
                     mContactBtnDiv.setVisibility(View.GONE);
                     mImpTv.setVisibility(View.GONE);
-                    ChangeContactColor();
                 } else {
                     setAddPrivacyText(false);
                 }
