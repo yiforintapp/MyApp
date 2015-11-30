@@ -622,17 +622,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
         String password = pref.getPassword();
         // AM-2936, no gesture, just unlock
-        if (Utilities.isEmpty(password) ||  password.equals(mTempPasswd)) {
-            if(mIsIntruded) {
-                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((LockScreenActivity) mActivity).onUnlockSucceed();
-                    }
-                }, 300);
-            } else {
-                ((LockScreenActivity) mActivity).onUnlockSucceed();
-            }
+        if (Utilities.isEmpty(password) || password.equals(mTempPasswd)) {
+            ((LockScreenActivity) mActivity).onUnlockSucceed();
             mIsIntruded = false;
         } else {
             if (mInputCount >= mMaxInput) {

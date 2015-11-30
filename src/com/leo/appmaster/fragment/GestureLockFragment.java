@@ -319,16 +319,7 @@ public class GestureLockFragment extends LockFragment implements
         String savedGesture = pref.getGesture();
         // AM-2936, no gesture, just unlock
         if (Utilities.isEmpty(savedGesture) || savedGesture.equals(gesture)) {
-            if(mIsIntruded) {
-                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((LockScreenActivity) mActivity).onUnlockSucceed();
-                    }
-                }, 300);
-            } else {
-                ((LockScreenActivity) mActivity).onUnlockSucceed();
-            }
+            ((LockScreenActivity) mActivity).onUnlockSucceed();
             mIsIntruded = false;
         } else {
             if (mInputCount >= mMaxInput) {
