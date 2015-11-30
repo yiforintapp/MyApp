@@ -720,11 +720,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //            mTtileBar.setTitle(R.string.app_name);
             setTiltleBarInfo(getPackageName());
         }
+        
+        if(mLockedPackage == null) {
+            mLockedPackage = getPackageName();
+        }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
             mLockedPackage = newLockedPkg;
-
+            if(mLockedPackage == null) {
+                mLockedPackage = getPackageName();
+            }
             if (mPretendFragment != null) {
                 mPretendLayout.setVisibility(View.GONE);
                 mLockLayout.setVisibility(View.VISIBLE);
@@ -820,6 +826,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockedPackage = getPackageName();
         } else {
             mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
+        }
+        
+        if(mLockedPackage == null) {
+            mLockedPackage = getPackageName();
         }
 
         mLockMode = intent.getIntExtra(EXTRA_LOCK_MODE,
