@@ -230,12 +230,12 @@ public class QuickHelperActivity extends BaseActivity {
 //                                        .isInstallIsiwpe(AppMasterApplication.getInstance());
                                 PreferenceTable preferenceTable = PreferenceTable.getInstance();
                                 boolean isBoostCreat = preferenceTable.getBoolean(PrefConst.IS_BOOST_CREAT, false);
-                                if (!isBoostCreat) {
+//                                if (!isBoostCreat) {  
                                     intent = new Intent(AppMasterApplication.getInstance(), HomeBoostActivity.class);
                                     intent.putExtra("from_quickhelper", true);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_BOOST]), mHelperResourceIDs[POSITION_BOOST], intent, QuickHelperActivity.this);
-                                }
+//                                }
                                 break;
                             // 图片隐藏
                             case R.drawable.qh_image_icon:
