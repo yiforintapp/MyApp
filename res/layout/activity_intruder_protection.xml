@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_alignParentBottom="true"
-            android:visibility="invisible">
+            android:visibility="visible">
 
             <View
                 android:id="@+id/v_timebar"
@@ -59,7 +59,12 @@
                 android:textSize="13dp"
                 android:visibility="invisible" />
 
-            <TextView
+            <RelativeLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                >
+                <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_below="@+id/iv_nopic"
@@ -70,10 +75,12 @@
 
             <ImageView
                 android:id="@+id/iv_nopic"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:src="@drawable/intruder_nopic" />
+                
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 
