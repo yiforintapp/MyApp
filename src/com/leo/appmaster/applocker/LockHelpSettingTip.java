@@ -391,7 +391,7 @@ public class LockHelpSettingTip extends BaseActivity {
     private void enterLockSettingPage() {
         LeoLog.d("Track Lock Screen", "apply lockscreen form LockHelpSetting: enterLockSettingPage");
         mLockManager.applyLock(LockManager.LOCK_MODE_PURE,
-                null, false, new LockManager.OnUnlockedListener() {
+                getPackageName(), false, new LockManager.OnUnlockedListener() {
 
                     @Override
                     public void onUnlocked() {

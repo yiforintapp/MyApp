@@ -186,17 +186,5 @@ public class IntruderGalleryActivity extends BaseActivity {
                 LeoLog.i("poha_intruder_gallery", "currentItem = "+currentItem);
             }
         });
-        
     }
-
-//    private void updatePositionTips() {
-//        LeoLog.i("poha", mVPPhotos.getChildCount() + ":: child count===" + "adapter count :"
-//                + mVPPhotos.getAdapter().getCount());
-//        if (mVPPhotos.getAdapter().getCount() == 0) {
-//            mTvPosition.setText("");
-//        } else {
-//            mTvPosition.setText(mVPPhotos.getCurrentItem() + 1 + "/"
-//                    + mVPPhotos.getAdapter().getCount());
-//        }
-//    }
 }

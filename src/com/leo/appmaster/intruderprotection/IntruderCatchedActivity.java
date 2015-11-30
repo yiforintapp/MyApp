@@ -98,6 +98,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static final int TIMES_TO_CATCH_2 = 2;
     private static final int TIMES_TO_CATCH_3 = 3;
     private static final int TIMES_TO_CATCH_4 = 5;
+    private boolean mIsNewestBigPicShowing = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
