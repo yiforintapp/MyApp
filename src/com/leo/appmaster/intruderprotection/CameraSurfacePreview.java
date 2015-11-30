@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.intruderprotection;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
         mHolder.addCallback(this);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
+    
+    public boolean getIsTimeOut() {
+        return mIsTimeOut;
+    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -49,6 +54,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
                     try {
                         init();
                     } catch (Exception e) {
+                        LeoLog.i("poha", "exception in the whole init :" + e.toString());
                     }
                 }
             });
@@ -61,18 +67,10 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
     private void selectPictureSize() {
         Parameters parameters = mCamera.getParameters();
         List<Size> Sizes = parameters.getSupportedPictureSizes();
-//        int delta = Math.abs(Math.max(Sizes.get(0).height, Sizes.get(0).width - 1280));
-//        int index = 0;
-        for(int i = 0; i < Sizes.size(); i++) {
-            LeoLog.i("poha", "照相机支持的分辨率： " + "height :" + Sizes.get(i).height + "  width : "+ Sizes.get(i).width);
-//            if(Math.abs(Math.max(Sizes.get(0).height, Sizes.get(0).width - 1280)) < delta) {
-//                delta = Math.max(Sizes.get(i).height, Sizes.get(i).width) - 1280;
-//                index = i;
-//            }
-        }
-        
+//        for(int i = 0; i < Sizes.size(); i++) {
+//            LeoLog.i("poha", "照相机支持的分辨率： " + "height :" + Sizes.get(i).height + "  width : "+ Sizes.get(i).width);
+//        }
        // 宽高差距大接近屏幕差距  //尺寸最好在1280以下
-        
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         int width = wm.getDefaultDisplay().getWidth();
         int height = wm.getDefaultDisplay().getHeight();
@@ -116,6 +114,8 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
     
     @SuppressWarnings("deprecation")
     public void init() {
+        LeoLog.i("poha", "start init ..");
+        long tbefore = System.currentTimeMillis();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
             return;
         }
@@ -128,7 +128,6 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
         else {
             return;
         }
-        try {
             //设置照相机的参数
             mCamera.setDisplayOrientation(90);          //预览时的角度
             selectPictureSize();
@@ -136,10 +135,15 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
             Camera.getCameraInfo(CameraInfo.CAMERA_FACING_FRONT, info);
             mCameraOrientation = info.orientation;
             LeoLog.i("poha", "前置照相机  orientation = "+info.orientation);
-            mCamera.setPreviewDisplay(mHolder);
+            try {
+                mCamera.setPreviewDisplay(mHolder);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             mCamera.startPreview();
             mIsinited = true;
             if(mPendingCallback != null) {
+                LeoLog.i("poha", "last time try to take picture, but not init, try to take picture after 1000ms ");
                 ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                     @Override
                     public void run() {
@@ -150,13 +154,11 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
                             LeoLog.i("poha", "Fail to takePic  :"+e.getMessage());
                         }
                         mPendingCallback = null;
+                        mIsTimeOut = false;
                     }
                 }, 1000);
             }
-        } catch (Exception e) {
-        }
-//        mCamera.stopPreview();
-//        mCamera.startPreview();
+        LeoLog.i("poha", "init 耗时 = "+ (System.currentTimeMillis() - tbefore));
     }
 
     @Override
@@ -172,24 +174,19 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        LeoLog.i("poha", "surface Destoryed! Camera release");
         release();
     }
 
     public void takePicture(PictureCallback imageCallback) {
         LeoLog.i("poha", "mCanTake : " + mCanTake);
-        // Not init, pending
         if(!mIsinited) {
+            mIsTimeOut = true;
             LeoLog.i("poha", "!mIsinited!!!!!") ;
             mPendingCallback = imageCallback;
             return;
         }
-//        try {
-//            LeoLog.i("poha", "real take pic!!!!!") ;
             mCamera.takePicture(null, null, imageCallback);
-//        } 
-//    catch (Throwable e) {
-//            LeoLog.i("poha", "Fail to takePic  :"+e.getMessage());
-//        }
     }
 
     public void release() {

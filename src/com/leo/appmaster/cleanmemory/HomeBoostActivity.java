@@ -418,7 +418,7 @@ public class HomeBoostActivity extends Activity {
 
         AnimatorSet cloudToHundredAnimator = new AnimatorSet();
         cloudToHundredAnimator.playTogether(cloudScaleYToHundred, cloudScaleToHundred);
-        cloudToHundredAnimator.setDuration(360);
+        cloudToHundredAnimator.setDuration(200);
 
         AnimatorSet cloudFinishAnimator = new AnimatorSet();
         cloudFinishAnimator.playTogether(cloudAlphaHide, cloudScaleToLarge);

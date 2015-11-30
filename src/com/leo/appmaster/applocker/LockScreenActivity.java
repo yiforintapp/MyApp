@@ -319,7 +319,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_package_"+packagename);
         if (view != null && mCanTakePhoto) {
-            LeoLog.i("poha", "take Piture!!!");
+            mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
             view.takePicture(new PictureCallback() {
                 @Override
                 public void onPictureTaken(final byte[] data, Camera camera) {
@@ -376,7 +376,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             mISManager.insertInfo(info);
                             mIsPicSaved = true;
                             LeoLog.i("poha", "after insert, before judge!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
-                            if(mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false)){
+                            if(mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false) && mIsPicSaved){
                                 mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
                                 Intent intent = new Intent(getApplicationContext(), IntruderCatchedActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -402,9 +402,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                     @Override
                     public void run() {
+                        LeoLog.i("poha", "fragment remove Camera");
                         mLockFragment.removeCamera();
                     }
-                }, 500);
+                }, 2000);
             }
         }
     }

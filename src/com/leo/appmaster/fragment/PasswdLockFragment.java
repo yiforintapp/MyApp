@@ -40,6 +40,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 
 public class PasswdLockFragment extends LockFragment implements OnClickListener, OnTouchListener {
