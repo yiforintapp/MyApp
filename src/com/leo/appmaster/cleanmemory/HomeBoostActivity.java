@@ -239,11 +239,11 @@ public class HomeBoostActivity extends Activity {
         if(mCdt!=null){
             mCdt.cancel();
         }
-        overridePendingTransition(0, 0);
+//        overridePendingTransition(0, 0);
 //        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 //        lockManager.filterAll(500);
         super.finish();
-        overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
+        overridePendingTransition(DEFAULT_KEYS_DISABLE, R.anim.anim_activity_dismiss_alpha);
     }
 
     
