@@ -28,8 +28,9 @@ import com.leo.imageloader.ImageLoader;
 public class AppMasterApplication extends Application {
 
     private static AppMasterApplication sInstance;
-    private static List<WeakReference<Activity>> sActivityList;
-    private static List<WeakReference<Activity>> sResumedList;
+    private List<WeakReference<Activity>> mActivityList;
+    private List<WeakReference<Activity>> mResumedList;
+    private List<WeakReference<Activity>> mStartedList;
     public static boolean sCheckTs = true;
     public static long sAppOnCrate;
     public static boolean sIsSplashActioned = false;
@@ -86,8 +87,9 @@ public class AppMasterApplication extends Application {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        sActivityList = new ArrayList<WeakReference<Activity>>();
-        sResumedList = new ArrayList<WeakReference<Activity>>();
+        mActivityList = new ArrayList<WeakReference<Activity>>();
+        mResumedList = new ArrayList<WeakReference<Activity>>();
+        mStartedList = new ArrayList<WeakReference<Activity>>();
         mHandler = new Handler();
 
         sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE);
@@ -144,9 +146,9 @@ public class AppMasterApplication extends Application {
     }
 
     // for force update strategy to exit application completely
-    public synchronized void addActivity(Activity activity) {
-        // sActivityList.add(activity);
-        Iterator<WeakReference<Activity>> iterator = sActivityList.iterator();
+    public synchronized void createActivity(Activity activity) {
+        // mActivityList.add(activity);
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
             Activity ac = reference.get();
@@ -158,11 +160,11 @@ public class AppMasterApplication extends Application {
             }
         }
 
-        sActivityList.add(new WeakReference<Activity>(activity));
+        mActivityList.add(new WeakReference<Activity>(activity));
     }
 
-    public synchronized void removeActivity(Activity activity) {
-        Iterator<WeakReference<Activity>> iterator = sActivityList.iterator();
+    public synchronized void destroyActivity(Activity activity) {
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
             Activity ac = reference.get();
@@ -174,7 +176,7 @@ public class AppMasterApplication extends Application {
     }
 
     public synchronized void exitApplication() {
-        Iterator<WeakReference<Activity>> iterator = sActivityList.iterator();
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
             Activity ac = reference.get();
@@ -192,7 +194,7 @@ public class AppMasterApplication extends Application {
      * @param activity
      */
     public synchronized void resumeActivity(Activity activity) {
-        Iterator<WeakReference<Activity>> iterator = sResumedList.iterator();
+        Iterator<WeakReference<Activity>> iterator = mResumedList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
             Activity ac = reference.get();
@@ -204,11 +206,39 @@ public class AppMasterApplication extends Application {
             }
         }
 
-        sResumedList.add(new WeakReference<Activity>(activity));
+        mResumedList.add(new WeakReference<Activity>(activity));
     }
 
     public synchronized void pauseActivity(Activity activity) {
-        Iterator<WeakReference<Activity>> iterator = sResumedList.iterator();
+        Iterator<WeakReference<Activity>> iterator = mResumedList.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Activity> reference = iterator.next();
+            Activity ac = reference.get();
+            if (ac == null || ac == activity) {
+                // 移除掉已经被释放掉的ref
+                iterator.remove();
+            }
+        }
+    }
+
+    public synchronized void startActivity(Activity activity) {
+        Iterator<WeakReference<Activity>> iterator = mStartedList.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Activity> reference = iterator.next();
+            Activity ac = reference.get();
+            if (ac != null && ac == activity) {
+                return;
+            } else if (ac == null) {
+                // 存放的activity已经被释放掉，移除引用
+                iterator.remove();
+            }
+        }
+
+        mStartedList.add(new WeakReference<Activity>(activity));
+    }
+
+    public synchronized void stopActivity(Activity activity) {
+        Iterator<WeakReference<Activity>> iterator = mStartedList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
             Activity ac = reference.get();
@@ -225,7 +255,17 @@ public class AppMasterApplication extends Application {
      * @return
      */
     public boolean isForeground() {
-        for (WeakReference<Activity> weakReference : sResumedList) {
+        for (WeakReference<Activity> weakReference : mResumedList) {
+            if (weakReference.get() != null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isVisible() {
+        for (WeakReference<Activity> weakReference : mStartedList) {
             if (weakReference.get() != null) {
                 return true;
             }
@@ -240,21 +280,21 @@ public class AppMasterApplication extends Application {
      * @return
      */
     public boolean isHomeOnTopAndBackground() {
-        if (!sResumedList.isEmpty() || sActivityList.isEmpty()) {
+        if (!mStartedList.isEmpty() || mActivityList.isEmpty()) {
             // resume list 不为空，说明在前台
             // activity list 为空，说明所有activity被销毁
             return false;
         }
 
-        if (sActivityList.size() == 1) {
-            WeakReference<Activity> reference = sActivityList.get(0);
+        if (mActivityList.size() == 1) {
+            WeakReference<Activity> reference = mActivityList.get(0);
             Activity activity = reference.get();
             if (activity != null && (activity instanceof HomeActivity)) {
                 return true;
             }
-        } else if (sActivityList.size() > 1) {
-            WeakReference<Activity> reference0 = sActivityList.get(0);
-            WeakReference<Activity> reference1 = sActivityList.get(1);
+        } else if (mActivityList.size() > 1) {
+            WeakReference<Activity> reference0 = mActivityList.get(0);
+            WeakReference<Activity> reference1 = mActivityList.get(1);
             Activity activity0 = reference0.get();
             Activity activity1 = reference1.get();
             if (activity0 != null && (activity0 instanceof HomeActivity)

@@ -107,7 +107,7 @@ public class TaskChangeHandler {
         String myPackage = mContext.getPackageName();
 
         if (DBG) {
-            LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+            LeoLog.d("handleAppLaunch", pkg + "/" + activity);
         }
 
         // fix bug AM-2134

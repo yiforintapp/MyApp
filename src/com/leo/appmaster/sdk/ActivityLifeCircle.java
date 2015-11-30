@@ -21,16 +21,17 @@ public class ActivityLifeCircle {
     }
 
     protected void onCreate() {
-        mApplication.addActivity(mActivity);
+        mApplication.createActivity(mActivity);
     }
 
     protected void onStart() {
-        mApplication.resumeActivity(mActivity);
+        mApplication.startActivity(mActivity);
         // 到前台，停止定时扫描
         PrivacyHelper.getInstance(mApplication).stopIntervalScanner();
     }
 
     protected void onResume() {
+        mApplication.resumeActivity(mActivity);
         if ((mActivity instanceof HomeActivity) ||
                 (mActivity instanceof UpdateActivity) ||
                 (mActivity instanceof LockScreenActivity)) {
@@ -42,19 +43,19 @@ public class ActivityLifeCircle {
     }
 
     protected void onPause() {
-
+        mApplication.pauseActivity(mActivity);
     }
 
     protected void onStop() {
-        mApplication.pauseActivity(mActivity);
+        mApplication.stopActivity(mActivity);
 
-        if (!mApplication.isForeground()) {
+        if (!mApplication.isVisible()) {
             PrivacyHelper.getInstance(mApplication).startIntervalScanner(0);
         }
     }
 
     protected void onDestroy() {
-        mApplication.removeActivity(mActivity);
+        mApplication.destroyActivity(mActivity);
         mActivity = null;
     }
 }

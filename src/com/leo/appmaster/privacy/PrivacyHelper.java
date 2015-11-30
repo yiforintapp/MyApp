@@ -311,7 +311,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         if (scoreAfterDec < 70 || totalDecScore > 20) {
             long lastNotify = PreferenceTable.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);
             AppMasterApplication application = AppMasterApplication.getInstance();
-            boolean isForeground = application.isForeground();
+            boolean isForeground = application.isVisible();
             boolean isSameDay = TimeUtil.isSameDay(lastNotify, currentTs);
             LeoLog.i(TAG, "checkOrNotifyDecScore, isForeground: " + isForeground + ", isSameDay: " + isSameDay);
             if (!isForeground && !isSameDay) {

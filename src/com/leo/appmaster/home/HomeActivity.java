@@ -621,7 +621,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             }
             ft.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            LeoLog.w(TAG, "remove fragments ex.", e);
         }
         LeoLog.i(TAG, "removeFragments, cost: " + (SystemClock.elapsedRealtime() - start));
     }
