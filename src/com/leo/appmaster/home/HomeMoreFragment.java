@@ -195,10 +195,12 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
         if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver) {
             mUpArrow.showRedTip(true);
-            mAdapter.notifyDataSetInvalidated();
+//            mAdapter.notifyDataSetInvalidated();
+            mAdapter.notifyDataSetChanged();
         } else {
             mUpArrow.showRedTip(false);
-            mAdapter.notifyDataSetInvalidated();
+//            mAdapter.notifyDataSetInvalidated();
+            mAdapter.notifyDataSetChanged();
         }
     }
 
