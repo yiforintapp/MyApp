@@ -355,6 +355,11 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
     private void sortInfos() {
         mInfosSorted = mISManager.sortInfosByTimeStamp(mSrcInfos);
+        boolean hasLateast = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+        if (!hasLateast) {
+            IntruderPhotoInfo intruderPhotoInfo = new IntruderPhotoInfo("Lateast", "", "");
+            mInfosSorted.add(0, intruderPhotoInfo);
+        }
     }
 
     /**
@@ -425,9 +430,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mRlNopic.setVisibility(View.VISIBLE);
         }
         // 如果记录不止一条，将显示下方的其他照片部分
-        boolean hasLateast = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
-        int size = hasLateast ? 2 : 1;
-        if (mInfosSorted.size() >= size) {
+        if (mInfosSorted.size() >= 2) {
             showOtherPhotos();
         } else {
             // 记录只有一条，下方没有照片显示，布局的visibility改为gone
@@ -490,9 +493,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 final LinearLayout llMask = (LinearLayout) view.findViewById(R.id.ll_mask);
                 final BottomCropImage ivv = (BottomCropImage) view
                         .findViewById(R.id.iv_intruder_more);
-                boolean has = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
-                int index = has ? (position + 1) : position;
-                final String filePath = mInfosSorted.get(index).getFilePath();
+                final String filePath = mInfosSorted.get(position + 1).getFilePath();
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
@@ -506,9 +507,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                                 ivv.setOnClickListener(new OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        boolean has = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
-                                        int index = has ? (position + 1) : position;
-                                        startGallery(index);
+                                        startGallery(position + 1);
                                     }
                                 });
                             }
@@ -543,12 +542,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
             @Override
             public int getCount() {
-                boolean has = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
-                if (mInfosSorted == null) {
+                if (mInfosSorted == null)
                     return 0;
-                }
-                int count = has ? (mInfosSorted.size() - 1) : mInfosSorted.size();
-                return Math.min(NEWEST_PHOTO_NUMBER, count);
+                return Math.min(NEWEST_PHOTO_NUMBER, mInfosSorted.size() - 1);
             }
         });
     }
