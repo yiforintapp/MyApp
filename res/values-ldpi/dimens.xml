@@ -270,4 +270,8 @@
     <dimen name="wifi_fragment_padding">15dp</dimen>
     <dimen name="privacy_input_cb_pd_lf">24dp</dimen>
     <dimen name="sec_gde_content_pd">18dp</dimen>
+
+    <dimen name="ad_content_width">290dp</dimen>
+    <dimen name="ad_view_width">308dp</dimen>
+    <dimen name="ad_clean_text_width">218dp</dimen>
 </resources>
