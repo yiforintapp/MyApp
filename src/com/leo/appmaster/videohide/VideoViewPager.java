@@ -306,9 +306,11 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void startCancelDoingBack() {
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         String newFileName = null;
         boolean isSuccess = true;
         if (mPosition < mAllPath.size()) {
+            pdm.unregisterMediaListener();
             String path = mAllPath.get(mPosition);
             if (isServiceDo) {
                 int mProcessType = -1;
@@ -377,8 +379,10 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     isSuccess = false;
                 }
             }
+            //refresh by itself
+            pdm.registerMediaListener();
+            pdm.notifySecurityChange();
         }
-
         readyCancelDoingDone(isSuccess);
     }
 
