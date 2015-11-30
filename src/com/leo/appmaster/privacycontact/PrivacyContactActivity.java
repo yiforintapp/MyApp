@@ -503,7 +503,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         if (AppMasterPreference.getInstance(this).getCallLogNoReadCount() > 0) {
             mFragmentHolders[index].redTip = true;
         }
-//        mFragmentHolders[index].redTip = true;
         index++;
 
         /**
@@ -516,7 +515,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         // appManagerFragment.setContent(holder.title);
         holder.fragment = appManagerFragment;
         mFragmentHolders[index] = holder;
-//        mFragmentHolders[index].redTip = true;
 
         FragmentManager fm = getSupportFragmentManager();
         try {
