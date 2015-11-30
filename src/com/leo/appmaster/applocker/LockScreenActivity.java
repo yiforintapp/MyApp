@@ -1029,6 +1029,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onRestart() {
         super.onRestart();
+        LeoLog.d(TAG, "onRestart...");
         /**
          * dont change it, for lock theme
          */

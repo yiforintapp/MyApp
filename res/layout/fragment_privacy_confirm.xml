@@ -49,31 +49,37 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
-                android:layout_below="@id/pri_con_header"
-                android:background="@color/pri_pro_list_bg" />
+                android:background="@color/pri_pro_list_bg"
+                android:layout_below="@id/pri_con_header" />
 
-            <ViewStub
-                android:id="@+id/list_parent_layout_stub"
+            <include
+                android:id="@+id/list_parent_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/pri_con_header"
                 android:background="@color/pri_pro_list_bg"
-                android:layout="@layout/pri_con_list_stub" />
+                layout="@layout/pri_con_list_stub" />
 
+            <View
+                android:layout_below="@id/list_parent_layout"
+                android:background="@color/pri_pro_list_bg"
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
         </RelativeLayout>
     </ScrollView>
 
     <!-- 底部操作区域 -->
-    <ViewStub
+    <!--<ViewStub
         android:id="@+id/pri_pro_bottom_stub"
-        android:layout_alignParentBottom="true"
-        android:layout="@layout/pri_pro_bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="63dp" />
-    <!--<include
+        android:layout_height="63dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/pri_pro_list_bg"
+        android:layout="@layout/pri_pro_bottom_layout" />-->
+    <include
         layout="@layout/pri_pro_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="63dp"
-        android:layout_alignParentBottom="true" />-->
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
 

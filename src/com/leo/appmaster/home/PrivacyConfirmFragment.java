@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -77,8 +76,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private static final String TAG = "PrivacyConfirmFragment";
 
     private static final String KEY_SHOW_CONTACT = "SHOW_CONTACT";
-    private View mRootView;
     private View mPanelView;
+
+    private View mRootView;
     private TextView mHeadView;
 
     private TextView mLostSummary;
@@ -172,6 +172,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private boolean mShowContact;
     private TextView mImpTv;
     private View mContactContainorDisable;
+    private View mLostInclude;
+    private View mIntruderInclude;
+    private View mWIfiInclude;
+    private View mContactInclude;
+
+    // 初始化时的占位View，避免一开始显示空白页面
+//    private View mDisplayProxyView;
 
     public static PrivacyConfirmFragment newInstance(boolean showContact) {
         PrivacyConfirmFragment fragment = new PrivacyConfirmFragment();
@@ -218,20 +225,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         super.onViewCreated(view, savedInstanceState);
         mRootView = view;
 
-//        mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
-//        mProcessBtn.setRippleOverlay(true);
-//        mProcessClick = view.findViewById(R.id.pp_process_rv_click);
-//        mProcessClick.setOnClickListener(this);
-//        mIgnoreBtn = view.findViewById(R.id.pp_process_ignore_rv);
-//        mProcessTv = (TextView) view.findViewById(R.id.pp_process_tv);
-//
-//        mIgnoreBtn.setVisibility(View.GONE);
-//        mProcessTv.setText(R.string.pri_pro_complete);
-//        mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
-
         mHeadView = (TextView) view.findViewById(R.id.pri_con_header);
-
+//        mDisplayProxyView = view.findViewById(R.id.list_parent_layout_proxy);
         mActivity.resetToolbarColor();
+
+
+        updateBottomPanel();
     }
 
 
@@ -317,52 +316,43 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         LeoLog.d(TAG, "onResume...");
 
         if (mPanelView == null) {
+            mPanelView = mRootView.findViewById(R.id.list_parent_layout);
+            // AM-3143: add animation for advertise cell
+            ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
+
+            initLostLayout(mPanelView);
+            initIntruderLayout(mPanelView);
+            updateIntruderAndLost();
+
+            ThreadManager.executeOnSubThread(new Runnable() {
+                @Override
+                public void run() {
+                    loadAd(mPanelView);
+                }
+            });
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ViewStub panelViewStub = (ViewStub) mRootView.findViewById(R.id.list_parent_layout_stub);
-                    long start = SystemClock.elapsedRealtime();
-                    mPanelView = panelViewStub.inflate();
-                    LeoLog.d(TAG, "inflate cost: " + (SystemClock.elapsedRealtime() - start));
-
-                    // AM-3143: add animation for advertise cell
-                    ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
-
-                    start = SystemClock.elapsedRealtime();
-                    initLostLayout(mPanelView);
-                    initIntruderLayout(mPanelView);
                     initWifiLayout(mPanelView);
-                    LeoLog.d(TAG, "init layout cost: " + (SystemClock.elapsedRealtime() - start));
+                    initContactLayout(mPanelView);
+                    initGradeLayout(mPanelView);
+                    initFbLayout(mPanelView);
+                    initSwiftyLayout(mPanelView);
 
-                    ThreadManager.executeOnSubThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadAd(mPanelView);
-                        }
-                    });
-
-                    updatePanelVisibility();
-                    updateBottomPanel();
-                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            initContactLayout(mPanelView);
-                            initGradeLayout(mPanelView);
-                            initFbLayout(mPanelView);
-                            initSwiftyLayout(mPanelView);
-                        }
-                    }, 500);
+                    updateStubPanelVisibility();
                 }
-            }, 220);
+            }, 900);
         } else {
-            updatePanelVisibility();
+            updateIntruderAndLost();
+            updateStubPanelVisibility();
         }
 
     }
 
     private void updateBottomPanel() {
-        ViewStub viewStub = (ViewStub) mRootView.findViewById(R.id.pri_pro_bottom_stub);
-        View view = viewStub.inflate();
+//        ViewStub viewStub = (ViewStub) mRootView.findViewById(R.id.pri_pro_bottom_stub);
+//        View view = viewStub.inflate();
+        View view = mRootView;
         mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
         mProcessBtn.setRippleOverlay(true);
         mProcessClick = view.findViewById(R.id.pp_process_rv_click);
@@ -375,7 +365,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
     }
 
-    private void updatePanelVisibility() {
+    private void updateIntruderAndLost() {
         View panelView = mPanelView;
         IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         if (!ism.getIsIntruderSecurityAvailable()) {
@@ -400,14 +390,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mLostFixedLt.setVisibility(View.VISIBLE);
             mLostFixedTv.setText(mActivity.getString(R.string.pri_pro_lost_fixed_pattern, times[0], times[1]));
         }
+    }
 
+    private void updateStubPanelVisibility() {
         if (PrivacyHelper.getInstance(mActivity).getSecurityScore() == 100) {
             mHeadView.setText(R.string.pri_pro_summary_confirm);
         } else {
             mHeadView.setText(R.string.pri_pro_summary_not_confirm);
         }
 
-        View include = panelView.findViewById(R.id.wifi_security);
+        View include = mWIfiInclude;
         WifiSecurityManager wsm = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         boolean isScnnedEver = wsm.getLastScanState();
         if (wsm.getWifiState() == WifiSecurityManager.NO_WIFI) {
@@ -442,17 +434,19 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void initContactLayout(View view) {
-        View include = view.findViewById(R.id.contact_security);
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.contact_security_stub);
+//        View include = view.findViewById(R.id.contact_security);
+        mContactInclude = viewStub.inflate();
         if (mContactList == null || mContactList.isEmpty() || !mShowContact) {
-            include.setVisibility(View.GONE);
+            mContactInclude.setVisibility(View.GONE);
             return;
         }
 
-        mContactArrowIv = (ImageView) include.findViewById(R.id.contact_arrow_iv);
+        mContactArrowIv = (ImageView) mContactInclude.findViewById(R.id.contact_arrow_iv);
         mContactArrowIv.setOnClickListener(this);
-        mSelectAllCb = (CheckBox) include.findViewById(R.id.contact_all_cb);
+        mSelectAllCb = (CheckBox) mContactInclude.findViewById(R.id.contact_all_cb);
         mSelectAllCb.setOnClickListener(this);
-        mContactContainor = (LinearLayout) include.findViewById(R.id.contact_containor);
+        mContactContainor = (LinearLayout) mContactInclude.findViewById(R.id.contact_containor);
 
         if (mContactList.size() > 1) {
             mContactArrowIv.setImageResource(R.drawable.ic_pri_arrow_down);
@@ -519,16 +513,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mDataMap.put(checkBox, contactBean);
         }
 
-        mContactBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
+        mContactBtnTv = (TextView) mContactInclude.findViewById(R.id.item_btn_tv);
         ChangeContactColor();
-        mContactBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
-        mContactBtnDiv = include.findViewById(R.id.item_btn_divider);
+        mContactBtnLt = (RippleView1) mContactInclude.findViewById(R.id.item_btn_rv);
+        mContactBtnDiv = mContactInclude.findViewById(R.id.item_btn_divider);
         mContactBtnLt.setOnClickListener(this);
 //        mContactBtnLt.setOnRippleCompleteListener(this);
 
         mContactBtnTv.setText(R.string.pri_pro_contact_btn);
-        mImpTv = (TextView) include.findViewById(R.id.imp_item_btn_rv);
-        mContactContainorDisable = (View) include.findViewById(R.id.contact_containor_disab);
+        mImpTv = (TextView) mContactInclude.findViewById(R.id.imp_item_btn_rv);
+        mContactContainorDisable = (View) mContactInclude.findViewById(R.id.contact_containor_disab);
     }
 
     private void ChangeContactColor() {
@@ -710,7 +704,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private void initAdLayout(Campaign campaign, View view, String unitId, Bitmap previewBitmap) {
         if (view != null) {
-            View include = view.findViewById(R.id.advertise_security);
+            ViewStub viewStub = (ViewStub) view.findViewById(R.id.advertise_security_stub);
+//            View include = view.findViewById(R.id.advertise_security);
+            View include = viewStub.inflate();
             TextView title = (TextView) include.findViewById(R.id.item_title);
             title.setText(campaign.getAppName());
             TextView btnCTA = (TextView) include.findViewById(R.id.item_btn_tv);
@@ -727,15 +723,15 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private void initLostLayout(View view) {
         if (view != null) {
-            View include = view.findViewById(R.id.lost_security);
+            mLostInclude = view.findViewById(R.id.lost_security);
             LostSecurityManager manager = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            mLostFixedLt = include.findViewById(R.id.item_middle_fixed_rl);
-            mLostMiddleLt = include.findViewById(R.id.item_middle_ll);
-            mLostFixedTv = (TextView) include.findViewById(R.id.fixed_summary);
-            mLostSummary = (TextView) include.findViewById(R.id.item_summary);
-            mLostBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
-            mLostBtnDiv = include.findViewById(R.id.item_btn_divider);
-            mLostBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+            mLostFixedLt = mLostInclude.findViewById(R.id.item_middle_fixed_rl);
+            mLostMiddleLt = mLostInclude.findViewById(R.id.item_middle_ll);
+            mLostFixedTv = (TextView) mLostInclude.findViewById(R.id.fixed_summary);
+            mLostSummary = (TextView) mLostInclude.findViewById(R.id.item_summary);
+            mLostBtnTv = (TextView) mLostInclude.findViewById(R.id.item_btn_tv);
+            mLostBtnDiv = mLostInclude.findViewById(R.id.item_btn_divider);
+            mLostBtnLt = (RippleView1) mLostInclude.findViewById(R.id.item_btn_rv);
             mLostBtnLt.setOnClickListener(this);
 //            mLostBtnLt.setOnRippleCompleteListener(this);
 
@@ -748,14 +744,14 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private void initIntruderLayout(View view) {
         IntrudeSecurityManager manager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-        View include = view.findViewById(R.id.intruder_security);
-        mIntruderFixedLt = include.findViewById(R.id.item_middle_fixed_rl);
-        mIntruderMiddleLt = include.findViewById(R.id.item_middle_ll);
-        mIntruderFixedTv = (TextView) include.findViewById(R.id.fixed_summary);
-        mIntruderSummary = (TextView) include.findViewById(R.id.item_summary);
-        mIntruderBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
-        mIntruderBtnDiv = include.findViewById(R.id.item_btn_divider);
-        mIntruderBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+        mIntruderInclude = view.findViewById(R.id.intruder_security);
+        mIntruderFixedLt = mIntruderInclude.findViewById(R.id.item_middle_fixed_rl);
+        mIntruderMiddleLt = mIntruderInclude.findViewById(R.id.item_middle_ll);
+        mIntruderFixedTv = (TextView) mIntruderInclude.findViewById(R.id.fixed_summary);
+        mIntruderSummary = (TextView) mIntruderInclude.findViewById(R.id.item_summary);
+        mIntruderBtnTv = (TextView) mIntruderInclude.findViewById(R.id.item_btn_tv);
+        mIntruderBtnDiv = mIntruderInclude.findViewById(R.id.item_btn_divider);
+        mIntruderBtnLt = (RippleView1) mIntruderInclude.findViewById(R.id.item_btn_rv);
         mIntruderBtnLt.setOnClickListener(this);
 //        mIntruderBtnLt.setOnRippleCompleteListener(this);
 
@@ -766,29 +762,33 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void initWifiLayout(View view) {
-        View include = view.findViewById(R.id.wifi_security);
-        View warn = include.findViewById(R.id.item_summay_sub_ll);
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.wifi_security_stub);
+//        View include = view.findViewById(R.id.wifi_security);
+        mWIfiInclude = viewStub.inflate();
+        View warn = mWIfiInclude.findViewById(R.id.item_summay_sub_ll);
         warn.setVisibility(View.VISIBLE);
-        mWifiSummary = (TextView) include.findViewById(R.id.item_summary);
-        mWifiSubSummary = (TextView) include.findViewById(R.id.item_summary_subject);
-        mWifiBtnTv = (TextView) include.findViewById(R.id.item_btn_tv);
-        mWifiBtnDiv = include.findViewById(R.id.item_btn_divider);
-        mWifiBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+        mWifiSummary = (TextView) mWIfiInclude.findViewById(R.id.item_summary);
+        mWifiSubSummary = (TextView) mWIfiInclude.findViewById(R.id.item_summary_subject);
+        mWifiBtnTv = (TextView) mWIfiInclude.findViewById(R.id.item_btn_tv);
+        mWifiBtnDiv = mWIfiInclude.findViewById(R.id.item_btn_divider);
+        mWifiBtnLt = (RippleView1) mWIfiInclude.findViewById(R.id.item_btn_rv);
         mWifiBtnLt.setOnClickListener(this);
 //        mWifiBtnLt.setOnRippleCompleteListener(this);
 
-        mWifiMiddleLt = include.findViewById(R.id.item_middle_ll);
-        mWifiFixedLt = include.findViewById(R.id.item_middle_fixed_rl);
+        mWifiMiddleLt = mWIfiInclude.findViewById(R.id.item_middle_ll);
+        mWifiFixedLt = mWIfiInclude.findViewById(R.id.item_middle_fixed_rl);
 
-        mWifiFixedTitle = (TextView) include.findViewById(R.id.fixed_title);
-        mWifiFixedSummaryLt = include.findViewById(R.id.fixed_summary_ll);
+        mWifiFixedTitle = (TextView) mWIfiInclude.findViewById(R.id.fixed_title);
+        mWifiFixedSummaryLt = mWIfiInclude.findViewById(R.id.fixed_summary_ll);
 
         String text = mActivity.getString(R.string.pri_pro_wifi_btn);
         mWifiBtnTv.setText(text);
     }
 
     private void initSwiftyLayout(View view) {
-        View include = view.findViewById(R.id.swifty_security);
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.swifty_security_stub);
+//        View include = view.findViewById(R.id.swifty_security);
+        View include = viewStub.inflate();
         mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
         mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
         mSwiftyBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
@@ -834,7 +834,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void initFbLayout(View view) {
-        View include = view.findViewById(R.id.fb_security);
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.fb_security_stub);
+//        View include = view.findViewById(R.id.fb_security);
+        View include = viewStub.inflate();
         mFbBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
         mFbBtnLt.setOnClickListener(this);
 //        mFbBtnLt.setOnRippleCompleteListener(this);
@@ -843,10 +845,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void initGradeLayout(View view) {
         int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
         LeoLog.i("loadSwiftySecurity", "score：" + score);
-        View highInclude = view.findViewById(R.id.grade_high_security);
-        View include = view.findViewById(R.id.grade_security);
+//        View highInclude = view.findViewById(R.id.grade_high_security);
+//        View include = view.findViewById(R.id.grade_security);
         if (score == 100) {  // 等于100分
-
+            ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_high_security_stub);
+            View highInclude = viewStub.inflate();
             mHighOneStar = (ImageView) highInclude.findViewById(R.id.one_star);
             mHighTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
             mHighThreeStar = (ImageView) highInclude.findViewById(R.id.three_star);
@@ -863,14 +866,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 //
 //            highFrameParams.height = (int)getLayoutHeight();
 
-            highInclude.setVisibility(View.VISIBLE);
-            include.setVisibility(View.GONE);
-
+//            highInclude.setVisibility(View.VISIBLE);
+//            include.setVisibility(View.GONE);
             showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
                     mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
-
         } else {
-
+            ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_security_stub);
+            View include = viewStub.inflate();
             mOneStar = (ImageView) include.findViewById(R.id.one_star);
             mTwoStar = (ImageView) include.findViewById(R.id.two_star);
             mThreeStar = (ImageView) include.findViewById(R.id.three_star);
@@ -887,8 +889,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 //
 //            frameParams.height = (int)getLayoutHeight();
 
-            highInclude.setVisibility(View.GONE);
-            include.setVisibility(View.VISIBLE);
+//            highInclude.setVisibility(View.GONE);
+//            include.setVisibility(View.VISIBLE);
 
             showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar,
                     mFiveStar, mFiveEmptyStar, mGradeGesture);
