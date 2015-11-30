@@ -320,8 +320,8 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
 
             boolean isWifiScaned = isScanAlready(wifiName);
 
-//            if (nowIn - wifiToastLastIn > 5000 && !isWifiScaned) {
-            if (nowIn - wifiToastLastIn > 5000) {
+            if (nowIn - wifiToastLastIn > 5000 && !isWifiScaned) {
+//            if (nowIn - wifiToastLastIn > 5000) {
                 Message msg = new Message();
                 msg.what = SHOW_WIFI_TOAST;
                 Bundle data = new Bundle();
