@@ -895,19 +895,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void setQuickLockModeTiltleBarInfo(LockMode targetMode) {
         mTtileBar.setTitle(R.string.change_lock_mode);
         Drawable iconDraw = targetMode.getModeDrawable();
-        int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
-        iconDraw.setBounds(0, 0, w, w);
-        mTtileBar.getTitleView().setCompoundDrawables(new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable(), null, null, null);
-        mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+        if (iconDraw != null) {
+            int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
+            iconDraw.setBounds(0, 0, w, w);
+            mTtileBar.getTitleView().setCompoundDrawables(/*new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable()*/iconDraw, null, null, null);
+            mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+        }
     }
 
     private void setTiltleBarInfo(String pkg) {
         mTtileBar.setTitle(AppUtil.getAppLabel(getPackageManager(), pkg));
         Drawable iconDraw = AppUtil.getAppIconDrawble(pkg);
-        int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
-        iconDraw.setBounds(0, 0, w, w);
-        mTtileBar.getTitleView().setCompoundDrawables(new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable(), null, null, null);
-        mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+        if (iconDraw != null) {
+            int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
+            iconDraw.setBounds(0, 0, w, w);
+            mTtileBar.getTitleView().setCompoundDrawables(/*new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable()*/iconDraw, null, null, null);
+            mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+        }
     }
 
     private void createLoackAppInfoView(String pkg) {
