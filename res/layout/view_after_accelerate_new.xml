@@ -6,7 +6,7 @@
 
     <ImageView
         android:layout_width="295dp"
-        android:layout_height="39dp"
+        android:layout_height="41dp"
         android:layout_gravity="top"
         android:src="@drawable/ad_top_bg"
         android:scaleType="fitXY"
