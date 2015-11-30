@@ -82,8 +82,8 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         MessageCallLogBean messageCalls = null;
         for (ContactBean contact : addContacts) {
             String name = contact.getContactName();
-            String number = PrivacyContactUtils.deleteOtherNumber(contact
-                    .getContactNumber());
+            String number = PrivacyContactUtils.deleteOtherNumber(PrivacyContactUtils.deleteOtherNumber(contact
+                    .getContactNumber()));
             Bitmap contactIcon = contact.getContactIcon();
             /*隐私联系人去重*/
             boolean flagContact = PrivacyContactUtils.pryContRemovSame(number);

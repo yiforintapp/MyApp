@@ -111,14 +111,14 @@ public class PrivacyContactInputActivity extends BaseActivity {
                     if (!flagContact) {
                         ContactBean contact = new ContactBean();
                         contact.setContactName(mPhoneName);
-                        contact.setContactNumber(mPhoneNumber);
+                        contact.setContactNumber(PrivacyContactUtils.deleteOtherNumber(mPhoneNumber));
                         contact.setAnswerType(mPhoneState);
                         ContentValues values = new ContentValues();
-                        values.put(Constants.COLUMN_PHONE_NUMBER, mPhoneNumber);
+                        values.put(Constants.COLUMN_PHONE_NUMBER, PrivacyContactUtils.deleteOtherNumber(mPhoneNumber));
                         if (mPhoneName != null && !"".equals(mPhoneName)) {
                             values.put(Constants.COLUMN_CONTACT_NAME, mPhoneName);
                         } else {
-                            values.put(Constants.COLUMN_CONTACT_NAME, mPhoneNumber);
+                            values.put(Constants.COLUMN_CONTACT_NAME, PrivacyContactUtils.deleteOtherNumber(mPhoneNumber));
                         }
                         values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mPhoneState);
                         Uri result = null;
@@ -131,10 +131,15 @@ public class PrivacyContactInputActivity extends BaseActivity {
 
                             ContentResolver cr = PrivacyContactInputActivity.this.getContentResolver();
                             PrivacyContactManagerImpl pm = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+                            /*4.4以上不去做短信操作*/
+                            boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+                            Cursor curMsm = null;
+                            if (isLessLeve19) {
                             /*查看是否存在短信*/
-                            Cursor curMsm = pm.getSystemMessages("address LIKE ? ", new String[]{"%" + tempNumber});
-                            if (curMsm != null) {
-                                mMsmCount = curMsm.getCount();
+                                curMsm = pm.getSystemMessages("address LIKE ? ", new String[]{"%" + tempNumber});
+                                if (curMsm != null) {
+                                    mMsmCount = curMsm.getCount();
+                                }
                             }
                             /*查询是否存在通话*/
                             Cursor callCur = pm.getSystemCalls("number LIKE ?", new String[]{"%" + tempNumber});

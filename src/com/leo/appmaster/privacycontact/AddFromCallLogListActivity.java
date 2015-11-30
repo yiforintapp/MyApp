@@ -291,7 +291,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
      */
     public void addContToSelfDb(ContactCallLog call) {
         String name = call.getCallLogName();
-        String contactNumber = call.getCallLogNumber();
+        String contactNumber = PrivacyContactUtils.deleteOtherNumber(call.getCallLogNumber());
         ContentResolver cr = this.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(this);
         ContentValues values = new ContentValues();

@@ -340,7 +340,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     .getInstance(getApplicationContext());
                             for (ContactBean contact : mAddPrivacyContact) {
                                 String name = contact.getContactName();
-                                String number = contact.getContactNumber();
+                                String number = PrivacyContactUtils.deleteOtherNumber(contact.getContactNumber());
                                 Bitmap contactIcon = contact.getContactIcon();
                                 /*隐私联系人去重*/
                                 boolean flagContact = false;
@@ -516,7 +516,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             .getInstance(getApplicationContext());
                     for (ContactBean contact : mAddPrivacyContact) {
                         String name = contact.getContactName();
-                        String number = contact.getContactNumber();
+                        String number = PrivacyContactUtils.deleteOtherNumber(contact.getContactNumber());
                         Bitmap contactIcon = contact.getContactIcon();
                         // 隐私联系人去重
                         String tempNumber =
