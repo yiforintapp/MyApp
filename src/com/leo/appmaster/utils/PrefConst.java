@@ -88,4 +88,6 @@ public class PrefConst {
 
     // 加速快捷方式
     public static final String IS_BOOST_CREAT = "is_boost_creat";
+
+    public static final String KEY_HAS_LATEAST = "intruder_has_lateast";
 }

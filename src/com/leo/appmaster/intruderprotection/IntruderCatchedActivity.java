@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static final int TIMES_TO_CATCH_3 = 3;
     private static final int TIMES_TO_CATCH_4 = 5;
     private boolean mIsNewestBigPicShowing = true;
+    private String mLatestImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -362,7 +364,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         // 排序数据库的结果，按照时间排序
         sortInfos();
         final PackageManager pm = getPackageManager();
-        if (mInfosSorted != null && mInfosSorted.size() != 0) {
+//        if (mInfosSorted != null && mInfosSorted.size() != 0) {
+        if (shouldDisplayLatest()) {
             // 如果记录有效，显示第一张大图
             mRlNewest.setVisibility(View.VISIBLE);
             mRlNopic.setVisibility(View.INVISIBLE);
@@ -381,21 +384,15 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                                 }
 
                                 @Override
-                                public void onLoadingComplete(String imageUri, View view,
+                                public void onLoadingComplete(final String imageUri, View view,
                                                               Bitmap loadedImage) {
                                     mIvNewestPhoto.setImageBitmap(loadedImage);
                                     mIvNewestPhoto.setOnClickListener(new OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             // 点击后进入大图浏览
-                                            Intent intent = new Intent(
-                                                    IntruderCatchedActivity.this,
-                                                    IntruderGalleryActivity.class);
-                                            intent.putExtra("current_position", 0);
-                                            SDKWrapper.addEvent(IntruderCatchedActivity.this,
-                                                    SDKWrapper.P1,
-                                                    "intruder", "intruder_view_capture");
-                                            startActivity(intent);
+                                            startGallery(0);
+                                            mLatestImageUri = imageUri;
                                         }
                                     });
                                     // 大图上面的遮盖蒙层，图标和时间
@@ -428,7 +425,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mRlNopic.setVisibility(View.VISIBLE);
         }
         // 如果记录不止一条，将显示下方的其他照片部分
-        if (mInfosSorted.size() >= 2) {
+        boolean hasLateast = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+        int size = hasLateast ? 2 : 1;
+        if (mInfosSorted.size() >= size) {
             showOtherPhotos();
         } else {
             // 记录只有一条，下方没有照片显示，布局的visibility改为gone
@@ -461,6 +460,19 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mRvHeader.requestFocus();
     }
 
+    private boolean shouldDisplayLatest() {
+        if (mInfosSorted == null || mInfosSorted.isEmpty()) {
+            return false;
+        }
+
+        IntruderPhotoInfo photoInfo = mInfosSorted.get(0);
+        if (photoInfo == null || photoInfo.getFilePath() == null) {
+            return false;
+        }
+
+        return PreferenceTable.getInstance().getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+    }
+
     /**
      * 显示下方更多照片部分的操作
      */
@@ -478,7 +490,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 final LinearLayout llMask = (LinearLayout) view.findViewById(R.id.ll_mask);
                 final BottomCropImage ivv = (BottomCropImage) view
                         .findViewById(R.id.iv_intruder_more);
-                final String filePath = mInfosSorted.get(position + 1).getFilePath();
+                boolean has = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                int index = has ? (position + 1) : position;
+                final String filePath = mInfosSorted.get(index).getFilePath();
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
@@ -492,13 +506,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                                 ivv.setOnClickListener(new OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Intent intent = new Intent(IntruderCatchedActivity.this,
-                                                IntruderGalleryActivity.class);
-                                        intent.putExtra("current_position", position + 1);
-                                        SDKWrapper.addEvent(IntruderCatchedActivity.this,
-                                                SDKWrapper.P1,
-                                                "intruder", "intruder_view_capture");
-                                        startActivity(intent);
+                                        boolean has = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                                        int index = has ? (position + 1) : position;
+                                        startGallery(index);
                                     }
                                 });
                             }
@@ -533,11 +543,22 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
             @Override
             public int getCount() {
-                if (mInfosSorted == null)
+                boolean has = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                if (mInfosSorted == null) {
                     return 0;
-                return Math.min(NEWEST_PHOTO_NUMBER, mInfosSorted.size() - 1);
+                }
+                int count = has ? (mInfosSorted.size() - 1) : mInfosSorted.size();
+                return Math.min(NEWEST_PHOTO_NUMBER, count);
             }
         });
+    }
+
+    private void startGallery(int position) {
+        Intent intent = new Intent(IntruderCatchedActivity.this, IntruderGalleryActivity.class);
+        intent.putExtra("current_position", position);
+        SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                "intruder", "intruder_view_capture");
+        startActivity(intent);
     }
 
     /**

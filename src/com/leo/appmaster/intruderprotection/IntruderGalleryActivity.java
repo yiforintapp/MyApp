@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -25,6 +26,7 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.imageloader.ImageLoader;
 
 public class IntruderGalleryActivity extends BaseActivity {
@@ -160,7 +162,7 @@ public class IntruderGalleryActivity extends BaseActivity {
                 dialog.setContent(askforsure);
                 dialog.setRightBtnStr(IntruderGalleryActivity.this.getString(R.string.makesure));
                 dialog.setLeftBtnStr(IntruderGalleryActivity.this.getString(R.string.cancel));
-                dialog.setRightBtnListener(new DialogInterface.OnClickListener()  {
+                dialog.setRightBtnListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final String filePath = mInfosSorted.get(currentItem).getFilePath();
@@ -168,22 +170,27 @@ public class IntruderGalleryActivity extends BaseActivity {
                         ThreadManager.executeOnFileThread(new Runnable() {
                             @Override
                             public void run() {
-                                    FileOperationUtil.deleteFile(filePath);
-                                    FileOperationUtil.deleteFileMediaEntry(filePath, IntruderGalleryActivity.this);
-                                    LeoLog.i("poha", "delete pic");
+                                FileOperationUtil.deleteFile(filePath);
+                                FileOperationUtil.deleteFileMediaEntry(filePath, IntruderGalleryActivity.this);
+                                LeoLog.i("poha", "delete pic");
                             }
                         });
                         mInfosSorted.remove(currentItem);
-                        if(mInfosSorted.size() != 0){
+                        if (mInfosSorted.size() != 0) {
                             adapter.notifyDataSetChanged();
-                        }else{
+                        } else {
                             IntruderGalleryActivity.this.finish();
                         }
                         dialog.dismiss();
+                        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                        boolean hasLateast = preferenceTable.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                        if (currentItem == 0 && hasLateast) {
+                            preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                        }
                     }
                 });
                 dialog.show();
-                LeoLog.i("poha_intruder_gallery", "currentItem = "+currentItem);
+                LeoLog.i("poha_intruder_gallery", "currentItem = " + currentItem);
             }
         });
     }
