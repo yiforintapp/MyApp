@@ -108,6 +108,12 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.hm_tool_menu_rl:
+                Activity ac = (Activity) getContext();
+                if (ac instanceof HomeActivity) {
+                    if (((HomeActivity) ac).isTabDismiss()) {
+                        return;
+                    }
+                }
                 if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
                     mDrawerLayout.closeDrawer(Gravity.START);
                 } else {
