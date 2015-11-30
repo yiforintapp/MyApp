@@ -662,20 +662,20 @@ public class FileOperationUtil {
 //                        continue;
 //                    }
 
-                    if (!countMap.containsKey(dir_path)) {
-                        File f = new File(path);
-                        if (f.exists()) {
+                    File f = new File(path);
+                    if (f.exists()) {
+                        if (!countMap.containsKey(dir_path)) {
                             pa = new PhotoAibum();
                             pa.setName(dir);
                             pa.setCount("1");
                             pa.setDirPath(dir_path);
                             pa.getBitList().add(new PhotoItem(path));
                             countMap.put(dir_path, pa);
+                        } else {
+                            pa = countMap.get(dir_path);
+                            pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                            pa.getBitList().add(new PhotoItem(path));
                         }
-                    } else {
-                        pa = countMap.get(dir_path);
-                        pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                        pa.getBitList().add(new PhotoItem(path));
                     }
                 }
             }
@@ -953,6 +953,8 @@ public class FileOperationUtil {
             }
         }
         try {
+//            LeoLog.d("testRename", "fromFile:" + fromFile);
+//            LeoLog.d("testRename", "newPath:" + newPath);
             InputStream fosfrom = new FileInputStream(fromFile);
             OutputStream fosto = new FileOutputStream(newPath);
             byte bt[] = new byte[1024 * 8];
@@ -965,6 +967,9 @@ public class FileOperationUtil {
             FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
                 String rename = newPath.replace(".leotmi", "");
+//                LeoLog.d("testRename", "rename:" + rename);
+//                File imageFile = new File(newPath);
+//                boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
                 // 复制取消隐藏成功
