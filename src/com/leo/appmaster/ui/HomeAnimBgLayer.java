@@ -49,6 +49,7 @@ public class HomeAnimBgLayer extends AnimLayer {
     private Rect mRepeatRect;
     private int mTargetScore;
     private boolean mIncrease;
+    private int mTabHeight;
 
     HomeAnimBgLayer(HomeAnimView view) {
         super(view);
@@ -72,14 +73,14 @@ public class HomeAnimBgLayer extends AnimLayer {
         mProgressGap = view.getResources().getDimensionPixelSize(R.dimen.home_arrow_gap);
 
         mRepeatFg = (BitmapDrawable) view.getResources().getDrawable(R.drawable.ic_home_color_repeat);
+        mTabHeight = view.getResources().getDimensionPixelSize(R.dimen.home_tab_height);
     }
 
     @Override
     protected void onSizeChanged() {
         super.onSizeChanged();
 
-        int tabH = mParent.getResources().getDimensionPixelSize(R.dimen.home_tab_height);
-        mProgressBottom = getHeight() - tabH;
+        mProgressBottom = getHeight() - mTabHeight;
 
         if (mBgShader == null) {
             int score = 100;
@@ -90,6 +91,8 @@ public class HomeAnimBgLayer extends AnimLayer {
 
         int progressH = mParent.getContext().getResources().getDimensionPixelSize(R.dimen.home_anim_progress);
         mProgressBounds.set(getLeft(), mProgressBottom - progressH, getRight(), mProgressBottom);
+        LeoLog.d(TAG, "progress bounds: " + mProgressBounds + " | mProgressBottom: " + mProgressBottom +
+                " | getHeight: " + getHeight() + " | tabH: " + mTabHeight);
 
         int[] colors = new int[]{
                 Color.parseColor("#2797ff"),
