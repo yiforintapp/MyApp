@@ -492,6 +492,9 @@ public class TaskDetectService extends Service {
                         return;
                     }
                     pkgName = topTaskInfo.topActivity.getPackageName();
+                    if (Constants.ISWIPE_PACKAGE.equals(pkgName)) {
+                        return;
+                    }
                     activityName = topTaskInfo.topActivity.getShortClassName();
                     if (topTaskInfo.baseActivity != null) {
                         baseActivity = topTaskInfo.baseActivity.getShortClassName();
