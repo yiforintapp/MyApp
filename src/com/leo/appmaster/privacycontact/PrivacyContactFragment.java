@@ -1105,8 +1105,11 @@ public class PrivacyContactFragment extends BaseFragment {
                     Constants.COLUMN_PHONE_NUMBER + " = ? ",
                     contact.getContactNumber(),
                     mContext);
-            if (flagNumber > 0) {
+            if (mContacts != null && mContacts.size() > 0) {
                 mContacts.remove(contact);
+                PrivacyContactManager.getInstance(mActivity).removeContact(contact);
+            }
+            if (flagNumber > 0) {
                 PrivacyContactManager.getInstance(mActivity).removeContact(contact);
 //                PrivacyHelper.getInstance(mActivity).computePrivacyLevel(
 //                        PrivacyHelper.VARABLE_PRIVACY_CONTACT);
