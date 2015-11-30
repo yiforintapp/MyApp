@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.os.Message;
 
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -29,25 +31,32 @@ import java.util.Map;
 
 public class WifiSecurityManagerImpl extends WifiSecurityManager {
     private static final int TOAST_SHOW_TIME = 5000;
-    private static final int DONT_SHOW_PG_START = 33;
+    private static final int SHOW_WIFI_TOAST = 33;
+    private static final int SHOW_WIFI_TOAST_DELAY = 2500;
+    private static final String TOAST_WIFI_NAME = "toast_wifi_name";
+    private static final String TOAST_WIFI_STATE = "toast_wifi_state";
     private static final String ACTIVITYNAME = "WifiSecurityActivity";
     private static final String SCAN_WIFI_NAME = "scan_wifi_name";
     private WifiAdmin wifiManager;
     private boolean mLastScanState = false;
     private long lastTimeIn;
     private long wifiToastLastIn;
-//    private boolean isStartPG = false;
 
 
-//    private android.os.Handler mHandler = new android.os.Handler() {
-//        public void handleMessage(android.os.Message msg) {
-//            switch (msg.what) {
-//                case DONT_SHOW_PG_START:
-//                    isStartPG = false;
-//                    break;
-//            }
-//        }
-//    };
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case SHOW_WIFI_TOAST:
+                    LeoLog.d("testShowToast", "ready show toast");
+                    Bundle data = msg.getData();
+                    String wifiName = data.getString(TOAST_WIFI_NAME);
+                    int wifiState = data.getInt(TOAST_WIFI_STATE);
+                    SelfDurationToast.makeText(mContext, wifiName, TOAST_SHOW_TIME, wifiState).show();
+                    saveWifiName(wifiName);
+                    break;
+            }
+        }
+    };
 
     public WifiSecurityManagerImpl() {
         wifiManager = WifiAdmin.getInstance(mContext);
@@ -261,17 +270,11 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
                     }
                 }
 
-                //first time start PG do not go this
-//                if (needToHandle && !isStartPG) {
                 if (needToHandle) {
                     handleWifiChange();
                 }
-//                else {
-//                    mHandler.sendEmptyMessageDelayed(DONT_SHOW_PG_START, 1500);
-//                }
             } catch (Exception e) {
                 e.printStackTrace();
-//                isStartPG = false;
             }
         }
     }
@@ -317,17 +320,23 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
 
             boolean isWifiScaned = isScanAlready(wifiName);
 
-            if (nowIn - wifiToastLastIn > 5000 && !isWifiScaned) {
-//            if (nowIn - wifiToastLastIn > 5000) {
-                if (wifiState == NOT_SAFE) {
-                    LeoLog.d("testWifiPart", "wifiState is :" + wifiState + " , show NOT_SAFE");
-                    SelfDurationToast.makeText(mContext, wifiName, TOAST_SHOW_TIME, wifiState).show();
-                    saveWifiName(wifiName);
-                } else {
-                    LeoLog.d("testWifiPart", "wifiState is :" + wifiState + " , show SAFE");
-                    SelfDurationToast.makeText(mContext, wifiName, TOAST_SHOW_TIME, wifiState).show();
-                    saveWifiName(wifiName);
-                }
+//            if (nowIn - wifiToastLastIn > 5000 && !isWifiScaned) {
+            if (nowIn - wifiToastLastIn > 5000) {
+                Message msg = new Message();
+                msg.what = SHOW_WIFI_TOAST;
+                Bundle data = new Bundle();
+                data.putString(TOAST_WIFI_NAME, wifiName);
+                data.putInt(TOAST_WIFI_STATE, wifiState);
+                msg.setData(data);
+                LeoLog.d("testShowToast", "send Message");
+                mHandler.sendMessageDelayed(msg, SHOW_WIFI_TOAST_DELAY);
+//                if (wifiState == NOT_SAFE) {
+//                    SelfDurationToast.makeText(mContext, wifiName, TOAST_SHOW_TIME, wifiState).show();
+//                    saveWifiName(wifiName);
+//                } else {
+//                    SelfDurationToast.makeText(mContext, wifiName, TOAST_SHOW_TIME, wifiState).show();
+//                    saveWifiName(wifiName);
+//                }
                 wifiToastLastIn = nowIn;
             }
         } else {
