@@ -1,51 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-     android:padding="4dp" 
-     android:background="@color/white">
+    android:background="@color/white"
+    android:padding="@dimen/cancel_hide_pic_item_padding">
 
     <FrameLayout
-       android:id="@+id/fralay_top"
+        android:id="@+id/fralay_top"
         android:layout_width="109dp"
-        android:layout_height="109dp"
-        >
-<!--         android:background="@drawable/photo_bg" -->
+        android:layout_height="109dp">
 
-<!--             android:layout_marginTop="@dimen/hide_pictrue_image_frame_top"
-            android:layout_marginLeft="@dimen/hide_picture_image_frame_left" -->
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+            android:scaleType="centerCrop" />
     </FrameLayout>
-<!--        <ImageView
-            android:layout_width="@dimen/hide_pictrue_imge_frame_width"
-            android:layout_height="@dimen/hide_pictrue_imge_frame_width"
-            android:layout_marginTop="@dimen/hide_pictrue_image_frame_top"
-            android:layout_marginLeft="@dimen/hide_picture_image_frame_left"
-            android:adjustViewBounds="true"
-            android:scaleType="center"
-            android:background="@drawable/selector_over_frame"  /> -->
 
-<!--         <TextView
-            android:id="@+id/txt_item_picture"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_below="@id/fralay_top"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textColor="@color/grey" /> -->
-
-        <ImageView
-            android:id="@+id/photo_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+    <ImageView
+        android:id="@+id/photo_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingRight="4dp"
-        android:paddingBottom="4dp"
-            android:src="@drawable/ic_check_normal_n" />
+        android:layout_alignParentRight="true"
+        android:paddingBottom="@dimen/cancel_hide_pic_item_icon_padding"
+        android:paddingRight="@dimen/cancel_hide_pic_item_icon_padding"
+        android:src="@drawable/ic_check_normal_n" />
 
 </RelativeLayout>

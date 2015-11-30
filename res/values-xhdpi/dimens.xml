@@ -205,4 +205,7 @@
     <dimen name="fragment_lock_margin_top">58dp</dimen>
     <!--手机防盗-->
     <dimen name="ph_sec_nu_bkup_cb_pd_left">20dp</dimen>
+
+    <dimen name="cancel_hide_pic_item_padding">4dp</dimen>
+    <dimen name="cancel_hide_pic_item_icon_padding">4dp</dimen>
 </resources>

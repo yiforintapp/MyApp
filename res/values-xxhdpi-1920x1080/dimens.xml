@@ -15,8 +15,8 @@
     <dimen name="lock_icon_height">24dp</dimen>
     <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
     <dimen name="app_item_linearlayout_padding">5dp</dimen>
-    
-      <dimen name="digital_item_width">60dp</dimen>
+
+    <dimen name="digital_item_width">60dp</dimen>
     <dimen name="digital_item_height">60dp</dimen>
 
     <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
@@ -84,7 +84,7 @@
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
     <dimen name="hide_picture_checkbox_left">95dp</dimen>
     <dimen name="hide_picture_checkbox_top">95dp</dimen>
-        <dimen name="hide_video_checkbox_right">24dp</dimen>
+    <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">24dp</dimen>
 
     <!-- lock mode begin -->
@@ -108,16 +108,16 @@
     <dimen name="dialog_list_btn_height">48dp</dimen>
     <dimen name="dialog_list_item_height">55dp</dimen>
     <dimen name="dialog_contact_item_height">66dp</dimen>
-     <dimen name="weizhuang_zhiwen_text_m_top">64dp</dimen>
+    <dimen name="weizhuang_zhiwen_text_m_top">64dp</dimen>
     <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <!-- quick gesutre end -->
 
     <dimen name="dialog_btn_height">48dp</dimen>
-	<!-- 2.5 start -->
+    <!-- 2.5 start -->
     <dimen name="lock_setting_title_margintop">22dp</dimen>
     <!-- 2.5 end -->
-    
+
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">70dp</dimen>
     <dimen name="webview_title_width">262dp</dimen>
@@ -128,12 +128,14 @@
     <dimen name="privacy_default_text_margin_top">10dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">52dp</dimen>
     <dimen name="app_manager_flow_chart_margin_top">20dp</dimen>
-     <dimen name="app_manager_lineview_margin_top">12dp</dimen> 
+    <dimen name="app_manager_lineview_margin_top">12dp</dimen>
     <!-- 2.6 end -->
-        <!-- 2.7 start -->
-     <dimen name="app_manager_headview_three_text_margin_top">16dp</dimen> <!-- 8dp -->
-      <dimen name="app_manager_headview_two_text_margin_top">5dp</dimen> <!-- 3 -->
-     <!-- 2.7 end -->
+    <!-- 2.7 start -->
+    <dimen name="app_manager_headview_three_text_margin_top">16dp</dimen>
+    <!-- 8dp -->
+    <dimen name="app_manager_headview_two_text_margin_top">5dp</dimen>
+    <!-- 3 -->
+    <!-- 2.7 end -->
 
     <!-- 3.0 -->
     <dimen name="home_tab_height">244dp</dimen>
@@ -197,10 +199,13 @@
     <dimen name="sec_op_tip_tv_pd_lf">40dp</dimen>
     <dimen name="sec_op_tip_tv_pd_rt">40dp</dimen>
     <dimen name="sec_op_tip_tv_size">16dp</dimen>
-    
+
     <dimen name="sec_op_suc_numb_lt">52dp</dimen>
     <dimen name="sec_num_name_tv_size">17dp</dimen>
     <dimen name="sec_nub_tv">2dp</dimen>
     <dimen name="sec_nub_size">14dp</dimen>
     <dimen name="sec_suc_instr_tip_tp">9dp</dimen>
+
+    <dimen name="cancel_hide_pic_item_padding">6dp</dimen>
+    <dimen name="cancel_hide_pic_item_icon_padding">8dp</dimen>
 </resources>
