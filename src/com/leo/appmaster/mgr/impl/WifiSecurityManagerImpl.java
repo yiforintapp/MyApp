@@ -32,7 +32,7 @@ import java.util.Map;
 public class WifiSecurityManagerImpl extends WifiSecurityManager {
     private static final int TOAST_SHOW_TIME = 5000;
     private static final int SHOW_WIFI_TOAST = 33;
-    private static final int SHOW_WIFI_TOAST_DELAY = 2500;
+    private static final int SHOW_WIFI_TOAST_DELAY = 2000;
     private static final String TOAST_WIFI_NAME = "toast_wifi_name";
     private static final String TOAST_WIFI_STATE = "toast_wifi_state";
     private static final String ACTIVITYNAME = "WifiSecurityActivity";

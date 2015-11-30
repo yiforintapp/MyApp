@@ -833,10 +833,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                         item = iterator.next();
                         if (!mIsBackgoundRunning)
                             break;
-
+                        LeoLog.d("testHidePic", "path : " + item.getPath());
                         String newPath = ((PrivacyDataManager) MgrContext.
                                 getManager(MgrContext.MGR_PRIVACY_DATA)).
                                 onHidePic(item.getPath(), "");
+                        LeoLog.d("testHidePic", "result : " + newPath);
+                        LeoLog.d("testHidePic", "---------------------------------------");
                         if (newPath != null) {
                             if ("-2".equals(newPath)) {
                                 isSuccess = -2;
@@ -875,8 +877,11 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                             break;
 
                         String filepath = item.getPath();
+                        LeoLog.d("testHidePic", "filepath : " + filepath);
                         String newPaht = ((PrivacyDataManager) MgrContext.getManager
                                 (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
+                        LeoLog.d("testHidePic", "result : " + newPaht);
+                        LeoLog.d("testHidePic", "---------------------------------------");
                         if (newPaht == null) {
                             isSuccess = 2;
                         } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {

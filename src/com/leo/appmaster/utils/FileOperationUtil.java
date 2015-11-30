@@ -663,12 +663,15 @@ public class FileOperationUtil {
 //                    }
 
                     if (!countMap.containsKey(dir_path)) {
-                        pa = new PhotoAibum();
-                        pa.setName(dir);
-                        pa.setCount("1");
-                        pa.setDirPath(dir_path);
-                        pa.getBitList().add(new PhotoItem(path));
-                        countMap.put(dir_path, pa);
+                        File f = new File(path);
+                        if (f.exists()) {
+                            pa = new PhotoAibum();
+                            pa.setName(dir);
+                            pa.setCount("1");
+                            pa.setDirPath(dir_path);
+                            pa.getBitList().add(new PhotoItem(path));
+                            countMap.put(dir_path, pa);
+                        }
                     } else {
                         pa = countMap.get(dir_path);
                         pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
@@ -683,6 +686,7 @@ public class FileOperationUtil {
                 cursor.close();
             }
         }
+
 
         //splashPath
         String splashPath = FileOperationUtil.getSplashPath();

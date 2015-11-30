@@ -544,6 +544,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                         }
                     }
 
+//                    File f = new File(path);
+//                    if (!f.exists()) {
+//                        continue;
+//                    }
+
                     boolean isFilterVideoType = false;
                     for (String videoType : filterVideoTypes) {
                         isFilterVideoType = isFilterVideoType(path, videoType);
@@ -629,6 +634,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     if (splashPath != null && dirPath.equals(splashPath)) {
                         continue;
                     }
+
                     if (currSDK_INT >= API_LEVEL_19) {
                         LeoLog.d("checkVidId", "store is : " + store);
                         if (!path.startsWith(store)) {
@@ -638,6 +644,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                             LeoLog.d("checkVidId", "inner card");
                         }
                     }
+
+//                    File f = new File(path);
+//                    if (!f.exists()) {
+//                        continue;
+//                    }
 
                     boolean isFilterVideoType = false;
                     for (String videoType : filterVideoTypes) {
