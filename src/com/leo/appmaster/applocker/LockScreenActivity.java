@@ -319,7 +319,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_package_"+packagename);
         if (view != null && mCanTakePhoto) {
-            mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
             view.takePicture(new PictureCallback() {
                 @Override
                 public void onPictureTaken(final byte[] data, Camera camera) {

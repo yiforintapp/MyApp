@@ -28,6 +28,7 @@ import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.SubmaineAnimEvent;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
@@ -40,6 +41,7 @@ import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
@@ -317,7 +319,16 @@ public class GestureLockFragment extends LockFragment implements
         String savedGesture = pref.getGesture();
         // AM-2936, no gesture, just unlock
         if (Utilities.isEmpty(savedGesture) || savedGesture.equals(gesture)) {
-            ((LockScreenActivity) mActivity).onUnlockSucceed();
+            if(mIsIntruded) {
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((LockScreenActivity) mActivity).onUnlockSucceed();
+                    }
+                }, 300);
+            } else {
+                ((LockScreenActivity) mActivity).onUnlockSucceed();
+            }
             mIsIntruded = false;
         } else {
             if (mInputCount >= mMaxInput) {
@@ -333,6 +344,7 @@ public class GestureLockFragment extends LockFragment implements
                         if (mCameraSurPreview != null) {
                             ((LockScreenActivity) mActivity).mHasTakePic = true;
                             ((LockScreenActivity) mActivity).mIsPicSaved = false;
+                            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
                             ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                                 @Override
                                 public void run() {

@@ -30,6 +30,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
@@ -622,7 +623,16 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         String password = pref.getPassword();
         // AM-2936, no gesture, just unlock
         if (Utilities.isEmpty(password) ||  password.equals(mTempPasswd)) {
-            ((LockScreenActivity) mActivity).onUnlockSucceed();
+            if(mIsIntruded) {
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((LockScreenActivity) mActivity).onUnlockSucceed();
+                    }
+                }, 300);
+            } else {
+                ((LockScreenActivity) mActivity).onUnlockSucceed();
+            }
             mIsIntruded = false;
         } else {
             if (mInputCount >= mMaxInput) {
@@ -636,6 +646,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                         if(mCameraSurPreview != null) {
                             ((LockScreenActivity) mActivity).mHasTakePic = true;
                             ((LockScreenActivity) mActivity).mIsPicSaved = false;
+                            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
                             ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                                 @Override
                                 public void run() {
