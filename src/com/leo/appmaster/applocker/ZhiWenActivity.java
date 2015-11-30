@@ -5,6 +5,7 @@ import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,6 +36,7 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
     private boolean isClick = false;
     private float lineTranslateY;
     // three click
+    long[] mHits = new long[3];
     private LEOAlarmDialog mAlarmDialog;
 
     private Handler handler = new Handler() {
@@ -150,6 +152,13 @@ public class ZhiWenActivity extends BaseActivity implements OnClickListener {
                     zhiwen_bang.setVisibility(View.VISIBLE);
                 }
                 isClick = true;
+                System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+                mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+                if (mHits[0] >= (SystemClock.uptimeMillis() - 800)) {
+                    showAlarmDialog(getString(R.string.open_weizhuang_dialog_title),
+                            getString(R.string.open_weizhuang_dialog_content),
+                            getString(R.string.open_weizhuang_dialog_sure));
+                }
                 break;
             default:
                 break;

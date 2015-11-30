@@ -243,8 +243,10 @@ public class HomeBoostActivity extends Activity {
 //        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 //        lockManager.filterAll(500);
         super.finish();
+        overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
     }
 
+    
     private void initUI() {
         Display mDisplay = getWindowManager().getDefaultDisplay();
         mScreenH = mDisplay.getHeight();
@@ -539,6 +541,7 @@ public class HomeBoostActivity extends Activity {
         }
 
     }
+    
 
     /** 广告界面动画 */
     private void adShowAnimation() {
@@ -621,6 +624,7 @@ public class HomeBoostActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
         if(mAdEngine!=null){
             mAdEngine.release(Constants.UNIT_ID_62);
         }

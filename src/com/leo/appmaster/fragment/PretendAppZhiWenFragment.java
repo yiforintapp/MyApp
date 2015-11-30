@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppZhiWenFragment extends PretendFragment implements OnClickListener {
     private final static int SHOWLOCK = 1;
@@ -192,7 +193,6 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
 
                     showFeedBack();
 
-
                 }
                 break;
             default:
@@ -201,6 +201,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     }
 
     private void showFeedBack() {
+        LeoLog.i("PAZWF", "showFeedBack!");
         mHandler.sendEmptyMessage(SHOWLOCK);
         mHandler.sendEmptyMessageDelayed(SHOWUNLOCK, 300);
         mHandler.sendEmptyMessageDelayed(FINISHFRAGMENT, 600);

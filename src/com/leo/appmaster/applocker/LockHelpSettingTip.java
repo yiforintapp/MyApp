@@ -356,7 +356,7 @@ public class LockHelpSettingTip extends BaseActivity {
     private void changePasswd() {
         LeoLog.d("Track Lock Screen", "apply lockscreen form LockHelpSetting: enterLockPage");
         mLockManager.applyLock(LockManager.LOCK_MODE_PURE,
-                LockSettingActivity.class.getName(), false, new LockManager.OnUnlockedListener() {
+                getPackageName(), false, new LockManager.OnUnlockedListener() {
                     @Override
                     public void onUnlocked() {
                         AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(null);
