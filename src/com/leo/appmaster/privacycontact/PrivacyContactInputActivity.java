@@ -155,17 +155,23 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             } else {
                                 toContactList();
                             }
+                            if (callCur != null) {
+                                callCur.close();
+                            }
+                            if (curMsm != null) {
+                                curMsm.close();
+                            }
                         }
                         /* "添加成功！", 通知更新隐私联系人列表*/
                         String msg = PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE;
                         PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(msg);
                         LeoEventBus.getDefaultBus().post(event);
+
                     } else {
                         Context context = PrivacyContactInputActivity.this;
                         String str = getResources().getString(R.string.privacy_add_contact_toast);
                         Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     Context context = PrivacyContactInputActivity.this;
                     String str = getResources().getString(R.string.input_toast_no_number_tip);
@@ -267,7 +273,9 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             public void handleMessage(Message msg) {
                                 int currentValue = msg.what;
                                 if (currentValue >= privacyTotal) {
-                                    mProgressDialog.cancel();
+                                    if (mProgressDialog != null) {
+                                        mProgressDialog.cancel();
+                                    }
                                     toContactList();
                                 } else {
                                     mProgressDialog.setProgress(currentValue);
@@ -326,7 +334,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    LeoLog.i(TAG,"import logs !");
+                    LeoLog.i(TAG, "import logs !");
                     int count = 0;
                     ContentResolver cr = getContentResolver();
                     queryCallsMsms(mPhoneNumber);

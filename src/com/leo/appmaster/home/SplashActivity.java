@@ -82,7 +82,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
     /* 是否显示更多引导 */
     private boolean mIsShowGuide;
     /*是否从闪屏跳出到facebook，标志*/
@@ -260,11 +260,25 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         if (path != null && !"".equals(path)) {
             BitmapFactory.Options option = new BitmapFactory.Options();
             option.inJustDecodeBounds = true;
+            option.inScaled = true;
             BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
             int[] pix = AppUtil.getScreenPix(this);
             int width = pix[0];
             int height = pix[1];
-            option.inSampleSize = AppUtil.calculateInSampleSize(option, width, height);
+            if (AppUtil.calculateInSampleSize(option, width, height) >= 2) {
+                option.inSampleSize = AppUtil.calculateInSampleSize(option, width, height);
+            } else {
+                option.inDensity = 480;
+                option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
+                // scale for hdpi, mdpi and ldpi
+                if (option.inTargetDensity < 125) {
+                    option.inTargetDensity = option.inTargetDensity - 40;
+                } else if (option.inTargetDensity < 165) {
+                    option.inTargetDensity = option.inTargetDensity - 40;
+                } else if (option.inTargetDensity < 245) {
+                    option.inTargetDensity = option.inTargetDensity - 40;
+                }
+            }
             option.inJustDecodeBounds = false;
             try {
                 splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
