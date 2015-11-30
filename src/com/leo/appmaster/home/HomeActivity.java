@@ -543,7 +543,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         if (getFragmentManager().getBackStackEntryCount() > 0
                 || mTabFragment.isTabDismiss()) {
-            onExitScanning();
+            try {
+                onExitScanning();
+            } catch (Exception e) {
+                LeoLog.e(TAG, "ex on onExitScanning...", e);
+            }
         } else {
             finish();
 

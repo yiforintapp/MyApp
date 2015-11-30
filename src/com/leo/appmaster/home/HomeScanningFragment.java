@@ -1,9 +1,5 @@
 package com.leo.appmaster.home;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,9 +31,10 @@ import com.leo.appmaster.ui.ScanningTextView;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoItemBean;
-import com.leo.tools.animator.Animator;
-import com.leo.tools.animator.AnimatorSet;
-import com.leo.tools.animator.ObjectAnimator;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jasper on 2015/10/18.
