@@ -1093,7 +1093,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                             FeedbackActivity.class);
                     startActivity(intent);
                 } else if (position == 6) {
-                    /* 游戏中心 */
+                    /* 卸载 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "uninstall");
                     unistallPG();
                 } else if (position == 4) {
                     /* 检查更新 */
