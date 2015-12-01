@@ -132,8 +132,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         listener = l;
     }
 
-    public void unregisterOnProgressListener(Activity activity){
-        if(activity.equals(listener)){
+    public void unregisterOnProgressListener(Activity activity) {
+        if (activity.equals(listener)) {
             listener = null;
         }
     }
@@ -551,12 +551,12 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         List<RunningAppProcessInfo> list = am.getRunningAppProcesses();
         for (RunningAppProcessInfo pi : list) {
             if (pi.importance <= RunningAppProcessInfo.IMPORTANCE_VISIBLE // Foreground
-                                                                          // or
-                                                                          // Visible
+                    // or
+                    // Visible
                     && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter
-                                                                                       // provider
-                                                                                       // and
-                                                                                       // service
+                    // provider
+                    // and
+                    // service
                     && (0x4 & pi.flags) > 0) { // Must have activities
                 String pkgList[] = pi.pkgList;
                 if (pkgList != null && pkgList.length > 0) {
@@ -615,7 +615,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         if (isActivityOnTop(mContext) && listener != null) {
             LeoLog.d(TAG, "activity on top");
 
-            if (type == IUIHelper.TYPE_CHECKING && param == 0 && mManager.isFromUser()) {
+            if (type == IUIHelper.TYPE_CHECKING && mManager.isFromUser()) {
                 //from user and ready to update , show Activity absolutely
                 checkShowRemindActivity();
             } else {
@@ -660,7 +660,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     }
 
     private void relaunchActivity(int type, int param, boolean needRecord,
-            boolean filterLockFlag/* 是否需要过滤锁 */, String lockPackage) {
+                                  boolean filterLockFlag/* 是否需要过滤锁 */, String lockPackage) {
         if (!mManager.isFromUser() && needRecord) {
             LeoLog.d(TAG, "relaunchActivity");
             mManager.recordRemind();
@@ -682,7 +682,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         }
         i.putExtra(LAYOUT_TYPE, type);
         i.putExtra(LAYOUT_PARAM, param);
-        if(type == IUIHelper.TYPE_DOWNLOAD_FAILED){
+        if (type == IUIHelper.TYPE_DOWNLOAD_FAILED) {
             cancelDownloadFailedNotification();
         }
         mContext.startActivity(i);
