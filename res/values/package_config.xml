@@ -3,6 +3,6 @@
 
     <string name="channel_name">Official</string>
     <string name="channel_code">0000a</string>
-    <string name="version_name">3.2</string>
+    <string name="version_name">3.1</string>
     <integer name="guide_page_version">2</integer>
 </resources>
