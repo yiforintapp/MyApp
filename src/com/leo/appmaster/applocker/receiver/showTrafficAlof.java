@@ -149,9 +149,13 @@ public class showTrafficAlof extends BroadcastReceiver {
     public final void setMobileNetUnable() {
         // LeoLog.d("ServiceTraffic", "关闭网络咯！！");
         if (android.os.Build.VERSION.SDK_INT > 19) {
-            Intent intent =  new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);  
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
+            try {
+                Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             Object[] arg = null;
             try {

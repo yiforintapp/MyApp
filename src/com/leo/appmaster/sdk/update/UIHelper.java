@@ -614,7 +614,14 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         LeoLog.d(TAG, "showUI, type=" + type + "; param=" + param + "; listener=" + listener);
         if (isActivityOnTop(mContext) && listener != null) {
             LeoLog.d(TAG, "activity on top");
-            listener.onChangeState(type, param);
+
+            if (type == IUIHelper.TYPE_CHECKING && param == 0 && mManager.isFromUser()) {
+                //from user and ready to update , show Activity absolutely
+                checkShowRemindActivity();
+            } else {
+                listener.onChangeState(type, param);
+            }
+
         } else if (isAppOnTop(mContext) || mManager.isFromUser()) {
             // TODO check auto check update
             // relaunchActivity(type, param);
