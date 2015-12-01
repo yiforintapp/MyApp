@@ -374,7 +374,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                             for (MessageBean message : mAddPrivacyMessage) {
                                 String name = message.getMessageName();
                                 String contactNumber = message.getPhoneNumber();
-                                String numberFromMessage = PrivacyContactUtils.deleteOtherNumber(PrivacyContactUtils.deleteOtherNumber(contactNumber));
+                                String numberFromMessage = PrivacyContactUtils.deleteOtherNumber(contactNumber);
                                 /*隐私联系人去重*/
                                 boolean flagContact = PrivacyContactUtils.pryContRemovSame(contactNumber);
                                 if (!flagContact) {
