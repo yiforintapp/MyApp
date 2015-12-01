@@ -474,6 +474,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mRvMore.setVisibility(View.GONE);
         }
         // 这里让头布局获得焦点，使得每次进入界面时显示界面的上部分，解决一进入界面就聚焦在下方listview部分的问题
+        mSvMain.scrollTo(0,0);
         mRvHeader.setFocusable(true);
         mRvHeader.setFocusableInTouchMode(true);
         mRvHeader.requestFocus();
