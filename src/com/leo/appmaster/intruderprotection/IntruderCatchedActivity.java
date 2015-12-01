@@ -611,7 +611,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).getHidePicAlbum("");
 
                 String parent = null;
-                for (IntruderPhotoInfo intruderPhotoInfo : mInfosSorted) {
+                for (int i = 0; i < mInfosSorted.size(); i++) {
+                    IntruderPhotoInfo intruderPhotoInfo = mInfosSorted.get(i);
                     String filePath = intruderPhotoInfo.getFilePath();
                     if (filePath == null || filePath.equals("Lateast")) {
                         continue;
@@ -627,6 +628,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     Intent intent = new Intent(IntruderCatchedActivity.this, ImageHideMainActivity.class);
                     startActivity(intent);
                     return;
+                }
+                for (int i = 0; i < mAlbumList.size(); i++) {
+                    PhotoAibum photoAibum = mAlbumList.get(i);
+                    if (parent.equals(photoAibum.getDirPath())) {
+                        index = i;
+                        break;
+                    }
                 }
 
                 long cc2 = System.currentTimeMillis();
