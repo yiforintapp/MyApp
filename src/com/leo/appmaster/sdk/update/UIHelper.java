@@ -293,6 +293,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     @Override
     public void onNewState(int ui_type, int param) {
+        LeoLog.d(TAG, "onNewState, type=" + ui_type + "; param=" + param);
         mUIType = ui_type;
         mUIParam = param;
         /* 恢复记录强制升级标志的默认值 */
@@ -610,7 +611,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     }
 
     private void showUI(int type, int param) {
-        LeoLog.d(TAG, "type=" + type + "; param=" + param);
+        LeoLog.d(TAG, "showUI, type=" + type + "; param=" + param + "; listener=" + listener);
         if (isActivityOnTop(mContext) && listener != null) {
             LeoLog.d(TAG, "activity on top");
             listener.onChangeState(type, param);

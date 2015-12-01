@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.leo.imageloader.utils;
 
+import android.support.v4.app.FragmentTransaction;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -115,6 +117,17 @@ public final class IoUtils {
 			try {
 				closeable.close();
 			} catch (Throwable ignored) {
+			}
+		}
+	}
+
+	public static void commitSafely(FragmentTransaction ft) {
+		try {
+			ft.commit();
+		} catch (Exception e) {
+			try {
+				ft.commitAllowingStateLoss();
+			} catch (Exception e1) {
 			}
 		}
 	}
