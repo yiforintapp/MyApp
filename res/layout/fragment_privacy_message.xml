@@ -3,7 +3,7 @@
     android:id="@+id/message_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white" >
+    android:background="@color/white">
 
     <ListView
         android:id="@+id/privacy_messageLV"
@@ -11,10 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
-        android:overScrollMode="never"
         android:divider="@null"
-        android:scrollbars="none">
-    </ListView>
+        android:overScrollMode="never"
+        android:scrollbars="none"></ListView>
 
     <LinearLayout
         android:id="@+id/message_default_tv"
@@ -23,8 +22,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/privacy_default_image_width"
@@ -34,18 +32,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/empty_page_text_m_top"
+            android:gravity="center_horizontal"
             android:text="@string/privacy_contact_default_text"
             android:textColor="#d3d3d4"
-            android:gravity="center_horizontal"
             android:textSize="@dimen/kongbaiye_text_size" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/privacy_default_text_margin_top"
-            android:text="@string/privacy_message_default_text"
             android:gravity="center_horizontal"
+            android:text="@string/privacy_message_default_text"
             android:textColor="#d3d3d4"
             android:textSize="15dp" />
     </LinearLayout>
@@ -63,11 +61,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/privacy_message_not_privacy_tip"
-            android:textColor="#828179"
             android:gravity="center_horizontal"
             android:paddingLeft="38dp"
             android:paddingRight="38dp"
+            android:text="@string/privacy_message_not_privacy_tip"
+            android:textColor="#828179"
             android:textSize="11dp" />
     </RelativeLayout>
 
