@@ -302,21 +302,28 @@ public class GestureLockFragment extends LockFragment implements
     @Override
     public void onPatternDetected(List<Cell> pattern) {
         LeoLog.d("testPattern", "onPatternDetected");
-//        mLockPatternView.setIsClearingPattern(true);
         final String gesture = LockPatternUtils.patternToString(pattern);
+        AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
+        final String savedGesture = pref.getGesture();
+
+        if (Utilities.isEmpty(savedGesture) || savedGesture.equals(gesture)) {
+            mLockPatternView.setIsUnlockSuccess(true);
+        }
+
         mLockPatternView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                checkGesture(gesture);
+                checkGesture(gesture, savedGesture);
             }
         }, 200);
     }
 
-    private void checkGesture(String gesture) {
+    private void checkGesture(String gesture, String savegesture) {
         LeoLog.d("testPattern", "checkGesture");
         mInputCount++;
-        AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
-        String savedGesture = pref.getGesture();
+//        AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
+//        String savedGesture = pref.getGesture();
+        String savedGesture = savegesture;
         // AM-2936, no gesture, just unlock
         if (Utilities.isEmpty(savedGesture) || savedGesture.equals(gesture)) {
             ((LockScreenActivity) mActivity).onUnlockSucceed();
@@ -335,7 +342,7 @@ public class GestureLockFragment extends LockFragment implements
                         if (mCameraSurPreview != null) {
                             ((LockScreenActivity) mActivity).mHasTakePic = true;
                             ((LockScreenActivity) mActivity).mIsPicSaved = false;
-                            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
+                            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false);
                             ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                                 @Override
                                 public void run() {
@@ -349,23 +356,10 @@ public class GestureLockFragment extends LockFragment implements
                 ((LockScreenActivity) mActivity).onUnlockOutcount();
                 mGestureTip.setText(R.string.please_input_gesture);
                 mInputCount = 0;
-            } else {
-                //判断触发拍照所需的剩余解锁失败次数，如果次数只剩1了，初始化 surfaceview
-//                if(mMaxInput - mInputCount <= 1 && (!mIsSurfaceViewInit) && mCanTakePic){
-//                    if (mCameraSurPreview == null) {
-//                        mCameraSurPreview = new CameraSurfacePreview(mActivity);
-//                    }
-//                    mFlPreview.addView(mCameraSurPreview);
-//                    mIsSurfaceViewInit = true;
-//                }
             }
-            mLockPatternView.clearPattern();
-//            mLockPatternView.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mLockPatternView.setIsClearingPattern(false);
-//                }
-//            }, 50);
+            if (!mLockPatternView.getIsStartDrawing()) {
+                mLockPatternView.clearPattern();
+            }
             shakeIcon();
         }
     }

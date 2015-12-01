@@ -435,12 +435,6 @@ public class LockPatternView extends ViewGroup {
         }
     }
 
-    private boolean isClearingPattern = false;
-
-    public void setIsClearingPattern(boolean isClearing) {
-        isClearingPattern = isClearing;
-    }
-
     /**
      * Clear the pattern.
      */
@@ -794,9 +788,9 @@ public class LockPatternView extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        if (isClearingPattern) {
-//            return false;
-//        }
+        if (isUnlockSuccess) {
+            return false;
+        }
 
         if (!mInputEnabled || !isEnabled()) {
             mGestureState = BUTTON_STATE_NAMAL;
@@ -805,6 +799,8 @@ public class LockPatternView extends ViewGroup {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                isStartDrawing = true;
+
                 mGestureState = BUTTON_STATE_DOWN;
                 handleActionDown(event);
                 return true;
@@ -812,11 +808,15 @@ public class LockPatternView extends ViewGroup {
                 mGestureState = BUTTON_STATE_UP;
                 clearGifAnimation();
                 handleActionUp(event);
+
+                isStartDrawing = false;
                 return true;
             case MotionEvent.ACTION_MOVE:
                 handleActionMove(event);
                 return true;
             case MotionEvent.ACTION_CANCEL:
+                isStartDrawing = false;
+
                 mGestureState = BUTTON_STATE_UP;
                 resetPattern();
                 mPatternInProgress = false;
@@ -974,6 +974,17 @@ public class LockPatternView extends ViewGroup {
 
         }
 
+    }
+
+    private boolean isUnlockSuccess = false;
+    private boolean isStartDrawing = false;
+
+    public void setIsUnlockSuccess(boolean mFlag) {
+        isUnlockSuccess = mFlag;
+    }
+
+    public boolean getIsStartDrawing() {
+        return isStartDrawing;
     }
 
     private void handleActionUp(MotionEvent event) {
