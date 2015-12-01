@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.intruderprotection;
 
 import java.io.File;
@@ -355,11 +354,28 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
     private void sortInfos() {
         mInfosSorted = mISManager.sortInfosByTimeStamp(mSrcInfos);
-        boolean hasLateast = mPt.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
-        if (!hasLateast) {
+        if (!isLateastValid()) {
             IntruderPhotoInfo intruderPhotoInfo = new IntruderPhotoInfo("Lateast", "", "");
             mInfosSorted.add(0, intruderPhotoInfo);
         }
+    }
+
+    /**
+     * 最新的抓拍是否合法：过期或被删除
+     * @return
+     */
+    private boolean isLateastValid() {
+        if (mInfosSorted == null || mInfosSorted.isEmpty()) {
+            return false;
+        }
+
+        IntruderPhotoInfo photoInfo = mInfosSorted.get(0);
+        if (photoInfo == null || TextUtils.isEmpty(photoInfo.getFilePath())) {
+            return false;
+        }
+
+        long savedHash = mPt.getLong(PrefConst.KEY_LATEAST_PATH, -1);
+        return savedHash == photoInfo.getFilePath().hashCode();
     }
 
     /**
@@ -370,7 +386,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         sortInfos();
         final PackageManager pm = getPackageManager();
 //        if (mInfosSorted != null && mInfosSorted.size() != 0) {
-        if (shouldDisplayLatest()) {
+        if (isLateastValid()) {
             // 如果记录有效，显示第一张大图
             mRlNewest.setVisibility(View.VISIBLE);
             mRlNopic.setVisibility(View.INVISIBLE);
@@ -463,19 +479,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mRvHeader.requestFocus();
     }
 
-    private boolean shouldDisplayLatest() {
-        if (mInfosSorted == null || mInfosSorted.isEmpty()) {
-            return false;
-        }
-
-        IntruderPhotoInfo photoInfo = mInfosSorted.get(0);
-        if (photoInfo == null || photoInfo.getFilePath() == null) {
-            return false;
-        }
-
-        return PreferenceTable.getInstance().getBoolean(PrefConst.KEY_HAS_LATEAST, false);
-    }
-
     /**
      * 显示下方更多照片部分的操作
      */
@@ -566,7 +569,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             String packageName = mInfosSorted.get(0).getFromAppPackage();
             Drawable applicationIcon = AppUtil.getAppIcon(pm, packageName);
             mIvAppIntruded.setImageDrawable(applicationIcon);
-            CharSequence label = AppUtil.getAppLabel(pm, packageName);
+            String label = AppUtil.getAppLabel(pm, packageName);
             String newestCatchTipsS = getResources().getString(R.string.newest_catch_tip);
             String newestCatchTipsD = String.format(newestCatchTipsS, label);
             mTvNewestCatchTip.setText(newestCatchTipsD);
@@ -604,24 +607,32 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_capture_more");
                 long cc1 = System.currentTimeMillis();
-                File file = new File(mInfosSorted.get(0).getFilePath());
-                String parent = file.getParent();
                 int index = 0;
-                mAlbumList = ((PrivacyDataManager) MgrContext
-                        .getManager(MgrContext.MGR_PRIVACY_DATA)).
-                        getHidePicAlbum("");
-                for (int i = 0; i < mAlbumList.size(); i++) {
-                    String dirPath = mAlbumList.get(i).getDirPath();
-                    if (parent.equals(dirPath)) {
-                        index = i;
-                        break;
+                mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).getHidePicAlbum("");
+
+                String parent = null;
+                for (IntruderPhotoInfo intruderPhotoInfo : mInfosSorted) {
+                    String filePath = intruderPhotoInfo.getFilePath();
+                    if (filePath == null || filePath.equals("Lateast")) {
+                        continue;
+                    } else {
+                        File file = new File(filePath);
+                        parent = file.getParent();
+                        if (!TextUtils.isEmpty(parent)) {
+                            break;
+                        }
                     }
                 }
+                if (parent == null) {
+                    Intent intent = new Intent(IntruderCatchedActivity.this, ImageHideMainActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+
                 long cc2 = System.currentTimeMillis();
                 LeoLog.i("catch_poha", "cc2 -cc1 :" + (cc2 - cc1));
                 try {
-                    Intent intent = new Intent(IntruderCatchedActivity.this,
-                            ImageGridActivity.class);
+                    Intent intent = new Intent(IntruderCatchedActivity.this, ImageGridActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("data", mAlbumList.get(index));
                     intent.putExtras(bundle);

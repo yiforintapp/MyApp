@@ -90,4 +90,5 @@ public class PrefConst {
     public static final String IS_BOOST_CREAT = "is_boost_creat";
 
     public static final String KEY_HAS_LATEAST = "intruder_has_lateast";
+    public static final String KEY_LATEAST_PATH = "intruder_lateast_path";
 }
