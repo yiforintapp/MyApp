@@ -43,8 +43,10 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.imageloader.utils.IoUtils;
 
 public class PrivacyContactUtils {
     public static final int MSG_CALL = 10000;
@@ -236,22 +238,25 @@ public class PrivacyContactUtils {
                     for (MessageBean mb : it) {
                         String threadId = mb.getMessageThreadId();
                         Cursor msgCur = null;
-                        if (ifFrequContacts) {
-                            String selectionMsm = selection + " and thread_id = ?";
-                            String[] selectionArgsMsm = null;
-                            if (selectionArgs.length <= 1) {
-                                selectionArgsMsm = new String[]{selectionArgs[0], threadId};
-                            } else if (selectionArgs.length <= 2) {
-                                selectionArgsMsm = new String[]{selectionArgs[0], selectionArgs[1], threadId};
+                        try {
+                            if (ifFrequContacts) {
+                                String selectionMsm = selection + " and thread_id = ?";
+                                String[] selectionArgsMsm = null;
+                                if (selectionArgs.length <= 1) {
+                                    selectionArgsMsm = new String[]{selectionArgs[0], threadId};
+                                } else if (selectionArgs.length <= 2) {
+                                    selectionArgsMsm = new String[]{selectionArgs[0], selectionArgs[1], threadId};
+                                }
+                                msgCur = mgr.getSystemMessages(selectionMsm, selectionArgsMsm);
+                            } else {
+                                msgCur = mgr.getSystemMessages("thread_id" + " = ? ", new String[]{threadId});
                             }
-                            msgCur = mgr.getSystemMessages(selectionMsm, selectionArgsMsm);
-                        } else {
-                            msgCur = mgr.getSystemMessages("thread_id" + " = ? ", new String[]{threadId});
-                        }
-                        mb.setMessageCount(msgCur.getCount());
-                        messages.add(mb);
-                        if (msgCur != null) {
-                            msgCur.close();
+                            mb.setMessageCount(msgCur.getCount());
+                            messages.add(mb);
+                        } finally {
+                            if (!BuildProperties.isApiLevel14()) {
+                                IoUtils.closeSilently(msgCur);
+                            }
                         }
                     }
                 }
@@ -259,8 +264,8 @@ public class PrivacyContactUtils {
         } catch (Exception e) {
 
         } finally {
-            if (cur != null) {
-                cur.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cur);
             }
         }
 
@@ -358,8 +363,8 @@ public class PrivacyContactUtils {
         } catch (Error error) {
 
         } finally {
-            if (phoneCursor != null) {
-                phoneCursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(phoneCursor);
             }
         }
 
@@ -442,8 +447,8 @@ public class PrivacyContactUtils {
         } catch (Exception e) {
 
         } finally {
-            if (cursorContact != null) {
-                cursorContact.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursorContact);
             }
         }
         return contacts;
@@ -515,31 +520,34 @@ public class PrivacyContactUtils {
                     String number = contactCallLog.getCallLogNumber();
                     String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                     Cursor cur = null;
-                    if (isFreContacts) {
-                        String selectionCall = selection + " and number LIKE ? ";
-                        String[] selectionArgsCall = null;
-                        if (selectionArgs.length <= 1) {
-                            selectionArgsCall = new String[]{selectionArgs[0], "%" + formateNumber};
-                        } else if (selectionArgs.length <= 2) {
-                            selectionArgsCall = new String[]{selectionArgs[0], selectionArgs[1], "%" + formateNumber};
+                    try {
+                        if (isFreContacts) {
+                            String selectionCall = selection + " and number LIKE ? ";
+                            String[] selectionArgsCall = null;
+                            if (selectionArgs.length <= 1) {
+                                selectionArgsCall = new String[]{selectionArgs[0], "%" + formateNumber};
+                            } else if (selectionArgs.length <= 2) {
+                                selectionArgsCall = new String[]{selectionArgs[0], selectionArgs[1], "%" + formateNumber};
+                            }
+                            cur = mgr.getSystemCalls(selectionCall, selectionArgsCall);
+                        } else {
+                            cur = mgr.getSystemCalls("number" + " LIKE ? ", new String[]{"%" + formateNumber});
                         }
-                        cur = mgr.getSystemCalls(selectionCall, selectionArgsCall);
-                    } else {
-                        cur = mgr.getSystemCalls("number" + " LIKE ? ", new String[]{"%" + formateNumber});
-                    }
 
-                    contactCallLog.setCallLogCount(cur.getCount());
-                    calllogs.add(contactCallLog);
-                    if (cur != null) {
-                        cur.close();
+                        contactCallLog.setCallLogCount(cur.getCount());
+                        calllogs.add(contactCallLog);
+                    } finally {
+                        if (!BuildProperties.isApiLevel14()) {
+                            IoUtils.closeSilently(cur);
+                        }
                     }
                 }
             }
         } catch (Exception e) {
 
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
             }
         }
 
@@ -578,8 +586,8 @@ public class PrivacyContactUtils {
         } catch (Exception e) {
 
         } finally {
-            if (phoneCursor != null) {
-                phoneCursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(phoneCursor);
             }
         }
         return mSIMSContact;
@@ -722,8 +730,8 @@ public class PrivacyContactUtils {
             }
         } catch (Exception e) {
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
             }
         }
 
@@ -825,8 +833,8 @@ public class PrivacyContactUtils {
         } catch (Exception e) {
 
         } finally {
-            if (cur != null) {
-                cur.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cur);
             }
         }
 
@@ -868,8 +876,8 @@ public class PrivacyContactUtils {
         } catch (Exception e) {
 
         } finally {
-            if (cur != null) {
-                cur.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cur);
             }
         }
 
@@ -905,8 +913,8 @@ public class PrivacyContactUtils {
         } catch (Exception e) {
 
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
             }
         }
 
@@ -926,8 +934,8 @@ public class PrivacyContactUtils {
         } catch (Exception e) {
 
         } finally {
-            if (cur != null) {
-                cur.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cur);
             }
         }
 
@@ -1070,8 +1078,8 @@ public class PrivacyContactUtils {
             }
         } catch (Exception e) {
         } finally {
-            if (cur != null) {
-                cur.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cur);
             }
         }
         return contactIcon;
@@ -1107,8 +1115,8 @@ public class PrivacyContactUtils {
         } catch (Exception e) {
 
         } finally {
-            if (cur != null) {
-                cur.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cur);
             }
         }
 
@@ -1159,28 +1167,31 @@ public class PrivacyContactUtils {
                             R.drawable.default_user_avatar)).getBitmap());
                 }
 
-                if (cr != null && cr.getCount() > 0) {
-                    while (cr.moveToNext()) {
-                        long date = cr.getLong(DATE);
-                        String snippet = cr.getString(SNIPPET);
-                        String recipIDs = cr.getString(RECIPIENT_IDS);
-                        if (recipIDs != null && recipIDs.equals(id)) {
-                            message.setMessageBody(snippet);
-                            message.setMessageTime(sfd.format(date));
-                            if (date > 0) {
-                                messageList.add(message);
+                try {
+                    if (cr != null && cr.getCount() > 0) {
+                        while (cr.moveToNext()) {
+                            long date = cr.getLong(DATE);
+                            String snippet = cr.getString(SNIPPET);
+                            String recipIDs = cr.getString(RECIPIENT_IDS);
+                            if (recipIDs != null && recipIDs.equals(id)) {
+                                message.setMessageBody(snippet);
+                                message.setMessageTime(sfd.format(date));
+                                if (date > 0) {
+                                    messageList.add(message);
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
-                }
-                if (cr != null) {
-                    cr.close();
+                } finally {
+                    if (!BuildProperties.isApiLevel14()) {
+                        IoUtils.closeSilently(cr);
+                    }
                 }
             }
         }
-        if (cur != null) {
-            cur.close();
+        if (!BuildProperties.isApiLevel14()) {
+            IoUtils.closeSilently(cur);
         }
         return messageList;
     }
@@ -1335,8 +1346,8 @@ public class PrivacyContactUtils {
             }
         } catch (Exception e) {
         } finally {
-            if (cur != null) {
-                cur.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cur);
             }
         }
 

@@ -27,6 +27,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
@@ -37,6 +38,7 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
  */
 public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTabFragment";
+    private static final boolean DBG = false;
 
     private ImageView mRedDot;
     // 首页4个tab
@@ -60,7 +62,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 
         mActivity = (HomeActivity) activity;
     }
-    public interface OnShowTabListener{
+
+    public interface OnShowTabListener {
         void onShowTabListener();
     }
 
@@ -195,7 +198,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     /*进入手机防盗*/
     private void startPhoneSecurity() {
         FragmentActivity activity = getActivity();
-        if(activity != null) {
+        if (activity != null) {
             LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
             boolean flag = manager.isUsePhoneSecurity();
             Intent intent = null;
@@ -238,7 +241,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         FragmentActivity activity = getActivity();
-        if(activity != null) {
+        if (activity != null) {
             switch (view.getId()) {
                 case R.id.home_app_lock_tv:
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");
@@ -271,6 +274,10 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     // 手机防盗
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
                     startPhoneSecurity();
+                    if (DBG) {
+                        int[] pix = AppUtil.getScreenPix(getActivity());
+                        LeoLog.i(TAG, "X="+pix[0]+",Y="+pix[1]);
+                    }
                     break;
             }
         }

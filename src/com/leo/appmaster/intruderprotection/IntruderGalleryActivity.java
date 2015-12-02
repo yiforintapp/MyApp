@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.intruderprotection;
 
 import java.util.ArrayList;
@@ -183,9 +182,11 @@ public class IntruderGalleryActivity extends BaseActivity {
                         }
                         dialog.dismiss();
                         PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                        boolean hasLateast = preferenceTable.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
-                        if (currentItem == 0 && hasLateast) {
-                            preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, false);
+//                        boolean hasLateast = preferenceTable.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                        long pathHash = preferenceTable.getLong(PrefConst.KEY_LATEAST_PATH, -1);
+                        if (currentItem == 0 && pathHash != -1) {
+//                            preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                            preferenceTable.putLong(PrefConst.KEY_LATEAST_PATH, -1);
                         }
                     }
                 });

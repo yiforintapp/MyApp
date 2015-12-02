@@ -201,11 +201,13 @@ public class PhoneSecurityManager {
      * 检查是否为防盗指令
      */
     private void checkMsmIsInstructs(String phoneNumber, ArrayList<MessageBean> messages) {
+        phoneNumber = PrivacyContactUtils.deleteOtherNumber(phoneNumber);
         final LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         for (MessageBean message : messages) {
             /*短信id*/
             long msmId = message.getMsmId();
-            String formate = PrivacyContactUtils.formatePhoneNumber(message.getPhoneNumber());
+            String formateNum = PrivacyContactUtils.deleteOtherNumber(message.getPhoneNumber());
+            String formate = PrivacyContactUtils.formatePhoneNumber(formateNum);
             if (phoneNumber.contains(formate)) {
                 String body = message.getMessageBody();
                 /*去除字符串中所有的空格*/
@@ -280,7 +282,9 @@ public class PhoneSecurityManager {
         } else if (SecurityInstructSet.LOCATEPOSITION.equals(body)) {
             /*执行位置指令前，先初始化各个信息*/
             if (mLocationManager != null) {
-                mLocationManager.removeUpdates(mLocationListener);
+                if (mLocationListener != null) {
+                    mLocationManager.removeUpdates(mLocationListener);
+                }
                 setLocationManager(null);
             }
             if (mLocationListener != null) {

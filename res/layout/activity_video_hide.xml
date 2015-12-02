@@ -44,7 +44,7 @@
                 android:id="@+id/nohideTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/empty_page_text_m_top"
                 android:gravity="center"
                 android:textColor="#d3d3d4"
                 android:textSize="@dimen/kongbaiye_text_size" />

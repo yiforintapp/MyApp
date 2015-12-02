@@ -57,7 +57,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/empty_page_text_m_top"
             android:gravity="center_horizontal"
             android:text="@string/privacy_contact_default_text"
             android:textColor="#d3d3d4"

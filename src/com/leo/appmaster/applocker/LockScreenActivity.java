@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker;
 
 import java.io.ByteArrayOutputStream;
@@ -374,7 +373,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath,packagename, timeStamp);
                             mISManager.insertInfo(info);
                             mIsPicSaved = true;
-                            mPt.putBoolean(PrefConst.KEY_HAS_LATEAST, true);
+                            mPt.putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
+//                            mPt.putBoolean(PrefConst.KEY_HAS_LATEAST, true);
                             LeoLog.i("poha", "after insert, before judge!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
                             if(mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false) && mIsPicSaved){
                                 mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);

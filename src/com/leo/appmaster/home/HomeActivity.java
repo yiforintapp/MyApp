@@ -86,6 +86,7 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
+import com.leo.imageloader.utils.IoUtils;
 import com.leo.tools.animator.ValueAnimator;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
@@ -468,7 +469,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             ft.replace(R.id.pri_pro_content, fragment);
             mCurrentFragment = fragment;
         }
-        ft.addToBackStack(null).commit();
+        ft.addToBackStack(null);
+        IoUtils.commitSafely(ft);
     }
 
     private void initUI() {
@@ -619,7 +621,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     ft.remove(f);
                 }
             }
-            ft.commit();
+            IoUtils.commitSafely(ft);
         } catch (Exception e) {
             LeoLog.w(TAG, "remove fragments ex.", e);
         }
@@ -1093,7 +1095,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                             FeedbackActivity.class);
                     startActivity(intent);
                 } else if (position == 6) {
-                    /* 游戏中心 */
+                    /* 卸载 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "uninstall");
                     unistallPG();
                 } else if (position == 4) {
                     /* 检查更新 */
@@ -1154,7 +1157,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
         mProcessedMgr = null;
         mProcessAlreadyTimeout = false;
-        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(fragment);
+        IoUtils.commitSafely(ft);
+//        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         if (fragment instanceof PrivacyNewAppFragment) {

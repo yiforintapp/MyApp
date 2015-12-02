@@ -257,7 +257,7 @@
     <!-- apple watch -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <!-- quick gesutre end -->
-    <dimen name="privacy_contact_high_red_tip_x">167dp</dimen>
+    <dimen name="privacy_contact_high_red_tip_x">150dp</dimen>
     <dimen name="privacy_contact_high_red_tip_y">4dp</dimen>
     <dimen name="privacy_contact_red_tip_x">97dp</dimen>
     <dimen name="privacy_contact_red_tip_y">8dp</dimen>
