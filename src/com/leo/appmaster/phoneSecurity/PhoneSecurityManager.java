@@ -201,6 +201,7 @@ public class PhoneSecurityManager {
      * 检查是否为防盗指令
      */
     private void checkMsmIsInstructs(String phoneNumber, ArrayList<MessageBean> messages) {
+        phoneNumber = PrivacyContactUtils.deleteOtherNumber(phoneNumber);
         final LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         for (MessageBean message : messages) {
             /*短信id*/
