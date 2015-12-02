@@ -205,7 +205,8 @@ public class PhoneSecurityManager {
         for (MessageBean message : messages) {
             /*短信id*/
             long msmId = message.getMsmId();
-            String formate = PrivacyContactUtils.formatePhoneNumber(message.getPhoneNumber());
+            String formateNum = PrivacyContactUtils.deleteOtherNumber(message.getPhoneNumber());
+            String formate = PrivacyContactUtils.formatePhoneNumber(formateNum);
             if (phoneNumber.contains(formate)) {
                 String body = message.getMessageBody();
                 /*去除字符串中所有的空格*/
