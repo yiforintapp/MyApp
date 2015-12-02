@@ -282,7 +282,9 @@ public class PhoneSecurityManager {
         } else if (SecurityInstructSet.LOCATEPOSITION.equals(body)) {
             /*执行位置指令前，先初始化各个信息*/
             if (mLocationManager != null) {
-                mLocationManager.removeUpdates(mLocationListener);
+                if (mLocationListener != null) {
+                    mLocationManager.removeUpdates(mLocationListener);
+                }
                 setLocationManager(null);
             }
             if (mLocationListener != null) {
