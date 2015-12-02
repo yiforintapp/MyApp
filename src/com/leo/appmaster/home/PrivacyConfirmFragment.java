@@ -436,6 +436,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void initContactLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.contact_security_stub);
 //        View include = view.findViewById(R.id.contact_security);
+        if(viewStub == null) {
+            return;
+        }
         mContactInclude = viewStub.inflate();
         if (mContactList == null || mContactList.isEmpty() || !mShowContact) {
             mContactInclude.setVisibility(View.GONE);
@@ -706,6 +709,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         if (view != null) {
             ViewStub viewStub = (ViewStub) view.findViewById(R.id.advertise_security_stub);
 //            View include = view.findViewById(R.id.advertise_security);
+            if(viewStub == null) {
+                return;
+            }
             View include = viewStub.inflate();
             TextView title = (TextView) include.findViewById(R.id.item_title);
             title.setText(campaign.getAppName());
@@ -764,6 +770,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void initWifiLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.wifi_security_stub);
 //        View include = view.findViewById(R.id.wifi_security);
+        if(viewStub == null) {
+            return;
+        }
         mWIfiInclude = viewStub.inflate();
         View warn = mWIfiInclude.findViewById(R.id.item_summay_sub_ll);
         warn.setVisibility(View.VISIBLE);
@@ -788,6 +797,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void initSwiftyLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.swifty_security_stub);
 //        View include = view.findViewById(R.id.swifty_security);
+        if(viewStub == null) {
+            return;
+        }
         View include = viewStub.inflate();
         mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
         mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
@@ -836,6 +848,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void initFbLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.fb_security_stub);
 //        View include = view.findViewById(R.id.fb_security);
+        if(viewStub == null) {
+            return;
+        }
         View include = viewStub.inflate();
         mFbBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
         mFbBtnLt.setOnClickListener(this);
@@ -849,6 +864,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 //        View include = view.findViewById(R.id.grade_security);
         if (score == 100) {  // 等于100分
             ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_high_security_stub);
+            if(viewStub == null) {
+                return;
+            }
             View highInclude = viewStub.inflate();
             mHighOneStar = (ImageView) highInclude.findViewById(R.id.one_star);
             mHighTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
@@ -872,6 +890,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
         } else {
             ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_security_stub);
+            if(viewStub == null) {
+                return;
+            }
             View include = viewStub.inflate();
             mOneStar = (ImageView) include.findViewById(R.id.one_star);
             mTwoStar = (ImageView) include.findViewById(R.id.two_star);
