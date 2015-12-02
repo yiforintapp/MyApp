@@ -1148,11 +1148,11 @@ public class LockPatternView extends ViewGroup {
         } else {
             int length = mButtonViews.length;
             for (int i = 0; i < length; i++) {
-
                 if (!drawLookup[i / 3][i % 3]
                         || (mInStealthMode && mPatternDisplayMode != DisplayMode.Wrong)) {
                     mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
-                } else if (mPatternInProgress) {
+//                } else if (mPatternInProgress) {
+                } else {
                     mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
                 }/*
                   * else if (mPatternDisplayMode == DisplayMode.Wrong) {
