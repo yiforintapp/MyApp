@@ -523,20 +523,6 @@ public class HomeBoostActivity extends Activity {
 //            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
             toast.show();
             HomeBoostActivity.this.finish();
-//            mCdt = new CountDownTimer(2000, 1000) {
-//
-//                @Override
-//                public void onTick(long millisUntilFinished) {
-//
-//                }
-//
-//                @Override
-//                public void onFinish() {
-//                    HomeBoostActivity.this.finish();
-//
-//                }
-//            };
-//            mCdt.start();
             isClean = true;
         }
 

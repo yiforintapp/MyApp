@@ -32,6 +32,10 @@ import android.view.WindowManager;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.FolderItemInfo;
@@ -469,7 +473,7 @@ public final class Utilities {
     }
 
     /** 红米Note2 进入红米默认浏览器 */
-    private static void goRedMiTwoBrowser(Context context) {
+    public static void goRedMiTwoBrowser(Context context) {
         Intent intent;
         intent = new Intent(Intent.ACTION_VIEW);
         Uri uri = Uri
@@ -482,6 +486,143 @@ public final class Utilities {
             LeoLog.i("goFiveStar", "intent: " + intent.toURI());
         } catch (Exception e) {
             goGpBrowser(context);
+        }
+    }
+
+    /**
+     * 前往FaceBook
+     */
+    public static void goFaceBook(Context context) {
+        Intent intentLikeUs = null;
+        if (AppUtil.appInstalled(context.getApplicationContext(),
+                Constants.FACEBOOK_PKG_NAME)) {
+            intentLikeUs = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(Constants.FACEBOOK_URL);
+            intentLikeUs.setData(uri);
+            ComponentName cn = new ComponentName(Constants.FACEBOOK_PKG_NAME,
+                    Constants.FACEBOOK_CLASS);
+            intentLikeUs.setComponent(cn);
+            intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(intentLikeUs);
+            } catch (Exception e) {
+            }
+        } else {
+            intentLikeUs = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(Constants.FACEBOOK_PG_URL);
+            intentLikeUs.setData(uri);
+            intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(intentLikeUs);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+
+    public static void startISwipIntent(Context context) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        ComponentName cn = new ComponentName(AppLoadEngine.ISWIPE_PACKAGENAME,
+                "com.leo.iswipe.activity.QuickGestureActivity");
+        intent.setComponent(cn);
+        boolean iswipeFirstTip = AppMasterPreference.getInstance(context)
+                .getFristSlidingTip();
+        if (iswipeFirstTip) {
+            intent.putExtra(Constants.PG_TO_ISWIPE, Constants.ISWIPE_FIRST_TIP);
+        } else {
+            intent.putExtra(Constants.PG_TO_ISWIPE, Constants.ISWIPE_NO_FIRST_TIP);
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        try {
+            lockManager.filterSelfOneMinites();
+            lockManager.filterPackage(AppLoadEngine.ISWIPE_PACKAGENAME, false);
+            context.startActivity(intent);
+        } catch (Exception e) {
+        }
+
+    }
+
+
+    /**
+     * 前往Gp或亚马逊云
+     */
+    public static void gotoGpOrBrowser(Context context) {
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        String gpUrl;
+        String browserUrl;
+        if (Constants.BROWSER_URL_TYPE.equals(
+                preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE))) { // 使用浏览器
+
+            if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
+                    preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
+
+                browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
+                gotoBrowser(browserUrl,context);
+            }
+        } else {  // 使用gp
+            if (preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL) != null &&
+                    preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL).length() > 0) {
+                gpUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL);
+
+                if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
+                        preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
+
+                    browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
+                } else {
+                    browserUrl = "";
+                }
+                gotoGp(gpUrl, browserUrl,context);
+            } else {
+                if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
+                        preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
+
+                    browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
+                    gotoBrowser(browserUrl,context);
+                }
+            }
+        }
+    }
+
+    /**
+     * 使用Gp,没有Gp用浏览器
+     */
+    private static void gotoGp(String gpUrl, String browserUrl, Context context) {
+        Intent intent = null;
+        if (AppUtil.appInstalled(context,
+                "com.android.vending")) {
+            intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(gpUrl);
+            intent.setData(uri);
+            intent.setPackage("com.android.vending");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(intent);
+            } catch (Exception e) {
+                if (!"".equals(browserUrl)) {
+                    gotoBrowser(browserUrl, context);
+                }
+            }
+        } else {
+            if (!"".equals(browserUrl)) {
+                gotoBrowser(browserUrl, context);
+            }
+        }
+    }
+
+    /**
+     * 是使用浏览器
+     */
+    private static void gotoBrowser(String url, Context context) {
+        Intent intent;
+        intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(url);
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
         }
     }
     

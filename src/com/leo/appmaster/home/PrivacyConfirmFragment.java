@@ -2,13 +2,11 @@ package com.leo.appmaster.home;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,11 +41,11 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.MessageCallLogBean;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -546,116 +544,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         return inflater.inflate(R.layout.fragment_privacy_confirm, container, false);
     }
 
-    /**
-     * 前往Gp或亚马逊云
-     */
-    private void gotoGpOrBrowser() {
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        String gpUrl;
-        String browserUrl;
-        if (Constants.BROWSER_URL_TYPE.equals(
-                preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE))) { // 使用浏览器
-
-            if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
-                    preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
-
-                browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
-                gotoBrowser(browserUrl);
-            }
-        } else {  // 使用gp
-            if (preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL) != null &&
-                    preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL).length() > 0) {
-                gpUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL);
-
-                if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
-                        preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
-
-                    browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
-                } else {
-                    browserUrl = "";
-                }
-                gotoGp(gpUrl, browserUrl);
-            } else {
-                if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
-                        preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
-
-                    browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
-                    gotoBrowser(browserUrl);
-                }
-            }
-        }
-    }
-
-    /**
-     * 使用Gp,没有Gp用浏览器
-     */
-    private void gotoGp(String gpUrl, String browserUrl) {
-        Intent intent = null;
-        if (AppUtil.appInstalled(mActivity,
-                "com.android.vending")) {
-            intent = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.parse(gpUrl);
-            intent.setData(uri);
-            intent.setPackage("com.android.vending");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            try {
-                mActivity.startActivity(intent);
-            } catch (Exception e) {
-                if (!"".equals(browserUrl)) {
-                    gotoBrowser(browserUrl);
-                }
-            }
-        } else {
-            if (!"".equals(browserUrl)) {
-                gotoBrowser(browserUrl);
-            }
-        }
-    }
-
-    /**
-     * 是使用浏览器
-     */
-    private void gotoBrowser(String url) {
-        Intent intent;
-        intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri.parse(url);
-        intent.setData(uri);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        try {
-            mActivity.startActivity(intent);
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     * 前往FaceBook
-     */
-    private void goFaceBook() {
-        Intent intentLikeUs = null;
-        if (AppUtil.appInstalled(mActivity.getApplicationContext(),
-                Constants.FACEBOOK_PKG_NAME)) {
-            intentLikeUs = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.parse(Constants.FACEBOOK_URL);
-            intentLikeUs.setData(uri);
-            ComponentName cn = new ComponentName(Constants.FACEBOOK_PKG_NAME,
-                    Constants.FACEBOOK_CLASS);
-            intentLikeUs.setComponent(cn);
-            intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            try {
-                startActivity(intentLikeUs);
-            } catch (Exception e) {
-            }
-        } else {
-            intentLikeUs = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.parse(Constants.FACEBOOK_PG_URL);
-            intentLikeUs.setData(uri);
-            intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            try {
-                startActivity(intentLikeUs);
-            } catch (Exception e) {
-            }
-        }
-    }
 
     private void onAddContactFinish() {
         mActivity.runOnUiThread(new Runnable() {
@@ -1090,7 +978,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mFbBtnLt == v) {  // FaceBook分享
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "facebook");
             lockManager.filterSelfOneMinites();
-            goFaceBook();
+            Utilities.goFaceBook(mActivity);
         } else if (mHighGradeBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
@@ -1107,7 +995,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mSwiftyBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "swifty");
             lockManager.filterSelfOneMinites();
-            gotoGpOrBrowser();
+            boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
+            if (installISwipe) {
+                Utilities.startISwipIntent(mActivity);
+            } else {
+                Utilities.gotoGpOrBrowser(mActivity);
+            }
         }
     }
 

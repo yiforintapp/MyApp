@@ -1,7 +1,6 @@
 package com.leo.appmaster.home;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,12 +22,9 @@ import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
@@ -38,6 +34,7 @@ import com.leo.appmaster.ui.HomeUpArrow;
 import com.leo.appmaster.ui.SlidingUpPanelLayout;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 /**
@@ -49,10 +46,6 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
     private static final String TAG = "HomeMoreFragment";
 
     private static final int DEFAULT_FADE_COLOR = 0x99000000;
-
-    private static final String PG_TO_ISWIPE = "pg_to_iswipe";
-    private static final String ISWIPE_FIRST_TIP = "iswipe_first_tip";
-    private static final String ISWIPE_NO_FIRST_TIP = "iswipe_no_firt_tip";
 
     private SlidingUpPanelLayout mSlidingLayout;
     private View mRootView;
@@ -335,7 +328,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
 
         } else {
             /* 启动ISwipe主页 */
-            startISwipIntent();
+            Utilities.startISwipIntent(getActivity());
         }
     }
 
@@ -380,29 +373,6 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         mAppManagerIswipDialog.show();
     }
 
-    private void startISwipIntent() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        ComponentName cn = new ComponentName(AppLoadEngine.ISWIPE_PACKAGENAME,
-                "com.leo.iswipe.activity.QuickGestureActivity");
-        intent.setComponent(cn);
-        boolean iswipeFirstTip = AppMasterPreference.getInstance(getActivity())
-                .getFristSlidingTip();
-        if (iswipeFirstTip) {
-            intent.putExtra(PG_TO_ISWIPE, ISWIPE_FIRST_TIP);
-        } else {
-            intent.putExtra(PG_TO_ISWIPE, ISWIPE_NO_FIRST_TIP);
-        }
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        try {
-            lockManager.filterSelfOneMinites();
-            lockManager.filterPackage(AppLoadEngine.ISWIPE_PACKAGENAME, false);
-            startActivity(intent);
-        } catch (Exception e) {
-        }
-
-    }
 
     @Override
     public void onDestroy() {

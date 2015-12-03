@@ -407,4 +407,8 @@ public class Constants {
     public static final String BROWSER_URL_TYPE = "1";
     /** 判断手机是否为红米Note2 */
     public static final String RED_MI_TWO_NAME = "Redmi Note 2";
+
+    public static final String PG_TO_ISWIPE = "pg_to_iswipe";
+    public static final String ISWIPE_FIRST_TIP = "iswipe_first_tip";
+    public static final String ISWIPE_NO_FIRST_TIP = "iswipe_no_firt_tip";
 }
