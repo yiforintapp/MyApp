@@ -1,457 +1,749 @@
 package com.leo.appmaster.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Handler;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.Property;
 
-/**
- * Created by Jasper on 2015/10/21.
- */
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 public class LinearRippleView extends LinearLayout {
-    public LinearRippleView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
+
+    private static final int DEFAULT_DURATION = 350;
+    private static final int DEFAULT_FADE_DURATION = 75;
+    private static final float DEFAULT_DIAMETER_DP = 35;
+    private static final float DEFAULT_ALPHA = 0.5f;
+    private static final int DEFAULT_COLOR = Color.BLACK;
+    private static final int DEFAULT_BACKGROUND = Color.TRANSPARENT;
+    private static final boolean DEFAULT_HOVER = true;
+    private static final boolean DEFAULT_DELAY_CLICK = true;
+    private static final boolean DEFAULT_PERSISTENT = false;
+    private static final boolean DEFAULT_SEARCH_ADAPTER = false;
+    private static final boolean DEFAULT_RIPPLE_OVERLAY = false;
+
+    private static final int FADE_EXTRA_DELAY = 50;
+    private static final long HOVER_DURATION = 2500;
+
+    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Rect bounds = new Rect();
+
+    private int rippleColor;
+    private boolean rippleOverlay;
+    private boolean rippleHover;
+    private int rippleDiameter;
+    private int rippleDuration;
+    private int rippleAlpha;
+    private boolean rippleDelayClick;
+    private int rippleFadeDuration;
+    private boolean ripplePersistent;
+    private Drawable rippleBackground;
+    private boolean rippleInAdapter;
+
+    private float radius;
+
+    private AdapterView parentAdapter;
+    private View childView;
+    private AnimatorSet rippleAnimator;
+    private ObjectAnimator hoverAnimator;
+
+    private Point currentCoords = new Point();
+    private Point previousCoords = new Point();
+
+    private boolean eventCancelled;
+    private boolean prepressed;
+    private int positionInAdapter;
+
+    private GestureDetector gestureDetector;
+    private PerformClickEvent pendingClickEvent;
+    private PressedEvent pendingPressEvent;
+
+
+    public static RippleBuilder on(View view) {
+        return new RippleBuilder(view);
     }
 
-    private int WIDTH;
-    private int HEIGHT;
-    private int frameRate = 10;
-    private int rippleDuration = 200;
-    private int rippleAlpha = 255;
-    private Handler canvasHandler;
-    private float radiusMax = 0;
-    private boolean animationRunning = false;
-    private int timer = 0;
-    private int timerEmpty = 0;
-    private int durationEmpty = -1;
-    private float x = -1;
-    private float y = -1;
-    private int zoomDuration;
-    private float zoomScale;
-    private ScaleAnimation scaleAnimation;
-    private Boolean hasToZoom;
-    private Boolean isCentered;
-    private Integer rippleType;
-    private Paint paint;
-    private Bitmap originBitmap;
-    private int rippleColor;
-    private int ripplePadding;
-    private GestureDetector gestureDetector;
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            invalidate();
-        }
-    };
+    public LinearRippleView(Context context) {
+        this(context, null, 0);
+        childView = this;
+    }
 
-    private OnRippleCompleteListener onCompletionListener;
+    public LinearRippleView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+        childView = this;
+    }
 
-    /**
-     * Method that initializes all fields and sets listeners
-     *
-     * @param context Context used to create this view
-     * @param attrs Attribute used to initialize fields
-     */
-    private void init(final Context context, final AttributeSet attrs) {
-        if (isInEditMode())
-            return;
+    CheckBox mCheckBox;
 
-        final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RippleView);
-        rippleColor = typedArray.getColor(R.styleable.RippleView_rv_color, getResources().getColor(R.color.home_tab_rippelColor));
-        rippleType = typedArray.getInt(R.styleable.RippleView_rv_type, RippleType.RECTANGLE.type);
-        hasToZoom = typedArray.getBoolean(R.styleable.RippleView_rv_zoom, false);
-        isCentered = typedArray.getBoolean(R.styleable.RippleView_rv_centered, false);
-        rippleDuration = typedArray.getInteger(R.styleable.RippleView_rv_rippleDuration, rippleDuration);
-        frameRate = typedArray.getInteger(R.styleable.RippleView_rv_framerate, frameRate);
-        rippleAlpha = typedArray.getInteger(R.styleable.RippleView_rv_alpha, rippleAlpha);
-        ripplePadding = typedArray.getDimensionPixelSize(R.styleable.RippleView_rv_ripplePadding, 0);
-        canvasHandler = new Handler();
-        zoomScale = typedArray.getFloat(R.styleable.RippleView_rv_zoomScale, 1.03f);
-        zoomDuration = typedArray.getInt(R.styleable.RippleView_rv_zoomDuration, 200);
-        typedArray.recycle();
-        paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
+    public void setCheckBox(CheckBox checkBox) {
+        mCheckBox = checkBox;
+    }
+
+    public CheckBox getCheckBox() {
+        return mCheckBox;
+    }
+
+    public LinearRippleView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        childView = this;
+
+        setWillNotDraw(false);
+        gestureDetector = new GestureDetector(context, longClickListener);
+
+//        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RippleView);
+//        rippleColor = typedArray.getColor(R.styleable.RippleView_rv_color, DEFAULT_COLOR);
+//        rippleDuration = typedArray.getInteger(R.styleable.RippleView_rv_rippleDuration, DEFAULT_DURATION);
+//        rippleAlpha = (int) (255 * typedArray.getFloat(R.styleable.RippleView_rv_alpha, DEFAULT_ALPHA));
+//        rippleBackground = new ColorDrawable(DEFAULT_BACKGROUND);
+//        ripplePersistent = DEFAULT_PERSISTENT;
+//        rippleInAdapter = DEFAULT_SEARCH_ADAPTER;
+//        rippleDelayClick = DEFAULT_DELAY_CLICK;
+//        rippleFadeDuration = DEFAULT_FADE_DURATION;
+//        rippleOverlay = DEFAULT_RIPPLE_OVERLAY;
+//        rippleHover = DEFAULT_HOVER;
+//        rippleDiameter = (int) dpToPx(getResources(), DEFAULT_DIAMETER_DP);
+//        typedArray.recycle();
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialRippleLayout);
+        rippleColor = a.getColor(R.styleable.MaterialRippleLayout_rippleColor, DEFAULT_COLOR);
+        rippleDiameter = a.getDimensionPixelSize(
+                R.styleable.MaterialRippleLayout_rippleDimension,
+                (int) dpToPx(getResources(), DEFAULT_DIAMETER_DP)
+        );
+
+        rippleOverlay = a.getBoolean(R.styleable.MaterialRippleLayout_rippleOverlay, DEFAULT_RIPPLE_OVERLAY);
+        rippleHover = a.getBoolean(R.styleable.MaterialRippleLayout_rippleHover, DEFAULT_HOVER);
+        rippleDuration = a.getInt(R.styleable.MaterialRippleLayout_rippleDuration, DEFAULT_DURATION);
+        rippleAlpha = (int) (255 * a.getFloat(R.styleable.MaterialRippleLayout_rippleAlpha, DEFAULT_ALPHA));
+        rippleDelayClick = a.getBoolean(R.styleable.MaterialRippleLayout_rippleDelayClick, DEFAULT_DELAY_CLICK);
+        rippleFadeDuration = a.getInteger(R.styleable.MaterialRippleLayout_rippleFadeDuration, DEFAULT_FADE_DURATION);
+        rippleBackground = new ColorDrawable(a.getColor(R.styleable.MaterialRippleLayout_rippleBackground, DEFAULT_BACKGROUND));
+        ripplePersistent = a.getBoolean(R.styleable.MaterialRippleLayout_ripplePersistent, DEFAULT_PERSISTENT);
+        rippleInAdapter = a.getBoolean(R.styleable.MaterialRippleLayout_rippleInAdapter, DEFAULT_SEARCH_ADAPTER);
+        a.recycle();
+
         paint.setColor(rippleColor);
         paint.setAlpha(rippleAlpha);
-        this.setWillNotDraw(false);
+    }
 
-        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public void onLongPress(MotionEvent event) {
-                super.onLongPress(event);
-                animateRipple(event);
-                sendClickEvent(true);
-            }
 
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                return true;
-            }
+//    @SuppressWarnings("unchecked")
+//    public <T extends View> T getChildView() {
+//        return (T) childView;
+//    }
 
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
-        });
+    @Override
+    public final void addView(View child, int index, ViewGroup.LayoutParams params) {
+//        if (getChildCount() > 0) {
+//            throw new IllegalStateException("MaterialRippleLayout can host only one child");
+//        }
+//        //noinspection unchecked
+        childView = child;
+        super.addView(child, index, params);
+    }
 
-        this.setDrawingCacheEnabled(true);
-        this.setClickable(true);
+    OnClickListener listener;
+
+    @Override
+    public void setOnClickListener(OnClickListener onClickListener) {
+//        if (childView == null) {
+//            throw new IllegalStateException("MaterialRippleLayout must have a child view to handle clicks");
+//        }
+//        childView.setOnClickListener(onClickListener);
+//        super.setOnClickListener(onClickListener);
+        listener = onClickListener;
+    }
+
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return true;
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-        if (animationRunning) {
-            if (rippleDuration <= timer * frameRate) {
-                animationRunning = false;
-                timer = 0;
-                durationEmpty = -1;
-                timerEmpty = 0;
-                canvas.restore();
-                invalidate();
+    public boolean onTouchEvent(MotionEvent event) {
+        boolean superOnTouchEvent = super.onTouchEvent(event);
 
-                sendClickEvent(false);
-                if (onCompletionListener != null) onCompletionListener.onRippleComplete(this);
-                return;
-            } else
-                canvasHandler.postDelayed(runnable, frameRate);
+        if (!isEnabled() || !childView.isEnabled()) return superOnTouchEvent;
 
-            if (timer == 0)
-                canvas.save();
+        boolean isEventInBounds = bounds.contains((int) event.getX(), (int) event.getY());
 
-
-            canvas.drawCircle(x, y, (radiusMax * (((float) timer * frameRate) / rippleDuration)), paint);
-
-            paint.setColor(Color.parseColor("#ffff4444"));
-
-            if (rippleType == 1 && originBitmap != null && (((float) timer * frameRate) / rippleDuration) > 0.4f) {
-                if (durationEmpty == -1)
-                    durationEmpty = rippleDuration - timer * frameRate;
-
-                timerEmpty++;
-                final Bitmap tmpBitmap = getCircleBitmap((int) ((radiusMax) * (((float) timerEmpty * frameRate) / (durationEmpty))));
-                canvas.drawBitmap(tmpBitmap, 0, 0, paint);
-                tmpBitmap.recycle();
-            }
-
-            paint.setColor(rippleColor);
-
-            if (rippleType == 1) {
-                if ((((float) timer * frameRate) / rippleDuration) > 0.6f)
-                    paint.setAlpha((int) (rippleAlpha - ((rippleAlpha) * (((float) timerEmpty * frameRate) / (durationEmpty)))));
-                else
-                    paint.setAlpha(rippleAlpha);
-            }
-            else
-                paint.setAlpha((int) (rippleAlpha - ((rippleAlpha) * (((float) timer * frameRate) / rippleDuration))));
-
-            timer++;
+        if (isEventInBounds) {
+            previousCoords.set(currentCoords.x, currentCoords.y);
+            currentCoords.set((int) event.getX(), (int) event.getY());
         }
+
+        boolean gestureResult = gestureDetector.onTouchEvent(event);
+        if (gestureResult) {
+            return true;
+        } else {
+            int action = event.getActionMasked();
+            switch (action) {
+                case MotionEvent.ACTION_UP:
+                    pendingClickEvent = new PerformClickEvent();
+
+                    if (prepressed) {
+                        childView.setPressed(true);
+                        postDelayed(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        childView.setPressed(false);
+                                    }
+                                }, ViewConfiguration.getPressedStateDuration());
+                    }
+
+                    if (isEventInBounds) {
+                        startRipple(pendingClickEvent);
+                    } else if (!rippleHover) {
+                        setRadius(0);
+                    }
+                    if (!rippleDelayClick && isEventInBounds) {
+                        LeoLog.d("testclick", "is click right now");
+                        pendingClickEvent.run();
+                    }
+                    cancelPressedEvent();
+                    break;
+                case MotionEvent.ACTION_DOWN:
+                    setPositionInAdapter();
+                    eventCancelled = false;
+                    if (isInScrollingContainer()) {
+                        cancelPressedEvent();
+                        prepressed = true;
+                        pendingPressEvent = new PressedEvent(event);
+                        postDelayed(pendingPressEvent, ViewConfiguration.getTapTimeout());
+                    } else {
+                        childView.onTouchEvent(event);
+                        childView.setPressed(true);
+                        if (rippleHover) {
+                            startHover();
+                        }
+                    }
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    if (rippleInAdapter) {
+                        // dont use current coords in adapter since they tend to jump drastically on scroll
+                        currentCoords.set(previousCoords.x, previousCoords.y);
+                        previousCoords = new Point();
+                    }
+                    childView.onTouchEvent(event);
+                    if (rippleHover) {
+                        if (!prepressed) {
+                            startRipple(null);
+                        }
+                    } else {
+                        childView.setPressed(false);
+                    }
+                    cancelPressedEvent();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (rippleHover) {
+                        if (isEventInBounds && !eventCancelled) {
+                            invalidate();
+                        } else if (!isEventInBounds) {
+                            startRipple(null);
+                        }
+                    }
+
+                    if (!isEventInBounds) {
+                        cancelPressedEvent();
+                        if (hoverAnimator != null) {
+                            hoverAnimator.cancel();
+                        }
+                        childView.onTouchEvent(event);
+                        eventCancelled = true;
+                    }
+                    break;
+            }
+            return true;
+        }
+    }
+
+    private void cancelPressedEvent() {
+        if (pendingPressEvent != null) {
+            removeCallbacks(pendingPressEvent);
+            prepressed = false;
+        }
+    }
+
+    private SimpleOnGestureListener longClickListener = new SimpleOnGestureListener() {
+        public void onLongPress(MotionEvent e) {
+            childView.performLongClick();
+        }
+    };
+
+    private void startHover() {
+        if (eventCancelled) return;
+
+        if (hoverAnimator != null) {
+            hoverAnimator.cancel();
+        }
+        final float radius = (float) (Math.sqrt(Math.pow(getWidth(), 2) + Math.pow(getHeight(), 2)) * 1.2f);
+        hoverAnimator = ObjectAnimator.ofFloat(this, radiusProperty, rippleDiameter, radius)
+                .setDuration(HOVER_DURATION);
+        hoverAnimator.setInterpolator(new LinearInterpolator());
+        hoverAnimator.start();
+    }
+
+    private void startRipple(final Runnable animationEndRunnable) {
+        if (eventCancelled) return;
+
+        float endRadius = getEndRadius();
+
+        cancelAnimations();
+
+        rippleAnimator = new AnimatorSet();
+        rippleAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (!ripplePersistent) {
+                    setRadius(0);
+                    setRippleAlpha(rippleAlpha);
+                }
+                if (animationEndRunnable != null && rippleDelayClick) {
+                    LeoLog.d("testclick", "startRipple click");
+                    animationEndRunnable.run();
+                }
+                childView.setPressed(false);
+            }
+        });
+
+        ObjectAnimator ripple = ObjectAnimator.ofFloat(this, radiusProperty, radius, endRadius);
+        ripple.setDuration(rippleDuration);
+        ripple.setInterpolator(new DecelerateInterpolator());
+        ObjectAnimator fade = ObjectAnimator.ofInt(this, circleAlphaProperty, rippleAlpha, 0);
+        fade.setDuration(rippleFadeDuration);
+        fade.setInterpolator(new AccelerateInterpolator());
+        fade.setStartDelay(rippleDuration - rippleFadeDuration - FADE_EXTRA_DELAY);
+
+        if (ripplePersistent) {
+            rippleAnimator.play(ripple);
+        } else if (getRadius() > endRadius) {
+            fade.setStartDelay(0);
+            rippleAnimator.play(fade);
+        } else {
+            rippleAnimator.playTogether(ripple, fade);
+        }
+        rippleAnimator.start();
+    }
+
+    private void cancelAnimations() {
+        if (rippleAnimator != null) {
+            rippleAnimator.cancel();
+            rippleAnimator.removeAllListeners();
+        }
+
+        if (hoverAnimator != null) {
+            hoverAnimator.cancel();
+        }
+    }
+
+    private float getEndRadius() {
+        final int width = getWidth();
+        final int height = getHeight();
+
+        final int halfWidth = width / 2;
+        final int halfHeight = height / 2;
+
+        final float radiusX = halfWidth > currentCoords.x ? width - currentCoords.x : currentCoords.x;
+        final float radiusY = halfHeight > currentCoords.y ? height - currentCoords.y : currentCoords.y;
+
+        return (float) Math.sqrt(Math.pow(radiusX, 2) + Math.pow(radiusY, 2)) * 1.2f;
+    }
+
+    public boolean isInScrollingContainer() {
+        ViewParent p = getParent();
+        while (p != null && p instanceof ViewGroup) {
+            if (((ViewGroup) p).shouldDelayChildPressedState()) {
+                return true;
+            }
+            p = p.getParent();
+        }
+        return false;
+    }
+
+    private AdapterView findParentAdapterView() {
+        if (parentAdapter != null) {
+            return parentAdapter;
+        }
+        ViewParent current = getParent();
+        while (true) {
+            if (current instanceof AdapterView) {
+                parentAdapter = (AdapterView) current;
+                return parentAdapter;
+            } else {
+                try {
+                    current = current.getParent();
+                } catch (NullPointerException npe) {
+                    throw new RuntimeException("Could not find a parent AdapterView");
+                }
+            }
+        }
+    }
+
+    private void setPositionInAdapter() {
+        if (rippleInAdapter) {
+            positionInAdapter = findParentAdapterView().getPositionForView(LinearRippleView.this);
+        }
+    }
+
+    private boolean adapterPositionChanged() {
+        if (rippleInAdapter) {
+            int newPosition = findParentAdapterView().getPositionForView(LinearRippleView.this);
+            final boolean changed = newPosition != positionInAdapter;
+            positionInAdapter = newPosition;
+            if (changed) {
+                cancelPressedEvent();
+                cancelAnimations();
+                childView.setPressed(false);
+                setRadius(0);
+            }
+            return changed;
+        }
+        return false;
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        WIDTH = w;
-        HEIGHT = h;
-
-        scaleAnimation = new ScaleAnimation(1.0f, zoomScale, 1.0f, zoomScale, w / 2, h / 2);
-        scaleAnimation.setDuration(zoomDuration);
-        scaleAnimation.setRepeatMode(Animation.REVERSE);
-        scaleAnimation.setRepeatCount(1);
-    }
-
-    /**
-     * Launch Ripple animation for the current view with a MotionEvent
-     *
-     * @param event MotionEvent registered by the Ripple gesture listener
-     */
-    public void animateRipple(MotionEvent event) {
-        createAnimation(event.getX(), event.getY());
-    }
-
-    /**
-     * Launch Ripple animation for the current view centered at x and y position
-     *
-     * @param x Horizontal position of the ripple center
-     * @param y Vertical position of the ripple center
-     */
-    public void animateRipple(final float x, final float y) {
-        createAnimation(x, y);
-    }
-
-    /**
-     * Create Ripple animation centered at x, y
-     *
-     * @param x Horizontal position of the ripple center
-     * @param y Vertical position of the ripple center
-     */
-    private void createAnimation(final float x, final float y) {
-        if (this.isEnabled() && !animationRunning) {
-            if (hasToZoom)
-                this.startAnimation(scaleAnimation);
-
-            radiusMax = Math.max(WIDTH, HEIGHT);
-
-            if (rippleType != 2)
-                radiusMax /= 2;
-
-            radiusMax -= ripplePadding;
-
-            if (isCentered || rippleType == 1) {
-                this.x = getMeasuredWidth() / 2;
-                this.y = getMeasuredHeight() / 2;
-            } else {
-                this.x = x;
-                this.y = y;
-            }
-
-            animationRunning = true;
-
-            if (rippleType == 1 && originBitmap == null)
-                originBitmap = getDrawingCache(true);
-
-            invalidate();
-        }
+        bounds.set(0, 0, w, h);
+        rippleBackground.setBounds(bounds);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (gestureDetector.onTouchEvent(event)) {
-            animateRipple(event);
-//            sendClickEvent(false);
-        }
-        return super.onTouchEvent(event);
+    public boolean isInEditMode() {
+        return true;
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        this.onTouchEvent(event);
-        return super.onInterceptTouchEvent(event);
-    }
-
-    /**
-     * Send a click event if parent view is a Listview instance
-     *
-     * @param isLongClick Is the event a long click ?
+    /*
+     * Drawing
      */
-    private void sendClickEvent(final Boolean isLongClick) {
-        if (getParent() instanceof AdapterView) {
-            final AdapterView adapterView = (AdapterView) getParent();
-            final int position = adapterView.getPositionForView(this);
-            final long id = adapterView.getItemIdAtPosition(position);
-            if (isLongClick) {
-                if (adapterView.getOnItemLongClickListener() != null)
-                    adapterView.getOnItemLongClickListener().onItemLongClick(adapterView, this, position, id);
-            } else {
-                if (adapterView.getOnItemClickListener() != null)
-                    adapterView.getOnItemClickListener().onItemClick(adapterView, this, position, id);
+    @Override
+    public void draw(Canvas canvas) {
+        final boolean positionChanged = adapterPositionChanged();
+        if (rippleOverlay) {
+            if (!positionChanged) {
+                rippleBackground.draw(canvas);
             }
+            super.draw(canvas);
+            if (!positionChanged) {
+                canvas.drawCircle(currentCoords.x, currentCoords.y, radius, paint);
+            }
+        } else {
+            if (!positionChanged) {
+                rippleBackground.draw(canvas);
+                canvas.drawCircle(currentCoords.x, currentCoords.y, radius, paint);
+            }
+            super.draw(canvas);
         }
     }
 
-    private Bitmap getCircleBitmap(final int radius) {
-        final Bitmap output = Bitmap.createBitmap(originBitmap.getWidth(), originBitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
-        final Paint paint = new Paint();
-        final Rect rect = new Rect((int)(x - radius), (int)(y - radius), (int)(x + radius), (int)(y + radius));
+    /*
+     * Animations
+     */
+    private Property<LinearRippleView, Float> radiusProperty
+            = new Property<LinearRippleView, Float>(Float.class, "radius") {
+        @Override
+        public Float get(LinearRippleView object) {
+            return object.getRadius();
+        }
 
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        canvas.drawCircle(x, y, radius, paint);
+        @Override
+        public void set(LinearRippleView object, Float value) {
+            object.setRadius(value);
+        }
+    };
 
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(originBitmap, rect, rect, paint);
-
-        return output;
+    private float getRadius() {
+        return radius;
     }
 
-    /**
-     * Set Ripple color, default is #FFFFFF
-     *
-     * @param rippleColor New color resource
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+        invalidate();
+    }
+
+    private Property<LinearRippleView, Integer> circleAlphaProperty
+            = new Property<LinearRippleView, Integer>(Integer.class, "rippleAlpha") {
+        @Override
+        public Integer get(LinearRippleView object) {
+            return object.getRippleAlpha();
+        }
+
+        @Override
+        public void set(LinearRippleView object, Integer value) {
+            object.setRippleAlpha(value);
+        }
+    };
+
+    public int getRippleAlpha() {
+        return paint.getAlpha();
+    }
+
+    public void setRippleAlpha(Integer rippleAlpha) {
+        paint.setAlpha(rippleAlpha);
+        invalidate();
+    }
+
+    /*
+    * Accessor
      */
     public void setRippleColor(int rippleColor) {
-        this.rippleColor = getResources().getColor(rippleColor);
+        this.rippleColor = rippleColor;
+        paint.setColor(rippleColor);
+        paint.setAlpha(rippleAlpha);
+        invalidate();
     }
 
-    public int getRippleColor() {
-        return rippleColor;
+    public void setRippleOverlay(boolean rippleOverlay) {
+        this.rippleOverlay = rippleOverlay;
     }
 
-    public RippleType getRippleType()
-    {
-        return RippleType.values()[rippleType];
+    public void setRippleDiameter(int rippleDiameter) {
+        this.rippleDiameter = rippleDiameter;
     }
 
-    /**
-     * Set Ripple type, default is RippleType.SIMPLE
-     *
-     * @param rippleType New Ripple type for next animation
-     */
-    public void setRippleType(final RippleType rippleType)
-    {
-        this.rippleType = rippleType.ordinal();
-    }
-
-    public Boolean isCentered()
-    {
-        return isCentered;
-    }
-
-    /**
-     * Set if ripple animation has to be centered in its parent view or not, default is False
-     *
-     * @param isCentered
-     */
-    public void setCentered(final Boolean isCentered)
-    {
-        this.isCentered = isCentered;
-    }
-
-    public int getRipplePadding()
-    {
-        return ripplePadding;
-    }
-
-    /**
-     * Set Ripple padding if you want to avoid some graphic glitch
-     *
-     * @param ripplePadding New Ripple padding in pixel, default is 0px
-     */
-    public void setRipplePadding(int ripplePadding)
-    {
-        this.ripplePadding = ripplePadding;
-    }
-
-    public Boolean isZooming()
-    {
-        return hasToZoom;
-    }
-
-    /**
-     * At the end of Ripple effect, the child views has to zoom
-     *
-     * @param hasToZoom Do the child views have to zoom ? default is False
-     */
-    public void setZooming(Boolean hasToZoom)
-    {
-        this.hasToZoom = hasToZoom;
-    }
-
-    public float getZoomScale()
-    {
-        return zoomScale;
-    }
-
-    /**
-     * Scale of the end animation
-     *
-     * @param zoomScale Value of scale animation, default is 1.03f
-     */
-    public void setZoomScale(float zoomScale)
-    {
-        this.zoomScale = zoomScale;
-    }
-
-    public int getZoomDuration()
-    {
-        return zoomDuration;
-    }
-
-    /**
-     * Duration of the ending animation in ms
-     *
-     * @param zoomDuration Duration, default is 200ms
-     */
-    public void setZoomDuration(int zoomDuration)
-    {
-        this.zoomDuration = zoomDuration;
-    }
-
-    public int getRippleDuration()
-    {
-        return rippleDuration;
-    }
-
-    /**
-     * Duration of the Ripple animation in ms
-     *
-     * @param rippleDuration Duration, default is 400ms
-     */
-    public void setRippleDuration(int rippleDuration)
-    {
+    public void setRippleDuration(int rippleDuration) {
         this.rippleDuration = rippleDuration;
     }
 
-    public int getFrameRate()
-    {
-        return frameRate;
+    public void setRippleBackground(int color) {
+        rippleBackground = new ColorDrawable(color);
+        rippleBackground.setBounds(bounds);
+        invalidate();
     }
 
-    /**
-     * Set framerate for Ripple animation
-     *
-     * @param frameRate New framerate value, default is 10
+    public void setRippleHover(boolean rippleHover) {
+        this.rippleHover = rippleHover;
+    }
+
+    public void setRippleDelayClick(boolean rippleDelayClick) {
+        this.rippleDelayClick = rippleDelayClick;
+    }
+
+    public void setRippleFadeDuration(int rippleFadeDuration) {
+        this.rippleFadeDuration = rippleFadeDuration;
+    }
+
+    public void setRipplePersistent(boolean ripplePersistent) {
+        this.ripplePersistent = ripplePersistent;
+    }
+
+    public void setRippleInAdapter(boolean rippleInAdapter) {
+        this.rippleInAdapter = rippleInAdapter;
+    }
+
+    public void setDefaultRippleAlpha(int alpha) {
+        this.rippleAlpha = alpha;
+        paint.setAlpha(alpha);
+        invalidate();
+    }
+
+    /*
+     * Helper
      */
-    public void setFrameRate(int frameRate)
-    {
-        this.frameRate = frameRate;
+    private class PerformClickEvent implements Runnable {
+
+        @Override
+        public void run() {
+            // if parent is an AdapterView, try to call its ItemClickListener
+            if (getParent() instanceof AdapterView) {
+                clickAdapterView((AdapterView) getParent());
+            } else if (rippleInAdapter) {
+                // find adapter view
+                clickAdapterView(findParentAdapterView());
+            } else {
+                // otherwise, just perform click on child
+//                childView.performClick();
+                LeoLog.d("testClickEvent", "PerformClickEvent");
+                if (listener != null) {
+                    LeoLog.d("testClickEvent", "click!");
+                    listener.onClick(LinearRippleView.this);
+                }
+            }
+        }
+
+        private void clickAdapterView(AdapterView parent) {
+            try {
+                final int position = parent.getPositionForView(LinearRippleView.this);
+                final long itemId = parent.getAdapter() != null
+                        ? parent.getAdapter().getItemId(position)
+                        : 0;
+                if (position != AdapterView.INVALID_POSITION) {
+                    parent.performItemClick(LinearRippleView.this, position, itemId);
+                }
+            } catch (Exception e) {
+            }
+        }
     }
 
-    public int getRippleAlpha()
-    {
-        return rippleAlpha;
+    private final class PressedEvent implements Runnable {
+
+        private final MotionEvent event;
+
+        public PressedEvent(MotionEvent event) {
+            this.event = event;
+        }
+
+        @Override
+        public void run() {
+            prepressed = false;
+            childView.onTouchEvent(event);
+            childView.setPressed(true);
+            if (rippleHover) {
+                startHover();
+            }
+        }
     }
 
-    /**
-     * Set alpha for ripple effect color
-     *
-     * @param rippleAlpha Alpha value between 0 and 255, default is 90
+    static float dpToPx(Resources resources, float dp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
+    }
+
+    /*
+     * Builder
      */
-    public void setRippleAlpha(int rippleAlpha)
-    {
-        this.rippleAlpha = rippleAlpha;
-    }
 
-    public void setOnRippleCompleteListener(OnRippleCompleteListener listener) {
-        this.onCompletionListener = listener;
-    }
+    public static class RippleBuilder {
 
-    /**
-     * Defines a callback called at the end of the Ripple effect
-     */
-    public interface OnRippleCompleteListener {
-        void onRippleComplete(LinearRippleView rippleView);
-    }
+        private final Context context;
+        private final View child;
 
-    public enum RippleType {
-        SIMPLE(0),
-        DOUBLE(1),
-        RECTANGLE(2);
+        private int rippleColor = DEFAULT_COLOR;
+        private boolean rippleOverlay = DEFAULT_RIPPLE_OVERLAY;
+        private boolean rippleHover = DEFAULT_HOVER;
+        private float rippleDiameter = DEFAULT_DIAMETER_DP;
+        private int rippleDuration = DEFAULT_DURATION;
+        private float rippleAlpha = DEFAULT_ALPHA;
+        private boolean rippleDelayClick = DEFAULT_DELAY_CLICK;
+        private int rippleFadeDuration = DEFAULT_FADE_DURATION;
+        private boolean ripplePersistent = DEFAULT_PERSISTENT;
+        private int rippleBackground = DEFAULT_BACKGROUND;
+        private boolean rippleSearchAdapter = DEFAULT_SEARCH_ADAPTER;
 
-        int type;
+        public RippleBuilder(View child) {
+            this.child = child;
+            this.context = child.getContext();
+        }
 
-        RippleType(int type)
-        {
-            this.type = type;
+        public RippleBuilder rippleColor(int color) {
+            this.rippleColor = color;
+            return this;
+        }
+
+        public RippleBuilder rippleOverlay(boolean overlay) {
+            this.rippleOverlay = overlay;
+            return this;
+        }
+
+        public RippleBuilder rippleHover(boolean hover) {
+            this.rippleHover = hover;
+            return this;
+        }
+
+        public RippleBuilder rippleDiameterDp(int diameterDp) {
+            this.rippleDiameter = diameterDp;
+            return this;
+        }
+
+        public RippleBuilder rippleDuration(int duration) {
+            this.rippleDuration = duration;
+            return this;
+        }
+
+        public RippleBuilder rippleAlpha(float alpha) {
+            this.rippleAlpha = 255 * alpha;
+            return this;
+        }
+
+        public RippleBuilder rippleDelayClick(boolean delayClick) {
+            this.rippleDelayClick = delayClick;
+            return this;
+        }
+
+        public RippleBuilder rippleFadeDuration(int fadeDuration) {
+            this.rippleFadeDuration = fadeDuration;
+            return this;
+        }
+
+        public RippleBuilder ripplePersistent(boolean persistent) {
+            this.ripplePersistent = persistent;
+            return this;
+        }
+
+        public RippleBuilder rippleBackground(int color) {
+            this.rippleBackground = color;
+            return this;
+        }
+
+        public RippleBuilder rippleInAdapter(boolean inAdapter) {
+            this.rippleInAdapter(inAdapter);
+            return this;
+        }
+
+        public LinearRippleView create() {
+            LinearRippleView layout = new LinearRippleView(context);
+            layout.setRippleColor(rippleColor);
+            layout.setDefaultRippleAlpha((int) rippleAlpha);
+            layout.setRippleDelayClick(rippleDelayClick);
+            layout.setRippleDiameter((int) dpToPx(context.getResources(), rippleDiameter));
+            layout.setRippleDuration(rippleDuration);
+            layout.setRippleFadeDuration(rippleFadeDuration);
+            layout.setRippleHover(rippleHover);
+            layout.setRipplePersistent(ripplePersistent);
+            layout.setRippleOverlay(rippleOverlay);
+            layout.setRippleBackground(rippleBackground);
+            layout.setRippleInAdapter(rippleSearchAdapter);
+
+            ViewGroup.LayoutParams params = child.getLayoutParams();
+            ViewGroup parent = (ViewGroup) child.getParent();
+            int index = 0;
+
+            if (parent != null && parent instanceof LinearRippleView) {
+                throw new IllegalStateException("MaterialRippleLayout could not be created: parent of the view already is a MaterialRippleLayout");
+            }
+
+            if (parent != null) {
+                index = parent.indexOfChild(child);
+                parent.removeView(child);
+            }
+
+            layout.addView(child, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+
+            if (parent != null) {
+                parent.addView(layout, index, params);
+            }
+
+            return layout;
         }
     }
 }

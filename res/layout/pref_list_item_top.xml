@@ -1,82 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <com.leo.appmaster.ui.LinearRippleView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/home_tab_selector"
-    android:gravity="center_vertical"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp" >
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15.0dip"
-        android:layout_marginRight="6.0dip"
-        android:layout_weight="1.0" >
-
-        <TextView
-            android:id="@android:id/title"
-            android:layout_width="@dimen/lock_setting_item_title_des_width"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:gravity="center_vertical"
-            android:textColor="@color/option_text_color"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@android:id/summary"
-            android:layout_width="@dimen/lock_setting_item_des_width"
-            android:layout_height="wrap_content"
-            android:layout_below="@android:id/title"
-            android:layout_marginTop="5dp"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:gravity="center_vertical"
-            android:textColor="#999999"
-            android:textSize="10dp" />
-    </RelativeLayout>
+    app:rippleAlpha="1"
+    app:rippleColor="@color/home_tab_pressed"
+    app:rippleHover="true"
+    app:rippleInAdapter="true"
+    app:rippleOverlay="false">
 
     <LinearLayout
-        android:id="@android:id/widget_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical" />
-
-</com.leo.appmaster.ui.LinearRippleView><!--
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="@dimen/setting_item_height"
-    android:background="@drawable/manager_backup_list_selecter"
-    android:gravity="center_vertical" >
-
-    <RelativeLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15.0dip"
-        android:layout_marginRight="6.0dip"
-        android:layout_weight="1.0" >
+        android:background="@drawable/new_list_selecter"
+        android:gravity="center_vertical"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
-        <TextView
-            android:id="@android:id/title"
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15.0dip"
+            android:layout_marginRight="6.0dip"
+            android:layout_weight="1.0">
+
+            <TextView
+                android:id="@android:id/title"
+                android:layout_width="@dimen/lock_setting_item_title_des_width"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:gravity="center_vertical"
+                android:textColor="@color/option_text_color"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@android:id/summary"
+                android:layout_width="@dimen/lock_setting_item_des_width"
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/title"
+                android:layout_marginTop="5dp"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:gravity="center_vertical"
+                android:textColor="#999999"
+                android:textSize="10dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@android:id/widget_frame"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:singleLine="true"
+            android:layout_height="fill_parent"
             android:gravity="center_vertical"
-            android:textColor="@color/option_text_color"
-            android:textSize="16.0dp" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@android:id/widget_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical" />
-
-</LinearLayout>
--->
+            android:orientation="vertical" />
+    </LinearLayout>
+</com.leo.appmaster.ui.LinearRippleView>
