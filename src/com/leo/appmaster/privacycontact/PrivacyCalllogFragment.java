@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.AsyncTask;
@@ -55,7 +56,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 
-public class PrivacyCalllogFragment extends BaseFragment {
+public class PrivacyCalllogFragment extends BaseFragment implements OnItemClickListener, OnItemLongClickListener, OnClickListener {
     public static final String TAG = "PrivacyCalllogFragment";
     private TextView mTextView;
     private LinearLayout mDefaultText;
@@ -90,6 +91,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
         LeoEventBus.getDefaultBus().register(this);
         mAdapter = new CallLogAdapter(mContactCallLogs);
         mContactCallLog.setAdapter(mAdapter);
+        mContactCallLog.setOnItemClickListener(this);
+        mContactCallLog.setOnItemLongClickListener(this);
 //        mContactCallLog.setOnItemClickListener(new OnItemClickListener() {
 //
 //            @Override
@@ -225,8 +228,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
 
     @Override
     public void onResume() {
-//        PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-//        task.execute("");
         sendMsgHandler();
         super.onResume();
     }
@@ -240,6 +241,58 @@ public class PrivacyCalllogFragment extends BaseFragment {
     public void setContent(String content) {
         if (mTextView != null) {
             mTextView.setText(content);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.call_log_itemCB:
+                if (!mIsEditModel) {
+                    ContactCallLog calllog = (ContactCallLog) view.getTag();
+                    // 查询该号码是否为隐私联系人
+                    String formateNumber = PrivacyContactUtils
+                            .formatePhoneNumber(calllog.getCallLogNumber());
+                    ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
+                            formateNumber, mContext);
+                    PrivacyContactManager.getInstance(mContext)
+                            .setLastCall(privacyConatact);
+                    Uri uri = Uri.parse("tel:" + calllog.getCallLogNumber());
+                    // 跳到拨号界面
+                    Intent intent = new Intent(Intent.ACTION_DIAL,
+                            uri);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e) {
+                    }
+                } else {
+                    LeoLog.d("testItemClick", "edit model");
+                    ImageView image = (ImageView) view.findViewById(R.id.call_log_itemCB);
+                    ContactCallLog calllog = (ContactCallLog) image.getTag();
+                    if (!calllog.isCheck()) {
+                        LeoLog.d("testItemClick", "select check");
+//                image.setImageDrawable(getResources().getDrawable(
+//                        R.drawable.select));
+                        image.setImageResource(R.drawable.select);
+                        calllog.setCheck(true);
+                        mDeleteCallLog.add(calllog);
+                        mCallLogCount = mCallLogCount + 1;
+                    } else {
+                        LeoLog.d("testItemClick", "select not check");
+//                image.setImageDrawable(getResources().getDrawable(
+//                        R.drawable.unselect));
+                        image.setImageResource(R.drawable.unselect);
+                        calllog.setCheck(false);
+                        mDeleteCallLog.remove(calllog);
+                        if (mCallLogCount > 0) {
+                            mCallLogCount = mCallLogCount - 1;
+                        }
+                    }
+                    updateTitleBarSelectStatus();
+//                    return;
+                }
+                break;
         }
     }
 
@@ -298,60 +351,13 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 vh.contactIcon = (CircleImageView) convertView.findViewById(R.id.contactIV);
                 vh.bottomLine = (ImageView) convertView.findViewById(R.id.bottom_line);
                 vh.ripView = (RelativeLayout) convertView.findViewById(R.id.messageRT);
-                MaterialRippleLayout.on(vh.ripView)
-                        .rippleAlpha(0.1f)
-                        .rippleHover(true)
-                        .create();
-                vh.ripView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        RippleBean ripp = (RippleBean) v.getTag();
-                        int position = ripp.position;
-                        View convertView = ripp.view;
-                        onItemClick(convertView, position);
-                    }
-                });
-                vh.ripView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        RippleBean ripp = (RippleBean) v.getTag();
-                        int position = ripp.position;
-                        View convertView = ripp.view;
-                        onItemLongClick(convertView, position);
-                        return true;
-                    }
-                });
-
-                vh.checkImage.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View arg0) {
-                        if (!mIsEditModel) {
-                            ContactCallLog calllog = (ContactCallLog) arg0.getTag();
-                            // 查询该号码是否为隐私联系人
-                            String formateNumber = PrivacyContactUtils
-                                    .formatePhoneNumber(calllog.getCallLogNumber());
-                            ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
-                                    formateNumber, mContext);
-                            PrivacyContactManager.getInstance(mContext)
-                                    .setLastCall(privacyConatact);
-                            Uri uri = Uri.parse("tel:" + calllog.getCallLogNumber());
-                            // 跳到拨号界面
-                            Intent intent = new Intent(Intent.ACTION_DIAL,
-                                    uri);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            try {
-                                startActivity(intent);
-                            } catch (Exception e) {
-                            }
-                        } else {
-                            return;
-                        }
-                    }
-                });
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
+
+            vh.checkImage.setOnClickListener(PrivacyCalllogFragment.this);
+
             if (mb.getCallLogName() != null && !"".equals(mb.getCallLogName())) {
                 vh.name.setText(mb.getCallLogName());
             } else {
@@ -377,7 +383,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 }
             }
             if (mIsEditModel) {
-                // vh.checkImage.setOnClickListener(null);
                 if (mb.isCheck()) {
                     vh.checkImage.setImageResource(R.drawable.select);
                 } else {
@@ -394,13 +399,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
             }
             Bitmap icon = mb.getContactIcon();
             vh.contactIcon.setImageBitmap(icon);
-//            if (mContactCallLogs != null && mContactCallLogs.size() > 0) {
-//                if (position == mContactCallLogs.size() - 1) {
-//                    vh.bottomLine.setVisibility(View.GONE);
-//                } else {
-//                    vh.bottomLine.setVisibility(View.VISIBLE);
-//                }
-//            }
             vh.checkImage.setTag(mb);
             RippleBean ripp = new RippleBean();
             ripp.position = position;
@@ -410,7 +408,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
         }
     }
 
-    public boolean onItemLongClick(View arg1, int arg2) {
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
         LeoEventBus.getDefaultBus().post(
                 new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
                         PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
@@ -419,11 +418,22 @@ public class PrivacyCalllogFragment extends BaseFragment {
         return true;
     }
 
-    public void onItemClick(View view, int position) {
+//    public boolean onItemLongClick(View arg1, int arg2) {
+//        LeoEventBus.getDefaultBus().post(
+//                new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+//                        PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
+//        mIsEditModel = true;
+//        mAdapter.notifyDataSetChanged();
+//        return true;
+//    }
 
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        LeoLog.d("testItemClick", "itemClick");
         ContactCallLog calllog = mContactCallLogs.get(position);
         if (!mIsEditModel) {
+            LeoLog.d("testItemClick", "not edit model");
             String name = calllog.getCallLogName();
             String number = calllog.getCallLogNumber();
             String[] bundleData = new String[]{
@@ -446,25 +456,27 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 mAdapter.notifyDataSetChanged();
             } catch (Exception e) {
             }
-        } else {
-            ImageView image = (ImageView) view.findViewById(R.id.call_log_itemCB);
-            if (!calllog.isCheck()) {
-                image.setImageDrawable(getResources().getDrawable(
-                        R.drawable.select));
-                calllog.setCheck(true);
-                mDeleteCallLog.add(calllog);
-                mCallLogCount = mCallLogCount + 1;
-            } else {
-                image.setImageDrawable(getResources().getDrawable(
-                        R.drawable.unselect));
-                calllog.setCheck(false);
-                mDeleteCallLog.remove(calllog);
-                if (mCallLogCount > 0) {
-                    mCallLogCount = mCallLogCount - 1;
-                }
-            }
-            updateTitleBarSelectStatus();
         }
+//        else {
+//            LeoLog.d("testItemClick", "edit model");
+//            ImageView image = (ImageView) view.findViewById(R.id.call_log_itemCB);
+//            if (!calllog.isCheck()) {
+//                LeoLog.d("testItemClick", "select check");
+//                image.setImageResource(R.drawable.select);
+//                calllog.setCheck(true);
+//                mDeleteCallLog.add(calllog);
+//                mCallLogCount = mCallLogCount + 1;
+//            } else {
+//                LeoLog.d("testItemClick", "select not check");
+//                image.setImageResource(R.drawable.unselect);
+//                calllog.setCheck(false);
+//                mDeleteCallLog.remove(calllog);
+//                if (mCallLogCount > 0) {
+//                    mCallLogCount = mCallLogCount - 1;
+//                }
+//            }
+//            updateTitleBarSelectStatus();
+//        }
     }
 
     /**

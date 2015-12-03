@@ -55,18 +55,8 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
                 onBackPressed();
             }
         });
-//        mTtileBar.setTitle(R.string.lock_mode);
-//        mTtileBar.setBackViewListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
 
         mTtileBar.setNewStyle();
-        // mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        // mTtileBar.setOptionImage(R.drawable.mode_add_button);
-        // mTtileBar.setOptionListener(this);
     }
 
     @Override

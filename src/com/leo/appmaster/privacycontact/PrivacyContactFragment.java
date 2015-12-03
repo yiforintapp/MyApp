@@ -284,11 +284,6 @@ public class PrivacyContactFragment extends BaseFragment {
                     }
 
                 }
-//                if (position == mContacts.size() - 1) {
-//                    vh.bottomLine.setVisibility(View.GONE);
-//                } else {
-//                    vh.bottomLine.setVisibility(View.VISIBLE);
-//                }
             }
 
             return convertView;

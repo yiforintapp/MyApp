@@ -16,100 +16,100 @@
         android:layout_height="match_parent"
         android:background="@drawable/new_list_selecter">
 
-    <RelativeLayout
-        android:id="@+id/message_content"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_marginLeft="6dp">
-
-        <com.leo.appmaster.privacycontact.CircleImageView
-            android:id="@+id/contactIV"
-            android:layout_width="@dimen/privacy_contact_icon_size"
-            android:layout_height="@dimen/privacy_contact_icon_size"
-            android:layout_centerVertical="true"
-            android:src="@drawable/default_user_avatar" />
-
         <RelativeLayout
-            android:id="@+id/message_itemLT"
+            android:id="@+id/message_content"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/privacy_call_log_item_calllog_list_message_itemLT_layout_height"
-            android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@id/contactIV">
+            android:layout_height="72dp"
+            android:layout_marginLeft="6dp">
 
-            <LinearLayout
-                android:id="@+id/message_linear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <com.leo.appmaster.privacycontact.CircleImageView
+                android:id="@+id/contactIV"
+                android:layout_width="@dimen/privacy_contact_icon_size"
+                android:layout_height="@dimen/privacy_contact_icon_size"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="50dp"
-                android:orientation="vertical">
+                android:src="@drawable/default_user_avatar" />
 
-                <RelativeLayout
-                    android:id="@+id/reletive"
+            <RelativeLayout
+                android:id="@+id/message_itemLT"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/privacy_call_log_item_calllog_list_message_itemLT_layout_height"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@id/contactIV">
+
+                <LinearLayout
+                    android:id="@+id/message_linear"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="50dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/reletive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/message_list_nameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_toLeftOf="@+id/message_list_dateTV"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="联系人"
+                            android:textColor="#333333"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/message_list_countTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/message_list_nameTV"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/message_list_dateTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="月/天/年"
+                            android:textColor="#d3d3d3"
+                            android:textSize="10dp" />
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/message_list_nameTV"
+                        android:id="@+id/message_list_contentTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/message_list_dateTV"
-                        android:layout_weight="1"
+                        android:layout_marginTop="7dp"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="联系人"
-                        android:textColor="#333333"
-                        android:textSize="17dp" />
+                        android:text="短信内容"
+                        android:textColor="#9b9b9b"
+                        android:textSize="13dp" />
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/message_list_countTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/message_list_nameTV"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/message_list_dateTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:text="月/天/年"
-                        android:textColor="#d3d3d3"
-                        android:textSize="10dp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/message_list_contentTV"
+                <ImageView
+                    android:id="@+id/message_listCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="短信内容"
-                    android:textColor="#9b9b9b"
-                    android:textSize="13dp" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/message_listCB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="12dp"
-                android:visibility="invisible" />
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:visibility="invisible" />
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/bottom_line"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@id/message_content"
-        android:background="@color/c5" />
+        <ImageView
+            android:id="@+id/bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/message_content"
+            android:background="@color/c5" />
     </RelativeLayout>
 </com.leo.appmaster.ui.RippleView1>
