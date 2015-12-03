@@ -473,7 +473,7 @@ public final class Utilities {
     }
 
     /** 红米Note2 进入红米默认浏览器 */
-    public static void goRedMiTwoBrowser(Context context) {
+    private static void goRedMiTwoBrowser(Context context) {
         Intent intent;
         intent = new Intent(Intent.ACTION_VIEW);
         Uri uri = Uri
