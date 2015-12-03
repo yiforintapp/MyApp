@@ -86,7 +86,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
         
         if(indexsWhichWidthLessThan1280.size() == 0) {
             int normalQualityLevel = Sizes.size() / 2;
-            if(Sizes.get(normalQualityLevel).height > 1280 || (Math.max(Sizes.get(normalQualityLevel).height, Sizes.get(normalQualityLevel).width) / Math.min(Sizes.get(normalQualityLevel).height, Sizes.get(normalQualityLevel).width) < 1.5)) {
+            if((Sizes.get(normalQualityLevel).width > 1280) || (Sizes.get(normalQualityLevel).width / Sizes.get(normalQualityLevel).height < 1.5)) {
                 if((normalQualityLevel - 1 >= 0) && (Sizes.get(normalQualityLevel - 1).height < Sizes.get(normalQualityLevel).height)) {
                     normalQualityLevel -- ;
                 } else if ((normalQualityLevel + 1 <= Sizes.size() - 1) && (Sizes.get(normalQualityLevel + 1).height < Sizes.get(normalQualityLevel).height)) {

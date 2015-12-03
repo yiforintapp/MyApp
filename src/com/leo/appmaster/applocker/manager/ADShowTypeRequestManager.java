@@ -68,6 +68,7 @@ public class ADShowTypeRequestManager {
     public static final int SUBMARIN_AD_TYPE = 6;
     private static ADShowTypeRequestManager mInstance;
     private Context mContext;
+    private AppMasterPreference mSp;
     private SimpleDateFormat mDateFormate;
     // public boolean IsFromPush = false;
     public boolean mIsPushRequestADShowType = false;
@@ -77,6 +78,7 @@ public class ADShowTypeRequestManager {
 
     private ADShowTypeRequestManager(Context context) {
         mContext = context;
+        mSp = AppMasterPreference.getInstance(mContext);
         mDateFormate = new SimpleDateFormat("yyyy-MM-dd");
     }
 
@@ -114,9 +116,196 @@ public class ADShowTypeRequestManager {
             return def;
         }
     }
+    
+    private boolean updateADMainConfig(JSONObject response) {
+        // 中国大陆总开关
+        boolean forceClose = false;
+        if (AppMasterConfig.IS_FOR_MAINLAND_CHINA) {
+            mSp.setADMainlandSwticher(getJSIntValue(response, AD_MAIN_SWITCHER, 0));
+            forceClose = (mSp.getADMainlandSwticher()==0);
+            LeoLog.d(TAG, "Switcher for Mainland, forceClose = " + forceClose);
+        } else {
+            LeoLog.i(TAG, "Global user, use normal switchers");
+        }
+        mSp.setADFetchInterval(getJSIntValue(response, AD_FETCH_INTERVAL,
+                AppMasterPreference.DEFAULT_FETCH_INTERAL));
+        return forceClose;
+    }
+    
+    private void updateADInLockScreenConfig(JSONObject response ,boolean forceClose) {
+        int currentType = mSp.getADShowType();
+        int adtype = currentType;
+        try {
+            adtype = response.getInt(AD_NEW_SHOW_TYPE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        LeoLog.d("poha", "请求成功，广告展示形式是：" + adtype);
+        if (adtype != currentType) {
+            if (adtype == 1) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_banner");
+            }
+            if (adtype == 2) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_bannerpop");
+            }
+            if (adtype == 3) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_draw");
+            }
+            if (adtype == 4) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
+            }
+            if (adtype == 5) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_superman");
+            }
+            if (adtype == 6) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_submarine");
+            }
+        }
+        /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
+        List<String> list = Arrays.asList(LOCAL_AD_SHOW_TYPE);
+        String adTypeString = String.valueOf(adtype);
+        if (!(list.contains(adTypeString)) && adtype != CLOSE_LOCK_AD_SHOW) {
+            /* 满足两个条件：1,不再本地广告形式内，2，不为关闭广告指令 */
+            adtype = DEFAULT_AD_SHOW_TYPE;
+        }
+        mSp.setADShowType(forceClose?CLOSE_LOCK_AD_SHOW:adtype);
+    }
+    
+    private void updateLargeADInLockScreenConfig(JSONObject response, boolean forceClose) {
+        int largeBannerAdSwitch = mSp.getLockBannerADShowProbability();
+        try {
+            largeBannerAdSwitch = response.getInt(AD_LARGE_BANNER_PROBABILITY);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        mSp.setLockBannerADShowProbability(forceClose?0:largeBannerAdSwitch);
+        if (largeBannerAdSwitch == 0) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_picad_off");
+        }
+        LeoLog.d("poha", "请求成功，解锁界面大图banner 直接显示的概率：" + mSp.getLockBannerADShowProbability());
+    }
 
+    private void updateUFOADConfig(JSONObject response, boolean forceClose) {
+        try{
+            mSp.setUFOAnimType(forceClose?0:(response.getInt(UFO_ANIM_TYPE)));
+            mSp.setThemeChanceAfterUFO(forceClose?Integer.MAX_VALUE:(response.getInt(THEME_CHANCE_AFTER_UFO)));
+            LeoLog.d("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
+            LeoLog.d("poha","请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+    
+    private void updateADAfterAcceleratingConfig(JSONObject response, boolean forceClose) {
+        int currentType = mSp.getADChanceAfterAccelerating();
+        int adtype = currentType;
+        try {
+            adtype = response.getInt(AD_NEW_ACCELERATING);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        if (adtype != currentType) {
+            mSp.setADChanceAfterAccelerating(forceClose?0:adtype);
+            if (mSp.getADChanceAfterAccelerating() == 1) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
+            } else {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_off");
+            }
+        }
+        LeoLog.d("poha", "请求成功，加速后出现广告：" + adtype);
+    }
+    
+    private void updateADAtWifiScanConfig(JSONObject response, boolean forceClose) {
+        try {
+            if (response.getInt(AD_WIFI_SCAN) != mSp.getADWifiScan()) {
+                mSp.setADWifiScan(forceClose?0:(response.getInt(AD_WIFI_SCAN)));
+                if (mSp.getADWifiScan() == 1) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_on");
+                } else {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_off");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+    
+    private void updateADAtPrivacyProtectionConfig(JSONObject response, boolean forceClose) {
+        int currentType = mSp.getIsADAfterPrivacyProtectionOpen();
+        int adtype = currentType;
+        try {
+            adtype = response.getInt(AD_AFTER_PRIVACY_PROTECTION);
+            if (currentType != adtype) {
+                mSp.setIsADAfterPrivacyProtectionOpen(forceClose ? 0 : adtype);
+                if (adtype == 1) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_on");
+                } else {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_off");
+                }
+            }
+            LeoLog.d("poha", "请求成功，隐私保护后出现广告的开关：" + adtype);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+    
+    private void updateADEntryAtHomeActivityConfig(JSONObject response, boolean forceClose) {
+        try {
+            mSp.setIsADAtAppLockFragmentOpen(forceClose ? 0 : (response.getInt(AD_AT_APPLOCK_FRAGMENT)));
+            HomeActivity.mHomeAdSwitchOpen = response.getInt(AD_AT_APPLOCK_FRAGMENT);
+            LeoLog.d("poha","请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+    
+    private void updateGiftBoxNeedJump(JSONObject response, boolean forceClose) {
+        try {
+            mSp.setIsGiftBoxNeedUpdate(forceClose?0:(response.getInt(GIFTBOX_UPDATE)));
+            if (mIsPushRequestADShowType && response.getInt(GIFTBOX_UPDATE) == 1) {
+                AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
+                mIsPushRequestADShowType = false;
+            }
+            LeoLog.d("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
+            mSp.setIsLockAppWallOpen(forceClose ? 0 : (response.getInt(AD_LOCK_WALL)));
+            LeoLog.d("poha", "请求成功，解锁应用墙的开关：" + response.getInt(AD_LOCK_WALL));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+    
+    private void updateADAtThemeListConfig(JSONObject response, boolean forceClose) {
+        int currentType = mSp.getIsADAtLockThemeOpen();
+        int adtype = currentType;
+        try {
+            adtype = response.getInt(AD_AT_THEME);
+            if (adtype != currentType) {
+                if (adtype == 1) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_local");
+                } else if (adtype == 2) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_online");
+                } else {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_off");
+                }
+            }
+            mSp.setIsADAtLockThemeOpen(forceClose ? 0 : adtype);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+    
     private class UpdateADShowTypeRequestListener extends RequestListener<AppMasterApplication> {
-
         public UpdateADShowTypeRequestListener(AppMasterApplication outerContext) {
             super(outerContext);
         }
@@ -129,169 +318,42 @@ public class ADShowTypeRequestManager {
                 mListener.onResponse(response, noMidify);
             }
             if (response != null) {
-                AppMasterPreference sp = AppMasterPreference.getInstance(mContext);
-
+                boolean forceClose = false;
                 try {
-
                     // 中国大陆总开关
-                    boolean forceClose = false;
-                    if (AppMasterConfig.IS_FOR_MAINLAND_CHINA) {
-                        sp.setADMainlandSwticher(getJSIntValue(response, AD_MAIN_SWITCHER, 0));
-                        forceClose = (sp.getADMainlandSwticher()==0);
-                        LeoLog.d(TAG, "Switcher for Mainland, forceClose = " + forceClose);
-                    } else {
-                        LeoLog.i(TAG, "Global user, use normal switchers");
-                    }
-
-                    sp.setADFetchInterval(getJSIntValue(response, AD_FETCH_INTERVAL,
-                            AppMasterPreference.DEFAULT_FETCH_INTERAL));
-
-                    int adtype = response.getInt(AD_NEW_SHOW_TYPE);
-                    int currentType = sp.getADShowType();
-                    LeoLog.d("poha", "请求成功，广告展示形式是：" + adtype);
-                    if (adtype != currentType) {
-                        if (adtype == 1) {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_banner");
-                        }
-                        if (adtype == 2) {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_bannerpop");
-                        }
-                        if (adtype == 3) {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_draw");
-                        }
-                        if (adtype == 4) {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
-                        }
-                        if (adtype == 5) {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_superman");
-                        }
-                        if (adtype == 6) {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_submarine");
-                        }
-                    }
-                    /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
-                    List<String> list = Arrays.asList(LOCAL_AD_SHOW_TYPE);
-                    String adTypeString = String.valueOf(adtype);
-                    if (!(list.contains(adTypeString)) && adtype != CLOSE_LOCK_AD_SHOW) {
-                        /* 满足两个条件：1,不再本地广告形式内，2，不为关闭广告指令 */
-                        adtype = DEFAULT_AD_SHOW_TYPE;
-                    }
-                    sp.setADShowType(forceClose?CLOSE_LOCK_AD_SHOW:adtype);
-                    
-                    int largeBannerAdSwitch = response.getInt(AD_LARGE_BANNER_PROBABILITY);
-                    sp.setLockBannerADShowProbability(forceClose?0:largeBannerAdSwitch);
-                    if (largeBannerAdSwitch == 0) {
-                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_picad_off");
-                    }
-                    
-                    LeoLog.d("poha", "请求成功，解锁界面大图banner 直接显示的概率：" + sp.getLockBannerADShowProbability());
-
-                    /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
-                    sp.setUFOAnimType(forceClose?0:(response.getInt(UFO_ANIM_TYPE)));
-                    sp.setThemeChanceAfterUFO(forceClose?Integer.MAX_VALUE:(response.getInt(THEME_CHANCE_AFTER_UFO)));
-                    LeoLog.d("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
-                    LeoLog.d("poha",
-                            "请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
-
-                    adtype = response.getInt(AD_NEW_ACCELERATING);
-                    currentType = sp.getADChanceAfterAccelerating();
-                    if (adtype != currentType) {
-                        sp.setADChanceAfterAccelerating(forceClose?0:adtype);
-                        if (sp.getADChanceAfterAccelerating() == 1) {
-                            SDKWrapper
-                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
-                        } else {
-                            SDKWrapper
-                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_off");
-                        }
-                    }
-                    LeoLog.d("poha", "请求成功，加速后出现广告：" + adtype);
-                   
-                    // WIFI扫描
-                    if (response.getInt(AD_WIFI_SCAN) != sp.getADWifiScan()) {
-                        sp.setADWifiScan(forceClose?0:(response.getInt(AD_WIFI_SCAN)));
-                        if (sp.getADWifiScan() == 1) {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_on");
-                        } else {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_off");
-                        }
-                    }
-                    
-                    // 隐私防护
-                    currentType = sp.getIsADAfterPrivacyProtectionOpen();
-                    adtype = response.getInt(AD_AFTER_PRIVACY_PROTECTION);
-                    if (currentType != adtype) {
-                        sp.setIsADAfterPrivacyProtectionOpen(forceClose?0:adtype);
-                        if (adtype == 1) {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_on");
-                        } else {
-                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_off");
-                        }
-                    }
-                    LeoLog.d("poha",
-                            "请求成功，隐私保护后出现广告的开关：" + adtype);
-
-                    // 主页ad
-                    sp.setIsADAtAppLockFragmentOpen(forceClose?0:(response.getInt(AD_AT_APPLOCK_FRAGMENT)));
-                    HomeActivity.mHomeAdSwitchOpen = response.getInt(AD_AT_APPLOCK_FRAGMENT);
-                    LeoLog.d("poha",
-                            "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
-
-                    // 主题
-                    currentType = sp.getIsADAtLockThemeOpen();
-                    adtype = response.getInt(AD_AT_THEME);
-                    if (adtype != currentType) {
-                        if (adtype == 1) {
-                            SDKWrapper
-                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
-                            SDKWrapper
-                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_local");
-                        } else if (adtype == 2) {
-                            SDKWrapper
-                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
-                            SDKWrapper
-                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull",
-                                            "ad_theme_online");
-                        } else {
-                            SDKWrapper
-                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_off");
-                        }
-                    }
-                    sp.setIsADAtLockThemeOpen(forceClose?0:adtype);
-
-                    sp.setIsGiftBoxNeedUpdate(forceClose?0:(response.getInt(GIFTBOX_UPDATE)));
-                    if (mIsPushRequestADShowType && response.getInt(GIFTBOX_UPDATE) == 1) {
-                        AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
-                        mIsPushRequestADShowType = false;
-                    }
-                    LeoLog.d("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
-
-                    sp.setIsLockAppWallOpen(forceClose ? 0 : (response.getInt(AD_LOCK_WALL)));
-                    LeoLog.d("poha", "请求成功，解锁应用墙的开关：" + response.getInt(AD_LOCK_WALL));
-
+                    forceClose = updateADMainConfig(response);
+                    // 旧的锁屏界面N选一的广告展示形式
+                    updateADInLockScreenConfig(response, forceClose);
+                    // 锁屏界面的大图广告配置
+                    updateLargeADInLockScreenConfig(response, forceClose);
+                    // UFO动画的特有配置
+                    updateUFOADConfig(response, forceClose);
+                    // 桌面加速中的广告配置
+                    updateADAfterAcceleratingConfig(response, forceClose);
+                    //WIFI扫描中的广告开关
+                    updateADAtWifiScanConfig(response, forceClose);
+                    //隐私防护中的广告开关
+                    updateADAtPrivacyProtectionConfig(response, forceClose);
+                    //原主页中躲在一边的钱钱
+                    updateADEntryAtHomeActivityConfig(response, forceClose);
+                    //主题界面的广告配置
+                    updateADAtThemeListConfig(response, forceClose);
+                    //锁屏界面的礼物盒是否作更新显示的配置
+                    updateGiftBoxNeedJump(response, forceClose);
                     // 注意：下述3个非广告开关
-                    sp.setVersionUpdateTipsAfterUnlockOpen((response
-                            .getInt(VERSION_UPDATE_AFTER_UNLOCK)));
-                    LeoLog.d("poha",
-                            "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));
-                    sp.setIsAppStatisticsOpen((response.getInt(APP_STATISTICS)));
+                    mSp.setVersionUpdateTipsAfterUnlockOpen((response.getInt(VERSION_UPDATE_AFTER_UNLOCK)));
+                    LeoLog.d("poha", "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));
+                    mSp.setIsAppStatisticsOpen((response.getInt(APP_STATISTICS)));
                     LeoLog.d("poha", "请求成功，应用统计的开关：" + response.getInt(APP_STATISTICS));
-                    sp.setIsWifiStatistics((response.getInt(WIFI_STATISTICAL)));
+                    mSp.setIsWifiStatistics((response.getInt(WIFI_STATISTICAL)));
                     LeoLog.d("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
-
                     addAppInfoEvent();
-                    LeoLog.i(TAG, "cost, UpdateADShowTypeRequestListener.onResponse: " +
-                            (SystemClock.elapsedRealtime() - start));
+                    LeoLog.i(TAG, "cost, UpdateADShowTypeRequestListener.onResponse: " + (SystemClock.elapsedRealtime() - start));
                 } catch (JSONException e) {
-
                     LeoLog.d("poha", "请求成功，JSON解析出错");
-
                     e.printStackTrace();
                 }
-            } else {
-                LeoLog.d("poha", "请求成功，JSON是null");
-            }
-
+            } 
         }
 
         @Override
@@ -305,14 +367,12 @@ public class ADShowTypeRequestManager {
             AppMasterPreference sp = AppMasterPreference.getInstance(mContext);
             long currentTime = System.currentTimeMillis();
             String currentDate = mDateFormate.format(new Date(System.currentTimeMillis()));
-            String LastRequestDate = mDateFormate
-                    .format(new Date(sp.getADRequestShowTypeLastTime()));
+            String LastRequestDate = mDateFormate.format(new Date(sp.getADRequestShowTypeLastTime()));
 
             sp.setADRequestShowTypeLastTime(currentTime);
 
             if (currentDate.equals(LastRequestDate)) {
-                sp.setADRequestShowtypeFailTimesCurrentDay(sp
-                        .getADRequestShowtypeFailTimesCurrentDay() + 1);
+                sp.setADRequestShowtypeFailTimesCurrentDay(sp.getADRequestShowtypeFailTimesCurrentDay() + 1);
                 if (sp.getADRequestShowtypeFailTimesCurrentDay() == 3) {
                     sp.setADRequestShowTypeNextTimeSpacing(1000 * 60 * 60 * 12);
                 } else {
