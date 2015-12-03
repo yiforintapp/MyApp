@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -20,8 +19,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.CallLog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +34,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -374,7 +370,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                             for (MessageBean message : mAddPrivacyMessage) {
                                 String name = message.getMessageName();
                                 String contactNumber = message.getPhoneNumber();
-                                String numberFromMessage = PrivacyContactUtils.deleteOtherNumber(contactNumber);
+                                String numberFromMessage = PrivacyContactUtils.simpleFromateNumber(contactNumber);
                                 /*隐私联系人去重*/
                                 boolean flagContact = PrivacyContactUtils.pryContRemovSame(contactNumber);
                                 if (!flagContact) {
@@ -558,7 +554,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     for (MessageBean message : mAddPrivacyMessage) {
                         String name = message.getMessageName();
                         String contactNumber = message.getPhoneNumber();
-                        String numberFromMessage = PrivacyContactUtils.deleteOtherNumber(contactNumber);
+                        String numberFromMessage = PrivacyContactUtils.simpleFromateNumber(contactNumber);
                         // 隐私联系人去重
                         String tempNumber =
                                 PrivacyContactUtils.formatePhoneNumber(numberFromMessage);

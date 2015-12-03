@@ -21,7 +21,6 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -29,7 +28,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mobstat.e;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -37,15 +35,11 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -111,14 +105,14 @@ public class PrivacyContactInputActivity extends BaseActivity {
                     if (!flagContact) {
                         ContactBean contact = new ContactBean();
                         contact.setContactName(mPhoneName);
-                        contact.setContactNumber(PrivacyContactUtils.deleteOtherNumber(mPhoneNumber));
+                        contact.setContactNumber(PrivacyContactUtils.simpleFromateNumber(mPhoneNumber));
                         contact.setAnswerType(mPhoneState);
                         ContentValues values = new ContentValues();
-                        values.put(Constants.COLUMN_PHONE_NUMBER, PrivacyContactUtils.deleteOtherNumber(mPhoneNumber));
+                        values.put(Constants.COLUMN_PHONE_NUMBER, PrivacyContactUtils.simpleFromateNumber(mPhoneNumber));
                         if (mPhoneName != null && !"".equals(mPhoneName)) {
                             values.put(Constants.COLUMN_CONTACT_NAME, mPhoneName);
                         } else {
-                            values.put(Constants.COLUMN_CONTACT_NAME, PrivacyContactUtils.deleteOtherNumber(mPhoneNumber));
+                            values.put(Constants.COLUMN_CONTACT_NAME, PrivacyContactUtils.simpleFromateNumber(mPhoneNumber));
                         }
                         values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mPhoneState);
                         Uri result = null;
@@ -347,7 +341,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                     if (mAddMessages != null && mAddMessages.size() != 0) {
                         for (MessageBean message : mAddMessages) {
                             String contactNumber = message.getPhoneNumber();
-                            String number = PrivacyContactUtils.deleteOtherNumber(contactNumber);
+                            String number = PrivacyContactUtils.simpleFromateNumber(contactNumber);
                             // String name = message.getMessageName();
                             String name = null;
                             if (mPhoneName != null && !"".equals(mPhoneName)) {
@@ -442,7 +436,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 if (mAddMessages != null && mAddMessages.size() != 0) {
                     for (MessageBean message : mAddMessages) {
                         String contactNumber = message.getPhoneNumber();
-                        String number = PrivacyContactUtils.deleteOtherNumber(contactNumber);
+                        String number = PrivacyContactUtils.simpleFromateNumber(contactNumber);
                         // String name = message.getMessageName();
                         String name = null;
                         if (mPhoneName != null && !"".equals(mPhoneName)) {

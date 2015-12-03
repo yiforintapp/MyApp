@@ -37,10 +37,17 @@ public class PhoneSecurityConstants {
     /*延迟移除位置请求监听时间*/
     public static final long DELAY_REMOVE_LOCATION_TIME = 10000;
     /*主页跳转到防盗引导页KEY*/
-    public static final String KEY_FORM_HOME_SECUR="FORM_HOME_SECUR";
+    public static final String KEY_FORM_HOME_SECUR = "FORM_HOME_SECUR";
     /*位置精度，1米检测*/
     public static final int LOCATION_MIN_DISTANCE = 1;
     /*时间精度,1秒检测*/
     public static final int LOCATION_MIN_TIME = 1000;
+    /*添加失败*/
+    public static final int ADD_SECUR_NUMBER_FAIL = 0;
+    /*输入的为本机号码*/
+    public static final int ADD_SECUR_NUMBER_SELT = 1;
+    /*添加成功*/
+    public static final int ADD_SECUR_NUMBER_SUCESS = 2;
+    public static final int MAX_SCORE = 6;
 
 }

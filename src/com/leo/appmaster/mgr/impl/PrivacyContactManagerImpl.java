@@ -3,36 +3,23 @@ package com.leo.appmaster.mgr.impl;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Message;
 import android.provider.CallLog;
-import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
-import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityUtils;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.MessageCallLogBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PrefConst;
-import com.leo.appmaster.utils.Utilities;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,7 +69,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         MessageCallLogBean messageCalls = null;
         for (ContactBean contact : addContacts) {
             String name = contact.getContactName();
-            String number = PrivacyContactUtils.deleteOtherNumber(contact.getContactNumber());
+            String number = PrivacyContactUtils.simpleFromateNumber(contact.getContactNumber());
             Bitmap contactIcon = contact.getContactIcon();
             /*隐私联系人去重*/
             boolean flagContact = PrivacyContactUtils.pryContRemovSame(number);
@@ -221,11 +208,11 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         String selectionMessage = "date <= ? and date >= ? ";
         String[] selectionArgsMessage = new String[]{String.valueOf(currentDate), String.valueOf(beforeCurrentTime)};
         /*系统当前的所有短信列表*/
-        List<MessageBean> messages = PrivacyContactUtils.getSysMessage(mContext, selectionCall, selectionArgsCall, false, true);
+        List<MessageBean> messages = PrivacyContactUtils.getSysMessage(mContext, selectionMessage, selectionArgsMessage, false, true);
         if (messages == null || (messages != null && messages.size() <= 0)) {
             selectionMessage = "date >= ? ";
             selectionArgsMessage = new String[]{String.valueOf(currentDate)};
-            messages = PrivacyContactUtils.getSysMessage(mContext, selectionCall, selectionArgsCall, false, true);
+            messages = PrivacyContactUtils.getSysMessage(mContext, selectionMessage, selectionArgsMessage, false, true);
         }
 
         if ((calls == null || (calls != null && calls.size() <= 0))
@@ -238,7 +225,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
             /*短信查询*/
             selectionMessage = null;
             selectionArgsMessage = null;
-            messages = PrivacyContactUtils.getSysMessage(mContext, selectionCall, selectionArgsCall, false, false);
+            messages = PrivacyContactUtils.getSysMessage(mContext, selectionMessage, selectionArgsMessage, false, false);
             LeoLog.i(TAG, "查询整个记录");
         }
         LeoLog.d(TAG, "查询通话，短信记录耗时：" + (System.currentTimeMillis() - quTime));
@@ -310,7 +297,9 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                 ContactBean tempContact = null;
                 boolean isExistContact = false;
                 for (ContactBean contactBean : contacts) {
-                    if (contactBean.getContactNumber().contains(formateNumber)) {
+                    String contactNumber = contactBean.getContactNumber();
+                    contactNumber = PrivacyContactUtils.simpleFromateNumber(contactNumber);
+                    if (contactNumber.contains(formateNumber)) {
                         isExistContact = true;
                         tempContact = contactBean;
                         break;
@@ -492,7 +481,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
             if (messages != null && messages.size() != 0) {
                 for (MessageBean message : messages) {
                     String contactNumber = message.getPhoneNumber();
-                    String number = PrivacyContactUtils.deleteOtherNumber(contactNumber);
+                    String number = PrivacyContactUtils.simpleFromateNumber(contactNumber);
                     String name = message.getMessageName();
                     String body = message.getMessageBody();
                     String time = message.getMessageTime();

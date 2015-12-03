@@ -21,10 +21,7 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.CallLog;
@@ -42,9 +39,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
-import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.utils.IoUtils;
 
@@ -183,7 +178,7 @@ public class PrivacyContactUtils {
                     MessageBean mb = new MessageBean();
                     String number = null;
                     if (ifFrequContacts) {
-                        number = deleteOtherNumber(cur.getString(cur.getColumnIndex("address")));
+                        number = simpleFromateNumber(cur.getString(cur.getColumnIndex("address")));
                     } else {
                         number = cur.getString(cur.getColumnIndex("address"));
                     }
@@ -273,12 +268,16 @@ public class PrivacyContactUtils {
     }
 
     /**
-     * getSysContact
-     *
-     * @return
+     * @param context
+     * @param selection
+     * @param selectionArgs
+     * @param isFreContact  是否为频繁隐私联系人查询
+     * @return 联系人列表
      */
-    public static List<ContactBean> getSysContact(Context context, String selection, String[] selectionArgs, boolean isFreContact) {
+    public static List<ContactBean> getSysContact(Context context, String selection,
+                                                  String[] selectionArgs, boolean isFreContact) {
         if (Utilities.isEmpty(selection)) {
+            /*默认selection*/
             selection = Contacts.IN_VISIBLE_GROUP + "=1 and "
                     + Phone.HAS_PHONE_NUMBER + "=1 and "
                     + Phone.DISPLAY_NAME + " IS NOT NULL";
@@ -291,21 +290,17 @@ public class PrivacyContactUtils {
             phoneCursor = mgr.getSystemContacts(selection, selectionArgs);
             if (phoneCursor != null && phoneCursor.getCount() > 0) {
                 while (phoneCursor.moveToNext()) {
-                    // get phonenumber
-
                     String phoneNumber = null;
                     if (isFreContact) {
-                        phoneNumber = deleteOtherNumber(phoneCursor
+                        phoneNumber = simpleFromateNumber(phoneCursor
                                 .getString(phoneCursor.getColumnIndex(Phone.NUMBER)));
                     } else {
                         phoneNumber = phoneCursor
                                 .getString(phoneCursor.getColumnIndex(Phone.NUMBER));
                     }
-                    // IF IS NULL CONTINUE
                     if (TextUtils.isEmpty(phoneNumber)) {
                         continue;
                     }
-                    // get name
                     String contactName = phoneCursor.getString(phoneCursor
                             .getColumnIndex(Phone.DISPLAY_NAME));
                     Long contactid =
@@ -384,21 +379,16 @@ public class PrivacyContactUtils {
         List<ContactBean> contacts = new ArrayList<ContactBean>();
         Cursor cursorContact = null;
         try {
-//            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-//            cursorContact = mgr.getSystemContacts(selection, selectionArgs);
             cursorContact = cr.query(CONTACT_URL,
                     null, selection, selectionArgs, Phone.SORT_KEY_PRIMARY);
             if (cursorContact != null) {
                 while (cursorContact.moveToNext()) {
-                    // get phonenumber
                     String phoneNumber = cursorContact
                             .getString(cursorContact
                                     .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-                    // IF IS NULL CONTINUE
                     if (TextUtils.isEmpty(phoneNumber)) {
                         continue;
                     }
-                    // get name
                     String contactName = cursorContact.getString(cursorContact
                             .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                     Long contactid =
@@ -473,7 +463,7 @@ public class PrivacyContactUtils {
                     int count = cursor.getCount();
                     String number = null;
                     if (isFreContacts) {
-                        number = deleteOtherNumber(cursor.getString(cursor.getColumnIndex("number")));
+                        number = simpleFromateNumber(cursor.getString(cursor.getColumnIndex("number")));
                     } else {
                         number = cursor.getString(cursor.getColumnIndex("number"));
                     }
@@ -659,18 +649,23 @@ public class PrivacyContactUtils {
         return sbf.reverse().toString();
     }
 
-    // 格式化电话号码
-    public static String deleteOtherNumber(String number) {
-        String deleteOtherNumber = null;
-        if (number != null) {
+    /**
+     * 简单的格式化电话号码
+     *
+     * @param number
+     * @return
+     */
+    public static String simpleFromateNumber(String number) {
+        String fromateNumber = null;
+        if (!TextUtils.isEmpty(number)) {
             String deleteSpaceNumber = number.replace(" ", "");
-            deleteOtherNumber = deleteSpaceNumber.replace("-", "");
+            fromateNumber = deleteSpaceNumber.replace("-", "");
         }
-        return deleteOtherNumber;
+        return fromateNumber;
     }
 
     public static String formatePhoneNumber(String number) {
-        String temp = deleteOtherNumber(number);
+        String temp = simpleFromateNumber(number);
         String reverseStr = null;
         if (temp != null) {
             int strLength = temp.length();
@@ -686,7 +681,7 @@ public class PrivacyContactUtils {
     }
 
     public static String formatePhNumberFor4(String number) {
-        String temp = deleteOtherNumber(number);
+        String temp = simpleFromateNumber(number);
         String reverseStr = null;
         if (temp != null) {
             int strLength = temp.length();
@@ -1198,7 +1193,7 @@ public class PrivacyContactUtils {
 
     /**
      * 返回联系人头像。
-     * <p/>
+     * <p>
      * 联系人的Id。
      *
      * @return 返回小型头像;如果未能查询到，则返回的是一个null值。

@@ -54,11 +54,6 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     public static final Boolean DBG = false;
     public static final String TAG = "LostSecurityManagerImpl";
 
-    private static final int MAX_SCORE = 6;
-    private static final int ADD_SECUR_NUMBER_FAIL = 0;
-    private static final int ADD_SECUR_NUMBER_SELT = 1;
-    private static final int ADD_SECUR_NUMBER_SUCESS = 2;
-
     private static boolean mIsLocation;
     private static boolean mIsOnkey;
     private static boolean mIsFormate;
@@ -124,14 +119,14 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         try {
             if (contact == null) {
                 PreferenceTable.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, "");
-                return ADD_SECUR_NUMBER_FAIL;
+                return PhoneSecurityConstants.ADD_SECUR_NUMBER_FAIL;
             }
             String selfNumber = getSelfPhoneNumnber();
             if (!Utilities.isEmpty(selfNumber)) {
                 String formateSelfNumber = PrivacyContactUtils.formatePhoneNumber(selfNumber);
                 /*查询加入的手机防盗号码是否为本机号码*/
                 if (contact.getContactNumber().contains(formateSelfNumber)) {
-                    return ADD_SECUR_NUMBER_SELT;
+                    return PhoneSecurityConstants.ADD_SECUR_NUMBER_SELT;
                 }
             }
             String name = contact.getContactName();
@@ -140,11 +135,11 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             phone.append(":");
             phone.append(contact.getContactNumber());
             PreferenceTable.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, phone.toString());
-            return ADD_SECUR_NUMBER_SUCESS;
+            return PhoneSecurityConstants.ADD_SECUR_NUMBER_SUCESS;
         } catch (Exception e) {
 
         }
-        return ADD_SECUR_NUMBER_FAIL;
+        return PhoneSecurityConstants.ADD_SECUR_NUMBER_FAIL;
     }
 
     @Override
@@ -554,7 +549,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public int getMaxScore() {
-        return MAX_SCORE;
+        return PhoneSecurityConstants.MAX_SCORE;
     }
 
     @Override

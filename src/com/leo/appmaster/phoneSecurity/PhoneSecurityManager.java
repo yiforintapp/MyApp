@@ -18,7 +18,6 @@ import com.leo.analytics.LeoAgent;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
-import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.privacycontact.MessageBean;
@@ -201,12 +200,12 @@ public class PhoneSecurityManager {
      * 检查是否为防盗指令
      */
     private void checkMsmIsInstructs(String phoneNumber, ArrayList<MessageBean> messages) {
-        phoneNumber = PrivacyContactUtils.deleteOtherNumber(phoneNumber);
+        phoneNumber = PrivacyContactUtils.simpleFromateNumber(phoneNumber);
         final LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         for (MessageBean message : messages) {
             /*短信id*/
             long msmId = message.getMsmId();
-            String formateNum = PrivacyContactUtils.deleteOtherNumber(message.getPhoneNumber());
+            String formateNum = PrivacyContactUtils.simpleFromateNumber(message.getPhoneNumber());
             String formate = PrivacyContactUtils.formatePhoneNumber(formateNum);
             if (phoneNumber.contains(formate)) {
                 String body = message.getMessageBody();

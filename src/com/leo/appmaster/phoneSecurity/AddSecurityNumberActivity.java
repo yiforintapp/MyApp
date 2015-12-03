@@ -2,13 +2,6 @@
 package com.leo.appmaster.phoneSecurity;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.RippleDrawable;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -59,11 +52,8 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     private ContactSideBar mContactSideBar;
     private CommonToolbar mTtileBar;
     private List<ContactBean> mAddPrivacyContact;
-    private Handler mHandler;
-    private LEORoundProgressDialog mProgressDialog;
     private ProgressBar mProgressBar;
     private TextView mDialog;
-    private boolean mLogFlag = false;
     private LinearLayout mDefaultText;
     private Button mAddButton;
     private EditText mInputEdit;
@@ -93,12 +83,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         mListContact.setAdapter(mContactAdapter);
         mListContact.setOnItemClickListener(this);
         mAddButton = (Button) findViewById(R.id.sec_add_number_BT);
-//        MaterialRippleLayout.on(mAddButton)
-//                .rippleColor(getResources().getColor(R.color.button_blue_ripple))
-//                .rippleAlpha(0.1f)
-//                .rippleHover(true)
-//                .create();
-        mAddRip =  findViewById(R.id.sec_add_number_RP);
+        mAddRip = findViewById(R.id.sec_add_number_RP);
 
         mInputEdit = (EditText) findViewById(R.id.sec_input_numberEV);
         LostSecurityManagerImpl securityManager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
@@ -129,28 +114,6 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             mAddRip.setEnabled(false);
         }
 
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                int currentValue = msg.what;
-                if (currentValue >= mAddPrivacyContact.size()) {
-                    if (!mLogFlag) {
-                        if (mProgressDialog != null) {
-                            mProgressDialog.cancel();
-                        }
-                        AddSecurityNumberActivity.this.finish();
-                    } else {
-                        if (mProgressDialog != null) {
-                            mProgressDialog.cancel();
-                        }
-                        mLogFlag = false;
-                    }
-                } else {
-                    mProgressDialog.setProgress(currentValue);
-                }
-                super.handleMessage(msg);
-            }
-        };
         mContactSideBar.setOnTouchingLetterChangedListener(new OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
@@ -160,8 +123,6 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                 }
             }
         });
-//        AddContactAsyncTask addContacctTask = new AddContactAsyncTask();
-//        addContacctTask.execute(true);
         sendMsgHandler();
         TextWatcher watcher = new TextWatcher() {
             @Override
@@ -214,7 +175,6 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
-        mHandler = null;
         mAddPrivacyContact.clear();
         mListContact.post(new Runnable() {
             @Override
@@ -234,10 +194,10 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         ContactBean contact = mPhoneContact.get(position);
         LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         int result = mgr.addPhoneSecurityNumber(contact);
-        if (result == 1) {
+        if (result == PhoneSecurityConstants.ADD_SECUR_NUMBER_SELT) {
             //输入的为本机号码
             Toast.makeText(this, getResources().getString(R.string.secur_add_self_number_tip), Toast.LENGTH_SHORT).show();
-        } else if (result == 2) {
+        } else if (result == PhoneSecurityConstants.ADD_SECUR_NUMBER_SUCESS) {
             //添加成功
             AddSecurityNumberActivity.this.finish();
         } else {
@@ -371,11 +331,11 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                 case PrivacyContactUtils.MSG_ADD_SECURITY_CONTACT:
                     if (msg.obj != null) {
                         LeoLog.i(TAG, "load  contacts list finish !");
-                        List<ContactBean> calls = (List<ContactBean>) msg.obj;
+                        List<ContactBean> contacts = (List<ContactBean>) msg.obj;
                         if (mPhoneContact != null) {
                             mPhoneContact.clear();
                         }
-                        mPhoneContact = calls;
+                        mPhoneContact = contacts;
                         try {
                             if (mPhoneContact != null && mPhoneContact.size() > 0) {
                                 mDefaultText.setVisibility(View.GONE);
@@ -413,73 +373,30 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             });
         }
     }
-    private class AddContactAsyncTask extends AsyncTask<Boolean, Integer, Integer> {
-        @Override
-        protected void onPreExecute() {
-            mProgressBar.setVisibility(View.VISIBLE);
-            mContactSideBar.setVisibility(View.GONE);
-            super.onPreExecute();
-        }
 
-        @Override
-        protected Integer doInBackground(Boolean... arg0) {
-            boolean flag = arg0[0];
-            if (flag) {
-                mPhoneContact =
-                        PrivacyContactUtils.getSysContact(AddSecurityNumberActivity.this, null, null, false);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            if (mPhoneContact != null && mPhoneContact.size() > 0) {
-                mDefaultText.setVisibility(View.GONE);
-                mContactSideBar.setVisibility(View.VISIBLE);
-            } else {
-                mDefaultText.setVisibility(View.VISIBLE);
-
-            }
-            mProgressBar.setVisibility(View.GONE);
-            mContactAdapter.notifyDataSetChanged();
-            super.onPostExecute(result);
-        }
-    }
-
-    private void showProgressDialog(int maxValue, int currentValue) {
-        if (mProgressDialog == null) {
-            mProgressDialog = new LEORoundProgressDialog(this);
-        }
-        String title = getResources().getString(R.string.privacy_contact_progress_dialog_title);
-        String content = getResources().getString(R.string.privacy_contact_progress_dialog_content);
-        mProgressDialog.setTitle(title);
-        mProgressDialog.setMessage(content);
-        mProgressDialog.setMax(maxValue);
-        mProgressDialog.setProgress(currentValue);
-        mProgressDialog.setCustomProgressTextVisiable(true);
-        mProgressDialog.setButtonVisiable(false);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
-    }
 
     /*添加防盗号码处理*/
     private void addSecurNumberHandler(String number) {
         LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         ContactBean addContact = new ContactBean();
+        /*格式化号码*/
         addContact.setContactName(number);
         addContact.setContactNumber(number);
         String fromateNumber = PrivacyContactUtils.formatePhoneNumber(number);
         for (ContactBean contactBean : mPhoneContact) {
-            if (contactBean.getContactNumber().contains(fromateNumber)) {
+            String contactNumber = contactBean.getContactNumber();
+            contactNumber = PrivacyContactUtils.simpleFromateNumber(contactNumber);
+            if (contactNumber.contains(fromateNumber)) {
                 addContact.setContactName(contactBean.getContactName());
                 break;
             }
         }
+
         int result = mgr.addPhoneSecurityNumber(addContact);
-        if (result == 1) {
+        if (result == PhoneSecurityConstants.ADD_SECUR_NUMBER_SELT) {
             //输入的为本机号码
             Toast.makeText(this, getResources().getString(R.string.secur_add_self_number_tip), Toast.LENGTH_SHORT).show();
-        } else if (result == 2) {
+        } else if (result == PhoneSecurityConstants.ADD_SECUR_NUMBER_SUCESS) {
             //添加成功
             AddSecurityNumberActivity.this.finish();
         } else {
@@ -487,5 +404,4 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         }
 
     }
-
 }

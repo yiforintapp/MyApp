@@ -31,7 +31,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -291,7 +290,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
      */
     public void addContToSelfDb(ContactCallLog call) {
         String name = call.getCallLogName();
-        String contactNumber = PrivacyContactUtils.deleteOtherNumber(call.getCallLogNumber());
+        String contactNumber = PrivacyContactUtils.simpleFromateNumber(call.getCallLogNumber());
         ContentResolver cr = this.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(this);
         ContentValues values = new ContentValues();

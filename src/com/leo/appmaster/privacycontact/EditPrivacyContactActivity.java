@@ -326,7 +326,7 @@ public class EditPrivacyContactActivity extends BaseActivity {
             mPhoneName = mNameEt.getText().toString();
             mPhoneNumber = mNumberEt.getText().toString().trim();
             ContentValues values = new ContentValues();
-            values.put(Constants.COLUMN_PHONE_NUMBER, PrivacyContactUtils.deleteOtherNumber(mPhoneNumber));
+            values.put(Constants.COLUMN_PHONE_NUMBER, PrivacyContactUtils.simpleFromateNumber(mPhoneNumber));
             values.put(Constants.COLUMN_CONTACT_NAME, mPhoneName);
             values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mPhoneState);
             int result = updateMessageMyselfIsRead(values, "contact_phone_number = ? ",
