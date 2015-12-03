@@ -17,7 +17,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
 
 public class MonthDaySetting extends LEOBaseDialog {
@@ -26,7 +26,7 @@ public class MonthDaySetting extends LEOBaseDialog {
     private TextView sure_button;
     private AppMasterPreference sp_notice_flow;
     private int itselfmonthuse = 0, monthtraffic = 0;
-    private RippleView1 mRvBlue;
+    private RippleView mRvBlue;
 
     private OnTrafficDialogClickListener mListener;
 
@@ -49,7 +49,7 @@ public class MonthDaySetting extends LEOBaseDialog {
         first_ed = (EditText) dlgView.findViewById(R.id.first_ed);
         second_ed = (EditText) dlgView.findViewById(R.id.second_ed);
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
-        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
 //        int monthUsedData = (int) (sp_notice_flow.getMonthGprsAll() / 1024 * 1024);
 //        first_ed.setText(sp_notice_flow.getItselfMonthTraffic()/1024/1024 + "");
         first_ed.setText(sp_notice_flow.getItselfMonthTraffic() / 1024 + "");

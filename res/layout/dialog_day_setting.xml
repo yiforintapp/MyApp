@@ -47,7 +47,7 @@
             android:paddingLeft="16dp"
             android:scrollbars="none" />
 
-        <com.leo.appmaster.ui.RippleView1
+        <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_blue"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dialog_list_btn_height"
@@ -67,7 +67,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/cancel" />
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
     </RelativeLayout>
 
 </LinearLayout>

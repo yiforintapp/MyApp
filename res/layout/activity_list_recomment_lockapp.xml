@@ -68,7 +68,7 @@
             <!--android:textColor="@color/white"-->
             <!--android:textSize="16dp" />-->
 
-            <com.leo.appmaster.ui.RippleView1 xmlns:ripple="http://schemas.android.com/apk/res-auto"
+            <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/recomment_lock"
                 android:layout_width="210dp"
                 android:layout_height="40dp"
@@ -88,7 +88,7 @@
                     android:text="@string/lock"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
-            </com.leo.appmaster.ui.RippleView1>
+            </com.leo.appmaster.ui.RippleView>
             <!--android:background="@drawable/mycheck_button_selecter"-->
             <!--android:textColor="@drawable/manager_backup_text_selecter"-->
         </RelativeLayout>

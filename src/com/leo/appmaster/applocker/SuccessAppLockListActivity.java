@@ -22,7 +22,7 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 /**
  * Created by qili on 15-10-11.
@@ -32,7 +32,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     private List<AppInfo> mLockList;
     private ArrayList<AppInfo> resault;
     private ListView mLockListView;
-    private RippleView1 lockTV;
+    private RippleView lockTV;
     private List<LockMode> mModeList;
     private ListSuccessAdapter mListAdapter;
     public CommonTitleBar mTitleBar;
@@ -50,7 +50,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                 findViewById(R.id.lock_success_title_bar);
         mTitleBar.setBackArrowVisibility(View.GONE);
 
-        lockTV = (RippleView1) findViewById(R.id.success_recomment_lock);
+        lockTV = (RippleView) findViewById(R.id.success_recomment_lock);
         lockTV.setOnClickListener(this);
         mLockListView = (ListView) findViewById(R.id.recomment_lock_list);
         mListAdapter = new ListSuccessAdapter(this);

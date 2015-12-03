@@ -10,7 +10,7 @@
         android:layout_height="wrap_content" />
 
 
-    <com.leo.appmaster.ui.RippleView1
+    <com.leo.appmaster.ui.RippleView
         android:id="@+id/content_item_all"
         android:layout_width="match_parent"
         android:layout_height="68dp"
@@ -58,5 +58,5 @@
             android:layout_marginRight="26dp" />
 
         <View style="@style/priAppItem" />
-    </com.leo.appmaster.ui.RippleView1>
+    </com.leo.appmaster.ui.RippleView>
 </RelativeLayout>

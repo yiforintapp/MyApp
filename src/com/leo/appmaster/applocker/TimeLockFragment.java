@@ -33,7 +33,7 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 public class TimeLockFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
         OnItemLongClickListener, Editable {
@@ -45,7 +45,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     private View mLockGuideView;
     private ImageView mLockGuideIcon;
     private TextView mLockGuideText;
-    private RippleView1 mUserKnowBtn;
+    private RippleView mUserKnowBtn;
     private Animation mGuidAnimation;
     private boolean mGuideOpen = false;
 
@@ -76,7 +76,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockGuideIcon = (ImageView) mLockGuideView.findViewById(R.id.lock_guide_icon);
         mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
 
-        mUserKnowBtn = (RippleView1) mLockGuideView.findViewById(R.id.mode_user_know_button);
+        mUserKnowBtn = (RippleView) mLockGuideView.findViewById(R.id.mode_user_know_button);
 
         mTitleBar = ((LockModeActivity) mActivity).getActivityCommonTitleBar();
 

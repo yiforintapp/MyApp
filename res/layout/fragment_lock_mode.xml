@@ -40,7 +40,7 @@
             android:textColor="#808080"
             android:textSize="@dimen/home_lock_mode_guide_text_size" />
 
-        <com.leo.appmaster.ui.RippleView1 xmlns:ripple="http://schemas.android.com/apk/res-auto"
+        <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
             android:id="@+id/mode_user_know_button"
             android:layout_width="@dimen/home_lock_mode_guide_btn_width"
             android:layout_height="@dimen/home_lock_mode_guide_btn_height"
@@ -61,7 +61,7 @@
                 android:text="@string/lock_mode_guide_button_text"
                 android:textColor="@color/white"
                 android:textSize="@dimen/home_lock_mode_guide_text_size" />
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
     </RelativeLayout>
 
 </RelativeLayout>

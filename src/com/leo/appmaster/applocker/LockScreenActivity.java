@@ -29,7 +29,6 @@ import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ScaleDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
@@ -65,7 +64,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.handmark.pulltorefresh.library.internal.Utils;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -110,8 +108,7 @@ import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoCircleView;
 import com.leo.appmaster.ui.LeoHomePopMenu;
-import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
@@ -126,7 +123,6 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
-import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -136,7 +132,6 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
-import com.mobvista.sdk.m.core.WallIconCallback;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
@@ -167,7 +162,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LeoDoubleLinesInputDialog mDialog;
     private LEOAlarmDialog mTipDialog;
     private EditText mEtQuestion, mEtAnwser;
-    private RippleView1 mMrlGift;
+    private RippleView mMrlGift;
     private String mLockTitle;
     // private ImageView mThemeView;
     private ImageView mAdIcon, mAdIconRedTip;
@@ -1128,7 +1123,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mTtileBar.setOptionListener(this);
 
         mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
-        mMrlGift = (RippleView1) findViewById(R.id.mr_gift);
+        mMrlGift = (RippleView) findViewById(R.id.mr_gift);
         mMrlGift.setOnClickListener(this);
         
         mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);

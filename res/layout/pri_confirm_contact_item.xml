@@ -80,7 +80,7 @@
                 android:layout_marginRight="19dp"
                 android:background="@color/c4" />
 
-            <com.leo.appmaster.ui.RippleView1
+            <com.leo.appmaster.ui.RippleView
                 android:id="@+id/item_btn_rv"
                 style="@style/SecurityItemBtn"
                 leo:rippleColor="@color/button_gray_ripple"
@@ -94,7 +94,7 @@
                     android:drawablePadding="@dimen/add_priv_cont_pad"
                     android:drawableRight="@drawable/arrow_button_right"
                     android:textColor="@color/contact_no_select" />
-            </com.leo.appmaster.ui.RippleView1>
+            </com.leo.appmaster.ui.RippleView>
 
             <TextView
                 android:id="@+id/imp_item_btn_rv"

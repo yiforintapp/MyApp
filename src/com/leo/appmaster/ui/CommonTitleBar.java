@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 
 
-public class CommonTitleBar extends FrameLayout implements OnClickListener, RippleView.OnRippleCompleteListener {
+public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
     private ImageView mIvBackArrow;
     private TextView mTvTitle;
@@ -278,8 +278,4 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
         }
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        onClick(rippleView);
-    }
 }

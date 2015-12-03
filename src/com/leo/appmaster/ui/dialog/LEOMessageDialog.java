@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 public class LEOMessageDialog extends LEOBaseDialog {
     public static final String TAG = "XLOneButtonDialog";
@@ -21,7 +21,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
     private TextView mBottomBtn;
     private ImageView mIcon;
     private DialogInterface.OnClickListener mBottomBtnListener = null;
-    private RippleView1 mRvBlue;
+    private RippleView mRvBlue;
 
     public LEOMessageDialog(Context context) {
         super(context, R.style.bt_dialog);
@@ -109,7 +109,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
         mIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
-        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_blue);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
         mBottomBtn = (TextView) dlgView.findViewById(R.id.dlg_bottom_btn);
         mBottomBtn.setVisibility(View.VISIBLE);
         if (mBottomBtnListener == null) {

@@ -86,7 +86,7 @@
         android:paddingLeft="6dp"
         android:paddingRight="6dp">
 
-        <com.leo.appmaster.ui.RippleView1
+        <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_dialog_blue_button"
             android:layout_width="0dp"
             android:layout_height="42dp"
@@ -105,7 +105,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/makesure" />
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
 
     </LinearLayout>
 

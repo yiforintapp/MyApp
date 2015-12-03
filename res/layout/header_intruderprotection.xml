@@ -191,7 +191,7 @@
             android:textColor="#333333"
             android:textSize="15dp" />
 
-        <com.leo.appmaster.ui.RippleView1
+        <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_change_times"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -215,7 +215,7 @@
                 android:text="@string/change_times_to_catch"
                 android:textColor="#2674f6"
                 android:textSize="14dp" />
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 
     <View

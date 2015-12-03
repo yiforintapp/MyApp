@@ -29,7 +29,7 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
@@ -44,7 +44,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     public final static int LOAD_DATA_DONE = 27;
     private GridView mGridView;
     private CommonToolbar mTtileBar;
-    private RippleView1 mRvAdd;
+    private RippleView mRvAdd;
     private RelativeLayout mNoHidePictureHint;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
@@ -209,7 +209,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_video_hide);
         mTtileBar.setOptionMenuVisible(false);
-        mRvAdd = (RippleView1) findViewById(R.id.rv_add);
+        mRvAdd = (RippleView) findViewById(R.id.rv_add);
         mRvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

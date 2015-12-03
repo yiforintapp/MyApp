@@ -15,7 +15,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.imageloader.ImageLoader;
 
 /**
@@ -29,7 +29,7 @@ public class MsgCenterActivity extends BaseActivity implements
 
     private ListView mMessageLv;
     private View mEmptyView;
-    private RippleView1 mFeedbackTv;
+    private RippleView mFeedbackTv;
     private MsgCenterAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class MsgCenterActivity extends BaseActivity implements
 
         mEmptyView = findViewById(R.id.msg_center_empty_ll);
 
-        mFeedbackTv = (RippleView1) findViewById(R.id.msg_center_feedback_tv);
+        mFeedbackTv = (RippleView) findViewById(R.id.msg_center_feedback_tv);
         mFeedbackTv.setOnClickListener(this);
 
         mAdapter = new MsgCenterAdapter(mMessageLv, mEmptyView);

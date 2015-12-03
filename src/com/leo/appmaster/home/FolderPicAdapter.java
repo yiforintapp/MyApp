@@ -96,14 +96,24 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
                 }
             }
         });
-        holder.clickRv.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+
+        holder.clickRv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View view) {
                 if (mListener != null) {
                     mListener.onGroupClick(groupPosition, isExpanded);
                 }
             }
         });
+//        holder.clickRv.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+//            @Override
+//            public void onRippleComplete(RippleView rippleView) {
+//                if (mListener != null) {
+//                    mListener.onGroupClick(groupPosition, isExpanded);
+//                }
+//            }
+//        });
+
         if (isExpanded) {
             mWrapperViews.put(convertView, wrapper);
         }
@@ -138,6 +148,7 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
 
         final CheckBox checkBox = holder.checkBox;
         final ImageView imageView = holder.imageView;
+
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +160,7 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
                 }
             }
         });
+
         mItemViews.put(convertView, item);
         return convertView;
     }

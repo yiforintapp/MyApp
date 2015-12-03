@@ -163,7 +163,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.leo.appmaster.ui.RippleView1 xmlns:ripple="http://schemas.android.com/apk/res-auto"
+                <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/flow_setting"
                     android:layout_width="@dimen/app_manager_flowactivity_usage_set_flow_button_width"
                     android:layout_height="@dimen/app_manager_flowactivity_usage_set_flow_button_height"
@@ -183,7 +183,7 @@
                         android:text="@string/traff_first_page_small_set"
                         android:textColor="@color/white"
                         android:textSize="16dp" />
-                </com.leo.appmaster.ui.RippleView1>
+                </com.leo.appmaster.ui.RippleView>
 
             </RelativeLayout>
 

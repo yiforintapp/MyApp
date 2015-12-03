@@ -30,7 +30,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 /**
  * Created by qili on 15-10-11.
@@ -46,7 +46,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
 
     private ListView mLockListView;
     private CommonToolbar mTtileBar;
-    private RippleView1 lockTV;
+    private RippleView lockTV;
     private ListAppLockAdapter mLockAdapter;
     private List<AppInfo> mLockList;
     private List<AppInfo> mUnLockList;
@@ -102,7 +102,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
 
-        lockTV = (RippleView1) findViewById(R.id.recomment_lock);
+        lockTV = (RippleView) findViewById(R.id.recomment_lock);
         lockTV.setOnClickListener(this);
 //        lockTV.setOnRippleCompleteListener(this);
 

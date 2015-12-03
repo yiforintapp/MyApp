@@ -61,7 +61,7 @@
             android:layout_height="1px"
             android:background="@color/c4" />
 
-        <com.leo.appmaster.ui.RippleView1
+        <com.leo.appmaster.ui.RippleView
             android:id="@+id/item_btn_rv"
             style="@style/SecurityItemBtn"
             leo:rippleColor="@color/button_gray_ripple"
@@ -73,7 +73,7 @@
                 android:id="@+id/item_btn_tv"
                 style="@style/ItemBtnText"
                 android:text="@string/swifty_item_btn"/>
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 
 </RelativeLayout>

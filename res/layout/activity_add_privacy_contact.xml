@@ -75,7 +75,7 @@
             android:textColor="#d3d3d4"
             android:textSize="18dp" />
 
-        <com.leo.appmaster.ui.RippleView1
+        <com.leo.appmaster.ui.RippleView
             android:id="@+id/moto_add_btn_ripp"
             android:layout_width="120dp"
             android:layout_height="38dp"
@@ -94,7 +94,7 @@
                 android:text="@string/privacy_auto_add_text"
                 android:textColor="@color/white"
                 android:textSize="17dp" />
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 
 </RelativeLayout>

@@ -48,7 +48,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.leo.appmaster.ui.RippleView1
+        <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_dialog_blue_button"
             android:layout_width="0dp"
             android:layout_height="42dp"
@@ -67,7 +67,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/select_other_wifi" />
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 
 </LinearLayout>

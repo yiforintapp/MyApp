@@ -29,7 +29,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
@@ -192,7 +192,7 @@ public class QuickHelperActivity extends BaseActivity {
                 View view = mInflater.inflate(R.layout.item_quick_helper_list, null);
                 TextView tvClass = (TextView) view.findViewById(R.id.tv_class);
                 LinearLayout llClass = (LinearLayout) view.findViewById(R.id.ll_class);
-                RippleView1 rvAdd = (RippleView1) view.findViewById(R.id.rv_add);
+                RippleView rvAdd = (RippleView) view.findViewById(R.id.rv_add);
                 ImageView ivIcon = (ImageView) view.findViewById(R.id.iv_icon);
                 TextView tvName = (TextView) view.findViewById(R.id.tv_name);
                 TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc);

@@ -14,38 +14,46 @@
         android:layout_marginRight="26dp"
         android:button="@drawable/check_box_selector" />
 
-    <com.leo.appmaster.ui.RippleView
-        xmlns:leo="http://schemas.android.com/apk/res-auto"
+    <com.leo.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/pri_pro_click_rv"
         android:layout_width="match_parent"
-        leo:rv_color="@color/white_list_item_ripple"
-        android:background="@drawable/home_tab_selector"
         android:layout_height="@dimen/pri_pro_new"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/pri_pro_cb">
-        
-        <ImageView
-            android:id="@+id/pri_pro_label_arrow_iv"
-            android:layout_marginLeft="11dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_folder_arrow_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:layout_toLeftOf="@id/pri_pro_cb"
+        app:rippleAlpha="0.5"
+        app:rippleColor="@color/white_list_item_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
-        <TextView
-            android:id="@+id/pri_pro_new_label_tv"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="@dimen/pri_pro_new"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="9dp"
-            android:layout_toRightOf="@id/pri_pro_label_arrow_iv"
-            android:ellipsize="middle"
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
-            android:singleLine="true"
-            android:textColor="@color/c3"
-            android:textSize="@dimen/pri_pro_new_label" />
+            android:background="@drawable/home_tab_selector">
+
+            <ImageView
+                android:id="@+id/pri_pro_label_arrow_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="11dp"
+                android:src="@drawable/ic_folder_arrow_up" />
+
+            <TextView
+                android:id="@+id/pri_pro_new_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pri_pro_new"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="9dp"
+                android:layout_toRightOf="@id/pri_pro_label_arrow_iv"
+                android:ellipsize="middle"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:textColor="@color/c3"
+                android:textSize="@dimen/pri_pro_new_label" />
+        </RelativeLayout>
     </com.leo.appmaster.ui.RippleView>
 
     <View

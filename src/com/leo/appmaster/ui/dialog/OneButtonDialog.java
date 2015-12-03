@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 public class OneButtonDialog extends LEOBaseDialog {
     private Context mContext;
     private OnWifiDiaogClickListener mListener;
     private TextView mNoWifi, mSelectOther,mTitle;
-    private RippleView1 mRvBlue;
+    private RippleView mRvBlue;
     
     public interface OnWifiDiaogClickListener {
         public void onClick();
@@ -36,7 +36,7 @@ public class OneButtonDialog extends LEOBaseDialog {
         mSelectOther = (TextView) dlgView.findViewById(R.id.dlg_bottom_btn);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mSelectOther.setText(resources.getString(R.string.select_other_wifi));
-        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
         OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int arg1) {

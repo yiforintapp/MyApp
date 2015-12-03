@@ -18,7 +18,7 @@ import com.leo.appmaster.R;
  * 3、标题
  * Created by Jasper on 2015/10/14.
  */
-public class CommonToolbar extends RelativeLayout implements View.OnClickListener, RippleView.OnRippleCompleteListener {
+public class CommonToolbar extends RelativeLayout implements View.OnClickListener {
     private ImageView mBackArrow;
     private View mOptionView;
     private ImageView mOptionImg;
@@ -181,8 +181,4 @@ public class CommonToolbar extends RelativeLayout implements View.OnClickListene
         }
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        onClick(rippleView);
-    }
 }

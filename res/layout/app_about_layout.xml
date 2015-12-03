@@ -68,7 +68,7 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp">
 
-        <com.leo.appmaster.ui.RippleView1
+        <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_check_update_button"
             android:layout_width="289dp"
             android:layout_height="46dp"
@@ -86,7 +86,7 @@
                 android:text="@string/protocolBar"
                 android:textColor="#ffffff"
                 android:textSize="18dp" />
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
 
     </LinearLayout>
 

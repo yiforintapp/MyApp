@@ -42,7 +42,7 @@
                     android:textColor="#ffffff" />
             </LinearLayout>
 
-            <com.leo.appmaster.ui.RippleView1
+            <com.leo.appmaster.ui.RippleView
                 android:id="@+id/rv_close"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/close_in_catch" />
-            </com.leo.appmaster.ui.RippleView1>
+            </com.leo.appmaster.ui.RippleView>
 
             <TextView
                 android:id="@+id/tv_times_of_catch"
@@ -114,7 +114,7 @@
                 android:textColor="#333333"
                 android:textSize="15dp" />
 
-            <com.leo.appmaster.ui.RippleView1
+            <com.leo.appmaster.ui.RippleView
                 android:id="@+id/rv_change_times"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                     android:minWidth="52dp"
                     android:text="@string/change_times_to_catch"
                     android:textColor="#2674f6" />
-            </com.leo.appmaster.ui.RippleView1>
+            </com.leo.appmaster.ui.RippleView>
         </LinearLayout>
 
         <!-- 切换有图片和无图片 -->
@@ -363,7 +363,7 @@
                     android:textColor="@color/c2"
                     android:textSize="14dp" />
 
-                <com.leo.appmaster.ui.RippleView1
+                <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_fivestars"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -380,7 +380,7 @@
                         android:text="@string/grade"
                         android:textColor="#ffffff"
                         android:textSize="16dp" />
-                </com.leo.appmaster.ui.RippleView1>
+                </com.leo.appmaster.ui.RippleView>
             </LinearLayout>
 
             <!-- AD -->
@@ -505,7 +505,7 @@
                 android:dividerHeight="8dp"
                 android:scrollbars="none" />
 
-            <com.leo.appmaster.ui.RippleView1
+            <com.leo.appmaster.ui.RippleView
                 android:id="@+id/rv_more"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -523,7 +523,7 @@
                     android:background="#2675f6"
                     android:text="@string/intruder_pic_more"
                     android:textColor="#ffffff" />
-            </com.leo.appmaster.ui.RippleView1>
+            </com.leo.appmaster.ui.RippleView>
         </LinearLayout>
     </LinearLayout>
 

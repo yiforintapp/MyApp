@@ -2,10 +2,7 @@
 package com.leo.appmaster.imagehide;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +27,7 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -45,7 +42,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private ImageLoader mImageLoader;
     private CommonToolbar mTtileBar;
     private RelativeLayout mNoHidePictureHint;
-    private RippleView1 mRvAdd;
+    private RippleView mRvAdd;
     private ProgressBar loadingBar;
 
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
@@ -119,7 +116,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         mGridView = (GridView) findViewById(R.id.Image_hide_folder);
         mGridView.setOnItemClickListener(this);
         mGridView.setAdapter(mHideAlbumAdapt);
-        mRvAdd = (RippleView1) findViewById(R.id.rv_add);
+        mRvAdd = (RippleView) findViewById(R.id.rv_add);
         mRvAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

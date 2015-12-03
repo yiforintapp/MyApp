@@ -7,12 +7,12 @@ import android.view.View;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 
 public class WeiZhuangFirstIn extends BaseActivity implements View.OnClickListener {
 
-    private RippleView1 mRvGo;
+    private RippleView mRvGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class WeiZhuangFirstIn extends BaseActivity implements View.OnClickListen
     }
 
     private void init() {
-        mRvGo = (RippleView1) findViewById(R.id.rv_know_button);
+        mRvGo = (RippleView) findViewById(R.id.rv_know_button);
         mRvGo.setOnClickListener(this);
     }
 

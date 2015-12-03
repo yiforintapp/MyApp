@@ -9,7 +9,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 /**
  * Created by qili on 15-10-22.
@@ -19,7 +19,7 @@ public class WifiSettingActivity extends BaseActivity implements View.OnClickLis
     private CommonToolbar mTitleBar;
     private ImageView checkBox;
     private boolean isSelected;
-    private RippleView1 rpBtn;
+    private RippleView rpBtn;
 
 
     @Override
@@ -46,7 +46,7 @@ public class WifiSettingActivity extends BaseActivity implements View.OnClickLis
         mTitleBar.setToolbarColorResource(R.color.cb);
         mTitleBar.setOptionMenuVisible(false);
 
-        rpBtn = (RippleView1) findViewById(R.id.content_item_all);
+        rpBtn = (RippleView) findViewById(R.id.content_item_all);
         rpBtn.setOnClickListener(this);
 //        rpBtn.setOnRippleCompleteListener(this);
 

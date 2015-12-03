@@ -27,7 +27,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.home.GooglePlayGuideActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -156,7 +156,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvMsg.setText(getString(R.string.download_error));
         TextView tvRetry = (TextView) findViewById(R.id.dlg_right_btn);
         tvRetry.setText(getString(R.string.retry));
-        RippleView1 RvRetry = (RippleView1) findViewById(R.id.rv_dialog_blue_button);
+        RippleView RvRetry = (RippleView) findViewById(R.id.rv_dialog_blue_button);
         RvRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -167,7 +167,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
         tvCancel.setText(getString(R.string.cancel));
 
-        RippleView1 RvCancel = (RippleView1) findViewById(R.id.rv_dialog_whitle_button);
+        RippleView RvCancel = (RippleView) findViewById(R.id.rv_dialog_whitle_button);
         RvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -200,7 +200,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
         TextView tvYes = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvYes.setText(getString(R.string.do_update));
-        RippleView1 rvBlue = (RippleView1) findViewById(R.id.rv_blue);
+        RippleView rvBlue = (RippleView) findViewById(R.id.rv_blue);
         rvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,7 +240,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
         TextView tvCancel = (TextView) findViewById(R.id.dlg_left_btn);
         tvCancel.setText(getString(R.string.cancel_download));
-        RippleView1 rvCancel = (RippleView1) findViewById(R.id.rv_white);
+        RippleView rvCancel = (RippleView) findViewById(R.id.rv_white);
         rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -253,7 +253,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         });
         TextView tvHide = (TextView) findViewById(R.id.dlg_right_btn);
         tvHide.setText(getString(R.string.hide_download_window));
-        RippleView1 rvHide = (RippleView1) findViewById(R.id.rv_blue);
+        RippleView rvHide = (RippleView) findViewById(R.id.rv_blue);
         rvHide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -291,7 +291,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvCancel = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvCancel.setText(getString(R.string.cancel_download));
 
-        RippleView1 rvCancel = (RippleView1) findViewById(R.id.rv_blue);
+        RippleView rvCancel = (RippleView) findViewById(R.id.rv_blue);
         rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -312,7 +312,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.update_no_need));
         TextView tv = (TextView) findViewById(R.id.dlg_bottom_btn);
-        RippleView1 rvBlue = (RippleView1) findViewById(R.id.rv_blue);
+        RippleView rvBlue = (RippleView) findViewById(R.id.rv_blue);
         rvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -327,7 +327,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         tvMsg.setText(getString(R.string.network_error_msg));
         TextView tvBtn = (TextView) findViewById(R.id.dlg_bottom_btn);
-        RippleView1 rvBlue = (RippleView1) findViewById(R.id.rv_blue);
+        RippleView rvBlue = (RippleView) findViewById(R.id.rv_blue);
         rvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -346,7 +346,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView retry = (TextView) findViewById(R.id.dlg_right_btn);
         retry.setText(getString(R.string.retry));
 
-        RippleView1 rvRetry = (RippleView1) findViewById(R.id.rv_dialog_blue_button);
+        RippleView rvRetry = (RippleView) findViewById(R.id.rv_dialog_blue_button);
         rvRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -354,7 +354,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             }
         });
         TextView cancel = (TextView) findViewById(R.id.dlg_left_btn);
-        RippleView1 rvCancel = (RippleView1) findViewById(R.id.rv_dialog_whitle_button);
+        RippleView rvCancel = (RippleView) findViewById(R.id.rv_dialog_whitle_button);
         cancel.setText(getString(R.string.cancel));
         rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,7 +372,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvContent = (TextView) findViewById(R.id.dlg_content);
         tvContent.setText(getString(R.string.checking_update_msg));
         TextView tvCancel = (TextView) findViewById(R.id.dlg_bottom_btn);
-        RippleView1 rvCancel = (RippleView1) findViewById(R.id.rv_blue);
+        RippleView rvCancel = (RippleView) findViewById(R.id.rv_blue);
         rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -404,7 +404,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
 
-        RippleView1 rvBlue = (RippleView1) findViewById(R.id.rv_blue);
+        RippleView rvBlue = (RippleView) findViewById(R.id.rv_blue);
         rvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -418,7 +418,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         });
         TextView tvNo = (TextView) findViewById(R.id.dlg_left_btn);
         tvNo.setText(getString(R.string.ignore_update));
-        RippleView1 rvWhite = (RippleView1) findViewById(R.id.rv_white);
+        RippleView rvWhite = (RippleView) findViewById(R.id.rv_white);
         rvWhite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

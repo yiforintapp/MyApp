@@ -50,7 +50,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -67,7 +67,7 @@ public class AppLockListActivity extends BaseActivity implements
     private static final int IN_LOCK_GUIDE_COUNT = 3;
 
     private View mHeadView;
-    private RippleView1 mLockModeView, mWeiZhuangView, mLockThemeView;
+    private RippleView mLockModeView, mWeiZhuangView, mLockThemeView;
     private View mBarView;
     //    private View mClickView;
     private ImageView mRedDot, mGuideHelpTipBt;
@@ -75,7 +75,7 @@ public class AppLockListActivity extends BaseActivity implements
     private View mGuideHelpTip;
     private TextView mSecurityGuideBt, mAutoGuideBt, mBackageGroundBt;
     private Button mFinishBt;
-    private RippleView1 mFinishBtClick;
+    private RippleView mFinishBtClick;
     private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL;
     private TextView mSecurityText, mAutoText, mBackGroudText;
     private View mGuideTip;
@@ -179,13 +179,13 @@ public class AppLockListActivity extends BaseActivity implements
 
         mHeadView = layoutInflater.inflate(R.layout.list_lockapp_headview, null);
 
-        mLockModeView = (RippleView1) mHeadView.findViewById(R.id.lock_mode_type);
+        mLockModeView = (RippleView) mHeadView.findViewById(R.id.lock_mode_type);
         mLockModeView.setOnClickListener(this);
 
-        mWeiZhuangView = (RippleView1) mHeadView.findViewById(R.id.weizhuang_type);
+        mWeiZhuangView = (RippleView) mHeadView.findViewById(R.id.weizhuang_type);
         mWeiZhuangView.setOnClickListener(this);
 
-        mLockThemeView = (RippleView1) mHeadView.findViewById(R.id.lock_theme_type);
+        mLockThemeView = (RippleView) mHeadView.findViewById(R.id.lock_theme_type);
         mLockThemeView.setOnClickListener(this);
 
         mRedDot = (ImageView) mHeadView.findViewById(R.id.theme_red_dot);
@@ -214,7 +214,7 @@ public class AppLockListActivity extends BaseActivity implements
         mBackgroundRL = (RelativeLayout) findViewById(R.id.background_guide);
 
         mFinishBt = (Button) findViewById(R.id.finish);
-        mFinishBtClick = (RippleView1) findViewById(R.id.rv_finish);
+        mFinishBtClick = (RippleView) findViewById(R.id.rv_finish);
         mFinishBtClick.setOnClickListener(this);
 
 

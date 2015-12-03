@@ -25,7 +25,7 @@ import java.util.List;
  * Created by Jasper on 2015/11/13.
  */
 public abstract class FolderFragment<T> extends Fragment implements AbsListView.OnScrollListener,
-        ExpandableListView.OnGroupClickListener, FolderAdapter.OnFolderClickListener, RippleView.OnRippleCompleteListener,
+        ExpandableListView.OnGroupClickListener, FolderAdapter.OnFolderClickListener,
         View.OnClickListener {
     private static final String TAG = "FolderFragment";
     private Dictionary<Integer, Integer> mItemHeights = new Hashtable<Integer, Integer>();
@@ -95,7 +95,7 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         mFloatingTv = (TextView) mFloatingView.findViewById(R.id.pri_pro_new_label_tv);
         mFloatingCb = (CheckBox) mFloatingView.findViewById(R.id.pri_pro_cb);
         mFloatingRv = (RippleView) mFloatingView.findViewById(R.id.pri_pro_click_rv);
-        mFloatingRv.setOnRippleCompleteListener(this);
+        mFloatingRv.setOnClickListener(this);
         mFloatingCb.setOnClickListener(this);
 
         mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
@@ -220,9 +220,31 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         }
     }
 
+//    @Override
+//    public void onRippleComplete(RippleView rippleView) {
+//        if (mFloatingRv == rippleView) {
+//            for (int i = 0; i < mAdapter.getGroupCount(); i++) {
+//                mListView.collapseGroup(i);
+//                final int group = mCurrentGroup;
+//                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mListView.setSelectedGroup(group);
+//                    }
+//                }, 100);
+//            }
+//        }
+//    }
+
     @Override
-    public void onRippleComplete(RippleView rippleView) {
-        if (mFloatingRv == rippleView) {
+    public void onClick(View v) {
+        if (v == mFloatingCb) {
+            onFloatingCheckClick();
+        } else if (v.getId() == R.id.pp_process_rv_click) {
+            onProcessClick();
+        } else if (v.getId() == R.id.pp_process_ignore_rv_click) {
+            onIgnoreClick();
+        } else if (v.getId() == R.id.pri_pro_click_rv) {
             for (int i = 0; i < mAdapter.getGroupCount(); i++) {
                 mListView.collapseGroup(i);
                 final int group = mCurrentGroup;
@@ -234,17 +256,7 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
                 }, 100);
             }
         }
-    }
 
-    @Override
-    public void onClick(View v) {
-        if (v == mFloatingCb) {
-            onFloatingCheckClick();
-        } else if (v.getId() == R.id.pp_process_rv_click) {
-            onProcessClick();
-        } else if (v.getId() == R.id.pp_process_ignore_rv_click) {
-            onIgnoreClick();
-        }
     }
 
     public void setData(List<T> list) {

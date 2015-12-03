@@ -45,8 +45,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.FiveStarsLayout;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -80,18 +79,18 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private ImageView mClose;
     private RelativeLayout mRlNopic;
     private RelativeLayout mRlFiveStars;
-    private RippleView1 mRvClose;
+    private RippleView mRvClose;
     private TextView mTvOthers;
     private LEOChoiceDialog mDialog;
     private RelativeLayout mRvHeader;
-    private RippleView1 mRvRating;
+    private RippleView mRvRating;
     private int[] mTimes = {
             1, 2, 3, 5
     };
     private List<Bitmap> mBitmaps = new ArrayList<Bitmap>();
     private DisplayImageOptions mImageOptions;
-    private RippleView1 mRvChange;
-    private RippleView1 mRvMore;
+    private RippleView mRvChange;
+    private RippleView mRvMore;
     private RelativeLayout mRlNewest;
     private PreferenceTable mPt;
     private static final int TIMES_TO_CATCH_1 = 1;
@@ -254,17 +253,17 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mSvMain = (ScrollView) findViewById(R.id.sv_intrudercatch_main);
         mRlNopic = (RelativeLayout) findViewById(R.id.rl_nopic);
         mLlMainMask = (LinearLayout) findViewById(R.id.ll_main_mask);
-        mRvRating = (RippleView1) findViewById(R.id.rv_fivestars);
+        mRvRating = (RippleView) findViewById(R.id.rv_fivestars);
         mRvRating.setOnClickListener(this);
         mRlNewest = (RelativeLayout) findViewById(R.id.rl_newest);
         mTvOthers = (TextView) findViewById(R.id.tv_others);
         mClose = (ImageView) findViewById(R.id.iv_close);
-        mRvClose = (RippleView1) findViewById(R.id.rv_close);
+        mRvClose = (RippleView) findViewById(R.id.rv_close);
         mRvClose.setOnClickListener(this);
         mTvTotalTimes = (TextView) findViewById(R.id.tv_times_of_catch);
         mChangeTimes = (Button) findViewById(R.id.bt_change_times);
 
-        mRvChange = (RippleView1) findViewById(R.id.rv_change_times);
+        mRvChange = (RippleView) findViewById(R.id.rv_change_times);
         mRvChange.setOnClickListener(this);
 
         mTvTimesToCatch = (TextView) findViewById(R.id.tv_times_to_catch);
@@ -281,7 +280,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mTvNewestCatchTip = (TextView) findViewById(R.id.newest_catch_tip);
         mIvNewestPhoto = (BottomCropImage) findViewById(R.id.iv_newest_photo);
         mBtMore = (Button) findViewById(R.id.bt_more);
-        mRvMore = (RippleView1) findViewById(R.id.rv_more);
+        mRvMore = (RippleView) findViewById(R.id.rv_more);
         mRvMore.setOnClickListener(this);
         mLvMain = (ListView) findViewById(R.id.lv_mainlist);
     }

@@ -1,4 +1,4 @@
-<com.leo.appmaster.ui.RippleView1 xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/messageRT"
     android:layout_width="match_parent"
@@ -96,4 +96,4 @@
             android:layout_below="@id/message_content"
             android:background="@color/c5" />
     </RelativeLayout>
-</com.leo.appmaster.ui.RippleView1>
+</com.leo.appmaster.ui.RippleView>

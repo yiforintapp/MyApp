@@ -27,7 +27,7 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
@@ -41,7 +41,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     private WifiSecurityActivity mActivity;
     private View mRootView, mSafeView, mUnsafeView, mBottomView;
     private View mUnsafeViewBottom;
-    private RippleView1 mTrafficBtn, mOtherWifiBtn;
+    private RippleView mTrafficBtn, mOtherWifiBtn;
     protected LockManager mLockManager;
     private boolean  mOneLoadState, mTwoLoadState, mThridLoadState, mFourLoadState;
     private ImageView mOneImg, mTwoImg, mThreeImg, mFourImg;
@@ -90,9 +90,9 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 
         mBottomView = mRootView.findViewById(R.id.wifi_below_view_recomment);
 
-        mTrafficBtn = (RippleView1) mRootView.findViewById(R.id.wifi_resulte_sure);
+        mTrafficBtn = (RippleView) mRootView.findViewById(R.id.wifi_resulte_sure);
         mTrafficBtn.setOnClickListener(this);
-        mOtherWifiBtn = (RippleView1) mRootView.findViewById(R.id.wifi_resulte_other_wifi);
+        mOtherWifiBtn = (RippleView) mRootView.findViewById(R.id.wifi_resulte_other_wifi);
         mOtherWifiBtn.setOnClickListener(this);
 
         mOneImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_is_connect_icon);

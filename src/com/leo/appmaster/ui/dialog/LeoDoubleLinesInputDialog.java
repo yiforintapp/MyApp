@@ -9,14 +9,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 public class LeoDoubleLinesInputDialog extends LEOBaseDialog {
     public static final String TAG = "XLAlarmDialog";
 
     private Context mContext;
 
-    private RippleView1 mRvWhite, mRvBlue;
+    private RippleView mRvWhite, mRvBlue;
     private TextView mTitle;
     private TextView mLeftBtn;
     private TextView mRightBtn;
@@ -137,8 +137,8 @@ public class LeoDoubleLinesInputDialog extends LEOBaseDialog {
                 R.layout.dialog_double_lines_input, null);
 
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
-        mRvWhite = (RippleView1) dlgView.findViewById(R.id.rv_white);
-        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_blue);
+        mRvWhite = (RippleView) dlgView.findViewById(R.id.rv_white);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
 

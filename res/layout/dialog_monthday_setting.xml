@@ -85,7 +85,7 @@
             android:textSize="14dp" />
     </LinearLayout>
 
-    <com.leo.appmaster.ui.RippleView1
+    <com.leo.appmaster.ui.RippleView
         android:id="@+id/rv_dialog_blue_button"
         android:layout_width="match_parent"
         android:layout_height="42dp"
@@ -96,8 +96,7 @@
         app:rippleColor="@color/button_blue_ripple"
         app:rippleDuration="250"
         app:rippleHover="true"
-        app:rippleOverlay="true"
-        app:rv_rippleDuration="@integer/ripple_btn_duration">
+        app:rippleOverlay="true">
 
         <TextView
             android:id="@+id/sure_button"
@@ -109,6 +108,6 @@
             android:text="@string/flow_settting_sure_bg"
             android:textColor="@color/white"
             android:textSize="16dp" />
-    </com.leo.appmaster.ui.RippleView1>
+    </com.leo.appmaster.ui.RippleView>
 
 </LinearLayout>

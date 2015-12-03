@@ -6,7 +6,6 @@
     android:clickable="true"
     android:orientation="vertical">
 
-
     <CheckBox
         android:id="@+id/pri_pro_cb"
         android:layout_width="wrap_content"
@@ -18,21 +17,25 @@
         android:clickable="true"
         android:padding="5dp" />
 
-    <com.leo.appmaster.ui.RippleView xmlns:leo="http://schemas.android.com/apk/res-auto"
+    <com.leo.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/pri_pro_click_rv"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="14dp"
         android:layout_toLeftOf="@id/pri_pro_cb"
-        android:background="@drawable/home_tab_selector"
         android:paddingLeft="60dp"
-        leo:rv_color="@color/white_list_item_ripple">
+        app:rippleAlpha="0.5"
+        app:rippleColor="@color/white_list_item_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:layout_centerVertical="true"
+            android:background="@drawable/home_tab_selector"
             android:orientation="vertical">
 
             <TextView
@@ -53,7 +56,6 @@
                 android:textColor="@color/cb2"
                 android:textSize="@dimen/pri_folder_summary" />
         </LinearLayout>
-
 
     </com.leo.appmaster.ui.RippleView>
 

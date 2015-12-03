@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 public class PrivacyContactDeleteAlarmDialog extends LEOBaseDialog {
@@ -109,20 +109,20 @@ public class PrivacyContactDeleteAlarmDialog extends LEOBaseDialog {
 
     public void setRightBtnListener(View.OnClickListener listener) {
 //        mRightBtn.setOnClickListener(listener);
-        rippleView1.setOnClickListener(listener);
+        rippleView.setOnClickListener(listener);
     }
 
-    private RippleView1 rippleView1;
-    private RippleView1 rippleView2;
+    private RippleView rippleView;
+    private RippleView rippleView2;
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.privacy_contact_delete_dialog_alarm, null);
         mContentOne = (TextView) dlgView.findViewById(R.id.dlg_content_title_tv);
         mContentTwo = (TextView) dlgView.findViewById(R.id.dlg_content_tv);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
-        rippleView2 = (RippleView1) dlgView.findViewById(R.id.rv_dialog_whitle_button);
+        rippleView2 = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
-        rippleView1 = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        rippleView = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
         mCheckBox = (CheckBox) dlgView.findViewById(R.id.dlg_check);
         mCheckText = (TextView) dlgView.findViewById(R.id.dlg_check_tv);
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {

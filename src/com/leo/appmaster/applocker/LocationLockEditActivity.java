@@ -41,7 +41,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
@@ -420,7 +420,7 @@ public class LocationLockEditActivity extends BaseActivity implements
             mModeList = (ListView) container.findViewById(R.id.mode_list);
             mNoWifiTv = (TextView) container.findViewById(R.id.no_wifi);
             View cancel = mWifiListDialog.findViewById(R.id.dlg_bottom_btn);
-            RippleView1 rippView = (RippleView1) mWifiListDialog.findViewById(R.id.dlg_bottom_btn_ripp);
+            RippleView rippView = (RippleView) mWifiListDialog.findViewById(R.id.dlg_bottom_btn_ripp);
             rippView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

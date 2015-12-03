@@ -65,7 +65,7 @@
             android:layout_marginBottom="24dp"
             android:progressDrawable="@drawable/progress_bar" />
 
-        <com.leo.appmaster.ui.RippleView1
+        <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_blue"
             android:layout_width="match_parent"
             android:layout_height="42dp"
@@ -84,7 +84,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/cancel" />
-        </com.leo.appmaster.ui.RippleView1>
+        </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 
 </LinearLayout>

@@ -41,7 +41,7 @@ import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
@@ -64,7 +64,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
     private ProgressBar mProgressBar;
     private LinearLayout mDefaultText;
     private Button mAutoDddBtn;
-    private RippleView1 moto_add_btn_ripp;
+    private RippleView moto_add_btn_ripp;
     private AddFromCallHandler mAddFromCallHandler = new AddFromCallHandler();
 
     @Override
@@ -72,7 +72,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_call_log);
         mDefaultText = (LinearLayout) findViewById(R.id.add_call_log_default_tv);
-        moto_add_btn_ripp = (RippleView1) mDefaultText.findViewById(R.id.moto_add_btn_ripp);
+        moto_add_btn_ripp = (RippleView) mDefaultText.findViewById(R.id.moto_add_btn_ripp);
         moto_add_btn_ripp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

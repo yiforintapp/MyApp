@@ -30,7 +30,7 @@ import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
@@ -50,7 +50,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
     private LEORoundProgressDialog mProgressDialog;
     private LEOAlarmDialog mAlarmDialog;
     private LEOMessageDialog mMessageDialog;
-    private RippleView1 mRvBackup;
+    private RippleView mRvBackup;
     private AppItemInfo mPendingDelApp;
     private boolean isAllCheck = false;
 
@@ -66,7 +66,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
         tv_button_backup = (TextView) findViewById(R.id.tv_button_backup);
         iv_check_backup = findViewById(R.id.iv_check_backup);
         iv_check_backup.setOnClickListener(this);
-        mRvBackup = (RippleView1) findViewById(R.id.rv_button_backup);
+        mRvBackup = (RippleView) findViewById(R.id.rv_button_backup);
         mRvBackup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

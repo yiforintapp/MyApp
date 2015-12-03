@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants">
 
-    <com.leo.appmaster.ui.RippleView1
+    <com.leo.appmaster.ui.RippleView
         android:id="@+id/call_priv_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
 
             </RelativeLayout>
         </RelativeLayout>
-    </com.leo.appmaster.ui.RippleView1>
+    </com.leo.appmaster.ui.RippleView>
 
     <ImageView
         android:id="@+id/call_log_itemCB"

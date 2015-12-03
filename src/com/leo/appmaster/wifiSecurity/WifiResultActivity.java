@@ -13,7 +13,7 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.home.HomeColor;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.OneButtonDialog;
 
 /**
@@ -27,7 +27,7 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
     private View safeView, unsafeView, mTopViewBackground, unsafeBottomView;
     private ImageView mOneLoad, mTwoLoad, mThreeLoad, mFourLoad;
     private OneButtonDialog selectWifiDialog;
-    private RippleView1 mProcessBtn, mOtherWifiBtn;
+    private RippleView mProcessBtn, mOtherWifiBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +122,9 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
         }
 
 
-        mProcessBtn = (RippleView1) findViewById(R.id.wifi_resulte_sure);
+        mProcessBtn = (RippleView) findViewById(R.id.wifi_resulte_sure);
         mProcessBtn.setOnClickListener(this);
-        mOtherWifiBtn = (RippleView1) findViewById(R.id.wifi_resulte_other_wifi);
+        mOtherWifiBtn = (RippleView) findViewById(R.id.wifi_resulte_other_wifi);
         mOtherWifiBtn.setOnClickListener(this);
     }
 

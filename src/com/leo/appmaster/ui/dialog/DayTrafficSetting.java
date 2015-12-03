@@ -26,7 +26,7 @@ import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.DayTrafficInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -37,7 +37,7 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
     private TextView cancel_button;
     private List<DayTrafficInfo> mList;
     // record the current checked radio number
-    private RippleView1 mRvBlue;
+    private RippleView mRvBlue;
     private int checkedIndex = -1;
     private String[] itemsEn = {
             "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th",
@@ -84,7 +84,7 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
         mInflater = getLayoutInflater();
         resources = AppMasterApplication.getInstance().getResources();
         cancel_button = (TextView) dlgView.findViewById(R.id.cancel_button);
-        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_blue);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
         daytraffic_lv = (ListView) dlgView.findViewById(R.id.daytraffic_lv);
         mAdapter = new MyAdapter(mList);
         daytraffic_lv.setAdapter(mAdapter);

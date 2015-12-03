@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 public class PrivacyContactAlarmDialog extends LEOBaseDialog {
@@ -24,8 +24,8 @@ public class PrivacyContactAlarmDialog extends LEOBaseDialog {
     private View mRightBtn;
     private Object mUserData;
     private CircleImageView mContactIcon;
-    private RippleView1 mRvBlue;
-    private RippleView1 mRvWhite;
+    private RippleView mRvBlue;
+    private RippleView mRvWhite;
 
     private OnDiaogClickListener mListener;
 
@@ -130,8 +130,8 @@ public class PrivacyContactAlarmDialog extends LEOBaseDialog {
         mLeftBtn = dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = dlgView.findViewById(R.id.dlg_right_btn);
         mContactIcon = (CircleImageView) dlgView.findViewById(R.id.contactIV);
-        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_blue);
-        mRvWhite = (RippleView1) dlgView.findViewById(R.id.rv_white);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
+        mRvWhite = (RippleView) dlgView.findViewById(R.id.rv_white);
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 

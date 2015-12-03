@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 
 import java.util.Dictionary;

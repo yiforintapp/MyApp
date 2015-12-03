@@ -28,7 +28,7 @@ import com.leo.appmaster.model.WeiZhuangInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
 
 public class WeiZhuangActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
@@ -43,7 +43,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private AppMasterPreference sp_weizhuang;
     private int selected = 0;
     private ImageView weizhuang_ask;
-    private RippleView1 mRvKnow;
+    private RippleView mRvKnow;
     //    private View trffic_setting_iv;
     private LinearLayout mWeizhuangHelp;
     private Animation mGuidAnimation;
@@ -81,7 +81,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 
         mWeizhuangHelp = (LinearLayout) findViewById(R.id.activity_weizhuang_firstin);
 //        mKnowBt.setOnClickListener(this);
-        mRvKnow = (RippleView1) mWeizhuangHelp.findViewById(R.id.rv_know_button);
+        mRvKnow = (RippleView) mWeizhuangHelp.findViewById(R.id.rv_know_button);
         mRvKnow.setOnClickListener(this);
         if (sp_weizhuang.getWeiZhuang()) {
             mWeizhuangHelp.setVisibility(View.VISIBLE);

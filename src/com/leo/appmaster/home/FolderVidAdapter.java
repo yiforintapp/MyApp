@@ -1,35 +1,16 @@
 package com.leo.appmaster.home;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoItemBean;
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FadeInBitmapDisplayer;
-import com.leo.imageloader.core.ImageScaleType;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Jasper on 2015/10/22.
@@ -127,14 +108,25 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
                 }
             }
         });
-        holder.clickRv.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+
+
+        holder.clickRv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View view) {
                 if (mListener != null) {
                     mListener.onGroupClick(groupPosition, isExpanded);
                 }
             }
         });
+//        holder.clickRv.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+//            @Override
+//            public void onRippleComplete(RippleView rippleView) {
+//                if (mListener != null) {
+//                    mListener.onGroupClick(groupPosition, isExpanded);
+//                }
+//            }
+//        });
+
         if (isExpanded) {
             mWrapperViews.put(convertView, wrapper);
         }
@@ -172,7 +164,7 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
         holder.checkBox.setClickable(false);
         final CheckBox checkBox = holder.checkBox;
 
-        RippleView1 view = (RippleView1) convertView;
+        RippleView view = (RippleView) convertView;
         view.setCheckBox(checkBox);
 
 //        view.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +182,7 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
 
     public void setCheck(View view, boolean childChecked) {
         LeoLog.d("testsetcheck", "son setcheckF");
-        RippleView1 view2 = (RippleView1) view;
+        RippleView view2 = (RippleView) view;
         CheckBox checkBox = view2.getCheckBox();
         if (checkBox != null) {
             checkBox.setChecked(childChecked);

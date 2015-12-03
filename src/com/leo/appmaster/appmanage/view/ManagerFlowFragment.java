@@ -21,7 +21,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.ui.LineView;
 import com.leo.appmaster.ui.LineView.BackUpCallBack;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -41,7 +41,7 @@ public class ManagerFlowFragment extends BaseFragment {
     private ImageView mProgressBg;
     private LineView lineView;
     private View flow_all_content;
-    private RippleView1 flow_setting;
+    private RippleView flow_setting;
     private MonthDaySetting mTrafficSettingDialog;
     private String month = "";
     private int days = 0;
@@ -84,7 +84,7 @@ public class ManagerFlowFragment extends BaseFragment {
         roundProgressBar = (MulticolorRoundProgressBar) findViewById(R.id.roundProgressBar);
         flow_all_content = findViewById(R.id.flow_all_content);
 
-        flow_setting = (RippleView1) findViewById(R.id.flow_setting);
+        flow_setting = (RippleView) findViewById(R.id.flow_setting);
         flow_setting.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

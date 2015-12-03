@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 public class LEOThreeButtonDialog extends LEOBaseDialog {
     public static final String TAG = "XLAlarmDialog";
@@ -20,7 +20,7 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
     private TextView mTitle, mContent, mLeftBtn, mRightBtn, mMidBtn;
     private ImageView mHeadIcon;
     private Object mUserData;
-    private RippleView1 mRvWhite, mRvBlue, mRvRed;
+    private RippleView mRvWhite, mRvBlue, mRvRed;
 
     private OnDiaogClickListener mListener;
 
@@ -206,9 +206,9 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_alarm_three_button, null);
 
-        mRvWhite = (RippleView1) dlgView.findViewById(R.id.rv_dialog_whitle_button);
-        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
-        mRvRed = (RippleView1) dlgView.findViewById(R.id.rv_dialog_Red_button);
+        mRvWhite = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvRed = (RippleView) dlgView.findViewById(R.id.rv_dialog_Red_button);
 
         mHeadIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);

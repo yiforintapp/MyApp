@@ -44,7 +44,7 @@ import com.leo.appmaster.privacycontact.MessageCallLogBean;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -81,7 +81,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private TextView mLostSummary;
     private TextView mLostBtnTv;
-    private RippleView1 mLostBtnLt;
+    private RippleView mLostBtnLt;
     private View mLostBtnDiv;
     private View mLostMiddleLt;
     private View mLostFixedLt;
@@ -90,7 +90,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private TextView mIntruderSummary;
     private TextView mIntruderBtnTv;
     private View mIntruderBtnDiv;
-    private RippleView1 mIntruderBtnLt;
+    private RippleView mIntruderBtnLt;
     private View mIntruderMiddleLt;
     private View mIntruderFixedLt;
     private TextView mIntruderFixedTv;
@@ -99,14 +99,14 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private TextView mWifiSubSummary;
     private TextView mWifiBtnTv;
     private View mWifiBtnDiv;
-    private RippleView1 mWifiBtnLt;
+    private RippleView mWifiBtnLt;
     private View mWifiFixedLt;
     private View mWifiMiddleLt;
     private TextView mWifiFixedTitle;
     private View mWifiFixedSummaryLt;
 
     private TextView mContactBtnTv;
-    private RippleView1 mContactBtnLt;
+    private RippleView mContactBtnLt;
     private View mContactBtnDiv;
     private LinearLayout mContactContainor;
     private ImageView mContactArrowIv;
@@ -121,7 +121,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mHighFourStar;
     private ImageView mHighFiveStar;
     private ImageView mHighGradeGesture;
-    private RippleView1 mHighGradeBtnLt;
+    private RippleView mHighGradeBtnLt;
     private ImageView mHighFiveEmptyStar;
 
     private ImageView mOneStar;
@@ -130,7 +130,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mFourStar;
     private ImageView mFiveStar;
     private ImageView mGradeGesture;
-    private RippleView1 mGradeBtnLt;
+    private RippleView mGradeBtnLt;
     private ImageView mFiveEmptyStar;
 
     private AnimatorSet mAnimatorSet;
@@ -138,14 +138,14 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     /**
      * 前往FaceBook
      */
-    private RippleView1 mFbBtnLt;
+    private RippleView mFbBtnLt;
 
     /**
      * Swifty
      */
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
-    private RippleView1 mSwiftyBtnLt;
+    private RippleView mSwiftyBtnLt;
 
     private CheckBox mSelectAllCb;
     private List<View> mContactViews;
@@ -516,7 +516,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         mContactBtnTv = (TextView) mContactInclude.findViewById(R.id.item_btn_tv);
         ChangeContactColor();
-        mContactBtnLt = (RippleView1) mContactInclude.findViewById(R.id.item_btn_rv);
+        mContactBtnLt = (RippleView) mContactInclude.findViewById(R.id.item_btn_rv);
         mContactBtnDiv = mContactInclude.findViewById(R.id.item_btn_divider);
         mContactBtnLt.setOnClickListener(this);
 //        mContactBtnLt.setOnRippleCompleteListener(this);
@@ -625,7 +625,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mLostSummary = (TextView) mLostInclude.findViewById(R.id.item_summary);
             mLostBtnTv = (TextView) mLostInclude.findViewById(R.id.item_btn_tv);
             mLostBtnDiv = mLostInclude.findViewById(R.id.item_btn_divider);
-            mLostBtnLt = (RippleView1) mLostInclude.findViewById(R.id.item_btn_rv);
+            mLostBtnLt = (RippleView) mLostInclude.findViewById(R.id.item_btn_rv);
             mLostBtnLt.setOnClickListener(this);
 //            mLostBtnLt.setOnRippleCompleteListener(this);
 
@@ -645,7 +645,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mIntruderSummary = (TextView) mIntruderInclude.findViewById(R.id.item_summary);
         mIntruderBtnTv = (TextView) mIntruderInclude.findViewById(R.id.item_btn_tv);
         mIntruderBtnDiv = mIntruderInclude.findViewById(R.id.item_btn_divider);
-        mIntruderBtnLt = (RippleView1) mIntruderInclude.findViewById(R.id.item_btn_rv);
+        mIntruderBtnLt = (RippleView) mIntruderInclude.findViewById(R.id.item_btn_rv);
         mIntruderBtnLt.setOnClickListener(this);
 //        mIntruderBtnLt.setOnRippleCompleteListener(this);
 
@@ -668,7 +668,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mWifiSubSummary = (TextView) mWIfiInclude.findViewById(R.id.item_summary_subject);
         mWifiBtnTv = (TextView) mWIfiInclude.findViewById(R.id.item_btn_tv);
         mWifiBtnDiv = mWIfiInclude.findViewById(R.id.item_btn_divider);
-        mWifiBtnLt = (RippleView1) mWIfiInclude.findViewById(R.id.item_btn_rv);
+        mWifiBtnLt = (RippleView) mWIfiInclude.findViewById(R.id.item_btn_rv);
         mWifiBtnLt.setOnClickListener(this);
 //        mWifiBtnLt.setOnRippleCompleteListener(this);
 
@@ -691,7 +691,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         View include = viewStub.inflate();
         mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
         mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
-        mSwiftyBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+        mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
         mSwiftyBtnLt.setOnClickListener(this);
 //        mSwiftyBtnLt.setOnRippleCompleteListener(this);
 
@@ -740,7 +740,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             return;
         }
         View include = viewStub.inflate();
-        mFbBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+        mFbBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
         mFbBtnLt.setOnClickListener(this);
 //        mFbBtnLt.setOnRippleCompleteListener(this);
     }
@@ -762,7 +762,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mHighFourStar = (ImageView) highInclude.findViewById(R.id.four_star);
             mHighFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
             mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
-            mHighGradeBtnLt = (RippleView1) highInclude.findViewById(R.id.item_btn_rv);
+            mHighGradeBtnLt = (RippleView) highInclude.findViewById(R.id.item_btn_rv);
             mHighFiveEmptyStar = (ImageView) highInclude.findViewById(R.id.five_star_empty);
             mHighGradeBtnLt.setOnClickListener(this);
 //            mHighGradeBtnLt.setOnRippleCompleteListener(this);
@@ -788,7 +788,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mFourStar = (ImageView) include.findViewById(R.id.four_star);
             mFiveStar = (ImageView) include.findViewById(R.id.five_star);
             mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
-            mGradeBtnLt = (RippleView1) include.findViewById(R.id.item_btn_rv);
+            mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
             mFiveEmptyStar = (ImageView) include.findViewById(R.id.five_star_empty);
             mGradeBtnLt.setOnClickListener(this);
 //            mGradeBtnLt.setOnRippleCompleteListener(this);

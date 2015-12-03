@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 
 public class LEODoubleChoicesDialog extends LEOBaseDialog {
     public static final String TAG = "Dialogggg";
@@ -27,8 +27,8 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
     private CheckBox mCBFromCorner;
     private CheckBox mCBWhiteDot;
 
-    private RippleView1 mRvRight;
-    private RippleView1 mRvLeft;
+    private RippleView mRvRight;
+    private RippleView mRvLeft;
 
     public LEODoubleChoicesDialog(Context context) {
         super(context, R.style.bt_dialog);
@@ -127,8 +127,8 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
 
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
 
-        mRvRight = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
-        mRvLeft = (RippleView1) dlgView.findViewById(R.id.rv_dialog_white_button);
+        mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_white_button);
 
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
         mCBFromCorner = (CheckBox) dlgView.findViewById(R.id.cb_dialog_area);

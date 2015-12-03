@@ -31,7 +31,7 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <com.leo.appmaster.ui.RippleView1
+            <com.leo.appmaster.ui.RippleView
                 android:id="@+id/tv_feedback_click"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
@@ -51,9 +51,9 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/grade_tip_feedback" />
-            </com.leo.appmaster.ui.RippleView1>
+            </com.leo.appmaster.ui.RippleView>
 
-            <com.leo.appmaster.ui.RippleView1
+            <com.leo.appmaster.ui.RippleView
                 android:id="@+id/tv_make_click"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
@@ -72,7 +72,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/grade" />
-            </com.leo.appmaster.ui.RippleView1>
+            </com.leo.appmaster.ui.RippleView>
         </LinearLayout>
 
         <!--

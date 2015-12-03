@@ -30,7 +30,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
 
 public class LockHelpSettingTip extends BaseActivity {
@@ -250,7 +250,7 @@ public class LockHelpSettingTip extends BaseActivity {
             TextView titleTV = (TextView) view.findViewById(R.id.lock_help_title);
             TextView contentTV = (TextView) view.findViewById(R.id.lock_help_content);
             TextView buttonTV = (TextView) view.findViewById(R.id.lock_help_bt);
-            RippleView1 rv = (RippleView1) view.findViewById(R.id.rv_lock_help_bt);
+            RippleView rv = (RippleView) view.findViewById(R.id.rv_lock_help_bt);
             titleTV.setText(title);
             contentTV.setText(content);
             buttonTV.setText(button);

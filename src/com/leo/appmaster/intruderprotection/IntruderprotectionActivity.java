@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,7 +44,7 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
@@ -587,7 +586,7 @@ public class IntruderprotectionActivity extends BaseActivity {
         // 拍照所需的解锁失败次数的文本提示
         updateTimesToCatch();
         // 更改拍照所需的解锁失败次数
-        RippleView1 btChangeTimes = (RippleView1) mHeader.findViewById(R.id.rv_change_times);
+        RippleView btChangeTimes = (RippleView) mHeader.findViewById(R.id.rv_change_times);
         btChangeTimes.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

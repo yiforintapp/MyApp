@@ -158,8 +158,8 @@
         <attr name="umanoFlingVelocity" format="integer" />
         <attr name="umanoDragView" format="reference" />
         <attr name="umanoScrollableView" format="reference" />
-        <attr name="umanoOverlay" format="boolean"/>
-        <attr name="umanoClipPanel" format="boolean"/>
+        <attr name="umanoOverlay" format="boolean" />
+        <attr name="umanoClipPanel" format="boolean" />
         <attr name="umanoAnchorPoint" format="float" />
         <attr name="umanoInitialState" format="enum">
             <enum name="expanded" value="0" />
@@ -169,29 +169,11 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="RippleView">
-        <attr name="rv_alpha" format="integer" />
-        <attr name="rv_framerate" format="integer"/>
-        <attr name="rv_rippleDuration" format="integer"/>
-        <attr name="rv_zoomDuration" format="integer" />
-        <attr name="rv_color" format="color" />
-        <attr name="rv_centered" format="boolean" />
-        <attr name="rv_type" format="enum">
-            <enum name="simpleRipple" value="0"/>
-            <enum name="doubleRipple" value="1"/>
-            <enum name="rectangle" value="2" />
-        </attr>
-        <attr name="rv_ripplePadding" format="dimension" />
-        <attr name="rv_zoom" format="boolean" />
-        <attr name="rv_zoomScale" format="float" />
-
-    </declare-styleable>
-
     <declare-styleable name="ExpandableGridView">
         <attr name="horizontalSpacing" format="dimension" />
         <attr name="verticalSpacing" format="dimension" />
         <attr name="stretchMode">
-            <enum name="none" value="0"/>
+            <enum name="none" value="0" />
             <enum name="spacingWidth" value="1" />
             <enum name="columnWidth" value="2" />
             <enum name="spacingWidthUniform" value="3" />

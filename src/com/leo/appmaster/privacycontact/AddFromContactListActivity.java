@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,7 +41,7 @@ import com.leo.appmaster.privacycontact.ContactSideBar.OnTouchingLetterChangedLi
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
@@ -70,7 +69,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     private boolean mLogFlag = false;
     private LinearLayout mDefaultText;
     private Button mAutoDddBtn;
-    private RippleView1 rippleView;
+    private RippleView rippleView;
     private AddFromContactHandler mAddFromContactHandler = new AddFromContactHandler();
 
     @Override
@@ -78,7 +77,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_contact);
         mDefaultText = (LinearLayout) findViewById(R.id.add_contact_default_tv);
-        rippleView = (RippleView1) mDefaultText.findViewById(R.id.moto_add_btn_ripp);
+        rippleView = (RippleView) mDefaultText.findViewById(R.id.moto_add_btn_ripp);
         rippleView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

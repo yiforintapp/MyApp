@@ -20,7 +20,7 @@ import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoSeekBar;
-import com.leo.appmaster.ui.RippleView1;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LanguageUtils;
 
@@ -32,7 +32,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
     private int progressInt;
     private int progressTextWidth, progressTextHeight;
     private OnDiaogClickListener mListener;
-    private RippleView1 mRvBlue;
+    private RippleView mRvBlue;
 
 
     public interface OnDiaogClickListener {
@@ -52,7 +52,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
         Resources resources = AppMasterApplication.getInstance().getResources();
         seekbar_text = (TextView) dlgView.findViewById(R.id.seekbar_text);
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
-        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
         seekbar_text_progress = (TextView) dlgView.findViewById(R.id.seekbar_text_progress);
         progressInt = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
                 getOverDataInvokePercent();
