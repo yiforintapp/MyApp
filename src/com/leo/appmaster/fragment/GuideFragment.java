@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 
 
-public class GuideFragment extends Fragment {
+public class GuideFragment extends Fragment implements View.OnClickListener {
     private View mRootView;
     private RelativeLayout mHomeGuideRt;
     private RelativeLayout mPicVideoGuideRt;
@@ -82,6 +83,9 @@ public class GuideFragment extends Fragment {
         }
         View inClude = viewStub.inflate();
         mHomeGuideRt = (RelativeLayout) inClude.findViewById(R.id.pic_vid_home_rt);
+        mHomeGuideRt.findViewById(R.id.button1).setOnClickListener(this);
+        mHomeGuideRt.setOnClickListener(this);
+
     }
 
     /*图片，视频隐藏页编辑按钮引导*/
@@ -92,6 +96,8 @@ public class GuideFragment extends Fragment {
         }
         View inCloude = viewStub.inflate();
         mPicVideoGuideRt = (RelativeLayout) inCloude.findViewById(R.id.pic_vid_edit_rt);
+        mPicVideoGuideRt.findViewById(R.id.button2).setOnClickListener(this);
+        mPicVideoGuideRt.setOnClickListener(this);
     }
 
     public void setEnable(boolean enable, GUIDE_TYPE type) {
@@ -119,4 +125,23 @@ public class GuideFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.pic_vid_home_rt:
+                Toast.makeText(getActivity(), "首页引导", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.pic_vid_edit_rt:
+                Toast.makeText(getActivity(), "图片，视频编辑引导", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.button1:
+                Toast.makeText(getActivity(), "首页引导Button", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.button2:
+                Toast.makeText(getActivity(), "图片，视频编辑引导Button", Toast.LENGTH_SHORT).show();
+            default:
+                break;
+        }
+
+    }
 }
