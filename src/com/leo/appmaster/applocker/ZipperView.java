@@ -128,8 +128,11 @@ public class ZipperView extends View {
         mWidth = getWidth();
         mCenterX = mWidth / 2;
         mHeight = getHeight();
-        initScaleBitmap();
-
+        try {
+            initScaleBitmap();
+        } catch (Error e) {
+            
+        }
     }
 
     private void initScaleBitmap() {

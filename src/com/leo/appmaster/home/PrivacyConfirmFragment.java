@@ -313,36 +313,39 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         super.onResume();
         LeoLog.d(TAG, "onResume...");
 
-        if (mPanelView == null) {
-            mPanelView = mRootView.findViewById(R.id.list_parent_layout);
-            // AM-3143: add animation for advertise cell
-            ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
+        try {
+            if (mPanelView == null) {
+                mPanelView = mRootView.findViewById(R.id.list_parent_layout);
+                // AM-3143: add animation for advertise cell
+                ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
 
-            initLostLayout(mPanelView);
-            initIntruderLayout(mPanelView);
-            updateIntruderAndLost();
+                initLostLayout(mPanelView);
+                initIntruderLayout(mPanelView);
+                updateIntruderAndLost();
 
-            ThreadManager.executeOnSubThread(new Runnable() {
-                @Override
-                public void run() {
-                    loadAd(mPanelView);
-                }
-            });
-            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    initWifiLayout(mPanelView);
-                    initContactLayout(mPanelView);
-                    initGradeLayout(mPanelView);
-                    initFbLayout(mPanelView);
-                    initSwiftyLayout(mPanelView);
+                ThreadManager.executeOnSubThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadAd(mPanelView);
+                    }
+                });
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initWifiLayout(mPanelView);
+                        initContactLayout(mPanelView);
+                        initGradeLayout(mPanelView);
+                        initFbLayout(mPanelView);
+                        initSwiftyLayout(mPanelView);
 
-                    updateStubPanelVisibility();
-                }
-            }, 900);
-        } else {
-            updateIntruderAndLost();
-            updateStubPanelVisibility();
+                        updateStubPanelVisibility();
+                    }
+                }, 900);
+            } else {
+                updateIntruderAndLost();
+                updateStubPanelVisibility();
+            }
+        } catch (Exception e) {
         }
 
     }

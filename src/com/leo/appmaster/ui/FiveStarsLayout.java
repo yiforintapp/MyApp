@@ -88,7 +88,9 @@ public class FiveStarsLayout extends FrameLayout{
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mNeedRepeat = false;
-        mAsMain.cancel();
+        if(mAsMain != null) {
+            mAsMain.cancel();
+        }
     }
     
     
