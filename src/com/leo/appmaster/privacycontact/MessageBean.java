@@ -28,9 +28,9 @@ public class MessageBean extends BaseInfo implements Serializable {
     private String showDate;
     private Bitmap contactIcon;
     private int contactId;
-    public String flag;
-    public boolean isShowReadTip;
-    public int messageCount;
+    private String flag;
+    private boolean isShowReadTip;
+    private int messageCount;
 
     public long getMsmId() {
         return msmId;

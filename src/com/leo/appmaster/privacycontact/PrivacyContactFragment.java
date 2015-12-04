@@ -341,13 +341,13 @@ public class PrivacyContactFragment extends BaseFragment {
                 mPCDialog.cancel();
                 ContactBean contact = mContacts.get(position);
                 /* 查询该号码的隐私通话记录 */
-                PrivacyContactUtils.queryLogFromMySelg(
+                PrivacyContactUtils.queryDbLogCount(
                         mContext.getContentResolver(), Constants.PRIVACY_CALL_LOG_URI,
                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " LIKE ?", new String[]{
                                 "%" + contact.getContactNumber()
                         });
                 /* 查询该号码的隐私短信 */
-                PrivacyContactUtils.queryLogFromMySelg(
+                PrivacyContactUtils.queryDbLogCount(
                         mContext.getContentResolver(), Constants.PRIVACY_MESSAGE_URI,
                         Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ?", new String[]{
                                 "%" + contact.getContactNumber()
@@ -482,13 +482,13 @@ public class PrivacyContactFragment extends BaseFragment {
                             String tempNumber =
                                     PrivacyContactUtils.formatePhoneNumber(contact.getContactNumber());
                             if (mRestorMessages == null) {
-                                mRestorMessages = PrivacyContactUtils.queryMySelfMessageTable(cr,
+                                mRestorMessages = PrivacyContactUtils.queryPrivacyMsm(cr,
                                         "contact_phone_number LIKE ? ", new String[]{
                                                 "%" + tempNumber
                                         });
                             }
                             if (mRestorCallLogs == null) {
-                                mRestorCallLogs = PrivacyContactUtils.queryMySelfCallLogTable(cr,
+                                mRestorCallLogs = PrivacyContactUtils.queryPrivacyfCall(cr,
                                         "call_log_phone_number LIKE ?", new String[]{
                                                 "%" + tempNumber
                                         });
@@ -560,7 +560,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                                 // 删除短信記錄
                                                 try {
                                                     PrivacyContactUtils
-                                                            .deleteMessageFromMySelf(
+                                                            .deleteDbLog(
                                                                     mContext.getContentResolver(),
                                                                     Constants.PRIVACY_MESSAGE_URI,
                                                                     Constants.COLUMN_MESSAGE_PHONE_NUMBER
@@ -616,7 +616,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                                 String[] arg = new String[]{"%" + formateNumber};
                                                 ContentResolver crs = mContext.getContentResolver();
                                                 Uri uri = Constants.PRIVACY_CALL_LOG_URI;
-                                                PrivacyContactUtils.deleteMessageFromMySelf(crs, uri, select, arg);
+                                                PrivacyContactUtils.deleteDbLog(crs, uri, select, arg);
                                             }
                                         }
                                     }
@@ -665,13 +665,13 @@ public class PrivacyContactFragment extends BaseFragment {
                     String tempNumber =
                             PrivacyContactUtils.formatePhoneNumber(contact.getContactNumber());
                     if (mRestorMessages == null) {
-                        mRestorMessages = PrivacyContactUtils.queryMySelfMessageTable(cr,
+                        mRestorMessages = PrivacyContactUtils.queryPrivacyMsm(cr,
                                 "contact_phone_number LIKE ? ", new String[]{
                                         "%" + tempNumber
                                 });
                     }
                     if (mRestorCallLogs == null) {
-                        mRestorCallLogs = PrivacyContactUtils.queryMySelfCallLogTable(cr,
+                        mRestorCallLogs = PrivacyContactUtils.queryPrivacyfCall(cr,
                                 "call_log_phone_number LIKE ?", new String[]{
                                         "%" + tempNumber
                                 });
@@ -743,7 +743,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                         // 删除短信記錄
                                         try {
                                             PrivacyContactUtils
-                                                    .deleteMessageFromMySelf(
+                                                    .deleteDbLog(
                                                             mContext.getContentResolver(),
                                                             Constants.PRIVACY_MESSAGE_URI,
                                                             Constants.COLUMN_MESSAGE_PHONE_NUMBER
@@ -796,7 +796,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                                 .formatePhoneNumber(number);
                                         // 删除通话记录
                                         PrivacyContactUtils
-                                                .deleteMessageFromMySelf(
+                                                .deleteDbLog(
                                                         mContext.getContentResolver(),
                                                         Constants.PRIVACY_CALL_LOG_URI,
                                                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER
@@ -1118,7 +1118,7 @@ public class PrivacyContactFragment extends BaseFragment {
                         String formateNumber = PrivacyContactUtils
                                 .formatePhoneNumber(contact.getContactNumber());
                         if (contact != null) {
-                            messages = PrivacyContactUtils.queryMySelfMessageTable(
+                            messages = PrivacyContactUtils.queryPrivacyMsm(
                                     mContext.getContentResolver(),
                                     "contact_phone_number LIKE ? ", new String[]{
                                             "%" + formateNumber
@@ -1145,7 +1145,7 @@ public class PrivacyContactFragment extends BaseFragment {
                         }
                         // 删除短信
                         int deleteMessage = PrivacyContactUtils
-                                .deleteMessageFromMySelf(
+                                .deleteDbLog(
                                         mContext.getContentResolver(),
                                         Constants.PRIVACY_MESSAGE_URI,
                                         Constants.COLUMN_MESSAGE_PHONE_NUMBER
@@ -1154,7 +1154,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                                 "%" + number
                                         });
                         int deleteCallLog = PrivacyContactUtils
-                                .deleteMessageFromMySelf(
+                                .deleteDbLog(
                                         mContext.getContentResolver(),
                                         Constants.PRIVACY_CALL_LOG_URI,
                                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER

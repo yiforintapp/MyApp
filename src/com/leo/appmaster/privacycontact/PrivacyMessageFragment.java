@@ -24,7 +24,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -576,7 +575,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                         try {
                             String formateNumber = PrivacyContactUtils.formatePhoneNumber(messages
                                     .getPhoneNumber());
-                            int flag = PrivacyContactUtils.deleteMessageFromMySelf(cr,
+                            int flag = PrivacyContactUtils.deleteDbLog(cr,
                                     Constants.PRIVACY_MESSAGE_URI,
                                     Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ? ",
                                     new String[]{
@@ -634,7 +633,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                         }
                     }
                     for (MessageBean messages : mRestoremessgeLists) {
-                        int flagNumber = PrivacyContactUtils.deleteMessageFromMySelf(cr,
+                        int flagNumber = PrivacyContactUtils.deleteDbLog(cr,
                                 Constants.PRIVACY_MESSAGE_URI,
                                 Constants.COLUMN_MESSAGE_PHONE_NUMBER + " = ? ", new String[]{
                                         messages.getPhoneNumber()
