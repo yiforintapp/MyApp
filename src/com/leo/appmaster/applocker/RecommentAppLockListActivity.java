@@ -71,9 +71,11 @@ public class RecommentAppLockListActivity extends BaseActivity implements
     private void loadDone() {
         mProgressBar.setVisibility(View.GONE);
         mLockListView.setVisibility(View.VISIBLE);
-        mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
-        if (mResaultList != null) {
-            mLockAdapter.setData(mResaultList);
+        if(mLockAdapter != null) {
+            mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
+            if (mResaultList != null) {
+                mLockAdapter.setData(mResaultList);
+            }
         }
     }
 

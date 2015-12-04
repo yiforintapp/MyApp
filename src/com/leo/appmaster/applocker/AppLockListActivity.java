@@ -315,9 +315,12 @@ public class AppLockListActivity extends BaseActivity implements
         long part2 = SystemClock.elapsedRealtime();
         LeoLog.i("TsCost", "loadData part2: " + (part2 - part1));
 
-        Collections.sort(mLockedList, new LockedAppComparator(lockList));
-        Collections.sort(mUnlockRecommendList, new DefalutAppComparator());
-        Collections.sort(mUnlockNormalList, new DefalutAppComparator());
+        try {
+            Collections.sort(mLockedList, new LockedAppComparator(lockList));
+            Collections.sort(mUnlockRecommendList, new DefalutAppComparator());
+            Collections.sort(mUnlockNormalList, new DefalutAppComparator());
+        } catch (Exception e) {
+        }
 
         ArrayList<AppInfo> resaultUnlock = new ArrayList<AppInfo>(mUnlockRecommendList);
         resaultUnlock.addAll(mUnlockNormalList);

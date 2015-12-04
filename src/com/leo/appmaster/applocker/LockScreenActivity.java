@@ -896,8 +896,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         (drawable.getIntrinsicHeight() - h) / 2 + h);
                 drawable.draw(canvas);
                 canvas.drawColor(Color.argb(70, 0, 0, 0));
-                mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
-                mLockLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
+                try {
+                    mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
+                    mLockLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
+                } catch (Error e) {
+                }
             }
         }
     }
