@@ -60,6 +60,7 @@ import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
+import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -114,6 +115,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private HomeMoreFragment mMoreFragment;
     private HomePrivacyFragment mPrivacyFragment;
     private HomeTabFragment mTabFragment;
+    private GuideFragment mGuideFragment;
     private HomeScanningFragment mScanningFragment;
     private Fragment mCurrentFragment;
     private PrivacyHelper mPrivacyHelper;
@@ -189,7 +191,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void requestCamera() {
         if ((!mPt.getBoolean(PrefConst.KEY_HAS_REQUEST_CAMERA, false) && (mISManger.getIsIntruderSecurityAvailable()))) {
-            
+
             ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                 @Override
                 public void run() {
@@ -477,6 +479,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mMoreFragment = (HomeMoreFragment) getSupportFragmentManager().findFragmentById(R.id.home_more_ft);
         mPrivacyFragment = (HomePrivacyFragment) getSupportFragmentManager().findFragmentById(R.id.home_anim_ft);
         mTabFragment = (HomeTabFragment) getSupportFragmentManager().findFragmentById(R.id.home_tab_ft);
+        mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.home_guide);
+        mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
 
         mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
         mToolbarHeight = getResources().getDimensionPixelSize(R.dimen.toolbar_height);

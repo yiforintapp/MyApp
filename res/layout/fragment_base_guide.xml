@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/guide_ft"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c1"
+    tools:context="com.leo.appmaster.fragment.GuideFragment">
+    <!--首次处理完图片，视频返回首页引导-->
+    <ViewStub
+        android:id="@+id/home_more_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/handler_pic_vid_hom_more_guide" />
+    <!--图片，视频隐藏页编辑按钮引导-->
+    <ViewStub
+        android:id="@+id/pic_vid_edit_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/pic_vid_edit_bt_guide" />
+
+</FrameLayout>
