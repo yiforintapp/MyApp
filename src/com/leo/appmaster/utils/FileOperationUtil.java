@@ -45,11 +45,13 @@ public class FileOperationUtil {
 
     private static final String SYSTEM_PREFIX = "/system";
 
-    public static final String SDCARD_DIR_NAME = "PravicyLock";
+    public static final String SDCARD_DIR_NAME = ".PravicyLock";
+    public static final String OLD_SDCARD_DIR_NAME = "PravicyLock";
+
     public static final String[] STORE_IMAGES = {
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media._ID, //
+            MediaStore.Images.Media._ID,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME
             // dir name
     };
@@ -343,22 +345,26 @@ public class FileOperationUtil {
         if (filePath.endsWith(".leotmp")) {
             StringBuilder stringBuilder = new StringBuilder(filePath);
             replacedPath = stringBuilder.substring(0, stringBuilder.indexOf(".leotmp")) + ".leotmi";
-//            filePath.replace(".leotmp", ".leotmi");
         }
-        // if (Build.VERSION.SDK_INT < 19
-        // || FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(
-        // getSdCardPaths(ctx)[0])) {
+
         String newPath = null;
         boolean newHided = false;
+
+
         if (filePath.contains(SDCARD_DIR_NAME)) {
             newHided = true;
             newPath = replacedPath.replace(".leotmi", "").replace(
                     SDCARD_DIR_NAME + File.separator, "");
-
+        } else if (filePath.contains(OLD_SDCARD_DIR_NAME)) {
+            newHided = true;
+            newPath = replacedPath.replace(".leotmi", "").replace(
+                    OLD_SDCARD_DIR_NAME + File.separator, "");
         } else {
             newHided = false;
             newPath = replacedPath.replace(".leotmi", "");
         }
+
+
         String fileName = getNameFromFilepath(newPath);
         String fileDir = newPath.replace(fileName, "");
         if (fileName.startsWith(".")) {
@@ -828,7 +834,6 @@ public class FileOperationUtil {
             newPath = paths[position] + File.separator + SDCARD_DIR_NAME
                     + FileOperationUtil.getDirPathFromFilepath(fromFile).replace(paths[1], "")
                     + File.separator + fileName;
-
         }
         if (file.isFile()) {
             String newFileDir = null;
