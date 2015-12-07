@@ -160,7 +160,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         }
         String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
         if (MsgConsts.PATH_WEBVIEW.equals(path)) {
-            // 打开webview
+            // 打开webview，3.0支持以前
             SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoJump_cnts", "act_" + mTitle);
             Intent intent = new Intent(this, WebViewActivity.class);
             intent.putExtra(WebViewActivity.WEB_URL, pUrl);
@@ -168,7 +168,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
 
             return true;
         } else if (MsgConsts.PATH_DOWNLOAD.equals(path)) {
-            // 下载
+            // 下载，3.1开始支持
             LeoLog.i(TAG, "shouldOverrideUrlLoading, download url: " + pUrl);
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -181,7 +181,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             }
             return true;
         } else if (MsgConsts.PATH_NATIVE_APP.equals(path)) {
-            // 通用页面
+            // 通用页面, 3.1开始支持
             LeoLog.i(TAG, "shouldOverrideUrlLoading, nativeapp url: " + pUrl);
             try {
                 Intent intent = Intent.parseUri(pUrl, 0);
@@ -193,7 +193,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             }
             return true;
         } else if (MsgConsts.PATH_FACEBOOK.equals(path)) {
-            // facebook
+            // facebook，3.1开始支持
             try {
                 MsgUtil.openFacebook(pUrl, this);
                 mLockManager.filterSelfOneMinites();
@@ -202,12 +202,26 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             }
             return true;
         } else if (MsgConsts.PATH_GOOGLEPLAY.equals(path)) {
-            // googleplay
+            // googleplay，3.1开始支持
             try {
                 MsgUtil.openGooglePlay(pUrl, this);
                 mLockManager.filterSelfOneMinites();
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+            return true;
+        } else if (MsgConsts.PATH_PROMOTION.equals(path)) {
+            // App推广，有App打开App，没有App跳GP下载，没有Gp直接打开浏览器下载
+            // 3.1.1开始支持
+            String pkg = uri.getQueryParameter(MsgConsts.PARAMS_PKG);
+            boolean success = false;
+            try {
+                success = MsgUtil.openPromotion(this, pUrl, pkg);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (success) {
+                mLockManager.filterSelfOneMinites();
             }
             return true;
         }

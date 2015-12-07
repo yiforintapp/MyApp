@@ -19,4 +19,7 @@ public class MsgConsts {
     public static final String PATH_FACEBOOK = "/nativeapp/facebook";
     public static final String PATH_GOOGLEPLAY = "/nativeapp/googleplay";
     public static final String PARAMS_URL = "url";
+    // App推广
+    public static final String PATH_PROMOTION = "/promotion";
+    public static final String PARAMS_PKG = "pkg";
 }
