@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -41,7 +42,7 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
     public interface OnTabReselectedListener {
         /**
          * Callback when the selected tab has been reselected.
-         * 
+         *
          * @param position Position of the current center item.
          */
         void onTabReselected(int position);
@@ -340,7 +341,7 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
         }
 
         @SuppressLint("DrawAllocation")
-		@Override
+        @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             if (mIsRedTip) {
@@ -361,9 +362,20 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
                     x = res.getDimension(R.dimen.privacy_contact_high_red_tip_x);
                     y = res.getDimension(R.dimen.privacy_contact_high_red_tip_y);
                 }
+
+                //隐私联系人，两个tab下左右滑动的时候，红点的位置变化很突兀
+                float marginLeft = res.getDimension(R.dimen.tab_red_tip_m_left);
+                CharSequence text1 = getText();
+                if (text1 != null) {
+                    float textWidth = textPaint.measureText(text1.toString());
+                    x = (getPaddingLeft() + textWidth + getMeasuredWidth()) / 2 + marginLeft;
+                    x = (float) Math.ceil(x);
+                }
+
                 if (drawable != null) {
+                    LeoLog.d("testTabRed", "drawable != null");
                     CharSequence text = getText();
-                    if(text != null) {
+                    if (text != null) {
                         float textWidth = textPaint.measureText(text.toString());
 
                         float imgwidth = drawable.getIntrinsicWidth();
@@ -378,14 +390,16 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
                             y = y - DipPixelUtil.dip2px(getContext(), 3);
                         }
                     }
+                } else {
+                    LeoLog.d("testTabRed", "drawable == null");
                 }
                 canvas.translate(x, y);
                 canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
                 Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_dot);
                 float scaleX = (float) tabTextwdth / redTip.getWidth();
                 float scaleY = (float) tabTexteight / redTip.getHeight();
-                Log.i("LeoPagerTab", redTip.getWidth()+" "+scaleX);
-                Log.i("LeoPagerTab",redTip.getHeight()+ " "+scaleY);
+                Log.i("LeoPagerTab", redTip.getWidth() + " " + scaleX);
+                Log.i("LeoPagerTab", redTip.getHeight() + " " + scaleY);
                 Paint paint = new Paint();
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.FILL);
