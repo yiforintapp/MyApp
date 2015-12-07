@@ -3,18 +3,35 @@
     android:id="@+id/pic_vid_home_rt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone">
-<TextView
-    android:id="@+id/active_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:text="首页引导提示"/>
+    android:visibility="gone"
+    >
+
+    <TextView
+        android:id="@+id/active_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="首页引导提示" />
+
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_below="@id/active_text"
-        android:text="button1"/>
+        android:layout_centerInParent="true"
+        android:text="button1" />
+
+    <FrameLayout
+        android:id="@+id/home_guide_ft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ad_bg"></View>
+
+    </FrameLayout>
 </RelativeLayout>

@@ -7,16 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.tools.animator.ObjectAnimator;
 
 
 public class GuideFragment extends Fragment implements View.OnClickListener {
+
+    private static final long HOME_GUIDE_ANIM_TIME = 500;
+    private static final int HOME_GUIDE_REPEAT_COUNT = -1;
+    private static final float HOME_GUIDE_TRANSLA_VALUE1 = 0.0f;
+    private static final float HOME_GUIDE_TRANSLA_VALUE2 = -100.0f;
+    private static final String ANIME_PROPERTY_NAME = "translationY";
+
     private View mRootView;
     private RelativeLayout mHomeGuideRt;
     private RelativeLayout mPicVideoGuideRt;
+    private FrameLayout mHomeGuideFt;
+    private ObjectAnimator mHomeGuideAnim;
 
     /*引导类型*/
     public enum GUIDE_TYPE {
@@ -75,6 +86,16 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mHomeGuideAnim != null) {
+            mHomeGuideAnim.cancel();
+            mHomeGuideFt.clearAnimation();
+            mHomeGuideAnim = null;
+        }
+    }
+
     /*首次处理完图片，视频返回首页引导*/
     private void initHomeMoreGuide(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.home_more_guide);
@@ -83,9 +104,9 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         }
         View inClude = viewStub.inflate();
         mHomeGuideRt = (RelativeLayout) inClude.findViewById(R.id.pic_vid_home_rt);
+        mHomeGuideFt = (FrameLayout) inClude.findViewById(R.id.home_guide_ft);
         mHomeGuideRt.findViewById(R.id.button1).setOnClickListener(this);
         mHomeGuideRt.setOnClickListener(this);
-
     }
 
     /*图片，视频隐藏页编辑按钮引导*/
@@ -106,6 +127,11 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             setVisiblityGuide(type);
         } else {
             mRootView.setVisibility(View.GONE);
+            if (mHomeGuideAnim != null) {
+                mHomeGuideAnim.cancel();
+                mHomeGuideFt.clearAnimation();
+                mHomeGuideAnim = null;
+            }
         }
     }
 
@@ -116,6 +142,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         if (GUIDE_TYPE.HOME_MORE_GUIDE == type) {
             if (mHomeGuideRt != null) {
                 mHomeGuideRt.setVisibility(View.VISIBLE);
+                showHomeGuideAnim();
             }
         } else if (GUIDE_TYPE.PIC_VIDEO_GUIDE == type) {
             if (mPicVideoGuideRt != null) {
@@ -144,4 +171,19 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
+    /*首页引导动画*/
+    private void showHomeGuideAnim() {
+        if (mHomeGuideFt != null) {
+            if (mHomeGuideAnim == null) {
+                mHomeGuideAnim = new ObjectAnimator(mHomeGuideFt, ANIME_PROPERTY_NAME);
+            }
+            mHomeGuideAnim.setFloatValues(HOME_GUIDE_TRANSLA_VALUE1, HOME_GUIDE_TRANSLA_VALUE2);
+            mHomeGuideAnim.setRepeatCount(HOME_GUIDE_REPEAT_COUNT);
+            mHomeGuideAnim.setRepeatMode(ObjectAnimator.REVERSE);
+            mHomeGuideAnim.setDuration(HOME_GUIDE_ANIM_TIME);
+            mHomeGuideAnim.start();
+        }
+    }
+
 }
