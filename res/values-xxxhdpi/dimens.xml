@@ -7,7 +7,6 @@
     <dimen name="fragment_lock_large_banner_out_width">282dp</dimen>
     <dimen name="fragment_lock_large_banner_image_width">260dp</dimen>
     <dimen name="fragment_lock_large_banner_image_top">11dp</dimen>
-    <dimen name="fragment_lock_large_banner_image_right">11dp</dimen>
     <dimen name="fragment_lock_large_banner_button_height">22dp</dimen>
     <dimen name="fragment_lock_large_banner_button_width">64dp</dimen>
     <dimen name="fragment_lock_large_banner_button_text_size">10dp</dimen>

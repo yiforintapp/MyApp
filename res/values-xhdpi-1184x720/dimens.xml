@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="gridview_vertical_spacing">12dip</dimen>
 
     <dimen name="splash_width">206dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
@@ -12,8 +11,6 @@
     <dimen name="hide_album_image_frame_top">18dp</dimen>
     <dimen name="hide_pictrue_imge_frame_width">142dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-    <dimen name="hide_picture_checkbox_left">107dp</dimen>
-    <dimen name="hide_picture_checkbox_top">107dp</dimen>
             <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">24dp</dimen>
     <dimen name="digital_item_width">60dp</dimen>
@@ -39,16 +36,10 @@
     <dimen name="default_lock_recomment_title_top">4dp</dimen>
     <dimen name="default_lock_recomment_pagedgrideview_top">4dp</dimen>
     <dimen name="sucess_lock_recomment_pagedgrideview_top">5dp</dimen>
-    <dimen name="app_item_iv_app_icon_width">52dp</dimen>
-    <dimen name="app_item_iv_app_icon_height">52dp</dimen>
     <dimen name="default_lock_icon_width">23dp</dimen>
     <dimen name="lock_icon_height">24dp</dimen>
-    <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
-    <dimen name="app_item_linearlayout_padding">5dp</dimen>
 
 
-    <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
-    <dimen name="grid_page_item_layout_marginRight">8dp</dimen>
     <dimen name="help_icon_width">18dp</dimen>
     <dimen name="help_icon_height">24dp</dimen>
     <dimen name="help_setting_margintop">18dp</dimen>
@@ -106,7 +97,6 @@
     <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">20dp</dimen>
     <dimen name="guide_title_margin_buttom">18dp</dimen>
-    <dimen name="guide_content_margin_buttom">80dp</dimen>
     <dimen name="guide_go_button_height">38dp</dimen>
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
@@ -154,7 +144,6 @@
     <dimen name="webview_icon_margin">70dp</dimen>
     <dimen name="webview_title_width">262dp</dimen>
     <dimen name="guide_skip_margin">12dp</dimen>
-    <dimen name="privacy_default_title_margin_top">42dp</dimen>
     <dimen name="privacy_default_image_width">120dp</dimen>
     <dimen name="privacy_default_image_height">120dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">52dp</dimen>
@@ -175,23 +164,18 @@
     <dimen name="noti_spe_content_big_text_size">16dp</dimen>
     <dimen name="noti_spe_content_des_m_top">4dp</dimen>
     <dimen name="noti_spe_content_small_text_size">13dp</dimen>
-    <dimen name="noti_spe_butt_width">80dp</dimen>
     <dimen name="noti_spe_butt_height">35dp</dimen>
-    <dimen name="noti_spe_ar_butt_width">100dp</dimen>
     <dimen name="noti_spe_ar_butt_height">25dp</dimen>
     <dimen name="noti_spe_ar_content_m_left">10dp</dimen>
     <dimen name="noti_spe_fr_butt_width">56dp</dimen>
     <dimen name="noti_spe_fr_content_m_left">12dp</dimen>
-    <dimen name="noti_spe_tr_butt_width">124dp</dimen>
     <!-- 2.7 end -->
 
 
     <!-- 2.8 start -->
     <dimen name="ges_icon_m_top">0dp</dimen>
-    <dimen name="ges_icon_m_bottom">6dp</dimen>
     <dimen name="testview_below_icon">13dp</dimen>
     <dimen name="ges_Pattern_m_top">58dp</dimen>
-    <dimen name="ges_icon_padding">10dp</dimen>
     <!-- 2.8 end -->
 
 
@@ -199,7 +183,6 @@
     <dimen name="home_tab_height">227dp</dimen>
     <dimen name="home_scanning_padding_top">320dp</dimen>
     <dimen name="scan_shield_offset">52dp</dimen>
-    <dimen name="home_step_top_margin">-15dp</dimen>
     <dimen name="fragment_lock_margin_top">58dp</dimen>
     <!--手机防盗-->
     <dimen name="ph_sec_nu_bkup_cb_pd_left">20dp</dimen>

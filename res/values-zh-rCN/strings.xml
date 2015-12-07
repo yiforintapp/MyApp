@@ -89,7 +89,6 @@
     <string name="app_setting_update">检查升级</string>
     <string name="feedback">用户反馈</string>
     <string name="grade">五星好评</string>
-    <string name="grade_tip">您已经使用隐私卫士很多次了，喜欢我们吗，给5星鼓励下吧！</string>
     <string name="app_setting_about">关于</string>
     <string name="forbid_uninstall">高级保护</string>
     <string name="auto_lock">锁屏后自动锁定</string>
@@ -471,10 +470,6 @@
     <string name="summary_autolock_after_lockscreen">锁屏后所有应用重新锁定</string>
     <string name="summary_setting_locker">选择应用锁定设置</string>
     <string name="summary_hide_lockline">将应用解锁轨迹隐藏，更安全地保护您的隐私</string>
-    <string name="new_guide_page1_title">手机加速更方便</string>
-    <string name="new_guide_page1_content">在桌面也可以使用加速功能啦</string>
-    <string name="new_guide_page2_title">应用伪装更好玩</string>
-    <string name="new_guide_page2_content">新的伪装方式，出乎你意料</string>
     <!-- version 2.5 huangqili part -->
 
 
@@ -540,13 +535,10 @@
     <string name="advace_protect_dialog_content_text">恭喜您加锁成功，为了防止隐私卫士被他人无意卸载后无法继续加锁应用，建议您进行高级保护。随后您可以在侧边栏中卸载隐私卫士。</string>
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">高级保护设置成功</string>
-    <string name="advance_protect_open_success_tip_content">开启后无法在软件外部卸载隐私卫士。如需卸载，您需要先在应用锁设置中取消高级保护设置。</string>
     <string name="auto_start_tip_xiaomi4_and_letv">为了保证隐私卫士能够正常保护您的隐私。请点击“自启动管理”，选择隐私卫士加入到自启动列表 </string>
     <string name="auto_start_tip_redmi">为了保证隐私卫士能够正常保护您的隐私。请进入“自启动应用管理”，选择“添加自启动应用”，将隐私卫士加入到自启动列表</string>
     <string name="auto_start_tip_huawei">为了保证隐私卫士能够正常保护您的隐私。请进入“受保护应用”，将PG加入受保护名单中</string>
     <string name="auto_start_tip_lenovo">为了保证隐私卫士能够正常保护您的隐私。请进入\"后台管理\"，选择\"后台运行\"和\"后台自启\"，将隐私卫士加入到列表</string>
-    <string name="splash_guide_page_msg_title">消息中心</string>
-    <string name="splash_guide_page_msg_content">众多精彩活动，实用小技巧，一网打尽</string>
     <!-- 2.10 end -->
 
     <!-- 2.12 start -->
@@ -607,9 +599,6 @@
     <string name="pri_pro_summary_not_confirm">您还可以完成以下操作来提升隐私等级</string>
     <string name="pri_pro_summary_confirm">您的隐私状况良好，请继续保持~</string>
     <string name="pri_pro_btn">去开启 (+%1$d分)</string>
-    <string name="pri_pro_opened">已开启</string>
-    <string name="pri_mobile_privacy">已保护手机隐私%1$d次</string>
-    <string name="pri_lost_privacy">已经保护您的手机%1$d天%2$d小时</string>
     <string name="pri_pro_contact_summary">频繁联系人</string>
     <string name="pri_pro_contact">联系人</string>
     <string name="pri_pro_wifi_btn">去处理</string>
@@ -617,26 +606,14 @@
     <string name="pri_pro_complete">完成</string>
     <string name="pri_pro_scanning">正在进行隐私扫描</string>
     <string name="pri_pro_scanning_finish">隐私扫描完成</string>
-    <string name="pri_contact_empty">请选择联系人</string>
     <string name="pri_contact_succ">成功添加到隐私联系人</string>
     <string name="pri_contact_added">已添加</string>
     <string name="pri_contact_over">已处理</string>
     <string name="scanning_pattern">已完成%1$d项扫描</string>
     <string name="pri_pro_cancel">取消</string>
     <string name="pri_pro_process">立即处理</string>
-    <string name="pri_pro_locking">正在加锁应用</string>
-    <string name="pri_pro_hiding_img">正在隐藏图片</string>
-    <string name="pri_pro_hiding_vid">正在隐藏视频</string>
     <string name="pri_pro_wifi_warn">当前连接wifi存在安全风险</string>
     <string name="pri_pro_wifi_connect">已连接WiFi:%1$s</string>
-    <string name="pri_pro_ignore_app">确定不对以上应用进行加锁吗？</string>
-    <string name="pri_pro_ignore_pic">确定不对以上图片进行隐藏吗？</string>
-    <string name="pri_pro_ignore_vid">确定不对以上视频进行隐藏吗？</string>
-    <string name="scan_title">隐私等级</string>
-    <string name="scan_new_app">新增应用</string>
-    <string name="scan_new_media">新增媒体</string>
-    <string name="scan_new_mobile">手机安全</string>
-    <string name="scan_new_privacy">隐私防护</string>
     <string name="scan_notify">您的隐私状态下降了</string>
     <string name="scan_notify_app">发现您新增应用%1$d个，点击立即处理</string>
     <string name="scan_notify_pic">发现您新增图片%1$d个，点击立即处理</string>
@@ -653,7 +630,6 @@
 
     <string name="wifi_titlebar_name">WiFi安全</string>
     <string name="wifi_title_name">WiFi安全扫描</string>
-    <string name="wifi_connect_name">当前连接WiFi:%1$s</string>
     <string name="wifi_result_one">连接成功</string>
     <string name="wifi_result_two">无需二次访问</string>
     <string name="wifi_result_three">SSL加密</string>
@@ -672,13 +648,10 @@
     <string name="wifi_scan_result_use_now">立即使用</string>
     <string name="wifi_scan_result_scan">WiFi自动扫描</string>
     <string name="wifi_scan_result_scan_desc">连接上WiFi时自动扫描安全性</string>
-    <string name="wifi_scan_toast_scaning">正在扫描Wifi:%1$s</string>
     <string name="ten_new_app_toast">您有很多新增应用可以备份</string>
     <string name="ten_new_app_toast_content">点击前往备份</string>
     <string name="over_traffic_toast">您今日流量消耗已经超过%1$sMB</string>
     <string name="over_traffic_toast_content">点击查看详细情况</string>
-    <string name="over_traffic_toast_unsafe">WiFi: %1$s <Data><![CDATA[<font color="#ff1200">存在风险</font>]]></Data></string>
-    <string name="over_traffic_toast_safe">WiFi: %1$s <Data><![CDATA[<font color="#00a8ff">安全</font>]]></Data></string>
 
     <string name="phone_security_no_add_number_text">添加亲友号码，可发送短信控制被盗手机</string>
     <string name="phone_security_no_add_number_bt_text">添加亲友号码</string>
@@ -700,10 +673,6 @@
     <string name="phone_security_instruct_lock">锁定所有应用：#lockmobile</string>
     <string name="phone_security_instruct_lock_description">锁定手机中所有应用</string>
     <string name="secur_bottom_bt_text">下一步</string>
-    <string name="open_instr_locatepositon">追踪位置</string>
-    <string name="open_instr_alert">响警报</string>
-    <string name="no_open_instr_fromatedata">删除手机中的所有数据</string>
-    <string name="no_open_instr_lock">锁定所有应用</string>
     <string name="open_secur_text">恭喜！防盗基本功能开启成功</string>
     <string name="no_secur_text">您现在可以使用如下基本功能：</string>
     <string name="open_secur_checkbox_text">开启高级保护，将隐私卫士添加至设备管理器</string>
@@ -712,15 +681,11 @@
     <string name="quick_helper_pic_hide">图片隐藏</string>
     <string name="quick_helper_video_hide">视频隐藏</string>
     <string name="quick_helper_intruder">入侵者防护</string>
-    <string name="quick_helper_privacy_call">隐私通话</string>
-    <string name="quick_helper_privacy_msg">隐私短信</string>
     <string name="quick_helper_wifi_safety">WiFi安全</string>
     <string name="quick_helper_app_uninstall">应用卸载</string>
     <string name="quick_helper_app_backup">应用备份</string>
     <string name="quick_helper_flow_manage">流量管理</string>
     <string name="quick_helper_elec_manage">电量管理</string>
-    <string name="quick_helper_boost">桌面加速</string>
-    <string name="quick_helper_app_joy">App Joy</string>
 
     <string name="class_privacy_protection">隐私防护</string>
     <string name="class_system_manage">系统管理</string>
@@ -730,7 +695,6 @@
     <string name="quick_helper_desc_video_hide">将您的私密视频隐藏起来</string>
     <string name="quick_helper_desc_intruder">输入密码错误就拍照</string>
     <string name="quick_helper_desc_call">保护通话记录不泄露</string>
-    <string name="quick_helper_desc_msg">保护短信内容不泄露</string>
     <string name="quick_helper_desc_wifi">检测连接的WiFi的安全性</string>
     <string name="quick_helper_desc_uninstall">卸载已安装的应用</string>
     <string name="quick_helper_desc_backup">备份已安装的应用的安装包</string>
@@ -741,7 +705,6 @@
 
     <string name="quick_helper_add">添加</string>
     <string name="quick_help_add_toast">已创建</string>
-    <string name="quick_help_add_toast_fail">添加失败</string>
 
     <!-- 入侵者防护 -->
     <string name="intruder_to_catch_fail_times_tip">输错<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>次密码就会拍下入侵者照片</string>
@@ -765,12 +728,9 @@
     <string name="intruderprotection_desc_title">什么是入侵者防护</string>
     <string name="sure_delete_one">确定要删除这张入侵者照片吗？</string>
 
-    <string name="title_activity_security_finish">SecurityFinishActivity</string>
     <string name="secur_finish_complate_text">您已经开启了手机防盗的所有功能</string>
-    <string name="secur_finish_no_complate_text">还未开启高级保护功能，无法使用以下功能</string>
     <string name="secur_finish_bt_text">完成</string>
     <string name="secur_open_suc">防盗开启成功</string>
-    <string name="secur_suc_top_image_title">防盗功能已开启</string>
     <string name="secur_suc_top_image_content">已保护您的手机</string>
     <string name="secur_suc_day">天</string>
     <string name="secur_suc_hour">小时</string>
@@ -780,7 +740,6 @@
     <string name="sim_change_msm_tip"> 【LEOMASTER】警告！您当前型号为<xliff:g id="sim_chanage">%1$s</xliff:g>的手机，SIM卡已经被更换。换卡后的手机号码为本短信的发送号码。如为本人操作，请忽略本警告。</string>
     <string name="no_sim_tip">手机没有插入SIM卡，无法发送短信</string>
     <string name="secur_input_number">手动输入号码</string>
-    <string name="input_fren_number">输入亲友号码</string>
     <string name="secur_input_add_bt">添加</string>
     <string name="secur_add_number_title">添加预留号码</string>
 
@@ -800,9 +759,6 @@
     <string name="secur_open_bt">备份远程控制指令</string>
     <string name="secur_instr_open_bt">开启</string>
     <string name="backup_instr_dialog_content">备份远程控制指令，将会把指令以短信的形式发送到亲友手机，确认发送吗？</string>
-    <string name="backup_instr_dialog_cancel">取消</string>
-    <string name="backup_instr_dialog_sure">确认</string>
-    <string name="send_msm_suce">短信发送成功！</string>
     <string name="secur_finish_no_complate_tip">手机防盗基本功能已经可以使用,高级功能需要在设备管理器授权</string>
     <string name="secur_help_tip_txt">手机防盗是确保手机丢失后隐私不外泄，帮助您找回手机的功能。要使用手机防盗功能，您必须预留一个手机号码，通过该号码向丢失的手机发送短信，丢失的手机便会执行相应命令。</string>
     <string name="secur_help_bt">知道了</string>
@@ -811,20 +767,11 @@
     <string name="secur_location_msm"> 【LEOMASTER】隐私卫士已经为您获取到已丢失手机的地理位置，点击查看：<xliff:g id="locate_posi">%1$s</xliff:g> 。http://www.leomaster.com</string>
 
     <!-- 翻译给出后新增文案 -->
-    <string name="new_ignore">不处理</string>
-    <string name="new_increase_pravicy">您可以处理以下深度隐私来提升隐私安全</string>
-    <string name="new_pravicy_todo">您还有以下深度隐私可以处理</string>
-    <string name="new_pravicy_healthy">您的隐私安全状况良好，请继续保持~</string>
-    <string name="new_real_ignore">真的不处理？</string>
     <string name="pri_pro_ignore_dialog">确认不对扫描出的结果进行任何处理么？跳过处理将不会增加您的得分</string>
-    <string name="new_ok">确认</string>
-    <string name="new_cancel">取消</string>
-    <string name="new_cancel_alarm">取消警报</string>
     <string name="scanint_result_app">新应用</string>
     <string name="scanint_result_pic">新图片</string>
     <string name="scanint_result_vid">新视频</string>
     <string name="scanint_result_deep">深度隐私</string>
-    <string name="scaning_immediate">点击立即扫描</string>
     <string name="secur_add_self_number_tip">您输入的号码是本机号码，请重新输入</string>
     <string name="new_arrival">全新旅途</string>
     <string name="new_funciton">新界面，新功能，新起点</string>

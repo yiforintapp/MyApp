@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="gridview_vertical_spacing">11dip</dimen>
 
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
@@ -12,8 +11,6 @@
     <dimen name="hide_pictrue_imge_frame_width">142dp</dimen>
     <dimen name="hide_picture_image_frame_left">10dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-    <dimen name="hide_picture_checkbox_left">107dp</dimen>
-    <dimen name="hide_picture_checkbox_top">107dp</dimen>
     <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">24dp</dimen>
     <dimen name="digital_item_width">65dp</dimen>
@@ -41,16 +38,10 @@
     <dimen name="about_logo_width">144dp</dimen>
     <dimen name="about_logo_height">152dp</dimen>
     <dimen name="default_lock_recomment_pagedgrideview_top">2dp</dimen>
-    <dimen name="app_item_iv_app_icon_width">52dp</dimen>
-    <dimen name="app_item_iv_app_icon_height">52dp</dimen>
     <dimen name="default_lock_icon_width">23dp</dimen>
     <dimen name="lock_icon_height">24dp</dimen>
     <dimen name="default_lock_recomment_title_top">30dp</dimen>
-    <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
-    <dimen name="app_item_linearlayout_padding">3dp</dimen>
 
-    <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
-    <dimen name="grid_page_item_layout_marginRight">8dp</dimen>
     <dimen name="help_icon_width">18dp</dimen>
     <dimen name="help_icon_height">24dp</dimen>
     <dimen name="help_setting_margintop">18dp</dimen>
@@ -256,7 +247,6 @@
     <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">20dp</dimen>
     <dimen name="guide_title_margin_buttom">18dp</dimen>
-    <dimen name="guide_content_margin_buttom">80dp</dimen>
     <dimen name="guide_go_button_height">38dp</dimen>
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
@@ -326,7 +316,6 @@
     <dimen name="webview_icon_margin">70dp</dimen>
     <dimen name="webview_title_width">262dp</dimen>
     <dimen name="guide_skip_margin">14dp</dimen>
-    <dimen name="privacy_default_title_margin_top">48dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">52dp</dimen>
     <dimen name="app_manager_flow_chart_margin_top">20dp</dimen>
     <dimen name="app_manager_lineview_margin_top">12dp</dimen>
@@ -346,7 +335,6 @@
     <dimen name="fragment_lock_large_banner_out_width">282dp</dimen>
     <dimen name="fragment_lock_large_banner_image_width">260dp</dimen>
     <dimen name="fragment_lock_large_banner_image_top">11dp</dimen>
-    <dimen name="fragment_lock_large_banner_image_right">11dp</dimen>
     <dimen name="fragment_lock_large_banner_button_height">22dp</dimen>
     <dimen name="fragment_lock_large_banner_button_width">64dp</dimen>
     <dimen name="fragment_lock_large_banner_button_text_size">10dp</dimen>
@@ -369,7 +357,6 @@
     <dimen name="wifi_set_title_text_size">16sp</dimen>
     <dimen name="wifi_set_title_text_des_size">14sp</dimen>
 
-    <dimen name="wifi_fragment_padding">34dp</dimen>
     <dimen name="privacy_input_cb_pd_lf">14dp</dimen>
     <dimen name="sec_gde_content_pd">35dp</dimen>
 

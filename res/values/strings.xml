@@ -138,7 +138,6 @@
     <string name="lockerTheme">Theme</string>
     <string name="defaultTheme">Default</string>
     <string name="grade">5-Star Rating</string>
-    <string name="grade_tip">Do you like us? Rate 5 stars!</string>
     <string name="lock_more">More</string>
     <string name="ParadoxTheme">Spatial</string>
 
@@ -473,10 +472,6 @@
     <string name="summary_autolock_after_lockscreen">Auto lock apps after screen lock</string>
     <string name="summary_setting_locker">App lock settings</string>
     <string name="summary_hide_lockline">Invisible pattern for better protection</string>
-    <string name="new_guide_page1_title">Boost phone conveniently</string>
-    <string name="new_guide_page1_content">Boost phone on homescreen</string>
-    <string name="new_guide_page2_title">Funny App Cover</string>
-    <string name="new_guide_page2_content">New App Cover fools intruders</string>
     <!-- version 2.5 huangqili part -->
 
 
@@ -548,13 +543,10 @@
     <string name="advace_protect_dialog_content_text">Congrats! Applock applied successfully.Tips: Enable "Advanced Protection", then no one can peek at your secrets by uninstalling Privacy Guard. But if really want uninstall our app, please check the side bar.</string>
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">Succeed!</string>
-    <string name="advance_protect_open_success_tip_content">Under advanced protection nobody can uninstall LEO Privacy Guard. So, please go to AppLock page, disenable "Advanced Protection" in AppLock Settings first.</string>
     <string name="auto_start_tip_xiaomi4_and_letv">For better privacy protection, please click "Autostart", choose LEO Privacy Guard to add to Autostart List</string>
     <string name="auto_start_tip_redmi">For better privacy protection, please go to"Permissions", add Privacy Guard to Autostart Applications</string>
     <string name="auto_start_tip_huawei">For better privacy protection, please go to"Protected Apps", add PG to protected list</string>
     <string name="auto_start_tip_lenovo">Please go to \"Apps\", choose \"Background App\" and \"Auto-start\", add LEO Privacy Guard to  List</string>
-    <string name="splash_guide_page_msg_title">Message Center</string>
-    <string name="splash_guide_page_msg_content">Come and check out interesting activities  useful tips here</string>
     <!-- 2.10 end -->
 
     <!-- 2.12 start -->
@@ -588,7 +580,6 @@
     <string name="hp_helper_label">Assistant</string>
     <string name="hp_helper_shot">Shortcuts Assistant</string>
     <string name="hp_helper_iswipe">Swifty</string>
-    <string name="pri_pro_title">Deep Scan</string>
     <string name="pri_pro_ignore">Skip</string>
 
     <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> New videos</string>
@@ -615,9 +606,6 @@
     <string name="pri_pro_summary_not_confirm">Improve your privacy level by:</string>
     <string name="pri_pro_summary_confirm">Good, all safe, keep it up!</string>
     <!--<string name="pri_pro_btn">Enable (+%1$s)</string>-->
-    <string name="pri_pro_opened">Enabled</string>
-    <string name="pri_mobile_privacy">Privacy protected for %1$d times</string>
-    <string name="pri_lost_privacy">Privacy protected for %1$d days %2$d hours</string>
     <string name="pri_pro_contact_summary">Frequent Contacts</string>
     <string name="pri_pro_contact">Contacts</string>
     <string name="pri_pro_wifi_btn">To process</string>
@@ -625,26 +613,14 @@
     <string name="pri_pro_complete">Finish</string>
     <string name="pri_pro_scanning">Scanning privacy status</string>
     <string name="pri_pro_scanning_finish">Scan completed</string>
-    <string name="pri_contact_empty">Select contact</string>
     <string name="pri_contact_succ">Contact successfully added</string>
     <string name="pri_contact_added">Added</string>
     <string name="pri_contact_over">Processed</string>
     <string name="scanning_pattern">%1$s scanning items are completed</string>
     <string name="pri_pro_cancel">Cancel</string>
     <string name="pri_pro_process">Resolve Now</string>
-    <string name="pri_pro_locking">Locking apps</string>
-    <string name="pri_pro_hiding_img">Hiding photos</string>
-    <string name="pri_pro_hiding_vid">Hiding videos</string>
     <string name="pri_pro_wifi_warn">The connected WiFi is at risk</string>
     <string name="pri_pro_wifi_connect">Connected to WiFi:%1$s </string>
-    <string name="pri_pro_ignore_app">Not to lock the apps?</string>
-    <string name="pri_pro_ignore_pic">Not to hide the pictures?</string>
-    <string name="pri_pro_ignore_vid">Not to hide the videos?</string>
-    <string name="scan_title">Privacy Level</string>
-    <string name="scan_new_app">New apps</string>
-    <string name="scan_new_media">New media</string>
-    <string name="scan_new_mobile">Phone Safety</string>
-    <string name="scan_new_privacy">Privacy Protection</string>
 
 
     <string name="scan_notify">Privacy Level downgraded</string>
@@ -662,7 +638,6 @@
 
     <string name="wifi_titlebar_name">WiFi Security</string>
     <string name="wifi_title_name">WiFi scanning</string>
-    <string name="wifi_connect_name">Connected to WiFi:%1$s </string>
     <string name="wifi_result_one">Connect successfully</string>
     <string name="wifi_result_two">Secondary access not required</string>
     <string name="wifi_result_three">SSL encryption</string>
@@ -681,13 +656,10 @@
     <string name="wifi_scan_result_use_now">Enable Now</string>
     <string name="wifi_scan_result_scan">WiFi Auto Scan</string>
     <string name="wifi_scan_result_scan_desc">Scan WiFi security while connected</string>
-    <string name="wifi_scan_toast_scaning">Scanning WiFi:%1$s</string>
     <string name="ten_new_app_toast">You have new apps to backup</string>
     <string name="ten_new_app_toast_content">Click to backup</string>
     <string name="over_traffic_toast">Today usage exceeded %1$s MB</string>
     <string name="over_traffic_toast_content">Click for details</string>
-    <string name="over_traffic_toast_unsafe">WiFi: %1$s <Data><![CDATA[<font color="#ff1200">has risk</font>]]></Data></string>
-    <string name="over_traffic_toast_safe">WiFi: %1$s <Data><![CDATA[<font color="#00a8ff">is safe</font>]]></Data></string>
 
     <string name="phone_security_no_add_number_text">Add Family No. to send SMS  to control stolen phone</string>
     <string name="phone_security_no_add_number_bt_text">Add Family Number </string>
@@ -709,10 +681,6 @@
     <string name="phone_security_instruct_lock">Lock apps: #lockmobile</string>
     <string name="phone_security_instruct_lock_description">Lock all apps</string>
     <string name="secur_bottom_bt_text">Next</string>
-    <string name="open_instr_locatepositon">Track position</string>
-    <string name="open_instr_alert">Alarm</string>
-    <string name="no_open_instr_fromatedata">Delete all data in phone</string>
-    <string name="no_open_instr_lock">Lock apps</string>
     <string name="open_secur_text">Anti-theft function enabled</string>
     <string name="no_secur_text">You can use following functions:</string>
     <string name="open_secur_checkbox_text">Enable advance protection, add privacy guard to device manager</string>
@@ -720,15 +688,11 @@
     <string name="quick_helper_pic_hide">Hide Photo</string>
     <string name="quick_helper_video_hide">Hide Video</string>
     <string name="quick_helper_intruder">Break-in Alert</string>
-    <string name="quick_helper_privacy_call">Private Call</string>
-    <string name="quick_helper_privacy_msg">Private SMS</string>
     <string name="quick_helper_wifi_safety">WiFi Security</string>
     <string name="quick_helper_app_uninstall">App Uninstall</string>
     <string name="quick_helper_app_backup">App Backup</string>
     <string name="quick_helper_flow_manage">Data Monitor</string>
     <string name="quick_helper_elec_manage">Battery Usage</string>
-    <string name="quick_helper_boost">Boost</string>
-    <string name="quick_helper_app_joy">App Joy</string>
 
     <string name="class_privacy_protection">Privacy Protect</string>
     <string name="class_system_manage">System management</string>
@@ -738,7 +702,6 @@
     <string name="quick_helper_desc_video_hide">Hide private videos</string>
     <string name="quick_helper_desc_intruder">Take photo if password is wrong</string>
     <string name="quick_helper_desc_call">Protect call history</string>
-    <string name="quick_helper_desc_msg">Protect SMS</string>
     <string name="quick_helper_desc_wifi">Detect safety of connected WiFi</string>
     <string name="quick_helper_desc_uninstall">Uninstall apps</string>
     <string name="quick_helper_desc_backup">Backup installed package</string>
@@ -749,7 +712,6 @@
 
     <string name="quick_helper_add">Add</string>
     <string name="quick_help_add_toast">Succeeded</string>
-    <string name="quick_help_add_toast_fail">Failed</string>
 
     <string name="intruder_to_catch_fail_times_tip">Take photo if wrong password is input for %1$s times</string>
     <string name="intruder_times_of_catch">The <Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data> times found people want to break-in</string>
@@ -772,12 +734,9 @@
     <string name="intruderprotection_desc_title">What\'s Break-in Alert</string>
     <string name="sure_delete_one">Delete intruder\'s photo?</string>
 
-    <string name="title_activity_security_finish"></string>
     <string name="secur_finish_complate_text">All Anti-theft functions are enabled</string>
-    <string name="secur_finish_no_complate_text">Advanced protection not enabled</string>
     <string name="secur_finish_bt_text">Finish</string>
     <string name="secur_open_suc">Anti-theft enabled</string>
-    <string name="secur_suc_top_image_title">Enabled</string>
     <string name="secur_suc_top_image_content">Protected</string>
     <string name="secur_suc_day">Days</string>
     <string name="secur_suc_hour">Hours</string>
@@ -787,7 +746,6 @@
     <string name="sim_change_msm_tip">[LEOMASTER] Warning, your mobile phone which type is <xliff:g id="sim_chanage">%1$s</xliff:g>, has changed the SIM card. If operated by yourself, please ignore this notification.</string>
     <string name="no_sim_tip">No SIM card inserted, cannot send SMS</string>
     <string name="secur_input_number">Input number manually</string>
-    <string name="input_fren_number">Input Family number</string>
     <string name="secur_input_add_bt">Add</string>
     <string name="secur_add_number_title">Add Preset Number</string>
 
@@ -807,30 +765,18 @@
     <string name="secur_open_bt">Backup remote control orders</string>
     <string name="secur_instr_open_bt">Enable</string>
     <string name="backup_instr_dialog_content">Orders will be sent to Family number via SMS, send now? </string>
-    <string name="backup_instr_dialog_cancel">Cancel</string>
-    <string name="backup_instr_dialog_sure">OK</string>
-    <string name="send_msm_suce">Successfully sent!</string>
     <string name="secur_finish_no_complate_tip">You can use basic function now, for advance function, go to device manager</string>
     <string name="secur_help_tip_txt">This function will protect your privacy and help you find your lost mobile. To use it, you must preset a mobile number, and when the mobile is lost, send SMS via the preset number.</string>
     <string name="secur_help_bt">OK</string>
     <string name="advan_secur_text">You can use the following functions:</string>
     <string name="secur_backup_msm">[LEOMASTER] You have selected to backup control orders via SMS: 1. lock mobile: #lockmobile 2. locate mobile position: #locateposition 3. send alarm: #alert 4. alarm off: #alertoff  5. clear data: formatdata 6. enable lock; tracking; alarm; erase: #onekey. If the mobile is lost, send corresponding orders to it. If you forget the orders, click "Backup remote control orders" to send this SMS again. http://www.leomaster.com</string>
     <string name="secur_location_msm">[LEOMASTER] The position of the lost phone is located, click to view: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
-    <string name="new_ignore">Ignore</string>
-    <string name="new_increase_pravicy">Improve privacy level by following advance functions</string>
-    <string name="new_pravicy_todo">Other advance functions could be done</string>
-    <string name="new_pravicy_healthy">Good, all safe, keep it up!</string>
-    <string name="new_real_ignore">Are you sure?</string>
     <string name="pri_pro_ignore_dialog">Are you sure to ignore the result? To do so, you will not gain the score</string>
-    <string name="new_ok">OK</string>
-    <string name="new_cancel">Cancel</string>
 
-    <string name="new_cancel_alarm">Cancel the alert</string>
     <string name="scanint_result_app">New apps</string>
     <string name="scanint_result_pic">New photos</string>
     <string name="scanint_result_vid">New videos</string>
     <string name="scanint_result_deep">Advance privacy</string>
-    <string name="scaning_immediate">Click to scan</string>
     <string name="secur_add_self_number_tip">You have input this phone\'s number, please input again</string>
     <string name="new_arrival">New journey</string>
     <string name="new_funciton">New interface, new function, new start</string>

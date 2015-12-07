@@ -90,7 +90,6 @@
     <string name="app_setting_update">ตรวจสอบการอัพเดท</string>
     <string name="feedback">ให้เราตอบรับ</string>
     <string name="grade">เรท 5ดาว</string>
-    <string name="grade_tip">คุณชอบเรามั้ย? กรุณาเรทให้เรา 5 ดาว!</string>
     <string name="app_setting_about">เกี่ยวกับ</string>
     <string name="forbid_uninstall">ป้องกันถอนการติดตั้ง</string>
     <string name="auto_lock">ล็อคเมื่อจอดับ</string>
@@ -468,10 +467,6 @@
     <string name="summary_autolock_after_lockscreen">การใช้ทั้งหมดถูกลอคใหม่หลังจอถูกลอค</string>
     <string name="summary_setting_locker">เลือกการกำหนดลอคการใช้</string>
     <string name="summary_hide_lockline">ซ่อนเส้นปลดลอค คุ้มครองความลับส่วนตัว</string>
-    <string name="new_guide_page1_title">มือถือเร่งสะดวก</string>
-    <string name="new_guide_page1_content">ใช้ฟังก์ชันเร่งเดสก์ท็อป</string>
-    <string name="new_guide_page2_title">การใช้อำพรางสนุก</string>
-    <string name="new_guide_page2_content">วิธีการปลอมตัวใหม่</string>
     <!-- 2.5 end -->
 
 
@@ -536,9 +531,6 @@
     <string name="advace_protect_dialog_content_text">ล็อคแล้ว ใช้ปกป้องขั้นสูงเลี่ยงถอนติดตั้ง ถอนติดตั้ง Privacy Guard ที่แถบข้าง </string>
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">ใช้ปกป้องขั้นสูง</string>
-    <string name="splash_guide_page_msg_title">ศูนย์ข้อความ</string>
-    <string name="splash_guide_page_msg_content">ทุกกิจกรรมและเคล็ดลับที่เป็นประโยชน์ที่นี่</string>
-    <string name="advance_protect_open_success_tip_content">การปกป้องขั้นสูงเปิดใช้งาน Privacy Guard ไม่สามารถถอนติดตั้ง ปิดใช้ในตั้งค่า</string>
     <string name="auto_start_tip_xiaomi4_and_letv">คลิก"เริ่มอัตโนมัติ" เพิ่ม LEO Privacy Guard</string>
     <string name="auto_start_tip_redmi">ไปที่"การอนุญาตสิทธิ์" และเพิ่ม Privacy Guard</string>
     <string name="auto_start_tip_huawei">ไป "แอพที่ป้องกัน" และเพิ่ม PG ไปรายการป้องกัน</string>
@@ -576,7 +568,6 @@
     <string name="hp_helper_label">ตัวช่วย</string>
     <string name="hp_helper_shot">ตัวช่วยปุ่มลัด</string>
     <string name="hp_helper_iswipe">Swifty</string>
-    <string name="pri_pro_title">สแกนลึก</string>
     <string name="pri_pro_ignore">ข้าม</string>
 
     <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> วิดีโอใหม่</string>
@@ -603,9 +594,6 @@
     <string name="pri_pro_summary_not_confirm">ปรับปรุงระดับความเป็นส่วนตัวโดย:</string>
     <string name="pri_pro_summary_confirm">เยี่ยม ปลอดภัย รักษาไว้</string>
     <!--<string name="pri_pro_btn">เปิด(+%1$s)</string>-->
-    <string name="pri_pro_opened">เปิดใช้งาน</string>
-    <string name="pri_mobile_privacy">ปกป้องส่วนตัว %1$d ครั้ง</string>
-    <string name="pri_lost_privacy">ปกป้องส่วนตัว %1$d ว. %2$d ชม.</string>
     <string name="pri_pro_contact_summary">ชื่อติดต่อบ่อย</string>
     <string name="pri_pro_contact">รายชื่อติดต่อ</string>
     <string name="pri_pro_wifi_btn">ดำเนินการ</string>
@@ -613,26 +601,14 @@
     <string name="pri_pro_complete">เสร็จสิ้น</string>
     <string name="pri_pro_scanning">สแกนสถานะส่วนตัว</string>
     <string name="pri_pro_scanning_finish">สแกนสำเร็จ</string>
-    <string name="pri_contact_empty">เลือกรายชื่อ</string>
     <string name="pri_contact_succ">เพิ่มรายชื่อสำเร็จ</string>
     <string name="pri_contact_added">เพิ่ม</string>
     <string name="pri_contact_over">ดำเนินการ</string>
     <string name="scanning_pattern">%1$s รายการสแกนเสร็จสิ้น</string>
     <string name="pri_pro_cancel">ยกเลิก</string>
     <string name="pri_pro_process">แก้ไขตอนนี้</string>
-    <string name="pri_pro_locking">ล็อคแอพ</string>
-    <string name="pri_pro_hiding_img">ซ่อนรูปถ่าย</string>
-    <string name="pri_pro_hiding_vid">ซ่อนวิดีโอ</string>
     <string name="pri_pro_wifi_warn">WiFi ที่เชื่อมต่อมีความเสี่ยง</string>
     <string name="pri_pro_wifi_connect">เชื่อมต่อกับ WiFi %1$s</string>
-    <string name="pri_pro_ignore_app">ไม่ล็อคแอพ?</string>
-    <string name="pri_pro_ignore_pic">ไม่ซ่อนภาพ?</string>
-    <string name="pri_pro_ignore_vid">ไม่ซ่อนวิดีโอ?</string>
-    <string name="scan_title">ระดับส่วนตัว</string>
-    <string name="scan_new_app">แอพใหม่</string>
-    <string name="scan_new_media">สื่อใหม่</string>
-    <string name="scan_new_mobile">โทรศัพท์ปลอดภัย</string>
-    <string name="scan_new_privacy">ปกป้องส่วนตัว</string>
 
 
     <string name="scan_notify">ระดับส่วนตัวลดลง</string>
@@ -650,7 +626,6 @@
 
     <string name="wifi_titlebar_name">ความปลอดภัย WiFi</string>
     <string name="wifi_title_name">สแกน WiFi</string>
-    <string name="wifi_connect_name">เชื่อมต่อกับ WiFi %1$s</string>
     <string name="wifi_result_one">ต่อสำเร็จ</string>
     <string name="wifi_result_two">ไม่ใช้ทางสำรอง</string>
     <string name="wifi_result_three">เข้ารหัส SSL</string>
@@ -669,13 +644,10 @@
     <string name="wifi_scan_result_use_now">เปิดใช้งานเลย</string>
     <string name="wifi_scan_result_scan">สแกน WiFi</string>
     <string name="wifi_scan_result_scan_desc">สแกนปลอดภัย WiFi เมื่อเชื่อมต่อ</string>
-    <string name="wifi_scan_toast_scaning">สแกน WiFi: %1$s</string>
     <string name="ten_new_app_toast">มีแอพใหม่เพื่อสำรอง</string>
     <string name="ten_new_app_toast_content">คลิกเพื่อสำรอง</string>
     <string name="over_traffic_toast">วันนี้เกิน %1$s MB</string>
     <string name="over_traffic_toast_content">คลิกดูรายละเอียด</string>
-    <string name="over_traffic_toast_unsafe">WiFi: %1$s <Data><![CDATA[<font color="#ff1200">มีความเสี่ยง</font>]]></Data></string>
-    <string name="over_traffic_toast_safe">WiFi: %1$s <Data><![CDATA[<font color="#00a8ff">ปลอดภัย</font>]]></Data></string>
 
     <string name="phone_security_no_add_number_text">เพิ่มหมายเลขครอบครัวส่ง SMS</string>
     <string name="phone_security_no_add_number_bt_text">เพิ่มเลขครอบครัว</string>
@@ -700,10 +672,6 @@
     <string name="phone_security_instruct_lock">ล็อค:#lockmobile</string>
     <string name="phone_security_instruct_lock_description">ล็อคแอพทั้งหมด</string>
     <string name="secur_bottom_bt_text">ถัดไป</string>
-    <string name="open_instr_locatepositon">ติดตามตำแหน่ง</string>
-    <string name="open_instr_alert">แจ้งเตือน</string>
-    <string name="no_open_instr_fromatedata">ลบข้อมูลทั้งหมดในโทรศัพท์</string>
-    <string name="no_open_instr_lock">ล็อคโทรศัพท์</string>
     <string name="open_secur_text">เปิดใช้ฟังก์ชันกันขโมย</string>
     <string name="no_secur_text">คุณใช้ฟังก์ชันต่อไปนี้ได้:</string>
     <string name="open_secur_checkbox_text">เปิดปกป้องขั้นสูง เพิ่ม privacy guard ไปตัวจัดการ</string>
@@ -711,15 +679,11 @@
     <string name="quick_helper_pic_hide">ซ่่อนรูปถ่าย</string>
     <string name="quick_helper_video_hide">ซ่อนวิดิโอ</string>
     <string name="quick_helper_intruder">แจ้งการแทรก</string>
-    <string name="quick_helper_privacy_call">โทรส่วนตัว</string>
-    <string name="quick_helper_privacy_msg">SMS ส่วนตัว</string>
     <string name="quick_helper_wifi_safety">ปลอดภัย WiFi</string>
     <string name="quick_helper_app_uninstall">ถอนติดตั้งแอพ</string>
     <string name="quick_helper_app_backup">สำรองแอพ</string>
     <string name="quick_helper_flow_manage">เฝ้าดูข้อมูล</string>
     <string name="quick_helper_elec_manage">การใช้แบต</string>
-    <string name="quick_helper_boost">บูสท์</string>
-    <string name="quick_helper_app_joy">เชื่อมต่อแอพ</string>
 
     <string name="class_privacy_protection">ปกป้องความเป็นส่วนตัว</string>
     <string name="class_system_manage">จัดการระบบ</string>
@@ -729,7 +693,6 @@
     <string name="quick_helper_desc_video_hide">ซ่อนวิดีโอ</string>
     <string name="quick_helper_desc_intruder">ถ่ายรูปถ้าผิด</string>
     <string name="quick_helper_desc_call">ปกป้องประวัติโทร</string>
-    <string name="quick_helper_desc_msg">ปกป้อง SMS</string>
     <string name="quick_helper_desc_wifi">WiFi ปลอดภัย</string>
     <string name="quick_helper_desc_uninstall">ถอนติดตั้งแอพ</string>
     <string name="quick_helper_desc_backup">สำรองชุดติดตั้ง</string>
@@ -740,7 +703,6 @@
 
     <string name="quick_helper_add">เพิ่ม</string>
     <string name="quick_help_add_toast">สำเร็จ</string>
-    <string name="quick_help_add_toast_fail">ล้มเหลว</string>
 
     <string name="intruder_to_catch_fail_times_tip">ถ่ายรูปหากป้อนรหัสผิด %1$s ครั้ง</string>
     <string name="intruder_times_of_catch">พบ <Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data> ครั้งมีคนพยามเข้า</string>
@@ -763,12 +725,9 @@
     <string name="intruderprotection_desc_title">แจ้งการแทรกคือ?</string>
     <string name="sure_delete_one">ลบรูปถ่ายคนสอดรู้?</string>
 
-    <string name="title_activity_security_finish"></string>
     <string name="secur_finish_complate_text">ฟังก์ชันกันขโมยทั้งหมดเปิดใช้</string>
-    <string name="secur_finish_no_complate_text">ปกป้องขั้นสูงไม่ได้เปิดใช้</string>
     <string name="secur_finish_bt_text">เสร็จสิ้น</string>
     <string name="secur_open_suc">เปิดใช้กันขโมย</string>
-    <string name="secur_suc_top_image_title">เปิดใช้งาน</string>
     <string name="secur_suc_top_image_content">ปกป้อง</string>
     <string name="secur_suc_day">วัน</string>
     <string name="secur_suc_hour">ชั่วโมง</string>
@@ -778,7 +737,6 @@
     <string name="sim_change_msm_tip"> [LEOMASTER] คำเตือน โทรศัพท์ของคุณประเภท <xliff:g id="sim_chanage">%1$s</xliff:g> ถูกเปลี่ยนการ์ด SIM หากทำด้วยตัวเอง ไม่ต้องสนใจการแจ้งนี้</string>
     <string name="no_sim_tip">ไม่พบการ์ด SIM ไม่สามารถส่ง SMS</string>
     <string name="secur_input_number">ป้อนหมายเลขด้วยตัวเอง</string>
-    <string name="input_fren_number">ป้อนหมายเลขครอบครัว</string>
     <string name="secur_input_add_bt">เพิ่ม</string>
     <string name="secur_add_number_title">เพิ่มหมายเลขล่วงหน้า</string>
 
@@ -797,30 +755,18 @@
     <string name="secur_open_bt">สำรองคำสั่ง</string>
     <string name="secur_instr_open_bt">เปิดใช้</string>
     <string name="backup_instr_dialog_content">คำสั่งจะส่งไปหมายเลขครอบครัวผ่าน SMS, ส่งเลย?</string>
-    <string name="backup_instr_dialog_cancel">ยกเลิก</string>
-    <string name="backup_instr_dialog_sure">ตกลง</string>
-    <string name="send_msm_suce">ส่งสำเร็จ</string>
     <string name="secur_finish_no_complate_tip">คุณสามารถใช้ฟังก์ชันพื้นฐานได้เลย ไปที่ตัวจัดการอุปกรณ์เพื่อฟังก์ชันขั้นสูง</string>
     <string name="secur_help_tip_txt">ฟังก์ชันนี้ปกป้องส่วนตัวและค้นหาโทรศัพท์สูญหาย หากจะใช้ คุณต้องตั้งล่วงหน้าหมายเลข และเมื่อหาย ส่ง SMS ผ่านหมายเลขนั้น</string>
     <string name="secur_help_bt">ตกลง</string>
     <string name="advan_secur_text">คุณใช้ฟังก์ชันต่อไปนี้ได้:</string>
     <string name="secur_backup_msm"> [LEOMASTER] คุณเลือกสำรองคำสั่งควบคุมผ่าน SMS: 1. ล็อคโทรศัพท์: #lockmobile 2. ค้นหาตำแหน่ง: #locateposition 3. ส่งแจ้งเตือน: #alert 4. ปลุกออก: #alertoff 5. ลบข้อมูล: #formatdata 6. เปิดใช้ล็อค ติดตาม แจ้งเตือน ลบ: #onekey หากโทรศัพท์หาย ส่งคำสั่งออกไป หากลืมคำสั่ง คลิก "สำรองคำสั่งควบคุมระยะไกล" เพื่อส่ง SMS อีกครั้ง http://www.leomaster.com</string>
     <string name="secur_location_msm"> [LEOMASTER] ตำแหน่งหายถูกค้นหา คลิกดู: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
-    <string name="new_ignore">ไม่สน</string>
-    <string name="new_increase_pravicy">ฟังก์ชันขั้นสูงปรับความส่วนตัว</string>
-    <string name="new_pravicy_todo">ฟังก์ชันขั้นสูงอื่น ๆ ก็ทำได้</string>
-    <string name="new_pravicy_healthy">เยี่ยม ปลอดภัย รักษาไว้</string>
-    <string name="new_real_ignore">คุณแน่ใจ?</string>
     <string name="pri_pro_ignore_dialog">คุณแน่ใจว่าไม่สนใจผลลัพธ์นี้? หากตกลง คุณจะไม่ได้รับคะแนน</string>
-    <string name="new_ok">ตกลง</string>
-    <string name="new_cancel">ยกเลิก</string>
 
-    <string name="new_cancel_alarm">ยกเลิกแจ้งเตือน</string>
     <string name="scanint_result_app">แอพใหม่</string>
     <string name="scanint_result_pic">รูปภาพใหม่</string>
     <string name="scanint_result_vid">วิดีโอใหม่</string>
     <string name="scanint_result_deep">ความส่วนตัวขั้นสูง</string>
-    <string name="scaning_immediate">คลิกสแกน</string>
     <string name="secur_add_self_number_tip">คุณป้อนหมายเลขนี้ โปรดป้อนอีกครั้ง</string>
     <string name="new_arrival">การเดินทางใหม่</string>
     <string name="new_funciton">อินเตอร์เฟสใหม่ ฟังก์ชันใหม่ เริ่มใหม่</string>

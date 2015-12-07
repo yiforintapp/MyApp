@@ -88,7 +88,6 @@
     <string name="app_setting_update">проверить обновление</string>
     <string name="feedback">мнения абонента</string>
     <string name="grade">оценить маркета Google</string>
-    <string name="grade_tip">Вы уже много раз пользуетесь нашим продуктом, вам понравился? Дайте нам пять звезд для поощрения!</string>
     <string name="app_setting_about">в отношении</string>
     <string name="forbid_uninstall">предотвращать удаление</string>
     <string name="auto_lock">автоблокировка при блокировании экрана</string>
@@ -452,10 +451,6 @@
     <string name="summary_autolock_after_lockscreen">после замка экрана все применения заново заперты</string>
     <string name="summary_setting_locker">выберите заарретированную установку</string>
     <string name="summary_hide_lockline">скройте след отмыкания</string>
-    <string name="new_guide_page1_title">удобнее ускорить телефон</string>
-    <string name="new_guide_page1_content">на экране также можно ускорить</string>
-    <string name="new_guide_page2_title">камуфляж интереснее</string>
-    <string name="new_guide_page2_content">новый метод камуфляжа,неожиданно</string>
 
 
     <!-- 2.6 start -->
@@ -519,14 +514,11 @@
     <string name="advace_protect_dialog_content_text">Блок. добавл. Предл. улучш. защиту от удал. постор. PrivGuard удал. из бок. панели.</string>
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">Улучш. защита вкл.</string>
-    <string name="advance_protect_open_success_tip_content">Улучш. защита вкл. PrivGuard теперь нельзя удалить. Вы можете откл. его в настр.</string>
     <string name="auto_start_tip_xiaomi4_and_letv">Для защ. конфид. нажмите "Автостарт" и добавьте LEO PG</string>
     <string name="auto_start_tip_redmi">Для защ. конфид. в "Пр. доступа" добавьте PG в автозагр.</string>
     <string name="auto_start_tip_huawei">Для защ. конфид. в "Защ. Прилож." добавьте PG в список</string>
     <string name="auto_start_tip_lenovo">Для защ. конфид. в "Приложения"-"Автозапуск" доб. LEO PG</string>
 
-    <string name="splash_guide_page_msg_title">Центр сообщений</string>
-    <string name="splash_guide_page_msg_content">все мероприятия и полезные советы здесь</string>
     <!-- 2.10 end -->
     <!-- 2.12 start -->
     <string name="applock_guide_tip_title">Автор. треб. для норм. раб.</string>
@@ -559,7 +551,6 @@
     <string name="hp_helper_label">Помощник</string>
     <string name="hp_helper_shot">Быстрый помощник</string>
     <string name="hp_helper_iswipe">Swifty </string>
-    <string name="pri_pro_title">Глубокое скан.</string>
     <string name="pri_pro_ignore">скип</string>
 
     <string name="pri_pro_new_vid">Новое видео <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data></string>
@@ -586,9 +577,6 @@
     <string name="pri_pro_summary_not_confirm">Выполните следующие действия для повышения уровня секрета</string>
     <string name="pri_pro_summary_confirm">Хорошо, все безопасно, так держать!, </string>
     <!--<string name="pri_pro_btn">Открыть (+%1$d)</string>-->
-    <string name="pri_pro_opened">Открыть</string>
-    <string name="pri_mobile_privacy">Секрет с.т. %1$d раз под защ.</string>
-    <string name="pri_lost_privacy">Секрет %1$d д. %2$d ч.</string>
     <string name="pri_pro_contact_summary">Частые контакты</string>
     <string name="pri_pro_contact">Контакты</string>
     <string name="pri_pro_wifi_btn">Для решения</string>
@@ -596,26 +584,14 @@
     <string name="pri_pro_complete">Завершить</string>
     <string name="pri_pro_scanning">Сканирует секрет</string>
     <string name="pri_pro_scanning_finish">Скан. секр. завершено</string>
-    <string name="pri_contact_empty">Выберите контакты</string>
     <string name="pri_contact_succ">Успешно добавлен в контакты секрета</string>
     <string name="pri_contact_added">Были добавлены</string>
     <string name="pri_contact_over">Решил</string>
     <string name="scanning_pattern">Завершено скан. %1$d п.</string>
     <string name="pri_pro_cancel">Отмена</string>
     <string name="pri_pro_process">Сейчас</string>
-    <string name="pri_pro_locking">Замочное приложение</string>
-    <string name="pri_pro_hiding_img">Скрывает фото</string>
-    <string name="pri_pro_hiding_vid">Скрывает Видео</string>
     <string name="pri_pro_wifi_warn">Текущее соединемие WiFi будет риск</string>
     <string name="pri_pro_wifi_connect">Подключение к WiFi:%1$s</string>
-    <string name="pri_pro_ignore_app">Не заблокирует вышеприменение ?</string>
-    <string name="pri_pro_ignore_pic">Не скроет вышекартинки?</string>
-    <string name="pri_pro_ignore_vid">Не скроет вышевидео?</string>
-    <string name="scan_title">Уровень секрета</string>
-    <string name="scan_new_app">Нов. прил.</string>
-    <string name="scan_new_media">Нов. СМИ</string>
-    <string name="scan_new_mobile">Безопасность с.т.</string>
-    <string name="scan_new_privacy">Защ. секр.</string>
 
 
     <string name="scan_notify">Секр. безопасности снизился</string>
@@ -633,7 +609,6 @@
 
     <string name="wifi_titlebar_name">WiFi безопасности</string>
     <string name="wifi_title_name">WiFi Скан. безопасности</string>
-    <string name="wifi_connect_name">Текущее соединениеWiFi:%1$s</string>
     <string name="wifi_result_one">Соединение успешно</string>
     <string name="wifi_result_two">Ненужен втор. доступ</string>
     <string name="wifi_result_three">SSL шифрование</string>
@@ -652,13 +627,10 @@
     <string name="wifi_scan_result_use_now">Сейчас</string>
     <string name="wifi_scan_result_scan">WiFi автоскан.</string>
     <string name="wifi_scan_result_scan_desc">После подключения WiFi автоматически сканирует</string>
-    <string name="wifi_scan_toast_scaning">Сканирует WiFi:%1$s</string>
     <string name="ten_new_app_toast">Много нов. прил. для копии</string>
     <string name="ten_new_app_toast_content">Нажмите для копии</string>
     <string name="over_traffic_toast">Сегодня расх. трафика более%1$sMB</string>
     <string name="over_traffic_toast_content">Нажмите для смотра подробностей</string>
-    <string name="over_traffic_toast_unsafe">WiFi: %1$s <Data><![CDATA[<font color="#ff1200">было риск</font>]]></Data></string>
-    <string name="over_traffic_toast_safe">WiFi: %1$s <Data><![CDATA[<font color="#00a8ff">безопасный</font>]]></Data></string>
 
     <string name="phone_security_no_add_number_text">Доб. ном. близких,отправитьСМС для уп. украд. тел.</string>
     <string name="phone_security_no_add_number_bt_text">Доб. номер близких</string>
@@ -683,10 +655,6 @@
     <string name="phone_security_instruct_lock">Блокир. При.: #lockmobile</string>
     <string name="phone_security_instruct_lock_description">Блокируйте все прил. в с.т.</string>
     <string name="secur_bottom_bt_text">следующий</string>
-    <string name="open_instr_locatepositon">Место слежения</string>
-    <string name="open_instr_alert">звуковая тревога</string>
-    <string name="no_open_instr_fromatedata">Удалить все данные в с.т.</string>
-    <string name="no_open_instr_lock">Блокир. При.</string>
     <string name="open_secur_text">Поздравляем!Основные функции антиугона включены</string>
     <string name="no_secur_text">Вы можете использовать следующие функции:</string>
     <string name="open_secur_checkbox_text">Открыта вышая защита, доб. privacy guard в супервизор устройства</string>
@@ -694,15 +662,11 @@
     <string name="quick_helper_pic_hide">Скрыть фото</string>
     <string name="quick_helper_video_hide">Скрыть видео</string>
     <string name="quick_helper_intruder">Защита от хэкера</string>
-    <string name="quick_helper_privacy_call">Вызов секрета</string>
-    <string name="quick_helper_privacy_msg">СМС секрета</string>
     <string name="quick_helper_wifi_safety">WiFi безопасность</string>
     <string name="quick_helper_app_uninstall">Разгрузка приложения</string>
     <string name="quick_helper_app_backup">Копия приложений</string>
     <string name="quick_helper_flow_manage">Управление трафиком</string>
     <string name="quick_helper_elec_manage">Уп. электр. кол-во.</string>
-    <string name="quick_helper_boost">Ускорение стола</string>
-    <string name="quick_helper_app_joy">Веселое APP</string>
 
     <string name="class_privacy_protection">Защиты секреты</string>
     <string name="class_system_manage">система управления</string>
@@ -712,7 +676,6 @@
     <string name="quick_helper_desc_video_hide">Скрыть личное видео</string>
     <string name="quick_helper_desc_intruder">Возьмите фото,если пароль неверный</string>
     <string name="quick_helper_desc_call">Защ. запись разговоров от разглашения</string>
-    <string name="quick_helper_desc_msg">Защ. содерж.СМС от разглашения</string>
     <string name="quick_helper_desc_wifi">Проверьте безопасности подкл.WiFi</string>
     <string name="quick_helper_desc_uninstall">Разгрузить установл. прил.</string>
     <string name="quick_helper_desc_backup">Копить установл. прил.</string>
@@ -723,7 +686,6 @@
 
     <string name="quick_helper_add">добавить</string>
     <string name="quick_help_add_toast">Успешно добавил</string>
-    <string name="quick_help_add_toast_fail">Добавить удалось</string>
 
     <string name="intruder_to_catch_fail_times_tip">Ошибочно вводить %1$d разовый пароль будет фотографировать хэкера</string>
     <string name="intruder_times_of_catch"> Статья  <Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data>  раз  поймал  заглянуть  вам  телефон</string>
@@ -746,12 +708,9 @@
     <string name="intruderprotection_desc_title">Что такое защ. от хэкера</string>
     <string name="sure_delete_one">Определить ли удалить все фото хэкера?</string>
 
-    <string name="title_activity_security_finish"></string>
     <string name="secur_finish_complate_text">Все функции антиугона с.т. открыты</string>
-    <string name="secur_finish_no_complate_text">Вышая функция защиты не открыта,не использовать следующие функции</string>
     <string name="secur_finish_bt_text">Завершить</string>
     <string name="secur_open_suc">Антиугон открыт</string>
-    <string name="secur_suc_top_image_title">Антиугон открыт</string>
     <string name="secur_suc_top_image_content">С.т. под защиту</string>
     <string name="secur_suc_day">День</string>
     <string name="secur_suc_hour">Час</string>
@@ -761,7 +720,6 @@
     <string name="sim_change_msm_tip"> [LEOMASTER] Внимание! Ваша текущая модель <xliff:g id="sim_chanage">%1$s</xliff:g>. </string>
     <string name="no_sim_tip">SIM не вставлена, отправкаСМС удалась</string>
     <string name="secur_input_number">Введите номер вручно</string>
-    <string name="input_fren_number">Введите  номер  близких</string>
     <string name="secur_input_add_bt">Добавить</string>
     <string name="secur_add_number_title">Добавить бронированные  номеры </string>
 
@@ -780,30 +738,18 @@
     <string name="secur_open_bt">Копить команды дистанц. управл.</string>
     <string name="secur_instr_open_bt">Открыть</string>
     <string name="backup_instr_dialog_content">Копить команды дистанционного управления, команда будет отправить СМС в с.т. близких,отправить ли?</string>
-    <string name="backup_instr_dialog_cancel">Отменить</string>
-    <string name="backup_instr_dialog_sure">Убеждать</string>
-    <string name="send_msm_suce">Успешно отпрвил СМС</string>
     <string name="secur_finish_no_complate_tip">Функцию антиугона может использовать,вышая функция требуют разрешения</string>
     <string name="secur_help_tip_txt">Антиугон защит ваш с.т. после потери и помочь найти его.Сначала надо иметь номер.При потере по бронированным цифрам отправляется СМС для выполнения соответствующих командов. </string>
     <string name="secur_help_bt">Знать</string>
     <string name="advan_secur_text">При включении вышей защиты может использовать вышие функции:</string>
     <string name="secur_backup_msm"> [LEOMASTER] Вы выбрали для резервного копирования контроль заказов через SMS: 1. Блокировка мобильного: #lockmobile 2. найти положение мобильного: #locateposition 3. отправить сигнал тревоги: #alert 4. Сигнализация с: #alertoff 5. предупреждения. четкие данные: #formatdata 6. включить блокировки; отслеживание; сигнализация; стереть: #onekey. Если мобильный потерян, отправить соответствующие приказы. Если вы забыли заказов, нажмите кнопку "Резервное копирование удаленного управления заказами" отправить эту СМС еще раз. http://www.leomaster.com</string>
     <string name="secur_location_msm"> [LEOMASTER] Privacy Guard получил место потерянного тел., нажмите:<xliff:g id="locate_posi">%1$s</xliff:g> http://www.leomaster.com</string>
-    <string name="new_ignore">Игнорировать</string>
-    <string name="new_increase_pravicy">Решите следующие глубины для повышения безопасности секрета</string>
-    <string name="new_pravicy_todo">Решите вашу глубину секрета</string>
-    <string name="new_pravicy_healthy">Состояние секр. безопасное, продолжите ~</string>
-    <string name="new_real_ignore">Вы уверены?</string>
     <string name="pri_pro_ignore_dialog">Подтвердить ли не решить результат скан.? Перейти обработку не увеличить ваш счет</string>
-    <string name="new_ok">Убеждать</string>
-    <string name="new_cancel">Отменить</string>
 
-    <string name="new_cancel_alarm">Отменить тревогу</string>
     <string name="scanint_result_app">Новое примен.</string>
     <string name="scanint_result_pic">Новое фото</string>
     <string name="scanint_result_vid">Нов. видео</string>
     <string name="scanint_result_deep">Секрет глубиный</string>
-    <string name="scaning_immediate">Нажите скан.</string>
     <string name="secur_add_self_number_tip">Номер ввода-номер с.т.‚ введите снова</string>
     <string name="new_arrival">Новое путешествие</string>
     <string name="new_funciton">Новый интерфейс,новая функция,новое начало</string>

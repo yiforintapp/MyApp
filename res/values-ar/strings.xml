@@ -112,7 +112,6 @@
     <string name="app_setting_update">فحص الترقية</string>
     <string name="feedback">رد المستخدم</string>
     <string name="grade">خمس نجوم</string>
-    <string name="grade_tip">تم استعمال PrivacyGuard مرات، هل تحبنا، قدم لنا 5 نجوم!</string>
     <string name="app_setting_about">حولنا</string>
 
     <!-- TODO -->
@@ -573,10 +572,6 @@
     <string name="summary_autolock_after_lockscreen">بعد قفل شاشة أعد قفل</string>
     <string name="summary_setting_locker">اختر إعداد قفل تطبيق</string>
     <string name="summary_hide_lockline">يكمن مسار فتح قفل التطبيق لحماية خصوصيتكم</string>
-    <string name="new_guide_page1_title">تسريع الهاتف أسهلا</string>
-    <string name="new_guide_page1_content">يمكن أيضا استخدام وظيفة التسريع علي سطح المكتب</string>
-    <string name="new_guide_page2_title">  التمويه أكثر متعة</string>
-    <string name="new_guide_page2_content">طربقة التمويه الجديدة تتجاوز المتوقع الخاص بكم</string>
     <!-- version 2.5 huangqili part -->
     <!-- 2.6 start -->
     <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
@@ -638,10 +633,7 @@
     <string name="advace_protect_dialog_title_text">حماية متقدمة</string>
     <string name="advace_protect_dialog_content_text">تم إضافة القفل بنجاح. تم اقتراح الحماية المتقدمة لتجنب إلغاء تثبيت الآخرين. يمكنك إلغاء تثبيت حارس الخصوصية في الشريط الجانبي. يمكنك إلغاء تثبيت حارس الخصوصية في الشريط الجانبي.</string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="splash_guide_page_msg_title">مركز الرسائل</string>
-    <string name="splash_guide_page_msg_content">جميع الأنشطة والنصائح المفيدة هنا </string>
     <string name="advance_protect_open_success_tip_title">تنجح!</string>
-    <string name="advance_protect_open_success_tip_content">تم تمكين الحماية المتقدمة. لن يمكن إلغاء تثبيت حارس الخصوصية الآن. يمكنك تعطيل ذلك في الإعدادات.</string>
     <string name="auto_start_tip_xiaomi4_and_letv">يرجى الضغط على "التشغيل التلقائي" وإضافة حارس الخصوصية LEO لقائمة التشغيل التلقائي.</string>
     <string name="auto_start_tip_redmi">يرجى الذهاب إلى "الأذونات" وإضافة حارس الخصوصية لتطبيقات التشغيل التلقائي</string>
     <string name="auto_start_tip_huawei">يرجى الذهاب إلى "التطبيقات المحمية" وإضافة حارس الخصوصية للقائمة المحمية</string>
@@ -678,7 +670,6 @@
     <string name="hp_helper_label">المساعدة</string>
     <string name="hp_helper_shot">المساعدة السريعة</string>
     <string name="hp_helper_iswipe">Swifty</string>
-    <string name="pri_pro_title">الفحص العميق</string>
     <string name="pri_pro_ignore">تجاوز</string>
     
     <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فيديو جديد </string>
@@ -705,9 +696,6 @@
     <string name="pri_pro_summary_not_confirm">تحسين مستوى الخصوصية بواسطة</string>
     <string name="pri_pro_summary_confirm">جيد، الكل آمن، واصل ذلك!</string>
     <!--<string name="pri_pro_btn">تمكين(+<xliff:g>%1$s</xliff:g>)</string>-->
-    <string name="pri_pro_opened">تمكين</string>
-    <string name="pri_mobile_privacy">الخصوصية محمية لـ<xliff:g>%1$s</xliff:g> مرة</string>
-    <string name="pri_lost_privacy">الخصوصية محمية لـ <xliff:g>%1$d</xliff:g> يوم <xliff:g>%2$d</xliff:g> ساعة</string>
     <string name="pri_pro_contact_summary">جهات الاتصال المتكررة</string>
     <string name="pri_pro_contact">جهات الاتصال</string>
     <string name="pri_pro_wifi_btn">للمعالجة</string>
@@ -715,26 +703,14 @@
     <string name="pri_pro_complete">إنهاء</string>
     <string name="pri_pro_scanning">فحص حالة الخصوصية</string>
     <string name="pri_pro_scanning_finish">اكتمل الفحص</string>
-    <string name="pri_contact_empty">اختر جهة اتصال</string>
     <string name="pri_contact_succ">تم الإضافة جهة الاتصال الخاصة بنجاح</string>
     <string name="pri_contact_added">تمت الإضافة</string>
     <string name="pri_contact_over">تمت المعالجة</string>
     <string name="scanning_pattern">اكتمل فحص <xliff:g>%1$s</xliff:g> عنصر</string>
     <string name="pri_pro_cancel">إلغاء</string>
     <string name="pri_pro_process">قم بالحل الآن</string>
-    <string name="pri_pro_locking">قفل التطبيق</string>
-    <string name="pri_pro_hiding_img">إخفاء صورة</string>
-    <string name="pri_pro_hiding_vid">إخفاء فيديو</string>
     <string name="pri_pro_wifi_warn">شبكة واي فاي المتصلة في خطر</string>
     <string name="pri_pro_wifi_connect">متصل بشبكة واي فاي: <xliff:g>%1$s</xliff:g></string>
-    <string name="pri_pro_ignore_app">لا لقفل التطبييق؟</string>
-    <string name="pri_pro_ignore_pic">لا لإخفاء الصورة؟</string>
-    <string name="pri_pro_ignore_vid">لا لإخفاء الفيديو؟</string>
-    <string name="scan_title">مستوى الخصوصية</string>
-    <string name="scan_new_app">تطبيق جديد</string>
-    <string name="scan_new_media">وسائط جديدة</string>
-    <string name="scan_new_mobile">حماية الهاتف</string>
-    <string name="scan_new_privacy">حماية الخصوصية</string>
     <string name="scan_notify">انخفضت خصوصيتك</string>
     <string name="scan_notify_app">تم العثور على <xliff:g>%1$d</xliff:g> تطبيق جديد، انقر للمعالجة الآن</string>
     <string name="scan_notify_pic">تم العثور على <xliff:g>%1$d</xliff:g> صورة جديدة، انقر للمعالجة الآن</string>
@@ -748,7 +724,6 @@
     <string name="unlock_app_action">تم إلغاء قفل <xliff:g>%1$s</xliff:g></string>
     <string name="wifi_titlebar_name">حماية واي فاي</string>
     <string name="wifi_title_name">فحص حماية واي فاي</string>
-    <string name="wifi_connect_name">متصل بشبكة واي فاي:<xliff:g>%1$s</xliff:g></string>
     <string name="wifi_result_one">نجح الاتصال</string>
     <string name="wifi_result_two">الوصول الثانوي غير مطلوب</string>
     <string name="wifi_result_three">تشفير SSL</string>
@@ -767,13 +742,10 @@
     <string name="wifi_scan_result_use_now">الآن</string>
     <string name="wifi_scan_result_scan">فحص واي فاي التلقائي</string>
     <string name="wifi_scan_result_scan_desc">فحص حماية واي فاي عند الاتصال</string>
-    <string name="wifi_scan_toast_scaning">فحص واي فاي: <xliff:g>%1$s</xliff:g></string>
     <string name="ten_new_app_toast">لديك تطبيقات جديدة لنسخها احتياطيا</string>
     <string name="ten_new_app_toast_content">انقر للنسخ الاحتياطي</string>
     <string name="over_traffic_toast">تجاوز تردد اليوم <xliff:g>%1$s</xliff:g> ميجابايت</string>
     <string name="over_traffic_toast_content">انقر للتفاصيل</string>
-    <string name="over_traffic_toast_unsafe">واي فاي: <xliff:g>%1$s</xliff:g> <Data><![CDATA[<font color="#ff1200">بها خطورة</font>]]></Data></string>
-    <string name="over_traffic_toast_safe">واي فاي: <xliff:g>%1$s</xliff:g> <Data><![CDATA[<font color="#00a8ff">آمنة</font>]]></Data></string>
 
     <string name="phone_security_no_add_number_text">أضف رقم العائلة لإرسال رسالة نصية للتحكم بالهاتف المسروق</string>
     <string name="phone_security_no_add_number_bt_text">أضف رقم العائلة</string>
@@ -797,10 +769,6 @@
     <string name="phone_security_instruct_lock">قفل التطبيقات: #lockmobile</string>
     <string name="phone_security_instruct_lock_description">قفل كل التطبيقات</string>
     <string name="secur_bottom_bt_text">التالي</string>
-    <string name="open_instr_locatepositon">تعقب الموقع</string>
-    <string name="open_instr_alert">المنبه</string>
-    <string name="no_open_instr_fromatedata">حذف كل البيانات على الهاتف</string>
-    <string name="no_open_instr_lock">قفل التطبيقات</string>
     <string name="open_secur_text">تمكين خاصية مكافحة السرقة</string>
     <string name="no_secur_text">يمكنك استخدام الوظائف التالية:</string>
     <string name="open_secur_checkbox_text">تمكين الحماية المتقدمة، أضف privacy guard لمدير الجهاز</string>
@@ -808,15 +776,11 @@
     <string name="quick_helper_pic_hide">إخفاء صورة</string>
     <string name="quick_helper_video_hide">إخفاء فيديو</string>
     <string name="quick_helper_intruder">تنبيه باقتحام</string>
-    <string name="quick_helper_privacy_call">مكالمة خاصة</string>
-    <string name="quick_helper_privacy_msg">رسائل نصية خاصة</string>
     <string name="quick_helper_wifi_safety">حماية شبكة واي فاي</string>
     <string name="quick_helper_app_uninstall">إلغاء تثبيت تطبيق</string>
     <string name="quick_helper_app_backup">نسخ احتياطي للتطبيقات</string>
     <string name="quick_helper_flow_manage">مراقبة البيانات</string>
     <string name="quick_helper_elec_manage">استخدام البطارية</string>
-    <string name="quick_helper_boost">تعزيز</string>
-    <string name="quick_helper_app_joy">App Joy</string>
     <string name="class_privacy_protection">حماية الخصوصية</string>
     <string name="class_system_manage">إدارة النظام</string>
     <string name="class_happy_app">App Joy</string>
@@ -824,7 +788,6 @@
     <string name="quick_helper_desc_video_hide">إخفاء الفيديوهات الخاصة</string>
     <string name="quick_helper_desc_intruder">التقاط الصورة إذا كانت كلمة المرور خاطئة</string>
     <string name="quick_helper_desc_call">حماية سجل المكالمات</string>
-    <string name="quick_helper_desc_msg">حماية الرسائل النصية</string>
     <string name="quick_helper_desc_wifi">رصد حماية شبكة واي فاي المتصلة</string>
     <string name="quick_helper_desc_uninstall">إلغاء تثبيت التطبيقات</string>
     <string name="quick_helper_desc_backup">النسخ الاحتياطي للحزمة المثبتة</string>
@@ -834,7 +797,6 @@
     <string name="quick_helper_desc_appjoy">المزيد من المتعة بالداخل</string>
     <string name="quick_helper_add">إضافة</string>
     <string name="quick_help_add_toast">نجح</string>
-    <string name="quick_help_add_toast_fail">فشل</string>
     <string name="intruder_to_catch_fail_times_tip">التقاط صورة إذا تم إدخال كلمة مرور خاطئة <xliff:g>%1$s</xliff:g> مرات</string>
     <string name="intruder_times_of_catch">تم اكتشاف <Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data> محاولات اقتحام</string>
     <string name="change_times_to_catch">تغيير</string>
@@ -854,10 +816,8 @@
     <string name="intruderprotection_desc_title">ما هو تنبيه الاقتحام</string>
     <string name="sure_delete_one">حذف صورة الدخيل؟</string>
     <string name="secur_finish_complate_text">تم تمكين كل وظائف مكافحة السرقة</string>
-    <string name="secur_finish_no_complate_text">لم يتم تمكين الحماية المتقدمة</string>
     <string name="secur_finish_bt_text">إنهاء</string>
     <string name="secur_open_suc">تمكين مكافحة السرقة</string>
-    <string name="secur_suc_top_image_title">تمكين</string>
     <string name="secur_suc_top_image_content">محمي</string>
     <string name="secur_suc_day">أيام</string>
     <string name="secur_suc_hour">ساعات</string>
@@ -867,7 +827,6 @@
     <string name="sim_change_msm_tip">[LEOMASTER] تنبيه، تم تغيير بطاقة SIM بهاتفك المحمول والذي نوعه <xliff:g id="sim_chanage">%1$s</xliff:g>. إذا كان أنت من قام بذلك، يرجى تجاهل هذا الإشعار. </string>
     <string name="no_sim_tip">لم يتم إدخال بطاقة SIM، لا يمكن إرسال رسالة نصية</string>
     <string name="secur_input_number">إدخال الرقم يدويا</string>
-    <string name="input_fren_number">إدخال رقم العائلة</string>
     <string name="secur_input_add_bt">إضافة</string>
     <string name="secur_add_number_title">أضف الرقم المعد مسبقا</string>
     <string name="quick_helper_desc">أضف الوظائف التالية لسطح المكتب</string>
@@ -885,29 +844,17 @@
     <string name="secur_open_bt">النسخ الاحتياطي لأوامر التحكم عن بعد</string>
     <string name="secur_instr_open_bt">تمكين</string>
     <string name="backup_instr_dialog_content">سيتم إرسال الأوامر لرقم العائلة عبر رسالة نصية، إرسال الآن؟</string>
-    <string name="backup_instr_dialog_cancel">إلغاء</string>
-    <string name="backup_instr_dialog_sure">موافق</string>
-    <string name="send_msm_suce">تم الإرسال بنجاح!</string>
     <string name="secur_finish_no_complate_tip">يمكنك استخدام الوظائف الأساسية الآن، للوظائف المتقدمة، اذهب إلى مدير الجهاز</string>
     <string name="secur_help_tip_txt">ستقوم هذه الخاصية بحماية خصوصيتك ومساعدتك في العثور على هاتفك المفقود. لاستخدامها، يجب تعيين رقم هاتف مسبقا، وعند فقدان الهاتف، ترسل رسالة نصية عبر الرقم المعد مسبقا.</string>
     <string name="secur_help_bt">موافق</string>
     <string name="advan_secur_text">يمكنك استخدام الوظائف التالية:</string>
     <string name="secur_backup_msm">[LEOMASTER] لقد قمت باختيار النسخ الاحتياطي لأوامر التحكم عبر الرسائل النصية: 1. قفل الهاتف: #lockmobile 2. تحديد موقع الهاتف:  #locateposition 3. إرسال تنبيه: #alert  4. الانذار:#alertoff 5. مسح البيانات: formatdata# 6. تمكين القفل، التعقب؛ المنبه؛ المسح: #onekey. إذت تعرض الهاتف للضياع، ارسل الأوامر المطابقة لما تريد. إذا نسيت الأوامر، انقر على "النسخ الاحتياطي لأوامر التحكم عن بعد" لإرسال هذه الرسالة النصية مرة أخرى. http://www.leomaster.com</string>
     <string name="secur_location_msm">[LEOMASTER] تم تحديد موقع الهاتف المفقود، انقر لترى: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
-    <string name="new_ignore">تجاهل</string>
-    <string name="new_increase_pravicy">تحسين مستوى الخصوصية باتباع الوظائف المتقدمة</string>
-    <string name="new_pravicy_todo">يمكن إجراء وظائف متقدمة أخرى</string>
-    <string name="new_pravicy_healthy">جيد، الكل آمن، واصل ذلك!</string>
-    <string name="new_real_ignore">هل أنت متأكد؟</string>
     <string name="pri_pro_ignore_dialog">هل أنت متأكد من تجاهل النتائج؟ للقيام بذلك، لن تحصل على الدرجة</string>
-    <string name="new_ok">موافق</string>
-    <string name="new_cancel">إلغاء</string>
-    <string name="new_cancel_alarm">إلغاء التنبيه</string>
     <string name="scanint_result_app">تطبيقات جديدة</string>
     <string name="scanint_result_pic">صور جديدة</string>
     <string name="scanint_result_vid">فيديوهات جديدة</string>
     <string name="scanint_result_deep">الخصوصية المتقدمة</string>
-    <string name="scaning_immediate">انقر للفحص</string>
     <string name="secur_add_self_number_tip">لقد قمت بإدخال رقم هذا الهاتف، يرجى الإدخال مرة أخرى</string>
     <string name="new_arrival">رحلة جديدة</string>
     <string name="new_funciton">واجهة جديدة، خاصية جديدة، بداية جديدة</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="gridview_vertical_spacing">14dip</dimen>
 
 
     <dimen name="setting_item_height">55dp</dimen>
@@ -16,8 +15,6 @@
     <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
     <dimen name="hide_picture_image_frame_left">6dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-    <dimen name="hide_picture_checkbox_left">95dp</dimen>
-    <dimen name="hide_picture_checkbox_top">95dp</dimen>
             <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">24dp</dimen>
     <dimen name="digital_item_width">55dp</dimen>
@@ -47,16 +44,10 @@
     <dimen name="about_logo_width">112dp</dimen>
     <dimen name="about_logo_height">120dp</dimen>
     <dimen name="default_lock_recomment_pagedgrideview_top">15dp</dimen>
-    <dimen name="app_item_iv_app_icon_width">52dp</dimen>
-    <dimen name="app_item_iv_app_icon_height">52dp</dimen>
     <dimen name="default_lock_icon_width">23dp</dimen>
     <dimen name="lock_icon_height">24dp</dimen>
-    <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
-    <dimen name="app_item_linearlayout_padding">5dp</dimen>
 
 
-    <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
-    <dimen name="grid_page_item_layout_marginRight">8dp</dimen>
     <dimen name="help_icon_width">18dp</dimen>
     <dimen name="help_icon_height">24dp</dimen>
     <dimen name="help_setting_margintop">18dp</dimen>
@@ -107,7 +98,6 @@
     <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">20dp</dimen>
     <dimen name="guide_title_margin_buttom">21dp</dimen>
-    <dimen name="guide_content_margin_buttom">115dp</dimen>
     <dimen name="guide_go_button_height">36dp</dimen>
     <dimen name="guide_go_button_width">124dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
@@ -160,7 +150,6 @@
     <dimen name="webview_icon_margin">60dp</dimen>
     <dimen name="webview_title_width">232dp</dimen>
     <dimen name="privacy_default_text_margin_top">8dp</dimen>
-    <dimen name="privacy_default_title_margin_top">30dp</dimen>
     <dimen name="guide_skip_margin">10dp</dimen>
     <dimen name="privacy_default_image_width">100dp</dimen>
     <dimen name="privacy_default_image_height">100dp</dimen>
@@ -187,7 +176,6 @@
     <dimen name="mc_item_des_padding">9dp</dimen>
     <dimen name="mc_item_update_des_padding">4dp</dimen>
     <dimen name="mc_empty_iv_top_margin">124dp</dimen>
-    <dimen name="mc_empty_tv1_top_margin">13dp</dimen>
     <dimen name="mc_empty_tv2_top_margin">10dp</dimen>
     <dimen name="mc_empty_tv3_top_margin">20dp</dimen>
     <dimen name="app_about_content">10dp</dimen>
@@ -204,7 +192,6 @@
     <dimen name="ic_toolbar_width">50dp</dimen>
     <dimen name="home_tab_ic_size">32dp</dimen>
     <dimen name="home_tab_height">244dp</dimen>
-    <dimen name="home_shield_top_margin">80dp</dimen>
     <dimen name="home_shield_bg_circle_margin">40dp</dimen>
     <dimen name="home_shield_score">50dp</dimen>
     <dimen name="home_shield_status">12dp</dimen>
@@ -240,12 +227,10 @@
     <dimen name="loading_baseline_margin">28dp</dimen>
     <dimen name="home_loading">16dp</dimen>
     <dimen name="home_loading_rise">220dp</dimen>
-    <dimen name="home_scanning_icon">52dp</dimen>
     <dimen name="home_scanning_padding_top">352dp</dimen>
     <dimen name="scanning_icon_margin_top">30dp</dimen>
     <dimen name="home_step_width">164dp</dimen>
     <dimen name="home_step_height">20dp</dimen>
-    <dimen name="home_step_top_margin">0dp</dimen>
     <dimen name="home_step_middle">8dp</dimen>
     <dimen name="home_step_small">6dp</dimen>
     <dimen name="home_step_line">28dp</dimen>
@@ -255,9 +240,6 @@
     <dimen name="home_more_arrow_width">100dp</dimen>
     <!-- 一些通用配置 -->
     <dimen name="common_btn_radius">2dp</dimen>
-    <integer name="ripple_list_duration">150</integer>
-    <integer name="ripple_btn_duration">100</integer>
-    <integer name="menu_ripple_alpha">100</integer>
     <!--手机防盗-->
     <dimen name="phone_security_add_number_TV_size">14dp</dimen>
     <dimen name="phone_secur_add_bt_height">48dp</dimen>
@@ -289,8 +271,6 @@
     <dimen name="secur_nb_lt_hi">44dp</dimen>
     <dimen name="secur_bt_rt_hi">63dp</dimen>
     <dimen name="ph_sec_add_nb_tv_tp">16dp</dimen>
-    <dimen name="ph_sec_center_rt_tp">5dp</dimen>
-    <dimen name="secur_bt_rv_tp">7dp</dimen>
     <dimen name="ph_sec_add_nb_til_tv">16dp</dimen>
     <dimen name="sec_nub_hi">53dp</dimen>
     <dimen name="ph_sec_nb_sim_tip_top">10dp</dimen>
@@ -341,9 +321,6 @@
     <dimen name="spl_fc_share_bt_size">46dp</dimen>
     <dimen name="secur_list_height">400dp</dimen>
     <dimen name="secur_ckb_hgt">35dp</dimen>
-    <dimen name="secur_btm_hgt">95dp</dimen>
-    <dimen name="out_circle_adpt">0dp</dimen>
-    <dimen name="in_circle_adpt">0dp</dimen>
 
     <dimen name="ad_parent_width">345dp</dimen>
     <dimen name="ad_content_width">318dp</dimen>

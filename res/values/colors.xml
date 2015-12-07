@@ -12,7 +12,6 @@
     <color name="dialog_pro_bg">#dedede</color>
     <color name="dialog_pro_progress">#4285f4</color>
     <color name="dialog_title_area_bg">#2893fe</color>
-    <color name="dialog_content_area_bg">#ffffff</color>
     <color name="dialog_btn_area_bg">#f7f7f7</color>
     <color name="item_backup_grey">#f7f7f7</color>
     <color name="option_text_color">#505050</color>
@@ -54,10 +53,8 @@
     <drawable name="transparent">#00000000</drawable>
 
     <color name="home_btn_lock_pressed">#e3edfd</color>
-    <color name="manage_quick_gesture_text_color">#f0e6ff</color>
     <color name="webview_pro_bg">#e4e4e4</color>
     <color name="webview_pro">#28b1ff</color>
-    <color name="sort_select_color">#4584f5</color>
     <color name="cool_red">#ff2a00</color>
     <color name="translucent_background">#b2000000</color>
 
@@ -71,7 +68,6 @@
     <!--3.0-->
     <color name="ic_toolbar_pressed">#23000000</color>
     <!--通用标题栏按下背景-->
-    <color name="home_tab_rippelColor">#d3d3d3</color>
     <color name="home_tab_pressed">#ececec</color>
     <color name="home_tab_divider">#ebebeb</color>
     <color name="home_bg_level1_up">#1063ee</color>
@@ -94,8 +90,6 @@
     <color name="green_button">#16ca37</color>
     <color name="green_button_ripple">#08b329</color>
     <color name="blue_button_click">#00008B</color>
-    <color name="green_button_backcolor">#f016ca37</color>
-    <color name="green_button_click">#08b329</color>
 
     <color name="wifi_result_safe_start">#0057e8</color>
     <color name="wifi_result_safe_end">#3c73ff</color>
@@ -119,7 +113,6 @@
     <color name="wifi_loading_icon_bg">#b3000000</color>
     <color name="wifi_loading_icon_unsafe">#ff1200</color>
     <color name="wifi_loading_icon_safe">#00a8ff</color>
-    <color name="pattern_draw_path_color">#cc00d2ff</color>
 
     <!-- 绿色按钮 -->
     <color name="button_blue">#2675f6</color>

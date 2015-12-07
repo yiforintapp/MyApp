@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="gridview_vertical_spacing">21dip</dimen>
 
     <dimen name="about_logo_width">124dp</dimen>
     <dimen name="about_logo_height">132dp</dimen>
@@ -9,18 +8,12 @@
     <dimen name="success_lock_imageiv">75dp</dimen>
     <dimen name="default_lock_recomment_pagedgrideview_top">2dp</dimen>
     <dimen name="default_lock_recomment_title_top">30dp</dimen>
-    <dimen name="app_item_iv_app_icon_width">52dp</dimen>
-    <dimen name="app_item_iv_app_icon_height">52dp</dimen>
     <dimen name="default_lock_icon_width">23dp</dimen>
     <dimen name="lock_icon_height">24dp</dimen>
-    <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
-    <dimen name="app_item_linearlayout_padding">5dp</dimen>
 
     <dimen name="digital_item_width">60dp</dimen>
     <dimen name="digital_item_height">60dp</dimen>
 
-    <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
-    <dimen name="grid_page_item_layout_marginRight">8dp</dimen>
     <dimen name="help_icon_width">18dp</dimen>
     <dimen name="help_icon_height">24dp</dimen>
     <dimen name="help_setting_margintop">18dp</dimen>
@@ -69,7 +62,6 @@
     <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">20dp</dimen>
     <dimen name="guide_title_margin_buttom">18dp</dimen>
-    <dimen name="guide_content_margin_buttom">80dp</dimen>
     <dimen name="guide_go_button_height">38dp</dimen>
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
@@ -82,8 +74,6 @@
     <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
     <dimen name="hide_picture_image_frame_left">9dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-    <dimen name="hide_picture_checkbox_left">95dp</dimen>
-    <dimen name="hide_picture_checkbox_top">95dp</dimen>
     <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">24dp</dimen>
 
@@ -122,7 +112,6 @@
     <dimen name="webview_icon_margin">70dp</dimen>
     <dimen name="webview_title_width">262dp</dimen>
     <dimen name="guide_skip_margin">14dp</dimen>
-    <dimen name="privacy_default_title_margin_top">48dp</dimen>
     <dimen name="privacy_default_image_width">120dp</dimen>
     <dimen name="privacy_default_image_height">120dp</dimen>
     <dimen name="privacy_default_text_margin_top">10dp</dimen>
@@ -171,8 +160,6 @@
     <dimen name="secur_nb_lt_hi">44dp</dimen>
     <dimen name="secur_bt_rt_hi">63dp</dimen>
     <dimen name="ph_sec_add_nb_tv_tp">16dp</dimen>
-    <dimen name="ph_sec_center_rt_tp">5dp</dimen>
-    <dimen name="secur_bt_rv_tp">7dp</dimen>
     <dimen name="ph_sec_add_nb_til_tv">16dp</dimen>
     <dimen name="sec_nub_hi">53dp</dimen>
     <dimen name="ph_sec_nb_sim_tip_top">10dp</dimen>
