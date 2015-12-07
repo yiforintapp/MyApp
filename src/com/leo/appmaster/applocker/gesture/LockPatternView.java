@@ -1155,7 +1155,7 @@ public class LockPatternView extends ViewGroup {
 //                } else if (mPatternInProgress) {
                 } else {
                     Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_GESTURE_DOT, mContext);
-                    if (drawable != null) {
+                    if (drawable != null && isFromLockScreenActivity) {
                         mButtonViews[i].setBackgroundDrawable(drawable);
                     } else {
                         mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);

@@ -2,6 +2,7 @@ package com.leo.appmaster.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,12 +12,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.LockManager;
@@ -46,7 +49,11 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private View mIntruderView;
     private View mWifiSecurityView;
     private View mLostSecurityView;
-
+    private ImageView mIvTabIcon1;
+    private ImageView mIvTabIcon2;
+    private ImageView mIvTabIcon3;
+    private ImageView mIvTabIcon4;
+    
     private View mRootView;
     private HomeActivity mActivity;
 
@@ -127,6 +134,23 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .create();
         mLostSecurityView.setOnClickListener(this);
         mRedDot = (ImageView) view.findViewById(R.id.have_theme_red_dot);
+        
+        mIvTabIcon1 = (ImageView) view.findViewById(R.id.home_ic_applcok_img);
+        mIvTabIcon2 = (ImageView) view.findViewById(R.id.home_ic_wifi_img);
+        mIvTabIcon3 = (ImageView) view.findViewById(R.id.home_ic_lost_img);
+        mIvTabIcon4 = (ImageView) view.findViewById(R.id.home_ic_intruder_img);
+        
+        tryChangeToChrismasTheme();
+    }
+
+    private void tryChangeToChrismasTheme() {
+        Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB, getActivity());
+        if(drawable != null) {
+            mIvTabIcon1.setImageDrawable(drawable);
+            mIvTabIcon2.setImageDrawable(drawable);
+            mIvTabIcon3.setImageDrawable(drawable);
+            mIvTabIcon4.setImageDrawable(drawable);
+        }
     }
 
     public void dismissTab() {

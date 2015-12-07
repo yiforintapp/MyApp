@@ -19,6 +19,7 @@
             android:layout_weight="1">
 
             <RelativeLayout
+                android:id="@+id/rl_home_tab_applock"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/new_list_selecter">
@@ -73,6 +74,7 @@
             android:layout_weight="1">
 
             <RelativeLayout
+                android:id="@+id/rl_home_tab_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
@@ -112,6 +114,7 @@
             android:layout_weight="1">
 
             <RelativeLayout
+                android:id="@+id/rl_home_tab_findlost"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
@@ -144,6 +147,7 @@
             android:layout_weight="1">
 
             <RelativeLayout
+                android:id="@+id/rl_home_tab_intruder_protection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
