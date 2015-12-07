@@ -22,12 +22,13 @@
                 android:layout_height="@dimen/wifi_result_trans_content"
                 android:background="@color/transparent" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/main_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/trans_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:orientation="vertical">
 
                 <!-- Advertise -->
                 <RelativeLayout
@@ -101,13 +102,32 @@
                 </RelativeLayout>
                 <!-- Advertise -->
 
+                <ViewStub
+                    android:id="@+id/wifimaster_wifi_stub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout="@layout/wifi_wifimaster_item" />
+
+                <ViewStub
+                    android:id="@+id/swifty_wifi_stub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout="@layout/wifi_swifty_item" />
+
                 <!-- safe content-->
                 <RelativeLayout
                     android:id="@+id/safe_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/ad_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/wifi_result_1px_bg"
                     android:padding="19dp"
                     android:visibility="gone">
@@ -201,13 +221,13 @@
                     android:id="@+id/unsafe_result_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/ad_content"
                     android:background="@color/white"
                     android:gravity="center"
                     android:paddingBottom="19dp"
                     android:paddingLeft="34dp"
                     android:paddingRight="34dp"
                     android:paddingTop="19dp"
+                    android:layout_marginTop="8dp"
                     android:visibility="gone">
 
                     <RelativeLayout
@@ -343,13 +363,32 @@
                     android:id="@+id/bottom_content_empty_unsafe"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
-                    android:layout_below="@id/unsafe_result_content"
                     android:background="@color/white"
                     android:visibility="gone" />
                 <!-- un safe content-->
 
+                <!-- gp content-->
+                <ViewStub
+                    android:id="@+id/grade_wifi_stub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout="@layout/wifi_grade_item" />
+                <!-- gp content-->
 
-            </RelativeLayout>
+                <ViewStub
+                    android:id="@+id/fb_wifi_stub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout="@layout/wifi_fb_item" />
+
+
+            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 

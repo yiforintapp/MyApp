@@ -398,7 +398,7 @@ public class Constants {
     public static final String FACEBOOK_CLASS = "com.facebook.katana.IntentUriHandler";
     public static final String FACEBOOK_PG_URL = "https://www.facebook.com/pages/App-Master/1709302419294051";
 
-    /** Swifty卡片数据请求地址 */
+    /** 旧Swifty卡片数据请求地址 */
     public static final String SWIFTY_SECURITY_URL = "/appmaster/privacysuggest";
     
     public static final String EXTRA_IS_FROM_SCAN = "isFromScan";
@@ -411,4 +411,20 @@ public class Constants {
     public static final String PG_TO_ISWIPE = "pg_to_iswipe";
     public static final String ISWIPE_FIRST_TIP = "iswipe_first_tip";
     public static final String ISWIPE_NO_FIRST_TIP = "iswipe_no_firt_tip";
+
+    /** 用于拼接Gp地址 */
+    public final static String GP_PKG_NAME = "com.android.vending";
+    public final static String FIRST_GP_STRING = "market://details?id=";
+    public final static String LAST_GP_STRING = "&referrer=utm_source=AppMaster";
+
+    /** gp包名 */
+    public final static String SWIFTY_PKG_NAME = "com.leo.iswipe";
+
+    public final static String IS_CLICK_SWIFTY = "is_click_swifty";
+    public final static String IS_CLICK_WIFIMASTER = "is_click_wifimaster";
+
+    /** 新的卡片数据接口 */
+    public static final String PRIVACY_WIFI_URL = "/appmaster/promotion";
+
+
 }

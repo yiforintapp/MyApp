@@ -24,8 +24,14 @@
         android:layout_height="133dp"
         android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"
-        android:layout_below="@+id/item_header_ll"
-        android:background="@drawable/grade_bg">
+        android:layout_below="@+id/item_header_ll">
+
+        <ImageView
+            android:id="@+id/grade_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/grade_bg"
+            android:scaleType="centerCrop"/>
 
 
         <LinearLayout

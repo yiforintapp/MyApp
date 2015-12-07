@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
+    style="@style/ConfirmItem"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:id="@+id/item_header_ll"
+        style="@style/SecurityItemHeader">
+
+        <View
+            android:id="@+id/lost_item_label"
+            style="@style/ItemLabelLost"
+            android:background="@color/security_swifty" />
+
+        <TextView
+            android:id="@+id/item_title"
+            style="@style/ItemTitle"
+            android:text="wifimaster" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/wifimaster_img"
+        android:layout_width="match_parent"
+        android:layout_height="133dp"
+        android:src="@drawable/fb_banner"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/item_header_ll"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+        />
+
+    <TextView
+        android:id="@+id/wifimaster_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/c2"
+        android:textSize="14dp"
+        android:layout_alignLeft="@+id/wifimaster_img"
+        android:layout_alignRight="@+id/wifimaster_img"
+        android:layout_below="@+id/wifimaster_img"
+        android:text="wifimaster"/>
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/wifimaster_content"
+        >
+
+        <View
+            android:id="@+id/item_btn_divider"
+            android:layout_marginLeft="19dp"
+            android:layout_marginRight="19dp"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/c4" />
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/item_btn_rv"
+            style="@style/SecurityItemBtn"
+            leo:rippleColor="@color/button_gray_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="true"
+            leo:rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/item_btn_tv"
+                style="@style/ItemBtnText"
+                android:text="@string/fb_item_btn"/>
+        </com.leo.appmaster.ui.RippleView>
+    </LinearLayout>
+
+</RelativeLayout>

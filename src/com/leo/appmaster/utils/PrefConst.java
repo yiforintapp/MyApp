@@ -91,4 +91,54 @@ public class PrefConst {
 
     public static final String KEY_HAS_LATEAST = "intruder_has_lateast";
     public static final String KEY_LATEAST_PATH = "intruder_lateast_path";
+
+    //推广卡片8个Key值
+    public static final String KEY_PRI_WIFIMASTER = "privacymaster";
+    public static final String KEY_PRI_FB = "privacyfb";
+    public static final String KEY_PRI_GRADE = "privacypg";
+    public static final String KEY_WIFI_WIFIMASTER = "wifimaster";
+    public static final String KEY_WIFI_SWIFTY = "wifimswifty";
+    public static final String KEY_WIFI_FB = "wififb";
+    public static final String KEY_WIFI_GRADE = "wifipg";
+
+    //隐私页Wifimaster数据
+    public static final String KEY_PRI_WIFIMASTER_CONTENT = "pri_wifimaster_content";
+    public static final String KEY_PRI_WIFIMASTER_GP_URL = "pri_wifimaster_gp_url";
+    public static final String KEY_PRI_WIFIMASTER_IMG_URL = "pri_wifimaster_img_url";
+    public static final String KEY_PRI_WIFIMASTER_TYPE = "pri_wifimaster_type";
+    public static final String KEY_PRI_WIFIMASTER_URL = "pri_wifimaster_url";
+
+    //隐私页评分数据
+    public static final String KEY_PRI_GRADE_CONTENT = "pri_grade_content";
+    public static final String KEY_PRI_GRADE_IMG_URL = "pri_grade_img_url";
+    public static final String KEY_PRI_GRADE_URL = "pri_grade_url";
+
+    //隐私页FB数据
+    public static final String KEY_PRI_FB_CONTENT = "pri_fb_content";
+    public static final String KEY_PRI_FB_IMG_URL = "pri_fb_img_url";
+    public static final String KEY_PRI_FB_URL = "pri_fb_url";
+
+    //wifi页Wifimaster数据
+    public static final String KEY_WIFI_WIFIMASTER_CONTENT = "wifi_wifimaster_content";
+    public static final String KEY_WIFI_WIFIMASTER_GP_URL = "wifi_wifimaster_gp_url";
+    public static final String KEY_WIFI_WIFIMASTER_IMG_URL = "wifi_wifimaster_img_url";
+    public static final String KEY_WIFI_WIFIMASTER_TYPE = "wifi_wifimaster_type";
+    public static final String KEY_WIFI_WIFIMASTER_URL = "wifi_wifimaster_url";
+
+    //wifi页Swifty数据
+    public static final String KEY_WIFI_SWIFTY_CONTENT = "wifi_swifty_content";
+    public static final String KEY_WIFI_SWIFTY_GP_URL = "wifi_swifty_gp_url";
+    public static final String KEY_WIFI_SWIFTY_IMG_URL = "wifi_swifty_img_url";
+    public static final String KEY_WIFI_SWIFTY_TYPE = "wifi_swifty_type";
+    public static final String KEY_WIFI_SWIFTY_URL = "wifi_swifty_url";
+
+    //wifi页评分数据
+    public static final String KEY_WIFI_GRADE_CONTENT = "wifi_grade_content";
+    public static final String KEY_WIFI_GRADE_IMG_URL = "wifi_grade_img_url";
+    public static final String KEY_WIFI_GRADE_URL = "wifi_grade_url";
+
+    //wifi页FB数据
+    public static final String KEY_WIFI_FB_CONTENT = "wifi_fb_content";
+    public static final String KEY_WIFI_FB_IMG_URL = "wifi_fb_img_url";
+    public static final String KEY_WIFI_FB_URL = "wifi_fb_url";
 }

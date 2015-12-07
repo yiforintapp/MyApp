@@ -1,8 +1,5 @@
 package com.leo.appmaster.schedule;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,6 +11,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.LeoLog;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * 拉取业务基类
@@ -51,7 +51,8 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             "com.leo.appmaster.schedule.LockRecommentFetchJob",
             "com.leo.appmaster.schedule.SwiftyFetchJob",
             "com.leo.appmaster.schedule.LockRecommentFetchJob",
-            "com.leo.appmaster.schedule.PhoneSecurityFetchJob"
+            "com.leo.appmaster.schedule.PhoneSecurityFetchJob",
+            "com.leo.appmaster.schedule.CardFetchJob"
     };
 
     public static void startFetchJobs() {

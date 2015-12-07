@@ -123,6 +123,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mHighGradeGesture;
     private RippleView mHighGradeBtnLt;
     private ImageView mHighFiveEmptyStar;
+    private ImageView mHighGradeImg;
+    private TextView mHighGradeContent;
 
     private ImageView mOneStar;
     private ImageView mTwoStar;
@@ -132,12 +134,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mGradeGesture;
     private RippleView mGradeBtnLt;
     private ImageView mFiveEmptyStar;
+    private ImageView mGradeImg;
+    private TextView mGradeContent;
 
     private AnimatorSet mAnimatorSet;
 
     /**
      * 前往FaceBook
      */
+    private ImageView mFbImg;
+    private TextView mFbContent;
     private RippleView mFbBtnLt;
 
     /**
@@ -146,6 +152,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
     private RippleView mSwiftyBtnLt;
+
+    /**
+     * WifiMaster
+     */
+    private ImageView mWifiMasteImg;
+    private TextView mWifiMasteContent;
+    private RippleView mWifiMasteBtnLt;
 
     private CheckBox mSelectAllCb;
     private List<View> mContactViews;
@@ -337,6 +350,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                         initGradeLayout(mPanelView);
                         initFbLayout(mPanelView);
                         initSwiftyLayout(mPanelView);
+                        initWifiMasterLayout(mPanelView);
 
                         updateStubPanelVisibility();
                     }
@@ -685,18 +699,40 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mWifiBtnTv.setText(text);
     }
 
+    private void initWifiMasterLayout(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.wifi_master_stub);
+        if (viewStub == null) {
+            return;
+        }
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL));
+
+        boolean isTypeEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_TYPE));
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
+            View include = viewStub.inflate();
+            mWifiMasteImg = (ImageView) include.findViewById(R.id.wifimaster_img);
+            mWifiMasteContent = (TextView) include.findViewById(R.id.wifimaster_content);
+            mWifiMasteBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+            mWifiMasteBtnLt.setOnClickListener(this);
+            mWifiMasteContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mWifiMasteImg, getSwiftyOptions());
+        }
+    }
+
     private void initSwiftyLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.swifty_security_stub);
-//        View include = view.findViewById(R.id.swifty_security);
         if(viewStub == null) {
             return;
         }
-        View include = viewStub.inflate();
-        mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
-        mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
-        mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-        mSwiftyBtnLt.setOnClickListener(this);
-//        mSwiftyBtnLt.setOnRippleCompleteListener(this);
 
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
 
@@ -710,13 +746,15 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE));
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
+            View include = viewStub.inflate();
+            mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
+            mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
+            mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+            mSwiftyBtnLt.setOnClickListener(this);
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getSwiftyOptions());
-            include.setVisibility(View.VISIBLE);
 
-        } else {
-            include.setVisibility(View.GONE);
         }
 
     }
@@ -738,74 +776,102 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private void initFbLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.fb_security_stub);
-//        View include = view.findViewById(R.id.fb_security);
         if(viewStub == null) {
             return;
         }
-        View include = viewStub.inflate();
-        mFbBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-        mFbBtnLt.setOnClickListener(this);
-//        mFbBtnLt.setOnRippleCompleteListener(this);
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_FB_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_FB_IMG_URL));
+
+        boolean isURLEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_FB_URL));
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
+            View include = viewStub.inflate();
+            mFbImg = (ImageView) include.findViewById(R.id.fb_img);
+            mFbContent = (TextView) include.findViewById(R.id.fb_content);
+            mFbBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+            mFbBtnLt.setOnClickListener(this);
+            mFbContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_FB_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_FB_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mFbImg, getSwiftyOptions());
+
+
+        }
     }
 
     private void initGradeLayout(View view) {
         int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
         LeoLog.i("loadSwiftySecurity", "score：" + score);
-//        View highInclude = view.findViewById(R.id.grade_high_security);
-//        View include = view.findViewById(R.id.grade_security);
-        if (score == 100) {  // 等于100分
-            ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_high_security_stub);
-            if(viewStub == null) {
-                return;
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL));
+
+        boolean isURLEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_GRADE_URL));
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
+
+            if (score == 100) {  // 等于100分
+                ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_high_security_stub);
+                if(viewStub == null) {
+                    return;
+                }
+                View highInclude = viewStub.inflate();
+                mHighOneStar = (ImageView) highInclude.findViewById(R.id.one_star);
+                mHighTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
+                mHighThreeStar = (ImageView) highInclude.findViewById(R.id.three_star);
+                mHighFourStar = (ImageView) highInclude.findViewById(R.id.four_star);
+                mHighFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
+                mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
+                mHighGradeBtnLt = (RippleView) highInclude.findViewById(R.id.item_btn_rv);
+                mHighFiveEmptyStar = (ImageView) highInclude.findViewById(R.id.five_star_empty);
+                mHighGradeImg = (ImageView) highInclude.findViewById(R.id.grade_img);
+                mHighGradeContent = (TextView) highInclude.findViewById(R.id.grade_content);
+                mHighGradeBtnLt.setOnClickListener(this);
+
+                mHighGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
+                String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
+                mImageLoader.displayImage(imgUrl, mHighGradeImg, getSwiftyOptions());
+
+                showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
+                        mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
+
+            } else {
+                ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_security_stub);
+                if(viewStub == null) {
+                    return;
+                }
+                View include = viewStub.inflate();
+                mOneStar = (ImageView) include.findViewById(R.id.one_star);
+                mTwoStar = (ImageView) include.findViewById(R.id.two_star);
+                mThreeStar = (ImageView) include.findViewById(R.id.three_star);
+                mFourStar = (ImageView) include.findViewById(R.id.four_star);
+                mFiveStar = (ImageView) include.findViewById(R.id.five_star);
+                mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
+                mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+                mFiveEmptyStar = (ImageView) include.findViewById(R.id.five_star_empty);
+                mGradeImg = (ImageView) include.findViewById(R.id.grade_img);
+                mGradeContent = (TextView) include.findViewById(R.id.grade_content);
+                mGradeBtnLt.setOnClickListener(this);
+
+                mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
+                String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
+                mImageLoader.displayImage(imgUrl, mGradeImg, getSwiftyOptions());
+
+                showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar,
+                        mFiveStar, mFiveEmptyStar, mGradeGesture);
             }
-            View highInclude = viewStub.inflate();
-            mHighOneStar = (ImageView) highInclude.findViewById(R.id.one_star);
-            mHighTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
-            mHighThreeStar = (ImageView) highInclude.findViewById(R.id.three_star);
-            mHighFourStar = (ImageView) highInclude.findViewById(R.id.four_star);
-            mHighFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
-            mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
-            mHighGradeBtnLt = (RippleView) highInclude.findViewById(R.id.item_btn_rv);
-            mHighFiveEmptyStar = (ImageView) highInclude.findViewById(R.id.five_star_empty);
-            mHighGradeBtnLt.setOnClickListener(this);
-//            mHighGradeBtnLt.setOnRippleCompleteListener(this);
-
-//            FrameLayout.LayoutParams highFrameParams =
-//                    (FrameLayout.LayoutParams)mHighGrageFrame.getLayoutParams();
-//
-//            highFrameParams.height = (int)getLayoutHeight();
-
-//            highInclude.setVisibility(View.VISIBLE);
-//            include.setVisibility(View.GONE);
-            showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
-                    mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
-        } else {
-            ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_security_stub);
-            if(viewStub == null) {
-                return;
-            }
-            View include = viewStub.inflate();
-            mOneStar = (ImageView) include.findViewById(R.id.one_star);
-            mTwoStar = (ImageView) include.findViewById(R.id.two_star);
-            mThreeStar = (ImageView) include.findViewById(R.id.three_star);
-            mFourStar = (ImageView) include.findViewById(R.id.four_star);
-            mFiveStar = (ImageView) include.findViewById(R.id.five_star);
-            mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
-            mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-            mFiveEmptyStar = (ImageView) include.findViewById(R.id.five_star_empty);
-            mGradeBtnLt.setOnClickListener(this);
-//            mGradeBtnLt.setOnRippleCompleteListener(this);
-
-//            FrameLayout.LayoutParams frameParams =
-//                    (FrameLayout.LayoutParams)mGrageFrame.getLayoutParams();
-//
-//            frameParams.height = (int)getLayoutHeight();
-
-//            highInclude.setVisibility(View.GONE);
-//            include.setVisibility(View.VISIBLE);
-
-            showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar,
-                    mFiveStar, mFiveEmptyStar, mGradeGesture);
         }
 
     }
@@ -981,7 +1047,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mFbBtnLt == v) {  // FaceBook分享
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "facebook");
             lockManager.filterSelfOneMinites();
-            Utilities.goFaceBook(mActivity);
+            Utilities.goFaceBook(mActivity, true);
         } else if (mHighGradeBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
@@ -1002,9 +1068,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             if (installISwipe) {
                 Utilities.startISwipIntent(mActivity);
             } else {
-                Utilities.gotoGpOrBrowser(mActivity);
+                Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, true);
             }
+        } else if (mWifiMasteBtnLt == v) {
+            Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, true);
         }
+
     }
 
     private void collapseContact() {

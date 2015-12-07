@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fb_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/wifi_result_1px_bg"
+    android:padding="19dp">
+
+    <RelativeLayout
+        android:id="@+id/wifimaster_result_top_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/wifimaster_blue_tiao"
+            android:layout_width="3dp"
+            android:layout_height="14dp"
+            android:layout_centerVertical="true"
+            android:background="@color/wifi_result_blue" />
+
+        <TextView
+            android:id="@+id/wifimaster_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/wifimaster_blue_tiao"
+            android:text="wifimaster"
+            android:textColor="@color/c2"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/wifimaster_small_black_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/wifimaster_result_top_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/c5" />
+
+
+
+    <ImageView
+        android:id="@+id/wifimaster_img"
+        android:layout_width="match_parent"
+        android:layout_height="133dp"
+        android:layout_below="@id/wifimaster_small_black_line"
+        android:layout_marginTop="19dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/wifimaster_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/c2"
+        android:textSize="14dp"
+        android:layout_below="@+id/wifimaster_img"
+        android:text="wifimaster"/>
+
+    <com.leo.appmaster.ui.RippleView
+        android:id="@+id/wifimaster_resulte_sure"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/wifimaster_txt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/green_radius_btn_shape"
+        android:clickable="true"
+        ripple:rippleColor="@color/green_button_ripple"
+        ripple:rippleDuration="250"
+        ripple:rippleHover="true"
+        ripple:rippleOverlay="true">
+
+        <TextView
+            android:id="@+id/wifimaster_result_sure_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/fb_item_btn"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+    </com.leo.appmaster.ui.RippleView>
+</RelativeLayout>

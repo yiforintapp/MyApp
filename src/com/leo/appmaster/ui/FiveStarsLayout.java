@@ -1,6 +1,7 @@
 package com.leo.appmaster.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,8 @@ public class FiveStarsLayout extends FrameLayout{
     private boolean mHasShowed = false;
     private boolean mNeedRepeat = true;
     private AnimatorSet mAsMain;
+
+    private FrameLayout mGradeFrame;
     
     public FiveStarsLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -62,6 +65,7 @@ public class FiveStarsLayout extends FrameLayout{
         mFiveStar = (ImageView) findViewById(R.id.five_star);
         mGradeGesture = (ImageView) findViewById(R.id.grade_gesture);
         mFlFifthStar = (FrameLayout) findViewById(R.id.fl_fifthStar);
+        mGradeFrame = (FrameLayout) findViewById(R.id.grade_frame);
         getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             
             @Override
@@ -92,7 +96,10 @@ public class FiveStarsLayout extends FrameLayout{
             mAsMain.cancel();
         }
     }
-    
+
+    public void setBackgroundNull() {
+        mGradeFrame.setBackgroundColor(Color.parseColor("#00000000"));
+    }
     
     
     @Override

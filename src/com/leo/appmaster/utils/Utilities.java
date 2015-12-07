@@ -480,7 +480,7 @@ public final class Utilities {
                 .parse(Constants.RATING_ADDRESS_BROWSER);
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setClassName("com.android.browser","com.android.browser.BrowserActivity");
+        intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
         try {
             context.startActivity(intent);
             LeoLog.i("goFiveStar", "intent: " + intent.toURI());
@@ -492,12 +492,25 @@ public final class Utilities {
     /**
      * 前往FaceBook
      */
-    public static void goFaceBook(Context context) {
+    public static void goFaceBook(Context context, boolean isFromPrivacy) {
         Intent intentLikeUs = null;
+        String url = Constants.FACEBOOK_URL;
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        if (isFromPrivacy) {
+            if (preferenceTable.getString(PrefConst.KEY_PRI_FB_URL) != null &&
+                    preferenceTable.getString(PrefConst.KEY_PRI_FB_URL).length() > 0) {
+                url = preferenceTable.getString(PrefConst.KEY_PRI_FB_URL);
+            }
+        } else {
+            if (preferenceTable.getString(PrefConst.KEY_WIFI_FB_URL) != null &&
+                    preferenceTable.getString(PrefConst.KEY_WIFI_FB_URL).length() > 0) {
+                url = preferenceTable.getString(PrefConst.KEY_WIFI_FB_URL);
+            }
+        }
         if (AppUtil.appInstalled(context.getApplicationContext(),
                 Constants.FACEBOOK_PKG_NAME)) {
             intentLikeUs = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.parse(Constants.FACEBOOK_URL);
+            Uri uri = Uri.parse(url);
             intentLikeUs.setData(uri);
             ComponentName cn = new ComponentName(Constants.FACEBOOK_PKG_NAME,
                     Constants.FACEBOOK_CLASS);
@@ -509,7 +522,7 @@ public final class Utilities {
             }
         } else {
             intentLikeUs = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.parse(Constants.FACEBOOK_PG_URL);
+            Uri uri = Uri.parse(url);
             intentLikeUs.setData(uri);
             intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
@@ -548,65 +561,105 @@ public final class Utilities {
     /**
      * 前往Gp或亚马逊云
      */
-    public static void gotoGpOrBrowser(Context context) {
+    public static void gotoGpOrBrowser(Context context, String from, boolean isFromPrivacy) {
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        String gpUrl;
-        String browserUrl;
+        if (isFromPrivacy) {  //点击隐私页按钮
+            if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
+
+                selectType(preferenceTable, PrefConst.KEY_SWIFTY_TYPE, PrefConst.KEY_SWIFTY_GP_URL,
+                           PrefConst.KEY_SWIFTY_URL, Constants.SWIFTY_PKG_NAME, context);
+
+            } else { //点击wifimaster
+
+                selectType(preferenceTable, PrefConst.KEY_PRI_WIFIMASTER_TYPE,
+                        PrefConst.KEY_PRI_WIFIMASTER_GP_URL, PrefConst.KEY_PRI_WIFIMASTER_URL,
+                        "wifimaster", context);
+            }
+        } else {
+            if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
+
+                selectType(preferenceTable, PrefConst.KEY_WIFI_SWIFTY_TYPE,
+                        PrefConst.KEY_WIFI_SWIFTY_GP_URL, PrefConst.KEY_WIFI_SWIFTY_URL,
+                        Constants.SWIFTY_PKG_NAME, context);
+
+            } else { //点击wifimaster
+
+                selectType(preferenceTable, PrefConst.KEY_WIFI_WIFIMASTER_TYPE,
+                        PrefConst.KEY_WIFI_WIFIMASTER_GP_URL, PrefConst.KEY_WIFI_WIFIMASTER_URL,
+                        "wifimaster", context);
+            }
+        }
+    }
+
+    private static void selectType(PreferenceTable preferenceTable, String type, String gpUrl,
+                                   String url, String pkgName, Context context) {
+
         if (Constants.BROWSER_URL_TYPE.equals(
-                preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE))) { // 使用浏览器
+                preferenceTable.getString(type))) { // 使用浏览器
 
-            if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
-                    preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
+            browserType(preferenceTable, url, pkgName, context);
 
-                browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
-                gotoBrowser(browserUrl,context);
-            }
         } else {  // 使用gp
-            if (preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL) != null &&
-                    preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL).length() > 0) {
-                gpUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL);
 
-                if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
-                        preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
+            gpType(preferenceTable, gpUrl, url, pkgName, context);
+        }
+    }
 
-                    browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
-                } else {
-                    browserUrl = "";
-                }
-                gotoGp(gpUrl, browserUrl,context);
+    private static void browserType(PreferenceTable preferenceTable,
+                                    String key, String pkgName, Context context) {
+
+        if (preferenceTable.getString(key) != null &&
+                preferenceTable.getString(key).length() > 0) {
+
+            String browserUrl = preferenceTable.getString(key);
+            gotoBrowser(browserUrl, pkgName, context);
+        } else { // 使用包名跳转gp商店
+            gotoGpByPkg(pkgName, context);
+        }
+    }
+
+    private static void gpType(PreferenceTable preferenceTable,String gpUrlKey,
+                               String urlKey, String pkgName, Context context) {
+
+        String browserUrl;
+        if (preferenceTable.getString(gpUrlKey) != null &&
+                preferenceTable.getString(gpUrlKey).length() > 0) {
+                String gpUrl = preferenceTable.getString(gpUrlKey);
+
+            if (preferenceTable.getString(urlKey) != null &&
+                    preferenceTable.getString(urlKey).length() > 0) {
+
+                 browserUrl = preferenceTable.getString(urlKey);
             } else {
-                if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
-                        preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
-
-                    browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
-                    gotoBrowser(browserUrl,context);
-                }
+                 browserUrl = "";
             }
+            gotoGp(gpUrl, browserUrl, pkgName, context);
+        } else {
+            browserType(preferenceTable, urlKey, pkgName, context);
         }
     }
 
     /**
      * 使用Gp,没有Gp用浏览器
      */
-    private static void gotoGp(String gpUrl, String browserUrl, Context context) {
+    private static void gotoGp(String gpUrl, String browserUrl, String pkgName, Context context) {
         Intent intent = null;
-        if (AppUtil.appInstalled(context,
-                "com.android.vending")) {
+        if (AppUtil.appInstalled(context, Constants.GP_PKG_NAME)) {
             intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri.parse(gpUrl);
             intent.setData(uri);
-            intent.setPackage("com.android.vending");
+            intent.setPackage(Constants.GP_PKG_NAME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 context.startActivity(intent);
             } catch (Exception e) {
                 if (!"".equals(browserUrl)) {
-                    gotoBrowser(browserUrl, context);
+                    gotoBrowser(browserUrl, pkgName, context);
                 }
             }
         } else {
             if (!"".equals(browserUrl)) {
-                gotoBrowser(browserUrl, context);
+                gotoBrowser(browserUrl, pkgName, context);
             }
         }
     }
@@ -614,7 +667,7 @@ public final class Utilities {
     /**
      * 是使用浏览器
      */
-    private static void gotoBrowser(String url, Context context) {
+    private static void gotoBrowser(String url, String pkgName, Context context) {
         Intent intent;
         intent = new Intent(Intent.ACTION_VIEW);
         Uri uri = Uri.parse(url);
@@ -623,7 +676,28 @@ public final class Utilities {
         try {
             context.startActivity(intent);
         } catch (Exception e) {
+            gotoGpByPkg(pkgName, context);
         }
     }
-    
+
+    /**
+     *  使用包名跳转Gp
+     */
+    private static void  gotoGpByPkg(String pkgName, Context context) {
+        if (AppUtil.appInstalled(context, Constants.GP_PKG_NAME)) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            StringBuffer url = new StringBuffer(Constants.FIRST_GP_STRING);
+            url.append(pkgName).append(Constants.LAST_GP_STRING);
+            Uri uri = Uri.parse(url.toString());
+            intent.setData(uri);
+            intent.setPackage(Constants.GP_PKG_NAME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(intent);
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+        }
+    }
+
 }

@@ -1,16 +1,16 @@
 package com.leo.appmaster.wifiSecurity;
 
-import java.lang.ref.WeakReference;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -24,15 +24,24 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.appmanage.FlowActivity;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.Utilities;
+import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageScaleType;
 import com.mobvista.sdk.m.core.entity.Campaign;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by qili on 15-10-27.
@@ -45,6 +54,35 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     protected LockManager mLockManager;
     private boolean  mOneLoadState, mTwoLoadState, mThridLoadState, mFourLoadState;
     private ImageView mOneImg, mTwoImg, mThreeImg, mFourImg;
+
+    private ImageLoader mImageLoader;
+    /**
+     * Swifty
+     */
+    private ImageView mSwiftyImg;
+    private TextView mSwiftyContent;
+    private RippleView mSwiftyBtnLt;
+
+    /**
+     * WifiMaster
+     */
+    private ImageView mWifiMasterImg;
+    private TextView mWifiMasterContent;
+    private RippleView mWifiMasterBtnLt;
+
+    /**
+     * Fb
+     */
+    private ImageView mFbImg;
+    private TextView mFbContent;
+    private RippleView mFbBtnLt;
+
+    /**
+     * 评分
+     */
+    private ImageView mGradeImg;
+    private TextView mGradeContent;
+    private RippleView mGradeBtnLt;
 
     @Override
     public void onAttach(Activity activity) {
@@ -61,6 +99,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLockManager = mActivity.getLockManager();
+        mImageLoader = ImageLoader.getInstance();
     }
 
     @Override
@@ -100,6 +139,11 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         mThreeImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_ssl_icon);
         mFourImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_pas_type_icon);
 
+        initSwiftyLayout(mRootView);
+        initWifiMasterLayout(mRootView);
+        initGradeLayout(mRootView);
+        initFbLayout(mRootView);
+
         ThreadManager.executeOnSubThread(new Runnable() {
             @Override
             public void run() {
@@ -110,6 +154,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         switch (view.getId()) {
             case R.id.wifi_resulte_sure:
                 Intent intent = new Intent(mActivity, FlowActivity.class);
@@ -126,6 +171,26 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 }
                 SDKWrapper.addEvent(mActivity,
                         SDKWrapper.P1, "wifi_rst", "wifi_rst_risk_other");
+                break;
+            case R.id.swifty_resulte_sure:
+                lockManager.filterSelfOneMinites();
+                boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
+                if (installISwipe) {
+                    Utilities.startISwipIntent(mActivity);
+                } else {
+                    Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, false);
+                }
+                break;
+            case R.id.wifimaster_resulte_sure:
+                Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, false);
+                break;
+            case R.id.fb_resulte_sure:
+                lockManager.filterSelfOneMinites();
+                Utilities.goFaceBook(mActivity, false);
+                break;
+            case R.id.grade_resulte_sure:
+                lockManager.filterSelfOneMinites();
+                Utilities.goFiveStar(mActivity);
                 break;
         }
     }
@@ -240,6 +305,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                     mBottomView.setVisibility(View.VISIBLE);
                     setUnsafePageIcon();
                 }
+
             }
 
             @Override
@@ -268,6 +334,144 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         } else {
             view.setImageResource(R.drawable.wifi_error);
         }
+    }
+
+    private void initSwiftyLayout(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.swifty_wifi_stub);
+        if(viewStub == null) {
+            return;
+        }
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_IMG_URL));
+
+        boolean isTypeEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_TYPE));
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
+            View include = viewStub.inflate();
+            mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
+            mSwiftyContent = (TextView) include.findViewById(R.id.swifty_txt);
+            mSwiftyBtnLt = (RippleView) include.findViewById(R.id.swifty_resulte_sure);
+            mSwiftyBtnLt.setOnClickListener(this);
+            mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions());
+
+        }
+    }
+
+    private void initWifiMasterLayout(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.wifimaster_wifi_stub);
+        if(viewStub == null) {
+            return;
+        }
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_IMG_URL));
+
+        boolean isTypeEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_TYPE));
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
+            View include = viewStub.inflate();
+            mWifiMasterImg = (ImageView) include.findViewById(R.id.wifimaster_img);
+            mWifiMasterContent = (TextView) include.findViewById(R.id.wifimaster_txt);
+            mWifiMasterBtnLt = (RippleView) include.findViewById(R.id.wifimaster_resulte_sure);
+            mWifiMasterBtnLt.setOnClickListener(this);
+            mWifiMasterContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mWifiMasterImg, getOptions());
+
+        }
+    }
+
+
+    private void initFbLayout(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.fb_wifi_stub);
+        if(viewStub == null) {
+            return;
+        }
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_FB_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_FB_IMG_URL));
+
+        boolean isURLEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_FB_URL));
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
+            View include = viewStub.inflate();
+            mFbImg = (ImageView) include.findViewById(R.id.fb_img);
+            mFbContent = (TextView) include.findViewById(R.id.fb_txt);
+            mFbBtnLt = (RippleView) include.findViewById(R.id.fb_resulte_sure);
+            mFbBtnLt.setOnClickListener(this);
+            mFbContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_FB_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_FB_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mFbImg, getOptions());
+
+
+        }
+    }
+
+    private void initGradeLayout(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_wifi_stub);
+        if(viewStub == null) {
+            return;
+        }
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_IMG_URL));
+
+        boolean isURLEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_URL));
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
+            View include = viewStub.inflate();
+
+            FiveStarsLayout fiveStarsLayout = (FiveStarsLayout)
+                            include.findViewById(R.id.fsl_fivestars);
+            fiveStarsLayout.setBackgroundNull();
+            mGradeImg = (ImageView) include.findViewById(R.id.grade_img);
+            mGradeContent = (TextView) include.findViewById(R.id.grade_txt);
+            mGradeBtnLt = (RippleView) include.findViewById(R.id.grade_resulte_sure);
+            mGradeBtnLt.setOnClickListener(this);
+            mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mGradeImg, getOptions());
+        }
+    }
+
+    public DisplayImageOptions getOptions() {  //需要提供默认图
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.swifty_banner)
+                .showImageForEmptyUri(R.drawable.swifty_banner)
+                .showImageOnFail(R.drawable.swifty_banner)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+
+        return options;
     }
 
 }
