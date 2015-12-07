@@ -176,9 +176,9 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private void showHomeGuideAnim() {
         if (mHomeGuideFt != null) {
             if (mHomeGuideAnim == null) {
-                mHomeGuideAnim = new ObjectAnimator(mHomeGuideFt, ANIME_PROPERTY_NAME);
+                mHomeGuideAnim = ObjectAnimator.ofFloat(mHomeGuideFt, ANIME_PROPERTY_NAME, HOME_GUIDE_TRANSLA_VALUE1, HOME_GUIDE_TRANSLA_VALUE2);
             }
-            mHomeGuideAnim.setFloatValues(HOME_GUIDE_TRANSLA_VALUE1, HOME_GUIDE_TRANSLA_VALUE2);
+            mHomeGuideAnim.setFloatValues();
             mHomeGuideAnim.setRepeatCount(HOME_GUIDE_REPEAT_COUNT);
             mHomeGuideAnim.setRepeatMode(ObjectAnimator.REVERSE);
             mHomeGuideAnim.setDuration(HOME_GUIDE_ANIM_TIME);
