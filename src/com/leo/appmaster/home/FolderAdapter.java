@@ -314,9 +314,14 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         if (list == null) return null;
 
         List<ItemsWrapper> result = new ArrayList<ItemsWrapper>();
+        int index = -1;
         for (T item : list) {
             String path = getPath(item);
-            String parentPath = path.substring(0, path.lastIndexOf("/"));
+            index = path.lastIndexOf("/");
+            if(index < 1) {
+                continue;
+            }
+            String parentPath = path.substring(0, index);
 
             ItemsWrapper itemsWrapper = null;
             for (ItemsWrapper wrapper : result) {

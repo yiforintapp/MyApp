@@ -445,7 +445,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_NONE);
 
         FragmentManager fm = getSupportFragmentManager();
-        fm.popBackStack();
+        try {
+            fm.popBackStack();
+        } catch (Exception e) {
+        }
         FragmentTransaction ft = fm.beginTransaction();
         ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);
         if (mAppList != null && mAppList.size() > 0) {

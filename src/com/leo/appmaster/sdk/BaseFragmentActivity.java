@@ -59,7 +59,10 @@ public class BaseFragmentActivity extends FragmentActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
+        try {
+            super.onResume();
+        } catch (Exception e) {
+        }
         SDKWrapper.onResume(this);
 
         mLifeCircle.onResume();
