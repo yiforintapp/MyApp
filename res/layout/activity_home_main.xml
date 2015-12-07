@@ -68,5 +68,5 @@
         android:id="@+id/home_guide"
         android:name="com.leo.appmaster.fragment.GuideFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 </merge>

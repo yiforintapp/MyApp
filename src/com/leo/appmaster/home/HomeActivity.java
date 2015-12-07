@@ -400,7 +400,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
             /*首页引导*/
-//            showHomeGuide();
+            showHomeGuide();
         }
     }
 
@@ -482,7 +482,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mMoreFragment = (HomeMoreFragment) getSupportFragmentManager().findFragmentById(R.id.home_more_ft);
         mPrivacyFragment = (HomePrivacyFragment) getSupportFragmentManager().findFragmentById(R.id.home_anim_ft);
         mTabFragment = (HomeTabFragment) getSupportFragmentManager().findFragmentById(R.id.home_tab_ft);
-//        mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.home_guide);
+        mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.home_guide);
+        mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
 
         mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
         mToolbarHeight = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
@@ -1386,11 +1387,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
         boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
         boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-
-//        LeoLog.i("caocao", "是否拉起过：" + pulledEver);
-//        LeoLog.i("caocao", "图片是否处理过：" + picReddot);
-//        LeoLog.i("caocao", "视频是否处理过：" + vidReddot);
-        mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
-
+        if (!pulledEver && (picReddot || vidReddot)) {
+            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+        }
     }
 }
