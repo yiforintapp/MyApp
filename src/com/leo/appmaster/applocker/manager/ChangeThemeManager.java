@@ -29,10 +29,10 @@ public class ChangeThemeManager {
             Drawable drawableForReturn = null;
             switch (slotId) {
                 case BG_LOCKSCREEN_PASSWORD_NUM:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.ad_alien_inufo);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
                     break;
                 case BG_LOCKSCREEN_GESTURE_DOT:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.ad_alien_inufo_close);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
                     break;
                 default:
                     break;
