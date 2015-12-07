@@ -17,6 +17,7 @@
 package com.leo.appmaster.ui;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -51,54 +52,54 @@ import com.leo.tools.animator.Property;
 
 public class MaterialRippleLayout extends FrameLayout {
 
-    private static final int     DEFAULT_DURATION       = 350;
-    private static final int     DEFAULT_FADE_DURATION  = 75;
-    private static final float   DEFAULT_DIAMETER_DP    = 35;
-    private static final float   DEFAULT_ALPHA          = 0.2f;
-    private static final int     DEFAULT_COLOR          = Color.BLACK;
-    private static final int     DEFAULT_BACKGROUND     = Color.TRANSPARENT;
-    private static final boolean DEFAULT_HOVER          = true;
-    private static final boolean DEFAULT_DELAY_CLICK    = true;
-    private static final boolean DEFAULT_PERSISTENT     = false;
+    private static final int DEFAULT_DURATION = 350;
+    private static final int DEFAULT_FADE_DURATION = 75;
+    private static final float DEFAULT_DIAMETER_DP = 35;
+    private static final float DEFAULT_ALPHA = 0.2f;
+    private static final int DEFAULT_COLOR = Color.BLACK;
+    private static final int DEFAULT_BACKGROUND = Color.TRANSPARENT;
+    private static final boolean DEFAULT_HOVER = true;
+    private static final boolean DEFAULT_DELAY_CLICK = true;
+    private static final boolean DEFAULT_PERSISTENT = false;
     private static final boolean DEFAULT_SEARCH_ADAPTER = false;
     private static final boolean DEFAULT_RIPPLE_OVERLAY = false;
 
-    private static final int  FADE_EXTRA_DELAY = 50;
-    private static final long HOVER_DURATION   = 2500;
+    private static final int FADE_EXTRA_DELAY = 50;
+    private static final long HOVER_DURATION = 2500;
 
-    private final Paint paint  = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Rect  bounds = new Rect();
+    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Rect bounds = new Rect();
 
-    private int      rippleColor;
-    private boolean  rippleOverlay;
-    private boolean  rippleHover;
-    private int      rippleDiameter;
-    private int      rippleDuration;
-    private int      rippleAlpha;
-    private boolean  rippleDelayClick;
-    private int      rippleFadeDuration;
-    private boolean  ripplePersistent;
+    private int rippleColor;
+    private boolean rippleOverlay;
+    private boolean rippleHover;
+    private int rippleDiameter;
+    private int rippleDuration;
+    private int rippleAlpha;
+    private boolean rippleDelayClick;
+    private int rippleFadeDuration;
+    private boolean ripplePersistent;
     private Drawable rippleBackground;
-    private boolean  rippleInAdapter;
+    private boolean rippleInAdapter;
 
     private float radius;
 
     private AdapterView parentAdapter;
-    private View        childView;
+    private View childView;
 
-    private AnimatorSet    rippleAnimator;
+    private AnimatorSet rippleAnimator;
     private ObjectAnimator hoverAnimator;
 
-    private Point currentCoords  = new Point();
+    private Point currentCoords = new Point();
     private Point previousCoords = new Point();
 
     private boolean eventCancelled;
     private boolean prepressed;
-    private int     positionInAdapter;
+    private int positionInAdapter;
 
-    private GestureDetector   gestureDetector;
+    private GestureDetector gestureDetector;
     private PerformClickEvent pendingClickEvent;
-    private PressedEvent      pendingPressEvent;
+    private PressedEvent pendingPressEvent;
 
     public static RippleBuilder on(View view) {
         return new RippleBuilder(view);
@@ -121,8 +122,8 @@ public class MaterialRippleLayout extends FrameLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialRippleLayout);
         rippleColor = a.getColor(R.styleable.MaterialRippleLayout_rippleColor, DEFAULT_COLOR);
         rippleDiameter = a.getDimensionPixelSize(
-            R.styleable.MaterialRippleLayout_rippleDimension,
-            (int) dpToPx(getResources(), DEFAULT_DIAMETER_DP)
+                R.styleable.MaterialRippleLayout_rippleDimension,
+                (int) dpToPx(getResources(), DEFAULT_DIAMETER_DP)
         );
         rippleOverlay = a.getBoolean(R.styleable.MaterialRippleLayout_rippleOverlay, DEFAULT_RIPPLE_OVERLAY);
         rippleHover = a.getBoolean(R.styleable.MaterialRippleLayout_rippleHover, DEFAULT_HOVER);
@@ -169,6 +170,9 @@ public class MaterialRippleLayout extends FrameLayout {
         return true;
     }
 
+    private boolean isClickAlready = false;
+    private boolean isCanClick = false;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean superOnTouchEvent = super.onTouchEvent(event);
@@ -189,42 +193,51 @@ public class MaterialRippleLayout extends FrameLayout {
             int action = event.getActionMasked();
             switch (action) {
                 case MotionEvent.ACTION_UP:
-                    pendingClickEvent = new PerformClickEvent();
+                    if (isCanClick) {
+                        pendingClickEvent = new PerformClickEvent();
 
-                    if (prepressed) {
-                        childView.setPressed(true);
-                        postDelayed(
-                            new Runnable() {
-                                @Override public void run() {
-                                    childView.setPressed(false);
-                                }
-                            }, ViewConfiguration.getPressedStateDuration());
-                    }
+                        if (prepressed) {
+                            childView.setPressed(true);
+                            postDelayed(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            childView.setPressed(false);
+                                        }
+                                    }, ViewConfiguration.getPressedStateDuration());
+                        }
 
-                    if (isEventInBounds) {
-                        startRipple(pendingClickEvent);
-                    } else if (!rippleHover) {
-                        setRadius(0);
+                        if (isEventInBounds) {
+                            startRipple(pendingClickEvent);
+                        } else if (!rippleHover) {
+                            setRadius(0);
+                        }
+                        if (!rippleDelayClick && isEventInBounds) {
+                            pendingClickEvent.run();
+                        }
+                        cancelPressedEvent();
                     }
-                    if (!rippleDelayClick && isEventInBounds) {
-                        pendingClickEvent.run();
-                    }
-                    cancelPressedEvent();
                     break;
                 case MotionEvent.ACTION_DOWN:
-                    setPositionInAdapter();
-                    eventCancelled = false;
-                    if (isInScrollingContainer()) {
-                        cancelPressedEvent();
-                        prepressed = true;
-                        pendingPressEvent = new PressedEvent(event);
-                        postDelayed(pendingPressEvent, ViewConfiguration.getTapTimeout());
-                    } else {
-                        childView.onTouchEvent(event);
-                        childView.setPressed(true);
-                        if (rippleHover) {
-                            startHover();
+                    if (!isClickAlready) {
+                        isClickAlready = true;
+                        isCanClick = true;
+                        setPositionInAdapter();
+                        eventCancelled = false;
+                        if (isInScrollingContainer()) {
+                            cancelPressedEvent();
+                            prepressed = true;
+                            pendingPressEvent = new PressedEvent(event);
+                            postDelayed(pendingPressEvent, ViewConfiguration.getTapTimeout());
+                        } else {
+                            childView.onTouchEvent(event);
+                            childView.setPressed(true);
+                            if (rippleHover) {
+                                startHover();
+                            }
                         }
+                    } else {
+                        isCanClick = false;
                     }
                     break;
                 case MotionEvent.ACTION_CANCEL:
@@ -242,6 +255,8 @@ public class MaterialRippleLayout extends FrameLayout {
                         childView.setPressed(false);
                     }
                     cancelPressedEvent();
+                    isClickAlready = false;
+                    isCanClick = false;
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if (rippleHover) {
@@ -287,7 +302,7 @@ public class MaterialRippleLayout extends FrameLayout {
         }
         final float radius = (float) (Math.sqrt(Math.pow(getWidth(), 2) + Math.pow(getHeight(), 2)) * 1.2f);
         hoverAnimator = ObjectAnimator.ofFloat(this, radiusProperty, rippleDiameter, radius)
-            .setDuration(HOVER_DURATION);
+                .setDuration(HOVER_DURATION);
         hoverAnimator.setInterpolator(new LinearInterpolator());
         hoverAnimator.start();
     }
@@ -301,7 +316,8 @@ public class MaterialRippleLayout extends FrameLayout {
 
         rippleAnimator = new AnimatorSet();
         rippleAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override public void onAnimationEnd(Animator animation) {
+            @Override
+            public void onAnimationEnd(Animator animation) {
                 if (!ripplePersistent) {
                     setRadius(0);
                     setRippleAlpha(rippleAlpha);
@@ -447,7 +463,7 @@ public class MaterialRippleLayout extends FrameLayout {
      * Animations
      */
     private Property<MaterialRippleLayout, Float> radiusProperty
-        = new Property<MaterialRippleLayout, Float>(Float.class, "radius") {
+            = new Property<MaterialRippleLayout, Float>(Float.class, "radius") {
         @Override
         public Float get(MaterialRippleLayout object) {
             return object.getRadius();
@@ -470,7 +486,7 @@ public class MaterialRippleLayout extends FrameLayout {
     }
 
     private Property<MaterialRippleLayout, Integer> circleAlphaProperty
-        = new Property<MaterialRippleLayout, Integer>(Integer.class, "rippleAlpha") {
+            = new Property<MaterialRippleLayout, Integer>(Integer.class, "rippleAlpha") {
         @Override
         public Integer get(MaterialRippleLayout object) {
             return object.getRippleAlpha();
@@ -550,7 +566,8 @@ public class MaterialRippleLayout extends FrameLayout {
      */
     private class PerformClickEvent implements Runnable {
 
-        @Override public void run() {
+        @Override
+        public void run() {
             // if parent is an AdapterView, try to call its ItemClickListener
             if (getParent() instanceof AdapterView) {
                 clickAdapterView((AdapterView) getParent());
@@ -561,14 +578,15 @@ public class MaterialRippleLayout extends FrameLayout {
                 // otherwise, just perform click on child
                 childView.performClick();
             }
+            isClickAlready = false;
         }
 
         private void clickAdapterView(AdapterView parent) {
             try {
                 final int position = parent.getPositionForView(MaterialRippleLayout.this);
                 final long itemId = parent.getAdapter() != null
-                    ? parent.getAdapter().getItemId(position)
-                    : 0;
+                        ? parent.getAdapter().getItemId(position)
+                        : 0;
                 if (position != AdapterView.INVALID_POSITION) {
                     parent.performItemClick(MaterialRippleLayout.this, position, itemId);
                 }
@@ -607,18 +625,18 @@ public class MaterialRippleLayout extends FrameLayout {
     public static class RippleBuilder {
 
         private final Context context;
-        private final View    child;
+        private final View child;
 
-        private int     rippleColor         = DEFAULT_COLOR;
-        private boolean rippleOverlay       = DEFAULT_RIPPLE_OVERLAY;
-        private boolean rippleHover         = DEFAULT_HOVER;
-        private float   rippleDiameter      = DEFAULT_DIAMETER_DP;
-        private int     rippleDuration      = DEFAULT_DURATION;
-        private float   rippleAlpha         = DEFAULT_ALPHA;
-        private boolean rippleDelayClick    = DEFAULT_DELAY_CLICK;
-        private int     rippleFadeDuration  = DEFAULT_FADE_DURATION;
-        private boolean ripplePersistent    = DEFAULT_PERSISTENT;
-        private int     rippleBackground    = DEFAULT_BACKGROUND;
+        private int rippleColor = DEFAULT_COLOR;
+        private boolean rippleOverlay = DEFAULT_RIPPLE_OVERLAY;
+        private boolean rippleHover = DEFAULT_HOVER;
+        private float rippleDiameter = DEFAULT_DIAMETER_DP;
+        private int rippleDuration = DEFAULT_DURATION;
+        private float rippleAlpha = DEFAULT_ALPHA;
+        private boolean rippleDelayClick = DEFAULT_DELAY_CLICK;
+        private int rippleFadeDuration = DEFAULT_FADE_DURATION;
+        private boolean ripplePersistent = DEFAULT_PERSISTENT;
+        private int rippleBackground = DEFAULT_BACKGROUND;
         private boolean rippleSearchAdapter = DEFAULT_SEARCH_ADAPTER;
 
         public RippleBuilder(View child) {

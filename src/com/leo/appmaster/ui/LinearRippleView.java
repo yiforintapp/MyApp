@@ -188,6 +188,9 @@ public class LinearRippleView extends LinearLayout {
         return true;
     }
 
+    private boolean isClickAlready = false;
+    private boolean isCanClick = false;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean superOnTouchEvent = super.onTouchEvent(event);
@@ -208,44 +211,52 @@ public class LinearRippleView extends LinearLayout {
             int action = event.getActionMasked();
             switch (action) {
                 case MotionEvent.ACTION_UP:
-                    pendingClickEvent = new PerformClickEvent();
+                    if (isCanClick) {
+                        pendingClickEvent = new PerformClickEvent();
 
-                    if (prepressed) {
-                        childView.setPressed(true);
-                        postDelayed(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        childView.setPressed(false);
-                                    }
-                                }, ViewConfiguration.getPressedStateDuration());
-                    }
+                        if (prepressed) {
+                            childView.setPressed(true);
+                            postDelayed(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            childView.setPressed(false);
+                                        }
+                                    }, ViewConfiguration.getPressedStateDuration());
+                        }
 
-                    if (isEventInBounds) {
-                        startRipple(pendingClickEvent);
-                    } else if (!rippleHover) {
-                        setRadius(0);
+                        if (isEventInBounds) {
+                            startRipple(pendingClickEvent);
+                        } else if (!rippleHover) {
+                            setRadius(0);
+                        }
+                        if (!rippleDelayClick && isEventInBounds) {
+                            LeoLog.d("testclick", "is click right now");
+                            pendingClickEvent.run();
+                        }
+                        cancelPressedEvent();
                     }
-                    if (!rippleDelayClick && isEventInBounds) {
-                        LeoLog.d("testclick", "is click right now");
-                        pendingClickEvent.run();
-                    }
-                    cancelPressedEvent();
                     break;
                 case MotionEvent.ACTION_DOWN:
-                    setPositionInAdapter();
-                    eventCancelled = false;
-                    if (isInScrollingContainer()) {
-                        cancelPressedEvent();
-                        prepressed = true;
-                        pendingPressEvent = new PressedEvent(event);
-                        postDelayed(pendingPressEvent, ViewConfiguration.getTapTimeout());
-                    } else {
-                        childView.onTouchEvent(event);
-                        childView.setPressed(true);
-                        if (rippleHover) {
-                            startHover();
+                    if (!isClickAlready) {
+                        isClickAlready = true;
+                        isCanClick = true;
+                        setPositionInAdapter();
+                        eventCancelled = false;
+                        if (isInScrollingContainer()) {
+                            cancelPressedEvent();
+                            prepressed = true;
+                            pendingPressEvent = new PressedEvent(event);
+                            postDelayed(pendingPressEvent, ViewConfiguration.getTapTimeout());
+                        } else {
+                            childView.onTouchEvent(event);
+                            childView.setPressed(true);
+                            if (rippleHover) {
+                                startHover();
+                            }
                         }
+                    } else {
+                        isCanClick = false;
                     }
                     break;
                 case MotionEvent.ACTION_CANCEL:
@@ -263,6 +274,8 @@ public class LinearRippleView extends LinearLayout {
                         childView.setPressed(false);
                     }
                     cancelPressedEvent();
+                    isClickAlready = false;
+                    isCanClick = false;
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if (rippleHover) {
@@ -590,6 +603,7 @@ public class LinearRippleView extends LinearLayout {
                     listener.onClick(LinearRippleView.this);
                 }
             }
+            isClickAlready = false;
         }
 
         private void clickAdapterView(AdapterView parent) {
