@@ -14,7 +14,7 @@ public class ChangeThemeManager {
     public static final int BG_LOCKSCREEN_GESTURE_DOT = 2;
     public static final int BG_HOME_TAB = 3;
     public static final int BG_HOME_UPARROW = 4;
-    
+    public static final int BG_HOME_ASIDE_FRAGMENT = 5;
     public static Drawable getChrismasThemeDrawbleBySlotId (int slotId, Context context) {
         //获取versionCode
         PackageInfo info = null;
@@ -37,6 +37,9 @@ public class ChangeThemeManager {
                     drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
                     break;
                 case BG_HOME_TAB:
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
+                    break;
+                case BG_HOME_ASIDE_FRAGMENT:
                     drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
                     break;
                 default:

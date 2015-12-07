@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.net.Uri;
@@ -49,6 +50,7 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
+import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -527,6 +529,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             }
         });
         mMenuList = (ListView) findViewById(R.id.menu_list);
+        tryChangeToChrismasTheme();
         mMenuItems = getMenuItems();
         mMenuAdapter = new MenuAdapter(this, mMenuItems);
         mMenuList.setAdapter(mMenuAdapter);
@@ -537,6 +540,13 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 //        mAdIcon = (ImageView) findViewById(R.id.iv_ad_icon);
 //        mAdIcon.setOnClickListener(this);
+    }
+
+    private void tryChangeToChrismasTheme() {
+        Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_ASIDE_FRAGMENT, this);
+        if (drawable != null) {
+            mMenuList.setBackgroundDrawable(drawable);
+        }
     }
 
     @Override
