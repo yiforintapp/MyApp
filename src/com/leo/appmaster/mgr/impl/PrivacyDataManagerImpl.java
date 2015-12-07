@@ -130,7 +130,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
     @Override
     public List<PhotoAibum> getHidePicAlbum(String mSuffix) {
-        long a = System.currentTimeMillis();
         //mSuffix is 后缀 , some 后缀 you want , and replace it
         List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
         Uri uri = MediaStore.Files.getContentUri("external");
@@ -143,12 +142,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     MediaStore.MediaColumns.DATE_ADDED + " desc");
             Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
             PhotoAibum pa = null;
-            long b = System.currentTimeMillis();
-            LeoLog.d("testPicLoadTime", "rady load cost :" + (b - a));
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     String path = cursor.getString
                             (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    LeoLog.d("testPicLoadTime", "hide album path : " + path);
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
                     if (!countMap.containsKey(dirPath)) {
@@ -166,15 +164,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 }
             }
             long c = System.currentTimeMillis();
-            LeoLog.d("testPicLoadTime", "all pic cost:" + (c - b));
             Iterable<String> it = countMap.keySet();
             for (String key : it) {
                 aibumList.add(countMap.get(key));
             }
             Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
-            long d = System.currentTimeMillis();
-            LeoLog.d("testPicLoadTime", "left cost:" + (d - c));
-            LeoLog.d("testPicLoadTime", "total caost:" + (d - a));
         } catch (Exception e) {
 
         } finally {

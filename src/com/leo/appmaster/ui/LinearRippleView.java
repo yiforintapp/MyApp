@@ -293,6 +293,9 @@ public class LinearRippleView extends LinearLayout {
                         }
                         childView.onTouchEvent(event);
                         eventCancelled = true;
+
+                        isClickAlready = false;
+                        isCanClick = false;
                     }
                     break;
             }

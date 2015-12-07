@@ -233,7 +233,7 @@ public class RippleView extends RelativeLayout {
                             setRadius(0);
                         }
                         if (!rippleDelayClick && isEventInBounds) {
-                            LeoLog.d("testclick", "is click right now");
+                            LeoLog.d("testRippleClick", "is click right now");
                             pendingClickEvent.run();
                         }
                         cancelPressedEvent();
@@ -270,6 +270,7 @@ public class RippleView extends RelativeLayout {
 
                     break;
                 case MotionEvent.ACTION_CANCEL:
+                    LeoLog.d("testRippleClick", "ACTION_CANCEL");
                     if (rippleInAdapter) {
                         // dont use current coords in adapter since they tend to jump drastically on scroll
                         currentCoords.set(previousCoords.x, previousCoords.y);
@@ -303,6 +304,9 @@ public class RippleView extends RelativeLayout {
                         }
                         childView.onTouchEvent(event);
                         eventCancelled = true;
+
+                        isClickAlready = false;
+                        isCanClick = false;
                     }
                     break;
             }

@@ -44,6 +44,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -241,6 +242,7 @@ public class MaterialRippleLayout extends FrameLayout {
                     }
                     break;
                 case MotionEvent.ACTION_CANCEL:
+                    LeoLog.d("testRippleClick", "ACTION_CANCEL");
                     if (rippleInAdapter) {
                         // dont use current coords in adapter since they tend to jump drastically on scroll
                         currentCoords.set(previousCoords.x, previousCoords.y);
@@ -274,6 +276,9 @@ public class MaterialRippleLayout extends FrameLayout {
                         }
                         childView.onTouchEvent(event);
                         eventCancelled = true;
+
+                        isClickAlready = false;
+                        isCanClick = false;
                     }
                     break;
             }
