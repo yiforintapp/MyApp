@@ -148,6 +148,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        LeoLog.d(TAG, "shouldOverrideUrlLoading, url: " + url);
         Uri uri = Uri.parse(url);
         String schema = uri.getScheme();
         if (!MsgConsts.JSBRIDGE.equals(schema)) {
