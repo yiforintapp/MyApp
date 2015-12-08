@@ -6,14 +6,6 @@
     android:visibility="gone"
     android:background="@android:color/transparent"
     >
-    <!--    android:visibility="gone"-->
-
-    <FrameLayout
-        android:id="@+id/home_guide_ft"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/home_guide_marg_up"
-        android:layout_alignParentBottom="true">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -21,7 +13,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/home_guide_marg"
             android:layout_marginRight="@dimen/home_guide_marg"
-            android:background="@drawable/guide_tip_bg_home">
+            android:background="@drawable/guide_tip_bg_home"
+            android:layout_marginBottom="@dimen/home_guide_marg_up"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true">
 
             <ImageView
                 android:id="@+id/guide_tip_icon"
@@ -43,6 +38,4 @@
                 android:textSize="14dp"/>
 
         </RelativeLayout>
-
-    </FrameLayout>
 </RelativeLayout>

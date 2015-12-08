@@ -146,4 +146,6 @@ public class PrefConst {
     public static final String KEY_PIC_EDIT_GUIDE = "PIC_EDIT_GUIDE";
     /*视频编辑按钮引导标志*/
     public static final String KEY_VIDEO_EDIT_GUIDE = "VIDEO_EDIT_GUIDE";
+    /*首页引导*/
+    public static final String KEY_HOME_GUIDE = "HOME_GUIDE";
 }

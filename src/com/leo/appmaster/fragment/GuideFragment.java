@@ -23,6 +23,7 @@ import com.leo.tools.animator.ObjectAnimator;
 
 
 public class GuideFragment extends Fragment implements View.OnClickListener {
+    private static boolean HOME_GUIDE_SHOW_STATUS = false;
 
     private static final long HOME_GUIDE_ANIM_TIME = 500;
     private static final int HOME_GUIDE_REPEAT_COUNT = -1;
@@ -34,7 +35,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout mHomeGuideRt;
     private RelativeLayout mPicVideoGuideRt;
     private RelativeLayout mVideoGuideRt;
-    private FrameLayout mHomeGuideFt;
+    //    private FrameLayout mHomeGuideFt;
     private ObjectAnimator mHomeGuideAnim;
 
     /*引导类型*/
@@ -49,6 +50,14 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
 
     public GuideFragment() {
 
+    }
+
+    public static boolean isHomeGuideShowStatus() {
+        return HOME_GUIDE_SHOW_STATUS;
+    }
+
+    public static void setHomeGuideShowStatus(boolean homeGuideShowStatus) {
+        HOME_GUIDE_SHOW_STATUS = homeGuideShowStatus;
     }
 
     @Override
@@ -120,7 +129,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         }
         View inClude = viewStub.inflate();
         mHomeGuideRt = (RelativeLayout) inClude.findViewById(R.id.pic_vid_home_rt);
-        mHomeGuideFt = (FrameLayout) inClude.findViewById(R.id.home_guide_ft);
+//        mHomeGuideFt = (FrameLayout) inClude.findViewById(R.id.home_guide_ft);
         mHomeGuideRt.setOnClickListener(this);
     }
 
@@ -156,7 +165,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 if (mHomeGuideAnim.isRunning()) {
                     mHomeGuideAnim.cancel();
                 }
-                mHomeGuideFt.clearAnimation();
+                mHomeGuideRt.clearAnimation();
                 mHomeGuideAnim = null;
             }
         }
@@ -197,6 +206,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 String msg = EVENT_HOME_GUIDE_MSG;
                 CommonEvent event = new CommonEvent(id, msg);
                 LeoEventBus.getDefaultBus().post(event);
+                GuideFragment.HOME_GUIDE_SHOW_STATUS = false;
                 break;
             case R.id.pic_vid_edit_rt:
                 mRootView.setVisibility(View.GONE);

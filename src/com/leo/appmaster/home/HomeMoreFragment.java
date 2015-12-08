@@ -209,6 +209,9 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         boolean pulledEver = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_MORE_PULLED, false);
         if (!pulledEver) {
             mUpArrow.startUpAnimation();
+            if (GuideFragment.isHomeGuideShowStatus()) {
+                mUpArrow.cancelUpAnimation();
+            }
         } else {
             mUpArrow.cancelUpAnimation();
         }

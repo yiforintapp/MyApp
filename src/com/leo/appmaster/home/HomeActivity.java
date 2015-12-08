@@ -1396,11 +1396,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
         boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
         boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-        if (!pulledEver && (picReddot || vidReddot)) {
+        boolean homeGuide = preferenceTable.getBoolean(PrefConst.KEY_HOME_GUIDE, false);
+        if (!pulledEver && (picReddot || vidReddot) && !homeGuide) {
             if (mMoreFragment != null) {
                 mMoreFragment.cancelUpArrowAnim();
             }
+            GuideFragment.setHomeGuideShowStatus(true);
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+            preferenceTable.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
         }
     }
 }
