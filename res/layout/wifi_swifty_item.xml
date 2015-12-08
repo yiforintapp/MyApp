@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/swifty_blue_tiao"
-            android:text="@string/hp_helper_iswipe"
+            android:text="@string/wifi_result_swifty_title"
             android:textColor="@color/c2"
             android:textSize="15dp" />
     </RelativeLayout>
@@ -58,7 +58,7 @@
         android:textColor="@color/c2"
         android:textSize="14dp"
         android:layout_below="@+id/swifty_img"
-        android:text="@string/first_open_quick_gesture_dialog_tip_cotent"/>
+        android:text="@string/wifi_result_swifty_content"/>
 
     <com.leo.appmaster.ui.RippleView
         android:id="@+id/swifty_resulte_sure"

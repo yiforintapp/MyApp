@@ -831,4 +831,6 @@
     <string name="home_guide_txt">图片隐藏，视频隐藏，更多功能都在这里了</string>
     <string name="pic_video_guide_txt">点击编辑按钮，就可以勾选图片取消隐藏哦～</string>
     <string name="prot_open_suc_tip_cnt">已开启高级保护。如果需要卸载隐私卫士，请在侧边栏操作</string>
+    <string name="wifi_result_swifty_title">流量快捷开关</string>
+    <string name="wifi_result_swifty_content">流量用太快？别担心，使用Swifty，一键开关蜂窝数据及WiFi，节省流量看得见！</string>
 </resources>
