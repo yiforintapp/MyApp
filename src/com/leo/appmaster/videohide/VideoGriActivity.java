@@ -207,7 +207,9 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                             mCommonTtileBar.setOptionImageResource(R.drawable.mode_done);
                         }
                         mHideVideoAdapter.notifyDataSetChanged();
-                        cancelVideoGuide();
+                        if (!mVideoEditGuide) {
+                            cancelVideoGuide();
+                        }
                     }
                 }
             });

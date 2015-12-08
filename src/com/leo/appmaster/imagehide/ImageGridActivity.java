@@ -297,7 +297,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                                 null);
                         mImageAdapter.notifyDataSetChanged();
                     }
-                    cancelGuide();
+                    if (!mPicGuide) {
+                        cancelGuide();
+                    }
                 }
             });
             mBottomBar.setVisibility(View.GONE);

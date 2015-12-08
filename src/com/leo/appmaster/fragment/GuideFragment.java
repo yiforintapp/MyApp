@@ -84,6 +84,12 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
+        if (mHomeGuideAnim != null) {
+            if (mHomeGuideAnim.isRunning()) {
+                mHomeGuideAnim.cancel();
+            }
+            mHomeGuideAnim = null;
+        }
     }
 
 
@@ -102,7 +108,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             if (mHomeGuideAnim.isRunning()) {
                 mHomeGuideAnim.cancel();
             }
-            mHomeGuideFt.clearAnimation();
             mHomeGuideAnim = null;
         }
     }
@@ -187,19 +192,18 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pic_vid_home_rt:
-                Toast.makeText(getActivity(), "首页引导", Toast.LENGTH_SHORT).show();
                 mRootView.setVisibility(View.GONE);
-                CommonEvent event = new CommonEvent(EventId.EVENT_HOME_GUIDE_UP_ARROW, EVENT_HOME_GUIDE_MSG);
+                int id = EventId.EVENT_HOME_GUIDE_UP_ARROW;
+                String msg = EVENT_HOME_GUIDE_MSG;
+                CommonEvent event = new CommonEvent(id, msg);
                 LeoEventBus.getDefaultBus().post(event);
                 break;
             case R.id.pic_vid_edit_rt:
-                Toast.makeText(getActivity(), "图片编辑引导", Toast.LENGTH_SHORT).show();
                 mRootView.setVisibility(View.GONE);
                 PreferenceTable pre = PreferenceTable.getInstance();
                 pre.putBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, true);
                 break;
             case R.id.video_edit_rt:
-                Toast.makeText(getActivity(), "视频编辑引导", Toast.LENGTH_SHORT).show();
                 mRootView.setVisibility(View.GONE);
                 PreferenceTable preTab = PreferenceTable.getInstance();
                 preTab.putBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, true);
