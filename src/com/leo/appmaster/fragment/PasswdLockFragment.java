@@ -53,7 +53,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private ImageView mAppIconBottom;
     private RelativeLayout mRootView;
     private Boolean mCanTakePic = false;
-    
+    private Drawable mThemeDrawable = null;
     private FrameLayout mFlPreview;
     private CameraSurfacePreview mCameraSurPreview;
 
@@ -138,26 +138,6 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         return R.layout.fragment_lock_passwd;
     }
 
-//    @SuppressWarnings("deprecation")
-//    public void updateChrismasTheme() {
-//        boolean needChangeTheme = needChangeTheme();
-//        if (needChangeTheme) {
-//            return;
-//        }
-//        Drawable drawable = ChangeThemeManager.ChangeToChrismasThemeBySlotId(ChangeThemeManager.BG_LOCKSCREEN_PASSWORD_NUM, getActivity());
-//        tv1.setBackgroundDrawable(drawable);
-//        tv2.setBackgroundDrawable(drawable);
-//        tv3.setBackgroundDrawable(drawable);
-//        tv4.setBackgroundDrawable(drawable);
-//        tv5.setBackgroundDrawable(drawable);
-//        tv6.setBackgroundDrawable(drawable);
-//        tv7.setBackgroundDrawable(drawable);
-//        tv8.setBackgroundDrawable(drawable);
-//        tv9.setBackgroundDrawable(drawable);
-//        tv0.setBackgroundDrawable(drawable);
-//    }
-    
-    
     
     @SuppressWarnings("deprecation")
     @Override
@@ -1009,10 +989,14 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 bottomView = tv0Bottom;
                 return;
         }
+        
         Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_PASSWORD_NUM, getActivity());
         if (drawable != null) {
-            if (state == BUTTON_STATE_PRESS) {
-                bottomView.setImageDrawable(drawable);
+            if (state == BUTTON_STATE_PRESS ) {
+                if (mThemeDrawable == null) {
+                    mThemeDrawable = drawable;
+                }
+                bottomView.setImageDrawable(mThemeDrawable);
             } else if (state == BUTTON_STATE_NORMAL) {
                 bottomView.setImageResource(R.drawable.digital_bg_normal);
             }
