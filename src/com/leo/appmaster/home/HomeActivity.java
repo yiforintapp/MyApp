@@ -381,7 +381,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
                 @Override
                 public void onShowTabListener() {
-                    mMoreFragment.cancelUpArrowAnim();
                     mMoreFragment.setEnable(true);
                     /*首页引导*/
                     showHomeGuide();
@@ -399,6 +398,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mCommonToolbar.startAnimation(mComingInAnim);
 
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            mMoreFragment.cancelUpArrowAnim();
         }
     }
 
