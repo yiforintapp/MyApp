@@ -21,6 +21,7 @@ public class ChangeThemeManager {
     public static final int VERSION_CODE_NEED_CHANGE_TO_CHRISMAS_THEME = 62;
     public static final int BG_LOCKSCREEN_PASSWORD_NUM = 1;
     public static final int BG_LOCKSCREEN_GESTURE_DOT = 2;
+    public static final int ICON_HOME_UP_ARROW = 7;
     public static final int COUNT_LOCKSCREEN_DOT_THEME_BG = 10;
     public static final int BG_LOCKSCREEN_WHOLE = 6;
     public static final int BG_HOME_TAB = 3;
@@ -85,6 +86,7 @@ public class ChangeThemeManager {
                         return null;
                     }
                     break;
+                case ICON_HOME_UP_ARROW:
                 case BG_HOME_TAB:
                 case BG_HOME_UPARROW:
                 case BG_HOME_ASIDE_FRAGMENT:
@@ -113,6 +115,9 @@ public class ChangeThemeManager {
                     break;
                 case BG_LOCKSCREEN_WHOLE:
                     drawableForReturn = context.getResources().getDrawable(R.drawable.lockscreen_chrismas_bg);
+                    break;
+                case ICON_HOME_UP_ARROW:
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
                     break;
                 default:
                     break;
