@@ -95,7 +95,6 @@ public class InstructListAdapter extends BaseAdapter {
             vh.image.setImageResource(instructModel.image);
             vh.title.setText(mContext.getResources().getString(instructModel.title));
             vh.content.setText(mContext.getResources().getString(instructModel.content));
-            LeoLog.i("caocao", "是否选择：" + instructModel.isSelect);
             if (instructModel.isSelect) {
                 vh.selectImage.setVisibility(View.VISIBLE);
                 vh.openBt.setVisibility(View.VISIBLE);
@@ -116,6 +115,7 @@ public class InstructListAdapter extends BaseAdapter {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        PhoneSecurityManager.getInstance(mContext).setIsAdvOpenTip(true);
                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft", "theft_open");
                     }
                 });

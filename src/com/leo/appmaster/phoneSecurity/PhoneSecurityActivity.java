@@ -22,9 +22,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.intruderprotection.UpdateScoreHelper;
@@ -36,6 +38,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -91,6 +94,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private TextView mKnowMdContent;
     private TextView mKnowModelClick;
     private ScrollView mSecurPhNumCv;
+    private LEOAnimationDialog mAdvanceTipDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,14 +161,35 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             mHourTv.setText(String.valueOf(protectTime[1]));
             if (isOpenAdv) {
                 mNoAdvFinishTimeLt.setVisibility(View.GONE);
+                /*开启高级保护弹窗操作*/
+                boolean isAdvOpen = PhoneSecurityManager.getInstance(this).isIsAdvOpenTip();
+                if (isAdvOpen) {
+                    openAdvanceProtectDialogTip();
+                }
             } else {
                 mNoAdvFinishTimeLt.setVisibility(View.VISIBLE);
+               /*开启高级保护弹窗操作*/
+                PhoneSecurityManager psm = PhoneSecurityManager.getInstance(PhoneSecurityActivity.this);
+                if (psm.isIsAdvOpenTip()) {
+                    psm.setIsAdvOpenTip(false);
+                }
             }
             mNoAddSecurNumber.setVisibility(View.GONE);
             securTimeAnim(mShowProtTimeLt);
         } else if (contact != null && contact.length > 0) {
             LeoLog.i(TAG, "保存了防盗");
             if (mBottomNumber[1].equals(mCurrentProcNumber)) {
+                /*开启高级保护弹窗操作*/
+                PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
+                boolean isAdvTip = psm.isIsAdvOpenTip();
+                boolean isOpenAdv = securMgr.isOpenAdvanceProtect();
+                if (isAdvTip && isOpenAdv) {
+                    openAdvanceProtectDialogTip();
+                } else {
+                    if (isOpenAdv) {
+                        psm.setIsAdvOpenTip(false);
+                    }
+                }
                 toProcTwo();
             } else if (mBottomNumber[2].equals(mCurrentProcNumber)) {
                 toSecurFinish();
@@ -567,6 +592,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                         } else {
                             toSecurFinish();
                         }
+                        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
+                        psm.setIsAdvOpenTip(true);
                         /*打点上报*/
                         if (mAdvanProCheckStatus) {
                             SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_snd_protect");
@@ -635,6 +662,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             case R.id.open_sucur_adv_bt:
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_instant");
                 startDeviceItent(false);
+                PhoneSecurityManager.getInstance(PhoneSecurityActivity.this).setIsAdvOpenTip(true);
                 break;
             case R.id.help_bt:
                 if (mHelpRt.getVisibility() == View.VISIBLE) {
@@ -747,6 +775,11 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mgr.setUsePhoneSecurity(true);
         /*设置开启保护的时间*/
         mgr.setOpenSecurityTime();
+
+        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
+        if (psm.isIsAdvOpenTip()) {
+            psm.setIsAdvOpenTip(false);
+        }
     }
 
     /*来自扫描页面,加分提示处理*/
@@ -804,7 +837,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.cb));
                 setSecurShowUI(false, true, false, false, false, false, false, false);
                 isShowAdvProtectUi = true;
-                mCurrentProcNumber = "2";
+                mCurrentProcNumber = mBottomNumber[1];
                 mCommonBar.setToolbarTitle(R.string.secur_advan_title);
                 mAdvanChekBox.setVisibility(View.VISIBLE);
                 LeoLog.i(TAG, "go to 2 !");
@@ -943,5 +976,24 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             String content = new MsmPermisGuideList().getModelString();
             mKnowMdContent.setText(content);
         }
+    }
+
+    /*开启高级保护弹窗*/
+    private void openAdvanceProtectDialogTip() {
+        if (mAdvanceTipDialog == null) {
+            mAdvanceTipDialog = new LEOAnimationDialog(this);
+            mAdvanceTipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mAdvanceTipDialog != null) {
+                        mAdvanceTipDialog = null;
+                    }
+                }
+            });
+        }
+        String content = getString(R.string.prot_open_suc_tip_cnt);
+        mAdvanceTipDialog.setContent(content);
+        mAdvanceTipDialog.show();
+        PhoneSecurityManager.getInstance(PhoneSecurityActivity.this).setIsAdvOpenTip(false);
     }
 }

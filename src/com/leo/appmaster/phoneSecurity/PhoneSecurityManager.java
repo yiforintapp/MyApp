@@ -50,6 +50,8 @@ public class PhoneSecurityManager {
     private LocationManager mLocationManager;
     private SecurLocateListener mLocationListener;
     private boolean mIsFromScan;
+    private boolean mIsAdvOpenTip;
+
 
     private PhoneSecurityManager(Context context) {
         mContext = context;
@@ -125,6 +127,14 @@ public class PhoneSecurityManager {
 
     public void setStopAlert(boolean mStopAlert) {
         this.mStopAlert = mStopAlert;
+    }
+
+    public boolean isIsAdvOpenTip() {
+        return mIsAdvOpenTip;
+    }
+
+    public void setIsAdvOpenTip(boolean isAdvOpenTip) {
+        this.mIsAdvOpenTip = isAdvOpenTip;
     }
 
     /**
