@@ -826,4 +826,7 @@
     <string name="adv_prot_open_suc_tip_cnt">LEO Privacy Guard can not uninstall under advanced protection. If it is needed, please go to AppLock page and disenable \"Advanced Protection\" in AppLock Settings.</string>
     <string name="pri_pro_btn">Enable(+%1$d points)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
+
+    <!-- 3.1.1 -->
+    <string name="prot_open_suc_tip_cnt">已开启高级保护。如果需要卸载隐私卫士，请在侧边栏操作</string>
 </resources>

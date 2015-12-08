@@ -27,6 +27,7 @@ import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -49,7 +50,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     public static final int FROM_HOME = 2;
 
     private int mComeFrom = FROM_APPLOCK;
-    private LEOMessageDialog mMessageDialog;
+    private LEOAnimationDialog mMessageDialog;
 
     private SharedPreferences mySharedPreferences;
     private boolean mNewTheme;
@@ -62,7 +63,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         initIntent();
         initUI();
         setupPreference();
-        
+
         LeoEventBus.getDefaultBus().register(this);
     }
 
@@ -209,7 +210,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     private void openAdvanceProtectDialogTip() {
         if (mMessageDialog == null) {
-            mMessageDialog = new LEOMessageDialog(this);
+            mMessageDialog = new LEOAnimationDialog(this);
             mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -218,13 +219,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                     }
                     AppMasterPreference.getInstance(LockOptionActivity.this)
                             .setAdvanceProtectOpenSuccessDialogTip(false);
-                    LeoLog.i("openAdvanceProtectDialogTip", "高级保护开启成功--已经提示过了～～");
                 }
             });
         }
-        String title = getString(R.string.advance_protect_open_success_tip_title);
-        String content = getString(R.string.adv_prot_open_suc_tip_cnt);
-        mMessageDialog.setTitle(title);
+        String content = getString(R.string.prot_open_suc_tip_cnt);
         mMessageDialog.setContent(content);
         mMessageDialog.show();
     }
@@ -242,16 +240,16 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         }
         LeoEventBus.getDefaultBus().unregister(this);
     }
-    
+
     public void onEventMainThread(DeviceAdminEvent event) {
-        if(event.getEventId() == EventId.EVENT_DEVICE_ADMIN_DISABLE){
+        if (event.getEventId() == EventId.EVENT_DEVICE_ADMIN_DISABLE) {
             updateButtons(false);
-        }else if(event.getEventId() == EventId.EVENT_DEVICE_ADMIN_ENABLE){
+        } else if (event.getEventId() == EventId.EVENT_DEVICE_ADMIN_ENABLE) {
             updateButtons(true);
         }
     }
-    
-    private void updateButtons(boolean active){
+
+    private void updateButtons(boolean active) {
         if (active) {
             mForbidUninstall.setChecked(true);
             mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
@@ -281,7 +279,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mLockManager.filterSelfOneMinites();
 //            if(false){
             if (isAdminActive()) {
-                DevicePolicyManager dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+                DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
                 dpm.removeActiveAdmin(component);
             } else {
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);

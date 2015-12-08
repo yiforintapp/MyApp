@@ -192,5 +192,5 @@
     <dimen name="cancel_hide_pic_item_padding">4dp</dimen>
     <dimen name="cancel_hide_pic_item_icon_padding">4dp</dimen>
 
-    <dimen name="tab_red_tip_m_left">7dp</dimen>
+    <dimen name="tab_red_tip_m_left">2dp</dimen>
 </resources>
