@@ -420,13 +420,26 @@ public final class Utilities {
         return false;
     }
     
-    public static void goFiveStar(Context context) {
+    public static void goFiveStar(Context context, boolean isFromCard, boolean isFromPrivacy) {
+        String url = Constants.RATING_ADDRESS_BROWSER;
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        if (isFromCard && isFromPrivacy) {
+            if (preferenceTable.getString(PrefConst.KEY_PRI_GRADE_URL) != null &&
+                    preferenceTable.getString(PrefConst.KEY_PRI_GRADE_URL).length() > 0) {
+                url = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_URL);
+            }
+        } else if (isFromCard && !isFromPrivacy) {
+            if (preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_URL) != null &&
+                    preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_URL).length() > 0) {
+                url = preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_URL);
+            }
+        }
         Intent intent = null;
         if (AppUtil.appInstalled(context,
                 "com.android.vending")) {
             intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri
-                    .parse(Constants.RATING_ADDRESS_MARKET);
+                    .parse(url);
             intent.setData(uri);
             intent.setPackage("com.android.vending");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -435,26 +448,25 @@ public final class Utilities {
                 LeoLog.i("goFiveStar", "intent: " + intent.toURI());
             } catch (Exception e) {
                 if (isRedMiTwo()) {
-                    goRedMiTwoBrowser(context);
+                    goRedMiTwoBrowser(url, context);
                 } else {
-                    goGpBrowser(context);
+                    goGpBrowser(url, context);
                 }
 
             }
         } else {
             if (isRedMiTwo()) {
-                goRedMiTwoBrowser(context);
+                goRedMiTwoBrowser(url, context);
             } else {
-                goGpBrowser(context);
+                goGpBrowser(url, context);
             }
         }
     }
     
-    private static void goGpBrowser(Context context) {
+    private static void goGpBrowser(String url, Context context) {
         Intent intent;
         intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri
-                .parse(Constants.RATING_ADDRESS_BROWSER);
+        Uri uri = Uri.parse(url);
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
@@ -473,11 +485,10 @@ public final class Utilities {
     }
 
     /** 红米Note2 进入红米默认浏览器 */
-    private static void goRedMiTwoBrowser(Context context) {
+    private static void goRedMiTwoBrowser(String url, Context context) {
         Intent intent;
         intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri
-                .parse(Constants.RATING_ADDRESS_BROWSER);
+        Uri uri = Uri.parse(url);
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
@@ -485,7 +496,7 @@ public final class Utilities {
             context.startActivity(intent);
             LeoLog.i("goFiveStar", "intent: " + intent.toURI());
         } catch (Exception e) {
-            goGpBrowser(context);
+            goGpBrowser(url, context);
         }
     }
 
@@ -494,7 +505,7 @@ public final class Utilities {
      */
     public static void goFaceBook(Context context, boolean isFromPrivacy) {
         Intent intentLikeUs = null;
-        String url = Constants.FACEBOOK_URL;
+        String url = Constants.FACEBOOK_PG_URL;
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         if (isFromPrivacy) {
             if (preferenceTable.getString(PrefConst.KEY_PRI_FB_URL) != null &&
@@ -529,6 +540,19 @@ public final class Utilities {
                 context.startActivity(intentLikeUs);
             } catch (Exception e) {
             }
+        }
+    }
+
+    /** 通过包名打开已安装的wifimaster */
+    public static void openAPPByPkgName(Context context, String pkgName) {
+        Intent intent = null;
+        PackageManager pm = context.getPackageManager();
+        intent = pm.getLaunchIntentForPackage(pkgName);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -573,7 +597,7 @@ public final class Utilities {
 
                 selectType(preferenceTable, PrefConst.KEY_PRI_WIFIMASTER_TYPE,
                         PrefConst.KEY_PRI_WIFIMASTER_GP_URL, PrefConst.KEY_PRI_WIFIMASTER_URL,
-                        "wifimaster", context);
+                        Constants.WIFIMASTER_PKG_NAME, context);
             }
         } else {
             if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
@@ -586,7 +610,7 @@ public final class Utilities {
 
                 selectType(preferenceTable, PrefConst.KEY_WIFI_WIFIMASTER_TYPE,
                         PrefConst.KEY_WIFI_WIFIMASTER_GP_URL, PrefConst.KEY_WIFI_WIFIMASTER_URL,
-                        "wifimaster", context);
+                        Constants.WIFIMASTER_PKG_NAME, context);
             }
         }
     }

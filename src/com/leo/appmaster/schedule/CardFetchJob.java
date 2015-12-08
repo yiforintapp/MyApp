@@ -55,9 +55,11 @@ public class CardFetchJob extends FetchScheduleJob {
         JSONObject object = (JSONObject) response;
 
         try {
-            JSONObject priWifiMaster = object.getJSONObject(PrefConst.KEY_PRI_WIFIMASTER);
-            if (priWifiMaster != null) {  // 隐私页wifimaster
+            boolean isPriWifiMasterNull = object.isNull(
+                                          PrefConst.KEY_PRI_WIFIMASTER); // 判断key是否存在
 
+            if (!isPriWifiMasterNull) {  // 隐私页wifimaster
+                JSONObject priWifiMaster = object.getJSONObject(PrefConst.KEY_PRI_WIFIMASTER);
                 setValue(priWifiMaster, "content",
                         PrefConst.KEY_PRI_WIFIMASTER_CONTENT, preferenceTable);
                 setValue(priWifiMaster, "gp_url",
@@ -73,9 +75,9 @@ public class CardFetchJob extends FetchScheduleJob {
                 setPriWifiMasterEmpty(preferenceTable);
             }
 
-            JSONObject priGrade = object.getJSONObject(PrefConst.KEY_PRI_GRADE);
-            if (priGrade != null) { // 隐私页评分
-
+            boolean isPriGradeNull = object.isNull(PrefConst.KEY_PRI_GRADE); // 判断key是否存在
+            if (!isPriGradeNull) { // 隐私页评分
+                JSONObject priGrade = object.getJSONObject(PrefConst.KEY_PRI_GRADE);
                 setValue(priGrade, "content",
                         PrefConst.KEY_PRI_GRADE_CONTENT, preferenceTable);
                 setValue(priGrade, "img_url",
@@ -87,9 +89,9 @@ public class CardFetchJob extends FetchScheduleJob {
                 setPriGradeEmpty(preferenceTable);
             }
 
-            JSONObject priFb = object.getJSONObject(PrefConst.KEY_PRI_FB);
-            if (priGrade != null) { // 隐私页分享fb
-
+            boolean isPriFbNull = object.isNull(PrefConst.KEY_PRI_FB); // 判断key是否存在
+            if (!isPriFbNull) { // 隐私页分享fb
+                JSONObject priFb = object.getJSONObject(PrefConst.KEY_PRI_FB);
                 setValue(priFb, "content",
                         PrefConst.KEY_PRI_FB_CONTENT, preferenceTable);
                 setValue(priFb, "img_url",
@@ -101,9 +103,10 @@ public class CardFetchJob extends FetchScheduleJob {
                 setPriFbEmpty(preferenceTable);
             }
 
-            JSONObject wifiSwifty = object.getJSONObject(PrefConst.KEY_WIFI_SWIFTY);
-            if (priWifiMaster != null) {  // wifi页Swifty
-
+            boolean isWifiSwiftyNull = object.isNull(
+                    PrefConst.KEY_WIFI_SWIFTY); // 判断key是否存在
+            if (!isWifiSwiftyNull) {  // wifi页Swifty
+                JSONObject wifiSwifty = object.getJSONObject(PrefConst.KEY_WIFI_SWIFTY);
                 setValue(wifiSwifty, "content",
                         PrefConst.KEY_WIFI_SWIFTY_CONTENT, preferenceTable);
                 setValue(wifiSwifty, "gp_url",
@@ -119,9 +122,10 @@ public class CardFetchJob extends FetchScheduleJob {
                 setWifiSwiftyEmpty(preferenceTable);
             }
 
-            JSONObject wifiWifiMaster = object.getJSONObject(PrefConst.KEY_WIFI_WIFIMASTER);
-            if (priWifiMaster != null) {  // wifi页WifiMaster
-
+            boolean isWifiWifiMasterNull = object.isNull(
+                                            PrefConst.KEY_WIFI_WIFIMASTER); // 判断key是否存在
+            if (!isWifiWifiMasterNull) {  // wifi页WifiMaster
+                JSONObject wifiWifiMaster = object.getJSONObject(PrefConst.KEY_WIFI_WIFIMASTER);
                 setValue(wifiWifiMaster, "content",
                         PrefConst.KEY_WIFI_WIFIMASTER_CONTENT, preferenceTable);
                 setValue(wifiWifiMaster, "gp_url",
@@ -137,9 +141,9 @@ public class CardFetchJob extends FetchScheduleJob {
                 setWifiWifiMasterEmpty(preferenceTable);
             }
 
-            JSONObject wifiGrade = object.getJSONObject(PrefConst.KEY_WIFI_GRADE);
-            if (priGrade != null) { // wifi页评分
-
+            boolean isWifiGradeNull = object.isNull(PrefConst.KEY_WIFI_GRADE); // 判断key是否存在
+            if (!isWifiGradeNull) { // wifi页评分
+                JSONObject wifiGrade = object.getJSONObject(PrefConst.KEY_WIFI_GRADE);
                 setValue(wifiGrade, "content",
                         PrefConst.KEY_WIFI_GRADE_CONTENT, preferenceTable);
                 setValue(wifiGrade, "img_url",
@@ -147,13 +151,14 @@ public class CardFetchJob extends FetchScheduleJob {
                 setValue(wifiGrade, "url",
                         PrefConst.KEY_WIFI_GRADE_URL, preferenceTable);
 
+
             } else {
                 setWifiGradeEmpty(preferenceTable);
             }
 
-            JSONObject wifiFb = object.getJSONObject(PrefConst.KEY_WIFI_FB);
-            if (priGrade != null) { //wifi页分享fb
-
+            boolean isWifiFbNull = object.isNull(PrefConst.KEY_WIFI_FB); // 判断key是否存在
+            if (!isWifiFbNull) { //wifi页分享fb
+                JSONObject wifiFb = object.getJSONObject(PrefConst.KEY_WIFI_FB);
                 setValue(wifiFb, "content",
                         PrefConst.KEY_WIFI_FB_CONTENT, preferenceTable);
                 setValue(wifiFb, "img_url",
@@ -231,13 +236,17 @@ public class CardFetchJob extends FetchScheduleJob {
     private void setValue(JSONObject object, String key,
                           String prefKey, PreferenceTable preferenceTable) {
         try {
-            if (TextUtils.isEmpty(object.getString(key))) {
-                preferenceTable.putString(prefKey, "");
+            if (!object.isNull(key)) {
+                if (TextUtils.isEmpty(object.getString(key))) {
+                    preferenceTable.putString(prefKey, "");
+                } else {
+                    preferenceTable.putString(prefKey, object.getString(key));
+                }
             } else {
-                preferenceTable.putString(prefKey, object.getString(key));
+                preferenceTable.putString(prefKey, "");
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            preferenceTable.putString(prefKey, "");
         }
     }
 }

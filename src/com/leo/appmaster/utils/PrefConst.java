@@ -137,6 +137,7 @@ public class PrefConst {
     public static final String KEY_WIFI_GRADE_IMG_URL = "wifi_grade_img_url";
     public static final String KEY_WIFI_GRADE_URL = "wifi_grade_url";
 
+
     //wifi页FB数据
     public static final String KEY_WIFI_FB_CONTENT = "wifi_fb_content";
     public static final String KEY_WIFI_FB_IMG_URL = "wifi_fb_img_url";

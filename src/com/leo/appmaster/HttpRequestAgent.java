@@ -513,8 +513,9 @@ public class HttpRequestAgent {
                 .append(versionCodeString).append("/")
                 .append(channelCode)
                 .append(".html");
-        String url = stringBuilder.toString();
-        LeoLog.i("CardFetchJob", "load url: " + url);
+//        String url = stringBuilder.toString();
+        String url = "http://api.leomaster.com/appmaster/promotion/cn/zh/3.0/0001a.html";
+                LeoLog.i("CardFetchJob", "load url: " + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);

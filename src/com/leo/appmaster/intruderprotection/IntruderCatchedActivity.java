@@ -1,13 +1,5 @@
 package com.leo.appmaster.intruderprotection;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -56,6 +48,14 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
+
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class IntruderCatchedActivity extends BaseActivity implements View.OnClickListener {
     private List<PhotoAibum> mAlbumList = null;
@@ -600,7 +600,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_capture_rank");
                 mLockManager.filterSelfOneMinites();
-                Utilities.goFiveStar(IntruderCatchedActivity.this);
+                Utilities.goFiveStar(IntruderCatchedActivity.this, false, false);
                 break;
             case R.id.rv_more:
                 // “更多”按钮点击后，将进入图片隐藏功能中的的对应相册

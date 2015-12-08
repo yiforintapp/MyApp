@@ -46,6 +46,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -1051,7 +1052,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mHighGradeBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
-            Utilities.goFiveStar(mActivity);
+            Utilities.goFiveStar(mActivity, true, true);
         } else if (mLostBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "theft_enable");
             Intent intent = new Intent(mActivity, PhoneSecurityGuideActivity.class);
@@ -1060,7 +1061,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mGradeBtnLt == v) { // 五星好评
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
-            Utilities.goFiveStar(mActivity);
+            Utilities.goFiveStar(mActivity, true, true);
         } else if (mSwiftyBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "swifty");
             lockManager.filterSelfOneMinites();
@@ -1071,7 +1072,14 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, true);
             }
         } else if (mWifiMasteBtnLt == v) {
-            Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, true);
+            boolean installWifiMaster = AppUtil.isInstallPkgName(
+                    mActivity, Constants.WIFIMASTER_PKG_NAME);
+            if (installWifiMaster) {
+                Utilities.openAPPByPkgName(mActivity, Constants.WIFIMASTER_PKG_NAME);
+            } else {
+                Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, true);
+            }
+
         }
 
     }

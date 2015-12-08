@@ -31,6 +31,7 @@ import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
@@ -182,7 +183,13 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 }
                 break;
             case R.id.wifimaster_resulte_sure:
-                Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, false);
+                boolean installWifiMaster = AppUtil.isInstallPkgName(
+                        mActivity, Constants.WIFIMASTER_PKG_NAME);
+                if (installWifiMaster) {
+                    Utilities.openAPPByPkgName(mActivity, Constants.WIFIMASTER_PKG_NAME);
+                } else {
+                    Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, false);
+                }
                 break;
             case R.id.fb_resulte_sure:
                 lockManager.filterSelfOneMinites();
@@ -190,7 +197,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 break;
             case R.id.grade_resulte_sure:
                 lockManager.filterSelfOneMinites();
-                Utilities.goFiveStar(mActivity);
+                Utilities.goFiveStar(mActivity, true, false);
                 break;
         }
     }
