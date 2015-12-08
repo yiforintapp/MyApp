@@ -20,7 +20,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
@@ -30,7 +29,6 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
@@ -198,7 +196,7 @@ public class QuickHelperActivity extends BaseActivity {
                 TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc);
                 View line = view.findViewById(R.id.v_line);
                 if (position == FIRST_CLASS_LAST_ONE_POSITION || position == SECOND_CLASS_LAST_ONE_POSITION || position == THIRD_CLASS_LAST_ONE_POSITION) {
-                    line.setVisibility(view.GONE);
+                    line.setVisibility(View.GONE);
                 }
                 if (position == FIRST_CLASS_FIRST_ONE_POSITION) {
                     tvClass.setText(R.string.class_privacy_protection);
@@ -216,8 +214,6 @@ public class QuickHelperActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent;
-                        Intent makeSHortcut;
-                        Intent.ShortcutIconResource appwallIconRes;
                         int id = (int) getItemId(position);
                         switch (id) {
                             // 桌面加速 (免密码)
@@ -226,8 +222,6 @@ public class QuickHelperActivity extends BaseActivity {
                                         "assistant", "assistant_accelerate");
 //                                boolean isInstalllIswipe = ISwipUpdateRequestManager
 //                                        .isInstallIsiwpe(AppMasterApplication.getInstance());
-                                PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                                boolean isBoostCreat = preferenceTable.getBoolean(PrefConst.IS_BOOST_CREAT, false);
 //                                if (!isBoostCreat) {  
                                     intent = new Intent(AppMasterApplication.getInstance(), HomeBoostActivity.class);
                                     intent.putExtra("from_quickhelper", true);

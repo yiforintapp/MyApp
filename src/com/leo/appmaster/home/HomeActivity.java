@@ -1,9 +1,7 @@
 package com.leo.appmaster.home;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -54,7 +52,6 @@ import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.db.IntruderPhotoTable;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -63,7 +60,7 @@ import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.GuideFragment;
-import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
@@ -88,9 +85,7 @@ import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
-import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.imageloader.utils.IoUtils;
-import com.leo.tools.animator.ValueAnimator;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
@@ -103,7 +98,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private float mDrawerOffset;
     private List<MenuItem> mMenuItems;
     private MenuAdapter mMenuAdapter;
-    private boolean mHasRequestCamera = false;
     //    private ImageView mAdIcon;
     //    private MobvistaAdWall mWallAd;
     private Handler mHandler = new Handler();
