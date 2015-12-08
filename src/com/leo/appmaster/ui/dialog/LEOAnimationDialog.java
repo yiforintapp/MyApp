@@ -23,7 +23,6 @@ public class LEOAnimationDialog extends LEOBaseDialog {
     private static final int SHOW_ANIMATION_DELAY = 700;
     private static final int HAND_MOVE = 21;
     private static final int CLICK_DELAY = 500;
-    private static final int HAND_MOVE_TO_LAST = 22;
     private Context mContext;
     private TextView mTitle;
     private TextView mContent;
@@ -42,9 +41,6 @@ public class LEOAnimationDialog extends LEOBaseDialog {
                 case HAND_MOVE:
                     startHandMove();
                     break;
-//                case HAND_MOVE_TO_LAST:
-//                    moveToLast();
-//                    break;
             }
         }
 
@@ -61,19 +57,6 @@ public class LEOAnimationDialog extends LEOBaseDialog {
         mHandler.sendEmptyMessageDelayed(SHOW_ANIMATION, SHOW_ANIMATION_DELAY);
     }
 
-//    private void moveToLast() {
-//        ObjectAnimator handmoveX = ObjectAnimator.ofFloat(mMoveHand,
-//                "x", mMoveHand.getX(), mMoveHand.getX() - mMoveHand.getWidth() * 2);
-//        handmoveX.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                super.onAnimationEnd(animation);
-//                animationClick(false);
-//            }
-//        });
-//        handmoveX.setDuration(600);
-//        handmoveX.start();
-//    }
 
     private void startHandMove() {
         mIcon.setImageResource(R.drawable.uninstall_guide_phone2);
@@ -88,22 +71,6 @@ public class LEOAnimationDialog extends LEOBaseDialog {
         });
         handmoveY.setDuration(600);
         handmoveY.start();
-//        mIcon.setImageResource(R.drawable.uninstall_guide_phone2);
-//        ObjectAnimator handmoveX = ObjectAnimator.ofFloat(mMoveHand,
-//                "x", mMoveHand.getX(), mMoveHand.getX() + mMoveHand.getWidth() * 2);
-//        ObjectAnimator handmoveY = ObjectAnimator.ofFloat(mMoveHand,
-//                "y", mMoveHand.getY(), mMoveHand.getY() + mMoveHand.getHeight() * 3 / 4);
-//        AnimatorSet set = new AnimatorSet();
-//        set.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                super.onAnimationEnd(animation);
-//                mHandler.sendEmptyMessageDelayed(HAND_MOVE_TO_LAST, CLICK_DELAY);
-//            }
-//        });
-//        set.setDuration(600);
-//        set.play(handmoveX).with(handmoveY);
-//        set.start();
     }
 
     private void startAnimation() {

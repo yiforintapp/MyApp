@@ -29,7 +29,6 @@
                 android:layout_gravity="center"
                 android:src="@drawable/uninstall_guide_phone1" />
 
-
             <ImageView
                 android:id="@+id/move_hand_iv"
                 android:layout_width="wrap_content"
