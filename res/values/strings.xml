@@ -827,6 +827,10 @@
     <string name="pri_pro_btn">Enable(+%1$d points)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
 
+    <!--3.11-->
+    <string name="home_guide_txt">图片隐藏，视频隐藏，更多功能都在这里了</string>
+    <string name="pic_video_guide_txt">点击编辑按钮，就可以勾选图片取消隐藏哦～</string>
+
     <!-- 3.1.1 -->
     <string name="prot_open_suc_tip_cnt">已开启高级保护。如果需要卸载隐私卫士，请在侧边栏操作</string>
 </resources>

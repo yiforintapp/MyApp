@@ -23,7 +23,10 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.BackupEvent;
+import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -64,6 +67,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_home_more, container, false);
     }
 
@@ -378,5 +382,18 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
     public void onDestroy() {
         super.onDestroy();
         mUpArrow.release();
+    }
+
+    public void cancelUpArrowAnim() {
+        if (mUpArrow != null) {
+            mUpArrow.cancelUpAnimation();
+        }
+    }
+
+    public void onEventMainThread(CommonEvent event) {
+        String msg = event.eventMsg;
+        if (GuideFragment.EVENT_HOME_GUIDE_MSG.equals(msg)) {
+            mSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+        }
     }
 }

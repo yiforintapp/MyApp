@@ -3,19 +3,24 @@
     android:id="@+id/guide_ft"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/c1"
-    tools:context="com.leo.appmaster.fragment.GuideFragment">
+    android:background="@android:color/transparent">
     <!--首次处理完图片，视频返回首页引导-->
     <ViewStub
         android:id="@+id/home_more_guide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout="@layout/handler_pic_vid_hom_more_guide" />
-    <!--图片，视频隐藏页编辑按钮引导-->
+    <!--图片隐藏页编辑按钮引导-->
     <ViewStub
         android:id="@+id/pic_vid_edit_guide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout="@layout/pic_vid_edit_bt_guide" />
+    <!--视频隐藏页编辑按钮引导-->
+    <ViewStub
+        android:id="@+id/video_edit_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/video_edit_bt_guide" />
 
 </FrameLayout>

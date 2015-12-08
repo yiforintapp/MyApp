@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pic_vid_home_rt"
+    android:id="@+id/video_edit_rt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
     android:background="@android:color/transparent"
+    android:visibility="gone"
     >
-    <!--    android:visibility="gone"-->
+    <!--android:visibility="gone"-->
 
     <FrameLayout
-        android:id="@+id/home_guide_ft"
+        android:id="@+id/video_guide_ft"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/home_guide_marg_up"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/home_guide_marg"
-            android:layout_marginRight="@dimen/home_guide_marg"
-            android:background="@drawable/guide_tip_bg_home">
+            android:layout_gravity="right"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/guide_tip_bg_edit">
 
             <ImageView
-                android:id="@+id/guide_tip_icon"
+                android:id="@+id/video_guide_tip_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:src="@drawable/tips_icon" />
 
             <TextView
-                android:id="@+id/guide_text_tip"
+                android:id="@+id/video_guide_text_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/guide_tip_icon"
-                android:text="@string/home_guide_txt"
-                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/video_guide_tip_icon"
+                android:text="@string/pic_video_guide_txt"
+                android:maxLines="2"
+                android:layout_marginRight="9dp"
                 android:textColor="#ffffff"
                 android:textSize="14dp"/>
 

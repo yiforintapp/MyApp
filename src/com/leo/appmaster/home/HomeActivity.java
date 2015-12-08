@@ -71,6 +71,7 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
+import com.leo.appmaster.ui.HomeUpArrow;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.AppUtil;
@@ -108,7 +109,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private IntrudeSecurityManager mISManger;
     private boolean mShowIswipeFromNotfi;
 
-    private HomeMoreFragment mMoreFragment;
+    public HomeMoreFragment mMoreFragment;
     private HomePrivacyFragment mPrivacyFragment;
     private HomeTabFragment mTabFragment;
     private GuideFragment mGuideFragment;
@@ -273,6 +274,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //        }
     }
 
+
     public void onEvent(final MsgCenterEvent event) {
         // 设置消息中心未读计数
         if (event.getEventId() != MsgCenterEvent.ID_MSG)
@@ -379,7 +381,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
                 @Override
                 public void onShowTabListener() {
+                    mMoreFragment.cancelUpArrowAnim();
                     mMoreFragment.setEnable(true);
+                    /*首页引导*/
+                    showHomeGuide();
                 }
             });
             getSupportFragmentManager().popBackStack();
@@ -394,9 +399,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mCommonToolbar.startAnimation(mComingInAnim);
 
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-
-            /*首页引导*/
-            showHomeGuide();
         }
     }
 
@@ -1395,7 +1397,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
         boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
         if (!pulledEver && (picReddot || vidReddot)) {
-            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+            if (mMoreFragment != null) {
+                mMoreFragment.cancelUpArrowAnim();
+            }
+            mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
         }
     }
 }

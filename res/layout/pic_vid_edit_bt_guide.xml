@@ -3,20 +3,46 @@
     android:id="@+id/pic_vid_edit_rt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone">
+    android:background="@android:color/transparent"
+    android:visibility="gone"
+    >
+    <!--android:visibility="gone"-->
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/pic_video_guide_ft"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="图片，视频编辑按钮引导" />
+        android:layout_alignParentTop="true">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text"
-        android:layout_centerInParent="true"
-        android:text="button2"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_guide_marg"
+            android:layout_gravity="right"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/guide_tip_bg_edit">
+
+            <ImageView
+                android:id="@+id/guide_tip_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/tips_icon" />
+
+            <TextView
+                android:id="@+id/guide_text_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/guide_tip_icon"
+                android:text="@string/pic_video_guide_txt"
+                android:layout_marginRight="10dp"
+                android:maxLines="2"
+                android:textColor="#ffffff"
+                android:textSize="14dp"/>
+
+        </RelativeLayout>
+
+    </FrameLayout>
 </RelativeLayout>

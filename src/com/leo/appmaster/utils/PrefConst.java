@@ -142,4 +142,8 @@ public class PrefConst {
     public static final String KEY_WIFI_FB_CONTENT = "wifi_fb_content";
     public static final String KEY_WIFI_FB_IMG_URL = "wifi_fb_img_url";
     public static final String KEY_WIFI_FB_URL = "wifi_fb_url";
+    /*图片编辑按钮引导标志*/
+    public static final String KEY_PIC_EDIT_GUIDE = "PIC_EDIT_GUIDE";
+    /*视频编辑按钮引导标志*/
+    public static final String KEY_VIDEO_EDIT_GUIDE = "VIDEO_EDIT_GUIDE";
 }

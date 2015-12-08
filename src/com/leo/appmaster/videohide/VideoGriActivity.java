@@ -40,9 +40,12 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
+import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -50,6 +53,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -61,7 +65,7 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
 @SuppressLint("NewApi")
-public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
+public class VideoGriActivity extends BaseFragmentActivity implements OnItemClickListener, OnClickListener {
     public final static int START_CANCEL_OR_HIDE_VID = 26;
     public final static int CANCEL_OR_HIDE_FINISH = 27;
     private GridView mHideVideo;
@@ -94,6 +98,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private boolean isHaveServiceToBind = false;
     private String mOneName, mTwoName;
     private VideoBean mVideoBean;
+    private GuideFragment mGuideFragment;
+    private boolean mVideoEditGuide;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -201,16 +207,39 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             mCommonTtileBar.setOptionImageResource(R.drawable.mode_done);
                         }
                         mHideVideoAdapter.notifyDataSetChanged();
+                        cancelVideoGuide();
                     }
                 }
             });
             mCommonTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
             mBottomBar.setVisibility(View.GONE);
+            PreferenceTable pre = PreferenceTable.getInstance();
+            mVideoEditGuide = pre.getBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, false);
+            if (!mVideoEditGuide) {
+                mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.video_guide);
+                mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.VIDEO_GUIDE);
+                mCommonTtileBar.setNavigationClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cancelVideoGuide();
+                        finish();
+                    }
+                });
+            }
+
         }
         mCommonTtileBar.setToolbarTitle(mVideoBean.getName());
         if (mVideoItems != null && mVideoItems.size() != 0) {
             mHideVideoAdapter = new HideVideoAdapter(this, mVideoItems);
             mHideVideo.setAdapter(mHideVideoAdapter);
+        }
+    }
+
+    private void cancelVideoGuide() {
+        if (mGuideFragment != null) {
+            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.VIDEO_GUIDE);
+            PreferenceTable pre = PreferenceTable.getInstance();
+            pre.putBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, true);
         }
     }
 
@@ -272,7 +301,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
 
     @Override
     public void onBackPressed() {
-
+        if (!mVideoEditGuide) {
+            cancelVideoGuide();
+        }
         if (mActivityMode == Constants.CANCLE_HIDE_MODE && mIsEditmode) {
             cancelEditMode();
         } else {

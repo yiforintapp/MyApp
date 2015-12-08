@@ -30,9 +30,13 @@ import android.widget.ProgressBar;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.fragment.GuideFragment;
+import com.leo.appmaster.home.HomeTabFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -41,6 +45,7 @@ import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -49,7 +54,7 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
-public class ImageGridActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
+public class ImageGridActivity extends BaseFragmentActivity implements OnClickListener, OnItemClickListener {
     public final static int INIT_UI_DONE = 24;
     public final static int LOAD_DATA_DONE = 25;
     public final static int START_CANCEL_OR_HIDE_PIC = 26;
@@ -84,6 +89,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
     private Boolean mIsFromIntruderMore = false;
     private Boolean isLoadDone = false;
 
+    private GuideFragment mGuideFragment;
+    private boolean mPicGuide;
+
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
             switch (msg.what) {
@@ -109,6 +117,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
             }
         }
     };
+
 
     private void loadDone() {
         isLoadDone = true;
@@ -197,6 +206,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
 
     @Override
     public void onBackPressed() {
+        if (!mPicGuide) {
+            cancelGuide();
+        }
         if (mActicityMode == CANCEL_HIDE_MODE && mIsEditmode) {
             cancelEditMode();
         } else {
@@ -256,7 +268,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                 mAllListPath.add(item.getPath());
             }
         }
-
         if (mActicityMode == SELECT_HIDE_MODE) {
             mHidePicture.setText(R.string.app_hide_image);
         } else if (mActicityMode == CANCEL_HIDE_MODE) {
@@ -286,10 +297,31 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                                 null);
                         mImageAdapter.notifyDataSetChanged();
                     }
-
+                    cancelGuide();
                 }
             });
             mBottomBar.setVisibility(View.GONE);
+            PreferenceTable pre = PreferenceTable.getInstance();
+            mPicGuide = pre.getBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, false);
+            if (!mPicGuide) {
+                mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.pic_guide);
+                mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
+                mTtileBar.setNavigationClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cancelGuide();
+                        finish();
+                    }
+                });
+            }
+        }
+    }
+
+    private void cancelGuide() {
+        if (mGuideFragment != null) {
+            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
+            PreferenceTable pre = PreferenceTable.getInstance();
+            pre.putBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, true);
         }
     }
 
