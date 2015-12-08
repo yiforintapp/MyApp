@@ -17,6 +17,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 
 public class ChangeThemeManager {
+    private static final String TAG = "ChangeThemeManager";
     public static final int VERSION_CODE_NEED_CHANGE_TO_CHRISMAS_THEME = 62;
     public static final int BG_LOCKSCREEN_PASSWORD_NUM = 1;
     public static final int BG_LOCKSCREEN_GESTURE_DOT = 2;
@@ -68,18 +69,19 @@ public class ChangeThemeManager {
                 e.printStackTrace();
                 return null;
             }
-            LeoLog.i("ChangeThemeManager", "homeChrismasThemeBefore = "+homeChrismasThemeBefore);
-            LeoLog.i("ChangeThemeManager", "homeChrismasThemeAfter = "+homeChrismasThemeAfter);
-            LeoLog.i("ChangeThemeManager", "lockScreenChrismasThemeBefore = "+lockScreenChrismasThemeBefore);
-            LeoLog.i("ChangeThemeManager", "lockScreenChrismasThemeAfter = "+lockScreenChrismasThemeAfter);
-            LeoLog.i("ChangeThemeManager", "now = "+now);
+            LeoLog.i(TAG, "homeChrismasThemeBefore = "+homeChrismasThemeBefore);
+            LeoLog.i(TAG, "homeChrismasThemeAfter = "+homeChrismasThemeAfter);
+            LeoLog.i(TAG, "lockScreenChrismasThemeBefore = "+lockScreenChrismasThemeBefore);
+            LeoLog.i(TAG, "lockScreenChrismasThemeAfter = "+lockScreenChrismasThemeAfter);
+            LeoLog.i(TAG, "now = "+now);
             switch (slotId) {
                 case BG_LOCKSCREEN_PASSWORD_NUM:
                 case BG_LOCKSCREEN_GESTURE_DOT:
                 case BG_LOCKSCREEN_WHOLE:
                     if (now.after(lockScreenChrismasThemeAfter)) {
-                        //TODO 标记置为false
                         mPt.putBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, false);
+                        return null;
+                    } else if (now.before(lockScreenChrismasThemeBefore)) {
                         return null;
                     }
                     break;
@@ -88,6 +90,8 @@ public class ChangeThemeManager {
                 case BG_HOME_ASIDE_FRAGMENT:
                     if (now.after(homeChrismasThemeAfter)) {
                         mPt.putBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, false);
+                        return null;
+                    } else if (now.before(homeChrismasThemeBefore)) {
                         return null;
                     }
                     break;
