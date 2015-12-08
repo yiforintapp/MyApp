@@ -45,6 +45,7 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
+import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
@@ -73,6 +74,7 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.HomeUpArrow;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
@@ -134,7 +136,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mShownIgnoreDlg;
     private boolean mShowContact;
 
-    private LEOMessageDialog mMessageDialog;
+    private LEOAnimationDialog mMessageDialog;
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
@@ -1371,23 +1373,39 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void openAdvanceProtectDialogTip() {
         if (mMessageDialog == null) {
-            mMessageDialog = new LEOMessageDialog(this);
+            mMessageDialog = new LEOAnimationDialog(this);
             mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
                     if (mMessageDialog != null) {
                         mMessageDialog = null;
                     }
-                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-                    PreferenceTable.getInstance().putBoolean(key, false);
+                    AppMasterPreference.getInstance(HomeActivity.this)
+                            .setAdvanceProtectOpenSuccessDialogTip(false);
                 }
             });
         }
-        String title = getString(R.string.advance_protect_open_success_tip_title);
-        String content = getString(R.string.adv_prot_open_suc_tip_cnt);
-        mMessageDialog.setTitle(title);
+        String content = getString(R.string.prot_open_suc_tip_cnt);
         mMessageDialog.setContent(content);
         mMessageDialog.show();
+//        if (mMessageDialog == null) {
+//            mMessageDialog = new LEOMessageDialog(this);
+//            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialog) {
+//                    if (mMessageDialog != null) {
+//                        mMessageDialog = null;
+//                    }
+//                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
+//                    PreferenceTable.getInstance().putBoolean(key, false);
+//                }
+//            });
+//        }
+//        String title = getString(R.string.advance_protect_open_success_tip_title);
+//        String content = getString(R.string.adv_prot_open_suc_tip_cnt);
+//        mMessageDialog.setTitle(title);
+//        mMessageDialog.setContent(content);
+//        mMessageDialog.show();
     }
 
     /*首页引导*/
