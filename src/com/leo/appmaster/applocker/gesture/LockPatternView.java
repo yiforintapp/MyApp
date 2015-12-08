@@ -56,7 +56,7 @@ public class LockPatternView extends ViewGroup {
     // be minimum of (w,h)
     private static final int ASPECT_LOCK_HEIGHT = 2; // Fixed height; width will
     // be minimum of (w,h)
-
+    private Drawable themDrawable = null;
     private static final boolean PROFILE_DRAWING = false;
     private boolean mDrawingProfilingStarted = false;
 
@@ -1154,9 +1154,12 @@ public class LockPatternView extends ViewGroup {
                     mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
 //                } else if (mPatternInProgress) {
                 } else {
-                    Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_GESTURE_DOT, mContext);
-                    if (drawable != null && isFromLockScreenActivity) {
-                        mButtonViews[i].setBackgroundDrawable(drawable);
+                    if (themDrawable == null) {
+                        themDrawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_GESTURE_DOT, mContext);
+                    }
+//                    Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_GESTURE_DOT, mContext);
+                    if (themDrawable != null && isFromLockScreenActivity) {
+                        mButtonViews[i].setBackgroundDrawable(themDrawable);
                     } else {
                         mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
                     }

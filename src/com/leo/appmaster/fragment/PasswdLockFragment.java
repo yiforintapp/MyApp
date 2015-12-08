@@ -360,8 +360,14 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     }
 
     private void initAnimResource() {
-        if (!needChangeTheme())
+        if (!needChangeTheme()) {
+            Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_WHOLE, getActivity());
+            if (drawable != null) {
+                RelativeLayout layout = (RelativeLayout) getActivity().findViewById(R.id.activity_lock_layout);
+                layout.setBackgroundDrawable(drawable);
+            }
             return;
+        }
         Context themeContext = getThemepkgConotext(mThemepkgName);// com.leo.appmaster:drawable/multi_theme_lock_bg
         mThemeRes = themeContext.getResources();
 
@@ -388,7 +394,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             if (mDeleteNormalRes > 0) {
                 iv_delete_bottom.setImageDrawable(mThemeRes.getDrawable(mDeleteNormalRes));
             }
-
+            //TODO 整个背景
             if (mLayoutBgRes > 0) {
                 RelativeLayout layout = (RelativeLayout) getActivity().findViewById(
                         R.id.activity_lock_layout);

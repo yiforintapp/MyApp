@@ -172,8 +172,7 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
         Date date2 = null;
         for (int i = 0; i < resultList.size() - 1; i++) {
             for (int j = 0; j < resultList.size() - i - 1; j++) {
-                SimpleDateFormat sdf = new SimpleDateFormat(
-                        Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
+                SimpleDateFormat sdf = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
                 String timeStamp1 = resultList.get(j).getTimeStamp();
                 String timeStamp2 = resultList.get(j + 1).getTimeStamp();
                 try {

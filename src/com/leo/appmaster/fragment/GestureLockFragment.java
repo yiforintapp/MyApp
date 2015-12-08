@@ -27,6 +27,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
+import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -130,6 +131,12 @@ public class GestureLockFragment extends LockFragment implements
                 mAppIconTop.setVisibility(View.VISIBLE);
                 mAppIconBottom.setVisibility(View.VISIBLE);
                 checkApplyTheme();
+            } else {
+                Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_WHOLE, getActivity());
+                if (drawable != null) {
+                    RelativeLayout layout = (RelativeLayout) getActivity().findViewById(R.id.activity_lock_layout);
+                    layout.setBackgroundDrawable(drawable);
+                }
             }
         }
         LeoEventBus.getDefaultBus().register(this);
@@ -255,6 +262,7 @@ public class GestureLockFragment extends LockFragment implements
 
         if (themeRes != null) {
             if (layoutBgRes > 0) {
+                //TODO 整个背景的引用
                 RelativeLayout layout = (RelativeLayout) getActivity().findViewById(
                         R.id.activity_lock_layout);
                 Drawable bgDrawable = themeRes.getDrawable(layoutBgRes);

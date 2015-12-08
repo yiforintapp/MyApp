@@ -32,6 +32,9 @@ public class PrefConst {
     public static final String KEY_AD_TYPE_IN_INTRUDER_VIEW = "ad_type_in_intruder_view";
     public static final String KEY_IS_DELAY_TO_SHOW_CATCH = "is_delay_to_show_catch";
     public static final String KEY_ORIENTATION_OF_CAMERA_FACING_FRONT = "orientation_of_camera_facing_front";
+    
+    public static final String KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME = "need_home_change_to_chrismas_theme";
+    public static final String KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME = "need_lock_change_to_chrismas_theme";
     /**
      * 手机防盗
      */
