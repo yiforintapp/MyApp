@@ -20,7 +20,7 @@ import com.leo.tools.animator.ObjectAnimator;
 public class LEOAnimationDialog extends LEOBaseDialog {
     public static final String TAG = "XLOneButtonDialog";
     private static final int SHOW_ANIMATION = 20;
-    private static final int SHOW_ANIMATION_DELAY = 700;
+    private static final int SHOW_ANIMATION_DELAY = 1000;
     private static final int HAND_MOVE = 21;
     private static final int CLICK_DELAY = 500;
     private Context mContext;

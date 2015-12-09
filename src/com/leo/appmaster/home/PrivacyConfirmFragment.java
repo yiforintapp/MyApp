@@ -717,7 +717,15 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         boolean isTypeEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_TYPE));
 
-        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
+        boolean isGpUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_GP_URL));
+
+        boolean isBrowserUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_URL));
+
+        boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
             mWifiMasteImg = (ImageView) include.findViewById(R.id.wifimaster_img);
             mWifiMasteContent = (TextView) include.findViewById(R.id.wifimaster_content);
@@ -746,7 +754,15 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         boolean isTypeEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE));
 
-        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
+        boolean isGpUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL));
+
+        boolean isBrowserUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_SWIFTY_URL));
+
+        boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);

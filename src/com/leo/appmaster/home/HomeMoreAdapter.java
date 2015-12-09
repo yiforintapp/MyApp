@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -172,7 +173,10 @@ public class HomeMoreAdapter extends BaseAdapter {
                 convertView = mInflater.inflate(R.layout.home_more_label_item, null);
 
                 holder.textView = (TextView) convertView.findViewById(R.id.more_label_tv);
-
+                Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_MORE_FRAGMENT_LABEL, mContext);
+                if (drawable != null) {
+                    holder.textView.setBackgroundDrawable(drawable);
+                }
                 convertView.setTag(R.layout.home_more_label_item, holder);
             } else {
                 holder = new MoreHolder();

@@ -358,13 +358,6 @@
                             android:background="@drawable/loading_bar" />
                     </RelativeLayout>
                 </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/bottom_content_empty_unsafe"
-                    android:layout_width="match_parent"
-                    android:layout_height="63dp"
-                    android:background="@color/white"
-                    android:visibility="gone" />
                 <!-- un safe content-->
 
                 <!-- gp content-->
@@ -386,6 +379,13 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:layout="@layout/wifi_fb_item" />
+
+                <RelativeLayout
+                    android:id="@+id/bottom_content_empty_unsafe"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:background="@color/white"
+                    android:visibility="gone" />
 
 
             </LinearLayout>

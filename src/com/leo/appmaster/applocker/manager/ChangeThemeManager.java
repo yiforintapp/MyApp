@@ -18,15 +18,18 @@ import android.graphics.drawable.Drawable;
 
 public class ChangeThemeManager {
     private static final String TAG = "ChangeThemeManager";
-    public static final int VERSION_CODE_NEED_CHANGE_TO_CHRISMAS_THEME = 62;
+    public static final int VERSION_CODE_NEED_CHANGE_TO_CHRISMAS_THEME = 63;
+    //换装的slotId
     public static final int BG_LOCKSCREEN_PASSWORD_NUM = 1;
     public static final int BG_LOCKSCREEN_GESTURE_DOT = 2;
     public static final int ICON_HOME_UP_ARROW = 7;
-    public static final int COUNT_LOCKSCREEN_DOT_THEME_BG = 10;
     public static final int BG_LOCKSCREEN_WHOLE = 6;
     public static final int BG_HOME_TAB = 3;
     public static final int BG_HOME_UPARROW = 4;
     public static final int BG_HOME_ASIDE_FRAGMENT = 5;
+    public static final int BG_HOME_MORE_FRAGMENT_LABEL = 8;
+    //
+    public static final int COUNT_LOCKSCREEN_DOT_THEME_BG = 10;
     public static final String DATE_FORMAT = "yyyy-MM-dd-HH:mm:ss";
     public static final String DATE_LOCK_BEFORE = "2015-12-24-00:00:00";
     public static final String DATE_LOCK_AFTER = "2015-12-26-00:00:00";
@@ -90,6 +93,7 @@ public class ChangeThemeManager {
                 case BG_HOME_TAB:
                 case BG_HOME_UPARROW:
                 case BG_HOME_ASIDE_FRAGMENT:
+                case BG_HOME_MORE_FRAGMENT_LABEL:
                     if (now.after(homeChrismasThemeAfter)) {
                         mPt.putBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, false);
                         return null;
@@ -117,6 +121,9 @@ public class ChangeThemeManager {
                     drawableForReturn = context.getResources().getDrawable(R.drawable.lockscreen_chrismas_bg);
                     break;
                 case ICON_HOME_UP_ARROW:
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
+                    break;
+                case BG_HOME_MORE_FRAGMENT_LABEL:
                     drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
                     break;
                 default:
