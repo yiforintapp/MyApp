@@ -24,7 +24,10 @@ public class ChangeThemeManager {
     public static final int BG_LOCKSCREEN_GESTURE_DOT = 2;
     public static final int ICON_HOME_UP_ARROW = 7;
     public static final int BG_LOCKSCREEN_WHOLE = 6;
-    public static final int BG_HOME_TAB = 3;
+    public static final int BG_HOME_TAB1 = 31;
+    public static final int BG_HOME_TAB2 = 32;
+    public static final int BG_HOME_TAB3 = 33;
+    public static final int BG_HOME_TAB4 = 34;
     public static final int BG_HOME_UPARROW = 4;
     public static final int BG_HOME_ASIDE_FRAGMENT = 5;
     public static final int BG_HOME_MORE_FRAGMENT_LABEL = 8;
@@ -36,10 +39,10 @@ public class ChangeThemeManager {
     public static final String DATE_HOME_BEFORE = "2015-12-14-00:00:00";
     public static final String DATE_HOME_AFTER = "2015-12-27-00:00:00";
     private static PreferenceTable mPt = PreferenceTable.getInstance();
-    private static final int[] LOCKSCREEN_DOT_DRAWABLE_ID = 
-        {R.drawable.gesture_chrismas_dot1,R.drawable.gesture_chrismas_dot2,R.drawable.gesture_chrismas_dot3,
-        R.drawable.gesture_chrismas_dot4,R.drawable.gesture_chrismas_dot5,R.drawable.gesture_chrismas_dot6,
-        R.drawable.gesture_chrismas_dot7,R.drawable.gesture_chrismas_dot8,R.drawable.gesture_chrismas_dot9,
+    private static final int[] LOCKSCREEN_DOT_DRAWABLE_ID = {
+        R.drawable.gesture_chrismas_dot1, R.drawable.gesture_chrismas_dot2, R.drawable.gesture_chrismas_dot3,
+        R.drawable.gesture_chrismas_dot4, R.drawable.gesture_chrismas_dot5, R.drawable.gesture_chrismas_dot6,
+        R.drawable.gesture_chrismas_dot7, R.drawable.gesture_chrismas_dot8, R.drawable.gesture_chrismas_dot9,
         R.drawable.gesture_chrismas_dot10};
     
     public static Drawable getChrismasThemeDrawbleBySlotId (int slotId, Context context) {
@@ -90,7 +93,10 @@ public class ChangeThemeManager {
                     }
                     break;
                 case ICON_HOME_UP_ARROW:
-                case BG_HOME_TAB:
+                case BG_HOME_TAB1:
+                case BG_HOME_TAB2:
+                case BG_HOME_TAB3:
+                case BG_HOME_TAB4:
                 case BG_HOME_UPARROW:
                 case BG_HOME_ASIDE_FRAGMENT:
                 case BG_HOME_MORE_FRAGMENT_LABEL:
@@ -111,8 +117,17 @@ public class ChangeThemeManager {
                 case BG_LOCKSCREEN_GESTURE_DOT:
                     drawableForReturn = randomADrawable(context);
                     break;
-                case BG_HOME_TAB:
+                case BG_HOME_TAB1:
                     drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
+                    break;
+                case BG_HOME_TAB2:
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot2);
+                    break;
+                case BG_HOME_TAB3:
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot3);
+                    break;
+                case BG_HOME_TAB4:
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot4);
                     break;
                 case BG_HOME_ASIDE_FRAGMENT:
                     drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
