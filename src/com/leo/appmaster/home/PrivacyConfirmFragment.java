@@ -1088,6 +1088,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, true);
             }
         } else if (mWifiMasteBtnLt == v) {
+            lockManager.filterSelfOneMinites();
             boolean installWifiMaster = AppUtil.isInstallPkgName(
                     mActivity, Constants.WIFIMASTER_PKG_NAME);
             if (installWifiMaster) {

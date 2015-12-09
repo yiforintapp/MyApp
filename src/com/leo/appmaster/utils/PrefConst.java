@@ -98,11 +98,11 @@ public class PrefConst {
     //推广卡片8个Key值
     public static final String KEY_PRI_WIFIMASTER = "privacymaster";
     public static final String KEY_PRI_FB = "privacyfb";
-    public static final String KEY_PRI_GRADE = "privacypg";
+    public static final String KEY_PRI_GRADE = "privacygp";
     public static final String KEY_WIFI_WIFIMASTER = "wifimaster";
     public static final String KEY_WIFI_SWIFTY = "wifiswifty";
     public static final String KEY_WIFI_FB = "wififb";
-    public static final String KEY_WIFI_GRADE = "wifipg";
+    public static final String KEY_WIFI_GRADE = "wifigp";
 
     //隐私页Wifimaster数据
     public static final String KEY_PRI_WIFIMASTER_CONTENT = "pri_wifimaster_content";

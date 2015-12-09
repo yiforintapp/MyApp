@@ -9,7 +9,6 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -54,53 +53,15 @@ public class SwiftyFetchJob extends FetchScheduleJob {
 
         JSONObject object = (JSONObject) response;
 
-        try {
-            if (object.getString("content") != null && object.getString("content").length() > 0) {
-                String content = object.getString("content");
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_CONTENT, content);
-            } else {
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_CONTENT, "");
-            }
-
-            if (object.getString("gp_url") != null && object.getString("gp_url").length() > 0) {
-                String gpUrl = object.getString("gp_url");
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_GP_URL, gpUrl);
-            } else {
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_GP_URL, "");
-            }
-
-            if (object.getString("img_url") != null && object.getString("img_url").length() > 0) {
-                String imgUrl = object.getString("img_url");
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_IMG_URL, imgUrl);
-            } else {
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_IMG_URL, "");
-            }
-
-            if (object.getString("title") != null && object.getString("title").length() > 0) {
-                String title = object.getString("title");
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_TITLE, title);
-            } else {
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_TITLE, "");
-            }
-
-            if (object.getString("type") != null && object.getString("type").length() > 0) {
-                String type = object.getString("type");
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_TYPE, type);
-            } else {
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_TYPE, "");
-            }
-
-            if (object.getString("url") != null && object.getString("url").length() > 0) {
-                String url = object.getString("url");
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_URL, url);
-            } else {
-                preferenceTable.putString(PrefConst.KEY_SWIFTY_URL, "");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        setValue(object, "content", PrefConst.KEY_SWIFTY_CONTENT, preferenceTable);
+        setValue(object, "gp_url", PrefConst.KEY_SWIFTY_GP_URL, preferenceTable);
+        setValue(object, "img_url", PrefConst.KEY_SWIFTY_IMG_URL, preferenceTable);
+        setValue(object, "title", PrefConst.KEY_SWIFTY_TITLE, preferenceTable);
+        setValue(object, "type", PrefConst.KEY_SWIFTY_TYPE, preferenceTable);
+        setValue(object, "url", PrefConst.KEY_SWIFTY_URL, preferenceTable);
 
     }
+
+
 
 }

@@ -1,7 +1,6 @@
 package com.leo.appmaster.schedule;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
@@ -232,21 +231,4 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_WIFI_FB_URL, "");
     }
 
-    /** 存储卡片需要的数据 */
-    private void setValue(JSONObject object, String key,
-                          String prefKey, PreferenceTable preferenceTable) {
-        try {
-            if (!object.isNull(key)) {
-                if (TextUtils.isEmpty(object.getString(key))) {
-                    preferenceTable.putString(prefKey, "");
-                } else {
-                    preferenceTable.putString(prefKey, object.getString(key));
-                }
-            } else {
-                preferenceTable.putString(prefKey, "");
-            }
-        } catch (JSONException e) {
-            preferenceTable.putString(prefKey, "");
-        }
-    }
 }

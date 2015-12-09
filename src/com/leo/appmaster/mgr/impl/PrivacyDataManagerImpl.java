@@ -149,21 +149,23 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     LeoLog.d("testPicLoadTime", "hide album path : " + path);
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-                    if (!countMap.containsKey(dirPath)) {
-                        pa = new PhotoAibum();
-                        pa.setName(dirName);
-                        pa.setCount("1");
-                        pa.setDirPath(dirPath);
-                        pa.getBitList().add(new PhotoItem(path));
-                        countMap.put(dirPath, pa);
-                    } else {
-                        pa = countMap.get(dirPath);
-                        pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                        pa.getBitList().add(new PhotoItem(path));
+                    File f = new File(path);
+                    if (f.exists()) {
+                        if (!countMap.containsKey(dirPath)) {
+                            pa = new PhotoAibum();
+                            pa.setName(dirName);
+                            pa.setCount("1");
+                            pa.setDirPath(dirPath);
+                            pa.getBitList().add(new PhotoItem(path));
+                            countMap.put(dirPath, pa);
+                        } else {
+                            pa = countMap.get(dirPath);
+                            pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                            pa.getBitList().add(new PhotoItem(path));
+                        }
                     }
                 }
             }
-            long c = System.currentTimeMillis();
             Iterable<String> it = countMap.keySet();
             for (String key : it) {
                 aibumList.add(countMap.get(key));
@@ -260,7 +262,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public List<VideoBean> getHideVidAlbum(String mVidSuffix) {
         List<VideoBean> videoBeans = new ArrayList<VideoBean>();
         Uri uri = MediaStore.Files.getContentUri("external");
-//        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmv'";
         Cursor cursor = null;
         try {
@@ -273,7 +274,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     String path = cursor
                             .getString(cursor
                                     .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-//                                    .getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DATA));
                     LeoLog.d("checkVidId", "path is : " + path);
 
 //                    int currSDK_INT = Build.VERSION.SDK_INT;
@@ -288,7 +288,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 //                            LeoLog.d("checkVidId", "inner card");
 //                        }
 //                    }
-
 
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
@@ -368,6 +367,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                             .getString(cursor
                                     .getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DATA));
                     LeoLog.d("checkVidId", "path is : " + path);
+
                     if (path.startsWith(SYSTEM_PREFIX)) {
                         continue;
                     }
@@ -529,19 +529,15 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     }
 
                     if (currSDK_INT >= API_LEVEL_19) {
-                        LeoLog.d("getAddPic", "store is : " + store);
                         if (!path.startsWith(store)) {
-                            LeoLog.d("getAddPic", "out card");
                             continue;
-                        } else {
-                            LeoLog.d("getAddPic", "inner card");
                         }
                     }
 
-//                    File f = new File(path);
-//                    if (!f.exists()) {
-//                        continue;
-//                    }
+                    File f = new File(path);
+                    if (!f.exists()) {
+                        continue;
+                    }
 
                     boolean isFilterVideoType = false;
                     for (String videoType : filterVideoTypes) {
@@ -550,13 +546,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     if (isFilterVideoType) {
                         continue;
                     }
-
-//                    // 过滤闪屏图
-//                    if (FileOperationUtil.getSplashPath() != null
-//                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
-//                            .equals(path)) {
-//                        continue;
-//                    }
 
                     if (lastPic == 0) {
                         //all in
@@ -630,19 +619,15 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     }
 
                     if (currSDK_INT >= API_LEVEL_19) {
-                        LeoLog.d("checkVidId", "store is : " + store);
                         if (!path.startsWith(store)) {
-                            LeoLog.d("checkVidId", "out card");
                             continue;
-                        } else {
-                            LeoLog.d("checkVidId", "inner card");
                         }
                     }
 
-//                    File f = new File(path);
-//                    if (!f.exists()) {
-//                        continue;
-//                    }
+                    File f = new File(path);
+                    if (!f.exists()) {
+                        continue;
+                    }
 
                     boolean isFilterVideoType = false;
                     for (String videoType : filterVideoTypes) {
@@ -651,12 +636,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     if (isFilterVideoType) {
                         continue;
                     }
-//                    // 过滤闪屏图
-//                    if (FileOperationUtil.getSplashPath() != null
-//                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
-//                            .equals(path)) {
-//                        continue;
-//                    }
 
                     picNum++;
                 }
@@ -745,13 +724,14 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     }
 
                     if (currSDK_INT >= API_LEVEL_19) {
-                        LeoLog.d("checkVidId", "store is : " + store);
                         if (!path.startsWith(store)) {
-                            LeoLog.d("checkVidId", "out card");
                             continue;
-                        } else {
-                            LeoLog.d("checkVidId", "inner card");
                         }
+                    }
+
+                    File f = new File(path);
+                    if (!f.exists()) {
+                        continue;
                     }
 
                     if (lastVid == 0) {
@@ -829,13 +809,14 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                                     .getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DATA));
 
                     if (currSDK_INT >= API_LEVEL_19) {
-                        LeoLog.d("checkVidId", "store is : " + store);
                         if (!path.startsWith(store)) {
-                            LeoLog.d("checkVidId", "out card");
                             continue;
-                        } else {
-                            LeoLog.d("checkVidId", "inner card");
                         }
+                    }
+
+                    File f = new File(path);
+                    if (!f.exists()) {
+                        continue;
                     }
 
                     vidNum++;

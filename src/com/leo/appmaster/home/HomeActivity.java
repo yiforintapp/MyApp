@@ -196,6 +196,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 public void run() {
                     Camera camera = null;
                     try {
+                        LeoLog.i(TAG, "requestCamera!");
                         camera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
                     } catch (Throwable e) {
 

@@ -144,12 +144,21 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     }
 
     private void tryChangeToChrismasTheme() {
-        Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB, getActivity());
-        if(drawable != null) {
-            mIvTabIcon1.setImageDrawable(drawable);
-            mIvTabIcon2.setImageDrawable(drawable);
-            mIvTabIcon3.setImageDrawable(drawable);
-            mIvTabIcon4.setImageDrawable(drawable);
+        Drawable drawable1 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB1, getActivity());
+        if(drawable1 != null) {
+            mIvTabIcon1.setImageDrawable(drawable1);
+        }
+        Drawable drawable2 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB2, getActivity());
+        if(drawable2 != null) {
+            mIvTabIcon2.setImageDrawable(drawable2);
+        }
+        Drawable drawable3 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB3, getActivity());
+        if(drawable3 != null) {
+            mIvTabIcon3.setImageDrawable(drawable3);
+        }
+        Drawable drawable4 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB4, getActivity());
+        if(drawable4 != null) {
+            mIvTabIcon4.setImageDrawable(drawable4);
         }
     }
 
