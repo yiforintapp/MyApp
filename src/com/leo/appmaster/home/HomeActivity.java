@@ -1419,9 +1419,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             if (mMoreFragment != null) {
                 mMoreFragment.cancelUpArrowAnim();
             }
-            GuideFragment.setHomeGuideShowStatus(true);
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
             preferenceTable.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
+            GuideFragment.setHomeGuideShowStatus(true);
         }
     }
 }

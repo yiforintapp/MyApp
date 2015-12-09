@@ -35,7 +35,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout mHomeGuideRt;
     private RelativeLayout mPicVideoGuideRt;
     private RelativeLayout mVideoGuideRt;
-    //    private FrameLayout mHomeGuideFt;
     private ObjectAnimator mHomeGuideAnim;
 
     /*引导类型*/
@@ -129,7 +128,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         }
         View inClude = viewStub.inflate();
         mHomeGuideRt = (RelativeLayout) inClude.findViewById(R.id.pic_vid_home_rt);
-//        mHomeGuideFt = (FrameLayout) inClude.findViewById(R.id.home_guide_ft);
         mHomeGuideRt.setOnClickListener(this);
     }
 
