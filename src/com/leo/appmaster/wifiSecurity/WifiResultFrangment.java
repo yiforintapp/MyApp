@@ -359,7 +359,15 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         boolean isTypeEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_TYPE));
 
-        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
+        boolean isGpUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_GP_URL));
+
+        boolean isBrowserUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_URL));
+
+        boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_txt);
@@ -388,7 +396,15 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         boolean isTypeEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_TYPE));
 
-        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty) {
+        boolean isGpUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_GP_URL));
+
+        boolean isBrowserUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_URL));
+
+        boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
             mWifiMasterImg = (ImageView) include.findViewById(R.id.wifimaster_img);
             mWifiMasterContent = (TextView) include.findViewById(R.id.wifimaster_txt);

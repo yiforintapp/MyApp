@@ -100,7 +100,7 @@ public class PrefConst {
     public static final String KEY_PRI_FB = "privacyfb";
     public static final String KEY_PRI_GRADE = "privacypg";
     public static final String KEY_WIFI_WIFIMASTER = "wifimaster";
-    public static final String KEY_WIFI_SWIFTY = "wifimswifty";
+    public static final String KEY_WIFI_SWIFTY = "wifiswifty";
     public static final String KEY_WIFI_FB = "wififb";
     public static final String KEY_WIFI_GRADE = "wifipg";
 
