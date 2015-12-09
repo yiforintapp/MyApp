@@ -30,7 +30,6 @@
             android:id="@+id/grade_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/grade_bg"
             android:scaleType="centerCrop"/>
 
 

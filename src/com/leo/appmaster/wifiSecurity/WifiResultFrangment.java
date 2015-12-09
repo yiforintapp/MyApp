@@ -376,7 +376,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             mSwiftyBtnLt.setOnClickListener(this);
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions());
+            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
 
         }
     }
@@ -413,7 +413,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             mWifiMasterBtnLt.setOnClickListener(this);
             mWifiMasterContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mWifiMasterImg, getOptions());
+            mImageLoader.displayImage(imgUrl, mWifiMasterImg, getOptions(R.drawable.swifty_banner));
 
         }
     }
@@ -442,9 +442,9 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             mFbContent = (TextView) include.findViewById(R.id.fb_txt);
             mFbBtnLt = (RippleView) include.findViewById(R.id.fb_resulte_sure);
             mFbBtnLt.setOnClickListener(this);
-            mFbContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_FB_CONTENT));
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_FB_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mFbImg, getOptions());
+            mFbContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_FB_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_FB_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mFbImg, getOptions(R.drawable.fb_banner));
 
 
         }
@@ -477,17 +477,17 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             mGradeContent = (TextView) include.findViewById(R.id.grade_txt);
             mGradeBtnLt = (RippleView) include.findViewById(R.id.grade_resulte_sure);
             mGradeBtnLt.setOnClickListener(this);
-            mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mGradeImg, getOptions());
+            mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mGradeImg, getOptions(R.drawable.grade_bg));
         }
     }
 
-    public DisplayImageOptions getOptions() {  //需要提供默认图
+    public DisplayImageOptions getOptions(int drawble) {  //需要提供默认图
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.swifty_banner)
-                .showImageForEmptyUri(R.drawable.swifty_banner)
-                .showImageOnFail(R.drawable.swifty_banner)
+                .showImageOnLoading(drawble)
+                .showImageForEmptyUri(drawble)
+                .showImageOnFail(drawble)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)

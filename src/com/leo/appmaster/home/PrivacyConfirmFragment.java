@@ -733,7 +733,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mWifiMasteBtnLt.setOnClickListener(this);
             mWifiMasteContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mWifiMasteImg, getSwiftyOptions());
+            mImageLoader.displayImage(imgUrl, mWifiMasteImg, getOptions(R.drawable.swifty_banner));
         }
     }
 
@@ -770,17 +770,17 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mSwiftyBtnLt.setOnClickListener(this);
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mSwiftyImg, getSwiftyOptions());
+            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
 
         }
 
     }
 
-    public DisplayImageOptions getSwiftyOptions() {  //需要提供默认图
+    public DisplayImageOptions getOptions(int drawble) {  //需要提供默认图
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.swifty_banner)
-                .showImageForEmptyUri(R.drawable.swifty_banner)
-                .showImageOnFail(R.drawable.swifty_banner)
+                .showImageOnLoading(drawble)
+                .showImageForEmptyUri(drawble)
+                .showImageOnFail(drawble)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
@@ -816,7 +816,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mFbBtnLt.setOnClickListener(this);
             mFbContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_FB_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_FB_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mFbImg, getSwiftyOptions());
+            mImageLoader.displayImage(imgUrl, mFbImg, getOptions(R.drawable.fb_banner));
 
 
         }
@@ -859,7 +859,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
                 mHighGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
                 String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
-                mImageLoader.displayImage(imgUrl, mHighGradeImg, getSwiftyOptions());
+                mImageLoader.displayImage(imgUrl, mHighGradeImg, getOptions(R.drawable.grade_bg));
 
                 showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
                         mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
@@ -884,7 +884,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
                 mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
                 String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
-                mImageLoader.displayImage(imgUrl, mGradeImg, getSwiftyOptions());
+                mImageLoader.displayImage(imgUrl, mGradeImg, getOptions(R.drawable.grade_bg));
 
                 showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar,
                         mFiveStar, mFiveEmptyStar, mGradeGesture);

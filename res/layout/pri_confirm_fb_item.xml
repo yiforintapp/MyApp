@@ -23,7 +23,6 @@
         android:id="@+id/fb_img"
         android:layout_width="match_parent"
         android:layout_height="133dp"
-        android:src="@drawable/fb_banner"
         android:scaleType="centerCrop"
         android:layout_below="@+id/item_header_ll"
         android:layout_marginLeft="19dp"
