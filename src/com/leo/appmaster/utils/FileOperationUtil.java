@@ -661,13 +661,6 @@ public class FileOperationUtil {
                         continue;
                     }
 
-//                    // 过滤闪屏图
-//                    if (FileOperationUtil.getSplashPath() != null
-//                            && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
-//                            .equals(path)) {
-//                        continue;
-//                    }
-
                     File f = new File(path);
                     if (f.exists()) {
                         if (!countMap.containsKey(dir_path)) {
