@@ -334,6 +334,27 @@ public class FileOperationUtil {
         return null;
     }
 
+//    private static void makeAuthorization(String newPath) {
+//        File f = new File(newPath);
+//        try {
+//            String command = "chmod 664 " + f.getAbsolutePath();
+//            LeoLog.d("testAddPath", "command = " + command);
+//            Runtime runtime = Runtime.getRuntime();
+//            Process proc = runtime.exec(command);
+//            int status = proc.waitFor();
+//            if (status == 0) {
+//                //chmod succeed
+//                LeoLog.d("testAddPath", "chmod succeed");
+//            } else {
+//                //chmod failed
+//                LeoLog.d("testAddPath", "chmod failed");
+//            }
+//        } catch (Exception e) {
+//            LeoLog.i("testAddPath", "chmod fail!!!!");
+//            e.printStackTrace();
+//        }
+//    }
+
     public static synchronized String unhideImageFile(Context ctx,
                                                       String filePath, long fileSize) {
         if (filePath == null || (!filePath.endsWith(".leotmi") && !filePath.endsWith(".leotmp"))) {
