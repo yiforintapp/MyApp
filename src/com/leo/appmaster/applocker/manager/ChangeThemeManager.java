@@ -118,16 +118,16 @@ public class ChangeThemeManager {
                     drawableForReturn = randomADrawable(context);
                     break;
                 case BG_HOME_TAB1:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.home_tab_applock_icon_chrismas);
                     break;
                 case BG_HOME_TAB2:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot2);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.home_tab_wifi_icon_chrismas);
                     break;
                 case BG_HOME_TAB3:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot3);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.home_tab_findlost_icon_chrismas);
                     break;
                 case BG_HOME_TAB4:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot4);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.home_tab_intrudericon_chrismas);
                     break;
                 case BG_HOME_ASIDE_FRAGMENT:
                     drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
@@ -136,7 +136,7 @@ public class ChangeThemeManager {
                     drawableForReturn = context.getResources().getDrawable(R.drawable.lockscreen_chrismas_bg);
                     break;
                 case ICON_HOME_UP_ARROW:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.home_more_arrow_chrismas);
                     break;
                 case BG_HOME_MORE_FRAGMENT_LABEL:
                     drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
