@@ -4,15 +4,18 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -252,6 +255,24 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         @Override
         public void onResponse(T response, boolean noMidify) {
             onFetchSuccess(response, noMidify);
+        }
+    }
+
+    /** 存储卡片需要的数据 */
+    protected void setValue(JSONObject object, String key,
+                          String prefKey, PreferenceTable preferenceTable) {
+        try {
+            if (!object.isNull(key)) {
+                if (TextUtils.isEmpty(object.getString(key))) {
+                    preferenceTable.putString(prefKey, "");
+                } else {
+                    preferenceTable.putString(prefKey, object.getString(key));
+                }
+            } else {
+                preferenceTable.putString(prefKey, "");
+            }
+        } catch (JSONException e) {
+            preferenceTable.putString(prefKey, "");
         }
     }
 

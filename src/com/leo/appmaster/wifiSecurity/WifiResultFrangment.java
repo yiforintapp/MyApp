@@ -183,6 +183,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 }
                 break;
             case R.id.wifimaster_resulte_sure:
+                lockManager.filterSelfOneMinites();
                 boolean installWifiMaster = AppUtil.isInstallPkgName(
                         mActivity, Constants.WIFIMASTER_PKG_NAME);
                 if (installWifiMaster) {
