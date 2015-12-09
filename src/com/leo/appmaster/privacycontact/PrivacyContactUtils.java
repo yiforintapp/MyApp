@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Message;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -163,6 +164,7 @@ public class PrivacyContactUtils {
         SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<MessageBean> messages = new ArrayList<MessageBean>();
         Map<String, MessageBean> messageList = new HashMap<String, MessageBean>();
+        List<MessageBean> messageBeans = new ArrayList<MessageBean>();
         ContentResolver cr = context.getContentResolver();
         Cursor cur = null;
 
@@ -221,6 +223,7 @@ public class PrivacyContactUtils {
                     if (number != null) {
                         if (!isItemFlag) {
                             if (!Utilities.isEmpty(threadId)) {
+                                messageBeans.add(mb);
                                 if (!messageList.containsKey(threadId)) {
                                     messageList.put(threadId, mb);
                                 }
@@ -235,20 +238,24 @@ public class PrivacyContactUtils {
                     for (MessageBean mb : it) {
                         String threadId = mb.getMessageThreadId();
                         Cursor msgCur = null;
+                        int msmCount;
                         try {
                             if (ifFrequContacts) {
-                                String selectionMsm = selection + " and thread_id = ?";
-                                String[] selectionArgsMsm = null;
-                                if (selectionArgs.length <= 1) {
-                                    selectionArgsMsm = new String[]{selectionArgs[0], threadId};
-                                } else if (selectionArgs.length <= 2) {
-                                    selectionArgsMsm = new String[]{selectionArgs[0], selectionArgs[1], threadId};
-                                }
-                                msgCur = mgr.getSystemMessages(selectionMsm, selectionArgsMsm);
+//                                String selectionMsm = selection + " and thread_id = ?";
+//                                String[] selectionArgsMsm = null;
+//                                if (selectionArgs.length <= 1) {
+//                                    selectionArgsMsm = new String[]{selectionArgs[0], threadId};
+//                                } else if (selectionArgs.length <= 2) {
+//                                    selectionArgsMsm = new String[]{selectionArgs[0], selectionArgs[1], threadId};
+//                                }
+//                                msgCur = mgr.getSystemMessages(selectionMsm, selectionArgsMsm);
+                                msmCount = countMsm(messageBeans, threadId);
                             } else {
-                                msgCur = mgr.getSystemMessages("thread_id" + " = ? ", new String[]{threadId});
+//                                msgCur = mgr.getSystemMessages("thread_id" + " = ? ", new String[]{threadId});
+                                msmCount = countMsm(messageBeans, threadId);
                             }
-                            mb.setMessageCount(msgCur.getCount());
+//                            mb.setMessageCount(msgCur.getCount());
+                            mb.setMessageCount(msmCount);
                             messages.add(mb);
                         } finally {
                             if (!BuildProperties.isApiLevel14()) {
@@ -269,7 +276,29 @@ public class PrivacyContactUtils {
         return messages;
     }
 
+    /*计算每个联系人的短信个数*/
+    private static int countMsm(List<MessageBean> messages, String threadId) {
+        int count = 0;
+        for (MessageBean message : messages) {
+            String thread = message.getMessageThreadId();
+
+            if (threadId == null) {
+                break;
+            }
+
+            if (thread == null) {
+                continue;
+            }
+            if (thread.equals(threadId)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     /**
+     * 获取系统联系人列表
+     *
      * @param context
      * @param selection
      * @param selectionArgs
@@ -300,7 +329,7 @@ public class PrivacyContactUtils {
                     int numberColum = phoneCursor.getColumnIndex(Phone.NUMBER);
                     int nameColum = phoneCursor.getColumnIndex(Phone.DISPLAY_NAME);
                     int contactIdColum = phoneCursor.getColumnIndex(Phone.CONTACT_ID);
-                    int photoIdColum = phoneCursor.getColumnIndex("photo_id");
+                    int photoIdColum = phoneCursor.getColumnIndex(Contacts.PHOTO_ID);
                     int sortKeyPriColum = phoneCursor.getColumnIndex(Phone.SORT_KEY_PRIMARY);
 
                     if (isFreContact) {
@@ -394,7 +423,7 @@ public class PrivacyContactUtils {
                     int hasPhoneNumberColum = cursorContact.getColumnIndex(hasPhoneNumId);
                     int nameColum = cursorContact.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
                     int contactIdColum = cursorContact.getColumnIndex(ContactsContract.Contacts._ID);
-                    int photoIdColum = cursorContact.getColumnIndex("photo_id");
+                    int photoIdColum = cursorContact.getColumnIndex(Contacts.PHOTO_ID);
                     int sortKeyPriColum = cursorContact.getColumnIndex(Phone.SORT_KEY_PRIMARY);
 
                     String phoneNumber = cursorContact.getString(hasPhoneNumberColum);
@@ -463,6 +492,7 @@ public class PrivacyContactUtils {
         SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> calllog = new HashMap<String, ContactCallLog>();
+       List<ContactCallLog> callBeans = new ArrayList<ContactCallLog>();
         ContentResolver CR = context.getContentResolver();
         Cursor cursor = null;
         try {
@@ -470,8 +500,9 @@ public class PrivacyContactUtils {
             cursor = mgr.getSystemCalls(selection, selectionArgs);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    int numberColum = cursor.getColumnIndex("number");
-                    int nameColum = cursor.getColumnIndex("name");
+
+                    int numberColum = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+                    int nameColum = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
                     int dateColum = cursor.getColumnIndex(CallLog.Calls.DATE);
                     int callTypeColum = cursor.getColumnIndex(CallLog.Calls.TYPE);
                     int callDurationColum = cursor.getColumnIndex(CallLog.Calls.DURATION);
@@ -511,6 +542,7 @@ public class PrivacyContactUtils {
                         if (!isDetailList) {
                             // isDetailList:true--详细列表，false--列表
                             if (callLog != null) {
+                                callBeans.add(callLog);
                                 if (!calllog.containsKey(number)) {
                                     calllog.put(number, callLog);
                                 }
@@ -525,22 +557,26 @@ public class PrivacyContactUtils {
                     /*查询内每个号码在通话记录中的条数*/
                     String number = contactCallLog.getCallLogNumber();
                     String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                    int countCall;
                     Cursor cur = null;
                     try {
                         if (isFreContacts) {
-                            String selectionCall = selection + " and number LIKE ? ";
-                            String[] selectionArgsCall = null;
-                            if (selectionArgs.length <= 1) {
-                                selectionArgsCall = new String[]{selectionArgs[0], "%" + formateNumber};
-                            } else if (selectionArgs.length <= 2) {
-                                selectionArgsCall = new String[]{selectionArgs[0], selectionArgs[1], "%" + formateNumber};
-                            }
-                            cur = mgr.getSystemCalls(selectionCall, selectionArgsCall);
+//                            String selectionCall = selection + " and number LIKE ? ";
+//                            String[] selectionArgsCall = null;
+//                            if (selectionArgs.length <= 1) {
+//                                selectionArgsCall = new String[]{selectionArgs[0], "%" + formateNumber};
+//                            } else if (selectionArgs.length <= 2) {
+//                                selectionArgsCall = new String[]{selectionArgs[0], selectionArgs[1], "%" + formateNumber};
+//                            }
+//                            cur = mgr.getSystemCalls(selectionCall, selectionArgsCall);
+                            countCall = countCalls(callBeans,number);
                         } else {
-                            cur = mgr.getSystemCalls("number" + " LIKE ? ", new String[]{"%" + formateNumber});
+//                            cur = mgr.getSystemCalls("number" + " LIKE ? ", new String[]{"%" + formateNumber});
+                            countCall = countCalls(callBeans,number);
                         }
 
-                        contactCallLog.setCallLogCount(cur.getCount());
+//                        contactCallLog.setCallLogCount(cur.getCount());
+                        contactCallLog.setCallLogCount(countCall);
                         calllogs.add(contactCallLog);
                     } finally {
                         if (!BuildProperties.isApiLevel14()) {
@@ -558,6 +594,26 @@ public class PrivacyContactUtils {
         }
 
         return calllogs;
+    }
+
+    private static int countCalls(List<ContactCallLog> calls, String number) {
+        int count = 0;
+        for (ContactCallLog call : calls) {
+            String callNumber = formatePhoneNumber(call.getCallLogNumber());
+            number = formatePhoneNumber(number);
+            if (number == null) {
+                break;
+            }
+            if (callNumber == null) {
+                continue;
+            }
+
+            if (callNumber.equals(number)) {
+                count++;
+            }
+
+        }
+        return count;
     }
 
     /**
