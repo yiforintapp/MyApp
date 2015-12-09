@@ -284,6 +284,9 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         if (mAppIcon == null) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
         }
+        if(mAppIcon == null) {
+            return;
+        }
         if (lsa != null && lsa.mQuickLockMode) {
             List<LockMode> modes = mLockManager.getLockMode();
             LockMode targetMode = null;
