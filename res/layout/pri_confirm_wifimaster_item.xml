@@ -16,14 +16,13 @@
         <TextView
             android:id="@+id/item_title"
             style="@style/ItemTitle"
-            android:text="wifimaster" />
+            android:text="@string/pri_result_wifimaster_title" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/wifimaster_img"
         android:layout_width="match_parent"
         android:layout_height="133dp"
-        android:src="@drawable/fb_banner"
         android:scaleType="centerCrop"
         android:layout_below="@+id/item_header_ll"
         android:layout_marginLeft="19dp"
@@ -41,7 +40,7 @@
         android:layout_alignLeft="@+id/wifimaster_img"
         android:layout_alignRight="@+id/wifimaster_img"
         android:layout_below="@+id/wifimaster_img"
-        android:text="wifimaster"/>
+        android:text="@string/pri_result_wifimaster_content"/>
 
 
 
@@ -71,7 +70,7 @@
             <TextView
                 android:id="@+id/item_btn_tv"
                 style="@style/ItemBtnText"
-                android:text="@string/fb_item_btn"/>
+                android:text="@string/pri_result_wifimaster_btn"/>
         </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 

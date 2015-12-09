@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/wifimaster_blue_tiao"
-            android:text="wifimaster"
+            android:text="@string/pri_result_wifimaster_title"
             android:textColor="@color/c2"
             android:textSize="15dp" />
     </RelativeLayout>
@@ -58,7 +58,7 @@
         android:textColor="@color/c2"
         android:textSize="14dp"
         android:layout_below="@+id/wifimaster_img"
-        android:text="wifimaster"/>
+        android:text="@string/wifi_result_wifimaster_content"/>
 
     <com.leo.appmaster.ui.RippleView
         android:id="@+id/wifimaster_resulte_sure"
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/fb_item_btn"
+            android:text="@string/pri_result_wifimaster_btn"
             android:textColor="@color/white"
             android:textSize="16dp" />
     </com.leo.appmaster.ui.RippleView>
