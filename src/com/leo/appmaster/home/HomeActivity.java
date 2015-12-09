@@ -1381,7 +1381,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             /**
              * Samsung 5.1.1 sys 电池优化权限提示
              */
-            boolean samSungTip = AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_LOCK_SAMSUNG_TIP);
+            boolean samSungTip = AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_HOME_SAMSUNG_TIP);
             if (!samSungTip) {
                 openAdvanceProtectDialogTip();
                 SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
@@ -1390,7 +1390,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             /**
              * Samsung 5.1.1 sys 电池优化权限提示
              */
-            AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_LOCK_SAMSUNG_TIP);
+            AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_HOME_SAMSUNG_TIP);
         }
     }
 
