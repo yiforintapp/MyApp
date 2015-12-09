@@ -25,6 +25,7 @@ import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class ISwipUpdateRequestManager {
@@ -92,7 +93,7 @@ public class ISwipUpdateRequestManager {
         // LeoLog.e(TAG, "当前拉取策略：" + currentStrategy);
         if (currentStrategy < 0/* 首次拉取数据 */
                 || isLoadIswipe(currentTime, lastLoadTime, currentStrategy, fialDate, failNumber,
-                        currentDate)/* 根据策略拉取数据 */
+                currentDate)/* 根据策略拉取数据 */
                 || mIsPushLoadIswipe/* 是否为push拉取数据 */) {
             if ((fialDate != null && !currentDate.equals(fialDate))/* 每天的日期改变 */) {
                 AppMasterPreference.getInstance(mContext).setIswipUpdateLoadingNumber(-1);
@@ -117,7 +118,7 @@ public class ISwipUpdateRequestManager {
     }
 
     private boolean isLoadIswipe(long currentTime, long lastLoadTime, long currentStrategy,
-            String fialDate, int failNumber, String currentDate) {
+                                 String fialDate, int failNumber, String currentDate) {
         /* 当前策略是否大于0 */
         boolean isDefaultCurrentStrategy = currentStrategy > 0;
         /* 当前时间减去上次拉取时间是否达到当前策略的拉取时间 */
@@ -194,13 +195,13 @@ public class ISwipUpdateRequestManager {
                     saveIswipUpdateDate(checkUpdate, frequency, number,
                             gpUrl, browserUrl, downType);
                 } catch (JSONException e) {
-                   
+
                 }
             }
         }
 
         private void saveIswipUpdateDate(int checkUpdate, int frequency, int number, String gpUrl,
-                String browserUrl, int downType) {
+                                         String browserUrl, int downType) {
             AppMasterPreference preference = AppMasterPreference.getInstance(AppMasterApplication
                     .getInstance());
 
@@ -255,20 +256,20 @@ public class ISwipUpdateRequestManager {
             /* 默认Iswipe到浏览器下载链接 */
             browserDownLoadUrl = Constants.ISWIPE_TO_GP_BROWSER_RUL;
         }
-        
+
         if (AppMasterConfig.LOGGABLE) {
-            Log.d(TAG, "GP: " + gpDownLoadUrl);
-            Log.d(TAG, "Browser: " + browserDownLoadUrl);
+            LeoLog.d(TAG, "GP: " + gpDownLoadUrl);
+            LeoLog.d(TAG, "Browser: " + browserDownLoadUrl);
         }
         downLoadISwipToGP(gpDownLoadUrl, browserDownLoadUrl);
-        
+
     }
 
     private void downLoadISwipToGP(String gpDownLoadUrl, String browserUrl) {
         if (gpDownLoadUrl != null) {
             Intent intent = startPG(gpDownLoadUrl);
             try {
-                LockManager lm = (LockManager)MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                 lm.filterSelfOneMinites();
                 mContext.startActivity(intent);
             } catch (Exception e) {
@@ -288,7 +289,7 @@ public class ISwipUpdateRequestManager {
         if (browserUrl != null) {
             Intent intent = startBrowser(browserUrl);
             try {
-                LockManager lm = (LockManager)MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                 lm.filterSelfOneMinites();
                 mContext.startActivity(intent);
             } catch (Exception e) {
@@ -296,7 +297,7 @@ public class ISwipUpdateRequestManager {
             }
         } else {
             if (AppMasterConfig.LOGGABLE) {
-                Log.d(TAG, "下载ISwip的浏览器链接为空");
+                LeoLog.d(TAG, "下载ISwip的浏览器链接为空");
             }
         }
     }
@@ -322,7 +323,7 @@ public class ISwipUpdateRequestManager {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
-   
+
     /* 判断是否安装ISwipe，true：安装，false：未安装 */
     public static boolean isInstallIsiwpe(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
