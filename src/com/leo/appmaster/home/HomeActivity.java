@@ -545,7 +545,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_ASIDE_FRAGMENT, this);
         if (drawable != null) {
             mMenuList.setBackgroundDrawable(drawable);
+            mMenuList.setDivider(getResources().getDrawable(R.drawable.home_menu_list_divider_chrismas));
+            mMenuList.setDividerHeight(1); 
         }
+        
     }
 
     @Override
@@ -1314,6 +1317,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
             MaterialRippleLayout layout = (MaterialRippleLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
             TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
+            Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_ASIDE_FRAGMENT, HomeActivity.this);
+            if (drawable != null) {
+                tv.setTextColor(getResources().getColor(R.color.c1));
+            }
             ImageView redTip = (ImageView) layout.findViewById(R.id.update_red_tip);
             /* some item not HTML styled text, such as "check update" item */
             tv.setText(Html.fromHtml(items.get(arg0).itemName));

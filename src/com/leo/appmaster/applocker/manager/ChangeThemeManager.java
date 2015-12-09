@@ -130,7 +130,7 @@ public class ChangeThemeManager {
                     drawableForReturn = context.getResources().getDrawable(R.drawable.home_tab_intrudericon_chrismas);
                     break;
                 case BG_HOME_ASIDE_FRAGMENT:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.home_aside_fragment_list_bg);
                     break;
                 case BG_LOCKSCREEN_WHOLE:
                     drawableForReturn = context.getResources().getDrawable(R.drawable.lockscreen_chrismas_bg);
@@ -139,7 +139,7 @@ public class ChangeThemeManager {
                     drawableForReturn = context.getResources().getDrawable(R.drawable.home_more_arrow_chrismas);
                     break;
                 case BG_HOME_MORE_FRAGMENT_LABEL:
-                    drawableForReturn = context.getResources().getDrawable(R.drawable.gesture_chrismas_dot1);
+                    drawableForReturn = context.getResources().getDrawable(R.drawable.home_more_fragment_label_chrismas);
                     break;
                 default:
                     break;
