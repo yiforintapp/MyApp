@@ -1,20 +1,31 @@
 
 package com.leo.appmaster.home;
 
+import android.app.ResultInfo;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.util.Log;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
+
+import java.util.List;
 
 /**
  * 自启动引导
- * 
+ *
  * @author run
  */
 public class AutoStartGuideList extends WhiteList {
@@ -26,15 +37,19 @@ public class AutoStartGuideList extends WhiteList {
     public static final int LETV = 4;
     public static final int HUAWEIP6 = 5;
     public static final int IUNI = 6;
+    public static final int SAMSUMG_SYS = 7;
     // private static final int OPPO = 3;
     public static int[] LIST = {
-            XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6, IUNI
+            XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6, IUNI, SAMSUMG_SYS
     };
 
+
+    /*双提示打开系统权限的机型 */
     public static int[] DOUBLE_OPEN_TIP_PHONE = {
             HUAWEIP7_PLUS
     };
 
+    private static final int SAMSUNG_TIP_COUNT = 3;
     private static LockManager sLockManager;
 
     public AutoStartGuideList() {
@@ -91,6 +106,9 @@ public class AutoStartGuideList extends WhiteList {
                 break;
             case IUNI:
                 list = new Iuini();
+                break;
+            case SAMSUMG_SYS:
+                list = new SamSungOptimize();
                 break;
             default:
                 break;
@@ -266,6 +284,15 @@ public class AutoStartGuideList extends WhiteList {
         }
     }
 
+    /*samsung 是否为存在“电池优化-应用程序优化”的系统*/
+    public static class SamSungOptimize extends AutoStartGuideList {
+        @Override
+        protected boolean doHandler() {
+            startSamSungOpIntent(mContext);
+            return false;
+        }
+    }
+
     /* 判断是否为添加自启动的白名单机型 */
     public static int isAutoWhiteListModel(Context context) {
         boolean miuiV5 = BuildProperties.isMiuiV5();
@@ -297,6 +324,13 @@ public class AutoStartGuideList extends WhiteList {
         if (inui) {
             return IUNI;
         }
+
+         /*samsung 是否为存在“电池优化-应用程序优化”的系统*/
+        boolean samSung = BuildProperties.isSamSungModel() && isSamSungActivity(context);
+        if (samSung) {
+            return SAMSUMG_SYS;
+        }
+
         return -1;
     }
 
@@ -322,9 +356,14 @@ public class AutoStartGuideList extends WhiteList {
         if (letv) {
             return R.string.auto_start_tip_xiaomi4_and_letv;
         }
+        /*samsung 是否为存在“电池优化-应用程序优化”的系统*/
+        boolean samSung = BuildProperties.isSamSungModel() && isSamSungActivity(context);
+        if (samSung) {
+            return R.string.samsung_tip_txt;
+        }
         return R.string.auto_start_guide_tip_content;
     }
-    
+
     /* 查询是否为双提示打开系统权限的机型 */
     public static boolean isDoubleTipOPenPhone(int phoneModel) {
         for (int i : DOUBLE_OPEN_TIP_PHONE) {
@@ -333,5 +372,87 @@ public class AutoStartGuideList extends WhiteList {
             }
         }
         return false;
+    }
+
+    /*Samsung 5.1.1 sys 电池优化权限提示*/
+    public static boolean samSungSysTip(Context context, String key) {
+        PreferenceTable prefer = PreferenceTable.getInstance();
+        boolean samSung = BuildProperties.isSamSungModel() && isSamSungActivity(context);
+        boolean appConsumed = prefer.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+        if (!samSung || !appConsumed) {
+            return false;
+        }
+        if (PrefConst.KEY_HOME_SAMSUNG_TIP.equals(key)) {
+            int count = prefer.getInt(PrefConst.KEY_HOME_SAMSUNG_TIP, 1);
+            if (count <= SAMSUNG_TIP_COUNT) {
+                showSamSungDialog(context);
+                prefer.putInt(PrefConst.KEY_HOME_SAMSUNG_TIP, count++);
+                return true;
+            }
+        } else if (PrefConst.KEY_LOCK_SAMSUNG_TIP.equals(key)) {
+            int count = prefer.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
+            if (count <= SAMSUNG_TIP_COUNT) {
+                showSamSungDialog(context);
+                prefer.putInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, count++);
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    private static void showSamSungDialog(Context context) {
+        final Context contextApp = context.getApplicationContext();
+        PreferenceTable prefer = PreferenceTable.getInstance();
+        boolean appConsumed = prefer.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+        if (appConsumed) {
+            prefer.putBoolean(PrefConst.KEY_APP_COMSUMED, false);
+        }
+        LEOMessageDialog dialog = new LEOMessageDialog(context);
+        dialog.setBottomBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        startSamSungOpIntent(contextApp);
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        String content = context.getResources().getString(R.string.samsung_tip_txt);
+        dialog.setContent(content);
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        dialog.show();
+    }
+
+    /*判断是否该手机存在三星的应用程序优化*/
+    public static boolean isSamSungActivity(Context context) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setPackage("com.samsung.android.sm");
+        intent.setClassName("com.samsung.android.sm", "com.samsung.android.sm.ui.ram.AppLockingViewActivity");
+        List<ResolveInfo> info = context.getPackageManager().queryIntentActivities(intent, 0);
+        if (info != null && info.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void startSamSungOpIntent(Context context) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setPackage("com.samsung.android.sm");
+        intent.setClassName("com.samsung.android.sm", "com.samsung.android.sm.ui.battery.BatteryActivity");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            context.startActivity(intent);
+            sLockManager.filterSelfOneMinites();
+            LeoLog.e(TAG, "跳转samsung成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

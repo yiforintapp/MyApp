@@ -46,6 +46,7 @@ import com.leo.appmaster.appmanage.BusinessAppInstallTracker;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.db.LockRecommentTable;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.home.AutoStartGuideList;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.ThirdAppManager;
@@ -60,6 +61,7 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.PackageChangedListener;
@@ -1044,6 +1046,10 @@ public class AppLoadEngine extends BroadcastReceiver {
                                     mLockManager.addPkg2Mode(list, mLockManager.getCurLockMode());
                                 }
 
+                                /**
+                                 * Samsung 5.1.1 sys 电池优化权限提示
+                                 */
+                                AutoStartGuideList.samSungSysTip(mContext, PrefConst.KEY_LOCK_SAMSUNG_TIP);
                             } else if (which == 2) {
                                 if (pre.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
 

@@ -151,4 +151,9 @@ public class PrefConst {
     public static final String KEY_VIDEO_EDIT_GUIDE = "VIDEO_EDIT_GUIDE";
     /*首页引导*/
     public static final String KEY_HOME_GUIDE = "HOME_GUIDE";
+    /*首页三星提示*/
+    public static final String KEY_HOME_SAMSUNG_TIP = "HOME_SAMSUNG_TIP";
+    /*安装新应用，加锁三星提示*/
+    public static final String KEY_LOCK_SAMSUNG_TIP = "LOCK_SAMSUNG_TIP";
+    public static final String KEY_APP_COMSUMED = "app_comsumed";
 }

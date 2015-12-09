@@ -1187,6 +1187,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         if (fragment instanceof PrivacyNewAppFragment) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
+            boolean appConsumed = preferenceTable.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+            if (!appConsumed) {
+                preferenceTable.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
+            }
         } else if ((fragment instanceof PrivacyNewPicFragment)
                 || (fragment instanceof FolderPicFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_PIC);
@@ -1374,8 +1378,19 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         boolean isTip = PreferenceTable.getInstance().getBoolean(key, true);
 
         if (isAdminActive() && isTip) {
-            openAdvanceProtectDialogTip();
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
+            /**
+             * Samsung 5.1.1 sys 电池优化权限提示
+             */
+            boolean samSungTip = AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_LOCK_SAMSUNG_TIP);
+            if (!samSungTip) {
+                openAdvanceProtectDialogTip();
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
+            }
+        } else {
+            /**
+             * Samsung 5.1.1 sys 电池优化权限提示
+             */
+            AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_LOCK_SAMSUNG_TIP);
         }
     }
 

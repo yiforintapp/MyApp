@@ -160,7 +160,7 @@ public class ISwipUpdateRequestManager {
             /* noMidify， true：缓存，false：后台数据更改重新拉取 */
             if (response != null && !noMidify) {
                 if (AppMasterConfig.LOGGABLE) {
-                    Log.d(TAG, "Success: " + response.toString());
+                    LeoLog.i(TAG, "Success: " + response.toString());
                 }
                 /* 后台数据修改，恢复之前保存定时提示记录为默认值 */
                 if (!noMidify) {
@@ -222,7 +222,7 @@ public class ISwipUpdateRequestManager {
         public void onErrorResponse(VolleyError error) {
             /* 拉取失败 */
             if (AppMasterConfig.LOGGABLE) {
-                Log.d(TAG, "Fail!!");
+                LeoLog.i(TAG, "Fail!!");
             }
             AppMasterPreference.getInstance(context).setIswipUpdateLoadingStrategy(
                     AppMasterConfig.TIME_2_HOUR);
