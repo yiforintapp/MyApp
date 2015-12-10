@@ -838,4 +838,5 @@
     <string name="pri_result_wifimaster_content">专业的优化测速工具，让你的WiFi更加快速稳定，为你寻找更多优质的免费WiFi可以连接。</string>
     <string name="wifi_result_wifimaster_content">马上进行WiFi测速，选择最快的WiFi链接！</string>
     <string name="pri_result_wifimaster_btn">开启</string>
+    <string name="video_guide_txt">点击编辑按钮，就可以勾选视频取消隐藏哦～</string>
 </resources>

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
@@ -36,6 +37,8 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout mPicVideoGuideRt;
     private RelativeLayout mVideoGuideRt;
     private ObjectAnimator mHomeGuideAnim;
+    private TextView mVideoText;
+    private TextView mPicText;
 
     /*引导类型*/
     public enum GUIDE_TYPE {
@@ -140,6 +143,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         View inCloude = viewStub.inflate();
         mPicVideoGuideRt = (RelativeLayout) inCloude.findViewById(R.id.pic_vid_edit_rt);
         mPicVideoGuideRt.setOnClickListener(this);
+        mPicText = (TextView) inCloude.findViewById(R.id.guide_text_tip);
     }
 
     /*视频隐藏页编辑按钮引导*/
@@ -151,6 +155,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         View inCloude = viewStub.inflate();
         mVideoGuideRt = (RelativeLayout) inCloude.findViewById(R.id.video_edit_rt);
         mVideoGuideRt.setOnClickListener(this);
+        mVideoText = (TextView) inCloude.findViewById(R.id.video_guide_text_tip);
     }
 
     public void setEnable(boolean enable, GUIDE_TYPE type) {
@@ -182,6 +187,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         } else if (GUIDE_TYPE.PIC_GUIDE == type) {
             if (mPicVideoGuideRt != null) {
                 mPicVideoGuideRt.setVisibility(View.VISIBLE);
+                mPicText.setText(R.string.pic_video_guide_txt);
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
                 showHomeGuideAnim(mPicVideoGuideRt, HOME_GUIDE_TRANSLA_VALUE1, tranY);
             }
@@ -189,6 +195,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         } else if (GUIDE_TYPE.VIDEO_GUIDE == type) {
             if (mVideoGuideRt != null) {
                 mVideoGuideRt.setVisibility(View.VISIBLE);
+                mVideoText.setText(R.string.video_guide_txt);
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
                 showHomeGuideAnim(mVideoGuideRt, HOME_GUIDE_TRANSLA_VALUE1, tranY);
             }
