@@ -377,43 +377,37 @@ public class AutoStartGuideList extends WhiteList {
     /*Samsung 5.1.1 sys 电池优化权限提示*/
     public static synchronized boolean samSungSysTip(Context context, String key) {
         PreferenceTable prefer = PreferenceTable.getInstance();
+        int countFlag = prefer.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
+        boolean isCountEnough = countFlag > SAMSUNG_TIP_COUNT;
         boolean samSung = BuildProperties.isSamSungModel() && isSamSungActivity(context);
-        boolean appConsumed = false;
-        if (PrefConst.KEY_HOME_SAMSUNG_TIP.equals(key)) {
-            appConsumed = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
-        } else if (PrefConst.KEY_LOCK_SAMSUNG_TIP.equals(key)) {
-            appConsumed = prefer.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
-        }
-        if (!samSung || !appConsumed) {
+        boolean appConsumed = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+        if (!samSung || !appConsumed || isCountEnough) {
             return false;
         }
         if (PrefConst.KEY_HOME_SAMSUNG_TIP.equals(key)) {
-            int count = prefer.getInt(PrefConst.KEY_HOME_SAMSUNG_TIP, 1);
+            int count = prefer.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
             if (count <= SAMSUNG_TIP_COUNT) {
                 showSamSungDialog(context, key);
-                prefer.putInt(PrefConst.KEY_HOME_SAMSUNG_TIP, count++);
+                prefer.putInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, count + 1);
                 return true;
             }
         } else if (PrefConst.KEY_LOCK_SAMSUNG_TIP.equals(key)) {
             int count = prefer.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
             if (count <= SAMSUNG_TIP_COUNT) {
                 showSamSungDialog(context, key);
-                prefer.putInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, count++);
+                prefer.putInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, count + 1);
                 return true;
             }
-
         }
         return false;
     }
 
     private static void showSamSungDialog(Context context, String key) {
         final Context contextApp = context.getApplicationContext();
-        if (PrefConst.KEY_HOME_SAMSUNG_TIP.equals(key)) {
-            PreferenceTable prefer = PreferenceTable.getInstance();
-            boolean appLockHandler = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
-            if (appLockHandler) {
-                prefer.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
-            }
+        PreferenceTable prefer = PreferenceTable.getInstance();
+        boolean appLockHandler = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+        if (appLockHandler) {
+            prefer.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
         }
 
         LEOMessageDialog dialog = new LEOMessageDialog(context);
@@ -464,6 +458,23 @@ public class AutoStartGuideList extends WhiteList {
             LeoLog.e(TAG, "跳转samsung成功！");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void saveSamSungAppLock() {
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        int countFlag = preferenceTable.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
+        boolean isCountEnough = countFlag > SAMSUNG_TIP_COUNT;
+        if (isCountEnough) {
+            return;
+        }
+        boolean appConsumed = preferenceTable.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+        boolean appLockHandler = preferenceTable.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+        if (!appConsumed) {
+            preferenceTable.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
+        }
+        if (!appLockHandler) {
+            preferenceTable.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
         }
     }
 }

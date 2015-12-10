@@ -1409,6 +1409,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     }
                     AppMasterPreference.getInstance(HomeActivity.this)
                             .setAdvanceProtectOpenSuccessDialogTip(false);
+                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
+                    PreferenceTable.getInstance().putBoolean(key, false);
                 }
             });
         }

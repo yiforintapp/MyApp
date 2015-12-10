@@ -23,7 +23,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetector;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.home.AutoStartGuideList;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -31,6 +33,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.utils.PrefConst;
 
 /**
  * Created by qili on 15-10-11.
@@ -71,7 +74,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
     private void loadDone() {
         mProgressBar.setVisibility(View.GONE);
         mLockListView.setVisibility(View.VISIBLE);
-        if(mLockAdapter != null) {
+        if (mLockAdapter != null) {
             mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
             if (mResaultList != null) {
                 mLockAdapter.setData(mResaultList);
@@ -399,6 +402,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         // add pkgs to vistor mode
         if (mLockManager.getCurLockMode().defaultFlag == 1) {
             mLockManager.addPkg2Mode(list, mLockManager.getCurLockMode());
+            AutoStartGuideList.saveSamSungAppLock();
         } else {
             List<LockMode> modeList = mLockManager.getLockMode();
             for (LockMode lockMode : modeList) {
@@ -407,6 +411,9 @@ public class RecommentAppLockListActivity extends BaseActivity implements
                     break;
                 }
             }
+        }
+        if (mLockList.size() > 0) {
+            AutoStartGuideList.saveSamSungAppLock();
         }
     }
 

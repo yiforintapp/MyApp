@@ -97,6 +97,7 @@ public class AppLockListActivity extends BaseActivity implements
     private ProgressBar mProgressBar;
     private ArrayList<AppInfo> mResaultList;
     private int goCnotR = 0;
+    private ImageView mAutoImage;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -120,7 +121,6 @@ public class AppLockListActivity extends BaseActivity implements
 
         mProgressBar.setVisibility(View.GONE);
         mLockList.setVisibility(View.VISIBLE);
-        updateHelpState();
     }
 
     private void asyncLoad() {
@@ -211,6 +211,7 @@ public class AppLockListActivity extends BaseActivity implements
         mBackageGroundBt.setOnClickListener(this);
         mSecurityRL = (RelativeLayout) findViewById(R.id.security_guide);
         mAutoRL = (RelativeLayout) findViewById(R.id.auto_guide);
+        mAutoImage = (ImageView) findViewById(R.id.auto_icon);
         mBackgroundRL = (RelativeLayout) findViewById(R.id.background_guide);
 
         mFinishBt = (Button) findViewById(R.id.finish);
@@ -226,6 +227,7 @@ public class AppLockListActivity extends BaseActivity implements
         mSecurityText = (TextView) findViewById(R.id.security_guide_text);
         mAutoText = (TextView) findViewById(R.id.auto_guide_text);
         mBackGroudText = (TextView) findViewById(R.id.background_guide_text);
+        updateHelpState();
         inLockListGuideTip();
     }
 
@@ -507,6 +509,7 @@ public class AppLockListActivity extends BaseActivity implements
                     + mLastSelectApp.packageName);
             long e = System.currentTimeMillis();
             LeoLog.d("testWhoNull", "part c : " + (e - d));
+            AutoStartGuideList.saveSamSungAppLock();
         }
     }
 
@@ -748,6 +751,11 @@ public class AppLockListActivity extends BaseActivity implements
                     .getAutoWhiteListTipText(AppMasterApplication.getInstance());
             mAutoText.setText(content);
             mAutoRL.setVisibility(View.VISIBLE);
+            if (AutoStartGuideList.SAMSUMG_SYS == AutoStartGuideList.isAutoWhiteListModel(this)) {
+                mAutoImage.setImageResource(R.drawable.backstage_protection);
+            } else {
+                mAutoImage.setImageResource(R.drawable.power_star);
+            }
             mBackgroundRL.setVisibility(View.GONE);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_display_fn");
             /* 查询是否为双提示打开系统权限的机型 */

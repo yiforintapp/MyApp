@@ -834,6 +834,8 @@
     <string name="prot_open_suc_tip_cnt">已开启高级保护。如果需要卸载隐私卫士，请在侧边栏操作</string>
     <string name="wifi_result_swifty_title">流量快捷开关</string>
     <string name="wifi_result_swifty_content">流量用太快？别担心，使用Swifty，一键开关蜂窝数据及WiFi，节省流量看得见！</string>
+    <string name="samsung_tip_txt">为保证应用锁正常工作，需要您在"应用程序优化"→"详情"中点击隐私卫士，并选择"禁止"。您也可以稍后在应用锁中设置。</string>
+    <string name="pri_result_wifimaster_title">WifiMaster</string>
     <string name="samsung_tip_txt">"为保证应用锁正常工作，需要您在"应用程序优化"→"详情"中点击隐私卫士，并选择"禁止"。您也可以稍后在应用锁中设置"。点击"设置"，跳转系统设置界面。点击"稍后"，关闭对话框</string>
     <string name="pri_result_wifimaster_content">专业的优化测速工具，让你的WiFi更加快速稳定，为你寻找更多优质的免费WiFi可以连接。</string>
     <string name="wifi_result_wifimaster_content">马上进行WiFi测速，选择最快的WiFi链接！</string>

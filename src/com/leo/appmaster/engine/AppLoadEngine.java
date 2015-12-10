@@ -1044,6 +1044,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                                     LinkedList<String> list = new LinkedList<String>();
                                     list.add(packageName);
                                     mLockManager.addPkg2Mode(list, mLockManager.getCurLockMode());
+                                    AutoStartGuideList.saveSamSungAppLock();
                                 }
 
                                 /**
