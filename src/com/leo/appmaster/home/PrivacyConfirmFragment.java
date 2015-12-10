@@ -727,6 +727,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "master_shw");
             mWifiMasteImg = (ImageView) include.findViewById(R.id.wifimaster_img);
             mWifiMasteContent = (TextView) include.findViewById(R.id.wifimaster_content);
             mWifiMasteBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
@@ -764,6 +765,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "swifty_shw");
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
             mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
@@ -810,6 +812,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
             View include = viewStub.inflate();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "facebook_shw");
             mFbImg = (ImageView) include.findViewById(R.id.fb_img);
             mFbContent = (TextView) include.findViewById(R.id.fb_content);
             mFbBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
@@ -845,6 +848,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     return;
                 }
                 View highInclude = viewStub.inflate();
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate_shw");
                 mHighOneStar = (ImageView) highInclude.findViewById(R.id.one_star);
                 mHighTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
                 mHighThreeStar = (ImageView) highInclude.findViewById(R.id.three_star);
@@ -870,6 +874,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     return;
                 }
                 View include = viewStub.inflate();
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate_shw");
                 mOneStar = (ImageView) include.findViewById(R.id.one_star);
                 mTwoStar = (ImageView) include.findViewById(R.id.two_star);
                 mThreeStar = (ImageView) include.findViewById(R.id.three_star);
@@ -1088,6 +1093,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, true);
             }
         } else if (mWifiMasteBtnLt == v) {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "master");
             lockManager.filterSelfOneMinites();
             boolean installWifiMaster = AppUtil.isInstallPkgName(
                     mActivity, Constants.WIFIMASTER_PKG_NAME);

@@ -174,6 +174,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                         SDKWrapper.P1, "wifi_rst", "wifi_rst_risk_other");
                 break;
             case R.id.swifty_resulte_sure:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "swifty");
                 lockManager.filterSelfOneMinites();
                 boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
                 if (installISwipe) {
@@ -183,6 +184,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 }
                 break;
             case R.id.wifimaster_resulte_sure:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "master");
                 lockManager.filterSelfOneMinites();
                 boolean installWifiMaster = AppUtil.isInstallPkgName(
                         mActivity, Constants.WIFIMASTER_PKG_NAME);
@@ -193,10 +195,12 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 }
                 break;
             case R.id.fb_resulte_sure:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "FB");
                 lockManager.filterSelfOneMinites();
                 Utilities.goFaceBook(mActivity, false);
                 break;
             case R.id.grade_resulte_sure:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "GP");
                 lockManager.filterSelfOneMinites();
                 Utilities.goFiveStar(mActivity, true, false);
                 break;
@@ -370,6 +374,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "swifty_shw");
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_txt);
             mSwiftyBtnLt = (RippleView) include.findViewById(R.id.swifty_resulte_sure);
@@ -407,6 +412,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "master_shw");
             mWifiMasterImg = (ImageView) include.findViewById(R.id.wifimaster_img);
             mWifiMasterContent = (TextView) include.findViewById(R.id.wifimaster_txt);
             mWifiMasterBtnLt = (RippleView) include.findViewById(R.id.wifimaster_resulte_sure);
@@ -438,6 +444,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 
         if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
             View include = viewStub.inflate();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "FB_shw");
             mFbImg = (ImageView) include.findViewById(R.id.fb_img);
             mFbContent = (TextView) include.findViewById(R.id.fb_txt);
             mFbBtnLt = (RippleView) include.findViewById(R.id.fb_resulte_sure);
@@ -469,7 +476,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 
         if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
             View include = viewStub.inflate();
-
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "GP_shw");
             FiveStarsLayout fiveStarsLayout = (FiveStarsLayout)
                             include.findViewById(R.id.fsl_fivestars);
             fiveStarsLayout.setBackgroundNull();
