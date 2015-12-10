@@ -191,6 +191,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 .displayer(new FadeInBitmapDisplayer(500)).build();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     class VPagerAdapter extends PagerAdapter {
 
         @Override
@@ -425,92 +430,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     private void onPreDo() {
 
     }
-
-//    private class BackgoundTask extends AsyncTask<Boolean, Integer, Integer> {
-//        private Context context;
-//
-//        BackgoundTask(Context context) {
-//            this.context = context;
-//        }
-//
-//        @Override
-//        protected Integer doInBackground(Boolean... params) {
-//            String filepath = mPicturesList.get(mListPos);
-//
-//            long totalSize = new File(filepath).length();
-//            int isSuccess = 3;
-//
-//            String newPaht = ((PrivacyDataManager) MgrContext.getManager
-//                    (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
-//
-//
-//            if (newPaht == null) {
-//                isSuccess = 2;
-//            } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
-//                isSuccess = 2;
-//            } else if ("0".equals(newPaht)) {
-//                isSuccess = 3;
-//                ContentValues values = new ContentValues();
-//                String dirPath = FileOperationUtil.getDirPathFromFilepath(filepath);
-//                values.put("image_dir", dirPath);
-//                values.put("image_path", filepath);
-//                try {
-//                    getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
-//                } catch (Exception e) {
-//                }
-//                mPicturesList.remove(mListPos);
-//            } else if ("4".equals(newPaht)) {
-//                isSuccess = 4;
-//            } else {
-//                isSuccess = 3;
-//                mPicturesList.remove(mListPos);
-//                FileOperationUtil.saveImageMediaEntry(newPaht, context);
-//                FileOperationUtil.deleteFileMediaEntry(filepath, context);
-//            }
-//            return isSuccess;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Integer success) {
-//            if (success == 4) {
-//                String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
-//                String content = getString(R.string.image_unhide_memery_insuficient_dialog_content);
-//                String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
-//                float width = getResources().getDimension(
-//                        R.dimen.memery_dialog_button_width);
-//                float height = getResources().getDimension(
-//                        R.dimen.memery_dialog_button_height);
-//                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
-//                        width, height);
-//            } else if (success == -1 || success == -2) {
-//            } else if (success == 2) {
-//            }
-//            if (mPicturesList.size() == 0) {
-//                if (mIsFromIntruderMore) {
-//                    Intent intent = new Intent(PictureViewPager.this,
-//                            IntruderCatchedActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    intent.putExtra("isClear", true);
-//                    startActivity(intent);
-//                    finish();
-//                } else {
-//                    Intent intent = new Intent(PictureViewPager.this,
-//                            ImageHideMainActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(intent);
-//                }
-//            } else {
-//                if (mListPos == mPicturesList.size()) {
-//                    mListPos = 0;
-//                }
-//                mTtileBar.setTitle(FileOperationUtil
-//                        .getNoExtNameFromHideFilepath(mPicturesList
-//                                .get(mListPos)));
-//                mPagerAdapter.notifyDataSetChanged();
-//                mPager.setCurrentItem(mListPos);
-//            }
-//        }
-//    }
 
     private void deletePicture() {
         String filepath = mPicturesList.get(mListPos);

@@ -478,21 +478,6 @@ public class WifiTabFragment extends Fragment {
         setStartScan();
 
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_down_to_up);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
         mRootView.startAnimation(animation);
         showItemAnimation();
     }

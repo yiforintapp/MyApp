@@ -91,6 +91,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 
     private GuideFragment mGuideFragment;
     private boolean mPicGuide;
+    private boolean isFristIn = true;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -330,6 +331,15 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+
+//        if (!isFristIn) {
+//            mLoadingBar.setVisibility(View.VISIBLE);
+//            mGridView.setVisibility(View.GONE);
+//            mHandler.sendEmptyMessage(INIT_UI_DONE);
+//        } else {
+//            isFristIn = false;
+//        }
+
     }
 
     @Override
