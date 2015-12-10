@@ -45,7 +45,7 @@ public class FileOperationUtil {
 
     private static final String SYSTEM_PREFIX = "/system";
 
-    public static final String SDCARD_DIR_NAME = ".PravicyLock";
+    public static final String SDCARD_DIR_NAME = ".DefaultGallery";
     public static final String OLD_SDCARD_DIR_NAME = "PravicyLock";
 
     public static final String[] STORE_IMAGES = {
