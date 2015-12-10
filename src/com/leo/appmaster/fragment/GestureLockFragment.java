@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -96,7 +97,6 @@ public class GestureLockFragment extends LockFragment implements
         } else {
             mGestureTip.setVisibility(View.GONE);
         }
-
         mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
 
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -131,11 +131,15 @@ public class GestureLockFragment extends LockFragment implements
                 mAppIconTop.setVisibility(View.VISIBLE);
                 mAppIconBottom.setVisibility(View.VISIBLE);
                 checkApplyTheme();
-            } else {
-                Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_WHOLE, getActivity());
-                if (drawable != null) {
+            } 
+        } 
+        if (!needChangeTheme()) {
+            Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_WHOLE, getActivity());
+            if (drawable != null) {
+                try {
                     RelativeLayout layout = (RelativeLayout) getActivity().findViewById(R.id.activity_lock_layout);
                     layout.setBackgroundDrawable(drawable);
+                } catch (Exception e) {
                 }
             }
         }
