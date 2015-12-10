@@ -546,9 +546,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (drawable != null) {
             mMenuList.setBackgroundDrawable(drawable);
             mMenuList.setDivider(getResources().getDrawable(R.drawable.home_menu_list_divider_chrismas));
-            mMenuList.setDividerHeight(1); 
+            mMenuList.setDividerHeight(1);
         }
-        
+
     }
 
     @Override
@@ -1188,8 +1188,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (fragment instanceof PrivacyNewAppFragment) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
             boolean appConsumed = preferenceTable.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+            boolean appLockHandler = preferenceTable.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
             if (!appConsumed) {
                 preferenceTable.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
+            }
+            if (!appLockHandler) {
+                preferenceTable.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
             }
         } else if ((fragment instanceof PrivacyNewPicFragment)
                 || (fragment instanceof FolderPicFragment)) {

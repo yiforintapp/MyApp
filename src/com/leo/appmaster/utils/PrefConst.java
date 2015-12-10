@@ -156,4 +156,5 @@ public class PrefConst {
     /*安装新应用，加锁三星提示*/
     public static final String KEY_LOCK_SAMSUNG_TIP = "LOCK_SAMSUNG_TIP";
     public static final String KEY_APP_COMSUMED = "app_comsumed";
+    public static final String KEY_APP_LOCK_HANDLER = "APP_LOCK_HANDLER";
 }

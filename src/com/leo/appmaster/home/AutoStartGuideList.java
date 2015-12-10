@@ -375,24 +375,29 @@ public class AutoStartGuideList extends WhiteList {
     }
 
     /*Samsung 5.1.1 sys 电池优化权限提示*/
-    public static boolean samSungSysTip(Context context, String key) {
+    public static synchronized boolean samSungSysTip(Context context, String key) {
         PreferenceTable prefer = PreferenceTable.getInstance();
         boolean samSung = BuildProperties.isSamSungModel() && isSamSungActivity(context);
-        boolean appConsumed = prefer.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+        boolean appConsumed = false;
+        if (PrefConst.KEY_HOME_SAMSUNG_TIP.equals(key)) {
+            appConsumed = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+        } else if (PrefConst.KEY_LOCK_SAMSUNG_TIP.equals(key)) {
+            appConsumed = prefer.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+        }
         if (!samSung || !appConsumed) {
             return false;
         }
         if (PrefConst.KEY_HOME_SAMSUNG_TIP.equals(key)) {
             int count = prefer.getInt(PrefConst.KEY_HOME_SAMSUNG_TIP, 1);
             if (count <= SAMSUNG_TIP_COUNT) {
-                showSamSungDialog(context);
+                showSamSungDialog(context, key);
                 prefer.putInt(PrefConst.KEY_HOME_SAMSUNG_TIP, count++);
                 return true;
             }
         } else if (PrefConst.KEY_LOCK_SAMSUNG_TIP.equals(key)) {
             int count = prefer.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
             if (count <= SAMSUNG_TIP_COUNT) {
-                showSamSungDialog(context);
+                showSamSungDialog(context, key);
                 prefer.putInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, count++);
                 return true;
             }
@@ -401,15 +406,18 @@ public class AutoStartGuideList extends WhiteList {
         return false;
     }
 
-    private static void showSamSungDialog(Context context) {
+    private static void showSamSungDialog(Context context, String key) {
         final Context contextApp = context.getApplicationContext();
-        PreferenceTable prefer = PreferenceTable.getInstance();
-        boolean appConsumed = prefer.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
-        if (appConsumed) {
-            prefer.putBoolean(PrefConst.KEY_APP_COMSUMED, false);
+        if (PrefConst.KEY_HOME_SAMSUNG_TIP.equals(key)) {
+            PreferenceTable prefer = PreferenceTable.getInstance();
+            boolean appLockHandler = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+            if (appLockHandler) {
+                prefer.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+            }
         }
+
         LEOMessageDialog dialog = new LEOMessageDialog(context);
-        dialog.setBottomBtnListener(new DialogInterface.OnClickListener() {
+        DialogInterface.OnClickListener click = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -423,10 +431,13 @@ public class AutoStartGuideList extends WhiteList {
                         break;
                 }
             }
-        });
+        };
+
+        dialog.setBottomBtnListener(click);
         String content = context.getResources().getString(R.string.samsung_tip_txt);
         dialog.setContent(content);
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        int type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        dialog.getWindow().setType(type);
         dialog.show();
     }
 
