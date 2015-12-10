@@ -16,6 +16,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -402,7 +403,7 @@ public class AutoStartGuideList extends WhiteList {
         return false;
     }
 
-    private static void showSamSungDialog(Context context, String key) {
+    private static void showSamSungDialog(final Context context, String key) {
         final Context contextApp = context.getApplicationContext();
         PreferenceTable prefer = PreferenceTable.getInstance();
         boolean appLockHandler = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
@@ -410,24 +411,24 @@ public class AutoStartGuideList extends WhiteList {
             prefer.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
         }
 
-        LEOMessageDialog dialog = new LEOMessageDialog(context);
-        DialogInterface.OnClickListener click = new DialogInterface.OnClickListener() {
+        final LEOAlarmDialog dialog = new LEOAlarmDialog(context);
+        dialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        startSamSungOpIntent(contextApp);
-                        if (dialog != null) {
-                            dialog.dismiss();
-                        }
-                        break;
-                    default:
-                        break;
+                startSamSungOpIntent(contextApp);
+                if (dialog != null) {
+                    dialog.dismiss();
                 }
             }
-        };
-
-        dialog.setBottomBtnListener(click);
+        });
+        dialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
         String content = context.getResources().getString(R.string.samsung_tip_txt);
         dialog.setContent(content);
         int type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
@@ -453,8 +454,8 @@ public class AutoStartGuideList extends WhiteList {
         intent.setClassName("com.samsung.android.sm", "com.samsung.android.sm.ui.battery.BatteryActivity");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            context.startActivity(intent);
             sLockManager.filterSelfOneMinites();
+            context.startActivity(intent);
             LeoLog.e(TAG, "跳转samsung成功！");
         } catch (Exception e) {
             e.printStackTrace();
