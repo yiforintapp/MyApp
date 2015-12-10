@@ -431,6 +431,10 @@ public class AutoStartGuideList extends WhiteList {
         });
         String content = context.getResources().getString(R.string.samsung_tip_txt);
         dialog.setContent(content);
+        String leftBt = context.getResources().getString(R.string.quick_first_tip_dialog_left_bt);
+        dialog.setLeftBtnStr(leftBt);
+        String rightBt = context.getResources().getString(R.string.setting);
+        dialog.setRightBtnStr(rightBt);
         int type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         dialog.getWindow().setType(type);
         dialog.show();
@@ -454,7 +458,8 @@ public class AutoStartGuideList extends WhiteList {
         intent.setClassName("com.samsung.android.sm", "com.samsung.android.sm.ui.battery.BatteryActivity");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            sLockManager.filterSelfOneMinites();
+            LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            manager.filterSelfOneMinites();
             context.startActivity(intent);
             LeoLog.e(TAG, "跳转samsung成功！");
         } catch (Exception e) {
