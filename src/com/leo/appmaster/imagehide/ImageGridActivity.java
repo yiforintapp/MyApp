@@ -325,6 +325,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
             PreferenceTable pre = PreferenceTable.getInstance();
             pre.putBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, true);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "hidpic_bub_cnts");
         }
     }
 

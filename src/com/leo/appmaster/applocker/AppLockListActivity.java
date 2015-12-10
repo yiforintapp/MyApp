@@ -676,6 +676,10 @@ public class AppLockListActivity extends BaseActivity implements
                 }
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_finish");
+
+                if (AutoStartGuideList.SAMSUMG_SYS == AutoStartGuideList.isAutoWhiteListModel(this)) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_samsung_cover_fn");
+                }
                 break;
             case R.id.tip_help_click:
                 if (mGuideTip.getVisibility() == View.GONE) {
@@ -753,6 +757,9 @@ public class AppLockListActivity extends BaseActivity implements
             mAutoRL.setVisibility(View.VISIBLE);
             if (AutoStartGuideList.SAMSUMG_SYS == AutoStartGuideList.isAutoWhiteListModel(this)) {
                 mAutoImage.setImageResource(R.drawable.backstage_protection);
+
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_samsung_cover");
+
             } else {
                 mAutoImage.setImageResource(R.drawable.power_star);
             }

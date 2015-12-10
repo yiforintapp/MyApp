@@ -16,6 +16,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
@@ -289,6 +290,9 @@ public class AutoStartGuideList extends WhiteList {
     public static class SamSungOptimize extends AutoStartGuideList {
         @Override
         protected boolean doHandler() {
+
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "gd_wcnts", "gd_samsung_cover_use");
+
             startSamSungOpIntent(mContext);
             return false;
         }
@@ -415,6 +419,9 @@ public class AutoStartGuideList extends WhiteList {
         dialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                SDKWrapper.addEvent(context, SDKWrapper.P1, "gd_wcnts", "gd_battery_samsung_use");
+
                 startSamSungOpIntent(contextApp);
                 if (dialog != null) {
                     dialog.dismiss();
@@ -424,6 +431,9 @@ public class AutoStartGuideList extends WhiteList {
         dialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                SDKWrapper.addEvent(context, SDKWrapper.P1, "gd_wcnts", "gd_battery_samsung_later");
+
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -438,6 +448,8 @@ public class AutoStartGuideList extends WhiteList {
         int type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         dialog.getWindow().setType(type);
         dialog.show();
+
+        SDKWrapper.addEvent(context, SDKWrapper.P1, "gd_wcnts", "gd_battery_samsung");
     }
 
     /*判断是否该手机存在三星的应用程序优化*/

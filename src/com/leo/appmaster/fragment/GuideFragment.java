@@ -19,6 +19,7 @@ import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.ObjectAnimator;
 
@@ -180,12 +181,18 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         }
         if (GUIDE_TYPE.HOME_MORE_GUIDE == type) {
             if (mHomeGuideRt != null) {
+
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_bub");
+
                 mHomeGuideRt.setVisibility(View.VISIBLE);
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
                 showHomeGuideAnim(mHomeGuideRt, HOME_GUIDE_TRANSLA_VALUE1, -tranY);
             }
         } else if (GUIDE_TYPE.PIC_GUIDE == type) {
             if (mPicVideoGuideRt != null) {
+
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic_bub");
+
                 mPicVideoGuideRt.setVisibility(View.VISIBLE);
                 mPicText.setText(R.string.pic_video_guide_txt);
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
@@ -194,6 +201,9 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
 
         } else if (GUIDE_TYPE.VIDEO_GUIDE == type) {
             if (mVideoGuideRt != null) {
+
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_bub");
+
                 mVideoGuideRt.setVisibility(View.VISIBLE);
                 mVideoText.setText(R.string.video_guide_txt);
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
@@ -217,11 +227,15 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 mRootView.setVisibility(View.GONE);
                 PreferenceTable pre = PreferenceTable.getInstance();
                 pre.putBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, true);
+
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic_bub_cnts");
                 break;
             case R.id.video_edit_rt:
                 mRootView.setVisibility(View.GONE);
                 PreferenceTable preTab = PreferenceTable.getInstance();
                 preTab.putBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, true);
+
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_bub_cnts");
                 break;
             default:
                 break;

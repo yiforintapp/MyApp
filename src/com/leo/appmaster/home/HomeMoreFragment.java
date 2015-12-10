@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -114,12 +115,33 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                 PreferenceTable preferenceTable = PreferenceTable.getInstance();
                 boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
                 if (!pulledEver) {
+
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_rp_up");
+
                     preferenceTable.putBoolean(PrefConst.KEY_MORE_PULLED, true);
                     updateHideRedTip();
                 }
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_listup");
                 mSlidingLayout.setDragClickEnable(true);
                 mUpClickView.setVisibility(View.VISIBLE);
+
+                boolean pulled = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
+                boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+                boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+
+                if (pulled) {
+                    if (picReddot || vidReddot) {
+                        if (picReddot) {
+                            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_listup");
+                            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic_rp_cnts");
+                        }
+                        if (vidReddot) {
+                            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_listup");
+                            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_rp_cnts");
+                        }
+                    }
+                }
+
             }
 
             @Override
@@ -191,6 +213,22 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
         boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
         if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver) {
+
+            if (!pulledEver) {
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_rp");
+            } else {
+                if (picReddot || vidReddot) {
+                    if (picReddot) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic_rp");
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_rp");
+                    }
+                    if (vidReddot) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_rp");
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_rp");
+                    }
+                }
+            }
+
             mUpArrow.showRedTip(true);
 //            mAdapter.notifyDataSetInvalidated();
             mAdapter.notifyDataSetChanged();

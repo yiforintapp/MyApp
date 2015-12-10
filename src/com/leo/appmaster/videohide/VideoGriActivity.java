@@ -242,6 +242,8 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
             mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.VIDEO_GUIDE);
             PreferenceTable pre = PreferenceTable.getInstance();
             pre.putBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, true);
+
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "hidvid_bub_cnts");
         }
     }
 
