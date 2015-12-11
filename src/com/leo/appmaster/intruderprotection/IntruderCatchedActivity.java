@@ -133,8 +133,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     public void onBackPressed() {
         if (getPackageName().equals(mPkgName) && mNeedIntoHomeWhenFinish) {
             Intent intent = new Intent(this, HomeActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             startActivity(intent);
         } else {
             

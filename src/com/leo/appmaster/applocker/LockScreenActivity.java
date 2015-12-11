@@ -318,6 +318,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 public void onPictureTaken(final byte[] data, Camera camera) {
                     LeoLog.i("poha", "has taken!!!");
                     mCanTakePhoto = false;
+                    mHasTakePic = true;
                     LeoLog.i("poha", "pic taken!!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+mHasTakePic+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
                     mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
