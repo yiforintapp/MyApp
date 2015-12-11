@@ -701,6 +701,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        //这里只是为了更新标记
+        Drawable chrismasThemeDrawbleBySlotId = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB1, this);
         LeoLog.d(TAG, "onResume...");
         judgeShowGradeTip();
         /* 获取是否从iswipe通知进入 */
