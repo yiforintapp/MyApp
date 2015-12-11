@@ -125,7 +125,7 @@ public class ChangeThemeManager {
                     if (from == 1 && now.after(lockScreenChrismasThemeAfter)) {
                         mPt.putBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, false);
                         return null;
-                    } else if (now.before(lockScreenChrismasThemeBefore)) {
+                    } else if (from == 1 && now.before(lockScreenChrismasThemeBefore)) {
                         return null;
                     }
 //                case ICON_HOME_UP_ARROW:
@@ -140,7 +140,7 @@ public class ChangeThemeManager {
                         mPt.putBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, false);
                         mPt.putBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, false);
                         return null;
-                    } else if (now.before(homeChrismasThemeBefore)) {
+                    } else if (from == 2 && now.before(homeChrismasThemeBefore)) {
                         return null;
                     }
 //                    break;
