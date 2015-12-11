@@ -127,13 +127,15 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        if (getPackageName().equals(mPkgName)) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        } else {
+//        if (getPackageName().equals(mPkgName)) {
+//            Intent intent = new Intent(this, HomeActivity.class);
+////            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+//            startActivity(intent);
+//        } else {
+//            
             mLockManager.filterPackage(mPkgName, 2000);
-        }
+//        }
         finish();
     }
 
