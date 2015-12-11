@@ -98,6 +98,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static final int TIMES_TO_CATCH_3 = 3;
     private static final int TIMES_TO_CATCH_4 = 5;
     private boolean mIsNewestBigPicShowing = true;
+    private boolean mNeedIntoHomeWhenFinish = false;
     private String mLatestImageUri;
 
     @Override
@@ -111,6 +112,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mPkgName = intent.getStringExtra("pkgname");
         mLockManager.filterPackage(mPkgName, 5000);
         init();
+        
 //        Intent i = new Intent(this, GradeTipActivity.class);
 //        startActivity(i);
     }
@@ -123,19 +125,21 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false);
         updateData();// 重新查询数据库，做与数据相关的UI更新
         updateAll();// 更新与数据库无关的UI
+        mNeedIntoHomeWhenFinish = getIntent().getBooleanExtra("needIntoHomeWhenFinish", false);
+        LeoLog.i("IntruderCatchedActivity", "mNeedIntoHomeWhenFinish = " + mNeedIntoHomeWhenFinish);
     }
 
     @Override
     public void onBackPressed() {
-//        if (getPackageName().equals(mPkgName)) {
-//            Intent intent = new Intent(this, HomeActivity.class);
-////            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
-//            startActivity(intent);
-//        } else {
-//            
+        if (getPackageName().equals(mPkgName) && mNeedIntoHomeWhenFinish) {
+            Intent intent = new Intent(this, HomeActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+            startActivity(intent);
+        } else {
+            
             mLockManager.filterPackage(mPkgName, 2000);
-//        }
+        }
         finish();
     }
 

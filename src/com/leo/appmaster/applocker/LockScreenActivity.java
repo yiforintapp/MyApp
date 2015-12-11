@@ -1406,6 +1406,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mLockManager.filterPackage(getPackageName(), 1000);
                 Intent intent = new Intent(LockScreenActivity.this, IntruderCatchedActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("needIntoHomeWhenFinish", true);
                 intent.putExtra("pkgname", mLockedPackage);
                 startActivity(intent);
                 mIsPicSaved = false;
