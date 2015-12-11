@@ -318,7 +318,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 public void onPictureTaken(final byte[] data, Camera camera) {
                     LeoLog.i("poha", "has taken!!!");
                     mCanTakePhoto = false;
-                    mHasTakePic = true;
                     LeoLog.i("poha", "pic taken!!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+mHasTakePic+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
                     mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -331,6 +330,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             } catch (Throwable e) {
                             }
                             //旋转原始bitmap到正确的方向
+                            
                             Matrix m = new Matrix();
                             int orientation = view.getCameraOrientation();
                             m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
@@ -1418,6 +1418,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }else{
                 if (mHasTakePic) {
                     mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, true);
+//                    mHasTakePic = false;
                     LeoLog.i("poha", "set delay true");
                 }
             }
