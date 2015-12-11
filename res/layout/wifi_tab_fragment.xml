@@ -28,8 +28,7 @@
             android:layout_height="@dimen/wifi_scaning_loading_size"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:visibility="gone" />
+            android:layout_marginRight="10dp" />
 
         <ImageView
             android:id="@+id/wifi_is_connect_icon_done"
@@ -64,8 +63,7 @@
             android:layout_height="@dimen/wifi_scaning_loading_size"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:visibility="gone" />
+            android:layout_marginRight="10dp" />
 
         <ImageView
             android:id="@+id/wifi_second_connect_icon_done"
@@ -100,8 +98,7 @@
             android:layout_height="@dimen/wifi_scaning_loading_size"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:visibility="gone" />
+            android:layout_marginRight="10dp" />
 
         <ImageView
             android:id="@+id/wifi_ssl_icon_done"
@@ -136,8 +133,7 @@
             android:layout_height="@dimen/wifi_scaning_loading_size"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:visibility="gone" />
+            android:layout_marginRight="10dp" />
 
         <ImageView
             android:id="@+id/wifi_pas_type_icon_done"

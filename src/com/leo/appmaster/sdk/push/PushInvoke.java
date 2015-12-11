@@ -33,14 +33,6 @@ public class PushInvoke implements PushInvokeHelper {
     public static final String ADWALL = "6";
     public static final String ISWIPE = "7";
     public static final String MSG_CENTER = "8";
-    
-    public static final String ACTION_UPDATE_I = "com.leo.appmaster.invoke.update";
-    public static final String ACTION_THEME_I = "com.leo.appmaster.invoke.theme";
-    public static final String ACTION_SPLASH_I = "com.leo.appmaster.invoke.splash";
-    public static final String ACTION_HOTAPP_I = "com.leo.appmaster.invoke.hotapp";
-    public static final String ACTION_AD_I = "com.leo.appmaster.invoke.ad";
-    public static final String ACTION_GP_I = "com.leo.appmaster.invoke.gp";
-    public static final String ACTION_ISWIPE_I = "com.leo.appmaster.invoke.iswipe";
 
     public static final String PUSH_GOTO_PAGE_TRAFFIC = ".appmanage.FlowActivity";
     public static final String PUSH_GOTO_PAGE_ELEC = ".appmanage.EleActivity";
@@ -90,39 +82,11 @@ public class PushInvoke implements PushInvokeHelper {
             MsgCenterFetchJob.startImmediately();
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "push_refresh", "push_Info_cnts");
         }
-        // String mAction = getAction(type);
-        // Log.d("PushInvoke", "mAction is : " + mAction);
-        // Intent intent = new Intent(mContext, PushInvokeBroadcast.class);
-        // intent.putExtra(TYPE_BROAD, type);
-        // intent.setAction(mAction);
-        // mContext.sendBroadcast(intent);
     }
 
-    // private String getAction(String type) {
-    // String action;
-    // if (type.equals(THEME)) {
-    // action = ACTION_THEME_I;
-    // } else if (type.equals(HOTAPP)) {
-    // action = ACTION_HOTAPP_I;
-    // } else if (type.equals(UPDATE)) {
-    // action = ACTION_UPDATE_I;
-    // } else if (type.equals(SPLASH)) {
-    // action = ACTION_SPLASH_I;
-    // } else if (type.equals(GPGUIDE)) {
-    // action = ACTION_GP_I;
-    // } else if (type.equals(ADWALL)) {
-    // action = ACTION_AD_I;
-    // } else if (type.equals(ISWIPE)) {
-    // action = ACTION_ISWIPE_I;
-    // } else {
-    // action = "";
-    // }
-    // return action;
-    // }
 
     @Override
     public void addTimeFilter(String mType) {
-        // String mType = getMidName(actionContent);
         LeoLog.d("testDEO", "addTimeFilter mType is : " + mType);
         if (mType.equals(PUSH_GOTO_PAGE_TRAFFIC)
                 || mType.equals(PUSH_GOTO_PAGE_ELEC)
@@ -131,32 +95,13 @@ public class PushInvoke implements PushInvokeHelper {
                 || mType.equals(PUSH_GOTO_PAGE_THEME)
                 || mType.equals(PUSH_GOTO_PAGE_HotApp)
                 || mType.equals(PUSH_GOTO_GAME)
-                || mType.equals(PUSH_GOTO_MSGCENTER))
-        {
+                || mType.equals(PUSH_GOTO_MSGCENTER)) {
             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             lm.filterPackage(mContext.getPackageName(), 1000);
         }
 
     }
 
-//    private String getMidName(String actionContent) {
-//        String mType = "d";
-//        try {
-//            String[] mContent = actionContent.split(";");
-//            for (String mString : mContent) {
-//                if (mString.startsWith("component=")) {
-//                    String[] mStrings = mString.split("/");
-//                    mType = mStrings[1];
-//                }
-//            }
-//            Debug.d("testGetName", "mType is : " + mType);
-//            // String[] mMid = mContent[1].split("/");
-//            // mType = mMid[1];
-//        } catch (Exception e) {
-//            return mType;
-//        }
-//        return mType;
-//    }
 
     private void invokeISwipe() {
 
@@ -185,13 +130,11 @@ public class PushInvoke implements PushInvokeHelper {
 
     // FengShi do it
     private void invokeAd() {
-        ADShowTypeRequestManager.getInstance(mContext).mIsPushRequestADShowType=true;
+        ADShowTypeRequestManager.getInstance(mContext).mIsPushRequestADShowType = true;
         ADShowTypeRequestManager.getInstance(mContext).loadADCheckShowType(null);
     }
 
     private void invokeUpdate() {
-        // PushNotification.isFromPush_Update = true;
-        // planB convenient
         try {
             LeoAgent.init(mContext, mContext.getString(R.string.channel_code),
                     "appmaster");
@@ -204,19 +147,5 @@ public class PushInvoke implements PushInvokeHelper {
         LeoAgent.initUpdateEngine(UIHelper.getInstance(mContext),
                 true, true);
 
-        // planA -- can do
-        // mTracker = LeoTracker.getInstance(mContext, "0000a", "appmaster");
-        // mUpdateManager = mTracker.getUpdateManager();
-        //
-        // try {
-        // if (mUpdateManager != null) {
-        // mUpdateManager.startEngine(true);
-        // } else {
-        // throw new RuntimeException(
-        // "mUpdateManager is null, did you call initUpdateManager()?");
-        // }
-        // } catch (Exception e) {
-        //
-        // }
     }
 }
