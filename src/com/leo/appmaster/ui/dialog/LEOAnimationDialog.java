@@ -21,8 +21,10 @@ public class LEOAnimationDialog extends LEOBaseDialog {
     public static final String TAG = "XLOneButtonDialog";
     private static final int SHOW_ANIMATION = 20;
     private static final int SHOW_ANIMATION_DELAY = 1000;
-    private static final int HAND_MOVE = 21;
+    private static final int HAND_MOVE_DOWN = 21;
+    private static final int HAND_MOVE_UP = 22;
     private static final int CLICK_DELAY = 500;
+    private static final int MOVE_UP_DELAY = 1000;
     private Context mContext;
     private TextView mTitle;
     private TextView mContent;
@@ -38,13 +40,18 @@ public class LEOAnimationDialog extends LEOBaseDialog {
                 case SHOW_ANIMATION:
                     startAnimation();
                     break;
-                case HAND_MOVE:
-                    startHandMove();
+                case HAND_MOVE_DOWN:
+                    startHandMoveDown();
                     break;
+                case HAND_MOVE_UP:
+                    startHandMoveUp();
+                    break;
+
             }
         }
 
     };
+
 
     public LEOAnimationDialog(Context context) {
         super(context, R.style.bt_dialog);
@@ -57,8 +64,22 @@ public class LEOAnimationDialog extends LEOBaseDialog {
         mHandler.sendEmptyMessageDelayed(SHOW_ANIMATION, SHOW_ANIMATION_DELAY);
     }
 
+    private void startHandMoveUp() {
+        mIcon.setImageResource(R.drawable.uninstall_guide_phone1);
+        ObjectAnimator handmoveY = ObjectAnimator.ofFloat(mMoveHand,
+                "y", mMoveHand.getY(), mMoveHand.getY() - mMoveHand.getHeight() * 3 / 4);
+        handmoveY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                animationClick(true);
+            }
+        });
+        handmoveY.setDuration(600);
+        handmoveY.start();
+    }
 
-    private void startHandMove() {
+    private void startHandMoveDown() {
         mIcon.setImageResource(R.drawable.uninstall_guide_phone2);
         ObjectAnimator handmoveY = ObjectAnimator.ofFloat(mMoveHand,
                 "y", mMoveHand.getY(), mMoveHand.getY() + mMoveHand.getHeight() * 3 / 4);
@@ -88,7 +109,9 @@ public class LEOAnimationDialog extends LEOBaseDialog {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 if (firstClick) {
-                    mHandler.sendEmptyMessageDelayed(HAND_MOVE, CLICK_DELAY);
+                    mHandler.sendEmptyMessageDelayed(HAND_MOVE_DOWN, CLICK_DELAY);
+                } else {
+                    mHandler.sendEmptyMessageDelayed(HAND_MOVE_UP, MOVE_UP_DELAY);
                 }
             }
         });
