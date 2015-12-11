@@ -66,6 +66,7 @@ public class DeskProxyActivity extends Activity {
         Intent intent = getIntent();
         int type = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                 StatusBarEventService.EVENT_EMPTY);
+        String fromWhere = intent.getStringExtra(Constants.FROM_WHERE);
         mCbPath = intent.getStringExtra("cb_download_path");
         if (type == StatusBarEventService.EVENT_EMPTY) {
             mDelayFinish = true;
@@ -82,6 +83,11 @@ public class DeskProxyActivity extends Activity {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
                     gotoBackUp(type);
                 } else if (type == mWifi) {
+                    if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
+                        SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh",
+                                "push_wifi_cnts");
+                        LeoLog.d("testFromWhere", "Wifi from push");
+                    }
                     gotoWifi(type);
                 } else if (type == mQuickGues) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
@@ -93,6 +99,11 @@ public class DeskProxyActivity extends Activity {
                 } else if (type == mAd) {
                     gotoAd(type);
                 } else if (type == mQuickHelper) {
+                    if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
+                        SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh",
+                                "push_assistant_cnts");
+                        LeoLog.d("testFromWhere", "mQuickHelper from push");
+                    }
                     gotoQuickHelper(type);
                 } else {
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
@@ -113,6 +124,11 @@ public class DeskProxyActivity extends Activity {
                         goToAppWeiZhuang(type);
                         break;
                     case mWifi:
+                        if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
+                            SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh",
+                                    "push_wifi_cnts");
+                            LeoLog.d("testFromWhere", "Wifi from push");
+                        }
                         gotoWifi(type);
                         break;
                     case mPicHide:
@@ -161,6 +177,11 @@ public class DeskProxyActivity extends Activity {
                         gotoAd(type);
                         break;
                     case mQuickHelper:
+                        if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
+                            SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh",
+                                    "push_assistant_cnts");
+                            LeoLog.d("testFromWhere", "mQuickHelper from push");
+                        }
                         gotoQuickHelper(type);
                         break;
                 }
@@ -186,14 +207,14 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoAd(int type) {
-        if(getIntent().getBooleanExtra("from_quickhelper", false)){
+        if (getIntent().getBooleanExtra("from_quickhelper", false)) {
             SDKWrapper.addEvent(this, SDKWrapper.P1,
                     "assistant", "appjoy_cnts");
         }
         mLockManager.filterPackage(this.getPackageName(), 1000);
         // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
         wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_61);
-        
+
         if (wallAd != null) {
             wallAd.preloadWall();
             wallAd.clickWall();

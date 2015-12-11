@@ -18,6 +18,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 
 public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnClickListener {
     private static final boolean DBG = false;
@@ -47,6 +48,11 @@ public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnC
     private void intentHandler() {
         Intent intent = getIntent();
         fromScanIntentHandler(intent);
+        String fromWhere = intent.getStringExtra(Constants.FROM_WHERE);
+        if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh", "push_theft_cnts");
+            LeoLog.d("testFromWhere", "PhoneSecurityGuideActivity from push");
+        }
     }
 
     /*来自扫描结果页的Intent处理*/

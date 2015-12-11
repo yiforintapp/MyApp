@@ -378,7 +378,8 @@ public class Constants {
 
     public static final String PRIVACY_ENTER_SCAN = "enter_scan";
     public static final String PRIVACY_ENTER_SCAN_TYPE = "enter_scan_type";
-
+    public static final String FROM_WHERE = "from";
+    public static final String FROM_PUSH = "push";
 
     /* 数组中为不显示开启高级保护的渠道 */
     public static final String[] FILTER_CHANNEL = {

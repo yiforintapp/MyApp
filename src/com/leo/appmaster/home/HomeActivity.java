@@ -222,6 +222,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         boolean enterScan = intent.getBooleanExtra(Constants.PRIVACY_ENTER_SCAN, false);
         int type = intent.getIntExtra(Constants.PRIVACY_ENTER_SCAN_TYPE, PrivacyHelper.PRIVACY_NONE);
+        String fromWhere = intent.getStringExtra(Constants.FROM_WHERE);
         LeoLog.i(TAG, "checkEnterScanIntent, enterScan: " + enterScan + " | type: " + type);
         if (enterScan) {
             String description = null;
@@ -234,6 +235,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             }
             if (description != null) {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", description);
+            }
+            if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh", "push_scan_cnts");
+                LeoLog.d("testFromWhere", "HomeActivity from push");
             }
             onShieldClick();
         }
