@@ -47,6 +47,8 @@ public class ChangeThemeManager {
     
     public static Drawable getChrismasThemeDrawbleBySlotId (int slotId, Context context) {
         //获取versionCode
+        LeoLog.d(TAG, "home chrismas theme flag :"+mPt.getBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, true));
+        LeoLog.d(TAG, "lockscreen chrismas theme flag :"+mPt.getBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, true));
         if (!mPt.getBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, true) && !mPt.getBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, true)) {
             return null;
         }
@@ -81,6 +83,8 @@ public class ChangeThemeManager {
             LeoLog.i(TAG, "lockScreenChrismasThemeBefore = "+lockScreenChrismasThemeBefore);
             LeoLog.i(TAG, "lockScreenChrismasThemeAfter = "+lockScreenChrismasThemeAfter);
             LeoLog.i(TAG, "now = "+now);
+            
+            
             switch (slotId) {
                 case BG_LOCKSCREEN_PASSWORD_NUM:
                 case BG_LOCKSCREEN_GESTURE_DOT:
@@ -102,6 +106,7 @@ public class ChangeThemeManager {
                 case BG_HOME_MORE_FRAGMENT_LABEL:
                     if (now.after(homeChrismasThemeAfter)) {
                         mPt.putBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, false);
+                        mPt.putBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, false);
                         return null;
                     } else if (now.before(homeChrismasThemeBefore)) {
                         return null;
