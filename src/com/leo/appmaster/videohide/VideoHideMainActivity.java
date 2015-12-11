@@ -241,7 +241,9 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;
         }
-        hideVideos.clear();
+        if(hideVideos != null) {
+            hideVideos.clear();
+        }
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
