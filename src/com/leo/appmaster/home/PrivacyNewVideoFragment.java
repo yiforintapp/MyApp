@@ -19,7 +19,6 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.PrefConst;
@@ -29,11 +28,9 @@ import com.leo.appmaster.videohide.VideoItemBean;
  * Created by Jasper on 2015/10/16.
  */
 public class PrivacyNewVideoFragment extends PrivacyNewFragment implements AdapterView.OnItemClickListener {
-    private static final String TAG = "PrivacyNewVideoFragment";
     private static final int FOLDER_VIDEO_COUNT = 35;
 
     private ListView mVideoList;
-    private PrivacyDataManager mDataMgr;
 
     private List<VideoItemBean> mDataList;
 
@@ -81,7 +78,6 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDataMgr = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         mAdaper = new PrivacyNewVideoAdapter();
         mAdaper.setList(mDataList);
     }
@@ -213,8 +209,9 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if (view != null && mDataList.size() > 0) {
-            VideoItemBean info = mDataList.get(i - 1);
+        int pos = i - 1;
+        if (view != null && pos > -1 && mDataList.size() > pos) {
+            VideoItemBean info = mDataList.get(pos);
             mAdaper.toggle(info);
         }
     }
