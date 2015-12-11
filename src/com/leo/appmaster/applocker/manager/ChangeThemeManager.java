@@ -46,12 +46,46 @@ public class ChangeThemeManager {
         R.drawable.gesture_chrismas_dot10};
     
     public static Drawable getChrismasThemeDrawbleBySlotId (int slotId, Context context) {
-        //获取versionCode
+        int from = -1;
+        
         LeoLog.d(TAG, "home chrismas theme flag :"+mPt.getBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, true));
         LeoLog.d(TAG, "lockscreen chrismas theme flag :"+mPt.getBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, true));
-        if (!mPt.getBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, true) && !mPt.getBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, true)) {
+//        if (!mPt.getBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, true) && !mPt.getBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, true)) {
+//            return null;
+//        }
+        
+        switch (slotId) {
+            case BG_LOCKSCREEN_PASSWORD_NUM:
+            case BG_LOCKSCREEN_GESTURE_DOT:
+            case BG_LOCKSCREEN_WHOLE:
+                from = 1;
+                break;
+            case ICON_HOME_UP_ARROW:
+            case BG_HOME_TAB1:
+            case BG_HOME_TAB2:
+            case BG_HOME_TAB3:
+            case BG_HOME_TAB4:
+            case BG_HOME_UPARROW:
+            case BG_HOME_ASIDE_FRAGMENT:
+            case BG_HOME_MORE_FRAGMENT_LABEL:
+                from = 2;
+                break;
+            default:
+                break;
+        }
+        
+        if (from == 1) {
+            if (!mPt.getBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, true)) {
+                return null;
+            }
+        } else if (from == 2) {
+            if (!mPt.getBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, true)) {
+                return null;
+            }
+        } else {
             return null;
         }
+        
         PackageInfo info = null;
         try {
             info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_CONFIGURATIONS);
@@ -84,37 +118,35 @@ public class ChangeThemeManager {
             LeoLog.i(TAG, "lockScreenChrismasThemeAfter = "+lockScreenChrismasThemeAfter);
             LeoLog.i(TAG, "now = "+now);
             
-            
-            switch (slotId) {
-                case BG_LOCKSCREEN_PASSWORD_NUM:
-                case BG_LOCKSCREEN_GESTURE_DOT:
-                case BG_LOCKSCREEN_WHOLE:
-                    if (now.after(lockScreenChrismasThemeAfter)) {
+//            switch (slotId) {
+//                case BG_LOCKSCREEN_PASSWORD_NUM:
+//                case BG_LOCKSCREEN_GESTURE_DOT:
+//                case BG_LOCKSCREEN_WHOLE:
+                    if (from == 1 && now.after(lockScreenChrismasThemeAfter)) {
                         mPt.putBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, false);
                         return null;
                     } else if (now.before(lockScreenChrismasThemeBefore)) {
                         return null;
                     }
-                    break;
-                case ICON_HOME_UP_ARROW:
-                case BG_HOME_TAB1:
-                case BG_HOME_TAB2:
-                case BG_HOME_TAB3:
-                case BG_HOME_TAB4:
-                case BG_HOME_UPARROW:
-                case BG_HOME_ASIDE_FRAGMENT:
-                case BG_HOME_MORE_FRAGMENT_LABEL:
-                    if (now.after(homeChrismasThemeAfter)) {
+//                case ICON_HOME_UP_ARROW:
+//                case BG_HOME_TAB1:
+//                case BG_HOME_TAB2:
+//                case BG_HOME_TAB3:
+//                case BG_HOME_TAB4:
+//                case BG_HOME_UPARROW:
+//                case BG_HOME_ASIDE_FRAGMENT:
+//                case BG_HOME_MORE_FRAGMENT_LABEL:
+                    if (from == 2 && now.after(homeChrismasThemeAfter)) {
                         mPt.putBoolean(PrefConst.KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME, false);
                         mPt.putBoolean(PrefConst.KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME, false);
                         return null;
                     } else if (now.before(homeChrismasThemeBefore)) {
                         return null;
                     }
-                    break;
-                default:
-                    break;
-            }
+//                    break;
+//                default:
+//                    break;
+//            }
             //所有条件满足，选择并返回drawable
             Drawable drawableForReturn = null;
             switch (slotId) {
