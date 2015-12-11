@@ -416,7 +416,6 @@ public class EditPrivacyContactActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PrivacyContactUtils.MSG_EDIT_CONTACT:
-                    Toast.makeText(EditPrivacyContactActivity.this, "MSG_EDIT_CONTACT", Toast.LENGTH_SHORT).show();
                     int result = msg.arg1;
                     if (result > 0) {
 //                        UpdateContactDateTask task = new UpdateContactDateTask();
@@ -447,7 +446,6 @@ public class EditPrivacyContactActivity extends BaseActivity {
                     EditPrivacyContactActivity.this.finish();
                     break;
                 case PrivacyContactUtils.MSG_EDIT_LOG:
-                    Toast.makeText(EditPrivacyContactActivity.this, "MSG_EDIT_LOG", Toast.LENGTH_SHORT).show();
                     LeoEventBus
                             .getDefaultBus()
                             .post(
