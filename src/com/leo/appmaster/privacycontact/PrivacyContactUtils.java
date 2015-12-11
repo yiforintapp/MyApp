@@ -58,6 +58,8 @@ public class PrivacyContactUtils {
     public static final int MSG_CONTACT_QU = 10011;
     public static final int MSG_AUTO_ADD_QU = 10012;
     public static final int MSG_CONTACT_DE = 10013;
+    public static final int MSG_EDIT_CONTACT = 10014;
+    public static final int MSG_EDIT_LOG = 10015;
     /*隐私短信，通话未读通知id*/
     public static final int MSM_NOTIFI_NUMBER = 20140901;
     public static final int CALL_NOTIFI_NUMBER = 20140902;
