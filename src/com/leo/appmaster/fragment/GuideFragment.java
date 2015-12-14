@@ -32,6 +32,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private static final float HOME_GUIDE_TRANSLA_VALUE1 = 0.0f;
     private static final String ANIME_PROPERTY_NAME = "translationY";
     public static final String EVENT_HOME_GUIDE_MSG = "HOME_GUIDE_MSG";
+    public static final String EVETN_HOME_GUIDE_GONE = "HOME_GUIDE_GONE";
 
     private View mRootView;
     private RelativeLayout mHomeGuideRt;
@@ -66,7 +67,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        LeoEventBus.getDefaultBus().register(this);
     }
 
     @Override
@@ -102,6 +103,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             }
             mHomeGuideAnim = null;
         }
+        LeoEventBus.getDefaultBus().unregister(this);
     }
 
 
@@ -164,7 +166,9 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             mRootView.setVisibility(View.VISIBLE);
             setVisiblityGuide(type);
         } else {
-            mRootView.setVisibility(View.GONE);
+            if (mRootView.getVisibility() != View.GONE) {
+                mRootView.setVisibility(View.GONE);
+            }
             if (mHomeGuideAnim != null) {
                 if (mHomeGuideAnim.isRunning()) {
                     mHomeGuideAnim.cancel();
@@ -260,6 +264,18 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             mHomeGuideAnim.setDuration(HOME_GUIDE_ANIM_TIME);
 
             mHomeGuideAnim.start();
+        }
+    }
+
+    public void onEventMainThread(CommonEvent event) {
+        String msg = event.eventMsg;
+        if (GuideFragment.EVETN_HOME_GUIDE_GONE.equals(msg)) {
+            if (mRootView != null) {
+                if (mRootView.getVisibility() == View.GONE) {
+                    return;
+                }
+                mRootView.setVisibility(View.GONE);
+            }
         }
     }
 

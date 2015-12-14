@@ -43,4 +43,7 @@ public interface EventId {
     public static final int EVENT_DEVICE_ADMIN_DISABLE = 1093;
 
     public static final int EVENT_HOME_GUIDE_UP_ARROW = 1094;
+
+    public static final int EVENT_HOME_GUIDE_GONE_ID = 1095;
+
 }
