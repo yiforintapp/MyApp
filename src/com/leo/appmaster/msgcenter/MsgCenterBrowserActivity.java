@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebResourceResponse;
@@ -34,6 +35,9 @@ import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         View.OnClickListener {
@@ -225,6 +229,22 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 mLockManager.filterSelfOneMinites();
             }
             return true;
+        } else if (MsgConsts.PATH_ANDROIDID.equals(path)) {
+            String androidid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            String callback = uri.getQueryParameter(MsgConsts.PARAMS_CALLBACK);
+            if (!TextUtils.isEmpty(androidid) && !TextUtils.isEmpty(callback)) {
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("ret", 0);
+                    object.put("androidid", androidid);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (object.length() > 1) {
+                    getWebView().loadUrl("javascript:void(Jsbridge." + callback + "(" + object.toString() + "));");
+                }
+                return true;
+            }
         }
         return super.shouldOverrideUrlLoading(view, url);
     }

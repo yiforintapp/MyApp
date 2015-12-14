@@ -22,4 +22,8 @@ public class MsgConsts {
     // App推广
     public static final String PATH_PROMOTION = "/promotion";
     public static final String PARAMS_PKG = "pkg";
+
+    public static final String PATH_ANDROIDID = "/androidid";
+    public static final String PARAMS_CALLBACK = "callback";
+
 }
