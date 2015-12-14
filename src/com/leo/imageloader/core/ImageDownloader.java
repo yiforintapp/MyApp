@@ -52,7 +52,7 @@ public interface ImageDownloader {
      */
     public enum Scheme {
         HTTP("http"), HTTPS("https"), FILE("file"), CONTENT("content"), ASSETS("assets"), DRAWABLE(
-                "drawable"), UNKNOWN(""), VIDEOFILE("voidefile");
+                "drawable"), UNKNOWN(""), VIDEOFILE("voidefile"), CRYPTO("crypto");
 
         private String scheme;
         private String uriPrefix;

@@ -24,6 +24,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.FailReason.FailType;
@@ -241,7 +242,7 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
                 loadedFrom = LoadedFrom.NETWORK;
 
                 String imageUriForDecoding = uri;
-                if (options.isCacheOnDisk() && tryCacheImageOnDisk()) {
+                if (options.isCacheOnDisk() && tryCacheImageOnDisk() && !isEncryptUri()) {
                     imageFile = configuration.diskCache.get(uri);
                     if (imageFile != null) {
                         imageUriForDecoding = Scheme.FILE.wrap(imageFile.getAbsolutePath());
@@ -268,6 +269,15 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
             fireFailEvent(FailType.UNKNOWN, e);
         }
         return bitmap;
+    }
+
+    private boolean isEncryptUri() {
+        if (TextUtils.isEmpty(uri)) {
+            return false;
+        }
+
+        Scheme scheme = Scheme.ofUri(uri);
+        return Scheme.CRYPTO.equals(scheme);
     }
 
     private Bitmap decodeImage(String imageUri) throws IOException {

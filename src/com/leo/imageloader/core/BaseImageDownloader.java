@@ -39,6 +39,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
 
+import com.leo.appmaster.encrypt.ImageEncryptInputStream;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.utils.IoUtils;
 
@@ -98,6 +99,8 @@ public class BaseImageDownloader implements ImageDownloader {
                 return getStreamFromDrawable(imageUri, extra);
             case VIDEOFILE:
                 return getStreamFromVideoThumbnailStream(imageUri);
+            case CRYPTO:
+                return getStreamFromEncrypto(imageUri);
             case UNKNOWN:
             default:
                 return getStreamFromOtherSource(imageUri, extra);
@@ -165,6 +168,17 @@ public class BaseImageDownloader implements ImageDownloader {
         return new ContentLengthInputStream(new BufferedInputStream(videoSteam, BUFFER_SIZE),
                 (int) new File(file).length());
 
+    }
+
+    protected InputStream getStreamFromEncrypto(String imageUri) {
+        String path = Scheme.CRYPTO.crop(imageUri);
+        try {
+            InputStream is = new ImageEncryptInputStream(path);
+            return is;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
