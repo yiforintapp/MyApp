@@ -20,6 +20,7 @@ import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -176,6 +177,7 @@ public class HomeMoreAdapter extends BaseAdapter {
                 Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_MORE_FRAGMENT_LABEL, mContext);
                 if (drawable != null) {
                     holder.textView.setBackgroundDrawable(drawable);
+                    holder.textView.setPadding(DipPixelUtil.dip2px(mContext, 20), 0, DipPixelUtil.dip2px(mContext, 15), 0);
                 }
                 convertView.setTag(R.layout.home_more_label_item, holder);
             } else {

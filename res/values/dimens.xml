@@ -2,7 +2,7 @@
 <resources>
 
 
-
+	<dimen name="home_left_list_item_height">60dp</dimen>
     <dimen name="setting_item_height">55dp</dimen>
     <dimen name="lock_icon_width">22dp</dimen>
     <dimen name="lock_icon_X">28dp</dimen>
