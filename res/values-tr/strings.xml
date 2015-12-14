@@ -804,4 +804,17 @@
     <string name="adv_prot_open_suc_tip_cnt">LEO Kişisel Güvenlik programı çalışırken kaldırılamaz. Lütfen, önce AppLock sayfasından “Gelişmiş Koruma” seçeneğini iptal edin.</string>
     <string name="pri_pro_btn">Aç (+%1$d puan)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
+
+    <!--3.11-->
+    <string name="pri_result_wifimaster_title">WifiMaster</string>
+    <string name="home_guide_txt">Fotoğraf, video gizleme ve daha fazla ayarlar burada.</string>
+    <string name="pic_video_guide_txt">Tuş düzenlemeye tıklayarak fotoğraf gizleme seçeneği iptal edilebilir.</string>
+    <string name="prot_open_suc_tip_cnt">Yüksek güvenlik açılmıştır. LEO Privacy Guard kaldırma işlemini sol menüden yapabilirsiniz.</string>
+    <string name="wifi_result_swifty_title">Veri Kısayolu</string>
+    <string name="wifi_result_swifty_content">Swifty ile WiFi noktalarını seçerek Veri bağlantı kotanızı koruyun.</string>
+    <string name="samsung_tip_txt">Uygulamanın stabil çalışmasını sağlamak için "Uygulama Ayarları"ndan "Ayrıntılar"da LEO Privacy Guard seçeneğine tıklayarak "Yasaklar"ı seçin. Bu ayarları istediğiniz zaman değiştirebilirsiniz.</string>
+    <string name="pri_result_wifimaster_content">Profesyonel araçlar ile WiFi hızlandırabilir ve WiFi noktalarına bağlanabilirsiniz.</string>
+    <string name="wifi_result_wifimaster_content">WiFi hızılarını test ederek en hızlı WiFi noktasına bağlan</string>
+    <string name="pri_result_wifimaster_btn">Aç</string>
+    <string name="video_guide_txt">Düzenlemeye tıklayarak Video gizle işlemini kaldırabilirsiniz.</string>
 </resources>

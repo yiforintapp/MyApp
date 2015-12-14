@@ -804,4 +804,17 @@
     <string name="adv_prot_open_suc_tip_cnt">เปิดใช้แล้วไม่สามารถถอนการติดตั้งLEO Privacy Guardได้ คุณต้องยกเลิกการตั้งค่าการป้องกันขั้นสูงก่อน</string>
     <string name="pri_pro_btn">เปิด(+%1$dคะแนน)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
+
+    <!--3.11-->
+    <string name="pri_result_wifimaster_title">WifiMaster</string>
+    <string name="home_guide_txt">การซ่อนภาพ ซ่อนคลิป และออพชั่นอื่นๆ อยู่ที่นี่</string>
+    <string name="pic_video_guide_txt">แตะปุ่มแก้ไข จะสามารถเลือกภาพเพื่อยกเลิกการซ่อนได้</string>
+    <string name="prot_open_suc_tip_cnt">เปิดการป้องกันขั้นสูงอยู่ หากต้องการลบ Privaty โปรดเปิดแถบด้านซ้าย</string>
+    <string name="wifi_result_swifty_title">สวิทซ์ควบคุมdata</string>
+    <string name="wifi_result_swifty_content">data หมดเร็ว?ใช้Swifty ปิดเปิดCellular และ WiFi ได้ ช่วยประหยัดdataสุดๆ</string>
+    <string name="samsung_tip_txt">โปรดคลิก "รายละเอียด" จาก "จัดการแอพ" แล้วแตะ Privaty และเลือก "ห้ามใช้" เพื่อให้กุญแจแอพได้ทำงานปกติ หรือไม่ก็ตั้งค่ากุญแจแอพภายหลังได้</string>
+    <string name="pri_result_wifimaster_content">เครื่องมือวัดความเร็วมืออาชีพ ช่วยให้WiFiของคุณเสถียร และช่วยหาWiFiฟรีให้</string>
+    <string name="wifi_result_wifimaster_content">ลองวัดความเร็วWiFi และเชื่อมต่อWiFiที่เร็วที่สุด</string>
+    <string name="pri_result_wifimaster_btn">เปิด</string>
+    <string name="video_guide_txt">แตะปุ่มแก้ไข จะสามารถเลือกคลิปเพื่อยกเลิกการซ่อนได้</string>
 </resources>
