@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -250,14 +251,17 @@ public class PrivacyCalllogFragment extends BaseFragment implements OnItemClickL
             case R.id.call_log_itemCB:
                 if (!mIsEditModel) {
                     ContactCallLog calllog = (ContactCallLog) view.getTag();
+                    String number = calllog.getCallLogNumber();
+                    if (TextUtils.isEmpty(number)) {
+                        return;
+                    }
                     // 查询该号码是否为隐私联系人
-                    String formateNumber = PrivacyContactUtils
-                            .formatePhoneNumber(calllog.getCallLogNumber());
+                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                     ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
                             formateNumber, mContext);
                     PrivacyContactManager.getInstance(mContext)
                             .setLastCall(privacyConatact);
-                    Uri uri = Uri.parse("tel:" + calllog.getCallLogNumber());
+                    Uri uri = Uri.parse("tel:" + number);
                     // 跳到拨号界面
                     Intent intent = new Intent(Intent.ACTION_DIAL,
                             uri);

@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -102,6 +103,9 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
         mTtileBar.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                if (TextUtils.isEmpty(mPhoneNumber)) {
+                    return;
+                }
                 // 查询该号码是否为隐私联系人
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
                 ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(

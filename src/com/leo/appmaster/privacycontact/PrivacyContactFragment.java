@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -412,14 +413,17 @@ public class PrivacyContactFragment extends BaseFragment {
                                 /* SDK */
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "call", "contact");
                 mPCDialog.cancel();
+                String number = contact.getContactNumber();
+                if (TextUtils.isEmpty(number)) {
+                    return;
+                }
                 // 查询该号码是否为隐私联系人
-                String formateNumber = PrivacyContactUtils.formatePhoneNumber(contact
-                        .getContactNumber());
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                 ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
                         formateNumber, mContext);
                 PrivacyContactManager.getInstance(mContext).setLastCall(
                         privacyConatact);
-                Uri uri = Uri.parse("tel:" + contact.getContactNumber());
+                Uri uri = Uri.parse("tel:" + number);
                 // Intent intent = new Intent(Intent.ACTION_CALL, uri);
                 Intent intent = new Intent(Intent.ACTION_DIAL,
                         uri);
