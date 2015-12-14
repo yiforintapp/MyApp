@@ -342,7 +342,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             
                             //将bitmap压缩并保存
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            bitmapt.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                            bitmapt.compress(Bitmap.CompressFormat.PNG, 80, baos);
                             byte[] finalBytes = baos.toByteArray();
                             File photoSavePath = getPhotoSavePath();
                             if (photoSavePath == null) {
