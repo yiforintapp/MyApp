@@ -190,17 +190,22 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
     }
 
     public void release() {
-        if (mCamera != null) {
-            mIsinited = false;
-            try {
-                mCamera.stopPreview();
-                mCamera.release();
-                LeoLog.i("poha", "Camera release");
-            } catch (Exception e) {
-                
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mCamera != null) {
+                    mIsinited = false;
+                    try {
+                        mCamera.stopPreview();
+                        mCamera.release();
+                        LeoLog.i("poha", "Camera release");
+                    } catch (Exception e) {
+                        
+                    }
+                    mCamera = null;
+                }
+                mPendingCallback = null;
             }
-            mCamera = null;
-        }
-        mPendingCallback = null;
+        });
     }
 }
