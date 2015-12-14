@@ -60,6 +60,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     /**
      * Swifty
      */
+    private TextView mSwiftyTitle;
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
     private RippleView mSwiftyBtnLt;
@@ -67,6 +68,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     /**
      * WifiMaster
      */
+    private TextView mWifiMasterTitle;
     private ImageView mWifiMasterImg;
     private TextView mWifiMasterContent;
     private RippleView mWifiMasterBtnLt;
@@ -74,6 +76,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     /**
      * Fb
      */
+    private TextView mFbTitle;
     private ImageView mFbImg;
     private TextView mFbContent;
     private RippleView mFbBtnLt;
@@ -81,6 +84,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     /**
      * 评分
      */
+    private TextView mGradeTitle;
     private ImageView mGradeImg;
     private TextView mGradeContent;
     private RippleView mGradeBtnLt;
@@ -375,6 +379,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "swifty_shw");
+            mSwiftyTitle = (TextView) include.findViewById(R.id.swifty_text);
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_txt);
             mSwiftyBtnLt = (RippleView) include.findViewById(R.id.swifty_resulte_sure);
@@ -382,6 +387,12 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_WIFI_SWIFTY_TITLE));
+            if (!isTitleEmpty) {
+                mSwiftyTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_WIFI_SWIFTY_TITLE));
+            }
 
         }
     }
@@ -413,6 +424,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "master_shw");
+            mWifiMasterTitle = (TextView) include.findViewById(R.id.wifimaster_text);
             mWifiMasterImg = (ImageView) include.findViewById(R.id.wifimaster_img);
             mWifiMasterContent = (TextView) include.findViewById(R.id.wifimaster_txt);
             mWifiMasterBtnLt = (RippleView) include.findViewById(R.id.wifimaster_resulte_sure);
@@ -420,6 +432,12 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             mWifiMasterContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_IMG_URL);
             mImageLoader.displayImage(imgUrl, mWifiMasterImg, getOptions(R.drawable.swifty_banner));
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_WIFI_WIFIMASTER_TITLE));
+            if (!isTitleEmpty) {
+                mWifiMasterTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_WIFI_WIFIMASTER_TITLE));
+            }
 
         }
     }
@@ -445,6 +463,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
             View include = viewStub.inflate();
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "FB_shw");
+            mFbTitle = (TextView) include.findViewById(R.id.fb_text);
             mFbImg = (ImageView) include.findViewById(R.id.fb_img);
             mFbContent = (TextView) include.findViewById(R.id.fb_txt);
             mFbBtnLt = (RippleView) include.findViewById(R.id.fb_resulte_sure);
@@ -452,7 +471,12 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             mFbContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_FB_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_FB_IMG_URL);
             mImageLoader.displayImage(imgUrl, mFbImg, getOptions(R.drawable.fb_banner));
-
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_WIFI_FB_TITLE));
+            if (!isTitleEmpty) {
+                mFbTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_WIFI_FB_TITLE));
+            }
 
         }
     }
@@ -480,6 +504,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             FiveStarsLayout fiveStarsLayout = (FiveStarsLayout)
                             include.findViewById(R.id.fsl_fivestars);
             fiveStarsLayout.setBackgroundNull();
+            mGradeTitle = (TextView) include.findViewById(R.id.grade_text);
             mGradeImg = (ImageView) include.findViewById(R.id.grade_img);
             mGradeContent = (TextView) include.findViewById(R.id.grade_txt);
             mGradeBtnLt = (RippleView) include.findViewById(R.id.grade_resulte_sure);
@@ -487,6 +512,13 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_IMG_URL);
             mImageLoader.displayImage(imgUrl, mGradeImg, getOptions(R.drawable.grade_bg));
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_TITLE));
+            if (!isTitleEmpty) {
+                mGradeTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_WIFI_GRADE_TITLE));
+            }
+
         }
     }
 

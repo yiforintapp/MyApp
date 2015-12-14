@@ -21,14 +21,9 @@
 
         <TextView
             android:id="@+id/grade_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            style="@style/ItemTitle"
             android:layout_toRightOf="@id/grade_blue_tiao"
-            android:text="@string/grade_item_title"
-            android:textColor="@color/c2"
-            android:textSize="15dp" />
+            android:text="@string/grade_item_title" />
     </RelativeLayout>
 
     <ImageView

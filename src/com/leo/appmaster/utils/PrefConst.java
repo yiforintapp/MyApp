@@ -110,16 +110,19 @@ public class PrefConst {
     public static final String KEY_PRI_WIFIMASTER_IMG_URL = "pri_wifimaster_img_url";
     public static final String KEY_PRI_WIFIMASTER_TYPE = "pri_wifimaster_type";
     public static final String KEY_PRI_WIFIMASTER_URL = "pri_wifimaster_url";
+    public static final String KEY_PRI_WIFIMASTER_TITLE = "pri_wifimaster_title";
 
     //隐私页评分数据
     public static final String KEY_PRI_GRADE_CONTENT = "pri_grade_content";
     public static final String KEY_PRI_GRADE_IMG_URL = "pri_grade_img_url";
     public static final String KEY_PRI_GRADE_URL = "pri_grade_url";
+    public static final String KEY_PRI_GRADE_TITLE = "pri_grade_title";
 
     //隐私页FB数据
     public static final String KEY_PRI_FB_CONTENT = "pri_fb_content";
     public static final String KEY_PRI_FB_IMG_URL = "pri_fb_img_url";
     public static final String KEY_PRI_FB_URL = "pri_fb_url";
+    public static final String KEY_PRI_FB_TITLE = "pri_fb_title";
 
     //wifi页Wifimaster数据
     public static final String KEY_WIFI_WIFIMASTER_CONTENT = "wifi_wifimaster_content";
@@ -127,6 +130,7 @@ public class PrefConst {
     public static final String KEY_WIFI_WIFIMASTER_IMG_URL = "wifi_wifimaster_img_url";
     public static final String KEY_WIFI_WIFIMASTER_TYPE = "wifi_wifimaster_type";
     public static final String KEY_WIFI_WIFIMASTER_URL = "wifi_wifimaster_url";
+    public static final String KEY_WIFI_WIFIMASTER_TITLE = "wifi_wifimaster_title";
 
     //wifi页Swifty数据
     public static final String KEY_WIFI_SWIFTY_CONTENT = "wifi_swifty_content";
@@ -134,17 +138,20 @@ public class PrefConst {
     public static final String KEY_WIFI_SWIFTY_IMG_URL = "wifi_swifty_img_url";
     public static final String KEY_WIFI_SWIFTY_TYPE = "wifi_swifty_type";
     public static final String KEY_WIFI_SWIFTY_URL = "wifi_swifty_url";
+    public static final String KEY_WIFI_SWIFTY_TITLE = "wifi_swifty_title";
 
     //wifi页评分数据
     public static final String KEY_WIFI_GRADE_CONTENT = "wifi_grade_content";
     public static final String KEY_WIFI_GRADE_IMG_URL = "wifi_grade_img_url";
     public static final String KEY_WIFI_GRADE_URL = "wifi_grade_url";
+    public static final String KEY_WIFI_GRADE_TITLE = "wifi_grade_title";
 
 
     //wifi页FB数据
     public static final String KEY_WIFI_FB_CONTENT = "wifi_fb_content";
     public static final String KEY_WIFI_FB_IMG_URL = "wifi_fb_img_url";
     public static final String KEY_WIFI_FB_URL = "wifi_fb_url";
+    public static final String KEY_WIFI_FB_TITLE = "wifi_fb_title";
     /*图片编辑按钮引导标志*/
     public static final String KEY_PIC_EDIT_GUIDE = "PIC_EDIT_GUIDE";
     /*视频编辑按钮引导标志*/

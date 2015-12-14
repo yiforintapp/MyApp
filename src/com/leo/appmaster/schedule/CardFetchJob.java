@@ -69,6 +69,8 @@ public class CardFetchJob extends FetchScheduleJob {
                         PrefConst.KEY_PRI_WIFIMASTER_TYPE, preferenceTable);
                 setValue(priWifiMaster, "url",
                         PrefConst.KEY_PRI_WIFIMASTER_URL, preferenceTable);
+                setValue(priWifiMaster, "title",
+                        PrefConst.KEY_PRI_WIFIMASTER_TITLE, preferenceTable);
 
             } else {
                 setPriWifiMasterEmpty(preferenceTable);
@@ -83,6 +85,8 @@ public class CardFetchJob extends FetchScheduleJob {
                         PrefConst.KEY_PRI_GRADE_IMG_URL, preferenceTable);
                 setValue(priGrade, "url",
                         PrefConst.KEY_PRI_GRADE_URL, preferenceTable);
+                setValue(priGrade, "title",
+                        PrefConst.KEY_PRI_GRADE_TITLE, preferenceTable);
 
             } else {
                 setPriGradeEmpty(preferenceTable);
@@ -97,6 +101,8 @@ public class CardFetchJob extends FetchScheduleJob {
                         PrefConst.KEY_PRI_FB_IMG_URL, preferenceTable);
                 setValue(priFb, "url",
                         PrefConst.KEY_PRI_FB_URL, preferenceTable);
+                setValue(priFb, "title",
+                        PrefConst.KEY_PRI_FB_TITLE, preferenceTable);
 
             } else {
                 setPriFbEmpty(preferenceTable);
@@ -116,6 +122,8 @@ public class CardFetchJob extends FetchScheduleJob {
                         PrefConst.KEY_WIFI_SWIFTY_TYPE, preferenceTable);
                 setValue(wifiSwifty, "url",
                         PrefConst.KEY_WIFI_SWIFTY_URL, preferenceTable);
+                setValue(wifiSwifty, "title",
+                        PrefConst.KEY_WIFI_SWIFTY_TITLE, preferenceTable);
 
             } else {
                 setWifiSwiftyEmpty(preferenceTable);
@@ -135,6 +143,8 @@ public class CardFetchJob extends FetchScheduleJob {
                         PrefConst.KEY_WIFI_WIFIMASTER_TYPE, preferenceTable);
                 setValue(wifiWifiMaster, "url",
                         PrefConst.KEY_WIFI_WIFIMASTER_URL, preferenceTable);
+                setValue(wifiWifiMaster, "title",
+                        PrefConst.KEY_WIFI_WIFIMASTER_TITLE, preferenceTable);
 
             } else {
                 setWifiWifiMasterEmpty(preferenceTable);
@@ -149,7 +159,8 @@ public class CardFetchJob extends FetchScheduleJob {
                         PrefConst.KEY_WIFI_GRADE_IMG_URL, preferenceTable);
                 setValue(wifiGrade, "url",
                         PrefConst.KEY_WIFI_GRADE_URL, preferenceTable);
-
+                setValue(wifiGrade, "title",
+                        PrefConst.KEY_WIFI_GRADE_TITLE, preferenceTable);
 
             } else {
                 setWifiGradeEmpty(preferenceTable);
@@ -164,6 +175,8 @@ public class CardFetchJob extends FetchScheduleJob {
                         PrefConst.KEY_WIFI_FB_IMG_URL, preferenceTable);
                 setValue(wifiFb, "url",
                         PrefConst.KEY_WIFI_FB_URL, preferenceTable);
+                setValue(wifiFb, "title",
+                        PrefConst.KEY_WIFI_FB_TITLE, preferenceTable);
 
             } else {
                 setWifiFbEmpty(preferenceTable);
@@ -183,6 +196,7 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL, "");
         preferenceTable.putString(PrefConst.KEY_PRI_WIFIMASTER_TYPE, "");
         preferenceTable.putString(PrefConst.KEY_PRI_WIFIMASTER_URL, "");
+        preferenceTable.putString(PrefConst.KEY_PRI_WIFIMASTER_TITLE, "");
     }
 
     /** 隐私页评分数据置空 */
@@ -190,6 +204,7 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_PRI_GRADE_CONTENT, "");
         preferenceTable.putString(PrefConst.KEY_PRI_GRADE_IMG_URL, "");
         preferenceTable.putString(PrefConst.KEY_PRI_GRADE_URL, "");
+        preferenceTable.putString(PrefConst.KEY_PRI_GRADE_TITLE, "");
     }
 
     /** 隐私页分享fb数据置空 */
@@ -197,6 +212,7 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_PRI_FB_CONTENT, "");
         preferenceTable.putString(PrefConst.KEY_PRI_FB_IMG_URL, "");
         preferenceTable.putString(PrefConst.KEY_PRI_FB_URL, "");
+        preferenceTable.putString(PrefConst.KEY_PRI_FB_TITLE, "");
     }
 
     /** wifi页wifimaster数据置空 */
@@ -206,6 +222,7 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_WIFI_WIFIMASTER_IMG_URL, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_WIFIMASTER_TYPE, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_WIFIMASTER_URL, "");
+        preferenceTable.putString(PrefConst.KEY_WIFI_WIFIMASTER_TITLE, "");
     }
 
     /** wifi页swifty数据置空 */
@@ -215,6 +232,7 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_WIFI_SWIFTY_IMG_URL, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_SWIFTY_TYPE, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_SWIFTY_URL, "");
+        preferenceTable.putString(PrefConst.KEY_WIFI_SWIFTY_TITLE, "");
     }
 
     /** wifi页评分数据置空 */
@@ -222,6 +240,7 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_WIFI_GRADE_CONTENT, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_GRADE_IMG_URL, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_GRADE_URL, "");
+        preferenceTable.putString(PrefConst.KEY_WIFI_GRADE_TITLE, "");
     }
 
     /** wifi页分享fb数据置空 */
@@ -229,6 +248,7 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_WIFI_FB_CONTENT, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_FB_IMG_URL, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_FB_URL, "");
+        preferenceTable.putString(PrefConst.KEY_WIFI_FB_TITLE, "");
     }
 
 }
