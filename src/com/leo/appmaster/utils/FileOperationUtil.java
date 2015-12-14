@@ -42,7 +42,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 
 public class FileOperationUtil {
-
+    private static final String TAG ="FileOperationUtil";
     private static final String SYSTEM_PREFIX = "/system";
 
     public static final String SDCARD_DIR_NAME = ".DefaultGallery";
@@ -669,7 +669,7 @@ public class FileOperationUtil {
                     String dir = cursor.getString(3);
                     String dir_path = getDirPathFromFilepath(path);
                     if (dir.contains("videoCache")) {
-                        Log.d(Constants.RUN_TAG, "Image Path：" + path);
+                        LeoLog.d(TAG, "Image Path：" + path);
                     }
                     if (path.startsWith(SYSTEM_PREFIX)) {
                         continue;

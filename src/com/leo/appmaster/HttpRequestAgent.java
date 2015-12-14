@@ -365,7 +365,7 @@ public class HttpRequestAgent {
         String object = "";
         String iswipeUrl = "/appmaster/iswipeswitch.html";
         String url = Utilities.getURL(iswipeUrl);
-        Log.d(Constants.RUN_TAG, "iSwipe访问连接：" + url);
+        Log.d(TAG, "iSwipe访问连接：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);

@@ -49,7 +49,6 @@ public class Constants {
     public static final String TABLE_APPLIST_BUSINESS = "applist_business";
     public static final String TABLE_MONTH_TRAFFIC = "countflow";
     public static final String TABLE_APP_TRAFFIC = "countappflow";
-    public static final String RUN_TAG = "RUN_TAG";
     public static final Uri DOWNLOAD_URI = Uri.parse("content://" + AUTHORITY
             + "/" + TABLE_DOWNLOAD);
 

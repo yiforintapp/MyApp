@@ -214,9 +214,9 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
-            LeoLog.i(Constants.RUN_TAG, "接收到新短信广播");
+            LeoLog.i(TAG, "接收到新短信广播");
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
-            LeoLog.i(Constants.RUN_TAG, "接收到来电广播");
+            LeoLog.i(TAG, "接收到来电广播");
         }
     }
 
