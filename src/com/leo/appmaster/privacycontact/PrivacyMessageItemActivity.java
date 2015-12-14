@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,8 +40,8 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyMessageItemActivity extends BaseActivity implements OnClickListener {
@@ -175,7 +174,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
             }
         });
         LeoEventBus.getDefaultBus().register(this);
-        // 标识Activity创建运行不通知
+        /*标识Activity创建运行,不显示通知提示*/
         AppMasterPreference.getInstance(this).setMessageItemRuning(false);
     }
 
@@ -195,7 +194,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
     @Override
     protected void onDestroy() {
         LeoEventBus.getDefaultBus().unregister(this);
-        // 标识Activity结束通知
+        /*标识Activity结束,显示通知*/
         AppMasterPreference.getInstance(this).setMessageItemRuning(true);
         super.onDestroy();
     }
@@ -219,7 +218,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
         int id = v.getId();
         if (id == R.id.message_send_button) {
               /*有发送短信，恢复短信发送失败Toast标志值*/
-           PrivacyContactManager.getInstance(this).mSendMsmFail = true;
+            PrivacyContactManager.getInstance(this).mSendMsmFail = true;
             SmsManager sms = SmsManager.getDefault();
             String messageContent = mEditText.getText().toString();
             ArrayList<String> divideMessageContents = sms.divideMessage(messageContent);
@@ -250,6 +249,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                     values.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, mName);
                     values.put(Constants.COLUMN_MESSAGE_DATE, date);
                     values.put(Constants.COLUMN_MESSAGE_IS_READ, 1);
+                    /*使用该隐私联系人在联系人表中的ID作为ThreadId*/
                     int threadId = PrivacyContactUtils.queryContactId(
                             PrivacyMessageItemActivity.this, message.getPhoneNumber());
                     values.put(Constants.COLUMN_MESSAGE_THREAD_ID, threadId);
@@ -260,7 +260,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                     mContactCallLog.setSelection(mMessages.size() - 1);
                     Uri line = getContentResolver().insert(Constants.PRIVACY_MESSAGE_URI, values);
                     if (line == null) {
-                        Log.w("LockMessageItemActivity", "Send message insert fail!");
+                        LeoLog.i("LockMessageItemActivity", "Send message insert fail!");
                     }
                 }
 
