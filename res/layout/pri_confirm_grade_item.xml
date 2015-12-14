@@ -29,7 +29,7 @@
         <ImageView
             android:id="@+id/grade_img"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="133dp"
             android:scaleType="centerCrop"/>
 
 
