@@ -130,7 +130,11 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                if (mCanceled) return;
+                if (mCanceled) {
+                    mArrowAlpha = 255;
+                    invalidate();
+                    return;
+                }
 
                 LeoLog.i(TAG, "alpha anim end.");
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -207,6 +211,10 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
 
         int top = HomePrivacyFragment.sScreenHeight - getHeight();
         return new Rect(left, top, right, HomePrivacyFragment.sScreenHeight);
+    }
+
+    public void setCancelledFalse() {
+        mCanceled = false;
     }
 
 }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -24,7 +23,6 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -253,6 +251,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
 
         boolean pulledEver = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_MORE_PULLED, false);
         if (!pulledEver) {
+            mUpArrow.setCancelledFalse();
             mUpArrow.startUpAnimation();
             if (GuideFragment.isHomeGuideShowStatus()) {
                 mUpArrow.cancelUpAnimation();
