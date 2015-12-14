@@ -1,6 +1,7 @@
 package com.leo.appmaster.applocker.model;
 
 import android.annotation.SuppressLint;
+import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -10,6 +11,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -61,7 +63,9 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
         if (stats != null) {
             SortedMap<Long, UsageStats> runningTask = new TreeMap<Long,UsageStats>();
             for (UsageStats usageStats : stats) {
-                runningTask.put(usageStats.getLastTimeUsed(), usageStats);
+                if (usageStats.mLastEvent == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                    runningTask.put(usageStats.getLastTimeUsed(), usageStats);
+                }
             }
             if (runningTask.isEmpty()) {
                 LeoLog.i(TAG, "there is no app found.");
