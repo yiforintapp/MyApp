@@ -323,4 +323,26 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
             }
         }
     }
+
+    @Override
+    public SQLiteDatabase getReadableDatabase() {
+        try {
+            return super.getReadableDatabase();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public SQLiteDatabase getWritableDatabase() {
+        try {
+            return super.getWritableDatabase();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
