@@ -1,5 +1,13 @@
 package com.leo.appmaster.intruderprotection;
 
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -44,22 +51,12 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 public class IntruderCatchedActivity extends BaseActivity implements View.OnClickListener {
     private List<PhotoAibum> mAlbumList = null;
-    private Button mBtFiveStars;
     private ImageLoader mImageLoader;
     private String mPkgName;
     private ListView mLvMain;
@@ -67,18 +64,14 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private ArrayList<IntruderPhotoInfo> mInfosSorted;
     private IntrudeSecurityManager mISManager;
     private final int NEWEST_PHOTO_NUMBER = 3;
-    private Button mBtMore;
     private BottomCropImage mIvNewestPhoto;
     private LinearLayout mLlMainMask;
     private TextView mTvNewestCatchTip;
     private ImageView mIvAppIntruded;
     private ScrollView mSvMain;
     private TextView mTvTimesToCatch;
-    private Button mChangeTimes;
     private TextView mTvTotalTimes;
-    private ImageView mClose;
     private RelativeLayout mRlNopic;
-    private RelativeLayout mRlFiveStars;
     private RippleView mRvClose;
     private TextView mTvOthers;
     private LEOChoiceDialog mDialog;
@@ -87,8 +80,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private int[] mTimes = {
             1, 2, 3, 5
     };
-    private List<Bitmap> mBitmaps = new ArrayList<Bitmap>();
-    private DisplayImageOptions mImageOptions;
     private RippleView mRvChange;
     private RippleView mRvMore;
     private RelativeLayout mRlNewest;
@@ -97,9 +88,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static final int TIMES_TO_CATCH_2 = 2;
     private static final int TIMES_TO_CATCH_3 = 3;
     private static final int TIMES_TO_CATCH_4 = 5;
-    private boolean mIsNewestBigPicShowing = true;
     private boolean mNeedIntoHomeWhenFinish = false;
-    private String mLatestImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,29 +252,21 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mRvRating.setOnClickListener(this);
         mRlNewest = (RelativeLayout) findViewById(R.id.rl_newest);
         mTvOthers = (TextView) findViewById(R.id.tv_others);
-        mClose = (ImageView) findViewById(R.id.iv_close);
         mRvClose = (RippleView) findViewById(R.id.rv_close);
         mRvClose.setOnClickListener(this);
         mTvTotalTimes = (TextView) findViewById(R.id.tv_times_of_catch);
-        mChangeTimes = (Button) findViewById(R.id.bt_change_times);
 
         mRvChange = (RippleView) findViewById(R.id.rv_change_times);
         mRvChange.setOnClickListener(this);
 
         mTvTimesToCatch = (TextView) findViewById(R.id.tv_times_to_catch);
-        mBtFiveStars = (Button) findViewById(R.id.bt_beg_fivestars);
 
         // 初始化imageloader，需要时可以设置option
         mImageLoader = ImageLoader.getInstance();
-        mImageOptions = new DisplayImageOptions.Builder()
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .cacheInMemory(true)
-                .build();
 
         mIvAppIntruded = (ImageView) findViewById(R.id.iv_app_intruded);
         mTvNewestCatchTip = (TextView) findViewById(R.id.newest_catch_tip);
         mIvNewestPhoto = (BottomCropImage) findViewById(R.id.iv_newest_photo);
-        mBtMore = (Button) findViewById(R.id.bt_more);
         mRvMore = (RippleView) findViewById(R.id.rv_more);
         mRvMore.setOnClickListener(this);
         mLvMain = (ListView) findViewById(R.id.lv_mainlist);
@@ -391,7 +372,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         sortInfos();
         final PackageManager pm = getPackageManager();
 //        if (mInfosSorted != null && mInfosSorted.size() != 0) {
-        if (isLateastValid()) {
+        if (isLateastValid() && mRlNewest != null) {
             // 如果记录有效，显示第一张大图
             mRlNewest.setVisibility(View.VISIBLE);
             mRlNopic.setVisibility(View.INVISIBLE);
@@ -418,11 +399,10 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                                         public void onClick(View v) {
                                             // 点击后进入大图浏览
                                             startGallery(0);
-                                            mLatestImageUri = imageUri;
                                         }
                                     });
                                     // 大图上面的遮盖蒙层，图标和时间
-                                    mLlMainMask.setVisibility(view.VISIBLE);
+                                    mLlMainMask.setVisibility(View.VISIBLE);
                                     ImageView mainIcon = (ImageView) mLlMainMask
                                             .findViewById(R.id.iv_appicon);
                                     Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
