@@ -352,16 +352,21 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
      */
     private boolean isLateastValid() {
         if (mInfosSorted == null || mInfosSorted.isEmpty()) {
+            LeoLog.i("IntruderCatchedActivity", "is lastestValid : mInfos is null or empty!");
             return false;
         }
 
         IntruderPhotoInfo photoInfo = mInfosSorted.get(0);
         if (photoInfo == null || TextUtils.isEmpty(photoInfo.getFilePath())) {
+            LeoLog.i("IntruderCatchedActivity", "is lastestValid : index 0's photoInfo is null or empty!");
             return false;
         }
 
         long savedHash = mPt.getLong(PrefConst.KEY_LATEAST_PATH, -1);
+        LeoLog.i("IntruderCatchedActivity", "is lastestValid : preference last one hashCode = "+savedHash);
+        LeoLog.i("IntruderCatchedActivity", "is lastestValid : index 0's photoInf hashCode = "+photoInfo.getFilePath().hashCode());
         return savedHash == photoInfo.getFilePath().hashCode();
+        
     }
 
     /**
