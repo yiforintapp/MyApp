@@ -829,14 +829,15 @@
 
     <!--3.11-->
     <string name="pri_result_wifimaster_title">WifiMaster</string>
-    <string name="home_guide_txt">Picture hide, video hide, more functions here!</string>
-    <string name="pic_video_guide_txt">Click the edit button and tick the picture, then unhide pictures available.</string>
-    <string name="prot_open_suc_tip_cnt">Advanced protection is in operation! Please operate in the sidebar if you want to uninstall the privacy guard.</string>
-    <string name="wifi_result_swifty_title">Data flow shortcuts</string>
-    <string name="wifi_result_swifty_content">Data runs too fast! Don\'t worry, here comes Swifty! Just a click to start the cellular data and WIFI, save data flow just now!</string>
-    <string name="samsung_tip_txt">To ensure app lock operation well, just tick privacy guard in the "Application program optimization"->"Detail" and select "Forbid" or you can set it later in the application lock. </string>
-    <string name="pri_result_wifimaster_content">Professional and optimized tool for speed test to ensure higher and more stable WIFI speed and provide more quality and free WIFI connection.</string>
-    <string name="wifi_result_wifimaster_content">Test your WIFI speed now! Select the fastest WIFI connection!</string>
-    <string name="pri_result_wifimaster_btn">Enable</string>
-    <string name="video_guide_txt">Click the edit button and tick the video, then unhide videos available.</string>
+    <string name="home_guide_txt">Picture hidden, video hidden, more functions here!</string>
+    <string name="pic_video_guide_txt">Click edit to check and unhide the picture</string>
+    <string name="prot_open_suc_tip_cnt">Advanced protection started! Operate in side column to unload the Privacy Guard.</string>
+    <string name="wifi_result_swifty_title">Flow Toggle Widget</string>
+    <string name="wifi_result_swifty_content">Flow runs too fast! Don\'t worry, here comes Swifty! Just a click to start the cellular data and WiFi. Save data flow just now!</string>
+    <string name="samsung_tip_txt">To ensure normal operation of application lock, check Privacy Guard in "Application Program Optimization"->"Detail" and select "Disable", or set them later in Application Lock. </string>
+    <string name="pri_result_wifimaster_content">Professional and optimized speed tester to ensure higher and more stable WiFi speed and provide free WIFI with higher quality.</string>
+    <string name="wifi_result_wifimaster_content">Test your WiFi speed now! Select the fastest WiFi connection!</string>
+    <string name="pri_result_wifimaster_btn">Start</string>
+    <string name="video_guide_txt">Click Edit to check and unhide the video</string>
+
 </resources>
