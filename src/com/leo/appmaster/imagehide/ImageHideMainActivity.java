@@ -190,7 +190,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
         PhotoAibum photoAibum = mAlbumList.get(position);
         int size = photoAibum.getBitList().size();
-        if (size < 700) {
+        if (size < 800) {
             bundle.putSerializable("data", photoAibum);
         }
         intent.putExtra("pos", position);

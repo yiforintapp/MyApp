@@ -42,7 +42,7 @@ import java.util.Map;
 public class PrivacyDataManagerImpl extends PrivacyDataManager {
     private static final int API_LEVEL_19 = 19;
     public final static String CHECK_APART = "check_apart";
-    private final static int MAX_NUM = 702;
+    public final static int MAX_NUM = 802;
     public static final String[] STORE_IMAGES = {
             MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID, //
@@ -138,7 +138,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaStore.MediaColumns.DATA
                 + " LIKE '%.leotmi'";
 
-        int picNumFromDir = 1;
+        int picNumFromDir;
         Cursor cursor = null;
         try {
             cursor = mContext.getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
@@ -153,19 +153,15 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
                     if (!countMap.containsKey(dirPath)) {
-//                        LeoLog.d("testDirName", "dirPath is : " + dirPath);
-
                         pa = new PhotoAibum();
                         pa.setName(dirName);
                         pa.setCount("1");
                         pa.setDirPath(dirPath);
                         pa.getBitList().add(new PhotoItem(path));
                         countMap.put(dirPath, pa);
-
                     } else {
                         if (mSuffix != null && mSuffix.equals(CHECK_APART)) {
                             picNumFromDir = pa.getBitList().size();
-//                            LeoLog.d("testhowDir", "n : " + picNumFromDir + ",p : " + path);
                             if (picNumFromDir < MAX_NUM) {
                                 File f = new File(path);
                                 if (f.exists()) {
@@ -227,8 +223,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     }
 
     @Override
-    public List<PhotoAibum> getAllPicFile() {
-        return FileOperationUtil.getPhotoAlbum(mContext);
+    public List<PhotoAibum> getAllPicFile(String mSuffix) {
+        return FileOperationUtil.getPhotoAlbum(mContext,mSuffix);
     }
 
     @Override

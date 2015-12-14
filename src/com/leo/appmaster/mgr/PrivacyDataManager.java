@@ -69,7 +69,7 @@ public abstract class PrivacyDataManager extends Manager {
     /**
      * 获取所有图片文件夹
      */
-    public abstract List<PhotoAibum> getAllPicFile();
+    public abstract List<PhotoAibum> getAllPicFile(String mmSuffix);
 
     /**
      * 隐藏图片

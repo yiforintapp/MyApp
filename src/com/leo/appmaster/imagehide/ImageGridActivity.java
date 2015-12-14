@@ -144,7 +144,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             public void run() {
                 if (mActicityMode == SELECT_HIDE_MODE) {
                     mPhotoAibum = ((PrivacyDataManager) MgrContext.
-                            getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile().get(
+                            getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile("").get(
                             mPhotoAibumPos);
                 } else {
                     mPhotoAibum = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
