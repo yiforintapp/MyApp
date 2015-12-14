@@ -6,6 +6,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.util.Calendar;
@@ -52,8 +53,9 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
 //        List<UsageStats> stats = mStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY,
 //                startTime, endTime);
         long currentTs = System.currentTimeMillis();
-        List<UsageStats> stats = mStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
-                currentTs - 10 * 1000, currentTs);
+        long startTs = currentTs - Constants.TIME_ONE_DAY;
+        startTs = startTs < 0 ? 0 : startTs;
+        List<UsageStats> stats = mStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTs, currentTs);
 
         ProcessAdj processAdj = null;
         if (stats != null) {
