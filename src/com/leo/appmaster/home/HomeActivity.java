@@ -103,6 +103,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private MenuAdapter mMenuAdapter;
     //    private ImageView mAdIcon;
     //    private MobvistaAdWall mWallAd;
+    private int mMenuTextColorId;
     private Handler mHandler = new Handler();
     private PreferenceTable mPt = PreferenceTable.getInstance();
     public static int mHomeAdSwitchOpen = -1;
@@ -552,8 +553,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mMenuList.setBackgroundDrawable(drawable);
             mMenuList.setDivider(getResources().getDrawable(R.drawable.home_menu_list_divider_chrismas));
             mMenuList.setDividerHeight(1);
+            mMenuTextColorId = getResources().getColor(R.color.c1);
+        } else {
+            mMenuTextColorId = getResources().getColor(R.color.home_menu_text);
         }
-
     }
 
     @Override
@@ -1332,10 +1335,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
             MaterialRippleLayout layout = (MaterialRippleLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
             TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
-            Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_ASIDE_FRAGMENT, HomeActivity.this);
-            if (drawable != null) {
-                tv.setTextColor(getResources().getColor(R.color.c1));
-            }
+                tv.setTextColor(mMenuTextColorId);
             ImageView redTip = (ImageView) layout.findViewById(R.id.update_red_tip);
             /* some item not HTML styled text, such as "check update" item */
             tv.setText(Html.fromHtml(items.get(arg0).itemName));
