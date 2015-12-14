@@ -43,7 +43,7 @@ public class TaskChangeHandler {
     private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
     private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
 
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
 
     private Context mContext;
     private ActivityManager mAm;

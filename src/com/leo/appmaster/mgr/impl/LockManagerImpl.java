@@ -508,6 +508,7 @@ public class LockManagerImpl extends LockManager {
     }
 
     public void onEvent(AppUnlockEvent event) {
+        LeoLog.d(TAG, "onEvent, result: " + event.mUnlockResult);
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
             mLockPolicy.onUnlocked(event.mUnlockedPkg);
             if (mExtranalUnlockListener != null) {
