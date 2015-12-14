@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -173,6 +174,7 @@ public class LEOAlarmDialog extends LEOBaseDialog {
 
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
+        mContent.setMovementMethod(ScrollingMovementMethod.getInstance()) ;
         mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
         mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
