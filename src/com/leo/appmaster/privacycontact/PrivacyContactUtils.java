@@ -60,6 +60,7 @@ public class PrivacyContactUtils {
     public static final int MSG_CONTACT_DE = 10013;
     public static final int MSG_EDIT_CONTACT = 10014;
     public static final int MSG_EDIT_LOG = 10015;
+    public static final int MSG_PRIVACY_CALL_HANDLER = 10016;
     /*隐私短信，通话未读通知id*/
     public static final int MSM_NOTIFI_NUMBER = 20140901;
     public static final int CALL_NOTIFI_NUMBER = 20140902;
@@ -494,7 +495,7 @@ public class PrivacyContactUtils {
         SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> calllog = new HashMap<String, ContactCallLog>();
-       List<ContactCallLog> callBeans = new ArrayList<ContactCallLog>();
+        List<ContactCallLog> callBeans = new ArrayList<ContactCallLog>();
         ContentResolver CR = context.getContentResolver();
         Cursor cursor = null;
         try {
@@ -571,10 +572,10 @@ public class PrivacyContactUtils {
 //                                selectionArgsCall = new String[]{selectionArgs[0], selectionArgs[1], "%" + formateNumber};
 //                            }
 //                            cur = mgr.getSystemCalls(selectionCall, selectionArgsCall);
-                            countCall = countCalls(callBeans,number);
+                            countCall = countCalls(callBeans, number);
                         } else {
 //                            cur = mgr.getSystemCalls("number" + " LIKE ? ", new String[]{"%" + formateNumber});
-                            countCall = countCalls(callBeans,number);
+                            countCall = countCalls(callBeans, number);
                         }
 
 //                        contactCallLog.setCallLogCount(cur.getCount());
