@@ -222,6 +222,7 @@
             android:launchMode="singleTask"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
