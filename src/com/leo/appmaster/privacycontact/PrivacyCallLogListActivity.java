@@ -30,9 +30,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.utils.LeoLog;
 
 public class PrivacyCallLogListActivity extends BaseActivity implements OnClickListener {
     private ListView mContactCallLog;
@@ -150,7 +148,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
         int flag = arg0.getId();
         switch (flag) {
             case R.id.calllog_item_sendmessage:
-                String[] bundleData = new String[] {
+                String[] bundleData = new String[]{
                         mName, mCallLogNumber
                 };
                 Bundle bundle = new Bundle();
@@ -168,8 +166,8 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
             case R.id.calllog_item_call:
                 // 查询该号码是否为隐私联系人
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(mCallLogNumber);
-                ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
-                        formateNumber, PrivacyCallLogListActivity.this);
+                PrivacyContactManager pm = PrivacyContactManager.getInstance(PrivacyCallLogListActivity.this);
+                ContactBean privacyConatact = pm.getPrivateMessage(formateNumber, PrivacyCallLogListActivity.this);
                 PrivacyContactManager.getInstance(PrivacyCallLogListActivity.this).setLastCall(
                         privacyConatact);
                 Uri uri = Uri.parse("tel:" + mCallLogNumber);
@@ -221,7 +219,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
 
         class ViewHolder {
             ImageView typeImage, lineImage, bottomLineImage;
-            TextView date, showDate, type,call_duration;
+            TextView date, showDate, type, call_duration;
         }
 
         @SuppressLint("InflateParams")
@@ -240,7 +238,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                         .findViewById(R.id.call_log_item_top_bottom_line);
                 vh.bottomLineImage = (ImageView) convertView
                         .findViewById(R.id.call_log_item_bottom_line);
-                vh.call_duration= (TextView) convertView.findViewById(R.id.call_duration_TV);
+                vh.call_duration = (TextView) convertView.findViewById(R.id.call_duration_TV);
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
@@ -284,9 +282,9 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
             } else {
                 vh.showDate.setVisibility(View.GONE);
             }
-                long duration=mb.getCallLogDuraction();
+            long duration = mb.getCallLogDuraction();
 
-            if(duration>0) {
+            if (duration > 0) {
                 int m = (int) (duration / 60);
                 int s = (int) (duration % 60);
                 if (m > 0) {
@@ -298,7 +296,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                 } else {
                     vh.call_duration.setText(getResources().getString(R.string.call_duration, 0, s));
                 }
-            }else{
+            } else {
                 vh.call_duration.setText(getResources().getString(R.string.call_duration, 0, 0));
             }
             return convertView;
@@ -307,7 +305,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
 
     /**
      * getCallLog
-     * 
+     *
      * @param phoneNumber
      * @return
      */
@@ -315,8 +313,8 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
         List<String> showDate = new ArrayList<String>();
         String number = PrivacyContactUtils.formatePhoneNumber(phoneNumber);
         Cursor cursor = getContentResolver().query(Constants.PRIVACY_CALL_LOG_URI, null,
-                Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " LIKE ? ", new String[] {
-                    "%" + number
+                Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " LIKE ? ", new String[]{
+                        "%" + number
                 }, Constants.COLUMN_CALL_LOG_DATE + " desc");
         if (cursor != null) {
             try {
@@ -341,8 +339,8 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                         String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(numberCall);
                         PrivacyCalllogFragment.updateCallLogMyselfIsRead(1,
                                 "call_log_phone_number LIKE ? ",
-                                new String[] {
-                                    "%" + readNumberFlag
+                                new String[]{
+                                        "%" + readNumberFlag
                                 }, this);
                     }
                     try {

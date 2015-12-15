@@ -427,5 +427,7 @@ public class Constants {
     /** 新的卡片数据接口 */
     public static final String PRIVACY_WIFI_URL = "/appmaster/promotion";
 
+    public static final String PATTERN_DATE = "yyyy/MM/dd HH:mm:ss";
+
 
 }

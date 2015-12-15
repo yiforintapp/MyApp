@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -419,7 +418,7 @@ public class PrivacyContactFragment extends BaseFragment {
                 }
                 // 查询该号码是否为隐私联系人
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
+                ContactBean privacyConatact = PrivacyContactManager.getInstance(mContext).getPrivateMessage(
                         formateNumber, mContext);
                 PrivacyContactManager.getInstance(mContext).setLastCall(
                         privacyConatact);
@@ -434,31 +433,6 @@ public class PrivacyContactFragment extends BaseFragment {
                 }
             }
         });
-//        mPCDialog.setRightBtnListener(new OnRippleCompleteListener() {
-//
-//            @Override
-//            public void onRippleComplete(RippleView arg0) {
-//                /* SDK */
-//                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "call", "contact");
-//                mPCDialog.cancel();
-//                // 查询该号码是否为隐私联系人
-//                String formateNumber = PrivacyContactUtils.formatePhoneNumber(contact
-//                        .getContactNumber());
-//                ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
-//                        formateNumber, mContext);
-//                PrivacyContactManager.getInstance(mContext).setLastCall(
-//                        privacyConatact);
-//                Uri uri = Uri.parse("tel:" + contact.getContactNumber());
-//                // Intent intent = new Intent(Intent.ACTION_CALL, uri);
-//                Intent intent = new Intent(Intent.ACTION_DIAL,
-//                        uri);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                try {
-//                    startActivity(intent);
-//                } catch (Exception e) {
-//                }
-//            }
-//        });
         mPCDialog.setCanceledOnTouchOutside(true);
         mPCDialog.show();
     }
@@ -558,20 +532,15 @@ public class PrivacyContactFragment extends BaseFragment {
                                                             values,
                                                             mContext);
                                                 } catch (Exception e) {
-                                                    Log.e("PrivacyContactFragment Operation",
-                                                            "PrivacyContactFragment restore message fail!");
+                                                   e.printStackTrace();
                                                 }
                                                 // 删除短信記錄
                                                 try {
-                                                    PrivacyContactUtils
-                                                            .deleteDbLog(
-                                                                    mContext.getContentResolver(),
-                                                                    Constants.PRIVACY_MESSAGE_URI,
-                                                                    Constants.COLUMN_MESSAGE_PHONE_NUMBER
-                                                                            + " LIKE ?",
-                                                                    new String[]{
-                                                                            "%" + formateNumber
-                                                                    });
+                                                    ContentResolver resolver = mContext.getContentResolver();
+                                                    Uri url = Constants.PRIVACY_MESSAGE_URI;
+                                                    String select = Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ?";
+                                                    String[] selectArgs = new String[]{"%" + formateNumber};
+                                                    PrivacyContactUtils.deleteDbLog(resolver, url, select, selectArgs);
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
@@ -741,8 +710,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                                     values,
                                                     mContext);
                                         } catch (Exception e) {
-                                            Log.e("PrivacyContactFragment Operation",
-                                                    "PrivacyContactFragment restore message fail!");
+                                           e.printStackTrace();
                                         }
                                         // 删除短信記錄
                                         try {

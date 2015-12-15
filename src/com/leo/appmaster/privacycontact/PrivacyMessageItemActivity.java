@@ -39,6 +39,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -108,7 +110,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                 }
                 // 查询该号码是否为隐私联系人
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
-                ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
+                ContactBean privacyConatact = PrivacyContactManager.getInstance(PrivacyMessageItemActivity.this).getPrivateMessage(
                         formateNumber, PrivacyMessageItemActivity.this);
                 PrivacyContactManager.getInstance(PrivacyMessageItemActivity.this).setLastCall(
                         privacyConatact);
@@ -221,18 +223,13 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
          */
         int id = v.getId();
         if (id == R.id.message_send_button) {
-              /*有发送短信，恢复短信发送失败Toast标志值*/
-            PrivacyContactManager.getInstance(this).mSendMsmFail = true;
-            SmsManager sms = SmsManager.getDefault();
             String messageContent = mEditText.getText().toString();
-            ArrayList<String> divideMessageContents = sms.divideMessage(messageContent);
             try {
-                for (String text : divideMessageContents) {
-                    Intent sentIntent = new Intent(PrivacyContactUtils.SENT_SMS_ACTION);
-                    PendingIntent sentPI = PendingIntent.getBroadcast(this, 0,
-                            sentIntent, 0);
-                    sms.sendTextMessage(mPhoneNumber, null, text, sentPI, null);
+                PrivacyContactManagerImpl pm = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+                if (TextUtils.isEmpty(mPhoneNumber)) {
+                    return;
                 }
+                pm.sendMessage(mPhoneNumber, messageContent);
                 mEditText.getText().clear();
                 if (!messageContent.equals("") && messageContent != null) {
                     MessageBean message = new MessageBean();
@@ -262,7 +259,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                     mAdapter = new CallLogAdapter(mMessages);
                     mContactCallLog.setAdapter(mAdapter);
                     mContactCallLog.setSelection(mMessages.size() - 1);
-                    Uri line = getContentResolver().insert(Constants.PRIVACY_MESSAGE_URI, values);
+                    Uri line = PrivacyContactUtils.insertDbLog(getContentResolver(), Constants.PRIVACY_MESSAGE_URI, values);
                     if (line == null) {
                         LeoLog.i("LockMessageItemActivity", "Send message insert fail!");
                     }

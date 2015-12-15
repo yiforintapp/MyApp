@@ -8,8 +8,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
-import android.view.View;
-import android.widget.Toast;
+import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -19,9 +18,7 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 隐私联系人通话记录异步处理
@@ -172,13 +169,13 @@ public class PrivacyCallAsyncTask extends AsyncTask<ContactBean, ContactBean, Cu
                     if (call.getAnswerType() == 1) {
                         if (CallLog.Calls.OUTGOING_TYPE != type) {
                             if (CallLog.Calls.MISSED_TYPE == type) {
-                                new MessagePrivacyReceiver().callLogNotification(mContext,
+                                PrivacyContactUtils.callLogNotification(mContext,
                                         numberToIswipe);
                             }
                         }
                     } else if (call.getAnswerType() == 0) {
                         if (CallLog.Calls.OUTGOING_TYPE != type) {
-                            new MessagePrivacyReceiver().callLogNotification(mContext,
+                            PrivacyContactUtils.callLogNotification(mContext,
                                     numberToIswipe);
                         }
                     }
@@ -201,13 +198,12 @@ public class PrivacyCallAsyncTask extends AsyncTask<ContactBean, ContactBean, Cu
                 public void run() {
                     call = number;
                     ContentResolver cr = mContext.getContentResolver();
-                    String formatNumber = PrivacyContactUtils.formatePhoneNumber(call
-                            .getContactNumber());
+                    String callNumber = call.getContactNumber();
+                    String formatNumber = PrivacyContactUtils.formatePhoneNumber(callNumber);
                     try {
-                        cursor = cr.query(PrivacyContactUtils.CALL_LOG_URI, null,
-                                "number LIKE  ? ", new String[]{
-                                        "%" + formatNumber
-                                }, null);
+                        String select = "number LIKE  ? ";
+                        String[] selectArgs = new String[]{"%" + formatNumber};
+                        cursor = cr.query(PrivacyContactUtils.CALL_LOG_URI, null, select, selectArgs, null);
                     } catch (Exception e) {
                     } catch (Error error) {
                         // AM-1824, No such method error
@@ -234,28 +230,28 @@ public class PrivacyCallAsyncTask extends AsyncTask<ContactBean, ContactBean, Cu
                                 final String number = cursor.getString(cursor.getColumnIndex("number"));
                                 numberToIswipe = number;
                                 String name = call.getContactName();
-                                Date date = new Date(Long.parseLong(cursor.getString(cursor
-                                        .getColumnIndex(CallLog.Calls.DATE))));
-                                SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                int dateColum = cursor.getColumnIndex(CallLog.Calls.DATE);
+                                int typeColum = cursor.getColumnIndex(CallLog.Calls.TYPE);
+                                Date date = new Date(Long.parseLong(cursor.getString(dateColum)));
+                                SimpleDateFormat sfd = new SimpleDateFormat(Constants.PATTERN_DATE);
                                 String time = sfd.format(date);
-                                int type = (cursor
-                                        .getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)));
+                                int type = (cursor.getInt(typeColum));
                                 ContentValues values = new ContentValues();
                                 values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER, number);
-                                if (!"".equals(name) && name != null) {
+                                if (!TextUtils.isEmpty(name)) {
                                     values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, name);
                                 } else {
-                                    if (call.getContactName() != null
-                                            && !"".equals(call.getContactName())) {
-                                        values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
-                                                call.getContactName());
+                                    String contactName = call.getContactName();
+                                    if (!TextUtils.isEmpty(contactName)) {
+                                        values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, contactName);
                                     } else {
                                         values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, number);
                                     }
                                 }
                                 values.put(Constants.COLUMN_CALL_LOG_DATE, time);
                                 values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
-                                values.put(Constants.COLUMN_CALL_LOG_DURATION, cursor.getString(cursor.getColumnIndex("duration")));
+                                String duration = cursor.getString(cursor.getColumnIndex("duration"));
+                                values.put(Constants.COLUMN_CALL_LOG_DURATION, duration);
 
                                 if (call.getAnswerType() == 1) {
                                     if (CallLog.Calls.OUTGOING_TYPE == type
@@ -271,8 +267,11 @@ public class PrivacyCallAsyncTask extends AsyncTask<ContactBean, ContactBean, Cu
                                         values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
                                     }
                                 }
-                                // 保存记录
-                                mContext.getContentResolver().insert(Constants.PRIVACY_CALL_LOG_URI, values);
+
+                                /*保存记录*/
+                                ContentResolver cr = mContext.getContentResolver();
+                                PrivacyContactUtils.insertDbLog(cr, Constants.PRIVACY_CALL_LOG_URI, values);
+
                                 if (call.getAnswerType() == 1) {
                                     if (CallLog.Calls.OUTGOING_TYPE != type) {
                                         if (CallLog.Calls.MISSED_TYPE == type) {
@@ -284,11 +283,9 @@ public class PrivacyCallAsyncTask extends AsyncTask<ContactBean, ContactBean, Cu
                                             } else {
                                                 pre.setCallLogNoReadCount(1);
                                             }
-                                            LeoEventBus
-                                                    .getDefaultBus()
-                                                    .post(
-                                                            new PrivacyEditFloatEvent(
-                                                                    PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                                            String msgEvent = PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION;
+                                            PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(msgEvent);
+                                            LeoEventBus.getDefaultBus().post(event);
                                         }
                                     }
                                 } else if (call.getAnswerType() == 0) {
@@ -301,11 +298,9 @@ public class PrivacyCallAsyncTask extends AsyncTask<ContactBean, ContactBean, Cu
                                         } else {
                                             pre.setCallLogNoReadCount(1);
                                         }
-                                        LeoEventBus
-                                                .getDefaultBus()
-                                                .post(
-                                                        new PrivacyEditFloatEvent(
-                                                                PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
+                                        String msgCallNoti = PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION;
+                                        PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(msgCallNoti);
+                                        LeoEventBus.getDefaultBus().post(event);
                                     }
                                 }
                                 // 删除系统记录
@@ -325,22 +320,20 @@ public class PrivacyCallAsyncTask extends AsyncTask<ContactBean, ContactBean, Cu
                                 });
                                 AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
                                 // 通知更新通话记录
-                                LeoEventBus
-                                        .getDefaultBus()
-                                        .post(
-                                                new PrivacyEditFloatEvent(
-                                                        PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
+                                String msgEdit = PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP;
+                                PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(msgEdit);
+                                LeoEventBus.getDefaultBus().post(event);
                                 // 发送通知
                                 if (call.getAnswerType() == 1) {
                                     if (CallLog.Calls.OUTGOING_TYPE != type) {
                                         if (CallLog.Calls.MISSED_TYPE == type) {
-                                            new MessagePrivacyReceiver().callLogNotification(mContext,
+                                            PrivacyContactUtils.callLogNotification(mContext,
                                                     numberToIswipe);
                                         }
                                     }
                                 } else if (call.getAnswerType() == 0) {
                                     if (CallLog.Calls.OUTGOING_TYPE != type) {
-                                        new MessagePrivacyReceiver().callLogNotification(mContext,
+                                        PrivacyContactUtils.callLogNotification(mContext,
                                                 numberToIswipe);
                                     }
                                 }

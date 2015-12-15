@@ -18,9 +18,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,7 +49,6 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
@@ -257,7 +254,7 @@ public class PrivacyCalllogFragment extends BaseFragment implements OnItemClickL
                     }
                     // 查询该号码是否为隐私联系人
                     String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                    ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
+                    ContactBean privacyConatact = PrivacyContactManager.getInstance(mContext).getPrivateMessage(
                             formateNumber, mContext);
                     PrivacyContactManager.getInstance(mContext)
                             .setLastCall(privacyConatact);

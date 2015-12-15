@@ -686,7 +686,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".privacycontact.MessagePrivacyReceiver"
+            android:name=".privacycontact.PrivacyContactReceiver"
             android:exported="true" >
             <intent-filter android:priority="2147483647" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
