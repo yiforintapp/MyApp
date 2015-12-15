@@ -83,25 +83,31 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                     mPhoneNumber = message.getOriginatingAddress();// 电话号
                     mMessgeBody = message.getMessageBody();// 短信内容
                     mSendDate = message.getTimestampMillis();
+
                     /*手机防盗功能处理:防止手机防盗号码为隐私联系人时拦截掉放在最前面*/
                     boolean isSecurInstr = PhoneSecurityManager.getInstance(mContext).securityPhoneReceiverHandler(message);
                     if (isSecurInstr) {
                         break;
                     }
+
+                    /*隐私联系人功能处理：*/
                     if (!Utilities.isEmpty(mPhoneNumber)) {
                         String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
-                        // 查询来的号码是否为隐私联系人，如果返回值为空则说明不是
+                        /*查询来的号码是否为隐私联系人，如果返回值为空则说明不是*/
                         ContactBean contact = PrivacyContactManager.getInstance(mContext).getPrivateMessage(formateNumber, mContext);
-                        // 设置每次来的号码，方便在Observer的onChanage中去使用
+                        /*设置每次来的号码，方便在Observer的onChanage中去使用*/
                         PrivacyContactManager.getInstance(mContext).setLastMessageContact(contact);
                         if (contact != null) {
-                             /*4.4以上去做短信操作*/
+
+                            /*4.4以上不去做短信拦截操作*/
                             boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
                             if (!isLessLeve19) {
                                 return;
                             }
-                            // 拦截短信
+
+                            /* 拦截短信*/
                             abortBroadcast();
+
                             String sendTime = mSimpleDateFormate.format(System.currentTimeMillis());
                             final MessageBean messageBean = new MessageBean();
                             messageBean.setMessageName(contact.getContactName());

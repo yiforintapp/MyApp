@@ -229,6 +229,7 @@ public class PrivacyContactManager {
                     && sendDate == date) {
                 mMessage = message;
             } else {
+
                 ContentValues values = new ContentValues();
                 values.put(Constants.COLUMN_MESSAGE_PHONE_NUMBER, message.getPhoneNumber());
                 values.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, message.getMessageName());
@@ -239,8 +240,9 @@ public class PrivacyContactManager {
                 int threadId = PrivacyContactUtils.queryContactId(mContext,
                         message.getPhoneNumber());
                 values.put(Constants.COLUMN_MESSAGE_THREAD_ID, threadId);
-                ContentResolver mCr = mContext.getContentResolver();
-                mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+                ContentResolver cr = mContext.getContentResolver();
+                PrivacyContactUtils.insertDbLog(cr,Constants.PRIVACY_MESSAGE_URI, values);
+
                 if (count > 0) {
                     pre.setMessageNoReadCount(count + 1);
                 } else {
@@ -255,7 +257,7 @@ public class PrivacyContactManager {
                     intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intentPending.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
                             PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
-                    intentPending.putExtra("message_notifi", true);
+                    intentPending.putExtra(PrivacyContactUtils.PRIVACY_MSM_NORI, true);
                     PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0,
                             intentPending, PendingIntent.FLAG_UPDATE_CURRENT);
                     notification.icon = R.drawable.ic_launcher_notification;
