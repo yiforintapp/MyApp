@@ -55,6 +55,10 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
                         init();
                     } catch (Exception e) {
                         LeoLog.i("poha", "exception in the whole init :" + e.toString());
+                        if (mCamera != null) {
+                            mCamera.stopPreview();
+                            mCamera.release();
+                        }
                     }
                 }
             });
