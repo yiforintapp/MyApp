@@ -1208,7 +1208,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                         mBannerContainer.setCurrentItem(1,false);
                                         mAdapterCycle.setLasterSlectedPage(1);
                                         delayBannerHideAnim();
-                                        largeBannerShowAnim();
+                                        hideIconAndPswTips();
                                         
                                     } else {
                                         mBannerContainer.setCurrentItem(0,false);
@@ -1264,7 +1264,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
 
-    private void largeBannerShowAnim() {
+    private void hideIconAndPswTips() {
         //隐藏图标和密码提示
         int type = AppMasterPreference.getInstance(this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
