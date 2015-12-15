@@ -690,10 +690,10 @@ public class FileOperationUtil {
                         pa.getBitList().add(new PhotoItem(path));
                         countMap.put(dir_path, pa);
                     } else {
-
                         if (mSuffix != null && mSuffix.equals(PrivacyDataManagerImpl.CHECK_APART)) {
                             picNumFromDir = pa.getBitList().size();
                             if (picNumFromDir < PrivacyDataManagerImpl.MAX_NUM) {
+                                LeoLog.d("testGetAllPicFlie", "<MAXNUM picNumFromDir : " + picNumFromDir);
                                 File f = new File(path);
                                 if (f.exists()) {
                                     pa = countMap.get(dir_path);
@@ -701,6 +701,7 @@ public class FileOperationUtil {
                                     pa.getBitList().add(new PhotoItem(path));
                                 }
                             } else {
+                                LeoLog.d("testGetAllPicFlie", ">MAXNUM picNumFromDir");
                                 pa = countMap.get(dir_path);
                                 pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
                                 pa.getBitList().add(new PhotoItem(path));
@@ -713,7 +714,6 @@ public class FileOperationUtil {
                                 pa.getBitList().add(new PhotoItem(path));
                             }
                         }
-
                     }
                 }
             }

@@ -224,7 +224,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
     @Override
     public List<PhotoAibum> getAllPicFile(String mSuffix) {
-        return FileOperationUtil.getPhotoAlbum(mContext,mSuffix);
+        return FileOperationUtil.getPhotoAlbum(mContext, mSuffix);
     }
 
     @Override
@@ -515,6 +515,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         List<PhotoItem> aibumList = new ArrayList<PhotoItem>();
         Cursor cursor = null;
 
+        int theMaxNum = 1;
+
         String splashPath = getSplashDirPath();
 
         int currSDK_INT = Build.VERSION.SDK_INT;
@@ -555,9 +557,14 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                         }
                     }
 
-                    File f = new File(path);
-                    if (!f.exists()) {
-                        continue;
+                    //in case of too slow
+                    if (theMaxNum < MAX_NUM) {
+                        LeoLog.d("testAddPicExists", "check exists num : " + theMaxNum);
+                        File f = new File(path);
+                        if (!f.exists()) {
+                            continue;
+                        }
+                        theMaxNum++;
                     }
 
                     boolean isFilterVideoType = false;
