@@ -146,6 +146,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                         }
                     }
                 }
+                mUpArrow.setBgAlpha(255);
 
             }
 
