@@ -715,7 +715,7 @@ public class LockManagerImpl extends LockManager {
                 List<LocationLock> deleteLocationList = new ArrayList<LocationLock>();
                 for (LocationLock locationLock : mLocationLockList) {
                     if (locationLock.entranceModeId == lockMode.modeId
-                            || locationLock.entranceModeId == lockMode.modeId) {
+                            || locationLock.quitModeId == lockMode.modeId) {
                         deleteLocationList.add(locationLock);
                     }
                 }
