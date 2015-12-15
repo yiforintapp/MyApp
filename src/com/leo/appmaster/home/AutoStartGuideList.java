@@ -331,8 +331,7 @@ public class AutoStartGuideList extends WhiteList {
         }
 
          /*samsung 是否为存在“电池优化-应用程序优化”的系统*/
-        boolean samSung = BuildProperties.isSamSungModel()
-                && (isSamSungSActivity(context) || isSamSungNActivity(context));
+        boolean samSung = isSamSungGuideModel(context);
         if (samSung) {
             return SAMSUMG_SYS;
         }
@@ -363,8 +362,7 @@ public class AutoStartGuideList extends WhiteList {
             return R.string.auto_start_tip_xiaomi4_and_letv;
         }
         /*samsung 是否为存在“电池优化-应用程序优化”的系统*/
-        boolean samSung = BuildProperties.isSamSungModel()
-                && (isSamSungSActivity(context) || isSamSungNActivity(context));
+        boolean samSung = isSamSungGuideModel(context);
         if (samSung) {
             return R.string.samsung_tip_txt;
         }
@@ -386,7 +384,7 @@ public class AutoStartGuideList extends WhiteList {
         PreferenceTable prefer = PreferenceTable.getInstance();
         int countFlag = prefer.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
         boolean isCountEnough = countFlag > SAMSUNG_TIP_COUNT;
-        boolean samSung = BuildProperties.isSamSungModel() && (isSamSungSActivity(context) || isSamSungNActivity(context));
+        boolean samSung = isSamSungGuideModel(context);
         boolean appConsumed = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
         if (!samSung || !appConsumed || isCountEnough) {
             return false;
@@ -465,6 +463,7 @@ public class AutoStartGuideList extends WhiteList {
         }
         return false;
     }
+
     /*判断是否该手机存在三星Note的应用程序优化*/
     public static boolean isSamSungNActivity(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -507,5 +506,12 @@ public class AutoStartGuideList extends WhiteList {
         if (!appLockHandler) {
             preferenceTable.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
         }
+    }
+
+
+    public static boolean isSamSungGuideModel(Context context) {
+        boolean samSung = BuildProperties.isSamSungModel()
+                && (isSamSungSActivity(context) || isSamSungNActivity(context));
+        return samSung;
     }
 }
