@@ -124,6 +124,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mHighGradeGesture;
     private RippleView mHighGradeBtnLt;
     private ImageView mHighFiveEmptyStar;
+    private TextView mHighGradeTitle;
     private ImageView mHighGradeImg;
     private TextView mHighGradeContent;
 
@@ -135,6 +136,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ImageView mGradeGesture;
     private RippleView mGradeBtnLt;
     private ImageView mFiveEmptyStar;
+    private TextView mGradeTitle;
     private ImageView mGradeImg;
     private TextView mGradeContent;
 
@@ -143,6 +145,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     /**
      * 前往FaceBook
      */
+    private TextView mFbTitle;
     private ImageView mFbImg;
     private TextView mFbContent;
     private RippleView mFbBtnLt;
@@ -150,6 +153,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     /**
      * Swifty
      */
+    private TextView mSwiftyTitle;
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
     private RippleView mSwiftyBtnLt;
@@ -157,6 +161,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     /**
      * WifiMaster
      */
+    private TextView mWifiMasteTitle;
     private ImageView mWifiMasteImg;
     private TextView mWifiMasteContent;
     private RippleView mWifiMasteBtnLt;
@@ -728,6 +733,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "master_shw");
+            mWifiMasteTitle = (TextView) include.findViewById(R.id.item_title);
             mWifiMasteImg = (ImageView) include.findViewById(R.id.wifimaster_img);
             mWifiMasteContent = (TextView) include.findViewById(R.id.wifimaster_content);
             mWifiMasteBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
@@ -735,6 +741,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mWifiMasteContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL);
             mImageLoader.displayImage(imgUrl, mWifiMasteImg, getOptions(R.drawable.swifty_banner));
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_TITLE));
+            if (!isTitleEmpty) {
+                mWifiMasteTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_PRI_WIFIMASTER_TITLE));
+            }
         }
     }
 
@@ -766,6 +778,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
             View include = viewStub.inflate();
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "swifty_shw");
+            mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
             mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
@@ -773,7 +786,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
-
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_SWIFTY_TITLE));
+            if (!isTitleEmpty) {
+                mSwiftyTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_SWIFTY_TITLE));
+            }
         }
 
     }
@@ -813,6 +831,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
             View include = viewStub.inflate();
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "facebook_shw");
+            mFbTitle = (TextView) include.findViewById(R.id.item_title);
             mFbImg = (ImageView) include.findViewById(R.id.fb_img);
             mFbContent = (TextView) include.findViewById(R.id.fb_content);
             mFbBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
@@ -820,8 +839,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mFbContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_FB_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_FB_IMG_URL);
             mImageLoader.displayImage(imgUrl, mFbImg, getOptions(R.drawable.fb_banner));
-
-
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_PRI_FB_TITLE));
+            if (!isTitleEmpty) {
+                mFbTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_PRI_FB_TITLE));
+            }
         }
     }
 
@@ -857,6 +880,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
                 mHighGradeBtnLt = (RippleView) highInclude.findViewById(R.id.item_btn_rv);
                 mHighFiveEmptyStar = (ImageView) highInclude.findViewById(R.id.five_star_empty);
+                mHighGradeTitle = (TextView) highInclude.findViewById(R.id.item_title);
                 mHighGradeImg = (ImageView) highInclude.findViewById(R.id.grade_img);
                 mHighGradeContent = (TextView) highInclude.findViewById(R.id.grade_content);
                 mHighGradeBtnLt.setOnClickListener(this);
@@ -864,6 +888,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mHighGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
                 String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
                 mImageLoader.displayImage(imgUrl, mHighGradeImg, getOptions(R.drawable.grade_bg));
+                boolean isTitleEmpty = TextUtils.isEmpty(
+                        preferenceTable.getString(PrefConst.KEY_PRI_GRADE_TITLE));
+                if (!isTitleEmpty) {
+                    mHighGradeTitle.setText(preferenceTable.getString(
+                            PrefConst.KEY_PRI_GRADE_TITLE));
+                }
 
                 showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
                         mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
@@ -883,6 +913,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
                 mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
                 mFiveEmptyStar = (ImageView) include.findViewById(R.id.five_star_empty);
+                mGradeTitle = (TextView) include.findViewById(R.id.item_title);
                 mGradeImg = (ImageView) include.findViewById(R.id.grade_img);
                 mGradeContent = (TextView) include.findViewById(R.id.grade_content);
                 mGradeBtnLt.setOnClickListener(this);
@@ -890,6 +921,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
                 String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
                 mImageLoader.displayImage(imgUrl, mGradeImg, getOptions(R.drawable.grade_bg));
+                boolean isTitleEmpty = TextUtils.isEmpty(
+                        preferenceTable.getString(PrefConst.KEY_PRI_GRADE_TITLE));
+                if (!isTitleEmpty) {
+                    mGradeTitle.setText(preferenceTable.getString(
+                            PrefConst.KEY_PRI_GRADE_TITLE));
+                }
 
                 showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar,
                         mFiveStar, mFiveEmptyStar, mGradeGesture);

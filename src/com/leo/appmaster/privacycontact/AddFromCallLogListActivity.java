@@ -116,7 +116,9 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 int currentValue = msg.what;
                 if (currentValue >= mAddPrivacyCallLog.size()) {
                     if (!mLogFlag) {
-                        mProgressDialog.cancel();
+                        if (mProgressDialog != null) {
+                            mProgressDialog.cancel();
+                        }
                         AddFromContactListActivity
                                 .notificationUpdatePrivacyContactList();
                         AddFromCallLogListActivity.this.finish();

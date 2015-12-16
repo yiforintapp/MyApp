@@ -395,6 +395,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     }
 
     public void onEvent(AppUnlockEvent event) {
+        LeoLog.d(TAG, "onEvent, result: " + event.mUnlockResult);
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
             if (getPackageName() != null && getPackageName().equals(event.mUnlockedPkg)) {
                 Intent intent = new Intent(this, HomeActivity.class);

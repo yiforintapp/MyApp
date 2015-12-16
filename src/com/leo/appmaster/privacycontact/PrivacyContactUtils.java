@@ -1,11 +1,14 @@
 
 package com.leo.appmaster.privacycontact;
 
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
@@ -32,6 +35,7 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.utils.IoUtils;
 
@@ -58,6 +62,9 @@ public class PrivacyContactUtils {
     public static final int MSG_CONTACT_QU = 10011;
     public static final int MSG_AUTO_ADD_QU = 10012;
     public static final int MSG_CONTACT_DE = 10013;
+    public static final int MSG_EDIT_CONTACT = 10014;
+    public static final int MSG_EDIT_LOG = 10015;
+    public static final int MSG_PRIVACY_CALL_HANDLER = 10016;
     /*隐私短信，通话未读通知id*/
     public static final int MSM_NOTIFI_NUMBER = 20140901;
     public static final int CALL_NOTIFI_NUMBER = 20140902;
@@ -129,6 +136,8 @@ public class PrivacyContactUtils {
     public static final String PRIVACY_EDIT_NAME_UPDATE_MESSAGE_EVENT = "edit_name_udpate_message_event";
     public static final String PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_cancel_red_tip";
     public static final String PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_call_log_cancel_red_tip";
+    public static final String PRIVACY_MSM_CALL_NOTI = "message_call_notifi";
+    public static final String PRIVACY_MSM_NORI = "message_notifi";
     public static final int ID = 0;
 
     public static final int DATE = 1;
@@ -492,7 +501,7 @@ public class PrivacyContactUtils {
         SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> calllog = new HashMap<String, ContactCallLog>();
-       List<ContactCallLog> callBeans = new ArrayList<ContactCallLog>();
+        List<ContactCallLog> callBeans = new ArrayList<ContactCallLog>();
         ContentResolver CR = context.getContentResolver();
         Cursor cursor = null;
         try {
@@ -569,10 +578,10 @@ public class PrivacyContactUtils {
 //                                selectionArgsCall = new String[]{selectionArgs[0], selectionArgs[1], "%" + formateNumber};
 //                            }
 //                            cur = mgr.getSystemCalls(selectionCall, selectionArgsCall);
-                            countCall = countCalls(callBeans,number);
+                            countCall = countCalls(callBeans, number);
                         } else {
 //                            cur = mgr.getSystemCalls("number" + " LIKE ? ", new String[]{"%" + formateNumber});
-                            countCall = countCalls(callBeans,number);
+                            countCall = countCalls(callBeans, number);
                         }
 
 //                        contactCallLog.setCallLogCount(cur.getCount());
@@ -1036,6 +1045,18 @@ public class PrivacyContactUtils {
         return number;
 
     }
+
+    /**
+     * 向制定数据库表中插入数据
+     *
+     * @param cr
+     * @param url
+     * @param values
+     */
+    public static Uri insertDbLog(ContentResolver cr, Uri url, ContentValues values) {
+        return cr.insert(url, values);
+    }
+
 
     // delete contact from myself
 
@@ -1647,4 +1668,93 @@ public class PrivacyContactUtils {
         return Build.VERSION.SDK_INT < 19 ? true : false;
     }
 
+    /**
+     * 来电通知
+     *
+     * @param context
+     * @param number
+     */
+    public static void callLogNotification(Context context, String number) {
+        boolean callLogRuningStatus = AppMasterPreference.getInstance(
+                context)
+                .getCallLogItemRuning();
+        if (callLogRuningStatus) {
+            NotificationManager notificationManager = (NotificationManager)
+                    context.getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new Notification();
+            Intent intentPending = new Intent(context,
+                    PrivacyContactActivity.class);
+            intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentPending.putExtra(
+                    PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                    PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+            intentPending.putExtra(PRIVACY_MSM_CALL_NOTI, true);
+            PendingIntent contentIntent = PendingIntent
+                    .getActivity(
+                            context,
+                            0,
+                            intentPending,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+            notification.icon = R.drawable.ic_launcher_notification;
+            notification.tickerText = context
+                    .getString(R.string.privacy_contact_notification_title_big);
+            notification.flags = Notification.FLAG_AUTO_CANCEL;
+            notification
+                    .setLatestEventInfo(
+                            context,
+                            context.getString(R.string.privacy_contact_notification_title_big),
+                            context.getString(R.string.privacy_contact_notification_title_small),
+                            contentIntent);
+            NotificationUtil.setBigIcon(notification,
+                    R.drawable.ic_launcher_notification_big);
+            notification.when = System.currentTimeMillis();
+            notificationManager.notify(PrivacyContactUtils.CALL_NOTIFI_NUMBER, notification);
+            /* 隐私联系人有未读 通话时发送广播 */
+            PrivacyContactManager.getInstance(context).privacyContactSendReceiverToSwipe(
+                    PrivacyContactManager.PRIVACY_CALL, 0, number);
+        }
+    }
+
+    public static void saveCallLog(ContactBean contact) {
+        SimpleDateFormat dateFormate = new SimpleDateFormat(Constants.PATTERN_DATE);
+        Context context = AppMasterApplication.getInstance();
+        // 判断是否为5.0系统，特别处理
+        if (Build.VERSION.SDK_INT >= 21) {
+            ContentValues values = new ContentValues();
+            values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER, contact.getContactNumber());
+            String name = contact.getContactName();
+
+            if (!TextUtils.isEmpty(name)) {
+                values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, contact.getContactName());
+            } else {
+                values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, contact.getContactNumber());
+            }
+            String date = dateFormate.format(System.currentTimeMillis());
+            values.put(Constants.COLUMN_CALL_LOG_DATE, date);
+            values.put(Constants.COLUMN_CALL_LOG_TYPE, CallLog.Calls.INCOMING_TYPE);
+            values.put(Constants.COLUMN_CALL_LOG_IS_READ, 0);
+            // 保存记录
+            ContentResolver cr = context.getContentResolver();
+            Uri uri = insertDbLog(cr, Constants.PRIVACY_CALL_LOG_URI, values);
+            AppMasterPreference pre = AppMasterPreference.getInstance(context);
+            int count = pre.getCallLogNoReadCount();
+            if (count > 0) {
+                pre.setCallLogNoReadCount(count + 1);
+            } else {
+                pre.setCallLogNoReadCount(1);
+            }
+            if (uri != null) {
+                /*通知更新通话记录*/
+                String eventMsg = PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP;
+                PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(eventMsg);
+                LeoEventBus.getDefaultBus().post(event);
+
+            }
+            String eventMsgNoti = PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION;
+            PrivacyEditFloatEvent eventNoti = new PrivacyEditFloatEvent(eventMsgNoti);
+            LeoEventBus.getDefaultBus().post(eventNoti);
+            /*发送通知*/
+            PrivacyContactUtils.callLogNotification(context, contact.getContactNumber());
+        }
+    }
 }

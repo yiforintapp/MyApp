@@ -41,6 +41,8 @@ import java.util.Map;
 
 public class PrivacyDataManagerImpl extends PrivacyDataManager {
     private static final int API_LEVEL_19 = 19;
+    public final static String CHECK_APART = "check_apart";
+    public final static int MAX_NUM = 802;
     public static final String[] STORE_IMAGES = {
             MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID, //
@@ -136,6 +138,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaStore.MediaColumns.DATA
                 + " LIKE '%.leotmi'";
 
+        int picNumFromDir;
         Cursor cursor = null;
         try {
             cursor = mContext.getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
@@ -149,20 +152,37 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     LeoLog.d("testPicLoadTime", "hide album path : " + path);
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-                    File f = new File(path);
-                    if (f.exists()) {
-                        if (!countMap.containsKey(dirPath)) {
-                            pa = new PhotoAibum();
-                            pa.setName(dirName);
-                            pa.setCount("1");
-                            pa.setDirPath(dirPath);
-                            pa.getBitList().add(new PhotoItem(path));
-                            countMap.put(dirPath, pa);
+                    if (!countMap.containsKey(dirPath)) {
+                        pa = new PhotoAibum();
+                        pa.setName(dirName);
+                        pa.setCount("1");
+                        pa.setDirPath(dirPath);
+                        pa.getBitList().add(new PhotoItem(path));
+                        countMap.put(dirPath, pa);
+                    } else {
+                        if (mSuffix != null && mSuffix.equals(CHECK_APART)) {
+                            picNumFromDir = pa.getBitList().size();
+                            if (picNumFromDir < MAX_NUM) {
+                                File f = new File(path);
+                                if (f.exists()) {
+                                    pa = countMap.get(dirPath);
+                                    pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                                    pa.getBitList().add(new PhotoItem(path));
+                                }
+                            } else {
+                                pa = countMap.get(dirPath);
+                                pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                                pa.getBitList().add(new PhotoItem(path));
+                            }
                         } else {
-                            pa = countMap.get(dirPath);
-                            pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                            pa.getBitList().add(new PhotoItem(path));
+                            File f = new File(path);
+                            if (f.exists()) {
+                                pa = countMap.get(dirPath);
+                                pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                                pa.getBitList().add(new PhotoItem(path));
+                            }
                         }
+
                     }
                 }
             }
@@ -181,6 +201,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
         return aibumList;
     }
+
 
     @Override
     public List<PhotoItem> getHidePicFile(PhotoAibum mFileInfo) {
@@ -202,8 +223,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     }
 
     @Override
-    public List<PhotoAibum> getAllPicFile() {
-        return FileOperationUtil.getPhotoAlbum(mContext);
+    public List<PhotoAibum> getAllPicFile(String mSuffix) {
+        return FileOperationUtil.getPhotoAlbum(mContext, mSuffix);
     }
 
     @Override
@@ -494,6 +515,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         List<PhotoItem> aibumList = new ArrayList<PhotoItem>();
         Cursor cursor = null;
 
+        int theMaxNum = 1;
+
         String splashPath = getSplashDirPath();
 
         int currSDK_INT = Build.VERSION.SDK_INT;
@@ -534,9 +557,14 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                         }
                     }
 
-                    File f = new File(path);
-                    if (!f.exists()) {
-                        continue;
+                    //in case of too slow
+                    if (theMaxNum < MAX_NUM) {
+                        LeoLog.d("testAddPicExists", "check exists num : " + theMaxNum);
+                        File f = new File(path);
+                        if (!f.exists()) {
+                            continue;
+                        }
+                        theMaxNum++;
                     }
 
                     boolean isFilterVideoType = false;

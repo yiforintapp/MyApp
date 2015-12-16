@@ -22,6 +22,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.imageloader.DisplayImageOptions;
@@ -78,7 +79,7 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             @Override
             public void run() {
                 mAlbumList = ((PrivacyDataManager) MgrContext.
-                        getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile();
+                        getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile(PrivacyDataManagerImpl.CHECK_APART);
                 if (mHandler != null) {
                     mHandler.sendEmptyMessage(LOAD_DATA_DONE);
                 }
@@ -168,7 +169,7 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             Bundle bundle = new Bundle();
             PhotoAibum photoAibum = mAlbumList.get(position);
             int size = photoAibum.getBitList().size();
-            if (size < 1000) {
+            if (size < 800) {
                 bundle.putSerializable("data", photoAibum);
             }
             intent.putExtra("pos", position);

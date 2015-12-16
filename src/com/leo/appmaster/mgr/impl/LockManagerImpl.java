@@ -508,6 +508,7 @@ public class LockManagerImpl extends LockManager {
     }
 
     public void onEvent(AppUnlockEvent event) {
+        LeoLog.d(TAG, "onEvent, result: " + event.mUnlockResult);
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
             mLockPolicy.onUnlocked(event.mUnlockedPkg);
             if (mExtranalUnlockListener != null) {
@@ -714,7 +715,7 @@ public class LockManagerImpl extends LockManager {
                 List<LocationLock> deleteLocationList = new ArrayList<LocationLock>();
                 for (LocationLock locationLock : mLocationLockList) {
                     if (locationLock.entranceModeId == lockMode.modeId
-                            || locationLock.entranceModeId == lockMode.modeId) {
+                            || locationLock.quitModeId == lockMode.modeId) {
                         deleteLocationList.add(locationLock);
                     }
                 }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -24,8 +23,8 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.CommonEvent;
+import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -108,6 +107,12 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
             public void onPanelExpanded(View panel) {
                 // 打开
                 Log.i(TAG, "onPanelExpanded, state: " + mSlidingLayout.getPanelState());
+
+                int id = EventId.EVENT_HOME_GUIDE_GONE_ID;
+                String msg = GuideFragment.EVETN_HOME_GUIDE_GONE;
+                CommonEvent event = new CommonEvent(id, msg);
+                LeoEventBus.getDefaultBus().post(event);
+
                 mTouchDelegate.setVisibility(View.VISIBLE);
                 mUpArrow.reverse();
                 mUpArrow.cancelUpAnimation();
@@ -141,6 +146,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                         }
                     }
                 }
+                mUpArrow.setBgAlpha(255);
 
             }
 
@@ -246,6 +252,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
 
         boolean pulledEver = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_MORE_PULLED, false);
         if (!pulledEver) {
+            mUpArrow.setCancelledFalse();
             mUpArrow.startUpAnimation();
             if (GuideFragment.isHomeGuideShowStatus()) {
                 mUpArrow.cancelUpAnimation();
@@ -434,7 +441,9 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
     public void onEventMainThread(CommonEvent event) {
         String msg = event.eventMsg;
         if (GuideFragment.EVENT_HOME_GUIDE_MSG.equals(msg)) {
-            mSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            if (mSlidingLayout != null) {
+                mSlidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            }
         }
     }
 }

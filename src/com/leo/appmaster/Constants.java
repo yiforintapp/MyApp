@@ -49,7 +49,6 @@ public class Constants {
     public static final String TABLE_APPLIST_BUSINESS = "applist_business";
     public static final String TABLE_MONTH_TRAFFIC = "countflow";
     public static final String TABLE_APP_TRAFFIC = "countappflow";
-    public static final String RUN_TAG = "RUN_TAG";
     public static final Uri DOWNLOAD_URI = Uri.parse("content://" + AUTHORITY
             + "/" + TABLE_DOWNLOAD);
 
@@ -427,6 +426,8 @@ public class Constants {
 
     /** 新的卡片数据接口 */
     public static final String PRIVACY_WIFI_URL = "/appmaster/promotion";
+
+    public static final String PATTERN_DATE = "yyyy/MM/dd HH:mm:ss";
 
 
 }

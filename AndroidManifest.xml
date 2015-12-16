@@ -219,8 +219,10 @@
             android:name=".msgcenter.MsgCenterActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:launchMode="singleTask"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
@@ -685,7 +687,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".privacycontact.MessagePrivacyReceiver"
+            android:name=".privacycontact.PrivacyContactReceiver"
             android:exported="true" >
             <intent-filter android:priority="2147483647" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

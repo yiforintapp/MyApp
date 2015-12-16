@@ -330,6 +330,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             } catch (Throwable e) {
                             }
                             //旋转原始bitmap到正确的方向
+                            
                             Matrix m = new Matrix();
                             int orientation = view.getCameraOrientation();
                             m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
@@ -341,7 +342,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             
                             //将bitmap压缩并保存
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            bitmapt.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                            bitmapt.compress(Bitmap.CompressFormat.JPEG, 80, baos);
                             byte[] finalBytes = baos.toByteArray();
                             File photoSavePath = getPhotoSavePath();
                             if (photoSavePath == null) {
@@ -1207,6 +1208,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                         mBannerContainer.setCurrentItem(1,false);
                                         mAdapterCycle.setLasterSlectedPage(1);
                                         delayBannerHideAnim();
+                                        hideIconAndPswTips();
+                                        
                                     } else {
                                         mBannerContainer.setCurrentItem(0,false);
                                         mAdapterCycle.setLasterSlectedPage(0);
@@ -1261,12 +1264,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
 
-    private void largeBannerShowAnim() {
-        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(200);
-        mBannerContainer.setAnimation(anim);
-        anim.startNow();
-        
+    private void hideIconAndPswTips() {
         //隐藏图标和密码提示
         int type = AppMasterPreference.getInstance(this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
@@ -1417,6 +1415,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }else{
                 if (mHasTakePic) {
                     mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, true);
+//                    mHasTakePic = false;
                     LeoLog.i("poha", "set delay true");
                 }
             }

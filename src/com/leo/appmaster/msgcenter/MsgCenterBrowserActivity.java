@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebResourceResponse;
@@ -35,6 +36,9 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         View.OnClickListener {
     private static final String TAG = "MsgCenterBrowserActivity";
@@ -46,6 +50,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     private String mLocalUrl;
     // 是否是更新日志
     private boolean mIsUpdate;
+    private boolean mVerifySuccess;
 
     /**
      * 启动消息中心二级页面
@@ -108,6 +113,22 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             mTitleBar.setOptionMenuVisible(true);
         }
         LeoLog.i(TAG, "url : " + mUrl);
+        verifyUrl(mUrl);
+    }
+
+    private void verifyUrl(String url) {
+        try {
+            Uri uri = Uri.parse(url);
+            String host = uri.getHost();
+            if (host.endsWith("leomaster.com") || host.endsWith("leoers.com")) {
+                mVerifySuccess = true;
+            } else {
+                mVerifySuccess = false;
+            }
+        } catch (Exception e) {
+            LeoLog.e(TAG, "verify ex. " + e.getMessage());
+            mVerifySuccess = false;
+        }
     }
 
     @Override
@@ -149,6 +170,9 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         LeoLog.d(TAG, "shouldOverrideUrlLoading, url: " + url);
+        if (!mVerifySuccess) {
+            return super.shouldOverrideUrlLoading(view, url);
+        }
         Uri uri = Uri.parse(url);
         String schema = uri.getScheme();
         if (!MsgConsts.JSBRIDGE.equals(schema)) {
@@ -225,6 +249,22 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 mLockManager.filterSelfOneMinites();
             }
             return true;
+        } else if (MsgConsts.PATH_ANDROIDID.equals(path)) {
+            String androidid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            String callback = uri.getQueryParameter(MsgConsts.PARAMS_CALLBACK);
+            if (!TextUtils.isEmpty(androidid) && !TextUtils.isEmpty(callback)) {
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("ret", 0);
+                    object.put("androidid", androidid);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (object.length() > 1) {
+                    getWebView().loadUrl("javascript:void(Jsbridge." + callback + "(" + object.toString() + "));");
+                }
+                return true;
+            }
         }
         return super.shouldOverrideUrlLoading(view, url);
     }

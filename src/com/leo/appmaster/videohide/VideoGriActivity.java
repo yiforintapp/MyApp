@@ -598,11 +598,14 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
         }
     }
 
+    private ArrayList<VideoItemBean> clickListAnimation = new ArrayList<VideoItemBean>();
+
     private void startDoingBack(boolean isHide) {
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         String newFileName;
         Boolean isSuccess = true;
         ArrayList<VideoItemBean> list = (ArrayList<VideoItemBean>) mClickList.clone();
+        clickListAnimation = list;
         if (list != null && list.size() > 0) {
 
             VideoItemBean vItem = list.get(0);
@@ -692,6 +695,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                     if (!mIsBackgoundRunning)
                         break;
                     if (isServiceDo) {
+                        LeoLog.d("testcancelHide", "isServiceDo");
                         int mProcessType = -1;
                         try {
                             mProcessType =
@@ -706,6 +710,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         }
                         // if cb can not do this , pg do this
                         if (!isSuccess) {
+                            LeoLog.d("testcancelHide", "CB do not cancel , pg do");
                             try {
                                 newFileName =
                                         FileOperationUtil.getNameFromFilepath(item.getPath());
@@ -747,6 +752,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                                                                 .getPath()), newFileName), this);
                                 FileOperationUtil.deleteFileMediaEntry(item.getPath(),
                                         this);
+                                LeoLog.d("testcancelHide", "cancel success");
                                 mVideoItems.remove(item);
                             } else {
                                 isSuccess = false;
@@ -761,7 +767,6 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
             pdm.registerMediaListener();
             pdm.notifySecurityChange();
         }
-
         readyDoingDone(isSuccess);
     }
 
@@ -777,6 +782,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
     private void onPostDo(boolean isSuccess) {
         mClickList.clear();
         if (!isSuccess) {
+            LeoLog.d("testcancelHide", "onPostDo not success");
             mSelectAll.setText(R.string.app_select_all);
             if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                 if (mTwoName.equals(VideoHideMainActivity.LAST_CATALOG)
@@ -820,12 +826,14 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         "hide_fail");
             }
         } else {
+            LeoLog.d("testcancelHide", "onPostDo success");
             if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                 SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb ",
                         "unhide_done");
             }
         }
         dismissProgressDialog();
+        LeoLog.d("testcancelHide", "mVideoItems size : " + mVideoItems.size());
         if (mVideoItems.size() > 0) {
             animateReorder();
             updateRightButton();
@@ -1241,6 +1249,12 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
 
     private void animateReorder() {
         int length = mClickPosList.size();
+        if (clickListAnimation != null && clickListAnimation.size() > 0) {
+            if (length > clickListAnimation.size()) {
+                length = clickListAnimation.size();
+            }
+        }
+
         List<Animator> resultList = new LinkedList<Animator>();
         int fistVisblePos = mHideVideo.getFirstVisiblePosition();
         int lastVisblePos = mHideVideo.getLastVisiblePosition();

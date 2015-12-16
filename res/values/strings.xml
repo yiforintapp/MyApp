@@ -828,15 +828,16 @@
     <string name="uninstall_empty_page">No any apps could uninstall</string>
 
     <!--3.11-->
-    <string name="home_guide_txt">图片隐藏，视频隐藏，更多功能都在这里了</string>
-    <string name="pic_video_guide_txt">点击编辑按钮，就可以勾选图片取消隐藏哦～</string>
-    <string name="prot_open_suc_tip_cnt">已开启高级保护。如果需要卸载隐私卫士，请在侧边栏操作</string>
-    <string name="wifi_result_swifty_title">流量快捷开关</string>
-    <string name="wifi_result_swifty_content">流量用太快？别担心，使用Swifty，一键开关蜂窝数据及WiFi，节省流量看得见！</string>
-    <string name="samsung_tip_txt">为保证应用锁正常工作，需要您在"应用程序优化"→"详情"中点击隐私卫士，并选择"禁止"。您也可以稍后在应用锁中设置。</string>
     <string name="pri_result_wifimaster_title">WifiMaster</string>
-    <string name="pri_result_wifimaster_content">专业的优化测速工具，让你的WiFi更加快速稳定，为你寻找更多优质的免费WiFi可以连接。</string>
-    <string name="wifi_result_wifimaster_content">马上进行WiFi测速，选择最快的WiFi链接！</string>
-    <string name="pri_result_wifimaster_btn">开启</string>
-    <string name="video_guide_txt">点击编辑按钮，就可以勾选视频取消隐藏哦～</string>
+    <string name="home_guide_txt">Picture hidden, video hidden, more functions here!</string>
+    <string name="pic_video_guide_txt">Click edit to check and unhide the picture</string>
+    <string name="prot_open_suc_tip_cnt">Advanced protection started! Operate in side column to unload the Privacy Guard.</string>
+    <string name="wifi_result_swifty_title">Flow Toggle Widget</string>
+    <string name="wifi_result_swifty_content">Flow runs too fast! Don\'t worry, here comes Swifty! Just a click to start the cellular data and WiFi. Save data flow just now!</string>
+    <string name="samsung_tip_txt">To ensure normal operation of application lock, check Privacy Guard in "Application Program Optimization"->"Detail" and select "Disable", or set them later in Application Lock. </string>
+    <string name="pri_result_wifimaster_content">Professional and optimized speed tester to ensure higher and more stable WiFi speed and provide free WIFI with higher quality.</string>
+    <string name="wifi_result_wifimaster_content">Test your WiFi speed now! Select the fastest WiFi connection!</string>
+    <string name="pri_result_wifimaster_btn">Start</string>
+    <string name="video_guide_txt">Click Edit to check and unhide the video</string>
+
 </resources>

@@ -368,7 +368,7 @@ public class LockHelpSettingTip extends BaseActivity {
                                     intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
                                     startActivity(intent);
                                 }
-                            }, 200);
+                            }, 50);
                             AppMasterApplication.sIsSplashActioned = false;
                         } else {
                             Intent intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);

@@ -18,14 +18,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,7 +49,6 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
@@ -250,14 +248,17 @@ public class PrivacyCalllogFragment extends BaseFragment implements OnItemClickL
             case R.id.call_log_itemCB:
                 if (!mIsEditModel) {
                     ContactCallLog calllog = (ContactCallLog) view.getTag();
+                    String number = calllog.getCallLogNumber();
+                    if (TextUtils.isEmpty(number)) {
+                        return;
+                    }
                     // 查询该号码是否为隐私联系人
-                    String formateNumber = PrivacyContactUtils
-                            .formatePhoneNumber(calllog.getCallLogNumber());
-                    ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
+                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                    ContactBean privacyConatact = PrivacyContactManager.getInstance(mContext).getPrivateMessage(
                             formateNumber, mContext);
                     PrivacyContactManager.getInstance(mContext)
                             .setLastCall(privacyConatact);
-                    Uri uri = Uri.parse("tel:" + calllog.getCallLogNumber());
+                    Uri uri = Uri.parse("tel:" + number);
                     // 跳到拨号界面
                     Intent intent = new Intent(Intent.ACTION_DIAL,
                             uri);

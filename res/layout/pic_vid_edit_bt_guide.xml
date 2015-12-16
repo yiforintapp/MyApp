@@ -38,7 +38,7 @@
                 android:layout_toRightOf="@id/guide_tip_icon"
                 android:text="@string/pic_video_guide_txt"
                 android:layout_marginRight="10dp"
-                android:maxLines="2"
+                android:maxLines="4"
                 android:textColor="#ffffff"
                 android:textSize="14dp"/>
 

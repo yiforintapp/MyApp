@@ -268,7 +268,7 @@ public class LocationLockEditActivity extends BaseActivity implements
 
         }
     }
-    
+
 //    mCategoryDialog.setTitle(getResources().getString(R.string.feedback_category_tip));
 //    mCategoryDialog.setItemsWithDefaultStyle(mCategories,mCategoryPos);
 //    mCategoryDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
@@ -282,8 +282,8 @@ public class LocationLockEditActivity extends BaseActivity implements
 //        }
 //    });
 //    mCategoryDialog.show();
-    
-    
+
+
 //    if (convertView == null) {
 //        convertView = inflater.inflate(R.layout.item_time_lock_select, parent, false);
 //        holder = new Holder();
@@ -315,44 +315,54 @@ public class LocationLockEditActivity extends BaseActivity implements
             mModeListDialog = new LEOChoiceDialog(this);
         }
         mModeListDialog.setTitle(getResources().getString(R.string.select_mode));
-        LockManager  lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         List<String> names = new ArrayList<String>();
         int index = -1;
-        for(int i = 0 ; i < lm.getLockMode().size() ; i++){
+        for (int i = 0; i < lm.getLockMode().size(); i++) {
             names.add(lm.getLockMode().get(i).modeName);
-            if(lm.getLockMode().get(i).modeId == mEditLocationLock.quitModeId){
-                index = i;
+            switch (which) {
+                case 0:
+                    if (lm.getLockMode().get(i).modeId == mEditLocationLock.entranceModeId) {
+                        index = i;
+                    }
+                    break;
+                case 1:
+                    if (lm.getLockMode().get(i).modeId == mEditLocationLock.quitModeId) {
+                        index = i;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
-        mModeListDialog.setItemsWithDefaultStyle(names,index);
+        mModeListDialog.setItemsWithDefaultStyle(names, index);
         mModeListDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 List<LockMode> modeList = mLockManager.getLockMode();
-              LockMode selectedMode = modeList.get(position);
-              if (which == 0) {
-                  mEditLocationLock.quitModeId = selectedMode.modeId;
-                  mEditLocationLock.entranceModeId = selectedMode.modeId;
-                  mEditLocationLock.entranceModeName = selectedMode.modeName;
-                  mTvEnterMode.setText(mEditLocationLock.entranceModeName);
+                LockMode selectedMode = modeList.get(position);
+                if (which == 0) {
+                    mEditLocationLock.entranceModeId = selectedMode.modeId;
+                    mEditLocationLock.entranceModeName = selectedMode.modeName;
+                    mTvEnterMode.setText(mEditLocationLock.entranceModeName);
 
-              } else {
-                  mEditLocationLock.quitModeId = selectedMode.modeId;
-                  mEditLocationLock.quitModeName = selectedMode.modeName;
-                  mTvQuitMode.setText(mEditLocationLock.quitModeName);
-              }
-              mModeListDialog.dismiss();
-              mEdited = true;
+                } else {
+                    mEditLocationLock.quitModeId = selectedMode.modeId;
+                    mEditLocationLock.quitModeName = selectedMode.modeName;
+                    mTvQuitMode.setText(mEditLocationLock.quitModeName);
+                }
+                mModeListDialog.dismiss();
+                mEdited = true;
 
-              if (selectedMode.defaultFlag == 1 && !selectedMode.haveEverOpened) {
-                  Intent intent = new Intent(LocationLockEditActivity.this,
-                          RecommentAppLockListActivity.class);
-                  intent.putExtra("target", -1);
-                  startActivity(intent);
-                  selectedMode.haveEverOpened = true;
-                  mLockManager.updateMode(selectedMode);
-              }
-          }
+                if (selectedMode.defaultFlag == 1 && !selectedMode.haveEverOpened) {
+                    Intent intent = new Intent(LocationLockEditActivity.this,
+                            RecommentAppLockListActivity.class);
+                    intent.putExtra("target", -1);
+                    startActivity(intent);
+                    selectedMode.haveEverOpened = true;
+                    mLockManager.updateMode(selectedMode);
+                }
+            }
         });
         mModeListDialog.show();
     }
@@ -476,8 +486,7 @@ public class LocationLockEditActivity extends BaseActivity implements
         mWifiListDialog.show();
     }
 
-    
-    
+
     private void saveLocationLock() {
         // name
         String name = mEtTimeLockName.getText().toString();
@@ -536,7 +545,8 @@ public class LocationLockEditActivity extends BaseActivity implements
     public String format(int value) {
         return value + "";
     }
-//TODO
+
+    //TODO
     class ModeListAdapter extends BaseAdapter {
 
         private LockManager lm;

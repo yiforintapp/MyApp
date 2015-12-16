@@ -671,15 +671,15 @@
     <string name="hp_helper_shot">المساعدة السريعة</string>
     <string name="hp_helper_iswipe">Swifty</string>
     <string name="pri_pro_ignore">تجاوز</string>
-    
+
     <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فيديو جديد </string>
     <string name="pri_pro_new_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>صورة جديدة </string>
     <string name="pri_pro_new_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>تطبيق جديد </string>
     <string name="pri_pro_scan_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فحص للفيديو </string>
     <string name="pri_pro_scan_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فحص للصورة </string>
     <string name="pri_pro_scan_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فحص للتطبيق </string>
-    
-     <string name="pri_pro_hide_vid">إخفاء فيديو</string>
+
+    <string name="pri_pro_hide_vid">إخفاء فيديو</string>
     <string name="pri_pro_hide_pic">إخفاء صورة</string>
     <string name="pri_pro_lock_app">قفل التطبيق</string>
     <string name="pri_monitor_app_summ">حماية التطبيقات الجديدة</string>
@@ -892,4 +892,17 @@
     <string name="adv_prot_open_suc_tip_cnt">لا يمكن إلغاء تثبيت LEO حارس الشيخوخة. أذهب إلي قفل التطبيق وعطًل حماية متقدمة</string>
     <string name="pri_pro_btn">تمكين (+%1$d نقطة)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
+    <!--3.11-->
+    <string name="pri_result_wifimaster_title">WifiMaster</string>
+    <string name="home_guide_txt">اخفاء الصور ، اخفاء الفيديو ، أكثر الوظائف كلها فى هنا</string>
+    <string name="pic_video_guide_txt">اضغط  زر التحرير ، ممكن  وضع علامة اختبار الصور لإلغاء الإخفاء ～</string>
+    <string name="prot_open_suc_tip_cnt">قد بدأ تشغيل حماية ترقية . اذا احتاج الى الغاء حرس الإخفاء ، الرخاء التشغيل فى العمود الجانب</string>
+    <string name="wifi_result_swifty_title">مفتاح التدفق السريع</string>
+    <string name="wifi_result_swifty_content">سريع استعمال التدفق ؟ لا تقلق ، استخدم Swifty ، اشغل البيانات الخلوية و WiFi بزر ، تشهد توفير التدفق !</string>
+    <string name="samsung_tip_txt">لضمان عمل القفل التطبيقى عاديا ، احتاج اليكم أن تنقر حارس الإخفاء فى " التفاصيل " ← " تحسين البرنامج التطبيق " ، واختر " ممنوع " . </string>
+    <string name="pri_result_wifimaster_content">أداة تحسين قياس السرعة الخاصة ، تجعل WiFi أسرع الإستقرار ، لبحث لكم عن أكثر من WiFi الممتاز لإتصالكم مجانا .</string>
+    <string name="wifi_result_wifimaster_content">يجرى قياس سرعة WiFi فورا ، اختر أسرع WiFi لإتصال !</string>
+    <string name="pri_result_wifimaster_btn">بدء التشغيل</string>
+    <string name="video_guide_txt">اضغط  زر التحرير ، ممكن  وضع علامة اختبار الفيديو لإلغاء الإخفاء ～</string>
+
 </resources>

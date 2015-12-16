@@ -39,7 +39,7 @@ import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
+import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
@@ -66,7 +66,7 @@ public class InitCoreBootstrap extends Bootstrap {
     private PrivacyMessageContentObserver mMessageObserver;
     private PrivacyMessageContentObserver mCallLogObserver;
     private PrivacyMessageContentObserver mContactObserver;
-    private MessagePrivacyReceiver mPrivacyReceiver;
+    private PrivacyContactReceiver mPrivacyReceiver;
 
     private ITelephony mITelephony;
     private AudioManager mAudioManager;
@@ -188,7 +188,7 @@ public class InitCoreBootstrap extends Bootstrap {
                     mContactObserver);
         }
         openEndCall();
-        mPrivacyReceiver = new MessagePrivacyReceiver(mITelephony, mAudioManager);
+        mPrivacyReceiver = new PrivacyContactReceiver(mITelephony, mAudioManager);
         IntentFilter filter = new IntentFilter();
         filter.setPriority(Integer.MAX_VALUE);
         filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION);

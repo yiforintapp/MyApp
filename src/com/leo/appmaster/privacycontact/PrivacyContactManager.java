@@ -57,7 +57,7 @@ public class PrivacyContactManager {
     /* 用来做隐私联系人通话删除时的通话标志 */
     public boolean deleteCallLogDatebaseFlag;
     /* 用来做隐私联系人短信删除时的标志 */
-    public boolean deleteMsmDatebaseFlag;
+//    public boolean deleteMsmDatebaseFlag;
     /* 对不能接受短信广播未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false */
     public int messageSize;
     /* 对不能接受来电广播未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false */
@@ -229,6 +229,7 @@ public class PrivacyContactManager {
                     && sendDate == date) {
                 mMessage = message;
             } else {
+
                 ContentValues values = new ContentValues();
                 values.put(Constants.COLUMN_MESSAGE_PHONE_NUMBER, message.getPhoneNumber());
                 values.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, message.getMessageName());
@@ -239,8 +240,9 @@ public class PrivacyContactManager {
                 int threadId = PrivacyContactUtils.queryContactId(mContext,
                         message.getPhoneNumber());
                 values.put(Constants.COLUMN_MESSAGE_THREAD_ID, threadId);
-                ContentResolver mCr = mContext.getContentResolver();
-                mCr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+                ContentResolver cr = mContext.getContentResolver();
+                PrivacyContactUtils.insertDbLog(cr,Constants.PRIVACY_MESSAGE_URI, values);
+
                 if (count > 0) {
                     pre.setMessageNoReadCount(count + 1);
                 } else {
@@ -255,7 +257,7 @@ public class PrivacyContactManager {
                     intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intentPending.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
                             PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
-                    intentPending.putExtra("message_notifi", true);
+                    intentPending.putExtra(PrivacyContactUtils.PRIVACY_MSM_NORI, true);
                     PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0,
                             intentPending, PendingIntent.FLAG_UPDATE_CURRENT);
                     notification.icon = R.drawable.ic_launcher_notification;
@@ -656,5 +658,36 @@ public class PrivacyContactManager {
         return PrivacyContactUtils.getSysCallLog(mContext, selection, selectionArgs, true, false);
     }
 
+    public ContactBean getPrivateContact(String number) {
+        ContactBean flagContact = null;
+        if (!Utilities.isEmpty(number)) {
+            List<ContactBean> contacts = PrivacyContactManager.getInstance(mContext)
+                    .getPrivateContacts();
+            for (ContactBean contactBean : contacts) {
+                if (contactBean.getContactNumber().contains(number)
+                        && contactBean.getAnswerType() == 0) {
+                    flagContact = contactBean;
+                    break;
+                }
+            }
+        }
+        return flagContact;
+    }
 
+    public  ContactBean getPrivateMessage(String number, Context context) {
+        ContactBean flagContact = null;
+        String formateNumber = null;
+        if (!Utilities.isEmpty(number)) {
+            List<ContactBean> contacts = PrivacyContactManager.getInstance(context)
+                    .getPrivateContacts();
+            formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+            for (ContactBean contactBean : contacts) {
+                if (contactBean.getContactNumber().contains(formateNumber)) {
+                    flagContact = contactBean;
+                    break;
+                }
+            }
+        }
+        return flagContact;
+    }
 }

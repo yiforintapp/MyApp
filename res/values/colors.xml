@@ -90,7 +90,7 @@
     <color name="green_button">#16ca37</color>
     <color name="green_button_ripple">#08b329</color>
     <color name="blue_button_click">#00008B</color>
-
+	 <color name="home_menu_text">#636363</color>
     <color name="wifi_result_safe_start">#0057e8</color>
     <color name="wifi_result_safe_end">#3c73ff</color>
     <color name="wifi_result_unsafe_start">#d8322f</color>

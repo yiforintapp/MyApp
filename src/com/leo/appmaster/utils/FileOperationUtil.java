@@ -40,9 +40,10 @@ import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
 
 public class FileOperationUtil {
-
+    private static final String TAG = "FileOperationUtil";
     private static final String SYSTEM_PREFIX = "/system";
 
     public static final String SDCARD_DIR_NAME = ".DefaultGallery";
@@ -648,10 +649,10 @@ public class FileOperationUtil {
     /*
      * get image folder list
      */
-    public static List<PhotoAibum> getPhotoAlbum(Context context) {
+    public static List<PhotoAibum> getPhotoAlbum(Context context, String mSuffix) {
         List<String> filterVideoTypes = getFilterVideoType();
         List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
-
+        int picNumFromDir;
         Cursor cursor = null;
 
         Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
@@ -669,7 +670,7 @@ public class FileOperationUtil {
                     String dir = cursor.getString(3);
                     String dir_path = getDirPathFromFilepath(path);
                     if (dir.contains("videoCache")) {
-                        Log.d(Constants.RUN_TAG, "Image Path：" + path);
+                        LeoLog.d(TAG, "Image Path：" + path);
                     }
                     if (path.startsWith(SYSTEM_PREFIX)) {
                         continue;
@@ -681,20 +682,37 @@ public class FileOperationUtil {
                     if (isFilterVideoType) {
                         continue;
                     }
-
-                    File f = new File(path);
-                    if (f.exists()) {
-                        if (!countMap.containsKey(dir_path)) {
-                            pa = new PhotoAibum();
-                            pa.setName(dir);
-                            pa.setCount("1");
-                            pa.setDirPath(dir_path);
-                            pa.getBitList().add(new PhotoItem(path));
-                            countMap.put(dir_path, pa);
+                    if (!countMap.containsKey(dir_path)) {
+                        pa = new PhotoAibum();
+                        pa.setName(dir);
+                        pa.setCount("1");
+                        pa.setDirPath(dir_path);
+                        pa.getBitList().add(new PhotoItem(path));
+                        countMap.put(dir_path, pa);
+                    } else {
+                        if (mSuffix != null && mSuffix.equals(PrivacyDataManagerImpl.CHECK_APART)) {
+                            picNumFromDir = pa.getBitList().size();
+                            if (picNumFromDir < PrivacyDataManagerImpl.MAX_NUM) {
+                                LeoLog.d("testGetAllPicFlie", "<MAXNUM picNumFromDir : " + picNumFromDir);
+                                File f = new File(path);
+                                if (f.exists()) {
+                                    pa = countMap.get(dir_path);
+                                    pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                                    pa.getBitList().add(new PhotoItem(path));
+                                }
+                            } else {
+                                LeoLog.d("testGetAllPicFlie", ">MAXNUM picNumFromDir");
+                                pa = countMap.get(dir_path);
+                                pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                                pa.getBitList().add(new PhotoItem(path));
+                            }
                         } else {
-                            pa = countMap.get(dir_path);
-                            pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                            pa.getBitList().add(new PhotoItem(path));
+                            File f = new File(path);
+                            if (f.exists()) {
+                                pa = countMap.get(dir_path);
+                                pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                                pa.getBitList().add(new PhotoItem(path));
+                            }
                         }
                     }
                 }

@@ -22,6 +22,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
+/**
+ * 未使用，作废
+ */
 public class PrivacyMessageSendActivity extends BaseActivity implements OnClickListener {
     private CommonTitleBar mComTitle;
     private static final String CONTACT_CALL_LOG = "contact_call_log";

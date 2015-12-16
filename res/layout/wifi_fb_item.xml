@@ -21,14 +21,9 @@
 
         <TextView
             android:id="@+id/fb_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            style="@style/ItemTitle"
             android:layout_toRightOf="@id/fb_blue_tiao"
-            android:text="@string/fb_item_title"
-            android:textColor="@color/c2"
-            android:textSize="15dp" />
+            android:text="@string/fb_item_title" />
     </RelativeLayout>
 
     <ImageView

@@ -72,6 +72,8 @@
             <TextView
                 android:id="@+id/item_btn_tv"
                 style="@style/ItemBtnText"
+                android:drawablePadding="7dp"
+                android:drawableRight="@drawable/arrow_button_right"
                 android:text="@string/swifty_item_btn"/>
         </com.leo.appmaster.ui.RippleView>
     </LinearLayout>

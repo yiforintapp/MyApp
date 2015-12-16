@@ -21,7 +21,6 @@
         android:id="@+id/pri_pro_click_rv"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="14dp"
         android:layout_toLeftOf="@id/pri_pro_cb"
         android:paddingLeft="60dp"
@@ -31,12 +30,11 @@
         app:rippleHover="true"
         app:rippleOverlay="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_centerVertical="true"
             android:background="@drawable/home_tab_selector"
-            android:orientation="vertical">
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/pri_pro_new_label_tv"
@@ -52,11 +50,11 @@
                 android:id="@+id/pp_folder_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/pri_pro_new_label_tv"
                 android:layout_marginTop="7dp"
                 android:textColor="@color/cb2"
                 android:textSize="@dimen/pri_folder_summary" />
-        </LinearLayout>
-
+        </RelativeLayout>
     </com.leo.appmaster.ui.RippleView>
 
     <ImageView

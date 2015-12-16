@@ -788,4 +788,16 @@
     <string name="pri_pro_btn">Включить (+%1$d балл)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
 
+    <!--3.11-->
+    <string name="pri_result_wifimaster_title">WifiMaster</string>
+    <string name="home_guide_txt">Скрыть фото, скрыть видео, больше функций здесь</string>
+    <string name="pic_video_guide_txt">Для отмены скрытия нажмите кнопку редактирования и отметьте галочкойизображение </string>
+    <string name="prot_open_suc_tip_cnt">Расширенная защита включена. Удаление защиты конфиденциальности можно выполнить с помощью боковой панели</string>
+    <string name="wifi_result_swifty_title">Удобная кнопка трафика данных</string>
+    <string name="wifi_result_swifty_content">Быстрый расход трафика  данных? Не волнуйтесь, с помощью Swifty возможно включение сотовых данных и WiFi в один клик, экономьте трафика  данных прямо сейчас! </string>
+    <string name="samsung_tip_txt">Для нормальной работы замка для приложений необходимо в «Оптимизация прикладных программ» → «Подробно» нажать кнопкузащиты конфиденциальности и выбрать «Запретить». Вы также можете сделать настройки в замкедля приложений.</string>
+    <string name="pri_result_wifimaster_content">Профессиональное иулучшенное средство для тестирования скорости поможет сделать Ваш WiFi быстрее и стабильнееи найти больше качественных и бесплатных WiFi соединений.</string>
+    <string name="wifi_result_wifimaster_content">Начать тестирование скорости WiFi прямо сейчас и выбрать самое быстрое WiFi подключение!</string>
+    <string name="pri_result_wifimaster_btn">Начать </string>
+    <string name="video_guide_txt">Для отмены скрытия нажмитекнопку редактирования и отметьте галочкой видео</string>
 </resources>
