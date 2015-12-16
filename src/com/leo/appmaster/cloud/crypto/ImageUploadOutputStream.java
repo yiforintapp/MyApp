@@ -1,4 +1,4 @@
-package com.leo.appmaster.encrypt;
+package com.leo.appmaster.cloud.crypto;
 
 import android.text.TextUtils;
 
@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilterOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 /**

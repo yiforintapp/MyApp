@@ -1,4 +1,4 @@
-package com.leo.appmaster.encrypt;
+package com.leo.appmaster.cloud.crypto;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -9,7 +9,6 @@ import org.apache.http.HttpResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 

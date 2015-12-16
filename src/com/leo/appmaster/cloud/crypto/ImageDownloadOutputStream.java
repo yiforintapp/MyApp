@@ -1,4 +1,4 @@
-package com.leo.appmaster.encrypt;
+package com.leo.appmaster.cloud.crypto;
 
 import java.io.IOException;
 import java.io.OutputStream;

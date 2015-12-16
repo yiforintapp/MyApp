@@ -1,4 +1,4 @@
-package com.leo.appmaster.encrypt;
+package com.leo.appmaster.cloud.crypto;
 
 /**
  * Created by Jasper on 2015/12/2.

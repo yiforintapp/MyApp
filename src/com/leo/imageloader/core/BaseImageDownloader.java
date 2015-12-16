@@ -39,7 +39,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
 
-import com.leo.appmaster.encrypt.ImageEncryptInputStream;
+import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.utils.IoUtils;
 
