@@ -23,7 +23,4 @@ public class DownloadService extends CloudService {
         return null;
     }
 
-    protected HttpURLConnection openConnection() {
-        return null;
-    }
 }

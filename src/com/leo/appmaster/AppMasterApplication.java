@@ -23,9 +23,11 @@ import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
 
 public class AppMasterApplication extends Application {
+    private static final String TAG = "AppMasterApplication";
 
     private static AppMasterApplication sInstance;
     private List<WeakReference<Activity>> mActivityList;
@@ -54,17 +56,15 @@ public class AppMasterApplication extends Application {
     private Bootstrap mRootBootstrap;
 
     static {
-        // For android L and above, daemon service is not work, so disable it
-        if (PhoneInfo.getAndroidVersion() < 20) {
-            try {
-                System.loadLibrary("leo_service");
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
+        try {
+            System.loadLibrary("leo_service");
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 
     private native void restartApplocker(int sdk, String userSerial);
+    public native String[] getKeyArray();
 
     @Override
     public void onCreate() {
@@ -73,6 +73,16 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
+        try {
+            String[] array = getKeyArray();
+            if (array != null && array.length == 2) {
+                LeoLog.d(TAG, "array: [" + array[0] + ", " + array[1] + "]");
+            } else {
+                LeoLog.d(TAG, "array: " + array);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sInstance = this;
         // Use old sort
         try {
