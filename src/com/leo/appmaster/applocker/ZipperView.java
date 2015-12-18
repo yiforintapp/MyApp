@@ -197,15 +197,16 @@ public class ZipperView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Log.d(TAG, "onDraw");
-
-        mCanvas.drawBitmap(mFCowBoy, 0, 0, mPaint);
-        mCanvas.drawBitmap(mFMask, 0, mYp - mFMask.getHeight(), mSpecialPaint);
-        mCanvas.drawBitmap(mFLeft, -(mFLeft.getWidth() - mCenterX)
-                + (int) (mDisplayMetrics.density * 5.5), mYp - mFLeft.getHeight(), mPaint);
-        mCanvas.drawBitmap(mFRight, mCenterX - (int) (mDisplayMetrics.density * 7.5),
-                mYp - mFRight.getHeight(), mPaint);
-        mCanvas.drawBitmap(mFZipper, mCenterX - mFZipper.getWidth() / 2
-                - (int) (mDisplayMetrics.density * 1.5), (int) (mYp - 20.0 * mScaleH), mPaint);
+        if(mCanvas != null) {
+            mCanvas.drawBitmap(mFCowBoy, 0, 0, mPaint);
+            mCanvas.drawBitmap(mFMask, 0, mYp - mFMask.getHeight(), mSpecialPaint);
+            mCanvas.drawBitmap(mFLeft, -(mFLeft.getWidth() - mCenterX)
+                    + (int) (mDisplayMetrics.density * 5.5), mYp - mFLeft.getHeight(), mPaint);
+            mCanvas.drawBitmap(mFRight, mCenterX - (int) (mDisplayMetrics.density * 7.5),
+                    mYp - mFRight.getHeight(), mPaint);
+            mCanvas.drawBitmap(mFZipper, mCenterX - mFZipper.getWidth() / 2
+                    - (int) (mDisplayMetrics.density * 1.5), (int) (mYp - 20.0 * mScaleH), mPaint);
+        }
 
         canvas.drawBitmap(mFBitmap, 0, 0, mPaint);
 

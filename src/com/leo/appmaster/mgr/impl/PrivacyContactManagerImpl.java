@@ -253,7 +253,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
             Iterator callIt = callNumbers.iterator();
             while (callIt.hasNext()) {
                 String number = (String) callIt.next();
-                if (number.contains(formateNumber)) {
+                if (number != null && formateNumber != null && number.contains(formateNumber)) {
                     callIt.remove();
                 }
             }
@@ -271,8 +271,10 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                 int callCount = 0;
                 int messageCount = 0;
+                String phoneNumber = null;
                 for (ContactCallLog call : calls) {
-                    if (call.getCallLogNumber().contains(formateNumber)) {
+                    phoneNumber = call.getCallLogNumber();
+                    if (phoneNumber != null && formateNumber != null && phoneNumber.contains(formateNumber)) {
                     /*存在于通话记录中，保存通话记录的条数*/
                         int count = call.getCallLogCount();
                         callCount = count;
@@ -283,7 +285,8 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                     }
                 }
                 for (MessageBean message : messages) {
-                    if (message.getPhoneNumber().contains(formateNumber)) {
+                    phoneNumber = message.getPhoneNumber();
+                    if (phoneNumber != null && formateNumber != null && phoneNumber.contains(formateNumber)) {
                     /*存在于短信列表中，保存短信列表条数*/
                         int count = message.getMessageCount();
                         messageCount = count;
@@ -299,7 +302,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                 for (ContactBean contactBean : contacts) {
                     String contactNumber = contactBean.getContactNumber();
                     contactNumber = PrivacyContactUtils.simpleFromateNumber(contactNumber);
-                    if (contactNumber.contains(formateNumber)) {
+                    if (contactNumber != null && formateNumber != null && contactNumber.contains(formateNumber)) {
                         isExistContact = true;
                         tempContact = contactBean;
                         break;
@@ -335,12 +338,14 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         /*获取隐私联系人*/
         ArrayList<ContactBean> contacts = pcm.getPrivateContacts();
         if (contacts != null && contacts.size() != 0) {
+            String number = null;
             for (ContactBean contactPrivacy : contacts) {
                 String tempNumber = PrivacyContactUtils.formatePhoneNumber(contactPrivacy.getContactNumber());
                 Iterator it = cloneContacts.iterator();
                 while (it.hasNext()) {
                     ContactBean contact = (ContactBean) it.next();
-                    if (contact.getContactNumber().contains(tempNumber)/*是否为隐私联系人号码*/
+                    number = contact.getContactNumber();
+                    if (number != null && tempNumber != null && number.contains(tempNumber)/*是否为隐私联系人号码*/
                             || contact.getCount() <= 0 /*过滤掉通话，短信小于等于0的联系人*/) {
                         it.remove();
                         break;
