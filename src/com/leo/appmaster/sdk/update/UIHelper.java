@@ -10,6 +10,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.AppTask;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -515,9 +516,12 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         } else {
             ActivityManager am = (ActivityManager) context
                     .getSystemService(Context.ACTIVITY_SERVICE);
-            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-            if (cn.getClassName().equals(UpdateActivity.class.getName())) {
-                return true;
+            List<RunningTaskInfo> tasks = am.getRunningTasks(1);
+            if (tasks != null && tasks.size() > 0) {
+                ComponentName cn = tasks.get(0).topActivity;
+                if (cn.getClassName().equals(UpdateActivity.class.getName())) {
+                    return true;
+                }
             }
             return false;
         }
@@ -534,11 +538,14 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private boolean isAppOnTopBeforeLolipop(Context context) {
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        String currentPackageName = cn.getPackageName();
-        if (!TextUtils.isEmpty(currentPackageName)
-                && currentPackageName.equals(context.getPackageName())) {
-            return true;
+        List<RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (tasks != null && tasks.size() > 0) {
+            ComponentName cn = tasks.get(0).topActivity;
+            String currentPackageName = cn.getPackageName();
+            if (!TextUtils.isEmpty(currentPackageName)
+                    && currentPackageName.equals(context.getPackageName())) {
+                return true;
+            }
         }
         return false;
 
