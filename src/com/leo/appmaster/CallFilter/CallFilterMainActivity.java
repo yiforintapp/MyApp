@@ -1,11 +1,7 @@
 
-package com.leo.appmaster.appmanage;
+package com.leo.appmaster.CallFilter;
 
-import java.util.List;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,41 +12,35 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.appmanage.view.ManagerFlowFragment;
-import com.leo.appmaster.appmanage.view.ManagerFlowListFragment;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.intruderprotection.BlackListFragment;
+import com.leo.appmaster.intruderprotection.CallFilterFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
-import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
-import com.leo.appmaster.wifiSecurity.WifiSettingActivity;
 
-public class FlowActivity extends BaseFragmentActivity implements OnClickListener,
+import java.util.List;
+
+public class CallFilterMainActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
-    public static final String MESSAGE_MONTH_TRAFFI_SMALL_SETTING = "month_traffic_small_setting";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
     private CommonToolbar mTitleBar;
-    //    private View trffic_setting_iv;
-    private ManagerFlowListFragment trifficListFragment;
-    private ManagerFlowFragment trifficFragment;
+    private BlackListFragment mBlackListFragment;
+    private CallFilterFragment mCallFilterFragment;
+    private CallFilterFragmentHoler[] mFragmentHolders = new CallFilterFragmentHoler[2];
 
-    private ManagerFlowFragmentHoler[] mFragmentHolders = new ManagerFlowFragmentHoler[2];
-
-    // private int mDeskType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flow_trafficlist);
+        setContentView(R.layout.activity_call_filter_main);
         initUI();
     }
 
     private void initUI() {
-        mTitleBar = (CommonToolbar) findViewById(R.id.traffic_title_bar);
-        mTitleBar.setToolbarTitle(R.string.app_flow_elec);
+        mTitleBar = (CommonToolbar) findViewById(R.id.call_filter_toolbar);
+        mTitleBar.setToolbarTitle(R.string.call_filter_name);
         mTitleBar.setToolbarColorResource(R.color.cb);
         mTitleBar.setOptionClickListener(this);
         mTitleBar.setNavigationClickListener(this);
@@ -58,36 +48,29 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         mTitleBar.setOptionMenuVisible(true);
 
 
-        mPagerTab = (LeoPagerTab) findViewById(R.id.traffic_app_tab_indicator);
+        mPagerTab = (LeoPagerTab) findViewById(R.id.call_filter_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);
         mPagerTab.setBackgroundResource(R.color.cb);
-        mViewPager = (ViewPager) findViewById(R.id.traffic_app_viewpager);
+        mViewPager = (ViewPager) findViewById(R.id.call_filter_viewpager);
         initFragment();
 
-        mViewPager.setAdapter(new ManagerFlowAdapter(getSupportFragmentManager()));
+        mViewPager.setAdapter(new CallFilterAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2);
         mPagerTab.setViewPager(mViewPager);
     }
 
-    // @Override
-    // protected void onResume() {
-    // Intent intent = getIntent();
-    // mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-    // -1);
-    // super.onResume();
-    // }
 
     private void initFragment() {
-        ManagerFlowFragmentHoler holder = new ManagerFlowFragmentHoler();
-        holder.title = this.getString(R.string.app_flow);
-        trifficFragment = new ManagerFlowFragment();
-        holder.fragment = trifficFragment;
+        CallFilterFragmentHoler holder = new CallFilterFragmentHoler();
+        holder.title = this.getString(R.string.call_filter_black_list_tab);
+        mBlackListFragment = new BlackListFragment();
+        holder.fragment = mBlackListFragment;
         mFragmentHolders[0] = holder;
 
-        holder = new ManagerFlowFragmentHoler();
-        holder.title = this.getString(R.string.app_elec);
-        trifficListFragment = new ManagerFlowListFragment();
-        holder.fragment = trifficListFragment;
+        holder = new CallFilterFragmentHoler();
+        holder.title = this.getString(R.string.call_filter_list_tab);
+        mCallFilterFragment = new CallFilterFragment();
+        holder.fragment = mCallFilterFragment;
         mFragmentHolders[1] = holder;
 
         // AM-614, remove cached fragments
@@ -115,8 +98,8 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     }
 
 
-    class ManagerFlowAdapter extends FragmentPagerAdapter {
-        public ManagerFlowAdapter(FragmentManager fm) {
+    class CallFilterAdapter extends FragmentPagerAdapter {
+        public CallFilterAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -136,7 +119,7 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    class ManagerFlowFragmentHoler {
+    class CallFilterFragmentHoler {
         String title;
         BaseFragment fragment;
     }
@@ -144,10 +127,6 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ct_option_1_rl:
-                Intent intent = new Intent(this, TrafficSetting.class);
-                startActivity(intent);
-                break;
             case R.id.ct_back_rl:
                 onBackPressed();
                 break;
@@ -166,9 +145,9 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     public void onPageSelected(int arg0) {
-        if (arg0 == 1) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "datapage", "usagelist");
-        }
+//        if (arg0 == 1) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "datapage", "usagelist");
+//        }
     }
 
 }

@@ -216,6 +216,13 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
+            android:name=".CallFilter.CallFilterMainActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
             android:name=".msgcenter.MsgCenterActivity"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -573,7 +580,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
-        
+
         <activity
             android:name=".home.DeskProxyActivity"
             android:excludeFromRecents="true"
@@ -696,7 +703,7 @@
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        
+
         <receiver
             android:name=".quickgestures.receiver.QuickSwitchReceiver"
             android:exported="true" >

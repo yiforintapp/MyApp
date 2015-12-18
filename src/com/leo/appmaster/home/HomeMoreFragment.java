@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.CallFilter.CallFilterMainActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
@@ -317,8 +318,6 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                 case R.string.privacy_contacts:
                     SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "pricall");
                     intent = new Intent(activity, PrivacyContactActivity.class);
-//                   intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
-//                           PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
                     activity.startActivity(intent);
                     // 隐私通话
                     break;
@@ -367,6 +366,11 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(activity);
                     // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
                     startISwipHandlerForInstallIS(installISwipe);
+                    break;
+                case R.string.call_filter_name:
+                    //骚扰拦截
+                    intent = new Intent(activity, CallFilterMainActivity.class);
+                    startActivity(intent);
                     break;
             }
         }

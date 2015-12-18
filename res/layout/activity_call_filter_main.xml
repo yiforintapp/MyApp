@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/call_filter_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/call_filter_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cb"
+        android:orientation="vertical">
+
+        <com.leo.appmaster.ui.LeoPagerTab
+            android:id="@+id/call_filter_tab_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_manager_backup_head_back"
+            android:overScrollMode="never" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/call_filter_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:overScrollMode="never" />
+    </LinearLayout>
+
+</LinearLayout>
