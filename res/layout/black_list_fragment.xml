@@ -39,5 +39,11 @@
             android:textSize="@dimen/kongbaiye_text_size" />
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="@style/ProgressBarCricle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

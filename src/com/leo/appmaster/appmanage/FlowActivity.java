@@ -29,17 +29,13 @@ import com.leo.appmaster.wifiSecurity.WifiSettingActivity;
 
 public class FlowActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
-    public static final String MESSAGE_MONTH_TRAFFI_SMALL_SETTING = "month_traffic_small_setting";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
     private CommonToolbar mTitleBar;
-    //    private View trffic_setting_iv;
     private ManagerFlowListFragment trifficListFragment;
     private ManagerFlowFragment trifficFragment;
 
     private ManagerFlowFragmentHoler[] mFragmentHolders = new ManagerFlowFragmentHoler[2];
-
-    // private int mDeskType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +65,6 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         mPagerTab.setViewPager(mViewPager);
     }
 
-    // @Override
-    // protected void onResume() {
-    // Intent intent = getIntent();
-    // mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-    // -1);
-    // super.onResume();
-    // }
 
     private void initFragment() {
         ManagerFlowFragmentHoler holder = new ManagerFlowFragmentHoler();

@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.intruderprotection;
+package com.leo.appmaster.CallFilter;
 
 import android.view.View;
 import android.widget.ListView;
@@ -7,7 +7,7 @@ import android.widget.ListView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
 
-public class BlackListFragment extends BaseFragment {
+public class CallFilterFragment extends BaseFragment {
 
     private ListView mBlackListView;
     private View mNothingToShowView;

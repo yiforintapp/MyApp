@@ -13,8 +13,6 @@ import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.intruderprotection.BlackListFragment;
-import com.leo.appmaster.intruderprotection.CallFilterFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
@@ -46,7 +44,6 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         mTitleBar.setNavigationClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.setup_icon);
         mTitleBar.setOptionMenuVisible(true);
-
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.call_filter_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);
@@ -144,10 +141,8 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     }
 
     @Override
-    public void onPageSelected(int arg0) {
-//        if (arg0 == 1) {
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "datapage", "usagelist");
-//        }
+    public void onPageSelected(int position) {
+
     }
 
 }
