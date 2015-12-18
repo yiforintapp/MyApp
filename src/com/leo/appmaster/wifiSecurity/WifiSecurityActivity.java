@@ -55,8 +55,8 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case SHOW_START_ANIMATION:
-                    showIconLight();
                     isCheckWifiAlready(true);
+                    showIconLight();
                     break;
 //                case SHOWANIMATION:
 //                    if (!isScanIng) {
@@ -72,11 +72,16 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        long t1 = System.currentTimeMillis();
         setContentView(R.layout.activity_wifi_main);
+        long t2 = System.currentTimeMillis();
         LeoEventBus.getDefaultBus().register(this);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "wifi_scan", "wifi_scan_cnts");
         handlerIntent();
+        long t3 = System.currentTimeMillis();
         initUi();
+        long t4 = System.currentTimeMillis();
+        LeoLog.i("testwifi", "setContentView = "+(t2 - t1)+"   initUI = " + (t4 - t3));
         isCheckWifiAlready(false);
     }
 
@@ -101,6 +106,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        LeoLog.i("testwifi", "focus changed!");
         if (firstCome) {
             mHandler.sendEmptyMessageDelayed(SHOW_START_ANIMATION, 500);
             firstCome = false;
@@ -128,7 +134,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
 //        mSmallView.setImageResource(R.drawable.wifiscan_animation);
 //        animationDrawable = (AnimationDrawable) mSmallView.getDrawable();
 //        animationDrawable.start();
-
         wifiFragment = (WifiTabFragment) getSupportFragmentManager().
                 findFragmentById(R.id.wifi_scan_tab);
         wifiResultFrangment = (WifiResultFrangment) getSupportFragmentManager().
@@ -498,7 +503,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
 
     private void showLineAnimation() {
         animationSet = new AnimatorSet();
-
         lineStartPlace = mIconView.getTop() - mLineView.getHeight();
         lineEndPlace = mIconView.getBottom() + mLineView.getHeight();
 
