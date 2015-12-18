@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.text.TextUtils;
 
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.mgr.impl.DeviceManagerImpl;
 import com.leo.appmaster.mgr.impl.IntrudeSecurityManagerImpl;
 import com.leo.appmaster.mgr.impl.LockManagerImpl;
@@ -60,6 +61,7 @@ public class MgrContext {
      */
     public static final String MGR_PRIVACY_DATA = "mgr_privacy_data";
 
+    public static final String MGR_CALL_FILTER = "mgr_call_filter";
 
     private static HashMap<String, Manager> sManagerMap = new HashMap<String, Manager>();
 
@@ -93,6 +95,8 @@ public class MgrContext {
             manager = new WifiSecurityManagerImpl();
         } else if (MGR_LOST_SECURITY.equals(mgr)) {
             manager = new LostSecurityManagerImpl();
+        } else if(MGR_CALL_FILTER.equals(mgr)){
+            manager = new CallFilterContextManagerImpl();
         }
 
         if (manager != null) {

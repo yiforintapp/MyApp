@@ -102,7 +102,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             final ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
             if (call != null) {
                 PrivacyCallAsyncTask task = new PrivacyCallAsyncTask(mContext);
-//                task.execute(call);
                 task.sendMsgHandler(call);
             }
 
