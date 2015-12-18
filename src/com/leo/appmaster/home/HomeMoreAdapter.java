@@ -49,6 +49,7 @@ public class HomeMoreAdapter extends BaseAdapter {
 
     private static final int[] ARRAY_CONTACT = new int[]{
             R.string.hp_contact_lable,
+            R.string.call_filter_name,
             R.string.hp_contact_call,
             R.string.hp_contact_sms
     };
@@ -79,6 +80,7 @@ public class HomeMoreAdapter extends BaseAdapter {
     private static final int ID_RES_HIDE_VIDEO = R.drawable.ic_up_hide_video;
     private static final int ID_RES_CONTACT_CALL = R.drawable.ic_up_contact_call;
     private static final int ID_RES_CONTACT_SMS = R.drawable.ic_up_contact_sns;
+    private static final int ID_RES_INTERCEPT = R.drawable.ic_up_contact;
     private static final int ID_RES_CONTACT = R.drawable.ic_up_contact;
     private static final int ID_RES_APP_DEL = R.drawable.ic_up_del;
     private static final int ID_RES_APP_BACK = R.drawable.ic_up_back;
@@ -182,7 +184,7 @@ public class HomeMoreAdapter extends BaseAdapter {
                     } else {
                         holder.textView.setBackgroundDrawable(drawable);
                     }
-                    holder.textView.setPadding(DipPixelUtil.dip2px(mContext, 20), 0, DipPixelUtil.dip2px(mContext, 15), 0);                                     
+                    holder.textView.setPadding(DipPixelUtil.dip2px(mContext, 20), 0, DipPixelUtil.dip2px(mContext, 15), 0);
                 }
                 convertView.setTag(R.layout.home_more_label_item, holder);
             } else {

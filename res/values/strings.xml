@@ -840,4 +840,7 @@
     <string name="pri_result_wifimaster_btn">Start</string>
     <string name="video_guide_txt">Click Edit to check and unhide the video</string>
 
+
+    <!-- 3.2 -->
+    <string name="call_filter_name">骚扰拦截</string>
 </resources>
