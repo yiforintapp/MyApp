@@ -101,7 +101,6 @@ public class IntruderprotectionActivity extends BaseActivity {
         init();
         SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_enter");
-        CallFIlterUIHelper.getConfirmRemoveFromBlacklistDialog(this).show();
     }
 
     /**
