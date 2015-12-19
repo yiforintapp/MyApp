@@ -109,6 +109,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                //TODO
                 mList.remove(position);
                 if (mList.size() == 0) {
                     CallFilterMainActivity callFilterMainActivity =
