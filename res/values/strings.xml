@@ -841,6 +841,8 @@
     <string name="video_guide_txt">Click Edit to check and unhide the video</string>
 
     <!-- 3.2 -->
+    <string name="call_filter_remove_from_blacklist_checkbox_title">您将会收到这个号码的来电，确认要移出黑名单吗？</string>
+    <string name="call_filter_remove_from_blacklist_checkbox_text">是否同步将拦截记录恢复到通话记录</string>
     <string name="call_filter_name">骚扰拦截</string>
     <string name="call_filter_black_list_tab">黑名单</string>
     <string name="call_filter_list_tab">来电拦截</string>
