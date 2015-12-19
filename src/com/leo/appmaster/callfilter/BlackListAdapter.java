@@ -1,15 +1,17 @@
-package com.leo.appmaster.callFilter;
+package com.leo.appmaster.callfilter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.dialog.LEOWithSIngleCheckboxDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     private String mFlag;
     private Context mContext;
     private LayoutInflater layoutInflater;
+    private LEOWithSIngleCheckboxDialog mDialog;
 
     public BlackListAdapter(Context mContext) {
         this.mContext = mContext;
@@ -82,6 +85,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
             }
 
             holder.clickView.setOnClickListener(BlackListAdapter.this);
+            holder.clickView.setTag(R.id.bg_delete, i);
 
         }
         return convertView;
@@ -91,9 +95,31 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bg_delete:
-                Toast.makeText(mContext, "!!!!!!!!!", Toast.LENGTH_SHORT).show();
+                int position = (Integer) view.getTag(R.id.bg_delete);
+                showDialog(position);
                 break;
         }
+    }
+
+    private void showDialog(final int position) {
+        LeoLog.d("testPosition", "position : " + position);
+        if (mDialog == null) {
+            mDialog = (LEOWithSIngleCheckboxDialog) CallFIlterUIHelper.getOneChioseDialog(mContext);
+        }
+        mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mList.remove(position);
+                if (mList.size() == 0) {
+                    CallFilterMainActivity callFilterMainActivity =
+                            (CallFilterMainActivity) mContext;
+                    callFilterMainActivity.blackListShowEmpty();
+                }
+                notifyDataSetChanged();
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
     }
 
     public static class BlackListHolder {

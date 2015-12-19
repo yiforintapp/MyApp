@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.callFilter;
+package com.leo.appmaster.callfilter;
 
 import android.os.Handler;
 import android.view.View;
@@ -46,14 +46,18 @@ public class BlackListFragment extends BaseFragment {
     private void loadDone() {
         mProgressBar.setVisibility(View.GONE);
         if (mBlackList.size() < 1) {
-            mBlackListView.setVisibility(View.GONE);
-            mNothingToShowView.setVisibility(View.VISIBLE);
+            showEmpty();
         } else {
             mBlackListView.setVisibility(View.VISIBLE);
             mBlackListAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_BLACK_LIST);
             LeoLog.d("testBlackList", "list size : " + mBlackList.size());
             mBlackListAdapter.setData(mBlackList);
         }
+    }
+
+    public void showEmpty() {
+        mBlackListView.setVisibility(View.GONE);
+        mNothingToShowView.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -134,18 +134,7 @@ public class LEOWithSIngleCheckboxDialog extends LEOBaseDialog {
                 }
             }
         });
-//        mRvLeft.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-//
-//            @Override
-//            public void onRippleComplete(RippleView arg0) {
-//                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvLeft
-//                        .getTag();
-//                try {
-//                    lListener.onClick(LEOAlarmDialog.this, 0);
-//                } catch (Exception e) {
-//                }
-//            }
-//        });
+
     }
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
@@ -161,18 +150,6 @@ public class LEOWithSIngleCheckboxDialog extends LEOBaseDialog {
                 }
             }
         });
-//        mRvRight.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-//
-//            @Override
-//            public void onRippleComplete(RippleView arg0) {
-//                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvRight
-//                        .getTag();
-//                try {
-//                    lListener.onClick(LEOAlarmDialog.this, 1);
-//                } catch (Exception e) {
-//                }
-//            }
-//        });
     }
 
     private void initUI() {
@@ -180,14 +157,12 @@ public class LEOWithSIngleCheckboxDialog extends LEOBaseDialog {
                 R.layout.dialog_with_checkbox, null);
         mTvCheckboxText = (TextView) dlgView.findViewById(R.id.tv_checkbox_text);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
-//        mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
-//        mContent.setMovementMethod(ScrollingMovementMethod.getInstance()) ;
-        
+
         mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
         mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
-//        mDialogIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
+
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
             @Override
@@ -198,6 +173,7 @@ public class LEOWithSIngleCheckboxDialog extends LEOBaseDialog {
                 dialog.dismiss();
             }
         };
+
         setLeftBtnListener(listener);
         setRightBtnListener(listener);
         setContentView(dlgView);

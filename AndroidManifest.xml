@@ -209,7 +209,7 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name=".callFilter.CallFilterSettingActivity"
+            android:name=".callfilter.CallFilterSettingActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
@@ -223,7 +223,7 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name=".callFilter.CallFilterMainActivity"
+            android:name=".callfilter.CallFilterMainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
