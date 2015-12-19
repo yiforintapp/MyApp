@@ -10,12 +10,12 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by Jasper on 2015/12/19.
  */
-public class CryptoRequest extends StringRequest {
-    public CryptoRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+public class CryptoStringRequest extends StringRequest {
+    public CryptoStringRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(method, url, listener, errorListener);
     }
 
-    public CryptoRequest(String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+    public CryptoStringRequest(String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(url, listener, errorListener);
     }
 
