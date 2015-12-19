@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.CallFilter;
+package com.leo.appmaster.callFilter;
 
 import android.os.Handler;
 import android.view.View;
@@ -10,10 +10,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BlackListFragment extends BaseFragment {
 

@@ -216,7 +216,7 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name=".CallFilter.CallFilterMainActivity"
+            android:name=".callFilter.CallFilterMainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"

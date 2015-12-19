@@ -46,4 +46,71 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <RelativeLayout
+        android:id="@+id/bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/line_view"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/pri_pro_divider" />
+
+        <RelativeLayout
+            android:id="@+id/success_lockRT_well"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:layout_below="@id/line_view"
+            android:gravity="center">
+
+            <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/black_list_add"
+                android:layout_width="135dp"
+                android:layout_height="40dp"
+                android:background="@drawable/green_radius_btn_shape"
+                android:clickable="true"
+                ripple:rippleColor="@color/green_button_ripple"
+                ripple:rippleDuration="250"
+                ripple:rippleHover="true"
+                ripple:rippleOverlay="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/green_radius_btn_shape"
+                    android:text="@string/call_filter_black_list_add"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+            </com.leo.appmaster.ui.RippleView>
+
+            <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/black_list_unknow_num"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:layout_toRightOf="@id/black_list_add"
+                android:background="@drawable/green_radius_btn_shape"
+                android:layout_marginLeft="30dp"
+                android:clickable="true"
+                ripple:rippleColor="@color/green_button_ripple"
+                ripple:rippleDuration="250"
+                ripple:rippleHover="true"
+                ripple:rippleOverlay="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/green_radius_btn_shape"
+                    android:text="@string/call_filter_black_list_unknow_num"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+            </com.leo.appmaster.ui.RippleView>
+
+
+        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>

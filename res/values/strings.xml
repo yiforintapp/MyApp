@@ -844,4 +844,6 @@
     <string name="call_filter_name">骚扰拦截</string>
     <string name="call_filter_black_list_tab">黑名单</string>
     <string name="call_filter_list_tab">来电拦截</string>
+    <string name="call_filter_black_list_add">添加</string>
+    <string name="call_filter_black_list_unknow_num">最近陌生来电</string>
 </resources>

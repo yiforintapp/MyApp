@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.CallFilter.CallFilterMainActivity;
+import com.leo.appmaster.callFilter.CallFilterMainActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
