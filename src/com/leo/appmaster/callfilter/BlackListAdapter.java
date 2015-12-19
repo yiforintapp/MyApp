@@ -104,7 +104,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     private void showDialog(final int position) {
         LeoLog.d("testPosition", "position : " + position);
         if (mDialog == null) {
-            mDialog = (LEOWithSIngleCheckboxDialog) CallFIlterUIHelper.getOneChioseDialog(mContext);
+            mDialog = CallFIlterUIHelper.getInstance(mContext).getOneChioseDialog();
         }
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
