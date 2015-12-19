@@ -19,6 +19,7 @@ package com.android.volley.toolbox;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Request.Method;
+import com.leo.appmaster.cloud.crypto.CryptoUtils;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -29,6 +30,8 @@ import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -103,6 +106,7 @@ public class HurlStack implements HttpStack {
         for (String headerName : map.keySet()) {
             connection.addRequestProperty(headerName, map.get(headerName));
         }
+        addEncryptHeader(connection, request);
         setConnectionParametersForRequest(connection, request);
         // Initialize HttpResponse with data from the HttpURLConnection.
         ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
@@ -123,6 +127,28 @@ public class HurlStack implements HttpStack {
             }
         }
         return response;
+    }
+
+    private static void addEncryptHeader(HttpURLConnection connection, Request<?> request) {
+        if (connection == null || request == null) return;
+
+        Map<String, String> params = request.getEncryptParams();
+        if (params == null || params.size() == 0) {
+            return;
+        }
+        JSONObject object = new JSONObject();
+        for (String key : params.keySet()) {
+            try {
+                object.put(key, params.get(key));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        if (object.length() > 0) {
+            String message = object.toString();
+            String cryptMsg = CryptoUtils.encrypt(message);
+            connection.addRequestProperty("message", cryptMsg);
+        }
     }
 
     /**
