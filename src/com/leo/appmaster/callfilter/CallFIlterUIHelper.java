@@ -1,6 +1,7 @@
 package com.leo.appmaster.callfilter;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSIngleCheckboxDialog;
 
 import android.app.Dialog;
@@ -18,6 +19,12 @@ public class CallFIlterUIHelper {
         dialog.setTitle(mContext.getResources().
                 getString(R.string.call_filter_remove_from_blacklist_checkbox_title));
         dialog.setCanceledOnTouchOutside(true);
+        return dialog;
+    }
+    
+    public LEOChoiceDialog getCallHandleDialog() {
+        LEOChoiceDialog dialog = new LEOChoiceDialog(mContext);
+        dialog.setNeedCheckbox(false);
         return dialog;
     }
 

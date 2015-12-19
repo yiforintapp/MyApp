@@ -21,6 +21,7 @@ public class LEOChoiceDialog extends LEOBaseDialog {
     private Context mContext;
     private ListView mLvChoices;
     private TextView mTvTitle;
+    private boolean mNeedCheckbox = true;
 
 	public LEOChoiceDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
 		super(context, cancelable, cancelListener);
@@ -59,6 +60,10 @@ public class LEOChoiceDialog extends LEOBaseDialog {
 	     mLvChoices.setAdapter(adapter);
 	 }
 	 
+	 public void setNeedCheckbox(boolean flag) {
+	     mNeedCheckbox = flag;
+	 }
+	 
 	 public void setItemsWithDefaultStyle(final List<String> itemList ,final int currentIndex){
 	     if(itemList == null) return;
 	     mLvChoices.setAdapter(new BaseAdapter() {
@@ -75,6 +80,10 @@ public class LEOChoiceDialog extends LEOBaseDialog {
                     holder = (Holder) convertView.getTag();
                 }
                 holder.name.setText(itemList.get(position));
+                if (!mNeedCheckbox) {
+                    holder.selecte.setVisibility(View.GONE);
+                    return convertView;
+                }
                 if(currentIndex == position){
                     holder.selecte.setChecked(true);
                 }else{
