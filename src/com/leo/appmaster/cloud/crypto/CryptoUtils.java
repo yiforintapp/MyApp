@@ -9,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Security;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -20,9 +19,15 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
+ * 加密工具类
  * Created by Jasper on 2015/12/19.
  */
 public class CryptoUtils {
+    /**
+     * 加密
+     * @param message
+     * @return
+     */
     public static String encrypt(String message) {
         if (TextUtils.isEmpty(message)) {
             return message;
@@ -65,6 +70,11 @@ public class CryptoUtils {
         return message;
     }
 
+    /**
+     * 解密
+     * @param message
+     * @return
+     */
     public static String decrypt(String message) {
         if (TextUtils.isEmpty(message)) {
             return message;
