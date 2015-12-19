@@ -80,7 +80,7 @@ public class AppMasterApplication extends Application {
             } else {
                 LeoLog.d(TAG, "array: " + array);
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
         sInstance = this;

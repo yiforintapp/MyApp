@@ -10,13 +10,14 @@ import android.content.Context;
 import android.text.format.Formatter;
 
 public class PropertyInfoUtil {
-    public static String getAvailMemory(Context context) {
+    public static long getAvailMemory(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         MemoryInfo mi = new MemoryInfo();
         am.getMemoryInfo(mi);
-      return Formatter.formatFileSize(context, mi.availMem);
+        return mi.availMem;
+//      return Formatter.formatFileSize(context, mi.availMem);
     }
-    public static String getTotalMemory(Context context) {
+    public static long getTotalMemory(Context context) {
         String str1 = "/proc/meminfo";
         String str2;
         String[] arrayOfString;
@@ -35,6 +36,7 @@ public class PropertyInfoUtil {
 
         } catch (IOException e) {
         }
-        return Formatter.formatFileSize(context, initial_memory);
+        return initial_memory;
+//        return Formatter.formatFileSize(context, initial_memory);
     }
 }
