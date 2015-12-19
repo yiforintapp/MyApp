@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.privacycontact.AddFromCallLogListActivity;
 import com.leo.appmaster.privacycontact.AddFromContactListActivity;
@@ -19,6 +20,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactInputActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
 
@@ -125,26 +127,49 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
     }
 
     public ArrayList<CallFilterInfo> getBlackListData() {
+        ArrayList<CallFilterInfo> list;
+        String blackNums = PreferenceTable.getInstance().getString("blackList");
+        if (!Utilities.isEmpty(blackNums)) {
+            list = StringToList(blackNums);
+        } else {
+            String mLongStr = "";
+            for (int i = 0; i < mStringName.length; i++) {
+                String mStr = mStringName[i];
+                if (i == 0) {
+                    mLongStr = mStr;
+                } else {
+                    mLongStr = mLongStr + ":" + mStr;
+                }
+            }
+            LeoLog.d("testBlackList", "number : " + mLongStr);
+            PreferenceTable.getInstance().putString("blackList", mLongStr);
+            list = StringToList(mLongStr);
+        }
+        return list;
+    }
+
+    private ArrayList<CallFilterInfo> StringToList(String mStrings) {
         ArrayList<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
-        for (int i = 0; i < mStringName.length; i++) {
+        String[] strings = mStrings.split(":");
+        for (int i = 0; i < strings.length; i++) {
             CallFilterInfo info = new CallFilterInfo();
-            info.numberName = getNumberName(i);
-            LeoLog.d("testBlackList", "name:" + info.numberName);
-            info.number = getNumber(i);
-            LeoLog.d("testBlackList", "number:" + info.number);
+            info.numberName = getNumberName(i, strings);
+            LeoLog.d("testBlackList", "numberName : " + info.numberName);
+            info.number = getNumber(i, strings);
+            LeoLog.d("testBlackList", "number : " + info.number);
             list.add(info);
         }
         return list;
     }
 
-    private String getNumberName(int i) {
-        String mStr = mStringName[i];
+    private String getNumberName(int i, String[] strings) {
+        String mStr = strings[i];
         String name = mStr.split("_")[0];
         return name;
     }
 
-    private String getNumber(int i) {
-        String mStr = mStringName[i];
+    private String getNumber(int i, String[] strings) {
+        String mStr = strings[i];
         String number = mStr.split("_")[1];
         return number;
     }
@@ -162,7 +187,6 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
     }
 
     public void showAddContentDialog() {
-
         if (mAddPrivacyContact == null) {
             mAddPrivacyContact = new AddPrivacyContactDialog(mActivity);
         }
@@ -173,6 +197,8 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
             public void onClick(View arg0) {
                 Intent intent = new Intent(mActivity,
                         AddFromCallLogListActivity.class);
+                intent.putExtra(CallFilterConstants.FROMWHERE,
+                        CallFilterConstants.FROM_BLACK_LIST);
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
@@ -189,6 +215,8 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
             public void onClick(View arg0) {
                 Intent intent = new Intent(mActivity,
                         AddFromContactListActivity.class);
+                intent.putExtra(CallFilterConstants.FROMWHERE,
+                        CallFilterConstants.FROM_BLACK_LIST);
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
@@ -205,6 +233,8 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
             public void onClick(View arg0) {
                 Intent intent = new Intent(mActivity,
                         AddFromMessageListActivity.class);
+                intent.putExtra(CallFilterConstants.FROMWHERE,
+                        CallFilterConstants.FROM_BLACK_LIST);
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
@@ -218,14 +248,16 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
         mAddPrivacyContact.setInputListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                /* SDK */
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "contactsadd",
                         "handadd");
                 Intent intent = new Intent(mActivity,
                         PrivacyContactInputActivity.class);
+                intent.putExtra(CallFilterConstants.FROMWHERE,
+                        CallFilterConstants.FROM_BLACK_LIST);
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
+
                 } finally {
                     intent = null;
                 }

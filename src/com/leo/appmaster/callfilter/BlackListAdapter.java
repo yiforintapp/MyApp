@@ -58,7 +58,6 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         BlackListHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.black_list_item, null);
-
             holder = new BlackListHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.iv_icon);
             holder.title = (TextView) convertView.findViewById(R.id.tv_title);
@@ -70,7 +69,6 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
             holder = (BlackListHolder) convertView.getTag();
         }
 
-
         if (mFlag.equals(CallFilterConstants.ADAPTER_FLAG_BLACK_LIST)) {
             CallFilterInfo info = mList.get(i);
             String numberName = info.numberName;
@@ -79,6 +77,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
             if (!Utilities.isEmpty(numberName)) {
                 holder.title.setText(numberName);
                 holder.desc.setText(number);
+                holder.desc.setVisibility(View.VISIBLE);
             } else {
                 holder.title.setText(number);
                 holder.desc.setVisibility(View.GONE);

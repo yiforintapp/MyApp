@@ -10,4 +10,7 @@ public class CallFilterConstants {
 
     public final static String SETTING_FILTER_FLAG = "filter_setting";
     public final static String SETTING_NOTI_FLAG = "noti_setting";
+
+    public final static String FROMWHERE = "from_where";
+    public final static String FROM_BLACK_LIST = "from_black_list";
 }

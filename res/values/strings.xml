@@ -852,4 +852,7 @@
     <string name="call_filter_setting_one_desc">骚扰拦截已开启</string>
     <string name="call_filter_setting_two_title">拦截通知</string>
     <string name="call_filter_setting_two_desc">拦截到的来电在通知栏显示</string>
+    <string name="call_filter_add_black_num">该号码是隐私联系人号码，请先从隐私联系人中移除</string>
+    <string name="call_filter_have_add_black_num">该号码已存在黑名单中</string>
+
 </resources>
