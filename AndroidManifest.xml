@@ -209,6 +209,13 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
+            android:name=".callFilter.CallFilterSettingActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
             android:name=".wifiSecurity.WifiResultActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"

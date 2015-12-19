@@ -20,6 +20,7 @@ public class BlackListFragment extends BaseFragment {
     private BlackListAdapter mBlackListAdapter;
     private ProgressBar mProgressBar;
     private ArrayList<CallFilterInfo> mBlackList;
+    private boolean isFristIn = true;
 
     private String[] mStringName = new String[]{
             "nameA_13632840685",
@@ -44,7 +45,7 @@ public class BlackListFragment extends BaseFragment {
 
     private void loadDone() {
         mProgressBar.setVisibility(View.GONE);
-        if (mStringName.length < 1) {
+        if (mBlackList.size() < 1) {
             mBlackListView.setVisibility(View.GONE);
             mNothingToShowView.setVisibility(View.VISIBLE);
         } else {
@@ -96,6 +97,10 @@ public class BlackListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!isFristIn) {
+            loadData();
+        }
+        isFristIn = false;
     }
 
     public ArrayList<CallFilterInfo> getBlackListData() {

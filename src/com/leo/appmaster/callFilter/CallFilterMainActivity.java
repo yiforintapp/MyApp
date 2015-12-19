@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.callFilter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -126,6 +127,10 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         switch (v.getId()) {
             case R.id.ct_back_rl:
                 onBackPressed();
+                break;
+            case R.id.ct_option_1_rl:
+                Intent intent = new Intent(this, CallFilterSettingActivity.class);
+                startActivity(intent);
                 break;
         }
     }
