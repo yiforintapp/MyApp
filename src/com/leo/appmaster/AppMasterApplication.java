@@ -63,8 +63,8 @@ public class AppMasterApplication extends Application {
         }
     }
 
-    private native void restartApplocker(int sdk, String userSerial);
-    public native String[] getKeyArray();
+//    private native void restartApplocker(int sdk, String userSerial);
+//    public native String[] getKeyArray();
 
     @Override
     public void onCreate() {
@@ -73,16 +73,16 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
-        try {
-            String[] array = getKeyArray();
-            if (array != null && array.length == 2) {
-                LeoLog.d(TAG, "array: [" + array[0] + ", " + array[1] + "]");
-            } else {
-                LeoLog.d(TAG, "array: " + array);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            String[] array = getKeyArray();
+//            if (array != null && array.length == 2) {
+//                LeoLog.d(TAG, "array: [" + array[0] + ", " + array[1] + "]");
+//            } else {
+//                LeoLog.d(TAG, "array: " + array);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         sInstance = this;
         // Use old sort
         try {
@@ -107,11 +107,11 @@ public class AppMasterApplication extends Application {
 
         // For android L and above, daemon service is not work, so disable it
         if (PhoneInfo.getAndroidVersion() < 20) {
-            try {
-                restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
+//            try {
+//                restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
+//            } catch (Throwable e) {
+//                e.printStackTrace();
+//            }
         }
 
         mRootBootstrap = new BootstrapGroup();

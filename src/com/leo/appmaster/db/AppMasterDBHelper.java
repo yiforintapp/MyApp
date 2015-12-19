@@ -6,13 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.callFilter.CallFilterConstants;
 
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "appmaster.db";
-    // 3.0 -> 8
-    public static final int DB_VERSION = 8;
+    // 3.2 -> 9
+    public static final int DB_VERSION = 9;
 
     private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
             + Constants.TABLE_DOWNLOAD
@@ -239,6 +239,18 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
             }
         }
 
+        execSQLForFilter(db);
+
+    }
+
+    /*骚扰拦截*/
+    private void execSQLForFilter(SQLiteDatabase db) {
+        db.execSQL(CallFilterConstants.CREATE_BLACK_LIST_TAB);
+//        db.execSQL(CallFilterConstants.CREATE_MARKER_NUMBER_TAB);
+        db.execSQL(CallFilterConstants.CREATE_FILTER_GR_TAB);
+        db.execSQL(CallFilterConstants.CREATE_FILTER_DET_TAB);
+        db.execSQL(CallFilterConstants.CREATE_STRANGER_GROUP_TAB);
+        db.execSQL(CallFilterConstants.CREATE_STRANGER_DET_TAB);
     }
 
     @Override
@@ -303,6 +315,8 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
                     + "download_count TEXT," + "desc TEXT,"
                     + "gp_priority INTEGER," + "gp_url TEXT,"
                     + "app_size INTEGER," + "icon_status INTEGER" + ");");
+        } else if (newVersion == 9) {
+            execSQLForFilter(db);
         }
 
         for (String table : TABLES) {
