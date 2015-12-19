@@ -117,7 +117,12 @@ public abstract class Request<T> implements Comparable<Request<T>> {
 	/** An opaque token tagging this request; used for bulk cancellation. */
 	private Object mTag;
 
-    private Map<String, String> mEncryptParams;
+    private Map<String, String> mEncryptHeaders;
+
+    /**
+     * 包体是否需要加密
+     */
+    private boolean mBodyNeedEncrypt;
 
 	/**
 	 * Creates a new request with the given URL and error listener. Note that
@@ -148,7 +153,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
 		setRetryPolicy(new DefaultRetryPolicy());
 
 		mDefaultTrafficStatsTag = findDefaultTrafficStatsTag(url);
-        mEncryptParams = new HashMap<String, String>();
+        mEncryptHeaders = new HashMap<String, String>();
 	}
 
 	/**
@@ -658,11 +663,19 @@ public abstract class Request<T> implements Comparable<Request<T>> {
 				+ " " + getPriority() + " " + mSequence;
 	}
 
-    public void addEncrytParameter(String key, String value) {
-        mEncryptParams.put(key, value);
+    public void addEncryptedHeader(String key, String value) {
+        mEncryptHeaders.put(key, value);
     }
 
-    public Map<String, String> getEncryptParams() {
-        return mEncryptParams;
+    public Map<String, String> getEncryptHeaders() {
+        return mEncryptHeaders;
+    }
+
+    public void setBodyEncrypt() {
+        mBodyNeedEncrypt = true;
+    }
+
+    public boolean isBodyNeedEncrypt() {
+        return mBodyNeedEncrypt;
     }
 }

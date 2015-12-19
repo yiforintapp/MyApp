@@ -117,4 +117,43 @@ public class CryptoUtils {
 
         return message;
     }
+
+    public static byte[] encrypt(byte[] data) {
+        if (data == null || data.length <= 0) {
+            return data;
+        }
+        AppMasterApplication application = AppMasterApplication.getInstance();
+        String[] keys = application.getKeyArray();
+        if (keys == null || keys.length <= 0) {
+            return data;
+        }
+
+        byte[] keyByte = Base64.decode(keys[0], Base64.NO_WRAP);
+        SecretKey aesKey = new SecretKeySpec(keyByte, "AES");
+
+        byte[] ivByte = Base64.decode(keys[1], Base64.NO_WRAP);
+        IvParameterSpec ivKey = new IvParameterSpec(ivByte);
+
+        try {
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, aesKey, ivKey);
+
+            byte[] cryptoByte = cipher.doFinal(data);
+            return cryptoByte;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
 }

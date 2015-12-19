@@ -132,7 +132,7 @@ public class HurlStack implements HttpStack {
     private static void addEncryptHeader(HttpURLConnection connection, Request<?> request) {
         if (connection == null || request == null) return;
 
-        Map<String, String> params = request.getEncryptParams();
+        Map<String, String> params = request.getEncryptHeaders();
         if (params == null || params.size() == 0) {
             return;
         }
@@ -260,6 +260,9 @@ public class HurlStack implements HttpStack {
     private static void addBodyIfExists(HttpURLConnection connection, Request<?> request)
             throws IOException, AuthFailureError {
         byte[] body = request.getBody();
+        if (request.isBodyNeedEncrypt()) {
+            body = CryptoUtils.encrypt(body);
+        }
         if (body != null) {
             connection.setDoOutput(true);
 //            connection.addRequestProperty(HEADER_CONTENT_TYPE, request.getBodyContentType());
