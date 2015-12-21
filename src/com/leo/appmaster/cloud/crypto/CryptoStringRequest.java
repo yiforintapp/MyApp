@@ -13,10 +13,12 @@ import java.io.UnsupportedEncodingException;
 public class CryptoStringRequest extends StringRequest {
     public CryptoStringRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(method, url, listener, errorListener);
+        setBodyNeedEncrypt();
     }
 
     public CryptoStringRequest(String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(url, listener, errorListener);
+        setBodyNeedEncrypt();
     }
 
     @Override

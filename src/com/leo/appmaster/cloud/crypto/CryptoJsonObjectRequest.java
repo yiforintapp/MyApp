@@ -18,6 +18,7 @@ public class CryptoJsonObjectRequest extends JsonRequest<JSONObject> {
     public CryptoJsonObjectRequest(int method, String url, String requestBody,
                                    Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         super(method, url, requestBody, listener, errorListener);
+        setBodyNeedEncrypt();
     }
 
     @Override

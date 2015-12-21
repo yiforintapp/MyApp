@@ -75,12 +75,6 @@ public class AppMasterApplication extends Application {
             return;
 
         sInstance = this;
-//        String text = "hahahahahahah";
-//        try {
-//            text = CryptoUtils.encrypt(text);
-//        } catch (Throwable e) {
-//            e.printStackTrace();
-//        }
         // Use old sor
         try {
             System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");

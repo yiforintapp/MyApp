@@ -8,7 +8,6 @@ import com.android.volley.toolbox.JsonRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
@@ -19,6 +18,7 @@ public class CryptoJsonArrayRequest extends JsonRequest<JSONArray> {
     public CryptoJsonArrayRequest(int method, String url, String requestBody,
                                   Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
         super(method, url, requestBody, listener, errorListener);
+        setBodyNeedEncrypt();
     }
 
     @Override

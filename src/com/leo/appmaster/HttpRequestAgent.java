@@ -310,19 +310,18 @@ public class HttpRequestAgent {
         int method = Method.POST;
         JsonObjectRequest request = new JsonObjectRequest(method, url, bodyString, listener,
                 errorListener) {
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("device", device);
-                return headers;
-            }
-
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("device", device);
+//                return headers;
+//            }
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return params;
             }
         };
+        request.addEncryptHeader("device", device);
         // 最多重试3次
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,

@@ -663,15 +663,19 @@ public abstract class Request<T> implements Comparable<Request<T>> {
 				+ " " + getPriority() + " " + mSequence;
 	}
 
-    public void addEncryptedHeader(String key, String value) {
+    public void addEncryptHeader(String key, String value) {
         mEncryptHeaders.put(key, value);
     }
+
+	public void addEncryptHeaders(Map<String, String> encryptHeaders) {
+		mEncryptHeaders.putAll(encryptHeaders);
+	}
 
     public Map<String, String> getEncryptHeaders() {
         return mEncryptHeaders;
     }
 
-    public void setBodyEncrypt() {
+    public void setBodyNeedEncrypt() {
         mBodyNeedEncrypt = true;
     }
 
