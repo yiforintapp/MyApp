@@ -189,6 +189,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
         if (mAddPrivacyContact == null) {
             mAddPrivacyContact = new AddPrivacyContactDialog(mActivity);
         }
+        mAddPrivacyContact.setTitle(mActivity.getString(R.string.call_filter_dialog_add_black));
         // 通话记录添加
         mAddPrivacyContact.setCallLogListener(new View.OnClickListener() {
 

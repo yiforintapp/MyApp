@@ -430,6 +430,35 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                         PreferenceTable.getInstance().
                                                 putString("blackList", blackNums);
                                         LeoLog.d("testAddContact", "blackNums:" + blackNums);
+
+                                        Context context = AddFromContactListActivity.this;
+                                     /*4.4以上不去做短信操作*/
+                                        boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
+                                        if (isLessLeve19) {
+                                            if (mAddMessages == null) {
+                                                mAddMessages = PrivacyContactManager.
+                                                        getInstance(context).queryMsmsForNumber(number);
+                                            } else {
+                                                List<MessageBean> addMessages = PrivacyContactManager.
+                                                        getInstance(context).queryMsmsForNumber(number);
+                                                mAddMessages.addAll(addMessages);
+                                            }
+                                        }
+                                        if (mAddCallLogs == null) {
+                                            mAddCallLogs = PrivacyContactManager.getInstance(context).
+                                                    queryCallsForNumber(number);
+                                        } else {
+                                            List<ContactCallLog> addCalllog = PrivacyContactManager.
+                                                    getInstance(context).queryCallsForNumber(number);
+                                            mAddCallLogs.addAll(addCalllog);
+                                        }
+                                        if (isOtherLogs == PrivacyContactUtils.NO_EXIST_LOG) {
+                                            if ((mAddMessages != null && mAddMessages.size() != 0)
+                                                    || (mAddCallLogs != null && mAddCallLogs.size() != 0)) {
+                                                isOtherLogs = PrivacyContactUtils.EXIST_LOG;
+                                                mLogFlag = true;
+                                            }
+                                        }
                                     }
                                 }
                                 //cancel Process Dialog
@@ -440,6 +469,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     mHandler.sendMessage(messge);
                                 }
 
+                                //TODO EventBus更新列表
                             }
 
                         } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {

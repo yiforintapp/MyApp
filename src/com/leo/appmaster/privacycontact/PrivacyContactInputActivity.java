@@ -52,6 +52,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private CommonToolbar mTtileBar;
     private EditText mNameEt, mNumberEt;
     private int mPhoneState = 1;
+    private View mClickArea;
     private CheckBox mRadioNormal, mRadioHangup;
     private String mPhoneName, mPhoneNumber;
     private List<MessageBean> mAddMessages;
@@ -257,11 +258,21 @@ public class PrivacyContactInputActivity extends BaseActivity {
         mTtileBar = (CommonToolbar) findViewById(R.id.title_bar);
         mTtileBar.setOptionMenuVisible(true);
         mTtileBar.setToolbarColorResource(R.color.cb);
-        mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_add_new_privacy_contact);
+        if (!Utilities.isEmpty(mFrom) &&
+                mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+            mTtileBar.setToolbarTitle(R.string.call_filter_dialog_add_black_new);
+        } else {
+            mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_add_new_privacy_contact);
+        }
         mTtileBar.setOptionImageResource(R.drawable.mode_done);
+
         mNameEt = (EditText) findViewById(R.id.privacy_input_nameET);
         mNumberEt = (EditText) findViewById(R.id.privacy_input_numberEV);
-
+        mClickArea = findViewById(R.id.privacy_input_rg);
+        if (!Utilities.isEmpty(mFrom) &&
+                mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+            mClickArea.setVisibility(View.GONE);
+        }
         mRadioNormal = (CheckBox) findViewById(R.id.privacy_input_normalRB);
         mRadioNormal.setSelected(true);
         mRadioHangup = (CheckBox) findViewById(R.id.privacy_input_hangupRB);

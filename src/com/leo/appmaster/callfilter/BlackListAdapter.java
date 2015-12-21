@@ -102,7 +102,9 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
 
     private void showDialog(final int position) {
         LeoLog.d("testPosition", "position : " + position);
-        mDialog = CallFIlterUIHelper.getInstance(mContext).getConfirmRemoveFromBlacklistDialog();
+        if (mDialog == null) {
+            mDialog = CallFIlterUIHelper.getInstance(mContext).getConfirmRemoveFromBlacklistDialog();
+        }
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
