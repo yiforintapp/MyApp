@@ -15,6 +15,7 @@ public class CallFilterConstants {
 
     public final static String FROMWHERE = "from_where";
     public final static String FROM_BLACK_LIST = "from_black_list";
+
     public final static int BLACK_LIST_LOAD_DONE = 101;
     public final static String ADAPTER_FLAG_BLACK_LIST = "black_list_adapter";
     /*降序*/
@@ -269,4 +270,6 @@ public class CallFilterConstants {
     /*记录未读*/
     public static final int READ = 1;
 
+
+    public final static String ADD_BLACK_LIST_MODEL = "add_black_list_mode";
 }

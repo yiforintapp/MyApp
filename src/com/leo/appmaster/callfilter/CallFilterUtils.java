@@ -14,6 +14,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.imageloader.utils.IoUtils;
+import com.leo.appmaster.utils.Utilities;
 
 /**
  * 骚扰拦截工具
@@ -98,17 +99,35 @@ public class CallFilterUtils {
     /**
      * 测试用
      */
-    public static  void addData() {
+    public static void addData() {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         for (int i = 0; i < 10; i++) {
             BlackListInfo info = getBlackListInfo(-1, "021544", "测试", 1, null, "深圳", 123, 321, true, false, false);
             mp.addBlackList(info, false);
         }
     }
-    public static void queryData(Context context){
+
+    public static void queryData(Context context) {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-      int count =   mp.getBlackListCount();
-        Toast.makeText(context,""+count,Toast.LENGTH_LONG).show();
+        int count = mp.getBlackListCount();
+        Toast.makeText(context, "" + count, Toast.LENGTH_LONG).show();
+    }
+    
+    public static boolean checkIsHaveBlackNum(String blackNums, String PhoneNum) {
+        String[] strings = blackNums.split(":");
+        for (int i = 0; i < strings.length; i++) {
+            String mNumber = getNumber(i, strings);
+            if (!Utilities.isEmpty(mNumber) && mNumber.equals(PhoneNum)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static String getNumber(int i, String[] strings) {
+        String mStr = strings[i];
+        String number = mStr.split("_")[1];
+        return number;
     }
 
 }

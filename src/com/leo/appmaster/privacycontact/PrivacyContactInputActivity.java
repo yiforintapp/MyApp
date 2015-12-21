@@ -32,6 +32,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -129,10 +130,11 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private void blackListProcess(boolean flagContact) {
         if (!flagContact) {
             String blackNums = PreferenceTable.getInstance().getString("blackList");
-            boolean isHaveBlackNum = checkIsHaveBlackNum(blackNums);
+            boolean isHaveBlackNum = CallFilterUtils.checkIsHaveBlackNum(blackNums, mPhoneNumber);
             if (!isHaveBlackNum) {
                 String string = mPhoneName + "_" + mPhoneNumber;
-                PreferenceTable.getInstance().putString("blackList", blackNums + ":" + string);
+                blackNums = blackNums + ":" + string;
+                PreferenceTable.getInstance().putString("blackList", blackNums);
                 finish();
             } else {
                 Context context = PrivacyContactInputActivity.this;
@@ -144,23 +146,6 @@ public class PrivacyContactInputActivity extends BaseActivity {
             String str = getResources().getString(R.string.call_filter_add_black_num);
             Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean checkIsHaveBlackNum(String blackNums) {
-        String[] strings = blackNums.split(":");
-        for (int i = 0; i < strings.length; i++) {
-            String mNumber = getNumber(i, strings);
-            if (!Utilities.isEmpty(mNumber) && mNumber.equals(mPhoneNumber)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private String getNumber(int i, String[] strings) {
-        String mStr = strings[i];
-        String number = mStr.split("_")[1];
-        return number;
     }
 
     private void privacyProcess(boolean flagContact) {
