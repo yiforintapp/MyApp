@@ -879,5 +879,5 @@
     <string name="scan_wifi_title">Wifi安全</string>
     <string name="scan_wifi_content">Wifi安全模式</string>
     <string name="call_filter_add_strange_num">加入黑名单</string>
-
+    <string name="call_filter_clear_all_black">清空所有</string>
 </resources>

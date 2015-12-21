@@ -18,7 +18,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 public class CallFIlterUIHelper {
-//    private static LEOWithSIngleCheckboxDialog mConfirmRemoveFromBlacklistDialog;
+    //    private static LEOWithSIngleCheckboxDialog mConfirmRemoveFromBlacklistDialog;
     private static CallFIlterUIHelper mInstance = null;
 
     public  LEOWithSIngleCheckboxDialog getConfirmRemoveFromBlacklistDialog(Context context) {
@@ -30,7 +30,7 @@ public class CallFIlterUIHelper {
         dialog.setCanceledOnTouchOutside(true);
         return dialog;
     }
-    
+
     public LEOChoiceDialog getCallHandleDialog(String title,Context context) {
         LEOChoiceDialog dialog = new LEOChoiceDialog(context);
         ArrayList<String> list = new ArrayList<String>();
@@ -47,13 +47,13 @@ public class CallFIlterUIHelper {
         MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
         dialog.setTitle(title);
         dialog.setContent(context.getResources().getString(R.string.call_filter_ask_add_to_blacklist));
-        String[] itemContent = {context.getResources().getString(R.string.call_filter_mark_as_sr), 
-                                                 context.getResources().getString(R.string.call_filter_mark_as_tx), 
-                                                 context.getResources().getString(R.string.call_filter_mark_as_zp)};
+        String[] itemContent = {context.getResources().getString(R.string.call_filter_mark_as_sr),
+                context.getResources().getString(R.string.call_filter_mark_as_tx),
+                context.getResources().getString(R.string.call_filter_mark_as_zp)};
         dialog.fillData(itemContent, 0);
         return dialog;
     }
-//    public static Dialog getConfirmRemoveFromBlacklistDialog() {
+    //    public static Dialog getConfirmRemoveFromBlacklistDialog() {
 //        return null;
 //    }
     public static synchronized CallFIlterUIHelper getInstance() {
@@ -62,7 +62,7 @@ public class CallFIlterUIHelper {
         }
         return mInstance;
     }
-    
+
     public LEOAlarmDialog getConfirmClearAllRecordDialog(Context mContext) {
         LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
         dialog.setContentVisiable(false);
@@ -73,7 +73,7 @@ public class CallFIlterUIHelper {
 
     private CallFIlterUIHelper() {
     }
-    
+
 //    public void showReceiveCallNotification() {
 //        Intent intent = new Intent(AppMasterApplication.getInstance(), IntruderprotectionActivity.class);
 //        PendingIntent pendingIntent= PendingIntent.getActivity(AppMasterApplication.getInstance(), 1, intent, Notification.FLAG_AUTO_CANCEL);
@@ -89,5 +89,5 @@ public class CallFIlterUIHelper {
 //        .setSmallIcon(R.drawable.ic_launcher);
 //        mNotificationManager.notify(1, mBuilder.build());
 //    }
-    
+
 }

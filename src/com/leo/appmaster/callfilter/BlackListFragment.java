@@ -105,7 +105,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
                 mBlackList = getBlackListData();
                 //load done
                 handler.sendEmptyMessageDelayed(CallFilterConstants.BLACK_LIST_LOAD_DONE,
-                        1000);
+                        500);
                 LeoLog.d("testBlackList", "send!");
             }
         });

@@ -1,0 +1,101 @@
+<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content_all_item"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    app:rippleAlpha="1"
+    app:rippleColor="@color/home_tab_pressed"
+    app:rippleDuration="250"
+    app:rippleHover="true"
+    app:rippleInAdapter="true"
+    app:rippleOverlay="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:background="@drawable/new_list_selecter">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="@dimen/app_manager_lv_item_icon_width_height"
+            android:layout_height="@dimen/app_manager_lv_item_icon_width_height"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/default_user_avatar"
+            android:gravity="center"
+            android:scaleType="centerInside" />
+
+        <LinearLayout
+            android:id="@+id/content_name_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/iv_icon"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="@dimen/app_manager_lv_item_text_width"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="#333333"
+                android:textSize="17dp" />
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:textColor="@color/c4"
+                android:textSize="13dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="26dp">
+
+            <TextView
+                android:id="@+id/tv_call_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2015/07/15 21:09:53"
+                android:textColor="@color/c4"
+                android:textSize="13dp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/tv_call_time"
+                android:layout_below="@id/tv_call_time">
+
+                <TextView
+                    android:id="@+id/tv_call_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="4"
+                    android:textColor="@color/c4"
+                    android:textSize="13dp" />
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
+                    android:layout_toRightOf="@id/tv_call_times"
+                    android:src="@drawable/decline_icon" />
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <View style="@style/priAppItem" />
+    </RelativeLayout>
+</com.leo.appmaster.ui.RippleView>
