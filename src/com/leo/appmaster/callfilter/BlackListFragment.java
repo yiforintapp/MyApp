@@ -180,9 +180,15 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
                 showAddContentDialog();
                 break;
             case R.id.black_list_unknow_num:
-                //TODO
+                showStrangeCallPage();
                 break;
         }
+    }
+
+    private void showStrangeCallPage() {
+        Intent intent = new Intent(mActivity,
+                StrangeCallActivity.class);
+        startActivity(intent);
     }
 
     public void showAddContentDialog() {

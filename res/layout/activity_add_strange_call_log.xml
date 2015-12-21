@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/add_privacy_call_log_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cb" />
+
+    <ListView
+        android:id="@+id/add_privacy_call_logLV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_privacy_call_log_title_bar"
+        android:layout_marginBottom="64dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:divider="@null"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/view_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="top"
+            android:background="@color/pri_pro_divider" />
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/rv_button_backup"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/green_radius_btn_shape"
+            ripple:rippleColor="@color/button_green_ripple"
+            ripple:rippleDuration="250"
+            ripple:rippleHover="true"
+            ripple:rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/tv_button_backup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/green_radius_btn_shape"
+                android:gravity="center"
+                android:text="@string/call_filter_add_strange_num"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </com.leo.appmaster.ui.RippleView>
+
+        <ImageView
+            android:id="@+id/iv_add_all_black"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="26dp"
+            android:src="@drawable/unselect" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressbar_loading"
+        style="@style/ProgressBarCricle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/add_call_log_default_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/privacy_default_image_width"
+            android:layout_height="@dimen/privacy_default_image_height"
+            android:src="@drawable/call_log_default" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/privacy_default_text_margin_top"
+            android:text="@string/privacy_add_call_log_default_text"
+            android:textColor="#d3d3d4"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+</RelativeLayout>

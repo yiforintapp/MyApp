@@ -237,6 +237,13 @@
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
+            android:name=".callfilter.StrangeCallActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.PageIndicatorDefaults" >
+        </activity>
+        <activity
             android:name=".msgcenter.MsgCenterActivity"
             android:excludeFromRecents="true"
             android:exported="true"
