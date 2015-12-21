@@ -1,8 +1,8 @@
 package com.leo.appmaster.mgr;
 
-import com.leo.appmaster.callFilter.BlackListInfo;
-import com.leo.appmaster.callFilter.CallFilterInfo;
-import com.leo.appmaster.callFilter.StrangerInfo;
+import com.leo.appmaster.callfilter.BlackListInfo;
+import com.leo.appmaster.callfilter.CallFilterInfo;
+import com.leo.appmaster.callfilter.StrangerInfo;
 
 import java.util.List;
 

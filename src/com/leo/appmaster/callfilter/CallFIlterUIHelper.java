@@ -6,11 +6,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSIngleCheckboxDialog;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class CallFIlterUIHelper {
 //    private static LEOWithSIngleCheckboxDialog mConfirmRemoveFromBlacklistDialog;

@@ -15,7 +15,6 @@ import com.leo.appmaster.privacycontact.AddFromCallLogListActivity;
 import com.leo.appmaster.privacycontact.AddFromContactListActivity;
 import com.leo.appmaster.privacycontact.AddFromMessageListActivity;
 import com.leo.appmaster.privacycontact.AddPrivacyContactDialog;
-import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactInputActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;

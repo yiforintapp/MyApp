@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.callFilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterConstants;
 
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 

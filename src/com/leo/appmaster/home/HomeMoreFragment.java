@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
@@ -22,6 +21,7 @@ import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
+import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;

@@ -9,11 +9,11 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.callFilter.BlackListInfo;
-import com.leo.appmaster.callFilter.CallFilterConstants;
-import com.leo.appmaster.callFilter.CallFilterInfo;
-import com.leo.appmaster.callFilter.CallFilterUtils;
-import com.leo.appmaster.callFilter.StrangerInfo;
+import com.leo.appmaster.callfilter.BlackListInfo;
+import com.leo.appmaster.callfilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterInfo;
+import com.leo.appmaster.callfilter.CallFilterUtils;
+import com.leo.appmaster.callfilter.StrangerInfo;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 

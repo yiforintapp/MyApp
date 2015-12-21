@@ -32,7 +32,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterInfo;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;

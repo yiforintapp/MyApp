@@ -13,8 +13,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -22,7 +20,7 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.callFilter.CallFilterUtils;
+import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -317,22 +315,23 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     startActivity(intent);
                     break;
                 case R.id.home_wifi_tab:
-                    // wifi安全
-//                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
-//                    Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
-//                    startActivity(mIntent);
-                    CallFilterUtils.queryData(getActivity());
+//                     wifi安全
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
+                    Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
+                    startActivity(mIntent);
+                    if(DBG) {
+                        CallFilterUtils.queryData(getActivity());
+                    }
                     break;
                 case R.id.home_lost_tab:
                     // 手机防盗
-//                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
-//                    startPhoneSecurity();
-//                    if (DBG) {
-//                        int[] pix = AppUtil.getScreenPix(getActivity());
-//                        LeoLog.i(TAG, "X="+pix[0]+",Y="+pix[1]);
-//                    }
-//
-                    CallFilterUtils.addData();
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
+                    startPhoneSecurity();
+                    if (DBG) {
+                        int[] pix = AppUtil.getScreenPix(getActivity());
+                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
+                        CallFilterUtils.addData();
+                    }
                     break;
             }
         }
