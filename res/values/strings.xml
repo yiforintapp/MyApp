@@ -860,7 +860,12 @@
 	<string name="call_filter_clear_record">清空记录</string>
 	<string name="call_filter_remove_from_blacklist">移出黑名单</string>
 	<string name="call_filter_mark">标记</string>
-
+	<string name="call_filter_delete_record">删除拦截记录</string>
+	<string name="call_filter_mark_as_sr">骚扰电话</string>
+	<string name="call_filter_mark_as_tx">广告推销</string>
+	<string name="call_filter_mark_as_zp">诈骗电话</string>
+	<string name="call_filter_ask_add_to_blacklist">监测到您的通话时间"&lt;"5秒，是否将该号码标记并加入黑名单</string>
+	
     <string name="scan_app_title">发现%1$s个应用</string>
     <string name="scan_app_content_less_three">其中高危项有%1$s</string>
     <string name="scan_app_content">其中高危项有%1$s等3个应用</string>

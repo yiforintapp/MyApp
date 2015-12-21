@@ -102,7 +102,7 @@ public class IntruderprotectionActivity extends BaseActivity {
         init();
         SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_enter");
-        CallFIlterUIHelper.getInstance(this).showReceiveCallNotification();
+//        CallFIlterUIHelper.getInstance(this).getCallHandleDialogWithSummary("call").show();
 //        long totalMemory2 = PropertyInfoUtil.getTotalMemory2(this);
 //        long availMemory = PropertyInfoUtil.getAvailMemory(this);
 //        Toast.makeText(this, "availMemory = "+availMemory+"       totalMemory = "+totalMemory2, 1).show()

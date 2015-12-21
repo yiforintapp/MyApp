@@ -35,9 +35,9 @@ public class CallFIlterUIHelper {
     public LEOChoiceDialog getCallHandleDialog(String title) {
         LEOChoiceDialog dialog = new LEOChoiceDialog(mContext);
         ArrayList<String> list = new ArrayList<String>();
-        list.add("删除拦截记录");
-        list.add("移出黑名单");
-        list.add("标记");
+        list.add(mContext.getResources().getString(R.string.call_filter_delete_record));
+        list.add(mContext.getResources().getString(R.string.call_filter_remove_from_blacklist));
+        list.add(mContext.getResources().getString(R.string.call_filter_mark));
         dialog.setNeedCheckbox(false);
         dialog.setTitle(title);
         dialog.setItemsWithDefaultStyle(list, 0);
@@ -47,8 +47,10 @@ public class CallFIlterUIHelper {
     public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title) {
         MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(mContext);
         dialog.setTitle(title);
-        dialog.setContent("检测到您的通话小于5妙，xxxx");
-        String[] itemContent = {"骚扰电话", "广告推销", "诈骗电话"};
+        dialog.setContent(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist));
+        String[] itemContent = {mContext.getResources().getString(R.string.call_filter_mark_as_sr), 
+                                                mContext.getResources().getString(R.string.call_filter_mark_as_tx), 
+                                                mContext.getResources().getString(R.string.call_filter_mark_as_zp)};
         dialog.fillData(itemContent, 0);
         return dialog;
     }
