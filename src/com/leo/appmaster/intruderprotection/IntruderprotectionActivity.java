@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -102,7 +103,6 @@ public class IntruderprotectionActivity extends BaseActivity {
         init();
         SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_enter");
-//        CallFIlterUIHelper.getInstance(this).getCallHandleDialogWithSummary("call").show();
 //        long totalMemory2 = PropertyInfoUtil.getTotalMemory2(this);
 //        long availMemory = PropertyInfoUtil.getAvailMemory(this);
 //        Toast.makeText(this, "availMemory = "+availMemory+"       totalMemory = "+totalMemory2, 1).show()
