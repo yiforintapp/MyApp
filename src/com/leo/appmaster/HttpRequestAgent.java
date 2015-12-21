@@ -18,11 +18,11 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
@@ -307,9 +307,8 @@ public class HttpRequestAgent {
     public void commitFeedback(Listener<JSONObject> listener,
                                ErrorListener errorListener, final Map<String, String> params, final String device) {
         String bodyString = null;
-        String url = Utilities.getURL(FeedbackHelper.FEEDBACK_CNCRYPT_URL);
         int method = Method.POST;
-        JsonObjectRequest request = new JsonObjectRequest(method, url, bodyString, listener,
+        JsonObjectRequest request = new JsonObjectRequest(method, LeoUrls.URL_FEEDBACK, bodyString, listener,
                 errorListener) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
