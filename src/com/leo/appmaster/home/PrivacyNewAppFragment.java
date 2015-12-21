@@ -1,10 +1,6 @@
 package com.leo.appmaster.home;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -22,9 +18,12 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 应用新增
@@ -39,15 +38,18 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
 
     private List<AppItemInfo> mDataList;
 
+    private String mAppString;
+
     public static PrivacyNewAppFragment newInstance() {
         PrivacyNewAppFragment fragment = new PrivacyNewAppFragment();
         return fragment;
     }
 
     @Override
-    public void setData(List<? extends Object> list) {
+    public void setData(List<? extends Object> list, String text) {
         if (list == null) return;
 
+        mAppString = text;
         mDataList = new ArrayList<AppItemInfo>();
         for (Object o : list) {
             mDataList.add((AppItemInfo) o);
@@ -164,6 +166,8 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         String content = AppMasterApplication.getInstance().getString(stringId, mDataList == null ? 0 : mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));
         setProcessContent(R.string.pri_pro_lock_app);
+        mAppNotifyLayout.setVisibility(View.VISIBLE);
+        mAppNotifyText.setText(mAppString);
     }
 
     private void setLabelCount(int count) {

@@ -1,8 +1,5 @@
 package com.leo.appmaster.home;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +21,9 @@ import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.videohide.VideoItemBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Jasper on 2015/10/16.
  */
@@ -41,14 +41,14 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
         Fragment fragment = null;
         if (list.size() < FOLDER_VIDEO_COUNT) {
             fragment = PrivacyNewVideoFragment.newInstance();
-            ((PrivacyNewVideoFragment) fragment).setData(list);
+            ((PrivacyNewVideoFragment) fragment).setData(list, "");
         } else {
             if (DataUtils.differentDirVid(list)) {
                 fragment = FolderVidFragment.newInstance();
                 ((FolderVidFragment) fragment).setData(list);
             } else {
                 fragment = PrivacyNewVideoFragment.newInstance();
-                ((PrivacyNewVideoFragment) fragment).setData(list);
+                ((PrivacyNewVideoFragment) fragment).setData(list, "");
             }
 
         }
@@ -62,7 +62,7 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
     }
 
     @Override
-    public void setData(List<? extends Object> list) {
+    public void setData(List<? extends Object> list, String text) {
         if (list == null) return;
 
         mDataList = new ArrayList<VideoItemBean>();

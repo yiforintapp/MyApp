@@ -1,10 +1,6 @@
 package com.leo.appmaster.home;
 
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,11 +21,16 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.ui.HomeAnimLoadingLayer;
 import com.leo.appmaster.ui.HomeAnimShieldLayer;
 import com.leo.appmaster.ui.HomeAnimView;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 隐私等级扫描
@@ -67,6 +68,8 @@ public class HomePrivacyFragment extends Fragment {
     private int mCurrentPercent;
     private ObjectAnimator mShieldOffsetYAnim;
     private boolean mInterceptRaise;
+
+    private AnimatorSet mCircleRotateAnimatorSet;
 
     public HomePrivacyFragment() {
 
@@ -206,12 +209,28 @@ public class HomePrivacyFragment extends Fragment {
         inCircleScaleAnim.setDuration(600);
         animators.add(inCircleScaleAnim);
 
+
         // 内环、外环旋转
-        mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
-        mCircleRotateAnim.setDuration(3500);
-        mCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
-        mCircleRotateAnim.setInterpolator(new LinearInterpolator());
-        animators.add(mCircleRotateAnim);
+        if (!AppUtil.isMemoryLittle(mActivity)) {
+            mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
+            mCircleRotateAnim.setDuration(3500);
+            mCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
+            mCircleRotateAnim.setInterpolator(new LinearInterpolator());
+            animators.add(mCircleRotateAnim);
+        } else {
+            mCircleRotateAnimatorSet = new AnimatorSet();
+            ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(
+                           mHomeAnimView, "circleRotateRatio", 0f, 360f);
+            rotateAnim.setDuration(3500);
+            rotateAnim.setRepeatCount(3);
+            rotateAnim.setInterpolator(new LinearInterpolator());
+            mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 360f, 360f);
+            mCircleRotateAnim.setDuration(3500);
+            mCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
+            mCircleRotateAnim.setInterpolator(new LinearInterpolator());
+            mCircleRotateAnimatorSet.playSequentially(rotateAnim, mCircleRotateAnim);
+            animators.add(mCircleRotateAnimatorSet);
+        }
 
         // 盾牌缩小
         ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
@@ -612,4 +631,5 @@ public class HomePrivacyFragment extends Fragment {
             super.handleMessage(msg);
         }
     }
+
 }

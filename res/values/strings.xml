@@ -860,4 +860,17 @@
 	<string name="call_filter_clear_record">清空记录</string>
 	<string name="call_filter_remove_from_blacklist">移出黑名单</string>
 	<string name="call_filter_mark">标记</string>
+
+    <string name="scan_app_title">发现%1$s个应用</string>
+    <string name="scan_app_content_less_three">其中高危项有%1$s</string>
+    <string name="scan_app_content">其中高危项有%1$s等3个应用</string>
+    <string name="scan_app_content_zero">可能会对您的隐私造成危害，建议立即加锁</string>
+    <string name="scan_pic_title">发现%1$s张图片</string>
+    <string name="scan_pic_content">可能暴露您的隐私，建议隐藏</string>
+    <string name="scan_vid_title">扫描到%1$s个视频</string>
+    <string name="scan_vid_content">可能暴露您的隐私，建议隐藏</string>
+    <string name="scan_instruct_title">手机防盗</string>
+    <string name="scan_instruct_content">开启手机防盗，找回被盗手机</string>
+    <string name="scan_wifi_title">Wifi安全</string>
+    <string name="scan_wifi_content">Wifi安全模式</string>
 </resources>

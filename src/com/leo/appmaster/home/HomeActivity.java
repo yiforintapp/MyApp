@@ -139,6 +139,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private LEOAnimationDialog mMessageDialog;
 
+    private String mAppScanText;
+
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -346,6 +348,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             } else {
                 mScanningFragment = new HomeScanningFragment();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);
                 ft.addToBackStack(null);
                 ft.replace(R.id.pri_pro_content, mScanningFragment);
                 boolean commited = false;
@@ -377,10 +380,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         return mPrivacyFragment.getScanningPercent();
     }
 
-    public void onScanningFinish(List<AppItemInfo> appList, PhotoList photoItems, List<VideoItemBean> videoItemBeans) {
+    public void onScanningFinish(List<AppItemInfo> appList, PhotoList photoItems, List<VideoItemBean> videoItemBeans, String appScanText) {
         mAppList = appList;
         mPhotoList = photoItems;
         mVideoList = videoItemBeans;
+        mAppScanText = appScanText;
     }
 
     public void onExitScanning() {
@@ -462,7 +466,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "app_arv");
             PrivacyNewFragment fragment = PrivacyNewAppFragment.newInstance();
             ft.replace(R.id.pri_pro_content, fragment);
-            fragment.setData(mAppList);
+            fragment.setData(mAppList, mAppScanText);
             mAppList = null;
             mCurrentFragment = fragment;
         } else if (mPhotoList != null && mPhotoList.photoItems.size() > 0) {

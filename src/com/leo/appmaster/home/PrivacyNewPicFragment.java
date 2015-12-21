@@ -1,8 +1,5 @@
 package com.leo.appmaster.home;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -18,11 +15,12 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.HeaderGridView;
-import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.PrefConst;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jasper on 2015/10/16.
@@ -56,7 +54,7 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
         if (fragment instanceof FolderPicFragment) {
             ((FolderPicFragment) fragment).setData(list.photoItems);
         } else if (fragment instanceof PrivacyNewPicFragment) {
-            ((PrivacyNewPicFragment) fragment).setData(list.photoItems);
+            ((PrivacyNewPicFragment) fragment).setData(list.photoItems, "");
         }
 
         return fragment;
@@ -68,7 +66,7 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
     }
 
     @Override
-    public void setData(List<? extends Object> list) {
+    public void setData(List<? extends Object> list, String text) {
         if (list == null) return;
 
         for (Object o : list) {

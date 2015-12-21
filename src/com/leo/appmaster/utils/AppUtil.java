@@ -1,11 +1,7 @@
 
 package com.leo.appmaster.utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-
+import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -31,9 +27,16 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 public class AppUtil {
     public static final float SPL_SHARE_SCALE_X = 1.0f;
     public static final float SPL_SHARE_SCALE_Y = 1.0f;
+
+    public static final long THE_KEY_MEMORY = 512 * 1024 *1024;  // 512M所占字节
 
     public static boolean isSystemApp(ApplicationInfo info) {
         // 有些系统应用是可以更新的，如果用户自己下载了一个系统的应用来更新了原来的，
@@ -395,4 +398,23 @@ public class AppUtil {
         pix[1] = height;
         return pix;
     }
+
+    /** 运行内存是否小于512M */
+    public static boolean isMemoryLittle(Context context) {
+        final ActivityManager activityManager = (ActivityManager)context.getSystemService(context.ACTIVITY_SERVICE);
+
+        ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
+
+        activityManager.getMemoryInfo(info);
+
+        LeoLog.i("isMemoryLittle","系统剩余内存:"+ info.availMem);
+
+        LeoLog.i("isMemoryLittle","系统是否处于低内存运行："+info.lowMemory);
+
+        LeoLog.i("isMemoryLittle","当系统剩余内存低于"+info.threshold+"时就看成低内存运行");
+
+        return info.availMem < THE_KEY_MEMORY;
+
+    }
+
 }

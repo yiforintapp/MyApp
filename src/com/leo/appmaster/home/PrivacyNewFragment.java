@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -48,7 +49,10 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
 
     private List<? extends Object> mDataList;
 
-    public void setData(List<? extends Object> list) {
+    protected RelativeLayout mAppNotifyLayout;
+    protected TextView mAppNotifyText;
+
+    public void setData(List<? extends Object> list, String text) {
     }
 
     @Override
@@ -58,7 +62,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
 
         mToolbarHeight = activity.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
         mEmptyHeight = activity.getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
-        mStickyHeight = activity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
+        mStickyHeight = activity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new_sticky);
     }
 
     @Override
@@ -80,6 +84,8 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
         mStickView = view.findViewById(R.id.pri_pro_sticky_header);
         mStickyCb = (CheckBox) view.findViewById(R.id.pri_pro_cb);
         mNewLabelTv = (TextView) view.findViewById(R.id.pri_pro_new_label_tv);
+        mAppNotifyLayout = (RelativeLayout) view.findViewById(R.id.app_notify_layout);
+        mAppNotifyText = (TextView) view.findViewById(R.id.app_notify_text);
         mStickyCb.setOnClickListener(this);
         mAdaper.setOnSelectionChangeListener(this);
 

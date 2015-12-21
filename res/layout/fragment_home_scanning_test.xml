@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/top_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/transparent"/>
+
+    <TextView
+        android:id="@+id/scan_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/top_view"
+        android:includeFontPadding="false"
+        android:text="@string/pri_pro_scanning"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/scan_progress_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scan_title_tv"
+        android:gravity="center_horizontal"
+        android:includeFontPadding="false"
+        android:text="@string/scanning_pattern"
+        android:textColor="@color/scanning_sub_title"
+        android:textSize="14dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/scan_progress_tv"
+        android:layout_marginBottom="55dp"
+        android:background="@color/white"
+        android:divider="#00000000"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.leo.appmaster.ui.MaterialRippleLayout
+                android:id="@+id/scan_new_app_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                leo:rippleAlpha="0.5"
+                leo:rippleColor="@color/white_list_item_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true"
+                android:visibility="invisible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_tab_selector">
+
+                    <ImageView
+                        android:id="@+id/scan_new_app_img"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp" />
+
+                    <TextView
+                        android:id="@+id/scan_new_app_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/pri_new_app_item"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical"
+                        android:text="+5分"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_toLeftOf="@id/scan_new_app_score"
+                        android:layout_toRightOf="@id/scan_new_app_img"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/scan_new_app_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_app_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
+
+            <com.leo.appmaster.ui.MaterialRippleLayout
+                android:id="@+id/scan_new_pic_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                leo:rippleAlpha="0.5"
+                leo:rippleColor="@color/white_list_item_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true"
+                android:visibility="invisible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_tab_selector">
+
+                    <ImageView
+                        android:id="@+id/scan_new_pic_img"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp" />
+
+                    <TextView
+                        android:id="@+id/scan_new_pic_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/pri_new_app_item"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:text="+5分"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_toLeftOf="@id/scan_new_pic_score"
+                        android:layout_toRightOf="@id/scan_new_pic_img"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/scan_new_pic_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_pic_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
+
+            <com.leo.appmaster.ui.MaterialRippleLayout
+                android:id="@+id/scan_new_vid_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                leo:rippleAlpha="0.5"
+                leo:rippleColor="@color/white_list_item_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true"
+                android:visibility="invisible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_tab_selector">
+
+                    <ImageView
+                        android:id="@+id/scan_new_vid_img"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp" />
+
+                    <TextView
+                        android:id="@+id/scan_new_vid_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/pri_new_app_item"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:text="+5分"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_toLeftOf="@id/scan_new_vid_score"
+                        android:layout_toRightOf="@id/scan_new_vid_img"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/scan_new_vid_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_vid_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
+
+            <com.leo.appmaster.ui.MaterialRippleLayout
+                android:id="@+id/scan_new_instruct_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                leo:rippleAlpha="0.5"
+                leo:rippleColor="@color/white_list_item_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true"
+                android:visibility="invisible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_tab_selector">
+
+                    <ImageView
+                        android:id="@+id/scan_new_instruct_img"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp" />
+
+                    <TextView
+                        android:id="@+id/scan_new_instruct_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/pri_new_app_item"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:text="+5分"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_toLeftOf="@id/scan_new_instruct_score"
+                        android:layout_toRightOf="@id/scan_new_instruct_img"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/scan_new_instruct_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_instruct_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
+
+            <com.leo.appmaster.ui.MaterialRippleLayout
+                android:id="@+id/scan_new_wifi_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                leo:rippleAlpha="0.5"
+                leo:rippleColor="@color/white_list_item_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true"
+                android:visibility="invisible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_tab_selector">
+
+                    <ImageView
+                        android:id="@+id/scan_new_wifi_img"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp" />
+
+                    <TextView
+                        android:id="@+id/scan_new_wifi_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/pri_new_app_item"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:text="+5分"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_toLeftOf="@id/scan_new_wifi_score"
+                        android:layout_toRightOf="@id/scan_new_wifi_img"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/scan_new_wifi_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_wifi_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="15dp"
+        android:background="@color/black">
+
+        <com.leo.appmaster.ui.MaterialRippleLayout
+            android:id="@+id/scan_cancel_rv"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/scan_cancel_btn"
+            leo:rippleAlpha="0.5"
+            leo:rippleColor="@color/white_list_item_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="true"
+            leo:rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/scan_cancel_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/pri_pro_cancel"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+        </com.leo.appmaster.ui.MaterialRippleLayout>
+
+        <com.leo.appmaster.ui.MaterialRippleLayout
+            android:id="@+id/scan_process_rv"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/scan_process_btn"
+            android:visibility="gone"
+            leo:rippleAlpha="0.5"
+            leo:rippleColor="@color/white_list_item_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="true"
+            leo:rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/scan_process_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/pri_pro_process"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+        </com.leo.appmaster.ui.MaterialRippleLayout>
+    </RelativeLayout>
+</RelativeLayout>

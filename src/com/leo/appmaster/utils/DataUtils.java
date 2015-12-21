@@ -6,12 +6,17 @@ import android.graphics.Color;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.videohide.VideoItemBean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashSet;
+import java.util.Iterator;
+
 import java.util.List;
+import java.util.Random;
 
 public class DataUtils {
 
@@ -82,5 +87,40 @@ public class DataUtils {
         int tarB = (int) (fromB + (toB - fromB) * ratio);
 
         return Color.rgb(tarR, tarG, tarB);
+    }
+
+    /** 获得高危应用需要展示的应用 */
+    public static String getThreeRandomAppName(List<AppItemInfo> list) {
+        StringBuffer appName = new StringBuffer();
+        if (list.size() > 3) {
+            HashSet<Integer> set = new HashSet<Integer>();
+            randomSet(list.size(), 3, set);
+            Iterator<Integer> iterator = set.iterator(); //迭代遍历
+            while (iterator.hasNext()) {
+                appName.append(list.get(iterator.next()).label).append(",");
+            }
+        } else {
+            for (AppItemInfo appItemInfo:list) {
+                appName.append(appItemInfo.packageName).append(",");
+            }
+        }
+
+        return appName.toString().substring(0,appName.length() - 1);
+
+    }
+
+    /** 获得随机数集合 */
+    private static void randomSet(int size, int n, HashSet<Integer> set) {
+
+        for (int i = 0; i < n; i++) {
+            Random random = new Random();
+            int num = random.nextInt(size);
+            set.add(num); // 将不同的数存入HashSet中
+        }
+        int setSize = set.size();
+
+        if (setSize < n) {
+            randomSet(size, n - setSize, set);// 递归
+        }
     }
 }
