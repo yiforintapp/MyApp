@@ -314,7 +314,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
                     startActivity(intent);
                     if(DBG){
-                        CallFilterUtils.removeData(getActivity());
+//                        CallFilterUtils.removeData(getActivity());
                     }
                     break;
                 case R.id.home_wifi_tab:
