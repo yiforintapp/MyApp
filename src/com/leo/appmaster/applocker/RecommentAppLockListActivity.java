@@ -109,7 +109,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements
 
         lockTV = (RippleView) findViewById(R.id.recomment_lock);
         lockTV.setOnClickListener(this);
-//        lockTV.setOnRippleCompleteListener(this);
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View headView = layoutInflater.inflate(R.layout.recom_ac_head, null);
