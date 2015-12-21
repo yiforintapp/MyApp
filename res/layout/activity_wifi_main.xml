@@ -4,21 +4,19 @@
     android:layout_height="match_parent"
     android:background="@color/wifi_error_red">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/small_boss"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:background="@color/wifi_bg_color" />
 
-        <RelativeLayout
+<!--         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:gravity="center">
+            android:gravity="center"> -->
 
             <com.leo.appmaster.ui.CommonToolbar
                 android:id="@+id/wifi_title_bar"
@@ -195,7 +193,7 @@
                     android:visibility="invisible" />
             </RelativeLayout>
 
-            <fragment
+           <fragment
                 android:id="@+id/wifi_scan_tab"
                 android:name="com.leo.appmaster.wifiSecurity.WifiTabFragment"
                 android:layout_width="match_parent"
@@ -208,6 +206,4 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/wifi_title_bar" />
-        </RelativeLayout>
-    </FrameLayout>
 </RelativeLayout>

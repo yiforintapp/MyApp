@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
@@ -17,6 +18,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -56,7 +58,10 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             switch (msg.what) {
                 case SHOW_START_ANIMATION:
                     isCheckWifiAlready(true);
-                    showIconLight();
+                    long totalMemory = PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this);
+                    if (totalMemory > Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY) {
+                        showIconLight();
+                    }
                     break;
 //                case SHOWANIMATION:
 //                    if (!isScanIng) {
@@ -488,7 +493,10 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                showLineAnimation();
+                
+                if (PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this) > Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY) {
+                    showLineAnimation();
+                }
             }
         });
         anim1.setDuration(400);

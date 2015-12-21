@@ -255,7 +255,7 @@ public class AppLoadEngine extends BroadcastReceiver {
         for (AppItemInfo appDetailInfo : collection) {
             int position = mRecommendLocklist.indexOf(appDetailInfo.packageName);
             int locknum = -1;
-            if (position >= 0 && position <= listnum.size()) {
+            if (position >= 0 && position < listnum.size()) {
                 locknum = Integer.parseInt(listnum.get(position));
             }
             appDetailInfo.topPos = locknum;

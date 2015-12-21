@@ -19,6 +19,8 @@ package com.android.volley.toolbox;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Request.Method;
+import com.leo.appmaster.cloud.crypto.CryptoUtils;
+import com.leo.imageloader.utils.IoUtils;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -29,17 +31,23 @@ import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.crypto.NoSuchPaddingException;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -103,6 +111,7 @@ public class HurlStack implements HttpStack {
         for (String headerName : map.keySet()) {
             connection.addRequestProperty(headerName, map.get(headerName));
         }
+        addEncryptHeader(connection, request);
         setConnectionParametersForRequest(connection, request);
         // Initialize HttpResponse with data from the HttpURLConnection.
         ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
@@ -123,6 +132,28 @@ public class HurlStack implements HttpStack {
             }
         }
         return response;
+    }
+
+    private static void addEncryptHeader(HttpURLConnection connection, Request<?> request) {
+        if (connection == null || request == null) return;
+
+        Map<String, String> params = request.getEncryptHeaders();
+        if (params == null || params.size() == 0) {
+            return;
+        }
+        JSONObject object = new JSONObject();
+        for (String key : params.keySet()) {
+            try {
+                object.put(key, params.get(key));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        if (object.length() > 0) {
+            String message = object.toString();
+            String cryptMsg = CryptoUtils.encrypt(message);
+            connection.addRequestProperty("message", cryptMsg);
+        }
     }
 
     /**
@@ -236,12 +267,29 @@ public class HurlStack implements HttpStack {
         byte[] body = request.getBody();
         if (body != null) {
             connection.setDoOutput(true);
-//            connection.addRequestProperty(HEADER_CONTENT_TYPE, request.getBodyContentType());
-            connection.setRequestProperty("Content-Type",  
-                    "application/x-www-form-urlencoded");
-            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.write(body);
-            out.close();
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            DataOutputStream out = null;
+            try {
+                if (request.isBodyNeedEncrypt()) {
+                    try {
+                        out = new DataOutputStream(CryptoUtils.newOutputStream(connection.getOutputStream()));
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchPaddingException e) {
+                        e.printStackTrace();
+                    } catch (InvalidKeyException e) {
+                        e.printStackTrace();
+                    } catch (InvalidAlgorithmParameterException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (out == null) {
+                    out = new DataOutputStream(connection.getOutputStream());
+                }
+                out.write(body);
+            } finally {
+                IoUtils.closeSilently(out);
+            }
         }
     }
 }

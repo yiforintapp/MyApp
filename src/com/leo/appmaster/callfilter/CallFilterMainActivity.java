@@ -1,6 +1,7 @@
 
-package com.leo.appmaster.callFilter;
+package com.leo.appmaster.callfilter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -127,6 +128,10 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
             case R.id.ct_back_rl:
                 onBackPressed();
                 break;
+            case R.id.ct_option_1_rl:
+                Intent intent = new Intent(this, CallFilterSettingActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -143,6 +148,12 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     @Override
     public void onPageSelected(int position) {
 
+    }
+
+    public void blackListShowEmpty() {
+        if (mBlackListFragment != null) {
+            mBlackListFragment.showEmpty();
+        }
     }
 
 }

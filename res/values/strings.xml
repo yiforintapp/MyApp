@@ -841,9 +841,18 @@
     <string name="video_guide_txt">Click Edit to check and unhide the video</string>
 
     <!-- 3.2 -->
+    <string name="call_filter_remove_from_blacklist_checkbox_title">您将会收到这个号码的来电，确认要移出黑名单吗？</string>
+    <string name="call_filter_remove_from_blacklist_checkbox_text">是否同步将拦截记录恢复到通话记录</string>
     <string name="call_filter_name">骚扰拦截</string>
     <string name="call_filter_black_list_tab">黑名单</string>
     <string name="call_filter_list_tab">来电拦截</string>
     <string name="call_filter_black_list_add">添加</string>
     <string name="call_filter_black_list_unknow_num">最近陌生来电</string>
+    <string name="call_filter_setting_title">设置</string>
+    <string name="call_filter_setting_one_desc">骚扰拦截已开启</string>
+    <string name="call_filter_setting_two_title">拦截通知</string>
+    <string name="call_filter_setting_two_desc">拦截到的来电在通知栏显示</string>
+    <string name="call_filter_add_black_num">该号码是隐私联系人号码，请先从隐私联系人中移除</string>
+    <string name="call_filter_have_add_black_num">该号码已存在黑名单中</string>
+
 </resources>
