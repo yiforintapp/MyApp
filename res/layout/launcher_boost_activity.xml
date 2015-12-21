@@ -127,6 +127,7 @@
                     android:layout_marginLeft="9dp"
                     android:background="@drawable/select_bt_halfscreen_install"
                     android:textColor="@color/white"
+                    android:clickable="false"
                     android:textSize="12dp" />
                 />
 
