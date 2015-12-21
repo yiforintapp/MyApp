@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSIngleCheckboxDialog;
+import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 
 import android.content.Context;
 
@@ -35,6 +36,14 @@ public class CallFIlterUIHelper {
         return dialog;
     }
 
+    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title) {
+        MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(mContext);
+        dialog.setTitle(title);
+        dialog.setContent("检测到您的通话小于5妙，xxxx");
+        String[] itemContent = {"骚扰电话", "广告推销", "诈骗电话"};
+        dialog.fillData(itemContent, 0);
+        return dialog;
+    }
 //    public static Dialog getConfirmRemoveFromBlacklistDialog() {
 //        return null;
 //    }

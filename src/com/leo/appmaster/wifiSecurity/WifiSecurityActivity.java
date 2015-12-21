@@ -50,6 +50,8 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private long lastTimeIn;
     private boolean firstCome = true;
     private boolean isSafe;
+    private int mScanAnimCount = 0;
+    private boolean mIsJudgeAsLowMemory = false;
 
     //开始首页动画
 //    private int animationShowNow = 0;
@@ -59,7 +61,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
                 case SHOW_START_ANIMATION:
                     isCheckWifiAlready(true);
                     long totalMemory = PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this);
-                    if (totalMemory > Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY) {
+                    if (!mIsJudgeAsLowMemory) {
                         showIconLight();
                     }
                     break;
@@ -81,6 +83,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         setContentView(R.layout.activity_wifi_main);
         long t2 = System.currentTimeMillis();
         LeoEventBus.getDefaultBus().register(this);
+        mIsJudgeAsLowMemory = PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this) <= Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY;
         SDKWrapper.addEvent(this, SDKWrapper.P1, "wifi_scan", "wifi_scan_cnts");
         handlerIntent();
         long t3 = System.currentTimeMillis();
@@ -494,9 +497,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 
-                if (PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this) > Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY) {
-                    showLineAnimation();
-                }
+                    showLineAnimation();//TODO
             }
         });
         anim1.setDuration(400);
@@ -529,7 +530,11 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
                 mLineView.setVisibility(View.GONE);
             }
         });
-        anim1.setDuration(1000);
+        if (mIsJudgeAsLowMemory) {
+            anim1.setDuration(1500);
+        } else {
+            anim1.setDuration(1000);
+        }
 
         anim2 = ObjectAnimator.ofFloat(mLineView2,
                 "y", lineEndPlace, lineStartPlace);
@@ -544,10 +549,18 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mLineView2.setVisibility(View.GONE);
-                showLineAnimation();
+                mScanAnimCount ++;
+                
+                if ((mScanAnimCount < 1 && mIsJudgeAsLowMemory) ||!mIsJudgeAsLowMemory) {
+                    showLineAnimation();
+                }
             }
         });
-        anim2.setDuration(1000);
+        if (mIsJudgeAsLowMemory) {
+            anim2.setDuration(1500);
+        } else {
+            anim2.setDuration(1000);
+        }
         animationSet.play(anim1).before(anim2);
         animationSet.start();
     }
