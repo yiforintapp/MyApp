@@ -25,10 +25,11 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
     private CommonToolbar mTitleBar;
+
     private BlackListFragment mBlackListFragment;
     private CallFilterFragment mCallFilterFragment;
-    private CallFilterFragmentHoler[] mFragmentHolders = new CallFilterFragmentHoler[2];
 
+    private CallFilterFragmentHoler[] mFragmentHolders = new CallFilterFragmentHoler[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +47,14 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         mTitleBar.setOptionImageResource(R.drawable.setup_icon);
         mTitleBar.setOptionMenuVisible(true);
 
+
         mPagerTab = (LeoPagerTab) findViewById(R.id.call_filter_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);
         mPagerTab.setBackgroundResource(R.color.cb);
         mViewPager = (ViewPager) findViewById(R.id.call_filter_viewpager);
         initFragment();
 
-        mViewPager.setAdapter(new CallFilterAdapter(getSupportFragmentManager()));
+        mViewPager.setAdapter(new ManagerFlowAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2);
         mPagerTab.setViewPager(mViewPager);
     }
@@ -96,8 +98,8 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     }
 
 
-    class CallFilterAdapter extends FragmentPagerAdapter {
-        public CallFilterAdapter(FragmentManager fm) {
+    class ManagerFlowAdapter extends FragmentPagerAdapter {
+        public ManagerFlowAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -146,7 +148,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     }
 
     @Override
-    public void onPageSelected(int position) {
+    public void onPageSelected(int arg0) {
 
     }
 

@@ -227,7 +227,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
+            android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
             android:name=".msgcenter.MsgCenterActivity"
