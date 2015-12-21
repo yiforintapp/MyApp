@@ -33,6 +33,7 @@ public class CallFilterInfo {
     private boolean readState;
     private int callType;
     private long duration;
+    private int filterGrId;
 
 
     public int getBlackId() {
@@ -129,5 +130,13 @@ public class CallFilterInfo {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public int getFilterGrId() {
+        return filterGrId;
+    }
+
+    public void setFilterGrId(int filterGrId) {
+        this.filterGrId = filterGrId;
     }
 }

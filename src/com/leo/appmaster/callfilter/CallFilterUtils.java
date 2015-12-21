@@ -12,6 +12,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.privacycontact.ContactBean;
+import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.imageloader.utils.IoUtils;
 import com.leo.appmaster.utils.Utilities;
@@ -82,13 +84,14 @@ public class CallFilterUtils {
      * @param id           -1
      * @param name         null
      * @param number       null
-     * @param backId       -1
-     * @param filterNumber 0
+     * @param backId       -1（无该属性）
+     * @param filterNumber -1（无该属性）
      * @param date         0
      * @param duration     0
-     * @param callType     -1(无) 通话类型
+     * @param callType     -1（无该属性） 通话类型
      * @param readState    false
      * @param filterType   0（无） ，标记类型
+     * @param filterGrId   -1（无该属性）
      * @return
      */
     public static CallFilterInfo getFilterInfo(int id,
@@ -101,7 +104,8 @@ public class CallFilterUtils {
                                                long duration,
                                                int callType,
                                                boolean readState,
-                                               int filterType) {
+                                               int filterType,
+                                               int filterGrId) {
         CallFilterInfo filter = new CallFilterInfo();
         if (id != -1) {
             filter.setId(id);
@@ -118,7 +122,9 @@ public class CallFilterUtils {
         if (backId != -1) {
             filter.setBlackId(backId);
         }
-        filter.setFilterCount(filterNumber);
+        if (filterNumber > 0) {
+            filter.setFilterCount(filterNumber);
+        }
         filter.setTimeLong(date);
         filter.setDuration(duration);
         if (callType != -1) {
@@ -126,7 +132,66 @@ public class CallFilterUtils {
         }
         filter.setReadState(readState);
         filter.setFilterType(filterType);
+        if (filterGrId != -1) {
+            filter.setFilterGrId(filterGrId);
+        }
         return filter;
+    }
+
+    /**
+     * 封装StrangerInfo
+     *
+     * @param id          -1
+     * @param number      null
+     * @param numberArea  null
+     * @param duration    0
+     * @param date        0
+     * @param callType    -1(无该属性) 通话类型
+     * @param starCount   -1(无该属性)
+     * @param tipState    false
+     * @param removeState false
+     * @param readState   false
+     * @param starGrId    -1(无该属性)
+     * @return
+     */
+    public static StrangerInfo getStrangInfo(int id,
+                                             String number,
+                                             String numberArea,
+                                             long duration,
+                                             long date,
+                                             int callType,
+                                             int starCount,
+                                             boolean tipState,
+                                             boolean removeState,
+                                             boolean readState,
+                                             int starGrId) {
+        StrangerInfo info = new StrangerInfo();
+
+        if (id != -1) {
+            info.setId(id);
+        }
+        if (!TextUtils.isEmpty(number)) {
+            info.setNumber(number);
+        }
+        if (!TextUtils.isEmpty(numberArea)) {
+            info.setNumberArea(numberArea);
+        }
+        info.setCallDuration(duration);
+        info.setDate(date);
+        if (callType != -1) {
+            info.setCallType(callType);
+        }
+        if (starCount != -1) {
+            info.setStarCount(starCount);
+        }
+        info.setTipState(tipState);
+        info.setReadState(removeState);
+        info.setReadState(readState);
+        if (starGrId != -1) {
+            info.setStrangeGrId(starGrId);
+        }
+
+        return info;
     }
 
     public static boolean isDbKeyExist(String table, String colum, String number) {
@@ -162,31 +227,50 @@ public class CallFilterUtils {
 //            BlackListInfo info = getBlackListInfo(-1, "021544", "测试", 1, null, "深圳", 123, 321, true, false, false);
 //            list.add(info);
 //        }
-//        int id,
-//        String name,
-//        String number,
-//        String numberArea,
-//        int backId,
-//        int filterNumber,
-//        long date,
-//        long duration,
-//        int callType,
-//        boolean readState,
-//        int filterType
-        List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
+
+
+//        List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
+//        for (int i = 0; i < 10; i++) {
+//            long date = Long.valueOf("5454545554");
+//            CallFilterInfo info = getFilterInfo(-1, "en", "021544", "测试", 1, 20, date, 123, -1, false, 1, 2);
+//            list.add(info);
+//        }
+
+        List<StrangerInfo> list = new ArrayList<StrangerInfo>();
         for (int i = 0; i < 10; i++) {
             long date = Long.valueOf("5454545554");
-            CallFilterInfo info = getFilterInfo(-1, "en", "021544", "测试", 1, 20, date, 123, -1, false, 1);
+            StrangerInfo info = getStrangInfo(-1, "34143", "测试", date, date,
+                    0, 20, false, false, false, -1);
+
             list.add(info);
         }
-        mp.addFilterGr(list, false);
+        mp.addStrangerDet(list, false);
     }
-    public static void queryData(Context context){
+
+    public static void queryData(Context context) {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-      int count =   mp.getBlackListCount();
-        Toast.makeText(context,""+count,Toast.LENGTH_LONG).show();
+        int count = 0;
+        List<StrangerInfo> strangerInfos = mp.getStrangerDetList();
+        if (strangerInfos != null) {
+            count = mp.getStrangerDetList().size();
+        }
+
+        Toast.makeText(context, "" + count, Toast.LENGTH_SHORT).show();
     }
-    
+
+    public static void removeDate(Context context) {
+        CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        List<StrangerInfo> list = new ArrayList<StrangerInfo>();
+        for (int i = 1; i <= 10; i++) {
+            long date = Long.valueOf("5454545554");
+            StrangerInfo info = getStrangInfo(i, "34143", "测试", date, date,
+                    0, 20, false, false, false, -1);
+            list.add(info);
+        }
+        mp.removeStrangerDet(list);
+
+    }
+
     public static boolean checkIsHaveBlackNum(String blackNums, String PhoneNum) {
         String[] strings = blackNums.split(":");
         for (int i = 0; i < strings.length; i++) {
@@ -202,6 +286,33 @@ public class CallFilterUtils {
         String mStr = strings[i];
         String number = mStr.split("_")[1];
         return number;
+    }
+
+    /**
+     * 查询该号码是否被隐私联系人使用
+     *
+     * @param number
+     * @return true，已经使用，false，未使用
+     */
+    public static boolean isNumberUsePrivacy(String number) {
+        if (TextUtils.isEmpty(number)) {
+            return true;
+        }
+        Context context = AppMasterApplication.getInstance();
+        PrivacyContactManager pm = PrivacyContactManager.getInstance(context);
+        List<ContactBean> priContacts = pm.getPrivateContacts();
+        if (priContacts == null || priContacts.size() <= 0) {
+            return false;
+        }
+
+        for (ContactBean contact : priContacts) {
+            String priNumber = PrivacyContactUtils.simpleFromateNumber(contact.getContactNumber());
+            String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+            if (priNumber.contains(formateNumber)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

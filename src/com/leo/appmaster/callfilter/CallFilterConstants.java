@@ -284,4 +284,8 @@ public class CallFilterConstants {
 
 
     public final static String ADD_BLACK_LIST_MODEL = "add_black_list_mode";
+    /*黑名单，标记弹窗，已提示*/
+    public static final int FILTER_TIP = 1;
+    /*黑名单，标记弹窗，未提示*/
+    public static final int FILTER_TIP_NO = 0;
 }

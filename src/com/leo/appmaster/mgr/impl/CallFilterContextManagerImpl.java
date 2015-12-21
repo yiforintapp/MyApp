@@ -15,6 +15,7 @@ import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.StrangerInfo;
+import com.leo.appmaster.intruderprotection.CameraUtils;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 
@@ -145,12 +146,17 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (blackList == null || blackList.size() <= 0) {
             return false;
         }
+
         for (BlackListInfo info : blackList) {
             if (TextUtils.isEmpty(info.getNumber())) {
                 continue;
             }
             String name = info.getNumberName();
             String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
+            boolean isContactUse = CallFilterUtils.isNumberUsePrivacy(number);
+            if (isContactUse) {
+                continue;
+            }
             Bitmap icon = info.getIcon();
             String area = info.getNumberArea();
             int addBlackNumber = info.getAddBlackNumber();
@@ -233,10 +239,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             int id = info.getId();
             String number = info.getNumber();
             if (id >= 0) {
-                selection = CallFilterConstants.BLACK_ID + " = ?";
+                selection = CallFilterConstants.BLACK_ID + " = ? ";
                 selectionArgs = new String[]{String.valueOf(id)};
             } else if (!TextUtils.isEmpty(number)) {
-                selection = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ?";
+                selection = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                 selectionArgs = new String[]{formateNumber};
             }
@@ -350,7 +356,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             Uri uri = CallFilterConstants.FILTER_GROUP_URI;
             String selection = null;
             String[] selectionArgs = null;
-            String sortOrder = CallFilterConstants.DESC + " " + CallFilterConstants.FIL_GR_DATE;
+            String sortOrder = CallFilterConstants.FIL_GR_DATE + " " + CallFilterConstants.DESC;
             cursor = cr.query(uri, null, selection, selectionArgs, sortOrder);
             if (cursor != null) {
                 infoList = new ArrayList<CallFilterInfo>();
@@ -393,8 +399,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                     }
                     int filterType = cursor.getInt(filterTypeColum);
+                    /*默认值-1*/
+                    int filterGrId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
-                            filterNumber, date, duration, callType, isRead, filterType);
+                            filterNumber, date, duration, callType, isRead, filterType, filterGrId);
                     infoList.add(filterInfo);
                 }
             }
@@ -447,7 +455,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 continue;
             }
             String name = info.getNumberName();
-            String number = info.getNumber();
+            String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
             int blackId = info.getBlackId();
             int callType = info.getCallType();
             long duration = info.getDuration();
@@ -499,7 +507,6 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         }
         ContentResolver cr = mContext.getContentResolver();
         Uri uri = CallFilterConstants.FILTER_GROUP_URI;
-        ContentValues values = new ContentValues();
         String selection = null;
         String[] selectionArgs = null;
 
@@ -511,10 +518,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             String number = info.getNumber();
 
             if (id >= 0) {
-                selection = CallFilterConstants.FIL_GR_ID + " = ?";
+                selection = CallFilterConstants.FIL_GR_ID + " = ? ";
                 selectionArgs = new String[]{String.valueOf(id)};
             } else if (!TextUtils.isEmpty(number)) {
-                selection = CallFilterConstants.FIL_GR_PH_NUMB + " LIKE ?";
+                selection = CallFilterConstants.FIL_GR_PH_NUMB + " LIKE ? ";
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                 selectionArgs = new String[]{formateNumber};
             }
@@ -526,61 +533,575 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public List<CallFilterInfo> getFilterDetList() {
-        return null;
+        List<CallFilterInfo> filterInfos = null;
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.FILTER_DETAIL_URI;
+        Cursor cursor = null;
+        String where = null;
+        String[] selectionArgs = null;
+        String sortOrder = CallFilterConstants.FIL_DET_DATE + " " + CallFilterConstants.DESC;
+        try {
+            cursor = cr.query(uri, null, where, selectionArgs, sortOrder);
+            if (cursor != null) {
+                filterInfos = new ArrayList<CallFilterInfo>();
+                while (cursor.moveToNext()) {
+
+                    int idColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_ID);
+                    int numberColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_PHONE_NUMBER);
+                    int nameColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_NAME);
+                    int numberAreaColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_NUM_AREA);
+                    int filterGrIdColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_TO_GR_ID);
+                    int dateColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_DATE);
+                    int durationColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_DURATION);
+                    int callTypeColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_CALL_TYPE);
+                    int readStateColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_READ_STATE);
+                    int filterTypeColum = cursor.getColumnIndex(CallFilterConstants.FIL_DET_TYPE);
+
+                    int id = cursor.getInt(idColum);
+                    String name = cursor.getString(nameColum);
+                    String number = cursor.getString(numberColum);
+                    if (TextUtils.isEmpty(name)) {
+                        name = number;
+                    }
+                    String numberArea = cursor.getString(numberAreaColum);
+                    int filterGrId = cursor.getInt(filterGrIdColum);
+                    long date = cursor.getLong(dateColum);
+                    long duration = cursor.getLong(durationColum);
+                    int callType = cursor.getInt(callTypeColum);
+                    int readState = cursor.getInt(readStateColum);
+                    boolean isRead = false;
+                    switch (readState) {
+                        case CallFilterConstants.READ:
+                            isRead = true;
+                            break;
+                        case CallFilterConstants.READ_NO:
+                            isRead = false;
+                            break;
+                        default:
+                            break;
+
+                    }
+                    int filterType = cursor.getInt(filterTypeColum);
+
+                    int filterNumber = -1;
+                    int blackId = -1;
+                    CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
+                            filterNumber, date, duration, callType, isRead, filterType, filterGrId);
+                    filterInfos.add(filterInfo);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return filterInfos;
     }
 
     @Override
     public int getFilterDetCount() {
-        return 0;
+        int count = 0;
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.FILTER_DETAIL_URI;
+        Cursor cursor = null;
+        String where = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        try {
+            cursor = cr.query(uri, null, where, selectionArgs, sortOrder);
+            if (cursor != null) {
+                count = cursor.getCount();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return count;
     }
 
     @Override
-    public boolean addFilterDet(CallFilterInfo info) {
-        return false;
+    public boolean addFilterDet(List<CallFilterInfo> infos, boolean update) {
+        if (infos == null || infos.size() <= 0) {
+            return false;
+        }
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.FILTER_DETAIL_URI;
+        ContentValues values = new ContentValues();
+        String where = null;
+        String[] selectionArgs = null;
+        for (CallFilterInfo info : infos) {
+            if (TextUtils.isEmpty(info.getNumber())) {
+                continue;
+            }
+            String name = info.getNumberName();
+            String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
+            int filterGrId = info.getFilterGrId();
+            int callType = info.getCallType();
+            long duration = info.getDuration();
+            int filterType = info.getFilterType();
+            String numberType = info.getNumberType();
+            long date = info.getTimeLong();
+            boolean isRead = info.isReadState();
+
+            values.put(CallFilterConstants.FIL_DET_PHONE_NUMBER, number);
+            values.put(CallFilterConstants.FIL_DET_NAME, name);
+            values.put(CallFilterConstants.FIL_DET_NUM_AREA, numberType);
+            values.put(CallFilterConstants.FIL_DET_TO_GR_ID, filterGrId);
+            values.put(CallFilterConstants.FIL_DET_DATE, date);
+            values.put(CallFilterConstants.FIL_DET_DURATION, duration);
+            values.put(CallFilterConstants.FIL_DET_CALL_TYPE, callType);
+            values.put(CallFilterConstants.FIL_DET_TYPE, filterType);
+            if (isRead) {
+                values.put(CallFilterConstants.FIL_DET_READ_STATE, CallFilterConstants.READ);
+            } else {
+                values.put(CallFilterConstants.FIL_DET_READ_STATE, CallFilterConstants.READ_NO);
+            }
+
+            try {
+                if (update) {
+                    String table = CallFilterConstants.FILTER_DETAIL_TAB;
+                    String colum = CallFilterConstants.FIL_DET_PHONE_NUMBER;
+                    boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, colum, number);
+                    if (isKeyExist) {
+                        cr.update(uri, values, where, selectionArgs);
+                    }
+                } else {
+                    cr.insert(uri, values);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+            }
+        }
+
+        return true;
     }
 
     @Override
-    public boolean removeFilterDet(CallFilterInfo info) {
-        return false;
+    public boolean removeFilterDet(List<CallFilterInfo> infos) {
+        if (infos == null || infos.size() <= 0) {
+            return false;
+        }
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.FILTER_DETAIL_URI;
+        String selection = null;
+        String[] selectionArgs = null;
+
+        for (CallFilterInfo info : infos) {
+            if (TextUtils.isEmpty(info.getNumber())) {
+                continue;
+            }
+            int id = info.getId();
+            String number = info.getNumber();
+
+            if (id >= 0) {
+                selection = CallFilterConstants.FIL_DET_ID + " = ? ";
+                selectionArgs = new String[]{String.valueOf(id)};
+            } else if (!TextUtils.isEmpty(number)) {
+                selection = CallFilterConstants.FIL_DET_PHONE_NUMBER + " LIKE ? ";
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                selectionArgs = new String[]{formateNumber};
+            }
+            cr.delete(uri, selection, selectionArgs);
+        }
+
+        return true;
     }
 
     @Override
     public List<StrangerInfo> getStrangerGrList() {
-        return null;
+        List<StrangerInfo> starInfos = null;
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.STRANGER_GROUP_URI;
+        Cursor cursor = null;
+        String where = null;
+        String[] selectionArgs = null;
+        String sortOrder = CallFilterConstants.STR_GR_CALL_DATE + " " + CallFilterConstants.DESC;
+        try {
+            cursor = cr.query(uri, null, where, selectionArgs, sortOrder);
+
+            if (cursor != null) {
+                starInfos = new ArrayList<StrangerInfo>();
+                while (cursor.moveToNext()) {
+
+                    int idColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_ID);
+                    int nmberColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_PHO_NUM);
+                    int numberAreaColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_NUM_AREA);
+                    int durationColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_CALL_DURATION);
+                    int dateColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_CALL_DATE);
+                    int callTypeColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_CALL_TYPE);
+                    int callCountColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_NUMBER);
+                    int tipColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_TIP_STATE);
+                    int removeColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_REMOVE_STATE);
+                    int readColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_READ_STATE);
+
+                    int id = cursor.getInt(idColum);
+                    String number = cursor.getString(nmberColum);
+                    String area = cursor.getString(numberAreaColum);
+                    long duration = cursor.getLong(durationColum);
+                    long date = cursor.getLong(dateColum);
+                    int callType = cursor.getInt(callTypeColum);
+                    int callCount = cursor.getInt(callCountColum);
+                    int tipInt = cursor.getInt(tipColum);
+                    int removeInt = cursor.getInt(removeColum);
+                    int readInt = cursor.getInt(readColum);
+                    boolean tipState = false;
+                    boolean removeState = false;
+                    boolean readState = false;
+                    switch (tipInt) {
+                        case CallFilterConstants.FILTER_TIP:
+                            tipState = true;
+                            break;
+                        case CallFilterConstants.FILTER_TIP_NO:
+                            tipState = false;
+                            break;
+                        default:
+                            break;
+                    }
+                    switch (removeInt) {
+                        case CallFilterConstants.REMOVE:
+                            removeState = true;
+                            break;
+                        case CallFilterConstants.REMOVE_NO:
+                            removeState = false;
+                            break;
+                        default:
+                            break;
+                    }
+                    switch (readInt) {
+                        case CallFilterConstants.READ:
+                            readState = true;
+                            break;
+                        case CallFilterConstants.READ_NO:
+                            readState = false;
+                            break;
+                        default:
+                            break;
+                    }
+                    int starGrId = -1;
+                    StrangerInfo straInfo = CallFilterUtils.getStrangInfo(id, number, area, duration, date,
+                            callType, callCount, tipState, removeState, readState, starGrId);
+                    starInfos.add(straInfo);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return starInfos;
     }
 
     @Override
     public int getStranagerGrCount() {
-        return 0;
+        int count = 0;
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.STRANGER_GROUP_URI;
+        Cursor cursor = null;
+        String where = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        try {
+            cursor = cr.query(uri, null, where, selectionArgs, sortOrder);
+            if (cursor != null) {
+                count = cursor.getCount();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return count;
     }
 
     @Override
-    public boolean addStrangerGr(StrangerInfo info) {
-        return false;
+    public boolean addStrangerGr(List<StrangerInfo> infos, boolean update) {
+        if (infos == null || infos.size() <= 0) {
+            return false;
+        }
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.STRANGER_GROUP_URI;
+        ContentValues values = new ContentValues();
+        String where = null;
+        String[] selectionArgs = null;
+
+        try {
+            for (StrangerInfo info : infos) {
+                if (TextUtils.isEmpty(info.getNumber())) {
+                    continue;
+                }
+
+                String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
+                long duration = info.getCallDuration();
+                int callType = info.getCallType();
+                long date = info.getDate();
+                String numberArea = info.getNumberArea();
+                int starCount = info.getStarCount();
+                boolean removeState = info.isRemoveState();
+                boolean readState = info.isReadState();
+                boolean tipState = info.isTipState();
+
+                values.put(CallFilterConstants.STR_GR_PHO_NUM, number);
+                values.put(CallFilterConstants.STR_GR_NUM_AREA, numberArea);
+                values.put(CallFilterConstants.STR_GR_CALL_DURATION, duration);
+                values.put(CallFilterConstants.STR_GR_CALL_TYPE, callType);
+                values.put(CallFilterConstants.STR_GR_CALL_DATE, date);
+                values.put(CallFilterConstants.STR_GR_NUMBER, starCount);
+                if (removeState) {
+                    values.put(CallFilterConstants.STR_GR_REMOVE_STATE, CallFilterConstants.REMOVE);
+                } else {
+                    values.put(CallFilterConstants.STR_GR_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
+                }
+
+                if (readState) {
+                    values.put(CallFilterConstants.STR_GR_READ_STATE, CallFilterConstants.READ);
+                } else {
+                    values.put(CallFilterConstants.STR_GR_READ_STATE, CallFilterConstants.READ_NO);
+                }
+
+                if (tipState) {
+                    values.put(CallFilterConstants.STR_GR_TIP_STATE, CallFilterConstants.FILTER_TIP);
+                } else {
+                    values.put(CallFilterConstants.STR_GR_TIP_STATE, CallFilterConstants.FILTER_TIP_NO);
+                }
+
+                if (update) {
+                    String table = CallFilterConstants.STRANGER_GROUP_TAB;
+                    String colum = CallFilterConstants.STR_GR_PHO_NUM;
+                    boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, colum, number);
+                    if (isKeyExist) {
+                        cr.update(uri, values, where, selectionArgs);
+                    }
+                } else {
+                    cr.insert(uri, values);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
-    public boolean removeStrangerGr(StrangerInfo info) {
-        return false;
+    public boolean removeStrangerGr(List<StrangerInfo> infos) {
+        if (infos == null || infos.size() <= 0) {
+            return false;
+        }
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.STRANGER_GROUP_URI;
+        String selection = null;
+        String[] selectionArgs = null;
+
+        for (StrangerInfo info : infos) {
+            if (TextUtils.isEmpty(info.getNumber())) {
+                continue;
+            }
+            int id = info.getId();
+            String number = info.getNumber();
+
+            if (id >= 0) {
+                selection = CallFilterConstants.STR_GR_ID + " = ? ";
+                selectionArgs = new String[]{String.valueOf(id)};
+            } else if (!TextUtils.isEmpty(number)) {
+                selection = CallFilterConstants.STR_GR_PHO_NUM + " LIKE ? ";
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                selectionArgs = new String[]{formateNumber};
+            }
+            cr.delete(uri, selection, selectionArgs);
+        }
+
+        return true;
     }
 
     @Override
     public List<StrangerInfo> getStrangerDetList() {
-        return null;
+
+        List<StrangerInfo> starInfos = null;
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.STRANGER_DETAIL_URI;
+        Cursor cursor = null;
+        String where = null;
+        String[] selectionArgs = null;
+//        String sortOrder = CallFilterConstants.STR_DET_CALL_DATE + " " + CallFilterConstants.DESC;
+        String sortOrder = null;
+        try {
+            cursor = cr.query(uri, null, where, selectionArgs, sortOrder);
+
+            if (cursor != null) {
+                starInfos = new ArrayList<StrangerInfo>();
+                while (cursor.moveToNext()) {
+                    int idColum = cursor.getColumnIndex(CallFilterConstants.STR_DET_ID);
+                    int nmberColum = cursor.getColumnIndex(CallFilterConstants.STR_DET_PHO_NUM);
+                    int straGrIdColum = cursor.getColumnIndex(CallFilterConstants.STR_DET_TO_GR_ID);
+                    int numberAreaColum = cursor.getColumnIndex(CallFilterConstants.STR_DET_NUM_AREA);
+                    int durationColum = cursor.getColumnIndex(CallFilterConstants.STR_DET_CALL_DURATION);
+                    int dateColum = cursor.getColumnIndex(CallFilterConstants.STR_DET_CALL_DATE);
+                    int callTypeColum = cursor.getColumnIndex(CallFilterConstants.STR_DET_CALL_TYPE);
+                    int readColum = cursor.getColumnIndex(CallFilterConstants.STR_GR_READ_STATE);
+
+                    int id = cursor.getInt(idColum);
+                    String number = cursor.getString(nmberColum);
+                    String area = cursor.getString(numberAreaColum);
+                    long duration = cursor.getLong(durationColum);
+                    long date = cursor.getLong(dateColum);
+                    int callType = cursor.getInt(callTypeColum);
+                    int readInt = cursor.getInt(readColum);
+                    int straGrId = cursor.getInt(straGrIdColum);
+                    boolean readState = false;
+
+                    switch (readInt) {
+                        case CallFilterConstants.READ:
+                            readState = true;
+                            break;
+                        case CallFilterConstants.READ_NO:
+                            readState = false;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    int callCount = -1;
+                    boolean tipState = false;
+                    boolean removeState = false;
+                    StrangerInfo straInfo = CallFilterUtils.getStrangInfo(id, number, area, duration, date,
+                            callType, callCount, tipState, removeState, readState, straGrId);
+                    starInfos.add(straInfo);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return starInfos;
     }
 
     @Override
     public int getStrangerDetCount() {
-        return 0;
+        int count = 0;
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.STRANGER_DETAIL_URI;
+        Cursor cursor = null;
+        String where = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        try {
+            cursor = cr.query(uri, null, where, selectionArgs, sortOrder);
+
+            if (cursor != null) {
+                count = cursor.getCount();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return count;
     }
 
     @Override
-    public boolean addStrangerDet(StrangerInfo info) {
-        return false;
+    public boolean addStrangerDet(List<StrangerInfo> infos, boolean update) {
+
+        if (infos == null || infos.size() <= 0) {
+            return false;
+        }
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.STRANGER_DETAIL_URI;
+        ContentValues values = new ContentValues();
+        String where = null;
+        String[] selectionArgs = null;
+        try {
+            for (StrangerInfo info : infos) {
+                if (TextUtils.isEmpty(info.getNumber())) {
+                    continue;
+                }
+
+                String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
+                int straGrId = info.getStrangeGrId();
+                String numberArea = info.getNumberArea();
+                long duration = info.getCallDuration();
+                long date = info.getDate();
+                int callType = info.getCallType();
+                boolean readState = info.isReadState();
+
+                values.put(CallFilterConstants.STR_GR_PHO_NUM, number);
+                values.put(CallFilterConstants.STR_GR_NUM_AREA, numberArea);
+                values.put(CallFilterConstants.STR_GR_CALL_DURATION, duration);
+                values.put(CallFilterConstants.STR_GR_CALL_TYPE, callType);
+                values.put(CallFilterConstants.STR_GR_CALL_DATE, date);
+                values.put(CallFilterConstants.STR_DET_TO_GR_ID, straGrId);
+
+                if (readState) {
+                    values.put(CallFilterConstants.STR_GR_READ_STATE, CallFilterConstants.READ);
+                } else {
+                    values.put(CallFilterConstants.STR_GR_READ_STATE, CallFilterConstants.READ_NO);
+                }
+
+                if (update) {
+                    String table = CallFilterConstants.STRANGER_DETAIL_TAB;
+                    String colum = CallFilterConstants.STR_GR_PHO_NUM;
+                    boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, colum, number);
+                    if (isKeyExist) {
+                        cr.update(uri, values, where, selectionArgs);
+                    }
+                } else {
+                    cr.insert(uri, values);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
     @Override
-    public boolean removeStrangerDet(StrangerInfo info) {
+    public boolean removeStrangerDet(List<StrangerInfo> infos) {
+        if (infos == null || infos.size() <= 0) {
+            return false;
+        }
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.STRANGER_DETAIL_URI;
+        String selection = null;
+        String[] selectionArgs = null;
+
+        for (StrangerInfo info : infos) {
+            if (TextUtils.isEmpty(info.getNumber())) {
+                continue;
+            }
+            int id = info.getId();
+            String number = info.getNumber();
+
+            if (id >= 0) {
+                selection = CallFilterConstants.STR_DET_ID + " = ? ";
+                selectionArgs = new String[]{String.valueOf(id)};
+            } else if (!TextUtils.isEmpty(number)) {
+                selection = CallFilterConstants.STR_DET_PHO_NUM + " LIKE ? ";
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                selectionArgs = new String[]{formateNumber};
+            }
+            cr.delete(uri, selection, selectionArgs);
+        }
+
         return false;
     }
 

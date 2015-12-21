@@ -19,8 +19,9 @@ public class StrangerInfo {
      */
     private String numberArea;
     private boolean readState;
-    private int callState;
-    private int removeState;
+    private int callType;
+    private boolean removeState;
+    private int strangeGrId;
 
     public long getCallDuration() {
         return callDuration;
@@ -30,12 +31,12 @@ public class StrangerInfo {
         this.callDuration = callDuration;
     }
 
-    public int getCallState() {
-        return callState;
+    public int getCallType() {
+        return callType;
     }
 
-    public void setCallState(int callState) {
-        this.callState = callState;
+    public void setCallType(int callType) {
+        this.callType = callType;
     }
 
     public long getDate() {
@@ -94,11 +95,20 @@ public class StrangerInfo {
         this.tipState = tipState;
     }
 
-    public int getRemoveState() {
+    public boolean isRemoveState() {
         return removeState;
     }
 
-    public void setRemoveState(int removeState) {
+    public void setRemoveState(boolean removeState) {
         this.removeState = removeState;
     }
+
+    public int getStrangeGrId() {
+        return strangeGrId;
+    }
+
+    public void setStrangeGrId(int strangeGrId) {
+        this.strangeGrId = strangeGrId;
+    }
+
 }
