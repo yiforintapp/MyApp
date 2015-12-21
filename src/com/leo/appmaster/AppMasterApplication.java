@@ -21,6 +21,7 @@ import android.os.UserManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
+import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -73,18 +74,14 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
-        try {
-            String[] array = getKeyArray();
-            if (array != null && array.length == 2) {
-                LeoLog.d(TAG, "array: [" + array[0] + ", " + array[1] + "]");
-            } else {
-                LeoLog.d(TAG, "array: " + array);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         sInstance = this;
-        // Use old sort
+//        String text = "hahahahahahah";
+//        try {
+//            text = CryptoUtils.encrypt(text);
+//        } catch (Throwable e) {
+//            e.printStackTrace();
+//        }
+        // Use old sor
         try {
             System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
         } catch (Exception e) {
@@ -95,7 +92,7 @@ public class AppMasterApplication extends Application {
         try {
             sLastVersion = Integer.parseInt(lastVer);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            LeoLog.e(TAG, "parse last ver ex." + e.getMessage());
         }
         mActivityList = new ArrayList<WeakReference<Activity>>();
         mResumedList = new ArrayList<WeakReference<Activity>>();

@@ -41,13 +41,12 @@ public class CryptoUtils {
         if (TextUtils.isEmpty(message)) {
             return message;
         }
-        AppMasterApplication application = AppMasterApplication.getInstance();
-        String[] keys = application.getKeyArray();
-        if (keys == null || keys.length <= 0) {
+
+        try {
+            initAesKeyIfNeeded();
+        } catch (RuntimeException e) {
             return message;
         }
-
-        initAesKeyIfNeeded();
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(cipher.ENCRYPT_MODE, sAesKey, sAesIv);
@@ -83,13 +82,12 @@ public class CryptoUtils {
         if (TextUtils.isEmpty(message)) {
             return message;
         }
-        AppMasterApplication application = AppMasterApplication.getInstance();
-        String[] keys = application.getKeyArray();
-        if (keys == null || keys.length <= 0) {
+
+        try {
+            initAesKeyIfNeeded();
+        } catch (RuntimeException e) {
             return message;
         }
-
-        initAesKeyIfNeeded();
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, sAesKey, sAesIv);
@@ -121,13 +119,12 @@ public class CryptoUtils {
         if (data == null || data.length <= 0) {
             return data;
         }
-        AppMasterApplication application = AppMasterApplication.getInstance();
-        String[] keys = application.getKeyArray();
-        if (keys == null || keys.length <= 0) {
+
+        try {
+            initAesKeyIfNeeded();
+        } catch (RuntimeException e) {
             return data;
         }
-
-        initAesKeyIfNeeded();
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, sAesKey, sAesIv);
@@ -169,7 +166,7 @@ public class CryptoUtils {
         return new CipherInputStream(in, c);
     }
 
-    private static void initAesKeyIfNeeded() {
+    private static void initAesKeyIfNeeded() throws RuntimeException {
         if (sAesKey != null && sAesIv != null) {
             return;
         }
@@ -177,14 +174,28 @@ public class CryptoUtils {
             AppMasterApplication application = AppMasterApplication.getInstance();
             String[] keys = application.getKeyArray();
             if (keys == null || keys.length <= 0) {
-                return;
+                throw new RuntimeException("key is null.");
             }
-
-            byte[] keyByte = Base64.decode(keys[0], Base64.NO_WRAP);
+            byte[] keyByte = HexStringToByteArray(keys[0]);
             sAesKey = new SecretKeySpec(keyByte, "AES");
 
-            byte[] ivByte = Base64.decode(keys[1], Base64.NO_WRAP);
+            byte[] ivByte = HexStringToByteArray(keys[1]);
             sAesIv = new IvParameterSpec(ivByte);
         }
     }
+
+    private static byte[] HexStringToByteArray(String s) throws IllegalArgumentException {
+        int len = s.length();
+        if (len % 2 == 1) {
+            throw new IllegalArgumentException("Hex string must have even number of characters");
+        }
+        byte[] data = new byte[len / 2]; // Allocate 1 byte per 2 hex characters
+        for (int i = 0; i < len; i += 2) {
+            // Convert each character into a integer (base-16), then bit-shift into place
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
+    }
+
 }
