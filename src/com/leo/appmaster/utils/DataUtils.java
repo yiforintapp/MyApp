@@ -1,10 +1,15 @@
 
 package com.leo.appmaster.utils;
 
+import android.content.Context;
 import android.graphics.Color;
 
+import com.leo.appmaster.R;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.videohide.VideoItemBean;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 

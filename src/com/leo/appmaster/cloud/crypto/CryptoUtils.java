@@ -150,7 +150,7 @@ public class CryptoUtils {
 
     public static CipherOutputStream newOutputStream(OutputStream os)
             throws NoSuchAlgorithmException, NoSuchPaddingException,
-            InvalidKeyException, InvalidAlgorithmParameterException {
+            InvalidKeyException, InvalidAlgorithmParameterException, RuntimeException {
         initAesKeyIfNeeded();
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.ENCRYPT_MODE, sAesKey, sAesIv);
@@ -159,7 +159,7 @@ public class CryptoUtils {
 
     public static CipherInputStream newInputStream(InputStream in)
             throws NoSuchAlgorithmException, NoSuchPaddingException,
-            InvalidKeyException, InvalidAlgorithmParameterException {
+            InvalidKeyException, InvalidAlgorithmParameterException, RuntimeException {
         initAesKeyIfNeeded();
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.DECRYPT_MODE, sAesKey, sAesIv);

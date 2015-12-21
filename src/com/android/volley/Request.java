@@ -123,6 +123,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
      * 包体是否需要加密
      */
     private boolean mBodyNeedEncrypt;
+    private boolean mBodyNeedCompress;
 
 	/**
 	 * Creates a new request with the given URL and error listener. Note that
@@ -681,5 +682,13 @@ public abstract class Request<T> implements Comparable<Request<T>> {
 
     public boolean isBodyNeedEncrypt() {
         return mBodyNeedEncrypt;
+    }
+
+    public void setBodyNeedCompress() {
+        mBodyNeedCompress = true;
+    }
+
+    public boolean isBodyNeedCompress() {
+        return mBodyNeedCompress;
     }
 }

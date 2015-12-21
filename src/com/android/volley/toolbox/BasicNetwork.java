@@ -23,6 +23,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,7 +56,10 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.imageloader.utils.IoUtils;
+
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * A network performing Volley requests over an {@link HttpStack}.
@@ -129,7 +135,10 @@ public class BasicNetwork implements Network {
 				if (httpResponse.getEntity() != null) {
 				    String contentEncoding = responseHeaders.get("Content-Encoding");
 				    boolean supportGzip = contentEncoding != null && contentEncoding.equalsIgnoreCase("gzip");
-					responseContents = entityToBytes(httpResponse.getEntity(), supportGzip);
+
+					String contentAes = responseHeaders.get("Content_Cpto");
+					boolean supportAes = contentAes != null && contentAes.equalsIgnoreCase("aes");
+					responseContents = entityToBytes(httpResponse.getEntity(), supportGzip, supportAes);
 					
 					// 这部分代码仅仅用来统计压缩比率, 所以注释掉
 //					String contentEncoding = responseHeaders.get("Content-Encoding");
@@ -253,7 +262,7 @@ public class BasicNetwork implements Network {
 	}
 
 	/** Reads the contents of HttpEntity into a byte[]. */
-	private byte[] entityToBytes(HttpEntity entity, boolean supportGzip) throws IOException,
+	private byte[] entityToBytes(HttpEntity entity, boolean supportGzip, boolean supportAes) throws IOException,
 			ServerError {
 		PoolingByteArrayOutputStream bytes = new PoolingByteArrayOutputStream(
 				mPool, (int) entity.getContentLength());
@@ -262,6 +271,9 @@ public class BasicNetwork implements Network {
 			InputStream in = entity.getContent();
 			if (supportGzip) {
 			    in = new GZIPInputStream(in);
+			}
+			if (supportAes) {
+				in = CryptoUtils.newInputStream(in);
 			}
 			if (in == null) {
 				throw new ServerError();
@@ -272,6 +284,14 @@ public class BasicNetwork implements Network {
 				bytes.write(buffer, 0, count);
 			}
 			return bytes.toByteArray();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
 		} finally {
 			try {
 				// Close the InputStream and release the resources by
@@ -286,6 +306,8 @@ public class BasicNetwork implements Network {
 			mPool.returnBuf(buffer);
 			bytes.close();
 		}
+
+        return new byte[0];
 	}
 
 	/**

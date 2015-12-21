@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
@@ -306,22 +307,17 @@ public class HttpRequestAgent {
     public void commitFeedback(Listener<JSONObject> listener,
                                ErrorListener errorListener, final Map<String, String> params, final String device) {
         String bodyString = null;
-        String url = Utilities.getURL(FeedbackHelper.FEEDBACK_URL);
+        String url = Utilities.getURL(FeedbackHelper.FEEDBACK_CNCRYPT_URL);
         int method = Method.POST;
         JsonObjectRequest request = new JsonObjectRequest(method, url, bodyString, listener,
                 errorListener) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                headers.put("device", device);
-//                return headers;
-//            }
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return params;
             }
         };
-        request.addEncryptHeader("device", device);
+        Map<String, String> data = DeviceUtil.getFeedbackData(mContext);
+        request.addEncryptHeaders(data);
         // 最多重试3次
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,

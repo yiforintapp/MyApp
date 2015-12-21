@@ -30,6 +30,8 @@ public class FeedbackHelper {
     private static final String TAG = "FeedbackHelper";
 
 	public final static String FEEDBACK_URL = "/appmaster/feedback";
+	// feedback需要加密接口
+	public final static String FEEDBACK_CNCRYPT_URL = "/appmaster/feedbackimage";
 	// private final static String FEEDBACK_URL =
 	// "http://test.leostat.com/appmaster/feedback";
 	protected final static String TABLE_NAME = "feedback";

@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
@@ -46,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.GZIPOutputStream;
 
 import javax.crypto.NoSuchPaddingException;
 import javax.net.ssl.HttpsURLConnection;
@@ -152,7 +154,7 @@ public class HurlStack implements HttpStack {
         if (object.length() > 0) {
             String message = object.toString();
             String cryptMsg = CryptoUtils.encrypt(message);
-            connection.addRequestProperty("message", cryptMsg);
+            connection.addRequestProperty("leo", cryptMsg);
         }
     }
 
@@ -268,11 +270,16 @@ public class HurlStack implements HttpStack {
         if (body != null) {
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            DataOutputStream out = null;
+
+            OutputStream target = null;
             try {
+                target = connection.getOutputStream();
+                if (request.isBodyNeedCompress()) {
+                    target = new GZIPOutputStream(target);
+                }
                 if (request.isBodyNeedEncrypt()) {
                     try {
-                        out = new DataOutputStream(CryptoUtils.newOutputStream(connection.getOutputStream()));
+                        target = CryptoUtils.newOutputStream(target);
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     } catch (NoSuchPaddingException e) {
@@ -283,12 +290,10 @@ public class HurlStack implements HttpStack {
                         e.printStackTrace();
                     }
                 }
-                if (out == null) {
-                    out = new DataOutputStream(connection.getOutputStream());
-                }
-                out.write(body);
+                target = new DataOutputStream(target);
+                target.write(body);
             } finally {
-                IoUtils.closeSilently(out);
+                IoUtils.closeSilently(target);
             }
         }
     }
