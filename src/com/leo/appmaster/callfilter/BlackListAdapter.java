@@ -74,7 +74,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
             String numberName = info.numberName;
             String number = info.number;
 
-            if (!Utilities.isEmpty(numberName)) {
+            if (!Utilities.isEmpty(numberName) && !numberName.equals("null")) {
                 holder.title.setText(numberName);
                 holder.desc.setText(number);
                 holder.desc.setVisibility(View.VISIBLE);
@@ -102,9 +102,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
 
     private void showDialog(final int position) {
         LeoLog.d("testPosition", "position : " + position);
-        if (mDialog == null) {
-            mDialog = CallFIlterUIHelper.getInstance(mContext).getOneChioseDialog();
-        }
+        mDialog = CallFIlterUIHelper.getInstance(mContext).getOneChioseDialog();
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

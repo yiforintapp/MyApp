@@ -99,7 +99,6 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_call_log);
-
         handleIntent();
         initUI();
         sendMsgHandler();
@@ -383,9 +382,10 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                             //TODO 删除系统记录？
                             for (ContactCallLog contact : mAddPrivacyCallLog) {
                                 String name = contact.getCallLogName();
+                                String contactNumber = contact.getCallLogNumber();
                                 String number = PrivacyContactUtils.simpleFromateNumber(contact.getCallLogNumber());
                                 /*隐私联系人去重,判断是否为隐私联系人*/
-                                boolean isPryCont = PrivacyContactUtils.pryContRemovSame(number);
+                                boolean isPryCont = PrivacyContactUtils.pryContRemovSame(contactNumber);
                                 if (!isPryCont) {
                                     boolean isHaveBlackNum =
                                             CallFilterUtils.checkIsHaveBlackNum(blackNums, number);

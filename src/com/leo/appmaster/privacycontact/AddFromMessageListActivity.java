@@ -37,6 +37,9 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.callfilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterUtils;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
@@ -48,6 +51,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
     private static final String TAG = "AddFromMessageListActivity";
@@ -57,7 +61,6 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
     private CommonToolbar mTtileBar;
     private List<MessageBean> mAddPrivacyMessage;
     private LEOAlarmDialog mAddMessageDialog;
-    private Handler mHandler;
     private LEORoundProgressDialog mProgressDialog;
     private ProgressBar mProgressBar;
     private List<MessageBean> mAddMessages;
@@ -68,11 +71,45 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
     private Button mAutoDddBtn;
     private RippleView rippleView;
     private AddFromMsmHandler mAddFromMsmHandler = new AddFromMsmHandler();
+    private String mFrom;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            int currentValue = msg.what;
+            if (currentValue >= mAddPrivacyMessage.size()) {
+                if (!mLogFlag) {
+                    if (mProgressDialog != null) {
+                        mProgressDialog.cancel();
+                    }
+                    AddFromMessageListActivity.this.finish();
+                } else {
+                    if (mProgressDialog != null) {
+                        mProgressDialog.cancel();
+                    }
+                    mLogFlag = false;
+                }
+            } else {
+                mProgressDialog.setProgress(currentValue);
+            }
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_message);
+        handleIntent();
+        initUI();
+        sendMsgHandler();
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        mFrom = intent.getStringExtra(CallFilterConstants.FROMWHERE);
+    }
+
+    private void initUI() {
         mDefaultText = (LinearLayout) findViewById(R.id.add_message_default_tv);
         rippleView = (RippleView) mDefaultText.findViewById(R.id.moto_add_btn_ripp);
         rippleView.setOnClickListener(new OnClickListener() {
@@ -88,18 +125,6 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
             }
         });
         mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
-//        mAutoDddBtn.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                /* SDK */
-//                SDKWrapper.addEvent(AddFromMessageListActivity.this, SDKWrapper.P1, "contactsadd",
-//                        "smsemptyadd");
-//                Intent intent = new Intent(AddFromMessageListActivity.this,
-//                        PrivacyContactInputActivity.class);
-//                intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
-//                startActivity(intent);
-//            }
-//        });
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
         mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionImageResource(R.drawable.mode_done);
@@ -110,36 +135,14 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
             public void onClick(View arg0) {
                 if (mMessageList != null && mMessageList.size() > 0) {
                     if (mAddPrivacyMessage.size() > 0 && mAddPrivacyMessage != null) {
-                        if (mHandler == null) {
-                            mHandler = new Handler() {
-                                @Override
-                                public void handleMessage(Message msg) {
-                                    int currentValue = msg.what;
-                                    if (currentValue >= mAddPrivacyMessage.size()) {
-                                        if (!mLogFlag) {
-                                            if (mProgressDialog != null) {
-                                                mProgressDialog.cancel();
-                                            }
-                                            AddFromMessageListActivity.this.finish();
-                                        } else {
-                                            if (mProgressDialog != null) {
-                                                mProgressDialog.cancel();
-                                            }
-                                            mLogFlag = false;
-                                        }
-                                    } else {
-                                        mProgressDialog.setProgress(currentValue);
-                                    }
-                                    super.handleMessage(msg);
-                                }
-                            };
-                        }
                         showProgressDialog(mAddPrivacyMessage.size(), 0);
-//                        PrivacyMessageTask task = new PrivacyMessageTask();
-//                        task.execute(PrivacyContactUtils.ADD_CONTACT_MODEL);
-                        sendImpMsmHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                        if (!Utilities.isEmpty(mFrom) &&
+                                mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+                            sendImpMsmHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
+                        } else {
+                            sendImpMsmHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                        }
                     } else {
-
                         Toast.makeText(AddFromMessageListActivity.this,
                                 getResources().getString(R.string.privacy_contact_toast_no_choose),
                                 Toast.LENGTH_SHORT).show();
@@ -153,9 +156,6 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         mAddPrivacyMessage = new ArrayList<MessageBean>();
         mListMessage = (ListView) findViewById(R.id.add_messageLV);
         mListMessage.setOnItemClickListener(this);
-//        AddMessageAsyncTask messgeTask = new AddMessageAsyncTask();
-//        messgeTask.execute(true);
-        sendMsgHandler();
     }
 
     @Override
@@ -431,6 +431,38 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                     SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd", "smsadd");
                                 }
                             }
+                        } else if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(flag)) {
+                            String blackNums = PreferenceTable.getInstance().getString("blackList");
+                            LeoLog.d("testAddContact", "OLD blackNums:" + blackNums);
+                            //TODO blacklist去重
+                            //TODO 删除系统记录？
+
+                            for (MessageBean message : mAddPrivacyMessage) {
+                                String name = message.getMessageName();
+                                String contactNumber = message.getPhoneNumber();
+                                String number = PrivacyContactUtils.simpleFromateNumber(contactNumber);
+                                /*隐私联系人去重*/
+                                boolean flagContact = PrivacyContactUtils.pryContRemovSame(contactNumber);
+                                if (!flagContact) {
+                                    boolean isHaveBlackNum =
+                                            CallFilterUtils.checkIsHaveBlackNum(blackNums, number);
+                                    if (!isHaveBlackNum) {
+                                        String string = name + "_" + number;
+                                        blackNums = blackNums + ":" + string;
+                                        PreferenceTable.getInstance().
+                                                putString("blackList", blackNums);
+                                        LeoLog.d("testAddContact", "blackNums:" + blackNums);
+                                    }
+                                }
+                                //cancel Process Dialog
+                                Message messge = new Message();
+                                count = count + 1;
+                                messge.what = count;
+                                if (messge != null && mHandler != null) {
+                                    mHandler.sendMessage(messge);
+                                }
+                            }
+
                         } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
                             // 导入短信和通话记录
                             if (mAddMessages != null) {
