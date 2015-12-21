@@ -185,7 +185,7 @@ public class HomeBoostActivity extends Activity {
         Button call = (Button) findViewById(R.id.btn_ad_appcall);
         if(call != null) {
             call.setText(campaign.getAdCall());
-            mAdEngine.registerView(Constants.UNIT_ID_62, call);
+            mAdEngine.registerView(Constants.UNIT_ID_62, mRlResultWithAD);
         }
     }
 
