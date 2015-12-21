@@ -27,6 +27,10 @@ public class BlackListInfo {
     private boolean uploadState;
     private boolean removeState;
     private boolean readState;
+    /**
+     *  服务器下发黑名单是否存在语本地黑名单
+     */
+    private boolean existState;
 
     public int getAddBlackNumber() {
         return addBlackNumber;
@@ -115,5 +119,13 @@ public class BlackListInfo {
 
     public void setMarkerType(int markerType) {
         this.markerType = markerType;
+    }
+
+    public boolean isExistState() {
+        return existState;
+    }
+
+    public void setExistState(boolean existState) {
+        this.existState = existState;
     }
 }

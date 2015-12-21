@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.telecom.Call;
 import android.text.TextUtils;
 
 import com.leo.appmaster.R;
@@ -15,9 +14,10 @@ import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.StrangerInfo;
-import com.leo.appmaster.intruderprotection.CameraUtils;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,9 +103,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         default:
                             break;
                     }
-
+                    int existState = -1;
                     BlackListInfo info = CallFilterUtils.getBlackListInfo(id, number, name, markerType, icon,
-                            numberArea, addBlackNum, markerNum, uploadState, removeState, readState);
+                            numberArea, addBlackNum, markerNum, uploadState, removeState, readState,existState);
                     blackListInfoList.add(info);
                 }
             }
@@ -331,9 +331,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         default:
                             break;
                     }
-
+                    int existState = -1;
                     BlackListInfo info = CallFilterUtils.getBlackListInfo(id, number, name, markerType, icon,
-                            numberArea, addBlackNum, markerNum, uploadState, removeState, readState);
+                            numberArea, addBlackNum, markerNum, uploadState, removeState, readState,existState);
                     blackListInfoList.add(info);
                 }
             }
@@ -1107,16 +1107,38 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public boolean getFilterOpenState() {
-        return false;
+        PreferenceTable pre = PreferenceTable.getInstance();
+        return pre.getBoolean(PrefConst.KEY_FIL_OP_STA, false);
     }
 
     @Override
     public void setFilterOpenState(boolean flag) {
-
+        PreferenceTable pre = PreferenceTable.getInstance();
+        boolean state = pre.getBoolean(PrefConst.KEY_FIL_OP_STA, false);
+        if (state != flag) {
+            pre.putBoolean(PrefConst.KEY_FIL_OP_STA, flag);
+        }
     }
 
     @Override
     public int[] isCallFilterTip(String number) {
+        int[] type = new int[2];
+        boolean isUse = CallFilterUtils.isNumberUsePrivacy(number);
+        if (isUse) {
+            type[0] = 1;
+        } else {
+            type[0] = 0;
+        }
+
+        int filUser = getFilterUserNumber();
+        int filUserPar = getFilterTipFroUser();
+        if (filUserPar > 0) {
+            if (filUser >= filUserPar) {
+                //TODO
+            }
+        }
+
+
         return new int[0];
     }
 
@@ -1142,6 +1164,26 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public List<BlackListInfo> getServerBlackList() {
+        return null;
+    }
+
+    @Override
+    public int getFilterTipFroUser() {
+        return 0;
+    }
+
+    @Override
+    public boolean addSerBlackList(List<BlackListInfo> infos) {
+        return false;
+    }
+
+    @Override
+    public boolean removeSerBlackList(List<BlackListInfo> infos) {
+        return false;
+    }
+
+    @Override
+    public List<BlackListInfo> getSerBlackList() {
         return null;
     }
 }

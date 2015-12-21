@@ -164,4 +164,6 @@ public class PrefConst {
     public static final String KEY_LOCK_SAMSUNG_TIP = "LOCK_SAMSUNG_TIP";
     public static final String KEY_APP_COMSUMED = "app_comsumed";
     public static final String KEY_APP_LOCK_HANDLER = "APP_LOCK_HANDLER";
+    /*骚扰拦截打开状态*/
+    public static final String KEY_FIL_OP_STA = "FIL_OP_STA";
 }

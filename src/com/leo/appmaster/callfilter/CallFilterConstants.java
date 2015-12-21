@@ -33,6 +33,8 @@ public class CallFilterConstants {
     public static final String STRANGER_GROUP_TAB = "stranger_group";
     /*陌生人详细表*/
     public static final String STRANGER_DETAIL_TAB = "stranger_detail";
+    /*服务端黑名单*/
+    public static final String SER_BLACK_TAB = "ser_black_list";
 
     public static final Uri BLACK_LIST_URI = Uri.parse("content://" + Constants.AUTHORITY
             + "/" + BLACK_LIST_TAB);
@@ -44,6 +46,8 @@ public class CallFilterConstants {
             + "/" + STRANGER_GROUP_TAB);
     public static final Uri STRANGER_DETAIL_URI = Uri.parse("content://" + Constants.AUTHORITY
             + "/" + STRANGER_DETAIL_TAB);
+    public static final Uri SER_BLACK_URI = Uri.parse("content://" + Constants.AUTHORITY
+            + "/" + SER_BLACK_TAB);
 
     /**
      * 创建黑名单表
@@ -193,7 +197,7 @@ public class CallFilterConstants {
     public static final String STR_GR_CALL_TYPE = "call_type";
     public static final String STR_GR_NUMBER = "stranger_number";
     public static final String STR_GR_TIP_STATE = "tip_state";
-    public static final String STR_GR_REMOVE_STATE ="remove_state";
+    public static final String STR_GR_REMOVE_STATE = "remove_state";
     public static final String STR_GR_READ_STATE = "read_state";
     public static final String STR_GR_OTHER = "other";
 
@@ -290,4 +294,41 @@ public class CallFilterConstants {
     public static final int FILTER_TIP = 1;
     /*黑名单，标记弹窗，未提示*/
     public static final int FILTER_TIP_NO = 0;
+
+    /**
+     * 创建服务器下发的黑名单
+     */
+    /*服务器黑名单列表*/
+    public static final String SER_BLACK_ID = "_id";
+    public static final String SER_BLACK_NUMBER = "number";
+    public static final String SER_MARKER_TYPE = "marker_type";
+    public static final String SER_MARKER_COUNT = "marker_count";
+    public static final String SER_ADD_BLACK_COUNT = "add_black_count";
+    public static final String SER_EXIST_STATE = "exist_state";
+    public static final String CREATE_SER_BLACK_TAB = "CREATE TABLE IF NOT EXISTS "
+            + SER_BLACK_TAB
+            + " ( "
+            + SER_BLACK_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + SER_BLACK_NUMBER
+            + " TEXT,"
+            + SER_MARKER_TYPE
+            + " INTEGER,"
+            + SER_MARKER_COUNT
+            + " INTEGER,"
+            + SER_ADD_BLACK_COUNT
+            + " INTEGER,"
+            + SER_EXIST_STATE
+            + " INTEGER"
+            + ");";
+
+    /**
+     * 存在于本地黑名单
+     */
+    public static final int EXIST_CLIENT = 1;
+    /**
+     * 不存在于本地黑名单
+     */
+    public static final int NO_EXIST_CLIENT = 0;
+
 }

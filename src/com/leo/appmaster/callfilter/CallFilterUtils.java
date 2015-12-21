@@ -41,6 +41,7 @@ public class CallFilterUtils {
      * @param uploadState    false
      * @param removeState    false
      * @param readState      false
+     * @param existState     -1(无该属性)(0:不存在，1：存在)
      * @return
      */
     public static BlackListInfo getBlackListInfo(int id, String number,
@@ -52,7 +53,8 @@ public class CallFilterUtils {
                                                  int markerNumber,
                                                  boolean uploadState,
                                                  boolean removeState,
-                                                 boolean readState) {
+                                                 boolean readState,
+                                                 int existState) {
         BlackListInfo info = new BlackListInfo();
         if (id != -1) {
             info.setId(id);
@@ -75,6 +77,13 @@ public class CallFilterUtils {
         info.setUploadState(uploadState);
         info.setRemoveState(removeState);
         info.setReadState(readState);
+        if (existState != -1) {
+            if (existState == CallFilterConstants.NO_EXIST_CLIENT) {
+                info.setExistState(false);
+            } else if (existState == CallFilterConstants.EXIST_CLIENT) {
+                info.setExistState(true);
+            }
+        }
         return info;
     }
 

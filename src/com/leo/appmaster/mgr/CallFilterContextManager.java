@@ -253,5 +253,34 @@ public abstract class CallFilterContextManager extends Manager {
      */
     public abstract List<BlackListInfo> getServerBlackList();
 
+    /**
+     * 骚扰拦截显示提示框：通过指定用户量参数值对比显示
+     *
+     * @return
+     */
+    public abstract int getFilterTipFroUser();
+
+    /**
+     * 添加服务器下发黑名单
+     *
+     * @param infos
+     * @return
+     */
+    public abstract boolean addSerBlackList(List<BlackListInfo> infos);
+
+    /**
+     * 删除服务器下发黑名单
+     *
+     * @param infos
+     * @return
+     */
+    public abstract boolean removeSerBlackList(List<BlackListInfo> infos);
+
+    /**
+     * 查询 服务器下发黑名单
+     *
+     * @return
+     */
+    public abstract List<BlackListInfo> getSerBlackList();
 
 }
