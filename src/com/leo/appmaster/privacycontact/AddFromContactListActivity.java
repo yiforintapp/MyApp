@@ -412,24 +412,26 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                 }
                             }
                         } else if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(flag)) {
-
                             String blackNums = PreferenceTable.getInstance().getString("blackList");
                             LeoLog.d("testAddContact", "OLD blackNums:" + blackNums);
                             //TODO blacklist去重
+                            //TODO 删除系统记录？
                             for (ContactBean contact : mAddPrivacyContact) {
                                 String name = contact.getContactName();
                                 String number = PrivacyContactUtils.
                                         simpleFromateNumber(contact.getContactNumber());
-                                boolean isHaveBlackNum =
-                                        CallFilterUtils.checkIsHaveBlackNum(blackNums, number);
-                                if (!isHaveBlackNum) {
-                                    String string = name + "_" + number;
-                                    blackNums = blackNums + ":" + string;
-                                    PreferenceTable.getInstance().
-                                            putString("blackList", blackNums);
-                                    LeoLog.d("testAddContact", "blackNums:" + blackNums);
+                                boolean flagContact = PrivacyContactUtils.pryContRemovSame(number);
+                                if (!flagContact) {
+                                    boolean isHaveBlackNum =
+                                            CallFilterUtils.checkIsHaveBlackNum(blackNums, number);
+                                    if (!isHaveBlackNum) {
+                                        String string = name + "_" + number;
+                                        blackNums = blackNums + ":" + string;
+                                        PreferenceTable.getInstance().
+                                                putString("blackList", blackNums);
+                                        LeoLog.d("testAddContact", "blackNums:" + blackNums);
+                                    }
                                 }
-
                                 //cancel Process Dialog
                                 Message messge = new Message();
                                 count = count + 1;
