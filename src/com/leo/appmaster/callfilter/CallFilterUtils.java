@@ -16,6 +16,9 @@ import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.imageloader.utils.IoUtils;
 import com.leo.appmaster.utils.Utilities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 骚扰拦截工具
  * Created by runlee on 15-12-18.
@@ -73,6 +76,59 @@ public class CallFilterUtils {
         return info;
     }
 
+    /**
+     * 封装CallFilterInfo
+     *
+     * @param id           -1
+     * @param name         null
+     * @param number       null
+     * @param backId       -1
+     * @param filterNumber 0
+     * @param date         0
+     * @param duration     0
+     * @param callType     -1(无) 通话类型
+     * @param readState    false
+     * @param filterType   0（无） ，标记类型
+     * @return
+     */
+    public static CallFilterInfo getFilterInfo(int id,
+                                               String name,
+                                               String number,
+                                               String numberArea,
+                                               int backId,
+                                               int filterNumber,
+                                               long date,
+                                               long duration,
+                                               int callType,
+                                               boolean readState,
+                                               int filterType) {
+        CallFilterInfo filter = new CallFilterInfo();
+        if (id != -1) {
+            filter.setId(id);
+        }
+        if (!TextUtils.isEmpty(name)) {
+            filter.setNumberName(name);
+        }
+        if (!TextUtils.isEmpty(number)) {
+            filter.setNumber(number);
+        }
+        if (!TextUtils.isEmpty(numberArea)) {
+            filter.setNumberType(numberArea);
+        }
+        if (backId != -1) {
+            filter.setBlackId(backId);
+        }
+        filter.setFilterCount(filterNumber);
+        filter.setTimeLong(date);
+        filter.setDuration(duration);
+        if (callType != -1) {
+            filter.setCallType(callType);
+        }
+        filter.setReadState(readState);
+        filter.setFilterType(filterType);
+        return filter;
+    }
+
     public static boolean isDbKeyExist(String table, String colum, String number) {
         SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
         SQLiteDatabase sd = dbHelper.getReadableDatabase();
@@ -101,16 +157,34 @@ public class CallFilterUtils {
      */
     public static void addData() {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//        List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+//        for (int i = 0; i < 10; i++) {
+//            BlackListInfo info = getBlackListInfo(-1, "021544", "测试", 1, null, "深圳", 123, 321, true, false, false);
+//            list.add(info);
+//        }
+//        int id,
+//        String name,
+//        String number,
+//        String numberArea,
+//        int backId,
+//        int filterNumber,
+//        long date,
+//        long duration,
+//        int callType,
+//        boolean readState,
+//        int filterType
+        List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
         for (int i = 0; i < 10; i++) {
-            BlackListInfo info = getBlackListInfo(-1, "021544", "测试", 1, null, "深圳", 123, 321, true, false, false);
-            mp.addBlackList(info, false);
+            long date = Long.valueOf("5454545554");
+            CallFilterInfo info = getFilterInfo(-1, "en", "021544", "测试", 1, 20, date, 123, -1, false, 1);
+            list.add(info);
         }
+        mp.addFilterGr(list, false);
     }
-
-    public static void queryData(Context context) {
+    public static void queryData(Context context){
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        int count = mp.getBlackListCount();
-        Toast.makeText(context, "" + count, Toast.LENGTH_LONG).show();
+      int count =   mp.getBlackListCount();
+        Toast.makeText(context,""+count,Toast.LENGTH_LONG).show();
     }
     
     public static boolean checkIsHaveBlackNum(String blackNums, String PhoneNum) {

@@ -9,6 +9,7 @@ public class CallFilterInfo {
     public String numberName;
 
     /**
+     * 无：0
      * 骚扰电话:1
      * 广告推销:2
      * 诈骗电话:3
@@ -31,6 +32,8 @@ public class CallFilterInfo {
     private int filterCount;
     private boolean readState;
     private int callType;
+    private long duration;
+
 
     public int getBlackId() {
         return blackId;
@@ -118,5 +121,13 @@ public class CallFilterInfo {
 
     public void setTimeStr(String timeStr) {
         this.timeStr = timeStr;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 }

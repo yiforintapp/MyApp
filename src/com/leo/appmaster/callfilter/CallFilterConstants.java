@@ -96,8 +96,10 @@ public class CallFilterConstants {
     public static final String FIL_GR_ID = "_id";
     public static final String FIL_GR_NAME = "name";
     public static final String FIL_GR_PH_NUMB = "phone_number";
+    public static final String FIL_GR_NUM_AREA = "number_area";
     public static final String FIL_GR_TO_BLACK_ID = "black_id";
     public static final String FIL_NUMBER = "filter_number";
+    public static final String FIL_GR_DATE = "fil_gr_date";
     public static final String FIL_CALL_DURATION = "call_duration";
     public static final String FIL_CALL_TYPE = "call_type";
     public static final String FIL_READ_STATE = "read_state";
@@ -113,9 +115,13 @@ public class CallFilterConstants {
             + " TEXT,"
             + FIL_GR_PH_NUMB
             + " TEXT,"
+            + FIL_GR_NUM_AREA
+            + " TEXT,"
             + FIL_GR_TO_BLACK_ID
             + " INTEGER,"
             + FIL_NUMBER
+            + " INTEGER,"
+            + FIL_GR_DATE
             + " INTEGER,"
             + FIL_CALL_DURATION
             + " INTEGER,"
@@ -137,6 +143,7 @@ public class CallFilterConstants {
     public static final String FIL_DET_ID = "_id";
     public static final String FIL_DET_PHONE_NUMBER = "phone_number";
     public static final String FIL_DET_NAME = "name";
+    public static final String FIL_DET_NUM_AREA = "number_area";
     public static final String FIL_DET_TO_GR_ID = "fil_gr_id";
     public static final String FIL_DET_DATE = "fil_det_date";
     public static final String FIL_DET_DURATION = "fil_det_duration";
@@ -153,6 +160,8 @@ public class CallFilterConstants {
             + FIL_DET_NAME
             + " TEXT,"
             + FIL_DET_PHONE_NUMBER
+            + " TEXT,"
+            + FIL_DET_NUM_AREA
             + " TEXT,"
             + FIL_DET_TO_GR_ID
             + " INTEGER,"
@@ -182,6 +191,7 @@ public class CallFilterConstants {
     public static final String STR_GR_CALL_TYPE = "call_type";
     public static final String STR_GR_NUMBER = "stranger_number";
     public static final String STR_GR_TIP_STATE = "tip_state";
+    public static final String STR_GR_REMOVE_STATE ="remove_state";
     public static final String STR_GR_READ_STATE = "read_state";
     public static final String STR_GR_OTHER = "other";
 
@@ -203,6 +213,8 @@ public class CallFilterConstants {
             + STR_GR_NUMBER
             + " INTEGER,"
             + STR_GR_TIP_STATE
+            + " INTEGER,"
+            + STR_GR_REMOVE_STATE
             + " INTEGER,"
             + STR_GR_READ_STATE
             + " INTEGER,"

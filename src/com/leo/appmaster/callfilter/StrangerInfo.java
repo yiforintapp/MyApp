@@ -20,6 +20,7 @@ public class StrangerInfo {
     private String numberArea;
     private boolean readState;
     private int callState;
+    private int removeState;
 
     public long getCallDuration() {
         return callDuration;
@@ -91,5 +92,13 @@ public class StrangerInfo {
 
     public void setTipState(boolean tipState) {
         this.tipState = tipState;
+    }
+
+    public int getRemoveState() {
+        return removeState;
+    }
+
+    public void setRemoveState(int removeState) {
+        this.removeState = removeState;
     }
 }

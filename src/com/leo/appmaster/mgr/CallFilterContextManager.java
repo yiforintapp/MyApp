@@ -39,18 +39,18 @@ public abstract class CallFilterContextManager extends Manager {
     /**
      * 增加黑名单
      *
-     * @param info
+     * @param blackList
      * @return
      */
-    public abstract boolean addBlackList(BlackListInfo info,boolean update);
+    public abstract boolean addBlackList(List<BlackListInfo> blackList,boolean update);
 
     /**
      * 删除黑名单
      *
-     * @param info
+     * @param blackList
      * @return
      */
-    public abstract boolean removeBlackList(BlackListInfo info);
+    public abstract boolean removeBlackList(List<BlackListInfo> blackList);
 
     /**
      * 查询为上传到服务器的黑名单列表
@@ -78,18 +78,19 @@ public abstract class CallFilterContextManager extends Manager {
     /**
      * 增加拦截分组
      *
-     * @param info
+     * @param infos
+     * @param update
      * @return
      */
-    public abstract boolean addFilterGr(CallFilterInfo info);
+    public abstract boolean addFilterGr(List<CallFilterInfo> infos,boolean update);
 
     /**
      * 删除拦截分组
      *
-     * @param info
+     * @param infos
      * @return
      */
-    public abstract boolean removeFilterGr(CallFilterInfo info);
+    public abstract boolean removeFilterGr(List<CallFilterInfo> infos);
 
     /*拦截详细*/
 

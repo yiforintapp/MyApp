@@ -313,6 +313,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
                     Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
                     startActivity(intent);
+                    if(DBG){
+                        CallFilterUtils.removeData(getActivity());
+                    }
                     break;
                 case R.id.home_wifi_tab:
 //                     wifi安全
@@ -321,6 +324,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     startActivity(mIntent);
                     if(DBG) {
                         CallFilterUtils.queryData(getActivity());
+//                        CallFilterUtils.queryNoUploadData(getActivity());
                     }
                     break;
                 case R.id.home_lost_tab:
