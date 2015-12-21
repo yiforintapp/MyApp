@@ -3,6 +3,7 @@ package com.leo.appmaster.callfilter;
 import java.util.ArrayList;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSIngleCheckboxDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
@@ -14,7 +15,7 @@ public class CallFIlterUIHelper {
     private Context mContext;
     private static CallFIlterUIHelper mInstance = null;
 
-    public  LEOWithSIngleCheckboxDialog getOneChioseDialog() {
+    public  LEOWithSIngleCheckboxDialog getConfirmRemoveFromBlacklistDialog() {
         LEOWithSIngleCheckboxDialog dialog = new LEOWithSIngleCheckboxDialog(mContext);
         dialog.setCheckboxText(mContext.getResources().
                 getString(R.string.call_filter_remove_from_blacklist_checkbox_text));
@@ -52,6 +53,14 @@ public class CallFIlterUIHelper {
             mInstance = new CallFIlterUIHelper(ctx);
         }
         return mInstance;
+    }
+    
+    public LEOAlarmDialog getConfirmClearAllRecordDialog() {
+        LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
+        dialog.setContentVisiable(false);
+        dialog.setTitle("确定清空所有记录吗");
+        dialog.setDialogIconVisibility(false);
+        return dialog;
     }
 
     private CallFIlterUIHelper(Context ctx) {

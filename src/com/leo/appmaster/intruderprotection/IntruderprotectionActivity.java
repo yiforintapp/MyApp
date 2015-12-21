@@ -102,7 +102,7 @@ public class IntruderprotectionActivity extends BaseActivity {
         init();
         SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_enter");
-        CallFIlterUIHelper.getInstance(this).getCallHandleDialogWithSummary("13723981440").show();
+//        CallFIlterUIHelper.getInstance(this).getConfirmClearAllRecordDialog().show();
     }
 
     /**
