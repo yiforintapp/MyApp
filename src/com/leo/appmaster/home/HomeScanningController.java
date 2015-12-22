@@ -75,38 +75,38 @@ public class HomeScanningController {
     private static final int NEW_UP_LIMIT_VID = 1500;
     private static final int NEW_UP_LIMIT_INS = 1500;
 
-//    public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
-//                                  ScanningImageView appImg, ScanningTextView appText,
-//                                  ScanningImageView picImg, ScanningTextView picText,
-//                                  ScanningImageView vidImg, ScanningTextView vidText,
-//                                  ScanningImageView privacyImg, ScanningTextView privacyText) {
-//        mActivity = activity;
-//        mFragment = fragment;
-//
-//        mAppImg = appImg;
-//        mAppText = appText;
-//        mPicImg = picImg;
-//        mPicText = picText;
-//        mVidImg = vidImg;
-//        mVidText = vidText;
-//        mPrivacyImg = privacyImg;
-//        mPrivacyText = privacyText;
-//    }
-
     public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
-           MaterialRippleLayout newAppLayout, MaterialRippleLayout newPicLayout,
-           MaterialRippleLayout newVidLayout, MaterialRippleLayout newInstructLayout,
-           MaterialRippleLayout newWifiLayout) {
-
+                                  ScanningImageView appImg, ScanningTextView appText,
+                                  ScanningImageView picImg, ScanningTextView picText,
+                                  ScanningImageView vidImg, ScanningTextView vidText,
+                                  ScanningImageView privacyImg, ScanningTextView privacyText) {
         mActivity = activity;
         mFragment = fragment;
 
-        mNewAppLayout = newAppLayout;
-        mNewPicLayout = newPicLayout;
-        mNewVidLayout = newVidLayout;
-        mNewInstructLayout = newInstructLayout;
-        mNewWifiLayout = newWifiLayout;
+        mAppImg = appImg;
+        mAppText = appText;
+        mPicImg = picImg;
+        mPicText = picText;
+        mVidImg = vidImg;
+        mVidText = vidText;
+        mPrivacyImg = privacyImg;
+        mPrivacyText = privacyText;
     }
+
+//    public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
+//           MaterialRippleLayout newAppLayout, MaterialRippleLayout newPicLayout,
+//           MaterialRippleLayout newVidLayout, MaterialRippleLayout newInstructLayout,
+//           MaterialRippleLayout newWifiLayout) {
+//
+//        mActivity = activity;
+//        mFragment = fragment;
+//
+//        mNewAppLayout = newAppLayout;
+//        mNewPicLayout = newPicLayout;
+//        mNewVidLayout = newVidLayout;
+//        mNewInstructLayout = newInstructLayout;
+//        mNewWifiLayout = newWifiLayout;
+//    }
 
     private AnimEntry createScanningAnim(final ScanningImageView imageView, ScanningTextView textView) {
         AnimEntry entry = new AnimEntry();
@@ -199,14 +199,14 @@ public class HomeScanningController {
 
     public void startScanning() {
         LeoLog.d(TAG, "startScanning...");
-//        mAppAnim = createScanningAnim(mAppImg, mAppText);
-//
-//        mAppAnim.totalAnim.start();
-//        mActivity.scanningFromPercent(UP_LIMIT_APP, 0, PER_APP);
-        mNewAppAnim = getItemAnimation(mNewAppLayout);
-        mNewAppAnim.setStartDelay(600);
-        mNewAppAnim.start();
-        mActivity.scanningFromPercent(NEW_UP_LIMIT_APP, 0, NEW_PER_APP);
+        mAppAnim = createScanningAnim(mAppImg, mAppText);
+
+        mAppAnim.totalAnim.start();
+        mActivity.scanningFromPercent(UP_LIMIT_APP, 0, PER_APP);
+//        mNewAppAnim = getItemAnimation(mNewAppLayout);
+//        mNewAppAnim.setStartDelay(600);
+//        mNewAppAnim.start();
+//        mActivity.scanningFromPercent(NEW_UP_LIMIT_APP, 0, NEW_PER_APP);
     }
 
     private void onAnimatorEnd(Animator animation) {

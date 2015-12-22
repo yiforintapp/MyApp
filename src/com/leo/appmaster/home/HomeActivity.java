@@ -45,7 +45,6 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
-import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
@@ -72,10 +71,8 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
-import com.leo.appmaster.ui.HomeUpArrow;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
-import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LanguageUtils;
@@ -380,11 +377,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         return mPrivacyFragment.getScanningPercent();
     }
 
-    public void onScanningFinish(List<AppItemInfo> appList, PhotoList photoItems, List<VideoItemBean> videoItemBeans, String appScanText) {
+    public void onScanningFinish(List<AppItemInfo> appList, PhotoList photoItems, List<VideoItemBean> videoItemBeans/*, String appScanText*/) {
         mAppList = appList;
         mPhotoList = photoItems;
         mVideoList = videoItemBeans;
-        mAppScanText = appScanText;
+//        mAppScanText = appScanText;
     }
 
     public void onExitScanning() {

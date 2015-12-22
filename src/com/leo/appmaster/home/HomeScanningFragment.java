@@ -134,41 +134,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
-//        mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
-//
-//        mCancelBtn = view.findViewById(R.id.scan_cancel_rv);
-//        mCancelTv = (TextView) view.findViewById(R.id.scan_cancel_tv);
-//
-//        mProcessBtn = view.findViewById(R.id.scan_process_rv);
-//        mProcessTv = (TextView) view.findViewById(R.id.scan_process_tv);
-//
-//        mCancelTv.setOnClickListener(this);
-//        mProcessTv.setOnClickListener(this);
-//
-//        mNewAppIv = (ScanningImageView) view.findViewById(R.id.scan_new_app_iv);
-//        mNewPhotoIv = (ScanningImageView) view.findViewById(R.id.scan_media_iv);
-//        mNewVideoIv = (ScanningImageView) view.findViewById(R.id.scan_mobile_iv);
-//        mNewPrivacyIv = (ScanningImageView) view.findViewById(R.id.scan_privacy_iv);
-//
-//        mNewAppText = (ScanningTextView) view.findViewById(R.id.scan_new_app_tv);
-//        mNewPhotoText = (ScanningTextView) view.findViewById(R.id.scan_media_tv);
-//        mNewVideoText = (ScanningTextView) view.findViewById(R.id.scan_mobile_tv);
-//        mNewPrivacyText = (ScanningTextView) view.findViewById(R.id.scan_privacy_tv);
-//
-//        mAppCountTv = (TextView) view.findViewById(R.id.scan_app_count_tv);
-//        mPicCountTv = (TextView) view.findViewById(R.id.scan_media_count_tv);
-//        mVidCountTv = (TextView) view.findViewById(R.id.scan_mobile_count_iv);
-//        mPrivacyCountIv = (ImageView) view.findViewById(R.id.scan_privacy_count_iv);
-//
-//        mAppCountIv = (ImageView) view.findViewById(R.id.scan_app_count_iv);
-//        mPicCountIv = (ImageView) view.findViewById(R.id.scan_pic_count_iv);
-//        mVidCountIv = (ImageView) view.findViewById(R.id.scan_vid_count_iv);
-//
-//        mController = new HomeScanningController(mActivity, this, mNewAppIv, mNewAppText,
-//                mNewPhotoIv, mNewPhotoText, mNewVideoIv, mNewVideoText, mNewPrivacyIv, mNewPrivacyText);
-//        startScanController();
-
         mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
         mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
 
@@ -181,53 +146,88 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mCancelTv.setOnClickListener(this);
         mProcessTv.setOnClickListener(this);
 
-        mNewAppImg = (ImageView) view.findViewById(R.id.scan_new_app_img);
-        mNewAppTitle = (TextView) view.findViewById(R.id.scan_new_app_title);
-        mNewAppContent = (TextView) view.findViewById(R.id.scan_new_app_content);
-        mNewAppScore = (TextView) view.findViewById(R.id.scan_new_app_score);
-        mNewAppLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_app_layout);
+        mNewAppIv = (ScanningImageView) view.findViewById(R.id.scan_new_app_iv);
+        mNewPhotoIv = (ScanningImageView) view.findViewById(R.id.scan_media_iv);
+        mNewVideoIv = (ScanningImageView) view.findViewById(R.id.scan_mobile_iv);
+        mNewPrivacyIv = (ScanningImageView) view.findViewById(R.id.scan_privacy_iv);
 
-        mNewPicImg = (ImageView) view.findViewById(R.id.scan_new_pic_img);
-        mNewPicTitle = (TextView) view.findViewById(R.id.scan_new_pic_title);
-        mNewPicContent = (TextView) view.findViewById(R.id.scan_new_pic_content);
-        mNewPicScore = (TextView) view.findViewById(R.id.scan_new_pic_score);
-        mNewPicLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_pic_layout);
+        mNewAppText = (ScanningTextView) view.findViewById(R.id.scan_new_app_tv);
+        mNewPhotoText = (ScanningTextView) view.findViewById(R.id.scan_media_tv);
+        mNewVideoText = (ScanningTextView) view.findViewById(R.id.scan_mobile_tv);
+        mNewPrivacyText = (ScanningTextView) view.findViewById(R.id.scan_privacy_tv);
 
-        mNewVidImg = (ImageView) view.findViewById(R.id.scan_new_vid_img);
-        mNewVidTitle = (TextView) view.findViewById(R.id.scan_new_vid_title);
-        mNewVidContent = (TextView) view.findViewById(R.id.scan_new_vid_content);
-        mNewVidScore = (TextView) view.findViewById(R.id.scan_new_vid_score);
-        mNewVidLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_vid_layout);
+        mAppCountTv = (TextView) view.findViewById(R.id.scan_app_count_tv);
+        mPicCountTv = (TextView) view.findViewById(R.id.scan_media_count_tv);
+        mVidCountTv = (TextView) view.findViewById(R.id.scan_mobile_count_iv);
+        mPrivacyCountIv = (ImageView) view.findViewById(R.id.scan_privacy_count_iv);
 
-        mNewInstructImg = (ImageView) view.findViewById(R.id.scan_new_instruct_img);
-        mNewInstructTitle = (TextView) view.findViewById(R.id.scan_new_instruct_title);
-        mNewInstructContent = (TextView) view.findViewById(R.id.scan_new_instruct_content);
-        mNewInstructScore = (TextView) view.findViewById(R.id.scan_new_instruct_score);
-        mNewInstructLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_instruct_layout);
+        mAppCountIv = (ImageView) view.findViewById(R.id.scan_app_count_iv);
+        mPicCountIv = (ImageView) view.findViewById(R.id.scan_pic_count_iv);
+        mVidCountIv = (ImageView) view.findViewById(R.id.scan_vid_count_iv);
 
-        mNewWifiImg = (ImageView) view.findViewById(R.id.scan_new_wifi_img);
-        mNewWifiTitle = (TextView) view.findViewById(R.id.scan_new_wifi_title);
-        mNewWifiContent = (TextView) view.findViewById(R.id.scan_new_wifi_content);
-        mNewWifiScore = (TextView) view.findViewById(R.id.scan_new_wifi_score);
-        mNewWifiLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_wifi_layout);
-
-        mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
-                mNewVidLayout, mNewInstructLayout, mNewWifiLayout);
-
+        mController = new HomeScanningController(mActivity, this, mNewAppIv, mNewAppText,
+                mNewPhotoIv, mNewPhotoText, mNewVideoIv, mNewVideoText, mNewPrivacyIv, mNewPrivacyText);
         startScanController();
+
+//        mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
+//        mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
+//
+//        mCancelBtn = view.findViewById(R.id.scan_cancel_rv);
+//        mCancelTv = (TextView) view.findViewById(R.id.scan_cancel_tv);
+//
+//        mProcessBtn = view.findViewById(R.id.scan_process_rv);
+//        mProcessTv = (TextView) view.findViewById(R.id.scan_process_tv);
+//
+//        mCancelTv.setOnClickListener(this);
+//        mProcessTv.setOnClickListener(this);
+//
+//        mNewAppImg = (ImageView) view.findViewById(R.id.scan_new_app_img);
+//        mNewAppTitle = (TextView) view.findViewById(R.id.scan_new_app_title);
+//        mNewAppContent = (TextView) view.findViewById(R.id.scan_new_app_content);
+//        mNewAppScore = (TextView) view.findViewById(R.id.scan_new_app_score);
+//        mNewAppLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_app_layout);
+//
+//        mNewPicImg = (ImageView) view.findViewById(R.id.scan_new_pic_img);
+//        mNewPicTitle = (TextView) view.findViewById(R.id.scan_new_pic_title);
+//        mNewPicContent = (TextView) view.findViewById(R.id.scan_new_pic_content);
+//        mNewPicScore = (TextView) view.findViewById(R.id.scan_new_pic_score);
+//        mNewPicLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_pic_layout);
+//
+//        mNewVidImg = (ImageView) view.findViewById(R.id.scan_new_vid_img);
+//        mNewVidTitle = (TextView) view.findViewById(R.id.scan_new_vid_title);
+//        mNewVidContent = (TextView) view.findViewById(R.id.scan_new_vid_content);
+//        mNewVidScore = (TextView) view.findViewById(R.id.scan_new_vid_score);
+//        mNewVidLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_vid_layout);
+//
+//        mNewInstructImg = (ImageView) view.findViewById(R.id.scan_new_instruct_img);
+//        mNewInstructTitle = (TextView) view.findViewById(R.id.scan_new_instruct_title);
+//        mNewInstructContent = (TextView) view.findViewById(R.id.scan_new_instruct_content);
+//        mNewInstructScore = (TextView) view.findViewById(R.id.scan_new_instruct_score);
+//        mNewInstructLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_instruct_layout);
+//
+//        mNewWifiImg = (ImageView) view.findViewById(R.id.scan_new_wifi_img);
+//        mNewWifiTitle = (TextView) view.findViewById(R.id.scan_new_wifi_title);
+//        mNewWifiContent = (TextView) view.findViewById(R.id.scan_new_wifi_content);
+//        mNewWifiScore = (TextView) view.findViewById(R.id.scan_new_wifi_score);
+//        mNewWifiLayout = (MaterialRippleLayout) view.findViewById(R.id.scan_new_wifi_layout);
+//
+//        mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
+//                mNewVidLayout, mNewInstructLayout, mNewWifiLayout);
+//
+//        startScanController();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home_scanning_test, container, false);
+        return inflater.inflate(R.layout.fragment_home_scanning, container, false);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mController.detachController();
-          mController.detachTheController();
+        mController.detachController();
+//          mController.detachTheController();
     }
 
     private void startScanController() {
@@ -246,17 +246,17 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                                  final List<VideoItemBean> videoItemBeans) {
         if (getActivity() == null || isDetached() || isRemoving()) return;
 
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mScanning = false;
-//                mCancelBtn.setVisibility(View.GONE);
-//                mProcessBtn.setVisibility(View.VISIBLE);
-//                mScannTitleTv.setText(R.string.pri_pro_scanning_finish);
-//                mProcessTv.setTextColor(mActivity.getToolbarColor());
-//                mActivity.onScanningFinish(appList, photoItems, videoItemBeans);
-//            }
-//        });
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mScanning = false;
+                mCancelBtn.setVisibility(View.GONE);
+                mProcessBtn.setVisibility(View.VISIBLE);
+                mScannTitleTv.setText(R.string.pri_pro_scanning_finish);
+                mProcessTv.setTextColor(mActivity.getToolbarColor());
+                mActivity.onScanningFinish(appList, photoItems, videoItemBeans);
+            }
+        });
     }
 
     public void onAnimatorEnd(ScanningImageView imageView) {
@@ -272,33 +272,33 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (isDetached() || isRemoving() || getActivity() == null) return;
 
         Context context = AppMasterApplication.getInstance();
-//        if (imageView == mNewAppIv) {
-//            updateAppList();
-//            int count = mAppList == null ? 0 : mAppList.size();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
-//            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "app_cnts_" + count);
-//        } else if (imageView == mNewPhotoIv) {
-//            updatePhotoList();
-//            int count = mPhotoList == null ? 0 : mPhotoList.photoItems.size();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
-//            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "pic_cnts_" + count);
-//        } else if (imageView == mNewVideoIv) {
-//            updateVideoList();
-//            int count = mVideoList == null ? 0 : mVideoList.size();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
-//            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "vid_cnts_" + count);
-//        } else if (imageView == mNewPrivacyIv) {
-//            LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//            boolean lostOpen = lsm.isUsePhoneSecurity();
-//            IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-//            boolean intruderOpen = ism.getIntruderMode();
-//            boolean result = lostOpen && intruderOpen;
-//            mPrivacyCountIv.setImageResource(result ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
-//            mPrivacyCountIv.setVisibility(View.VISIBLE);
-//
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
-//            onScannigFinish(mAppList, mPhotoList, mVideoList);
-//        }
+        if (imageView == mNewAppIv) {
+            updateAppList();
+            int count = mAppList == null ? 0 : mAppList.size();
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "app_cnts_" + count);
+        } else if (imageView == mNewPhotoIv) {
+            updatePhotoList();
+            int count = mPhotoList == null ? 0 : mPhotoList.photoItems.size();
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "pic_cnts_" + count);
+        } else if (imageView == mNewVideoIv) {
+            updateVideoList();
+            int count = mVideoList == null ? 0 : mVideoList.size();
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
+            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "vid_cnts_" + count);
+        } else if (imageView == mNewPrivacyIv) {
+            LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            boolean lostOpen = lsm.isUsePhoneSecurity();
+            IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+            boolean intruderOpen = ism.getIntruderMode();
+            boolean result = lostOpen && intruderOpen;
+            mPrivacyCountIv.setImageResource(result ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
+            mPrivacyCountIv.setVisibility(View.VISIBLE);
+
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+            onScannigFinish(mAppList, mPhotoList, mVideoList);
+        }
     }
 
     private void updateAppList() {
@@ -512,7 +512,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mProcessBtn.setVisibility(View.VISIBLE);
                 mScannTitleTv.setText(R.string.pri_pro_scanning_finish);
                 mProcessTv.setTextColor(mActivity.getToolbarColor());
-                mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, mAppNotifyText);
+//                mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, mAppNotifyText);
             }
         });
     }
