@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.utils.BuildProperties;
@@ -67,6 +68,31 @@ public class InstalledAppTable extends BaseTable {
         }
     }
 
+    public void removePackageList(List<AppItemInfo> itemInfos) {
+        if (itemInfos == null || itemInfos.size() <= 0) {
+            return;
+        }
+
+        initPkgListIfNeed();
+        SQLiteDatabase db = getHelper().getWritableDatabase();
+        if (db == null) return;
+
+        db.beginTransaction();
+        try {
+            for (AppItemInfo info : itemInfos) {
+                mPkgList.remove(info.packageName);
+                try {
+                    db.delete(TABLE_NAME, COL_PKG + " = ?", new String[]{ info.packageName });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public void insertIgnoreItemList(List<AppItemInfo> itemInfos) {
         if (itemInfos == null) return;
 
@@ -112,46 +138,32 @@ public class InstalledAppTable extends BaseTable {
 
         if (BuildProperties.isApiLevel14()) {
             synchronized (LOCK) {
-                SQLiteDatabase db = getHelper().getWritableDatabase();
-                if (db == null) return;
-
-                db.beginTransaction();
-                try {
-                    ContentValues values = new ContentValues();
-
-                    for (String pkg : list) {
-                        values.clear();
-                        values.put(COL_PKG, pkg);
-
-                        db.insert(TABLE_NAME, null, values);
-                    }
-                    db.setTransactionSuccessful();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    db.endTransaction();
-                }
+                doInsertList(list);
             }
         } else {
-            SQLiteDatabase db = getHelper().getWritableDatabase();
-            if (db == null) return;
+            doInsertList(list);
+        }
+    }
 
-            db.beginTransaction();
-            try {
-                ContentValues values = new ContentValues();
+    private void doInsertList(List<String> list) {
+        SQLiteDatabase db = getHelper().getWritableDatabase();
+        if (db == null) return;
 
-                for (String pkg : list) {
-                    values.clear();
-                    values.put(COL_PKG, pkg);
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
 
-                    db.insert(TABLE_NAME, null, values);
-                }
-                db.setTransactionSuccessful();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                db.endTransaction();
+            for (String pkg : list) {
+                values.clear();
+                values.put(COL_PKG, pkg);
+
+                db.insert(TABLE_NAME, null, values);
             }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
         }
     }
 
@@ -182,32 +194,6 @@ public class InstalledAppTable extends BaseTable {
         mPkgList = new ArrayList<String>();
         if (list != null) {
             mPkgList.addAll(list);
-        }
-    }
-
-    private void insertListMemory(List<String> list) {
-        if (list == null) return;
-
-        for (String pkg : list) {
-            if (!mPkgList.contains(pkg)) {
-                mPkgList.add(pkg);
-            }
-        }
-    }
-
-    private static class InstallApp {
-        public boolean ignored;
-        public String pkg;
-
-        @Override
-        public boolean equals(Object o) {
-            if (o instanceof String) {
-                return pkg.equals(o);
-            }
-            if (!(o instanceof InstallApp)) return false;
-
-            InstallApp app = (InstallApp) o;
-            return pkg != null && pkg.equals(app.pkg);
         }
     }
 

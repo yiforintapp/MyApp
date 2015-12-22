@@ -193,6 +193,21 @@ public class LockManagerImpl extends LockManager {
                 });
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, registerContentObserver: " + (end - start));
+
+        AppLoadEngine.getInstance(mContext).registerAppChangeListener(new AppLoadEngine.AppChangeListener() {
+            @Override
+            public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
+                if (type == AppLoadEngine.AppChangeListener.TYPE_REMOVE ||
+                        type == AppLoadEngine.AppChangeListener.TYPE_UNAVAILABLE) {
+                    InstalledAppTable.getInstance().removePackageList(changes);
+                    List<String> pkgList = new ArrayList<String>();
+                    for (AppItemInfo itemInfo : changes) {
+                        pkgList.add(itemInfo.packageName);
+                    }
+                    removePkgFromMode(pkgList, getCurLockMode(), false);
+                }
+            }
+        });
     }
 
     private void tryLoadLockMode() {

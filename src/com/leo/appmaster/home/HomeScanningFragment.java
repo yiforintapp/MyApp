@@ -372,7 +372,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             long start = SystemClock.elapsedRealtime();
             mAppList = lm.getNewAppList();
-            mScanAppName = DataUtils.getThreeRandomAppName(mAppList);
+            try {
+                mScanAppName = DataUtils.getThreeRandomAppName(mAppList);
+            } catch (Exception e) {
+                e.printStackTrace();
+                mScanAppName = "Exception.";
+            }
             mAppScanFinish = true;
             int appScore = lm.getSecurityScore(mAppList);
             mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, appScore);
