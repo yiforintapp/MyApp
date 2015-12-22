@@ -93,6 +93,11 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         isCheckWifiAlready(false);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+    }
+    
     private void handlerIntent() {
         Intent intent = getIntent();
         String from = intent.getStringExtra("from");
