@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.RippleView;
 
-public class LEOWithSIngleCheckboxDialog extends LEOBaseDialog {
+public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
     public static final String TAG = "LEOWithSIngleCheckboxDialog";
 
     private Context mContext;
@@ -37,7 +37,7 @@ public class LEOWithSIngleCheckboxDialog extends LEOBaseDialog {
         public void onClick(int which);
     }
 
-    public LEOWithSIngleCheckboxDialog(Context context) {
+    public LEOWithSingleCheckboxDialog(Context context) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
         initUI();
@@ -129,7 +129,7 @@ public class LEOWithSIngleCheckboxDialog extends LEOBaseDialog {
                 DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvLeft
                         .getTag();
                 try {
-                    lListener.onClick(LEOWithSIngleCheckboxDialog.this, 0);
+                    lListener.onClick(LEOWithSingleCheckboxDialog.this, 0);
                 } catch (Exception e) {
                 }
             }
@@ -145,7 +145,7 @@ public class LEOWithSIngleCheckboxDialog extends LEOBaseDialog {
                 DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvRight
                         .getTag();
                 try {
-                    lListener.onClick(LEOWithSIngleCheckboxDialog.this, 1);
+                    lListener.onClick(LEOWithSingleCheckboxDialog.this, 1);
                 } catch (Exception e) {
                 }
             }

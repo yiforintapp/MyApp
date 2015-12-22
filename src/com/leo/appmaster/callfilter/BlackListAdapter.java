@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.dialog.LEOWithSIngleCheckboxDialog;
+import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
@@ -25,7 +25,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     private String mFlag;
     private Context mContext;
     private LayoutInflater layoutInflater;
-    private LEOWithSIngleCheckboxDialog mDialog;
+    private LEOWithSingleCheckboxDialog mDialog;
 
     public BlackListAdapter(Context mContext) {
         this.mContext = mContext;

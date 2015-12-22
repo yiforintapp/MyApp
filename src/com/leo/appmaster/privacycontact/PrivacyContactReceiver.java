@@ -16,6 +16,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.provider.CallLog;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -28,6 +29,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.callfilter.CallFIlterUIHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
@@ -137,6 +139,18 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             }
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
             PrivacyContactManager.getInstance(mContext).testValue = true;
+//            TODO
+//            CallFIlterUIHelper.getInstance().showReceiveCallNotification();
+//            if (mITelephony != null) {
+//                try {
+//                    mITelephony.endCall();
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//            } else if(mITelephony == null) {
+//                LeoLog.i(TAG, "null");
+//            }
+//          TODO
             // 获取来电号码
             final String phoneNumber =
                     intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);

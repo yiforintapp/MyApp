@@ -37,6 +37,10 @@ public class LEOChoiceDialog extends LEOBaseDialog {
 		initUI();
 	}	
 	
+	public void setTitleGravity(int gravity) {
+	    mTvTitle.setGravity(gravity);
+	}
+	
 	private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_ask_times_to_catch, null);
         mTvTitle = (TextView) dlgView.findViewById(R.id.tv_ask);

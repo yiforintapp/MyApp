@@ -7,7 +7,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
-import com.leo.appmaster.ui.dialog.LEOWithSIngleCheckboxDialog;
+import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 
 import android.app.Notification;
@@ -16,13 +16,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.view.Gravity;
 
 public class CallFIlterUIHelper {
     //    private static LEOWithSIngleCheckboxDialog mConfirmRemoveFromBlacklistDialog;
     private static CallFIlterUIHelper mInstance = null;
 
-    public LEOWithSIngleCheckboxDialog getConfirmRemoveFromBlacklistDialog(Context context) {
-        LEOWithSIngleCheckboxDialog dialog = new LEOWithSIngleCheckboxDialog(context);
+    public LEOWithSingleCheckboxDialog getConfirmRemoveFromBlacklistDialog(Context context) {
+        LEOWithSingleCheckboxDialog dialog = new LEOWithSingleCheckboxDialog(context);
         dialog.setCheckboxText(context.getResources().
                 getString(R.string.call_filter_remove_from_blacklist_checkbox_text));
         dialog.setTitle(context.getResources().
@@ -39,6 +40,7 @@ public class CallFIlterUIHelper {
         list.add(context.getResources().getString(R.string.call_filter_mark));
         dialog.setNeedCheckbox(false);
         dialog.setTitle(title);
+        dialog.setTitleGravity(Gravity.CENTER);
         dialog.setItemsWithDefaultStyle(list, 0);
         return dialog;
     }
@@ -67,7 +69,7 @@ public class CallFIlterUIHelper {
     public LEOAlarmDialog getConfirmClearAllRecordDialog(Context mContext) {
         LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
         dialog.setContentVisiable(false);
-        dialog.setTitle("确定清空所有记录吗");
+        dialog.setTitle(mContext.getResources().getString(R.string.call_filter_confirm_clear_record));
         dialog.setCanceledOnTouchOutside(true);
         dialog.setDialogIconVisibility(false);
         return dialog;
@@ -76,20 +78,21 @@ public class CallFIlterUIHelper {
     private CallFIlterUIHelper() {
     }
 
-//    public void showReceiveCallNotification() {
-//        Intent intent = new Intent(AppMasterApplication.getInstance(), IntruderprotectionActivity.class);
-//        PendingIntent pendingIntent= PendingIntent.getActivity(AppMasterApplication.getInstance(), 1, intent, Notification.FLAG_AUTO_CANCEL);
-//        NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);  
-//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);  
-//        mBuilder.setContentTitle("拦截到以下来电")
-//        .setContentText("13510261550")
-//        .setContentIntent(pendingIntent) //设置通知栏点击意图  
-//        .setTicker("拦截到以下来电")
-//        .setWhen(System.currentTimeMillis())  
-//        .setPriority(Notification.PRIORITY_DEFAULT)
-//        .setAutoCancel(true)
-//        .setSmallIcon(R.drawable.ic_launcher);
-//        mNotificationManager.notify(1, mBuilder.build());
-//    }
+    public void showReceiveCallNotification() {
+        AppMasterApplication ama = AppMasterApplication.getInstance();
+        Intent intent = new Intent(ama, IntruderprotectionActivity.class);
+        PendingIntent pendingIntent= PendingIntent.getActivity(ama, 1, intent, Notification.FLAG_AUTO_CANCEL);
+        NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);  
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);  
+        mBuilder.setContentTitle("拦截到以下来电")
+        .setContentText("13510261550")
+        .setContentIntent(pendingIntent)
+        .setTicker("拦截到以下来电")
+        .setWhen(System.currentTimeMillis())  
+        .setPriority(Notification.PRIORITY_DEFAULT)
+        .setAutoCancel(true)
+        .setSmallIcon(R.drawable.ic_launcher);
+        mNotificationManager.notify(1, mBuilder.build());
+    }
 
 }

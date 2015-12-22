@@ -22,7 +22,7 @@
             style="@style/dlg_title_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="left"
             android:maxLines="2"
             android:text="@string/tips"
             android:visibility="visible" />
@@ -33,8 +33,10 @@
             android:orientation="horizontal"
             >
             <CheckBox 
+                android:button="@null"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/check_box_selector"
                 />
             
             <TextView 

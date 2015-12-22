@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.dialog.LEOWithSIngleCheckboxDialog;
+import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 

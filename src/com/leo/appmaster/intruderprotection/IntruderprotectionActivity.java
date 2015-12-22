@@ -106,6 +106,7 @@ public class IntruderprotectionActivity extends BaseActivity {
 //        long totalMemory2 = PropertyInfoUtil.getTotalMemory2(this);
 //        long availMemory = PropertyInfoUtil.getAvailMemory(this);
 //        Toast.makeText(this, "availMemory = "+availMemory+"       totalMemory = "+totalMemory2, 1).show()
+        CallFIlterUIHelper.getInstance().getConfirmRemoveFromBlacklistDialog(this).show();
     }
 
     /**
