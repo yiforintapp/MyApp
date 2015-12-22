@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by qili on 15-10-10.
  */
-public class CallFilterFragmentAdapter extends BaseAdapter implements View.OnClickListener {
+public class CallFilterFragmentAdapter extends BaseAdapter {
     private List<CallFilterInfo> mList;
     private String mFlag;
     private Context mContext;
@@ -83,13 +83,6 @@ public class CallFilterFragmentAdapter extends BaseAdapter implements View.OnCli
         return convertView;
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-        }
-    }
-
 
     public static class BlackListHolder {
         ImageView imageView;
@@ -99,6 +92,11 @@ public class CallFilterFragmentAdapter extends BaseAdapter implements View.OnCli
 
     public void setData(ArrayList<CallFilterInfo> infoList) {
         mList = infoList;
+        if (mList.size() < 1) {
+            CallFilterMainActivity callFilterMainActivity =
+                    (CallFilterMainActivity) mContext;
+            callFilterMainActivity.callFilterShowEmpty();
+        }
         notifyDataSetChanged();
     }
 

@@ -21,7 +21,7 @@ public class CallFIlterUIHelper {
     //    private static LEOWithSIngleCheckboxDialog mConfirmRemoveFromBlacklistDialog;
     private static CallFIlterUIHelper mInstance = null;
 
-    public  LEOWithSIngleCheckboxDialog getConfirmRemoveFromBlacklistDialog(Context context) {
+    public LEOWithSIngleCheckboxDialog getConfirmRemoveFromBlacklistDialog(Context context) {
         LEOWithSIngleCheckboxDialog dialog = new LEOWithSIngleCheckboxDialog(context);
         dialog.setCheckboxText(context.getResources().
                 getString(R.string.call_filter_remove_from_blacklist_checkbox_text));
@@ -31,7 +31,7 @@ public class CallFIlterUIHelper {
         return dialog;
     }
 
-    public LEOChoiceDialog getCallHandleDialog(String title,Context context) {
+    public LEOChoiceDialog getCallHandleDialog(String title, Context context) {
         LEOChoiceDialog dialog = new LEOChoiceDialog(context);
         ArrayList<String> list = new ArrayList<String>();
         list.add(context.getResources().getString(R.string.call_filter_delete_record));
@@ -43,7 +43,7 @@ public class CallFIlterUIHelper {
         return dialog;
     }
 
-    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title,Context context) {
+    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title, Context context) {
         MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
         dialog.setTitle(title);
         dialog.setContent(context.getResources().getString(R.string.call_filter_ask_add_to_blacklist));
@@ -53,6 +53,7 @@ public class CallFIlterUIHelper {
         dialog.fillData(itemContent, 0);
         return dialog;
     }
+
     //    public static Dialog getConfirmRemoveFromBlacklistDialog() {
 //        return null;
 //    }
@@ -67,6 +68,7 @@ public class CallFIlterUIHelper {
         LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
         dialog.setContentVisiable(false);
         dialog.setTitle("确定清空所有记录吗");
+        dialog.setCanceledOnTouchOutside(true);
         dialog.setDialogIconVisibility(false);
         return dialog;
     }

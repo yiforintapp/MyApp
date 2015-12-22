@@ -1,7 +1,7 @@
 
 package com.leo.appmaster.callfilter;
 
-import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.View;
@@ -14,6 +14,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -174,7 +175,18 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     }
 
     private void clearAll() {
-
+        final LEOAlarmDialog dialog = CallFIlterUIHelper.getInstance().
+                getConfirmClearAllRecordDialog(mActivity);
+        dialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                PreferenceTable.getInstance().putString("blackList", "");
+                mFilterList.clear();
+                mAdapter.setData(mFilterList);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     @Override

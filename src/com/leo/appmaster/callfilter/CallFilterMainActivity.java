@@ -158,4 +158,10 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         }
     }
 
+    public void callFilterShowEmpty() {
+        if (mCallFilterFragment != null) {
+            mCallFilterFragment.showEmpty();
+        }
+    }
+
 }
