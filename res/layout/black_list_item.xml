@@ -2,7 +2,7 @@
     android:id="@+id/content_all_item"
     android:layout_width="match_parent"
     android:layout_height="68dp"
-    android:minHeight="?android:attr/listPreferredItemHeight">
+    android:minHeight="68dp">
 
     <ImageView
         android:id="@+id/iv_icon"
