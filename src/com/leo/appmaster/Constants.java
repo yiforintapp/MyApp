@@ -30,6 +30,9 @@ public class Constants {
     public static final String UNIT_ID_63 = "63";
     public static final String UNIT_ID_67 = "67";
 
+    // 3.2 intruder
+    public static final String UNIT_ID_244 = "244";
+
     public static final String PLACEMENT_ID_58 = "1474823452846141_1475968499398303";
     // placement ids for lock screen - begin
     public static final String PLACEMENT_ID_59 = "1474823452846141_1475969219398231";
@@ -41,6 +44,8 @@ public class Constants {
     public static final String PLACEMENT_ID_62 = "1474823452846141_1475966676065152";
     public static final String PLACEMENT_ID_63 = "1474823452846141_1475968946064925";
     public static final String PLACEMENT_ID_67 = "1474823452846141_1475970436064776";
+    // 3.2 intruder
+    public static final String PLACEMENT_ID_244 = "1474823452846141_1501677286827424";
 
     public static final String INTRUDER_PHOTO_TIMESTAMP_FORMAT = "yyyy/MM/dd-HH:mm:ss";
     public static final long TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY = 512 * 1024 * 1024;

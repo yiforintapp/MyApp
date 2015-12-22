@@ -1,6 +1,7 @@
 package com.leo.appmaster.intruderprotection;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,13 +17,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -30,16 +35,19 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageGridActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -54,6 +62,7 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class IntruderCatchedActivity extends BaseActivity implements View.OnClickListener {
     private List<PhotoAibum> mAlbumList = null;
@@ -90,6 +99,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static final int TIMES_TO_CATCH_4 = 5;
     private boolean mNeedIntoHomeWhenFinish = false;
 
+    // 3.2 add advertise
+    private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +113,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mPkgName = intent.getStringExtra("pkgname");
         mLockManager.filterPackage(mPkgName, 5000);
         init();
+
+        // 3.2 add advertise
+        loadAd();
         
 //        Intent i = new Intent(this, GradeTipActivity.class);
 //        startActivity(i);
@@ -271,6 +286,89 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mRvMore.setOnClickListener(this);
         mLvMain = (ListView) findViewById(R.id.lv_mainlist);
     }
+
+    /* 3.2 advertise stuff - begin */
+    private void loadAd() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        if (amp.getADWifiScan() == 1) {
+            MobvistaEngine.getInstance(this).loadMobvista(INTRUDER_AD_ID, new MobvistaEngine.MobvistaListener() {
+
+                @Override
+                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
+                    if (code == MobvistaEngine.ERR_OK) {
+                        sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                    }
+                }
+
+                @Override
+                public void onMobvistaClick(Campaign campaign) {
+                    LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                    lm.filterSelfOneMinites();
+                }
+            });
+        }
+    }
+
+    /**
+     * 新需求：当广告大图加载完成之后再展示广告
+     */
+    public static class AdPreviewLoaderListener implements ImageLoadingListener {
+        WeakReference<IntruderCatchedActivity> mActivity;
+        Campaign mCampaign;
+
+        public AdPreviewLoaderListener(IntruderCatchedActivity fragment, final Campaign campaign) {
+            mActivity = new WeakReference<IntruderCatchedActivity>(fragment);
+            mCampaign = campaign;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            IntruderCatchedActivity activity = mActivity.get();
+            if (loadedImage != null && activity != null) {
+                LeoLog.d("MobvistaEngine", "[IntruderCatchedActivity] onLoadingComplete -> " + imageUri);
+                activity.initAdLayout(activity.findViewById(R.id.ad_content),
+                        mCampaign, Constants.UNIT_ID_60, loadedImage);
+            }
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+
+        }
+    }
+
+    private static AdPreviewLoaderListener sAdImageListener;
+
+    private void initAdLayout(View rootView, Campaign campaign, String unitId, Bitmap previewImage) {
+        ViewParent vg = rootView.getParent();
+        if (vg.getClass().equals(ViewGroup.class)) {
+            ((ViewGroup) vg).setLayoutTransition(new LayoutTransition());
+        }
+        View adView = rootView.findViewById(R.id.ad_content);
+        TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
+        tvTitle.setText(campaign.getAppName());
+        ImageView preview = (ImageView) adView.findViewById(R.id.item_ad_preview);
+        TextView summary = (TextView) adView.findViewById(R.id.item_summary);
+        summary.setText(campaign.getAppDesc());
+        Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
+        btnCTA.setText(campaign.getAdCall());
+        preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        preview.setImageBitmap(previewImage);
+        adView.setVisibility(View.VISIBLE);
+        MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
+    }
+    /* 3.2 advertise stuff - end */
 
     private void showChangeTimesDialog() {
         if (mDialog == null) {
@@ -574,6 +672,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
+        // 3.2 advertise
+        MobvistaEngine.getInstance(this).release(INTRUDER_AD_ID);
     }
 
     @Override
