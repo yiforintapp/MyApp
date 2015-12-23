@@ -423,4 +423,86 @@ public class CallFilterUtils {
         return blackListInfoList;
     }
 
+    public static List<BlackListInfo> getNoUpBlack(Uri uri,String selection,String[] selectionArgs,String sortOrder){
+        Context context = AppMasterApplication.getInstance();
+        ContentResolver cr = context.getContentResolver();
+        List<BlackListInfo> blackListInfoList = null;
+        Cursor cursor = null;
+        try {
+            cursor = cr.query(uri, null, selection, selectionArgs, sortOrder);
+            if (cursor != null) {
+                blackListInfoList = new ArrayList<BlackListInfo>();
+                while (cursor.moveToNext()) {
+                    int idColum = cursor.getColumnIndex(CallFilterConstants.BLACK_ID);
+                    int nameColum = cursor.getColumnIndex(CallFilterConstants.BLACK_NAME);
+                    int numberColum = cursor.getColumnIndex(CallFilterConstants.BLACK_PHONE_NUMBER);
+                    int iconColum = cursor.getColumnIndex(CallFilterConstants.BLACK_ICON);
+                    int areaColum = cursor.getColumnIndex(CallFilterConstants.BLACK_NUMBER_AREA);
+                    int addNumColum = cursor.getColumnIndex(CallFilterConstants.BLACK_ADD_NUMBER);
+                    int markerTypeColum = cursor.getColumnIndex(CallFilterConstants.MARKER_TYPE);
+                    int markerNumColum = cursor.getColumnIndex(CallFilterConstants.MARKER_NUMBER);
+                    int uploadStateColum = cursor.getColumnIndex(CallFilterConstants.BLACK_UPLOAD_STATE);
+                    int locHdColum = cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD);
+                    int locHdTypeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
+                    int readStateColum = cursor.getColumnIndex(CallFilterConstants.BLACK_READ_STATE);
+
+                    int id = cursor.getInt(idColum);
+                    String name = cursor.getString(nameColum);
+                    String number = cursor.getString(numberColum);
+                    if (TextUtils.isEmpty(name)) {
+                        name = number;
+                    }
+
+                    Bitmap icon = null;
+                    byte[] iconByte = cursor.getBlob(iconColum);
+                    if (iconByte != null && iconByte.length > 0) {
+                        icon = PrivacyContactUtils.getBmp(iconByte);
+                        int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
+                        icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
+                    }
+                    String numberArea = cursor.getString(areaColum);
+                    int addBlackNum = cursor.getInt(addNumColum);
+                    int markerType = cursor.getInt(markerTypeColum);
+                    int markerNum = cursor.getInt(markerNumColum);
+                    int uploadStateType = cursor.getInt(uploadStateColum);
+                    int locHd = cursor.getInt(locHdColum);
+                    int locHdType = cursor.getInt(locHdTypeColum);
+                    int readStateType = cursor.getInt(readStateColum);
+                    boolean uploadState = false;
+                    boolean readState = false;
+                    switch (uploadStateType) {
+                        case CallFilterConstants.UPLOAD:
+                            uploadState = true;
+                            break;
+                        case CallFilterConstants.UPLOAD_NO:
+                            uploadState = false;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    switch (readStateType) {
+                        case CallFilterConstants.READ:
+                            readState = true;
+                            break;
+                        case CallFilterConstants.READ_NO:
+                            readState = false;
+                            break;
+                        default:
+                            break;
+                    }
+                    BlackListInfo info = CallFilterUtils.getBlackListInfo(id, number, name, markerType, icon,
+                            numberArea, addBlackNum, markerNum, uploadState, locHd, locHdType, readState);
+                    blackListInfoList.add(info);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return blackListInfoList;
+    }
 }

@@ -166,4 +166,12 @@ public class PrefConst {
     public static final String KEY_APP_LOCK_HANDLER = "APP_LOCK_HANDLER";
     /*骚扰拦截打开状态*/
     public static final String KEY_FIL_OP_STA = "FIL_OP_STA";
+    /**
+     * 黑名单提示人数
+     */
+    public static final String KEY_BLACK_TIP = "black_tip";
+    /**
+     * 标记提示人数
+     */
+    public static final String KEY_MARKER_TIP = "marker_tip";
 }

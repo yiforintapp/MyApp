@@ -53,11 +53,26 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract boolean removeBlackList(List<BlackListInfo> blackList);
 
     /**
+     * 指定号码是否存在黑名单中
+     *
+     * @param number
+     * @return
+     */
+    public abstract boolean isExistBlackList(String number);
+
+    /**
      * 查询为上传到服务器的黑名单列表
      *
      * @return
      */
     public abstract List<BlackListInfo> getNoUploadBlackList();
+
+    /**
+     * 分页查询为上传到服务器的黑名单列表
+     *
+     * @return
+     */
+    public abstract List<BlackListInfo> getNoUpBlackListLimit();
 
     /*拦截分组*/
 
@@ -103,6 +118,7 @@ public abstract class CallFilterContextManager extends Manager {
 
     /**
      * 指定ID查询拦截详细列表
+     *
      * @param griId
      * @return
      */
@@ -183,7 +199,7 @@ public abstract class CallFilterContextManager extends Manager {
 
     /**
      * int[0]指定号码是否满足？：0,不满足;1,满足
-     * int[1]哪个弹框类型？
+     * int[1]哪个弹框类型？：0,标记;1,黑名单
      *
      * @param number
      * @return
@@ -257,5 +273,44 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract List<BlackListInfo> getSerBlackList();
+
+    /**
+     * 通过指定的号码，查询服务器下发黑名单
+     *
+     * @return
+     */
+    public abstract List<BlackListInfo> getSerBlackListFroNum(String number);
+
+    /**
+     * 获取黑名单来电提示显示的人数参数
+     *
+     * @return
+     */
+    public abstract int getSerBlackTipCount();
+
+    /**
+     * 设置黑名单来电提示显示的人数参数
+     *
+     * @param num
+     * @return
+     */
+    public abstract void setSerBlackTipNum(int num);
+
+
+    /**
+     * 标记来电提示显示的人数参数
+     *
+     * @return
+     */
+    public abstract int getSerMarkTipCount();
+
+    /**
+     * 设置标记来电提示显示的人数参数
+     *
+     * @param num
+     * @return
+     */
+    public abstract void setSerMarkTipNum(int num);
+
 
 }

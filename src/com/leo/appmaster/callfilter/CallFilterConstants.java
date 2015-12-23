@@ -55,6 +55,7 @@ public class CallFilterConstants {
     public static final String MARKER_NUMBER = "marker_number";
     public static final String BLACK_UPLOAD_STATE = "upload_state";
     public static final String BLACK_READ_STATE = "read_state";
+    public static final String BLACK_REMOVE_STATE = "remove_state";
     /**
      * 本地是否处理
      * 0：未处理
@@ -97,6 +98,8 @@ public class CallFilterConstants {
             + BLACK_LOC_HD_TYPE
             + " INTEGER,"
             + BLACK_READ_STATE
+            + " INTEGER,"
+            + BLACK_REMOVE_STATE
             + " INTEGER,"
             + BLACK_OTHER_FLAG
             + " TEXT"
@@ -257,5 +260,14 @@ public class CallFilterConstants {
      * 本地未处理
      */
     public static final int NO_LOC_HD = 0;
+
+    /**
+     * 弹框类型 ：0,标记;1,黑名单
+     */
+    public static final int[] DIALOG_TYPE = {0, 1};
+    /**
+     * 指定号码是否满足弹框条件（0,不满足;1,满足）
+     */
+    public static final int[] IS_TIP_DIA = {0,1};
 
 }

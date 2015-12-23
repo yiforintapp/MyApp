@@ -18,6 +18,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.leo.appmaster.cloud.UploadRequest;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.DeviceUtil;
@@ -47,6 +48,7 @@ public class HttpRequestAgent {
     private RequestQueue mRequestQueue;
     private static HttpRequestAgent mInstance;
     public static final String TAG = "HttpRequestAgent";
+
     private HttpRequestAgent(Context ctx) {
         mContext = ctx.getApplicationContext();
         mRequestQueue = Volley.newRequestQueue(mContext);
@@ -275,7 +277,7 @@ public class HttpRequestAgent {
                 + requestLanguage + "/" +
                 mContext.getString(R.string.version_name) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
-        LeoLog.i(TAG,"闪屏请求链接："+url);
+        LeoLog.i(TAG, "闪屏请求链接：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
         request.setShouldCache(false);
@@ -379,13 +381,13 @@ public class HttpRequestAgent {
     public void loadADShowType(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
         // String iswipeUrl = "/appmaster/config?ai=0000a.html";
-        String versionCodeString=null;
+        String versionCodeString = null;
         try {
-            int versionCode=mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-            versionCodeString=String.valueOf(versionCode);
+            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+            versionCodeString = String.valueOf(versionCode);
         } catch (NameNotFoundException e) {
         }
-        String adtypeurl = "/appmaster/adconfig.html?app_version_code="+versionCodeString;
+        String adtypeurl = "/appmaster/adconfig.html?app_version_code=" + versionCodeString;
         String url = Utilities.getURL(adtypeurl);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
@@ -425,6 +427,7 @@ public class HttpRequestAgent {
         request.setRetryPolicy(policy);
         mRequestQueue.add(request);
     }
+
     /* 加载手机防盗数据 */
     public void loadPhoneSecurity(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
@@ -455,8 +458,8 @@ public class HttpRequestAgent {
         String country = Utilities.getCountryID(context);
         String versionCodeString = "";
         try {
-            int versionCode=mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-            versionCodeString=String.valueOf(versionCode);
+            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+            versionCodeString = String.valueOf(versionCode);
         } catch (NameNotFoundException e) {
         }
         String channelCode = mContext.getString(R.string.channel_code);
@@ -494,8 +497,8 @@ public class HttpRequestAgent {
         String country = Utilities.getCountryID(context);
         String versionCodeString = "";
         try {
-            int versionCode=mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-            versionCodeString=String.valueOf(versionCode);
+            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+            versionCodeString = String.valueOf(versionCode);
         } catch (NameNotFoundException e) {
         }
         String channelCode = mContext.getString(R.string.channel_code);
@@ -519,6 +522,33 @@ public class HttpRequestAgent {
         request.setRetryPolicy(policy);
         mRequestQueue.add(request);
     }
+
+    /**
+     * 上传黑名单列表
+     *
+     * @param listener
+     * @param errorListener
+     * @param params
+     */
+    public void commitBlackList(Listener<JSONObject> listener,
+                                ErrorListener errorListener, final Map<String, String> params) {
+        String bodyString = null;
+        int method = Method.POST;
+        JsonObjectRequest request = new JsonObjectRequest(method, LeoUrls.URL_UPLOAD_BLACK, bodyString, listener,
+                errorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+        };
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
+        request.setShouldCache(false);
+        mRequestQueue.add(request);
+    }
+
 
     public abstract static class RequestListener<T> implements Listener<JSONObject>, ErrorListener {
         private WeakReference<T> outerContextRef;

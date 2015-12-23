@@ -313,8 +313,9 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                     contact.setContactNumber(tempContact.getContactNumber());
                     contact.setContactIcon(tempContact.getContactIcon());
                 } else {
-                    contact.setContactName(number);
-                    contact.setContactNumber(number);
+//                    contact.setContactName(number);
+//                    contact.setContactNumber(number);
+                    continue;
                 }
                 if (DBG) {
                     LeoLog.i(TAG, contact.getContactName() + ",短信数：" + messageCount + ",通话数：" + callCount);

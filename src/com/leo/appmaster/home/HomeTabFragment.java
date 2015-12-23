@@ -28,6 +28,7 @@ import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
+import com.leo.appmaster.schedule.BlackListUploadFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.AppUtil;
@@ -42,7 +43,7 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
  */
 public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTabFragment";
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
 
     private ImageView mRedDot;
     // 首页4个tab
@@ -306,6 +307,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     } else {
                         Intent intent = new Intent(getActivity(), AppLockListActivity.class);
                         startActivity(intent);
+                    }
+                    if(DBG){
+                        BlackListUploadFetchJob.startImmediately();
                     }
                     break;
                 case R.id.home_intruder_tv:
