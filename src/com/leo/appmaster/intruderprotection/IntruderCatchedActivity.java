@@ -296,6 +296,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 @Override
                 public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
+                        LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
                         sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
                         ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
                     }
@@ -303,6 +304,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
                 @Override
                 public void onMobvistaClick(Campaign campaign) {
+                    LeoLog.d("IntruderAd", "onMobvistaClick");
                     LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                     lm.filterSelfOneMinites();
                 }
@@ -336,7 +338,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             IntruderCatchedActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
-                LeoLog.d("MobvistaEngine", "[IntruderCatchedActivity] onLoadingComplete -> " + imageUri);
+                LeoLog.d("IntruderAd", "[IntruderCatchedActivity] onLoadingComplete -> " + imageUri);
                 activity.initAdLayout(activity.findViewById(R.id.ad_content),
                         mCampaign, Constants.UNIT_ID_60, loadedImage);
             }
