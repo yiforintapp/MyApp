@@ -309,7 +309,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             String language = DeviceUtil.getLanguage();
 
             String url = LeoUrls.FAR_REQUEST + "/"
-                    + country + "/" + version + "/" + language + ".html";
+                    + country + "/" + language + "/" + version + ".html";
             LeoLog.d("testFaq", "url : " + url);
 
 

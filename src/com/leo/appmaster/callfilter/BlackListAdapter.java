@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -21,16 +23,18 @@ import java.util.List;
  * Created by qili on 15-10-10.
  */
 public class BlackListAdapter extends BaseAdapter implements View.OnClickListener {
-    private List<CallFilterInfo> mList;
+    private List<BlackListInfo> mList;
     private String mFlag;
     private Context mContext;
     private LayoutInflater layoutInflater;
     private LEOWithSingleCheckboxDialog mDialog;
+    protected CallFilterContextManager mCallManger;
 
     public BlackListAdapter(Context mContext) {
         this.mContext = mContext;
-        mList = new ArrayList<CallFilterInfo>();
+        mList = new ArrayList<BlackListInfo>();
         layoutInflater = LayoutInflater.from(mContext);
+        mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
     }
 
     @Override
@@ -69,24 +73,22 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
             holder = (BlackListHolder) convertView.getTag();
         }
 
-        if (mFlag.equals(CallFilterConstants.ADAPTER_FLAG_BLACK_LIST)) {
-            CallFilterInfo info = mList.get(i);
-            String numberName = info.numberName;
-            String number = info.number;
+        BlackListInfo info = mList.get(i);
+        String numberName = info.getNumberName();
+        String number = info.getNumber();
 
-            if (!Utilities.isEmpty(numberName) && !numberName.equals("null")) {
-                holder.title.setText(numberName);
-                holder.desc.setText(number);
-                holder.desc.setVisibility(View.VISIBLE);
-            } else {
-                holder.title.setText(number);
-                holder.desc.setVisibility(View.GONE);
-            }
-
-            holder.clickView.setOnClickListener(BlackListAdapter.this);
-            holder.clickView.setTag(R.id.bg_delete, i);
-
+        if (!Utilities.isEmpty(numberName) && !numberName.equals("null")) {
+            holder.title.setText(numberName);
+            holder.desc.setText(number);
+            holder.desc.setVisibility(View.VISIBLE);
+        } else {
+            holder.title.setText(number);
+            holder.desc.setVisibility(View.GONE);
         }
+
+        holder.clickView.setOnClickListener(BlackListAdapter.this);
+        holder.clickView.setTag(R.id.bg_delete, i);
+
         return convertView;
     }
 
@@ -101,14 +103,18 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     }
 
     private void showDialog(final int position) {
-        LeoLog.d("testPosition", "position : " + position);
         if (mDialog == null) {
             mDialog = CallFIlterUIHelper.getInstance().getConfirmRemoveFromBlacklistDialog(mContext);
         }
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //TODO
+
+                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+                BlackListInfo info = mList.get(position);
+                list.add(info);
+                mCallManger.removeBlackList(list);
+
                 mList.remove(position);
                 if (mList.size() == 0) {
                     CallFilterMainActivity callFilterMainActivity =
@@ -129,7 +135,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         ImageView clickView;
     }
 
-    public void setData(ArrayList<CallFilterInfo> infoList) {
+    public void setData(List<BlackListInfo> infoList) {
         mList = infoList;
         notifyDataSetChanged();
     }

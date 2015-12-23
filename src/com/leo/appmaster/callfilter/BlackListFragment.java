@@ -22,6 +22,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BlackListFragment extends BaseFragment implements View.OnClickListener {
 
@@ -29,21 +30,11 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
     private View mNothingToShowView;
     private BlackListAdapter mBlackListAdapter;
     private ProgressBar mProgressBar;
-    private ArrayList<CallFilterInfo> mBlackList;
+    private List<BlackListInfo> mBlackList;
     private RippleView mAddBlackNum;
     private RippleView mUnknowCall;
     private boolean isFristIn = true;
     private AddPrivacyContactDialog mAddPrivacyContact;
-
-    private String[] mStringName = new String[]{
-            "nameA_13632840685",
-            "_15466879846",
-            "nameC_13665432165",
-            "_15444688987",
-            "nameE_15925465487",
-            "nameF_15844546873"
-    };
-
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -100,13 +91,9 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                //load
-                //TODO
-                mBlackList = getBlackListData();
+                mBlackList = mCallManger.getBlackList();
                 //load done
-                handler.sendEmptyMessageDelayed(CallFilterConstants.BLACK_LIST_LOAD_DONE,
-                        500);
-                LeoLog.d("testBlackList", "send!");
+                handler.sendEmptyMessage(CallFilterConstants.BLACK_LIST_LOAD_DONE);
             }
         });
     }
@@ -123,54 +110,6 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
             loadData();
         }
         isFristIn = false;
-    }
-
-    public ArrayList<CallFilterInfo> getBlackListData() {
-        ArrayList<CallFilterInfo> list;
-        String blackNums = PreferenceTable.getInstance().getString("blackList");
-        if (!Utilities.isEmpty(blackNums)) {
-            list = StringToList(blackNums);
-        } else {
-            String mLongStr = "";
-            for (int i = 0; i < mStringName.length; i++) {
-                String mStr = mStringName[i];
-                if (i == 0) {
-                    mLongStr = mStr;
-                } else {
-                    mLongStr = mLongStr + ":" + mStr;
-                }
-            }
-            LeoLog.d("testBlackList", "number : " + mLongStr);
-            PreferenceTable.getInstance().putString("blackList", mLongStr);
-            list = StringToList(mLongStr);
-        }
-        return list;
-    }
-
-    private ArrayList<CallFilterInfo> StringToList(String mStrings) {
-        ArrayList<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
-        String[] strings = mStrings.split(":");
-        for (int i = 0; i < strings.length; i++) {
-            CallFilterInfo info = new CallFilterInfo();
-            info.numberName = getNumberName(i, strings);
-            LeoLog.d("testBlackList", "numberName : " + info.numberName);
-            info.number = getNumber(i, strings);
-            LeoLog.d("testBlackList", "number : " + info.number);
-            list.add(info);
-        }
-        return list;
-    }
-
-    private String getNumberName(int i, String[] strings) {
-        String mStr = strings[i];
-        String name = mStr.split("_")[0];
-        return name;
-    }
-
-    private String getNumber(int i, String[] strings) {
-        String mStr = strings[i];
-        String number = mStr.split("_")[1];
-        return number;
     }
 
     @Override

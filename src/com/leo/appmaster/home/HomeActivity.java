@@ -1169,7 +1169,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         String language = DeviceUtil.getLanguage();
 
         String url = LeoUrls.FAR_REQUEST + "/"
-                + country + "/" + version + "/" + language + ".html";
+                + country + "/" + language + "/" + version + ".html";
         LeoLog.d("testFaq", "url : " + url);
 
 

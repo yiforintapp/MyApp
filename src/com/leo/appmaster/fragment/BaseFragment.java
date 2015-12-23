@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 
@@ -18,65 +19,66 @@ import com.leo.appmaster.mgr.MgrContext;
  */
 public abstract class BaseFragment extends Fragment {
 
-	protected FragmentActivity mActivity;
-	protected View mRootView;
+    protected FragmentActivity mActivity;
+    protected View mRootView;
 
-	protected LockManager mLockManager;
+    protected LockManager mLockManager;
+    protected CallFilterContextManager mCallManger;
+    final String TAG = getClass().getSimpleName();
 
-	final String TAG = getClass().getSimpleName();
+    @Override
+    public void onAttach(Activity activity) {
+        mActivity = (FragmentActivity) activity;
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        getArguments();
+        super.onAttach(activity);
+    }
 
-	@Override
-	public void onAttach(Activity activity) {
-		mActivity = (FragmentActivity) activity;
-		mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-		getArguments();
-		super.onAttach(activity);
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        if (mRootView == null) {
+            mRootView = LayoutInflater.from(mActivity).inflate(
+                    layoutResourceId(), null);
+            onInitUI();
+        } else {
+            detachRootView();
+        }
+        return mRootView;
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		if (mRootView == null) {
-			mRootView = LayoutInflater.from(mActivity).inflate(
-					layoutResourceId(), null);
-			onInitUI();
-		} else {
-			detachRootView();
-		}
-		return mRootView;
-	}
+    protected void detachRootView() {
+        if (mRootView == null) {
+            return;
+        }
 
-	protected void detachRootView() {
-		if (mRootView == null) {
-			return;
-		}
+        ViewParent parent = mRootView.getParent();
+        if (parent != null && parent instanceof ViewGroup) {
+            ((ViewGroup) parent).removeView(mRootView);
+        }
+    }
 
-		ViewParent parent = mRootView.getParent();
-		if (parent != null && parent instanceof ViewGroup) {
-			((ViewGroup) parent).removeView(mRootView);
-		}
-	}
+    /**
+     * @return provider layout id
+     */
+    protected abstract int layoutResourceId();
 
-	/**
-	 * @return provider layout id
-	 */
-	protected abstract int layoutResourceId();
+    /**
+     * init UI only one time
+     */
+    protected abstract void onInitUI();
 
-	/**
-	 * init UI only one time
-	 */
-	protected abstract void onInitUI();
+    protected View findViewById(int id) {
+        View result = null;
+        if (mRootView != null) {
+            result = mRootView.findViewById(id);
+        }
+        if (result == null && mActivity != null) {
+            result = mActivity.findViewById(id);
+        }
 
-	protected View findViewById(int id) {
-		View result = null;
-		if (mRootView != null) {
-			result = mRootView.findViewById(id);
-		}
-		if (result == null && mActivity != null) {
-			result = mActivity.findViewById(id);
-		}
-
-		return result;
+        return result;
 //		if (mRootView == null) {
 //			try {
 //				// throw new Exception(getString(R.string.exception_not_root));
@@ -85,48 +87,48 @@ public abstract class BaseFragment extends Fragment {
 //			}
 //		}
 //		return mRootView.findViewById(id);
-	}
+    }
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-	}
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-	}
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-	}
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
-	public boolean onBackPressed() {
-		return false;
-	}
+    public boolean onBackPressed() {
+        return false;
+    }
 
-	public boolean onMenuPressed() {
-		return false;
-	}
-	
-	public void onBackgroundChanged(int color) {
-	    
-	}
+    public boolean onMenuPressed() {
+        return false;
+    }
+
+    public void onBackgroundChanged(int color) {
+
+    }
 
 }
