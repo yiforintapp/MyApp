@@ -79,30 +79,55 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         int filterType = info.filterType;
         String numberLocal = info.numberType;
 
-        if (filterType == 0) {
-            if (Utilities.isEmpty(numberLocal)) {
-                if (Utilities.isEmpty(numberName)) {
-                    holder.title.setText(number);
+        if (Utilities.isEmpty(numberName) || numberName.equals(number)) {
+            if (filterType == 0) {
+                if (Utilities.isEmpty(numberLocal)) {
+                    holder.desc.setText(number);
                 } else {
-                    holder.title.setText(numberName);
+                    holder.desc.setText(numberLocal);
                 }
-                holder.desc.setText(number);
-            } else {
                 holder.title.setText(number);
-                holder.desc.setText(numberLocal);
+            } else {
+                String string;
+                if (filterType == 1) {
+                    string = mContext.getString(R.string.filter_number_type_saorao);
+                } else if (filterType == 2) {
+                    string = mContext.getString(R.string.filter_number_type_ad);
+                } else {
+                    string = mContext.getString(R.string.filter_number_type_zhapian);
+                }
+                holder.title.setText(string);
+                holder.desc.setText(number);
             }
         } else {
-            String string;
-            if (filterType == 1) {
-                string = mContext.getString(R.string.filter_number_type_saorao);
-            } else if (filterType == 2) {
-                string = mContext.getString(R.string.filter_number_type_ad);
-            } else {
-                string = mContext.getString(R.string.filter_number_type_zhapian);
-            }
-            holder.title.setText(string);
+            holder.title.setText(numberName);
             holder.desc.setText(number);
         }
+
+//        if (filterType == 0) {
+//            if (Utilities.isEmpty(numberLocal)) {
+//                if (Utilities.isEmpty(numberName)) {
+//                    holder.title.setText(number);
+//                } else {
+//                    holder.title.setText(numberName);
+//                }
+//                holder.desc.setText(number);
+//            } else {
+//                holder.title.setText(number);
+//                holder.desc.setText(numberLocal);
+//            }
+//        } else {
+//            String string;
+//            if (filterType == 1) {
+//                string = mContext.getString(R.string.filter_number_type_saorao);
+//            } else if (filterType == 2) {
+//                string = mContext.getString(R.string.filter_number_type_ad);
+//            } else {
+//                string = mContext.getString(R.string.filter_number_type_zhapian);
+//            }
+//            holder.title.setText(string);
+//            holder.desc.setText(number);
+//        }
 
 
         return convertView;

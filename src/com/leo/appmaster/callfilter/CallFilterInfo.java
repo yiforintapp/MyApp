@@ -2,7 +2,9 @@
 package com.leo.appmaster.callfilter;
 
 
-public class CallFilterInfo {
+import java.io.Serializable;
+
+public class CallFilterInfo implements Serializable {
     private int id;
     public String number;
 

@@ -161,6 +161,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
                         info.setNumberType("中国移动");
                         info.setFilterType(3);
                     }
+                    info.setTimeLong(System.currentTimeMillis());
                     list.add(info);
                 }
                 mCallManger.addFilterDet(list,false);

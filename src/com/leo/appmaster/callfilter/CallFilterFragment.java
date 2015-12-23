@@ -3,6 +3,7 @@ package com.leo.appmaster.callfilter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
@@ -140,6 +141,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(mActivity, CallFilterRecordActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("data", mFilterList.get(i));
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
