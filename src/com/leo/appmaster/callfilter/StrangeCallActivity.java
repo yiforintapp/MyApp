@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.privacycontact.CircleImageView;
@@ -355,7 +354,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                         info.setNumberName(name);
                                         info.setNumber(number);
                                         info.setLocHandler(CallFilterConstants.LOC_HD);
-                                        info.setIsLocHandlerType(0);
+                                        info.setLocHandlerType(0);
                                         info.setUploadState(CallFilterConstants.UPLOAD_NO);
                                         blackList.add(info);
 

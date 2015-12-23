@@ -33,8 +33,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterUtils;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
@@ -141,7 +139,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 info.setNumberName(mPhoneName);
                 info.setNumber(mPhoneNumber);
                 info.setLocHandler(CallFilterConstants.LOC_HD);
-                info.setIsLocHandlerType(0);
+                info.setLocHandlerType(0);
                 info.setUploadState(CallFilterConstants.UPLOAD_NO);
 
                 list.add(info);

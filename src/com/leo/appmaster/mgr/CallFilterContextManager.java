@@ -238,6 +238,12 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract int getFilterUserNumber();
 
     /**
+     * 设置链接用户量
+     * @param number
+     */
+    public abstract void setFilterUserNumber(int number);
+
+    /**
      * 后台下发黑名单列表(本地未添加处理的黑名单)
      *
      * @return
@@ -251,6 +257,11 @@ public abstract class CallFilterContextManager extends Manager {
      */
     public abstract int getFilterTipFroUser();
 
+    /**
+     * 设置骚扰拦截显示提示框：通过指定用户量参数值对比显示
+     * @param number
+     */
+    public abstract  void setFilterTipFroUser(int number);
     /**
      * 添加服务器下发黑名单
      *

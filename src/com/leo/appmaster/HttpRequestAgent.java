@@ -528,24 +528,32 @@ public class HttpRequestAgent {
      *
      * @param listener
      * @param errorListener
-     * @param params
+     * @param bodyString
      */
     public void commitBlackList(Listener<JSONObject> listener,
-                                ErrorListener errorListener, final Map<String, String> params) {
-        String bodyString = null;
+                                ErrorListener errorListener, String bodyString) {
         int method = Method.POST;
-        JsonObjectRequest request = new JsonObjectRequest(method, LeoUrls.URL_UPLOAD_BLACK, bodyString, listener,
-                errorListener) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return params;
-            }
-        };
+        JsonObjectRequest request = new JsonObjectRequest(method, "http://192.168.1.205/report", bodyString, listener, errorListener);
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
         request.setShouldCache(false);
+        mRequestQueue.add(request);
+    }
+
+    public  void loadBlackList(Listener<JSONObject> listener, ErrorListener errorListener) {
+        String object = "";
+        String url = LeoUrls.URI_BLACK_LIST;
+        url = Utilities.getURL(url);
+        LeoLog.i(TAG, "黑名单配置数据：" + url);
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
+                errorListener);
+        request.setShouldCache(true);
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         mRequestQueue.add(request);
     }
 

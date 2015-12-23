@@ -32,26 +32,26 @@ public class PrefConst {
     public static final String KEY_AD_TYPE_IN_INTRUDER_VIEW = "ad_type_in_intruder_view";
     public static final String KEY_IS_DELAY_TO_SHOW_CATCH = "is_delay_to_show_catch";
     public static final String KEY_ORIENTATION_OF_CAMERA_FACING_FRONT = "orientation_of_camera_facing_front";
-    
+
     public static final String KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME = "need_home_change_to_chrismas_theme";
     public static final String KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME = "need_lock_change_to_chrismas_theme";
     /**
      * 手机防盗
      */
     //开启手机防盗功能时的时间
-    public static final String KEY_OPEN_PHONE_SECRITY_TIME="OPEN_SECRITY_TIME";
+    public static final String KEY_OPEN_PHONE_SECRITY_TIME = "OPEN_SECRITY_TIME";
     //手机防盗号码
-    public static final String KEY_PHONE_SECURITY_TELPHONE_NUMBER="SECURITY_TELPHONE_NUMBER";
+    public static final String KEY_PHONE_SECURITY_TELPHONE_NUMBER = "SECURITY_TELPHONE_NUMBER";
     //手机防盗状态
-    public static  final String KEY_PHONE_SECURITY_STATE="PHONE_SECURITY_STATE";
+    public static final String KEY_PHONE_SECURITY_STATE = "PHONE_SECURITY_STATE";
     //手机卡imei
-    public static final String KEY_SIM_IMEI="SIM_IMEI";
+    public static final String KEY_SIM_IMEI = "SIM_IMEI";
     //设置使用手机防盗人数
-    public static final String KEY_USE_SECUR_NUMBER="USE_SECUR_NUMBER";
+    public static final String KEY_USE_SECUR_NUMBER = "USE_SECUR_NUMBER";
     //手机防盗：锁定手机指令使用状态
-    public static final String KEY_LOCK_INSTUR_EXECU_STATUE="LOCK_INSTUR_EXECU_STATUE";
+    public static final String KEY_LOCK_INSTUR_EXECU_STATUE = "LOCK_INSTUR_EXECU_STATUE";
     //手机防盗本次执行指令过的短信的id号
-    public static final String  KEY_INSTRU_MSM_ID="INSTRU_MSM_ID";
+    public static final String KEY_INSTRU_MSM_ID = "INSTRU_MSM_ID";
 
     // 隐私等级扫描
     public static final String KEY_SCANNED_APP = "scanned_app";
@@ -71,7 +71,7 @@ public class PrefConst {
     // 入侵者防护不可用的情况下，分数时间已经增加
     public static final String KEY_INTRUDER_ADDED = "intruder_score_added";
 
-      //swifty卡片数据
+    //swifty卡片数据
     public static final String KEY_SWIFTY_CONTENT = "swifty_content";
     public static final String KEY_SWIFTY_GP_URL = "swifty_gp_url";
     public static final String KEY_SWIFTY_IMG_URL = "swifty_img_url";
@@ -174,4 +174,12 @@ public class PrefConst {
      * 标记提示人数
      */
     public static final String KEY_MARKER_TIP = "marker_tip";
+    /**
+     * 骚扰拦截用户数
+     */
+    public static final String KEY_FILTER_USER = "filter_user";
+    /**
+     * 骚扰拦截显示基数
+     */
+    public static final String KEY_FILTER_TIP_USER = "filter_tip_user";
 }

@@ -12,10 +12,13 @@ public class LeoUrls {
 
     public static final String URL_FEEDBACK = HTTP + DOMAIN_FEEDBACK_PREFIX + DOMAIN + PATH_FEEDBACK;
 
-    public static final String DOMAIN_UPLOAD_BLACK_PREFIX = "telintercept.";
-    public static final String PATH_UPLOAD_BLACK_ = "/report";
-    public static final String URL_UPLOAD_BLACK = HTTP + DOMAIN_UPLOAD_BLACK_PREFIX + DOMAIN + PATH_UPLOAD_BLACK_;
+    public static final String DOMAIN_BLACK_PREFIX = "telintercept.";
+    public static final String PATH_UPLOAD_BLACK = "/report";
+    public static final String URL_UPLOAD_BLACK = HTTP + DOMAIN_BLACK_PREFIX + DOMAIN + PATH_UPLOAD_BLACK;
 
     //FAQ
     public static final String FAR_REQUEST = "http://api.leomaster.com/appmaster/faq";
+
+    public static final String PATH_BLACK = "/app/config";
+    public static final String URI_BLACK_LIST = HTTP + DOMAIN_BLACK_PREFIX + DOMAIN + PATH_BLACK;
 }

@@ -19,6 +19,7 @@ import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.imageloader.utils.IoUtils;
 import com.leo.appmaster.utils.Utilities;
 
@@ -85,7 +86,7 @@ public class CallFilterUtils {
             info.setLocHandler(locHd);
         }
         if (locHdType != -1) {
-            info.setIsLocHandlerType(locHdType);
+            info.setLocHandlerType(locHdType);
         }
         if (removeState != -1) {
             info.setRemoveState(removeState);
@@ -240,10 +241,11 @@ public class CallFilterUtils {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         List<BlackListInfo> list = new ArrayList<BlackListInfo>();
         for (int i = 0; i < 10; i++) {
-            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110", "测试", 0, null,
+            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110"+i, "测试", 0, null,
                     null, 23, 25, 0, 1, 1, 0, 1);
             list.add(info);
         }
+//        BlackUploadFetchJob.getJsonString(list);
 
 
 //        List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();

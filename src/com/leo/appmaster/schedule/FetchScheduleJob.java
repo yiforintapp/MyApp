@@ -55,7 +55,9 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             "com.leo.appmaster.schedule.SwiftyFetchJob",
             "com.leo.appmaster.schedule.LockRecommentFetchJob",
             "com.leo.appmaster.schedule.PhoneSecurityFetchJob",
-            "com.leo.appmaster.schedule.CardFetchJob"
+            "com.leo.appmaster.schedule.CardFetchJob",
+            "com.leo.appmaster.schedule.BlackDownLoadFetchJob",
+            "com.leo.appmaster.schedule.BlackUploadFetchJob",
     };
 
     public static void startFetchJobs() {
@@ -258,9 +260,11 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         }
     }
 
-    /** 存储卡片需要的数据 */
+    /**
+     * 存储卡片需要的数据
+     */
     protected void setValue(JSONObject object, String key,
-                          String prefKey, PreferenceTable preferenceTable) {
+                            String prefKey, PreferenceTable preferenceTable) {
         try {
             if (!object.isNull(key)) {
                 if (TextUtils.isEmpty(object.getString(key))) {

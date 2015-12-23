@@ -26,7 +26,7 @@ public class BlackListInfo {
      */
     private int uploadState = -1;
     private int locHandler = -1;
-    private int isLocHandlerType = -1;
+    private int locHandlerType = -1;
     private int readState = -1;
     private int removeState = -1;
     /**
@@ -90,12 +90,12 @@ public class BlackListInfo {
         this.numberName = numberName;
     }
 
-    public int getIsLocHandlerType() {
-        return isLocHandlerType;
+    public int getLocHandlerType() {
+        return locHandlerType;
     }
 
-    public void setIsLocHandlerType(int isLocHandlerType) {
-        this.isLocHandlerType = isLocHandlerType;
+    public void setLocHandlerType(int isLocHandlerType) {
+        this.locHandlerType = isLocHandlerType;
     }
 
 

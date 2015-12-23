@@ -36,8 +36,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterUtils;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -395,7 +393,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                         info.setNumberName(name);
                                         info.setNumber(number);
                                         info.setLocHandler(CallFilterConstants.LOC_HD);
-                                        info.setIsLocHandlerType(0);
+                                        info.setLocHandlerType(0);
                                         info.setUploadState(CallFilterConstants.UPLOAD_NO);
                                         blackList.add(info);
 

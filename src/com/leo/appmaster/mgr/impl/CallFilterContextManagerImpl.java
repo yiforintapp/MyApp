@@ -2,17 +2,14 @@ package com.leo.appmaster.mgr.impl;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.renderscript.Sampler;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.R;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
@@ -23,9 +20,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.utils.PrefConst;
-import com.leo.imageloader.utils.IoUtils;
 
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +89,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             String area = info.getNumberArea();
             int uploadState = info.getUploadState();
             int locHd = info.getLocHandler();
-            int locHdType = info.getIsLocHandlerType();
+            int locHdType = info.getLocHandlerType();
             int readState = info.getReadState();
             int removeState = info.getRemoveState();
 
@@ -142,22 +137,23 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
                 Cursor cur = CallFilterUtils.getCursor(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, number);
                 if (cur != null) {
-                    int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
-                    int removeStateFlag = cur.getColumnIndex(CallFilterConstants.BLACK_REMOVE_STATE);
-                    int readStateColum = cur.getColumnIndex(CallFilterConstants.BLACK_READ_STATE);
-
-                    int locHdTypeFlag = cur.getInt(locHdTypeCom);
-                    int remove = cur.getInt(removeStateFlag);
-                    int readStateFlag = cur.getInt(readStateColum);
-
-                    boolean isKeyExist = cur.getCount() > 0 ? true : false;
-                    if (isKeyExist) {
-                        //本地标记类型
-                        if (locHdTypeFlag != locHdType) {
-                            value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
+                    boolean flag = false;
+                    while (cur.moveToFirst()) {
+                        int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
+                        int locHdTypeFlag = cur.getInt(locHdTypeCom);
+                        boolean isKeyExist = cur.getCount() > 0 ? true : false;
+                        if (isKeyExist) {
+                            //本地标记类型
+                            if (locHdTypeFlag != locHdType) {
+                                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
+                            }
+                            cr.update(CallFilterConstants.BLACK_LIST_URI, value, null, null);
+                        } else {
+                            cr.insert(uri, value);
                         }
-                        cr.update(CallFilterConstants.BLACK_LIST_URI, value, null, null);
-                    } else {
+                        flag = true;
+                    }
+                    if (!flag) {
                         cr.insert(uri, value);
                     }
                 } else {
@@ -957,13 +953,14 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public int getFilterUserNumber() {
-        return 0;
+        PreferenceTable pt = PreferenceTable.getInstance();
+        return pt.getInt(PrefConst.KEY_FILTER_USER, 0);
     }
 
     @Override
     public int getFilterTipFroUser() {
-
-        return 0;
+        PreferenceTable pt = PreferenceTable.getInstance();
+        return pt.getInt(PrefConst.KEY_FILTER_TIP_USER, 0);
     }
 
     @Override
@@ -1098,5 +1095,17 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     public void setSerBlackTipNum(int num) {
         PreferenceTable pt = PreferenceTable.getInstance();
         pt.putInt(PrefConst.KEY_BLACK_TIP, num);
+    }
+
+    @Override
+    public void setFilterTipFroUser(int number) {
+        PreferenceTable pt = PreferenceTable.getInstance();
+        pt.putInt(PrefConst.KEY_FILTER_TIP_USER, number);
+    }
+
+    @Override
+    public void setFilterUserNumber(int number) {
+        PreferenceTable pt = PreferenceTable.getInstance();
+        pt.putInt(PrefConst.KEY_FILTER_USER, number);
     }
 }
