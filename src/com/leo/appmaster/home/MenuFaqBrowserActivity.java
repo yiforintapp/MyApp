@@ -1,24 +1,10 @@
-package com.leo.appmaster.msgcenter;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+package com.leo.appmaster.home;
 
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,24 +13,29 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.msgcenter.MsgConsts;
+import com.leo.appmaster.msgcenter.MsgUtil;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseBrowserActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
         View.OnClickListener {
-    private static final String TAG = "MsgCenterBrowserActivity";
+    private static final String TAG = "MenuFaqBrowserActivity";
 
     private CommonToolbar mTitleBar;
-
     private String mTitle;
     private String mUrl;
     private String mLocalUrl;
@@ -53,15 +44,15 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     private boolean mVerifySuccess;
 
     /**
-     * 启动消息中心二级页面
+     * 启动FAQ页面
      *
      * @param context
      * @param title
      * @param url
-     * @param isUpdate 是否是更新日志
+     * @param isUpdate 是否是更新
      */
-    public static void startMsgCenterWeb(Context context, String title, String url, boolean isUpdate) {
-        Intent intent = new Intent(context, MsgCenterBrowserActivity.class);
+    public static void startMenuFaqWeb(Context context, String title, String url, boolean isUpdate) {
+        Intent intent = new Intent(context, MenuFaqBrowserActivity.class);
         intent.putExtra(MsgConsts.KEY_URL, url);
         intent.putExtra(MsgConsts.KEY_TITLE, title);
         intent.putExtra(MsgConsts.KEY_UPDATE, isUpdate);
@@ -74,10 +65,9 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mc_browser);
+        setContentView(R.layout.activity_faq_browser);
 
         mUrl = getIntent().getStringExtra(MsgConsts.KEY_URL);
-        LeoLog.d("testUri","mUrl:"+mUrl);
         if (TextUtils.isEmpty(mUrl)) {
             finish();
             return;
@@ -96,23 +86,25 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             }
         });
 
-        if (mIsUpdate) {
-            // 更新日志从本地获取
-            String urlName = MsgCenterFetchJob.getFileName(mUrl) + ".html";
-            String path = MsgCenterFetchJob.getFilePath(urlName);
-            File file = new File(path);
-            if (file.exists()) {
-                mLocalUrl = "file:///" + path;
-                getWebView().loadUrl(mLocalUrl);
-                mTitleBar.setOptionMenuVisible(false);
-            } else {
-                getWebView().loadUrl(mUrl);
-                mTitleBar.setOptionMenuVisible(true);
-            }
-        } else {
-            getWebView().loadUrl(mUrl);
-            mTitleBar.setOptionMenuVisible(true);
-        }
+        //new
+        getWebView().loadUrl(mUrl);
+        mTitleBar.setOptionMenuVisible(true);
+//        else {
+//            //从本地获取
+//            String urlName = MsgCenterFetchJob.getFileName(mUrl) + ".html";
+//            String path = MsgCenterFetchJob.getFilePath(urlName);
+//            File file = new File(path);
+//            if (file.exists()) {
+//                mLocalUrl = "file:///" + path;
+//                getWebView().loadUrl(mLocalUrl);
+//                mTitleBar.setOptionMenuVisible(false);
+//            } else {
+//                getWebView().loadUrl(mUrl);
+//                mTitleBar.setOptionMenuVisible(true);
+//            }
+//        }
+
+
         LeoLog.i(TAG, "url : " + mUrl);
         verifyUrl(mUrl);
     }
@@ -134,17 +126,17 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
 
     @Override
     protected WebView getWebView() {
-        return (WebView) findViewById(R.id.mc_browser_web);
+        return (WebView) findViewById(R.id.faq_browser_web);
     }
 
     @Override
     protected ProgressBar getLoadingView() {
-        return (ProgressBar) findViewById(R.id.mc_progress);
+        return (ProgressBar) findViewById(R.id.faq_progress);
     }
 
     @Override
     protected View getErrorView() {
-        return findViewById(R.id.mc_error_ll);
+        return findViewById(R.id.faq_error_ll);
     }
 
     @Override
@@ -154,7 +146,6 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 finish();
                 break;
             case R.id.tv_option_image:
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "upd", "upd_cnts");
                 mWebView.reload();
                 break;
         }
