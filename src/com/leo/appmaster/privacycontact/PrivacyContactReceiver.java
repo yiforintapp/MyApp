@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.CallLog;
+import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
@@ -25,13 +27,18 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFIlterUIHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -47,7 +54,9 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
     private long mSendDate;
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
-
+    private CallFilterContextManager mCFCManager ;
+    private long mLastOffHookTime = 0;
+    
     public PrivacyContactReceiver() {
     }
 
@@ -72,9 +81,9 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
             PrivacyContactManager.getInstance(mContext).testValue = true;
-//            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
-//                return;
-//            }
+            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+                return;
+            }
             // Crash from feedback
             try {
                 Bundle bundle = intent.getExtras();
@@ -138,12 +147,40 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
 
             }
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
+            //数据初始化和准备
+            TelephonyManager tm = (TelephonyManager)context.getSystemService(Service.TELEPHONY_SERVICE);     
+            final String phoneNumber =intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+            mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            //定义接听状态的监听
+            PhoneStateListener listener=new PhoneStateListener() {
+                @Override
+                public void onCallStateChanged(int state, String incomingNumber) {
+                    super.onCallStateChanged(state, incomingNumber);
+                    switch(state){  
+                        case TelephonyManager.CALL_STATE_IDLE:  
+                            //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
+                            if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
+                                LeoLog.i("temp", System.currentTimeMillis() - mLastOffHookTime + " vs max :" + mCFCManager.getCallDurationMax());
+                                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance()).show();
+                            }
+                                break;  
+                        case TelephonyManager.CALL_STATE_OFFHOOK:  
+                            mLastOffHookTime = System.currentTimeMillis(); 
+                                break;  
+                        case TelephonyManager.CALL_STATE_RINGING:  
+                                break;  
+                        }  
+                }
+            };
+            tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);  
+            
+            
+            
             PrivacyContactManager.getInstance(mContext).testValue = true;
             // 获取来电号码
-            final String phoneNumber =
-                    intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+            
             // 没有隐私联系人时直接结束
-            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0 && mCFCManager.getBlackListCount() == 0) {
                 return;
             }
             // 获取当前时间
@@ -158,6 +195,9 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                 ContactBean privacyConatact = PrivacyContactManager.getInstance(mContext).getPrivateMessage(formateNumber, mContext);
                 PrivacyContactManager.getInstance(mContext).setLastCall(privacyConatact);
                 if (cb != null) {
+                    
+                    LeoLog.i("temp", "ys");
+                    
                     String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
                     if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
                         // 先静音处理
@@ -182,7 +222,26 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                             mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                         }
                     }
+                } else {
+                    //TODO PH
+                    LeoLog.i("temp", "lj");
+                    //不是隐私联系人，判断是否黑名单，是则挂断
+                    int[] callFilterTip = mCFCManager.isCallFilterTip(phoneNumber);
+                    if (callFilterTip[0] == 1) {
+                        try {
+                            mITelephony.endCall();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                        CallFIlterUIHelper.getInstance().showReceiveCallNotification();
+                    } else  {
+                        
+//                        List<BlackListInfo> serBlackList = mCFCManager.gets
+                        
+                    }
+                    
                 }
+                
             }
         } else if (PrivacyContactUtils.SENT_SMS_ACTION.equals(action)) {
             switch (getResultCode()) {

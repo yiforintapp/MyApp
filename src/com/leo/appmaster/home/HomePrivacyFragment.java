@@ -2,6 +2,7 @@ package com.leo.appmaster.home;
 
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,12 +11,19 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
+import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.SecurityScoreEvent;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -627,13 +635,52 @@ public class HomePrivacyFragment extends Fragment {
     //TODO PH
     public void tryPlayFullScoreAnim() {
         if (mCurrentScore != 100) {
-            LeoLog.i(TAG, "play full score");
-            HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
-            float shieldScale = shieldLayer.getShieldScale();
-            PropertyValuesHolder v1 = PropertyValuesHolder.ofFloat("shieldScaleRatio", shieldScale, 1.5f * shieldScale, shieldScale);
-            final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(mHomeAnimView, v1);
-            animatorI.setDuration(2000);
-            animatorI.start();
+//            LeoLog.i(TAG, "play full score");
+//            HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+//            float shieldScale = shieldLayer.getShieldScale();
+//            PropertyValuesHolder v1 = PropertyValuesHolder.ofFloat("shieldScaleRatio", shieldScale, 1.5f * shieldScale, shieldScale);
+//            final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(mHomeAnimView, v1);
+//            animatorI.setDuration(2000);
+//            animatorI.start();
+            
+//            int left = mHomeAnimView.getShieldLayer().getLeft();
+//            int top = mHomeAnimView.getShieldLayer().getTop();
+//            ViewParent parent = mHomeAnimView.getParent();
+//            final TextView tt = new TextView(mActivity);
+//            tt.setHeight(70);
+//            tt.setWidth(70);
+//            tt.setBackgroundColor(Color.BLACK);
+//            final WindowManager windowManager = mActivity.getWindowManager();
+//            windowManager.addView(tt, new WindowManager.LayoutParams());
+//            ThreeDimensionalRotationAnimation ra = new ThreeDimensionalRotationAnimation(0, 360, 35, 35, 50, false);
+//            ra.setDuration(1500);
+//            ra.setAnimationListener(new AnimationListener() {
+//                
+//                @Override
+//                public void onAnimationStart(Animation animation) {
+//                    // TODO Auto-generated method stub
+//                    
+//                }
+//                
+//                @Override
+//                public void onAnimationRepeat(Animation animation) {
+//                    // TODO Auto-generated method stub
+//                    
+//                }
+//                
+//                @Override
+//                public void onAnimationEnd(Animation animation) {
+//                    // TODO Auto-generated method stub
+//                    windowManager.removeView(tt);
+//                }
+//            });
+//            tt.startAnimation(ra);
+            
+//            HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+//            ThreeDimensionalRotationAnimation ra = new ThreeDimensionalRotationAnimation(0, 360, mHomeAnimView.getWidth() / 2, mHomeAnimView.getHeight() /2, 0, false);
+//            ra.setDuration(1500);
+//            mHomeAnimView.startAnimation(ra);
+            
         }
     }
 
