@@ -41,17 +41,21 @@ public class CallFIlterUIHelper {
         dialog.setNeedCheckbox(false);
         dialog.setTitle(title);
         dialog.setTitleGravity(Gravity.CENTER);
+        dialog.setCanceledOnTouchOutside(true);
         dialog.setItemsWithDefaultStyle(list, 0);
         return dialog;
     }
 
-    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title, Context context) {
+    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title, Context context,
+                                                                         boolean isContentShow) {
         MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
         dialog.setTitle(title);
+        dialog.setContentVisible(isContentShow);
         dialog.setContent(context.getResources().getString(R.string.call_filter_ask_add_to_blacklist));
         String[] itemContent = {context.getResources().getString(R.string.call_filter_mark_as_sr),
                 context.getResources().getString(R.string.call_filter_mark_as_tx),
                 context.getResources().getString(R.string.call_filter_mark_as_zp)};
+        dialog.setCanceledOnTouchOutside(true);
         dialog.fillData(itemContent, 0);
         return dialog;
     }
@@ -81,17 +85,17 @@ public class CallFIlterUIHelper {
     public void showReceiveCallNotification() {
         AppMasterApplication ama = AppMasterApplication.getInstance();
         Intent intent = new Intent(ama, IntruderprotectionActivity.class);
-        PendingIntent pendingIntent= PendingIntent.getActivity(ama, 1, intent, Notification.FLAG_AUTO_CANCEL);
-        NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);  
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);  
+        PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, Notification.FLAG_AUTO_CANCEL);
+        NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
         mBuilder.setContentTitle("拦截到以下来电")
-        .setContentText("13510261550")
-        .setContentIntent(pendingIntent)
-        .setTicker("拦截到以下来电")
-        .setWhen(System.currentTimeMillis())  
-        .setPriority(Notification.PRIORITY_DEFAULT)
-        .setAutoCancel(true)
-        .setSmallIcon(R.drawable.ic_launcher);
+                .setContentText("13510261550")
+                .setContentIntent(pendingIntent)
+                .setTicker("拦截到以下来电")
+                .setWhen(System.currentTimeMillis())
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_launcher);
         mNotificationManager.notify(1, mBuilder.build());
     }
 

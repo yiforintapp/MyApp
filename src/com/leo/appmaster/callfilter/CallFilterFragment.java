@@ -16,6 +16,7 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
+import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
@@ -143,7 +144,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
         if (mFilterList.size() > 0) {
             CallFilterInfo info = mFilterList.get(i);
             final LEOChoiceDialog dialog = CallFIlterUIHelper.getInstance().
@@ -152,12 +153,66 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     LeoLog.d("testPosition", "position : " + position);
-                    dialog.dismiss();
+
+                    if (position == 0) {
+                        deleteFilter(i);
+                        dialog.dismiss();
+                    } else if (position == 1) {
+                        removeBlackList(i);
+                        dialog.dismiss();
+                    } else if (position == 2) {
+                        dialog.dismiss();
+                        showChoiseDialog(i);
+                    }
+
                 }
             });
             dialog.show();
 
         }
         return false;
+    }
+
+    private void showChoiseDialog(int i) {
+        String title;
+        if (Utilities.isEmpty(mFilterList.get(i).getNumberName())) {
+            title = mFilterList.get(i).getNumber();
+        } else {
+            title = mFilterList.get(i).getNumberName();
+        }
+
+        MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
+                getCallHandleDialogWithSummary(title, mActivity, false);
+        dialog.show();
+    }
+
+
+    private void removeBlackList(int position) {
+        //remove Filter
+        List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
+        CallFilterInfo infoFilter = mFilterList.get(position);
+        removeFilterList.add(infoFilter);
+        mCallManger.removeFilterGr(removeFilterList);
+
+        //remove BlackList
+        List<BlackListInfo> removeBlacklist = new ArrayList<BlackListInfo>();
+        BlackListInfo infoBlack = new BlackListInfo();
+        infoBlack.setNumber(infoFilter.getNumber());
+        removeBlacklist.add(infoBlack);
+        mCallManger.removeBlackList(removeBlacklist);
+
+
+        mFilterList.remove(position);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void deleteFilter(int position) {
+        List<CallFilterInfo> removeList = new ArrayList<CallFilterInfo>();
+        CallFilterInfo info = mFilterList.get(position);
+        removeList.add(info);
+        mCallManger.removeFilterGr(removeList);
+
+        mFilterList.remove(position);
+        mAdapter.notifyDataSetChanged();
     }
 }

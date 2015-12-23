@@ -60,6 +60,16 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
         }
     }
 
+    public void setContentVisible(boolean visible) {
+        if (mSummary != null) {
+            if (visible) {
+                mSummary.setVisibility(View.VISIBLE);
+            } else {
+                mSummary.setVisibility(View.GONE);
+            }
+        }
+    }
+
     public void setContentVisiable(boolean visiable) {
         if (visiable) {
             mSummary.setVisibility(View.VISIBLE);
@@ -170,7 +180,7 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
                     convertView = getLayoutInflater().inflate(R.layout.traffic_day_list, parent, false);
-                } 
+                }
                 TextView tvContent = (TextView) convertView.findViewById(R.id.tv_showday);
                 ImageView ivCheckBox = (ImageView) convertView.findViewById(R.id.iv_showday);
                 tvContent.setText(itemContent[position]);
@@ -181,24 +191,24 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
                 }
                 return convertView;
             }
-            
+
             @Override
             public long getItemId(int position) {
                 return 0;
             }
-            
+
             @Override
             public Object getItem(int position) {
                 return null;
             }
-            
+
             @Override
             public int getCount() {
                 return itemContent.length;
             }
         });
     }
-    
+
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_multichoices_with_summary, null);
@@ -238,7 +248,7 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
         }
     }
 
-    
+
     public void setOnClickListener(OnDiaogClickListener listener) {
         mListener = listener;
     }
