@@ -70,6 +70,9 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
             holder = (BlackListHolder) convertView.getTag();
         }
 
+        RippleView view = (RippleView) convertView;
+        view.setNeedLongClick(true);
+
         CallFilterInfo info = mList.get(i);
         String numberName = info.numberName;
         String number = info.number;

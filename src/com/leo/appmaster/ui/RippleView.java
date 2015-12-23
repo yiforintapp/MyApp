@@ -213,31 +213,41 @@ public class RippleView extends RelativeLayout {
                 case MotionEvent.ACTION_UP:
 
                     if (isCanClick) {
-                        LeoLog.d("testRippleClick", "can click");
-                        pendingClickEvent = new PerformClickEvent();
+                        if (longClickDone && needLongClick) {
 
-                        if (prepressed) {
-                            childView.setPressed(true);
-                            postDelayed(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            childView.setPressed(false);
-                                        }
-                                    }, ViewConfiguration.getPressedStateDuration());
-                        }
+                            startRipple(null);
+                            cancelPressedEvent();
 
-                        if (isEventInBounds) {
-                            startRipple(pendingClickEvent);
-                        } else if (!rippleHover) {
-                            setRadius(0);
+                            isClickAlready = false;
+                            isCanClick = false;
+                            longClickDone = false;
+
+                        } else {
+                            pendingClickEvent = new PerformClickEvent();
+
+                            if (prepressed) {
+                                childView.setPressed(true);
+                                postDelayed(
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                childView.setPressed(false);
+                                            }
+                                        }, ViewConfiguration.getPressedStateDuration());
+                            }
+
+                            if (isEventInBounds) {
+                                startRipple(pendingClickEvent);
+                            } else if (!rippleHover) {
+                                setRadius(0);
+                            }
+                            if (!rippleDelayClick && isEventInBounds) {
+                                LeoLog.d("testRippleClick", "is click right now");
+                                pendingClickEvent.run();
+                            }
+                            cancelPressedEvent();
+                            isCanClick = false;
                         }
-                        if (!rippleDelayClick && isEventInBounds) {
-                            LeoLog.d("testRippleClick", "is click right now");
-                            pendingClickEvent.run();
-                        }
-                        cancelPressedEvent();
-                        isCanClick = false;
                     }
 
 
@@ -287,6 +297,7 @@ public class RippleView extends RelativeLayout {
                     cancelPressedEvent();
                     isClickAlready = false;
                     isCanClick = false;
+                    longClickDone = false;
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if (rippleHover) {
@@ -307,6 +318,7 @@ public class RippleView extends RelativeLayout {
 
                         isClickAlready = false;
                         isCanClick = false;
+                        longClickDone = false;
                     }
                     break;
             }
@@ -321,9 +333,11 @@ public class RippleView extends RelativeLayout {
         }
     }
 
+    private boolean longClickDone = false;
     private SimpleOnGestureListener longClickListener = new SimpleOnGestureListener() {
         public void onLongPress(MotionEvent e) {
             childView.performLongClick();
+            longClickDone = true;
         }
     };
 
@@ -593,6 +607,11 @@ public class RippleView extends RelativeLayout {
         this.rippleAlpha = alpha;
         paint.setAlpha(alpha);
         invalidate();
+    }
+
+    private boolean needLongClick = false;
+    public void setNeedLongClick(boolean isNeedLongClick) {
+        needLongClick = isNeedLongClick;
     }
 
     /*
