@@ -261,6 +261,13 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
+            android:name=".home.MenuFaqBrowserActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
             android:name=".applocker.LockModeActivity"
             android:excludeFromRecents="true"
             android:exported="true"

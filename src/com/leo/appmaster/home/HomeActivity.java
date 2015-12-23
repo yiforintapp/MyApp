@@ -61,6 +61,7 @@ import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.msgcenter.MsgCenterBrowserActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
@@ -901,6 +902,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         /* 吐个槽 */
         listItems.add(new MenuItem(resources.getString(R.string.feedback),
                 R.drawable.menu_feedbacks_icon, false));
+        /* 常见问题 */
+        listItems.add(new MenuItem(resources.getString(R.string.menu_left_item_problem),
+                R.drawable.theme_icon_black, false));
         /* 检查升级 */
         if (SDKWrapper.isUpdateAvailable()) {
             listItems.add(new MenuItem(resources.getString(R.string.app_setting_update),
@@ -1127,18 +1131,21 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent = new Intent(HomeActivity.this,
                             FeedbackActivity.class);
                     startActivity(intent);
-                } else if (position == 6) {
+                } else if (position == 7) {
                     /* 卸载 */
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "uninstall");
                     unistallPG();
                 } else if (position == 4) {
+                    /* 常见问题 */
+                    menuFaqJump();
+                } else if (position == 5) {
                     /* 检查更新 */
 
                     /* sdk mark */
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
                             "update");
                     SDKWrapper.checkUpdate();
-                } else if (position == 5) {
+                } else if (position == 6) {
                     /* 关于 */
                     /* sdk mark */
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "about");
@@ -1148,6 +1155,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 }
             }
         }, 200);
+    }
+
+    private void menuFaqJump() {
+        String faqtitle = getString(R.string.menu_left_item_problem);
+        String url = "http://api.leomaster.com/appmaster/faq/cn/60/en.html";
+        //load local html or load new , judg the network
+        boolean isNeedLoad = true;
+        MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, isNeedLoad);
     }
 
     /* 卸载 PG */
@@ -1336,7 +1351,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
             MaterialRippleLayout layout = (MaterialRippleLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
             TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
-                tv.setTextColor(mMenuTextColorId);
+            tv.setTextColor(mMenuTextColorId);
             ImageView redTip = (ImageView) layout.findViewById(R.id.update_red_tip);
             /* some item not HTML styled text, such as "check update" item */
             tv.setText(Html.fromHtml(items.get(arg0).itemName));
@@ -1357,15 +1372,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                         getResources().getDrawable(items.get(arg0).iconId), null, null, null);
             }
 
-//            if (layout instanceof LinearRippleView) {
-//                ((LinearRippleView) layout).setOnRippleCompleteListener(new LinearRippleView.OnRippleCompleteListener() {
-//                    @Override
-//                    public void onRippleComplete(LinearRippleView rippleView) {
-//
-//                    }
-//                });
-
-//            }
             return layout;
         }
 

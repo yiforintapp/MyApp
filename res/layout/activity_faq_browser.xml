@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.leo.appmaster.msgcenter.MsgCenterBrowserActivity">
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/layout_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/cb" />
+
+    <WebView
+        android:id="@+id/faq_browser_web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title_bar"
+        android:overScrollMode="never" />
+
+    <LinearLayout
+        android:id="@+id/faq_error_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title_bar"
+        android:background="@color/ms_error_bg"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="127dp"
+            android:src="@drawable/ic_load_fail" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:gravity="center_horizontal"
+            android:text="@string/msg_center_load_fail"
+            android:textColor="@color/mc_empty_tips"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/faq_progress"
+        style="@style/ProgressBar_webview"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/layout_title_bar"
+        android:max="100"
+        android:visibility="gone" />
+
+</RelativeLayout>
