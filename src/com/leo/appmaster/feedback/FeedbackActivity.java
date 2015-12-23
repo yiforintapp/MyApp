@@ -38,6 +38,7 @@ import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.Utilities;
 
 public class FeedbackActivity extends BaseActivity implements OnClickListener,
@@ -307,7 +308,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             int version = PhoneInfo.getVersionCode(this);
             String language = DeviceUtil.getLanguage();
 
-            String url = Constants.FAR_REQUEST + "/"
+            String url = LeoUrls.FAR_REQUEST + "/"
                     + country + "/" + version + "/" + language + ".html";
             LeoLog.d("testFaq", "url : " + url);
 

@@ -11,4 +11,7 @@ public class LeoUrls {
     public static final String PATH_FEEDBACK = "/appmaster/feedbackimage";
 
     public static final String URL_FEEDBACK = HTTP + DOMAIN_FEEDBACK_PREFIX + DOMAIN + PATH_FEEDBACK;
+
+    //FAQ
+    public static final String FAR_REQUEST = "http://api.leomaster.com/appmaster/faq";
 }

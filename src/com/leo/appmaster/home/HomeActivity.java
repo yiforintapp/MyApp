@@ -80,6 +80,7 @@ import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
@@ -1167,7 +1168,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         int version = PhoneInfo.getVersionCode(this);
         String language = DeviceUtil.getLanguage();
 
-        String url = Constants.FAR_REQUEST + "/"
+        String url = LeoUrls.FAR_REQUEST + "/"
                 + country + "/" + version + "/" + language + ".html";
         LeoLog.d("testFaq", "url : " + url);
 

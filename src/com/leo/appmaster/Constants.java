@@ -436,7 +436,5 @@ public class Constants {
     public static final String PATTERN_DATE = "yyyy/MM/dd HH:mm:ss";
 
 
-    //FAQ
-    public static final String FAR_REQUEST = "http://api.leomaster.com/appmaster/faq";
 
 }
