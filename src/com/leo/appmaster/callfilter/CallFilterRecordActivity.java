@@ -18,6 +18,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
+import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.Utilities;
 
 public class CallFilterRecordActivity extends BaseActivity implements OnClickListener {
@@ -98,6 +99,19 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 break;
             case R.id.remove_black_list:
                 showRemoveDialog();
+                break;
+            case R.id.mark_number:
+
+                String title;
+                if (Utilities.isEmpty(info.getNumberName())) {
+                    title = info.getNumber();
+                } else {
+                    title = info.getNumberName();
+                }
+                MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
+                        getCallHandleDialogWithSummary(title, this, false);
+                dialog.show();
+
                 break;
             default:
                 break;
