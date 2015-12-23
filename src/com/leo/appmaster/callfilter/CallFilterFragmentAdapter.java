@@ -73,13 +73,35 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         CallFilterInfo info = mList.get(i);
         String numberName = info.numberName;
         String number = info.number;
+        int filterType = info.filterType;
+        String numberLocal = info.numberType;
 
-        if (Utilities.isEmpty(numberName)) {
-            holder.title.setText("Name");
+        if (filterType == 0) {
+            if (Utilities.isEmpty(numberLocal)) {
+                if (Utilities.isEmpty(numberName)) {
+                    holder.title.setText(number);
+                } else {
+                    holder.title.setText(numberName);
+                }
+                holder.desc.setText(number);
+            } else {
+                holder.title.setText(number);
+                holder.desc.setText(numberLocal);
+            }
         } else {
-            holder.title.setText(numberName);
+            String string;
+            if (filterType == 1) {
+                string = mContext.getString(R.string.filter_number_type_saorao);
+            } else if (filterType == 2) {
+                string = mContext.getString(R.string.filter_number_type_ad);
+            } else {
+                string = mContext.getString(R.string.filter_number_type_zhapian);
+            }
+            holder.title.setText(string);
+            holder.desc.setText(number);
         }
-        holder.desc.setText(number);
+
+
         return convertView;
     }
 
@@ -90,7 +112,7 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         TextView desc;
     }
 
-    public void setData(ArrayList<CallFilterInfo> infoList) {
+    public void setData(List<CallFilterInfo> infoList) {
         mList = infoList;
         if (mList.size() < 1) {
             CallFilterMainActivity callFilterMainActivity =

@@ -14,10 +14,13 @@ import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CallFilterMainActivity extends BaseFragmentActivity implements OnClickListener,
@@ -124,6 +127,9 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         BaseFragment fragment;
     }
 
+    protected CallFilterContextManager mCallManger =
+            (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -133,6 +139,31 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
             case R.id.ct_option_1_rl:
                 Intent intent = new Intent(this, CallFilterSettingActivity.class);
                 startActivity(intent);
+
+                List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
+                for (int i = 0; i < 8; i++) {
+                    CallFilterInfo info = new CallFilterInfo();
+                    info.setNumber("254687965" + "" + i);
+                    if (i == 0) {
+                        info.setNumberName("nickyWang");
+                    } else if (i == 1) {
+                        info.setNumberName("nickyWang");
+                        info.setNumberType("中国移动");
+                    } else if (i == 2) {
+                        info.setNumberName("nickyWang");
+                        info.setFilterType(1);
+                    } else if (i == 3) {
+                        info.setNumberName("nickyWang");
+                        info.setFilterType(2);
+                    } else if (i == 4) {
+                        info.setNumberType("中国移动");
+                    } else if (i == 5) {
+                        info.setNumberType("中国移动");
+                        info.setFilterType(3);
+                    }
+                    list.add(info);
+                }
+                mCallManger.addFilterDet(list,false);
                 break;
         }
     }

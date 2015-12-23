@@ -20,6 +20,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CallFilterFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
@@ -28,16 +29,8 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     private RippleView mClearAll;
     private ProgressBar mProgressBar;
     private CallFilterFragmentAdapter mAdapter;
-    private ArrayList<CallFilterInfo> mFilterList;
+    private List<CallFilterInfo> mFilterList;
     private boolean isFristIn = true;
-    private String[] mStringName = new String[]{
-            "nameA_13632840685",
-            "_15466879846",
-            "nameC_13665432165",
-            "_15444688987",
-            "nameE_15925465487",
-            "nameF_15844546873"
-    };
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -54,6 +47,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         if (mFilterList.size() < 1) {
             showEmpty();
         } else {
+            mNothingToShowView.setVisibility(View.GONE);
             mCallListView.setVisibility(View.VISIBLE);
             mAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_CALL_FILTER);
             mAdapter.setData(mFilterList);
@@ -92,64 +86,13 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                //load
-                //TODO
-                mFilterList = getBlackListData();
+                mFilterList = mCallManger.getCallFilterGrList();
                 //load done
-                handler.sendEmptyMessageDelayed(CallFilterConstants.CALL_FILTER_LIST_LOAD_DONE,
-                        500);
-                LeoLog.d("testBlackList", "send!");
+                handler.sendEmptyMessage(CallFilterConstants.CALL_FILTER_LIST_LOAD_DONE);
             }
         });
     }
 
-    public ArrayList<CallFilterInfo> getBlackListData() {
-        ArrayList<CallFilterInfo> list;
-        String blackNums = PreferenceTable.getInstance().getString("blackList");
-        if (!Utilities.isEmpty(blackNums)) {
-            list = StringToList(blackNums);
-        } else {
-            String mLongStr = "";
-            for (int i = 0; i < mStringName.length; i++) {
-                String mStr = mStringName[i];
-                if (i == 0) {
-                    mLongStr = mStr;
-                } else {
-                    mLongStr = mLongStr + ":" + mStr;
-                }
-            }
-            LeoLog.d("testBlackList", "number : " + mLongStr);
-            PreferenceTable.getInstance().putString("blackList", mLongStr);
-            list = StringToList(mLongStr);
-        }
-        return list;
-    }
-
-    private ArrayList<CallFilterInfo> StringToList(String mStrings) {
-        ArrayList<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
-        String[] strings = mStrings.split(":");
-        for (int i = 0; i < strings.length; i++) {
-            CallFilterInfo info = new CallFilterInfo();
-            info.numberName = getNumberName(i, strings);
-            LeoLog.d("testBlackList", "numberName : " + info.numberName);
-            info.number = getNumber(i, strings);
-            LeoLog.d("testBlackList", "number : " + info.number);
-            list.add(info);
-        }
-        return list;
-    }
-
-    private String getNumberName(int i, String[] strings) {
-        String mStr = strings[i];
-        String name = mStr.split("_")[0];
-        return name;
-    }
-
-    private String getNumber(int i, String[] strings) {
-        String mStr = strings[i];
-        String number = mStr.split("_")[1];
-        return number;
-    }
 
     @Override
     public void onDestroy() {
@@ -169,7 +112,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clear_all:
-                clearAll();
+                if (mFilterList.size() > 0) {
+                    clearAll();
+                }
                 break;
         }
     }
@@ -180,7 +125,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         dialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                PreferenceTable.getInstance().putString("blackList", "");
+
+                mCallManger.removeFilterGr(mFilterList);
+
                 mFilterList.clear();
                 mAdapter.setData(mFilterList);
                 dialog.dismiss();
@@ -200,7 +147,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         if (mFilterList.size() > 0) {
             CallFilterInfo info = mFilterList.get(i);
             final LEOChoiceDialog dialog = CallFIlterUIHelper.getInstance().
-                    getCallHandleDialog(info.number, mActivity);
+                    getCallHandleDialog(info.numberName, mActivity);
             dialog.getItemsListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
