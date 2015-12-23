@@ -1,24 +1,10 @@
 package com.leo.appmaster.msgcenter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,17 +13,21 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseBrowserActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         View.OnClickListener {
