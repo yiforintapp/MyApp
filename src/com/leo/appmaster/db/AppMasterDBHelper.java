@@ -246,11 +246,9 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
     /*骚扰拦截*/
     private void execSQLForFilter(SQLiteDatabase db) {
         db.execSQL(CallFilterConstants.CREATE_BLACK_LIST_TAB);
-//        db.execSQL(CallFilterConstants.CREATE_MARKER_NUMBER_TAB);
         db.execSQL(CallFilterConstants.CREATE_FILTER_GR_TAB);
         db.execSQL(CallFilterConstants.CREATE_FILTER_DET_TAB);
-        db.execSQL(CallFilterConstants.CREATE_STRANGER_GROUP_TAB);
-        db.execSQL(CallFilterConstants.CREATE_STRANGER_DET_TAB);
+        db.execSQL(CallFilterConstants.CREATE_STRANGER_TP_TAB);
     }
 
     @Override

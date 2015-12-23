@@ -16,7 +16,7 @@ public class CallFilterConstants {
     public final static String FROMWHERE = "from_where";
     public final static String FROM_BLACK_LIST = "from_black_list";
 
-    public final static int BLACK_LIST_LOAD_DONE = 101;
+    public final static int BLACK_LIST_LOAD_DONE = 01;
     public final static int CALL_FILTER_LIST_LOAD_DONE = 102;
     public final static String ADAPTER_FLAG_BLACK_LIST = "black_list_adapter";
     public final static String ADAPTER_FLAG_CALL_FILTER = "call_filter_adapter";
@@ -29,12 +29,8 @@ public class CallFilterConstants {
     public static final String FILTER_GROUP_TAB = "filter_group";
     /*拦截详细表*/
     public static final String FILTER_DETAIL_TAB = "filter_detail";
-    /*陌生人分组表*/
-    public static final String STRANGER_GROUP_TAB = "stranger_group";
-    /*陌生人详细表*/
-    public static final String STRANGER_DETAIL_TAB = "stranger_detail";
-    /*服务端黑名单*/
-    public static final String SER_BLACK_TAB = "ser_black_list";
+    /*陌生人提示标记表*/
+    public static final String STRANGER_TP_TAB = "stranger_tp";
 
     public static final Uri BLACK_LIST_URI = Uri.parse("content://" + Constants.AUTHORITY
             + "/" + BLACK_LIST_TAB);
@@ -42,12 +38,8 @@ public class CallFilterConstants {
             + "/" + FILTER_GROUP_TAB);
     public static final Uri FILTER_DETAIL_URI = Uri.parse("content://" + Constants.AUTHORITY
             + "/" + FILTER_DETAIL_TAB);
-    public static final Uri STRANGER_GROUP_URI = Uri.parse("content://" + Constants.AUTHORITY
-            + "/" + STRANGER_GROUP_TAB);
-    public static final Uri STRANGER_DETAIL_URI = Uri.parse("content://" + Constants.AUTHORITY
-            + "/" + STRANGER_DETAIL_TAB);
-    public static final Uri SER_BLACK_URI = Uri.parse("content://" + Constants.AUTHORITY
-            + "/" + SER_BLACK_TAB);
+    public static final Uri STRANGER_TP_URI = Uri.parse("content://" + Constants.AUTHORITY
+            + "/" + STRANGER_TP_TAB);
 
     /**
      * 创建黑名单表
@@ -62,8 +54,21 @@ public class CallFilterConstants {
     public static final String MARKER_TYPE = "marker_type";
     public static final String MARKER_NUMBER = "marker_number";
     public static final String BLACK_UPLOAD_STATE = "upload_state";
-    public static final String BLACK_REMOVE_STATE = "remove_state";
     public static final String BLACK_READ_STATE = "read_state";
+    /**
+     * 本地是否处理
+     * 0：未处理
+     * 1：已处理
+     */
+    public static final String BLACK_LOC_HD = "loc_hd";
+    /**
+     * 本地处理类型
+     * 0：黑名单
+     * 1：骚扰电话
+     * 2：广告推销
+     * 3：诈骗电话
+     */
+    public static final String BLACK_LOC_HD_TYPE = "loc_hd_type";
     public static final String BLACK_OTHER_FLAG = "other_flag";
 
     public static final String CREATE_BLACK_LIST_TAB = "CREATE TABLE IF NOT EXISTS "
@@ -87,7 +92,9 @@ public class CallFilterConstants {
             + " INTEGER,"
             + BLACK_UPLOAD_STATE
             + " INTEGER,"
-            + BLACK_REMOVE_STATE
+            + BLACK_LOC_HD
+            + " INTEGER,"
+            + BLACK_LOC_HD_TYPE
             + " INTEGER,"
             + BLACK_READ_STATE
             + " INTEGER,"
@@ -186,82 +193,28 @@ public class CallFilterConstants {
             + ");";
 
     /**
-     * 创建陌生人分组表
+     * 创建陌生人表
      */
      /*陌生人分组表字段*/
     public static final String STR_GR_ID = "_id";
-    public static final String STR_GR_PHO_NUM = "phone_number";
-    public static final String STR_GR_NUM_AREA = "number_area";
-    public static final String STR_GR_CALL_DURATION = "call_duration";
-    public static final String STR_GR_CALL_DATE = "call_date";
-    public static final String STR_GR_CALL_TYPE = "call_type";
-    public static final String STR_GR_NUMBER = "stranger_number";
-    public static final String STR_GR_TIP_STATE = "tip_state";
-    public static final String STR_GR_REMOVE_STATE = "remove_state";
-    public static final String STR_GR_READ_STATE = "read_state";
-    public static final String STR_GR_OTHER = "other";
+    public static final String STR_TP_NUM = "phone_number";
+    public static final String STR_TP_STATE = "tp_state";
+    public static final String STR_TP_DATE = "tp_date";
+    public static final String STR_TP_TYPE = "tp_type";
 
-    public static final String CREATE_STRANGER_GROUP_TAB = "CREATE TABLE IF NOT EXISTS "
-            + STRANGER_GROUP_TAB
+    public static final String CREATE_STRANGER_TP_TAB = "CREATE TABLE IF NOT EXISTS "
+            + STRANGER_TP_TAB
             + " ( "
             + STR_GR_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + STR_GR_NUM_AREA
+            + STR_TP_NUM
             + " TEXT,"
-            + STR_GR_PHO_NUM
-            + " TEXT,"
-            + STR_GR_CALL_DATE
+            + STR_TP_STATE
             + " INTEGER,"
-            + STR_GR_CALL_DURATION
+            + STR_TP_DATE
             + " INTEGER,"
-            + STR_GR_CALL_TYPE
-            + " INTEGER,"
-            + STR_GR_NUMBER
-            + " INTEGER,"
-            + STR_GR_TIP_STATE
-            + " INTEGER,"
-            + STR_GR_REMOVE_STATE
-            + " INTEGER,"
-            + STR_GR_READ_STATE
-            + " INTEGER,"
-            + STR_GR_OTHER
-            + " TEXT"
-            + ");";
-    /**
-     * 创建陌生人详情表
-     */
-     /*陌生人详情表字段*/
-    public static final String STR_DET_ID = "_id";
-    public static final String STR_DET_PHO_NUM = "phone_number";
-    public static final String STR_DET_TO_GR_ID = "str_gr_id";
-    public static final String STR_DET_NUM_AREA = "number_area";
-    public static final String STR_DET_CALL_DURATION = "call_duration";
-    public static final String STR_DET_CALL_DATE = "call_date";
-    public static final String STR_DET_CALL_TYPE = "call_type";
-    public static final String STR_DET_READ_STATE = "read_state";
-    public static final String STR_DET_OHTER = "other";
-
-    public static final String CREATE_STRANGER_DET_TAB = "CREATE TABLE IF NOT EXISTS "
-            + STRANGER_DETAIL_TAB
-            + " ( "
-            + STR_DET_ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + STR_DET_NUM_AREA
-            + " TEXT,"
-            + STR_DET_PHO_NUM
-            + " TEXT,"
-            + STR_DET_TO_GR_ID
-            + " INTEGER,"
-            + STR_DET_CALL_DATE
-            + " INTEGER,"
-            + STR_DET_CALL_DURATION
-            + " INTEGER,"
-            + STR_DET_CALL_TYPE
-            + " INTEGER,"
-            + STR_DET_READ_STATE
-            + " INTEGER,"
-            + STR_DET_OHTER
-            + " TEXT"
+            + STR_TP_TYPE
+            + " INTEGER"
             + ");";
 
     /*没有标记类型，只是黑名单*/
@@ -295,40 +248,14 @@ public class CallFilterConstants {
     /*黑名单，标记弹窗，未提示*/
     public static final int FILTER_TIP_NO = 0;
 
-    /**
-     * 创建服务器下发的黑名单
-     */
-    /*服务器黑名单列表*/
-    public static final String SER_BLACK_ID = "_id";
-    public static final String SER_BLACK_NUMBER = "number";
-    public static final String SER_MARKER_TYPE = "marker_type";
-    public static final String SER_MARKER_COUNT = "marker_count";
-    public static final String SER_ADD_BLACK_COUNT = "add_black_count";
-    public static final String SER_EXIST_STATE = "exist_state";
-    public static final String CREATE_SER_BLACK_TAB = "CREATE TABLE IF NOT EXISTS "
-            + SER_BLACK_TAB
-            + " ( "
-            + SER_BLACK_ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + SER_BLACK_NUMBER
-            + " TEXT,"
-            + SER_MARKER_TYPE
-            + " INTEGER,"
-            + SER_MARKER_COUNT
-            + " INTEGER,"
-            + SER_ADD_BLACK_COUNT
-            + " INTEGER,"
-            + SER_EXIST_STATE
-            + " INTEGER"
-            + ");";
 
     /**
-     * 存在于本地黑名单
+     * 本地已处理
      */
-    public static final int EXIST_CLIENT = 1;
+    public static final int LOC_HD = 1;
     /**
-     * 不存在于本地黑名单
+     * 本地未处理
      */
-    public static final int NO_EXIST_CLIENT = 0;
+    public static final int NO_LOC_HD = 0;
 
 }

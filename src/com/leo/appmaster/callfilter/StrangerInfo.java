@@ -22,6 +22,7 @@ public class StrangerInfo {
     private int callType;
     private boolean removeState;
     private int strangeGrId;
+    private int tipType;
 
     public long getCallDuration() {
         return callDuration;
@@ -111,4 +112,11 @@ public class StrangerInfo {
         this.strangeGrId = strangeGrId;
     }
 
+    public int getTipType() {
+        return tipType;
+    }
+
+    public void setTipType(int tipType) {
+        this.tipType = tipType;
+    }
 }

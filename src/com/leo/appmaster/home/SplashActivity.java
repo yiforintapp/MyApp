@@ -82,7 +82,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
     /* 是否显示更多引导 */
     private boolean mIsShowGuide;
     /*是否从闪屏跳出到facebook，标志*/

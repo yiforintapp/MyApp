@@ -25,7 +25,8 @@ public class BlackListInfo {
      * 1：已上传
      */
     private boolean uploadState;
-    private boolean removeState;
+    private boolean locHandler;
+    private int isLocHandlerType;
     private boolean readState;
     /**
      *  服务器下发黑名单是否存在语本地黑名单
@@ -96,14 +97,21 @@ public class BlackListInfo {
         this.readState = readState;
     }
 
-    public boolean isRemoveState() {
-        return removeState;
+    public int getIsLocHandlerType() {
+        return isLocHandlerType;
     }
 
-    public void setRemoveState(boolean removeState) {
-        this.removeState = removeState;
+    public void setIsLocHandlerType(int isLocHandlerType) {
+        this.isLocHandlerType = isLocHandlerType;
     }
 
+    public boolean isLocHandler() {
+        return locHandler;
+    }
+
+    public void setLocHandler(boolean locHandler) {
+        this.locHandler = locHandler;
+    }
 
     public boolean isUploadState() {
         return uploadState;

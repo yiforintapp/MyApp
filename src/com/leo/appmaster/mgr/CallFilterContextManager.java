@@ -23,7 +23,7 @@ public abstract class CallFilterContextManager extends Manager {
     /*黑名单*/
 
     /**
-     * 查询黑名单列表
+     * 查询黑名单列表(本地添加的黑名单)
      *
      * @return
      */
@@ -102,11 +102,19 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract List<CallFilterInfo> getFilterDetList();
 
     /**
+     * 指定ID查询拦截详细列表
+     * @param griId
+     * @return
+     */
+    public abstract List<CallFilterInfo> getFilterDetListFroId(int griId);
+
+    /**
      * 查询拦截详细列表
      *
      * @return
      */
     public abstract int getFilterDetCount();
+
 
     /**
      * 增加拦截详情
@@ -157,39 +165,6 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract boolean removeStrangerGr(List<StrangerInfo> infos);
-
-    /*陌生人详细*/
-
-    /**
-     * 查询陌生人详细列表
-     *
-     * @return
-     */
-    public abstract List<StrangerInfo> getStrangerDetList();
-
-    /**
-     * 查询陌生人详细列表数量
-     *
-     * @return
-     */
-    public abstract int getStrangerDetCount();
-
-    /**
-     * 增加陌生人详细列表
-     *
-     * @param infos
-     * @param update
-     * @return
-     */
-    public abstract boolean addStrangerDet(List<StrangerInfo> infos, boolean update);
-
-    /**
-     * 删除陌生人详细列表
-     *
-     * @param infos
-     * @return
-     */
-    public abstract boolean removeStrangerDet(List<StrangerInfo> infos);
 
 
     /**
@@ -247,7 +222,7 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract int getFilterUserNumber();
 
     /**
-     * 后台下发黑名单列表
+     * 后台下发黑名单列表(本地未添加处理的黑名单)
      *
      * @return
      */

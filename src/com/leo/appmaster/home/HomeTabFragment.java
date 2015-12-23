@@ -42,7 +42,7 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
  */
 public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTabFragment";
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
 
     private ImageView mRedDot;
     // 首页4个tab
