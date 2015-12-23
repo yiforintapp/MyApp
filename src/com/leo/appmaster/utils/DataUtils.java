@@ -1,20 +1,14 @@
 
 package com.leo.appmaster.utils;
 
-import android.content.Context;
 import android.graphics.Color;
 
-import com.leo.appmaster.R;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.videohide.VideoItemBean;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashSet;
 import java.util.Iterator;
-
 import java.util.List;
 import java.util.Random;
 
@@ -92,16 +86,19 @@ public class DataUtils {
     /** 获得高危应用需要展示的应用 */
     public static String getThreeRandomAppName(List<AppItemInfo> list) {
         StringBuffer appName = new StringBuffer();
-        if (list.size() > 3) {
+        int theSize = list.size();
+        if (theSize == 0) {
+            return "";
+        } else if (theSize <= 3) {
+            for (AppItemInfo appItemInfo:list) {
+                appName.append(appItemInfo.packageName).append(",");
+            }
+        } else {
             HashSet<Integer> set = new HashSet<Integer>();
-            randomSet(list.size(), 3, set);
+            randomSet(theSize, 3, set);
             Iterator<Integer> iterator = set.iterator(); //迭代遍历
             while (iterator.hasNext()) {
                 appName.append(list.get(iterator.next()).label).append(",");
-            }
-        } else {
-            for (AppItemInfo appItemInfo:list) {
-                appName.append(appItemInfo.packageName).append(",");
             }
         }
 
