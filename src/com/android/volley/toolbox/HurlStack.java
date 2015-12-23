@@ -20,6 +20,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Request.Method;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
 import org.apache.http.Header;
@@ -154,6 +155,7 @@ public class HurlStack implements HttpStack {
         if (object.length() > 0) {
             String message = object.toString();
             String cryptMsg = CryptoUtils.encrypt(message);
+            LeoLog.i("CptoMsg", cryptMsg);
             connection.addRequestProperty("leo", cryptMsg);
         }
     }

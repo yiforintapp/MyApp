@@ -871,6 +871,13 @@
             android:excludeFromRecents="true"
             android:theme="@style/activity_theme"  >
         </activity>
+        <activity
+            android:name=".activity.DebugActivity"
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:theme="@style/activity_theme"  >
+        </activity>
     </application>
 
 </manifest>
