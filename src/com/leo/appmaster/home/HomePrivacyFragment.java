@@ -27,6 +27,7 @@ import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
 
 import java.lang.ref.WeakReference;
@@ -620,6 +621,19 @@ public class HomePrivacyFragment extends Fragment {
                     break;
             }
             super.handleMessage(msg);
+        }
+    }
+
+    //TODO PH
+    public void tryPlayFullScoreAnim() {
+        if (mCurrentScore != 100) {
+            LeoLog.i(TAG, "play full score");
+            HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+            float shieldScale = shieldLayer.getShieldScale();
+            PropertyValuesHolder v1 = PropertyValuesHolder.ofFloat("shieldScaleRatio", shieldScale, 1.5f * shieldScale, shieldScale);
+            final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(mHomeAnimView, v1);
+            animatorI.setDuration(2000);
+            animatorI.start();
         }
     }
 

@@ -61,7 +61,6 @@ public class HomeAnimView extends View {
         mShieldLayer = new HomeAnimShieldLayer(this);
         mLoadingLayer = new HomeAnimLoadingLayer(this);
         mStepLayer = new HomeAnimStepLayer(0, this);
-
         mPrivacyHelper = PrivacyHelper.getInstance(getContext());
     }
 

@@ -385,6 +385,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mPhotoList = photoItems;
         mVideoList = videoItemBeans;
 //        mAppScanText = appScanText;
+        mPrivacyFragment.tryPlayFullScoreAnim();
     }
 
     public void onExitScanning() {
