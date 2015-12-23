@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.db.PreferenceTable;
@@ -130,13 +131,24 @@ public class PrivacyContactInputActivity extends BaseActivity {
 
     private void blackListProcess(boolean flagContact) {
         if (!flagContact) {
-            String blackNums = PreferenceTable.getInstance().getString("blackList");
-            boolean isHaveBlackNum = CallFilterUtils.checkIsHaveBlackNum(blackNums, mPhoneNumber);
+
+            boolean isHaveBlackNum = false;
+
             if (!isHaveBlackNum) {
-                String string = mPhoneName + "_" + mPhoneNumber;
-                blackNums = blackNums + ":" + string;
-                PreferenceTable.getInstance().putString("blackList", blackNums);
+
+                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+                BlackListInfo info = new BlackListInfo();
+                info.setNumberName(mPhoneName);
+                info.setNumber(mPhoneNumber);
+                info.setLocHandler(true);
+                info.setIsLocHandlerType(0);
+                info.setUploadState(false);
+
+                list.add(info);
+
+                mCallManger.addBlackList(list, false);
                 finish();
+
             } else {
                 Context context = PrivacyContactInputActivity.this;
                 String str = getResources().getString(R.string.call_filter_have_add_black_num);

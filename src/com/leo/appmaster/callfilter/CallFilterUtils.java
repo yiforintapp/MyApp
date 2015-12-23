@@ -244,8 +244,14 @@ public class CallFilterUtils {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         List<BlackListInfo> list = new ArrayList<BlackListInfo>();
         for (int i = 0; i < 10; i++) {
-            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110", "测试", 0, null,
-                    null, 23, 25, false, 1, 1, false);
+//            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110", "测试", 0, null,
+//                    null, 23, 25, false, 1, 1, false);
+            BlackListInfo info = new BlackListInfo();
+            info.setNumberName("SB");
+            info.setNumber("12113");
+            info.setLocHandler(true);
+            info.setIsLocHandlerType(0);
+            info.setUploadState(false);
             list.add(info);
         }
 

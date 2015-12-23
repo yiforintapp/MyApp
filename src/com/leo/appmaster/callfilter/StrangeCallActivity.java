@@ -46,6 +46,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 public class StrangeCallActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private static final String TAG = "AddFromCallLogListActivity";
@@ -105,7 +106,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.add_privacy_call_log_title_bar);
-        mTitleBar.setToolbarTitle(R.string.privacy_contact_popumenus_from_call_log);
+        mTitleBar.setToolbarTitle(R.string.call_filter_black_list_unknow_num);
         mTitleBar.setToolbarColorResource(R.color.cb);
 
         mAddAll = (ImageView) findViewById(R.id.iv_add_all_black);
@@ -337,8 +338,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         int count = 0;
                         ContentResolver cr = getContentResolver();
                         if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(model)) {
-                            String blackNums = PreferenceTable.getInstance().getString("blackList");
-                            LeoLog.d("testAddContact", "OLD blackNums:" + blackNums);
+                            List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
                             //TODO blacklist去重
                             //TODO 删除系统记录？
                             for (ContactCallLog contact : mAddPrivacyCallLog) {
@@ -348,14 +348,16 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                 /*隐私联系人去重,判断是否为隐私联系人*/
                                 boolean isPryCont = PrivacyContactUtils.pryContRemovSame(contactNumber);
                                 if (!isPryCont) {
-                                    boolean isHaveBlackNum =
-                                            CallFilterUtils.checkIsHaveBlackNum(blackNums, number);
+                                    boolean isHaveBlackNum = false;
                                     if (!isHaveBlackNum) {
-                                        String string = name + "_" + number;
-                                        blackNums = blackNums + ":" + string;
-                                        PreferenceTable.getInstance().
-                                                putString("blackList", blackNums);
-                                        LeoLog.d("testAddContact", "blackNums:" + blackNums);
+
+                                        BlackListInfo info = new BlackListInfo();
+                                        info.setNumberName(name);
+                                        info.setNumber(number);
+                                        info.setLocHandler(true);
+                                        info.setIsLocHandlerType(0);
+                                        info.setUploadState(false);
+                                        blackList.add(info);
 
                                         Context context = StrangeCallActivity.this;
                                         /*4.4以上不去做短信操作*/
@@ -397,6 +399,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                     mHandler.sendMessage(messge);
                                 }
                                 //TODO EventBus更新列表
+                                mCallManger.addBlackList(blackList, false);
                             }
                         } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(model)) {
                             // 导入通话记录
@@ -632,7 +635,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 @Override
                 public void run() {
                     mProgressBar.setVisibility(View.VISIBLE);
-                    List<ContactCallLog> callLogList = PrivacyContactUtils.getSysCallLog(StrangeCallActivity.this, null, null, false, false);
+                    List<ContactCallLog> callLogList = PrivacyContactUtils.
+                            getSysCallLog(StrangeCallActivity.this, null, null, false, false);
+//                    callLogList = removeNoNameInfo(callLogList);
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                     }
@@ -643,6 +648,16 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 }
             });
         }
+    }
+
+    private List<ContactCallLog> removeNoNameInfo(List<ContactCallLog> callLogList) {
+        for (int i = 0; i < callLogList.size(); i++) {
+            ContactCallLog info = callLogList.get(i);
+            if (Utilities.isEmpty(info.getCallLogName())) {
+                callLogList.remove(i);
+            }
+        }
+        return callLogList;
     }
 
 }

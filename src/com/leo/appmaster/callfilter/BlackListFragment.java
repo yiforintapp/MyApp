@@ -52,6 +52,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
         if (mBlackList.size() < 1) {
             showEmpty();
         } else {
+            mNothingToShowView.setVisibility(View.GONE);
             mBlackListView.setVisibility(View.VISIBLE);
             mBlackListAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_BLACK_LIST);
             LeoLog.d("testBlackList", "list size : " + mBlackList.size());
@@ -127,6 +128,8 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
     private void showStrangeCallPage() {
         Intent intent = new Intent(mActivity,
                 StrangeCallActivity.class);
+        intent.putExtra(CallFilterConstants.FROMWHERE,
+                CallFilterConstants.FROM_BLACK_LIST);
         startActivity(intent);
     }
 

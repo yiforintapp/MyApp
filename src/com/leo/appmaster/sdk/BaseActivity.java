@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
@@ -17,7 +18,7 @@ import com.leo.appmaster.mgr.WifiSecurityManager;
 public class BaseActivity extends Activity {
     protected LockManager mLockManager;
     protected WifiSecurityManager mWifiManager;
-
+    protected CallFilterContextManager mCallManger;
     private ActivityLifeCircle mLifeCircle;
 
     @Override
@@ -26,6 +27,7 @@ public class BaseActivity extends Activity {
 
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
+        mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
         mLifeCircle = new ActivityLifeCircle(this);
         mLifeCircle.onCreate();

@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.db.PreferenceTable;
@@ -412,24 +413,28 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                 }
                             }
                         } else if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(flag)) {
-                            String blackNums = PreferenceTable.getInstance().getString("blackList");
-                            LeoLog.d("testAddContact", "OLD blackNums:" + blackNums);
                             //TODO blacklist去重
                             //TODO 删除系统记录？
+                            List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
+
                             for (ContactBean contact : mAddPrivacyContact) {
                                 String name = contact.getContactName();
                                 String number = PrivacyContactUtils.
                                         simpleFromateNumber(contact.getContactNumber());
                                 boolean flagContact = PrivacyContactUtils.pryContRemovSame(number);
                                 if (!flagContact) {
-                                    boolean isHaveBlackNum =
-                                            CallFilterUtils.checkIsHaveBlackNum(blackNums, number);
+                                    boolean isHaveBlackNum = false;
+
                                     if (!isHaveBlackNum) {
-                                        String string = name + "_" + number;
-                                        blackNums = blackNums + ":" + string;
-                                        PreferenceTable.getInstance().
-                                                putString("blackList", blackNums);
-                                        LeoLog.d("testAddContact", "blackNums:" + blackNums);
+
+                                        BlackListInfo info = new BlackListInfo();
+                                        info.setNumberName(name);
+                                        info.setNumber(number);
+                                        info.setLocHandler(true);
+                                        info.setIsLocHandlerType(0);
+                                        info.setUploadState(false);
+                                        blackList.add(info);
+
 
                                         Context context = AddFromContactListActivity.this;
                                      /*4.4以上不去做短信操作*/
@@ -468,9 +473,9 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                 if (messge != null && mHandler != null) {
                                     mHandler.sendMessage(messge);
                                 }
-
                                 //TODO EventBus更新列表
                             }
+                            mCallManger.addBlackList(blackList,false);
 
                         } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
                             List<String> addNumber = new ArrayList<String>();
