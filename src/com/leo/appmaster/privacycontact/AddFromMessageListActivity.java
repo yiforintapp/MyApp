@@ -450,9 +450,9 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                         BlackListInfo info = new BlackListInfo();
                                         info.setNumberName(name);
                                         info.setNumber(number);
-                                        info.setLocHandler(true);
+                                        info.setLocHandler(CallFilterConstants.LOC_HD);
                                         info.setIsLocHandlerType(0);
-                                        info.setUploadState(false);
+                                        info.setUploadState(CallFilterConstants.UPLOAD_NO);
                                         blackList.add(info);
 
                                         Context context = AddFromMessageListActivity.this;

@@ -140,9 +140,9 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 BlackListInfo info = new BlackListInfo();
                 info.setNumberName(mPhoneName);
                 info.setNumber(mPhoneNumber);
-                info.setLocHandler(true);
+                info.setLocHandler(CallFilterConstants.LOC_HD);
                 info.setIsLocHandlerType(0);
-                info.setUploadState(false);
+                info.setUploadState(CallFilterConstants.UPLOAD_NO);
 
                 list.add(info);
 

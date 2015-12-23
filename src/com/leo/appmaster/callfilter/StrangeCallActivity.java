@@ -354,9 +354,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                         BlackListInfo info = new BlackListInfo();
                                         info.setNumberName(name);
                                         info.setNumber(number);
-                                        info.setLocHandler(true);
+                                        info.setLocHandler(CallFilterConstants.LOC_HD);
                                         info.setIsLocHandlerType(0);
-                                        info.setUploadState(false);
+                                        info.setUploadState(CallFilterConstants.UPLOAD_NO);
                                         blackList.add(info);
 
                                         Context context = StrangeCallActivity.this;
