@@ -26,14 +26,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.home.MenuFaqBrowserActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 public class FeedbackActivity extends BaseActivity implements OnClickListener,
         OnFocusChangeListener {
@@ -51,6 +56,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private ImageView mCategoryImg;
     private View mCategoryLayout;
     private CommonToolbar mTitleBar;
+    private View mProblemView;
 
     private LEOChoiceDialog mCategoryDialog;
     private ListView mCategoryListView;
@@ -58,7 +64,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
     private final static int[] sCategoryIds = {
             R.string.home_tab_wifi, R.string.home_tab_lost,
-            R.string.home_tab_instruder,R.string.privacy_scan, R.string.category_lock, R.string.pravicy_protect,
+            R.string.home_tab_instruder, R.string.privacy_scan, R.string.category_lock, R.string.pravicy_protect,
             R.string.app_manager, R.string.category_other,
     };
 
@@ -79,7 +85,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
     private void handleIntent() {
         Intent intent = getIntent();
-        if(intent.getBooleanExtra("isFromIntruderProtectionForbiden", false)) {
+        if (intent.getBooleanExtra("isFromIntruderProtectionForbiden", false)) {
             mCategory.setText(mCategories.get(2));
             mCategoryPos = 2;
             mCategory.setTag(1);
@@ -90,17 +96,17 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         final AccountManager am = AccountManager.get(getApplicationContext());
         final Account[] accounts = am.getAccounts();
         List<String> as = new ArrayList<String>();
-        
-        for(int i = 0 ; i< accounts.length;i++){
-            if (accounts[i].name !=null && !accounts[i].name.startsWith("com.contapps")) {
+
+        for (int i = 0; i < accounts.length; i++) {
+            if (accounts[i].name != null && !accounts[i].name.startsWith("com.contapps")) {
                 as.add(accounts[i].name);
             }
         }
-        
-        for (int i = 0;i<as.size(); i++) {
-            LeoLog.i("fb", "a = "+as.get(i).toString());
-            if (as.get(i) != null && ( as.get(i)).matches(EMAIL_EXPRESSION) && !mEmails.contains(as.get(i))) {
-                mEmails.add( as.get(i));
+
+        for (int i = 0; i < as.size(); i++) {
+            LeoLog.i("fb", "a = " + as.get(i).toString());
+            if (as.get(i) != null && (as.get(i)).matches(EMAIL_EXPRESSION) && !mEmails.contains(as.get(i))) {
+                mEmails.add(as.get(i));
             }
         }
     }
@@ -151,7 +157,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         mCategoryLayout = findViewById(R.id.feedback_category_layout);
         mCategoryLayout.setOnClickListener(this);
         mCategory = (TextView) findViewById(R.id.feedback_category_title);
-        
+
         mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
         for (int i = 0; i < sCategoryIds.length; i++) {
             mCategories.add(getString(sCategoryIds[i]));
@@ -174,6 +180,9 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         };
         mEditEmail.addTextChangedListener(textWatcher);
         mEditContent.addTextChangedListener(textWatcher);
+
+        mProblemView = findViewById(R.id.normal_problem);
+        mProblemView.setOnClickListener(this);
     }
 
     private void checkPendingData() {
@@ -185,17 +194,17 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         }
         String currentEmail = perference.getString(FeedbackHelper.KEY_EMAIL, email);
         mEditEmail.setText(currentEmail.isEmpty() ? email : currentEmail);
-        
+
         Intent intent = getIntent();
         boolean isFromSecurHelp = false;
-        if(intent != null) {
-           isFromSecurHelp = intent.getBooleanExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK, false);
+        if (intent != null) {
+            isFromSecurHelp = intent.getBooleanExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK, false);
             if (isFromSecurHelp) {
                 mCategoryPos = 1;
                 intent.removeExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK);
             }
         }
-        if(!isFromSecurHelp) {
+        if (!isFromSecurHelp) {
             try {
                 mCategoryPos = perference.getInt(FeedbackHelper.KEY_CATEGORY, -1);
             } catch (Exception e) {
@@ -274,7 +283,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             String feedbkContent = getResources().getString(R.string.secur_feedbk_content);
             mEditContent.setText(feedbkContent);
             /*防盗问题*/
-            String feedbkQue=getResources().getString(R.string.secur_feedbk_type);
+            String feedbkQue = getResources().getString(R.string.secur_feedbk_type);
             mCategory.setText(feedbkQue);
             mCategory.setTag(feedbkQue);
             mCategoryPos = 3;
@@ -291,6 +300,21 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
         } else if (v == mEmailImg) {
             showEmailListDialog();
+        } else if (v == mProblemView) {
+            String faqtitle = getString(R.string.menu_left_item_problem);
+            String country = DeviceUtil.getCountry();
+            country = Utilities.exChange(country);
+            int version = PhoneInfo.getVersionCode(this);
+            String language = DeviceUtil.getLanguage();
+
+            String url = Constants.FAR_REQUEST + "/"
+                    + country + "/" + version + "/" + language + ".html";
+            LeoLog.d("testFaq", "url : " + url);
+
+
+            Toast.makeText(this, "" + url, Toast.LENGTH_LONG).show();
+            mLockManager.filterSelfOneMinites();
+            MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
         }
     }
 

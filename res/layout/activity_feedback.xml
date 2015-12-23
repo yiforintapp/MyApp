@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -10,6 +9,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/cb" />
+
+    <RelativeLayout
+        android:id="@+id/normal_problem"
+        android:layout_width="match_parent"
+        android:background="@color/white_list_item_ripple"
+        android:layout_height="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/feedback_problem_text"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            android:textSize="17dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/selector_pref_more" />
+
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scroll"

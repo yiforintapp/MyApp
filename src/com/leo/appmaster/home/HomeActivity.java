@@ -1163,7 +1163,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private void menuFaqJump() {
         String faqtitle = getString(R.string.menu_left_item_problem);
         String country = DeviceUtil.getCountry();
-        country = exChange(country);
+        country = Utilities.exChange(country);
         int version = PhoneInfo.getVersionCode(this);
         String language = DeviceUtil.getLanguage();
 
@@ -1173,24 +1173,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 
         Toast.makeText(this, "" + url, Toast.LENGTH_LONG).show();
+        mLockManager.filterSelfOneMinites();
         MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
-    }
-
-    //A to a
-    public static String exChange(String str) {
-        StringBuffer sb = new StringBuffer();
-        if (str != null) {
-            for (int i = 0; i < str.length(); i++) {
-                char c = str.charAt(i);
-                if (Character.isUpperCase(c)) {
-                    sb.append(Character.toLowerCase(c));
-                } else if (Character.isLowerCase(c)) {
-                    sb.append(c);
-                }
-            }
-        }
-
-        return sb.toString();
     }
 
     /* 卸载 PG */
