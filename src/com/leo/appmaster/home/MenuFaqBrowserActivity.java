@@ -42,6 +42,7 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
     // 是否是更新日志
     private boolean mIsUpdate;
     private boolean mVerifySuccess;
+    private WebView mWebView;
 
     /**
      * 启动FAQ页面
@@ -77,6 +78,18 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
         mTitle = getIntent().getStringExtra(MsgConsts.KEY_TITLE);
         mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTitleBar.setToolbarTitle(mTitle);
+
+        mTitleBar.setNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
+
         mTitleBar.setOptionMenuVisible(true);
         mTitleBar.setOptionImageResource(R.drawable.ic_msg_center_refresh);
         mTitleBar.setOptionClickListener(new View.OnClickListener() {
@@ -85,25 +98,10 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
                 mWebView.reload();
             }
         });
-
-        //new
-        getWebView().loadUrl(mUrl);
         mTitleBar.setOptionMenuVisible(true);
-//        else {
-//            //从本地获取
-//            String urlName = MsgCenterFetchJob.getFileName(mUrl) + ".html";
-//            String path = MsgCenterFetchJob.getFilePath(urlName);
-//            File file = new File(path);
-//            if (file.exists()) {
-//                mLocalUrl = "file:///" + path;
-//                getWebView().loadUrl(mLocalUrl);
-//                mTitleBar.setOptionMenuVisible(false);
-//            } else {
-//                getWebView().loadUrl(mUrl);
-//                mTitleBar.setOptionMenuVisible(true);
-//            }
-//        }
 
+        mWebView = getWebView();
+        mWebView.loadUrl(mUrl);
 
         LeoLog.i(TAG, "url : " + mUrl);
         verifyUrl(mUrl);

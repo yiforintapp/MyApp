@@ -37,6 +37,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -76,6 +77,7 @@ import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -1159,10 +1161,35 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void menuFaqJump() {
         String faqtitle = getString(R.string.menu_left_item_problem);
-        String url = "http://api.leomaster.com/appmaster/faq/cn/60/en.html";
-        //load local html or load new , judg the network
-        boolean isNeedLoad = true;
-        MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, isNeedLoad);
+        String country = DeviceUtil.getCountry();
+        country = exChange(country);
+        int version = PhoneInfo.getVersionCode(this);
+        String language = DeviceUtil.getLanguage();
+
+        String url = Constants.FAR_REQUEST + "/"
+                + country + "/" + version + "/" + language + ".html";
+        LeoLog.d("testFaq", "url : " + url);
+
+
+        Toast.makeText(this, "" + url, Toast.LENGTH_LONG).show();
+        MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
+    }
+
+    //A to a
+    public static String exChange(String str) {
+        StringBuffer sb = new StringBuffer();
+        if (str != null) {
+            for (int i = 0; i < str.length(); i++) {
+                char c = str.charAt(i);
+                if (Character.isUpperCase(c)) {
+                    sb.append(Character.toLowerCase(c));
+                } else if (Character.isLowerCase(c)) {
+                    sb.append(c);
+                }
+            }
+        }
+
+        return sb.toString();
     }
 
     /* 卸载 PG */

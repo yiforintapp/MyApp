@@ -94,6 +94,10 @@ public class DeviceUtil {
         return Locale.getDefault().getLanguage();
     }
 
+    public static String getCountry(){
+        return Locale.getDefault().getCountry();
+    }
+
     public static String getTimezone() {
         try {
             int offsetSecond = TimeZone.getDefault().getRawOffset() / 1000;
