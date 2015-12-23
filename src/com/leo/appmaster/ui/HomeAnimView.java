@@ -41,6 +41,8 @@ public class HomeAnimView extends View {
     private int mMaxStepOffsetY;
     private int mFinalMaxStepOffsetY;
 
+    private boolean mMemoryLess = false;
+
     public HomeAnimView(Context context) {
         this(context, null);
     }
@@ -188,6 +190,9 @@ public class HomeAnimView extends View {
      */
     public void setOutCircleScaleRatio(float outCircleScaleRatio) {
         mShieldLayer.setOutCircleScaleRatio(outCircleScaleRatio);
+        if (mMemoryLess) {
+            invalidate();
+        }
     }
 
     /**
@@ -197,6 +202,9 @@ public class HomeAnimView extends View {
      */
     public void setInCircleScaleRatio(float inCircleScaleRatio) {
         mShieldLayer.setInCircleScaleRatio(inCircleScaleRatio);
+        if (mMemoryLess) {
+            invalidate();
+        }
     }
 
     /**
@@ -206,6 +214,7 @@ public class HomeAnimView extends View {
      */
     public void setCircleRotateRatio(float circleRotateRatio) {
         mShieldLayer.setCircleRotateRatio(circleRotateRatio);
+        mShieldLayer.setMemoryLess(mMemoryLess);
         invalidate();
     }
 
@@ -216,6 +225,9 @@ public class HomeAnimView extends View {
      */
     public void setCircleAlpha(int circleAlpha) {
         mShieldLayer.setCircleAlpha(circleAlpha);
+        if (mMemoryLess) {
+            invalidate();
+        }
     }
 
     /**
@@ -236,18 +248,30 @@ public class HomeAnimView extends View {
 
     public void setFastProgress(int fastProgress) {
         mBackLayer.setFastProgress(fastProgress);
+        if (mMemoryLess) {
+            invalidate();
+        }
     }
 
     public void setShowColorProgress(boolean showProgress) {
         mBackLayer.setShowColorProgress(showProgress);
+        if (mMemoryLess) {
+            invalidate();
+        }
     }
 
     public void setScanningPercent(int scanningPercent) {
         mShieldLayer.setScanningPercent(scanningPercent);
+        if (mMemoryLess) {
+            invalidate();
+        }
     }
 
     public void setShieldOffsetY(int shieldOffsetY) {
         mShieldLayer.setShieldOffsetY(shieldOffsetY);
+        if (mMemoryLess) {
+            invalidate();
+        }
     }
 
     public void setShowProcessLoading(boolean show, int loadType) {
@@ -260,7 +284,7 @@ public class HomeAnimView extends View {
     }
 
     public void setTotalStepCount(int totalStepCount) {
-        mStepLayer.setTotalStepCount(totalStepCount);
+        mStepLayer.setTotalStepCount(totalStepCount, mMemoryLess);
     }
 
     public HomeAnimBgLayer getBgLayer() {
@@ -285,5 +309,9 @@ public class HomeAnimView extends View {
 
     public int getToolbarColor() {
         return mBackLayer.getToolbarColor();
+    }
+
+    public void setLessMemory() {
+        mMemoryLess = true;
     }
 }

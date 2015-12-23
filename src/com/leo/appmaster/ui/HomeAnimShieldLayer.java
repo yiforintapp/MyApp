@@ -110,6 +110,8 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private int mWhiteColor;
     private float mMaxFinalOffsetY;
 
+    private boolean mMemoryLess =false;
+
     HomeAnimShieldLayer(HomeAnimView view) {
         super(view);
         mOutCircleMatrix = new Matrix();
@@ -499,17 +501,23 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     public void setFirstWaveRatio(float firstWaveRatio) {
         mFirstWaveRatio = firstWaveRatio;
-//        mParent.invalidate();
+        if (mMemoryLess) {
+            mParent.invalidate();
+        }
     }
 
     public void setSecondWaveRatio(float secondWaveRatio) {
         mSecondWaveRatio = secondWaveRatio;
-//        mParent.invalidate();
+        if (mMemoryLess) {
+            mParent.invalidate();
+        }
     }
 
     public void setThirdWaveRatio(float thirdWaveRatio) {
         mThirdWaveRatio = thirdWaveRatio;
-//        mParent.invalidate();
+        if (mMemoryLess) {
+            mParent.invalidate();
+        }
     }
 
     /**
@@ -519,6 +527,9 @@ public class HomeAnimShieldLayer extends AnimLayer {
      */
     public void setFinalShieldRatio(float finalShieldRatio) {
         mFinalShieldRatio = finalShieldRatio;
+        if (mMemoryLess) {
+            mParent.invalidate();
+        }
     }
 
     /**
@@ -528,5 +539,12 @@ public class HomeAnimShieldLayer extends AnimLayer {
      */
     public void setFinalTextRatio(float finalTextRatio) {
         mFinalTextRatio = finalTextRatio;
+        if (mMemoryLess) {
+            mParent.invalidate();
+        }
+    }
+
+    public void setMemoryLess(boolean isMemoryLess) {
+        mMemoryLess = isMemoryLess;
     }
 }

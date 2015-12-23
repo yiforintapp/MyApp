@@ -208,6 +208,7 @@ public class HomeAnimBgLayer extends AnimLayer {
         mPaint.setShader(mBgShader);
         mColorPair = new Pair<Integer, Integer>(up, down);
 
+        mParent.invalidate();
     }
 
     private int getProgressColor(float progress, int from, int to) {

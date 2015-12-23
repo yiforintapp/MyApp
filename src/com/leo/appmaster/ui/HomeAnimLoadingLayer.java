@@ -129,11 +129,14 @@ public class HomeAnimLoadingLayer extends AnimLayer {
         }
         canvas.drawText(getLoadingTip(), centerX, mBaseLine, mTextPaint);
         mTextPaint.setAlpha(255);
+
+        mParent.invalidate();
     }
 
     public void setLoadType(int loadType) {
         mLoadType = loadType;
         mRiseHeight = 0;
+        mParent.invalidate();
     }
 
     /**
@@ -142,6 +145,7 @@ public class HomeAnimLoadingLayer extends AnimLayer {
      */
     public void setRiseHeight(int riseHeight) {
         mRiseHeight = riseHeight;
+        mParent.invalidate();
     }
 
     private Drawable getLoadingDrawable() {

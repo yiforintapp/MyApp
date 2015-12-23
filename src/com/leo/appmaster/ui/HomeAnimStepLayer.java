@@ -43,6 +43,8 @@ public class HomeAnimStepLayer extends AnimLayer {
 
     private Drawable mConfirm;
 
+    private boolean mMemoryLess = false;
+
     HomeAnimStepLayer(int stepCount, View view) {
         super(view);
 
@@ -177,6 +179,9 @@ public class HomeAnimStepLayer extends AnimLayer {
         if (DBG) {
             LeoLog.i(TAG, "setLineRatio, lineRatio: " + lineRatio);
         }
+        if (mMemoryLess) {
+            mParent.invalidate();
+        }
     }
 
     public void setCircleRatio(float circleRatio) {
@@ -184,10 +189,14 @@ public class HomeAnimStepLayer extends AnimLayer {
         if (DBG) {
             LeoLog.i(TAG, "setCircleRatio, circleRatio: " + circleRatio);
         }
+        if (mMemoryLess) {
+            mParent.invalidate();
+        }
     }
 
-    public void setTotalStepCount(int totalStepCount) {
+    public void setTotalStepCount(int totalStepCount, boolean isMemoryLess) {
         mTotalStepCount = totalStepCount;
+        mMemoryLess = isMemoryLess;
         mCurrentStep = 0;
         onSizeChanged();
     }
@@ -199,6 +208,9 @@ public class HomeAnimStepLayer extends AnimLayer {
     public void increaseCurrentStep() {
         mCurrentStep++;
         mLineRatio = 0f;
+        if (mMemoryLess) {
+            mParent.invalidate();
+        }
     }
 
     private class Dot {
