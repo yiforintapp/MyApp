@@ -282,11 +282,17 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract List<BlackListInfo> getSerBlackListFroNum(String number);
 
     /**
-     * 通过指定的号码，查询服务器下发黑名单
+     * 通过指定的号码，查询服务器下发黑名单人数
      *
      * @return
      */
-//    public abstract List<BlackListInfo> getSerBlackNumFroNum(String number);
+    public abstract int getSerBlackNumFroNum(String number);
+    /**
+     * 通过指定的号码，查询服务器下发标记人数
+     *
+     * @return
+     */
+    public abstract int getSerMarkerNumFroNum(String number);
 
     /**
      * 获取黑名单来电提示显示的人数参数

@@ -1053,6 +1053,30 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
+    public int getSerBlackNumFroNum(String number) {
+        List<BlackListInfo> infos = getSerBlackListFroNum(number);
+        int addBlackNum = 0;
+        for (BlackListInfo info : infos) {
+            addBlackNum = info.getAddBlackNumber();
+            break;
+        }
+        int params = getBlackMarkTipParam();
+        return addBlackNum * params;
+    }
+
+    @Override
+    public int getSerMarkerNumFroNum(String number) {
+        List<BlackListInfo> infos = getSerBlackListFroNum(number);
+        int addMarkerNum = 0;
+        for (BlackListInfo info : infos) {
+            addMarkerNum = info.getMarkerNumber();
+            break;
+        }
+        int params = getBlackMarkTipParam();
+        return addMarkerNum * params;
+    }
+
+    @Override
     public int getSerBlackTipCount() {
         PreferenceTable pt = PreferenceTable.getInstance();
         return pt.getInt(PrefConst.KEY_BLACK_TIP, 0);
