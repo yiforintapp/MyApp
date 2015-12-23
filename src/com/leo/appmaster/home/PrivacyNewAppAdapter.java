@@ -1,5 +1,6 @@
 package com.leo.appmaster.home;
 
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -59,8 +60,8 @@ public class PrivacyNewAppAdapter extends PrivacyNewAdaper<AppItemInfo> {
         if (info.topPos > -1) {
             holder.summary.setVisibility(View.VISIBLE);
             String ceilNum = ListAppLockAdapter.makePosRight(info);
-            String text = mContext.getString(R.string.lock_app_item_desc, ceilNum);
-            holder.summary.setText(text);
+            String text = mContext.getString(R.string.lock_app_item_desc_cb, ceilNum);
+            holder.summary.setText(Html.fromHtml(text));
         } else {
             holder.summary.setVisibility(View.GONE);
         }

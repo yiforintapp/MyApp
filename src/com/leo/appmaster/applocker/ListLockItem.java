@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -76,7 +77,7 @@ public class ListLockItem extends RelativeLayout {
                     text = context.getString(R.string.have_added_lock);
                 } else {
                     String string = makePosRight(info);
-                    text = context.getString(R.string.lock_app_item_desc, string);
+                    text = context.getString(R.string.lock_app_item_desc_cb, string);
                 }
                 if (text != null) {
                     applocknums.setText(text);
@@ -103,8 +104,8 @@ public class ListLockItem extends RelativeLayout {
                     applocknums.setText(text);
                 } else {
                     String string = makePosRight(info);
-                    text = context.getString(R.string.lock_app_item_desc, string);
-                    applocknums.setText(text);
+                    text = context.getString(R.string.lock_app_item_desc_cb, string);
+                    applocknums.setText(Html.fromHtml(text));
                 }
             } else {
                 if (setLock) {
@@ -231,7 +232,7 @@ public class ListLockItem extends RelativeLayout {
         return mInfo;
     }
 
-    public void setText(String text) {
+    public void setText(CharSequence text) {
         if (text != null && applocknums != null) {
             applocknums.setText(text);
         }

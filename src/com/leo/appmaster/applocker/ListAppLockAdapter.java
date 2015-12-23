@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,8 +68,8 @@ public class ListAppLockAdapter extends BaseAdapter {
             itemView.setTitle(info.label);
             if (info.topPos > -1) {
                 String infoTopPos = makePosRight(info);
-                String text = mContext.getString(R.string.lock_app_item_desc, infoTopPos);
-                itemView.setText(text);
+                String text = mContext.getString(R.string.lock_app_item_desc_cb, infoTopPos);
+                itemView.setText(Html.fromHtml(text));
             } else {
                 itemView.setText("");
             }
