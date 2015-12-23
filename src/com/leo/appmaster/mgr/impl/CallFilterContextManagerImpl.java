@@ -451,10 +451,20 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (id >= 0) {
                 selection = CallFilterConstants.FIL_GR_ID + " = ? ";
                 selectionArgs = new String[]{String.valueOf(id)};
+                List<CallFilterInfo> calls = new ArrayList<CallFilterInfo>();
+                CallFilterInfo call = new CallFilterInfo();
+                call.setId(id);
+                calls.add(call);
+                removeFilterDet(calls);
             } else if (!TextUtils.isEmpty(number)) {
                 selection = CallFilterConstants.FIL_GR_PH_NUMB + " LIKE ? ";
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                 selectionArgs = new String[]{formateNumber};
+                List<CallFilterInfo> calls = new ArrayList<CallFilterInfo>();
+                CallFilterInfo call = new CallFilterInfo();
+                call.setNumber(number);
+                calls.add(call);
+                removeFilterDet(calls);
             }
             cr.delete(uri, selection, selectionArgs);
 
