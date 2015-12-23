@@ -37,8 +37,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     public List<BlackListInfo> getBlackList() {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        String selects = CallFilterConstants.BLACK_LOC_HD + " = ? ";
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD)};
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
+        String selects = sb.toString();
+        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
+                String.valueOf(CallFilterConstants.REMOVE_NO)};
         return CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
     }
 
@@ -50,7 +54,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         try {
             Uri uri = CallFilterConstants.BLACK_LIST_URI;
             String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-            cursor = cr.query(uri, null, null, null, sortOrder);
+            StringBuilder sb = new StringBuilder();
+            sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+            sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
+            String selects = sb.toString();
+            String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
+                    String.valueOf(CallFilterConstants.REMOVE_NO)};
+            cursor = cr.query(uri, null, selects, selectArgs, sortOrder);
             if (cursor != null) {
                 count = cursor.getCount();
             }
@@ -82,13 +92,11 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             }
             Bitmap icon = info.getIcon();
             String area = info.getNumberArea();
-//            int addBlackNumber = info.getAddBlackNumber();
-//            int markerType = info.getMarkerType();
-//            int markerNum = info.getMarkerNumber();
-            boolean uploadState = info.isUploadState();
-            boolean locHd = info.isLocHandler();
+            int uploadState = info.getUploadState();
+            int locHd = info.getLocHandler();
             int locHdType = info.getIsLocHandlerType();
-            boolean readState = info.isReadState();
+            int readState = info.getReadState();
+            int removeState = info.getRemoveState();
 
             ContentResolver cr = mContext.getContentResolver();
             Uri uri = CallFilterConstants.BLACK_LIST_URI;
@@ -106,68 +114,55 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (!TextUtils.isEmpty(area)) {
                 value.put(CallFilterConstants.BLACK_NUMBER_AREA, area);
             }
-//            value.put(CallFilterConstants.BLACK_ADD_NUMBER, addBlackNumber);
-//            value.put(CallFilterConstants.MARKER_TYPE, markerType);
-//            value.put(CallFilterConstants.MARKER_NUMBER, markerNum);
 
-            if (locHd) {
-                value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
-            } else {
-                value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
+            if (locHd != -1) {
+                value.put(CallFilterConstants.BLACK_LOC_HD, locHd);
             }
-
-            value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, locHdType);
-
-            if (readState) {
-                value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ);
-            } else {
-                value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
+            if (locHdType != -1) {
+                value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, locHdType);
+            }
+            //是否上传
+            if (uploadState != -1) {
+                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, uploadState);
+            }
+            //是否删除
+            if (removeState != -1) {
+                value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE);
+            }
+            //是否已读
+            if (readState != -1) {
+                value.put(CallFilterConstants.BLACK_READ_STATE, readState);
             }
 
             try {
-                if (update) {
-                    String table = CallFilterConstants.BLACK_LIST_TAB;
-                    String colum = CallFilterConstants.BLACK_PHONE_NUMBER;
-                    String colum1 = CallFilterConstants.BLACK_UPLOAD_STATE;
-                    Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum, colum1}, number);
-                    if (cur != null) {
-                        int uploadStateColum = cur.getColumnIndex(CallFilterConstants.BLACK_UPLOAD_STATE);
-                        int uploadFlag = cur.getInt(uploadStateColum);
-                        boolean isKeyExist = cur.getCount() > 0 ? true : false;
-                        if (isKeyExist) {
-                            if (CallFilterConstants.UPLOAD != uploadFlag) {
-                                if (uploadState) {
-                                    value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD);
-                                } else {
-                                    value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-                                }
-                            }
-                            cr.update(CallFilterConstants.BLACK_LIST_URI, value, null, null);
-                        } else {
-                            if (uploadState) {
-                                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD);
-                            } else {
-                                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-                            }
-                            cr.insert(uri, value);
-                        }
-                    } else {
-                        if (uploadState) {
-                            value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD);
-                        } else {
+                String table = CallFilterConstants.BLACK_LIST_TAB;
+                String numbColum = CallFilterConstants.BLACK_PHONE_NUMBER;
+                String upColum = CallFilterConstants.BLACK_UPLOAD_STATE;
+                String locHdTypeColum = CallFilterConstants.BLACK_LOC_HD_TYPE;
+                String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
+                Cursor cur = CallFilterUtils.getCursor(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, number);
+                if (cur != null) {
+                    int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
+                    int removeStateFlag = cur.getColumnIndex(CallFilterConstants.BLACK_REMOVE_STATE);
+                    int readStateColum = cur.getColumnIndex(CallFilterConstants.BLACK_READ_STATE);
+
+                    int locHdTypeFlag = cur.getInt(locHdTypeCom);
+                    int remove = cur.getInt(removeStateFlag);
+                    int readStateFlag = cur.getInt(readStateColum);
+
+                    boolean isKeyExist = cur.getCount() > 0 ? true : false;
+                    if (isKeyExist) {
+                        //本地标记类型
+                        if (locHdTypeFlag != locHdType) {
                             value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
                         }
+                        cr.update(CallFilterConstants.BLACK_LIST_URI, value, null, null);
+                    } else {
                         cr.insert(uri, value);
                     }
                 } else {
-                    if (uploadState) {
-                        value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD);
-                    } else {
-                        value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-                    }
                     cr.insert(uri, value);
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -188,15 +183,22 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (TextUtils.isEmpty(info.getNumber())) {
                 continue;
             }
-            int id = info.getId();
+//            int id = info.getId();
             String number = info.getNumber();
-            if (id >= 0) {
-                selection = CallFilterConstants.BLACK_ID + " = ? ";
-                selectionArgs = new String[]{String.valueOf(id)};
-            } else if (!TextUtils.isEmpty(number)) {
+//            if (id >= 0) {
+//                selection = CallFilterConstants.BLACK_ID + " = ? ";
+//                selectionArgs = new String[]{String.valueOf(id)};
+//            } else
+            if (!TextUtils.isEmpty(number)) {
                 selection = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                 selectionArgs = new String[]{formateNumber};
+                List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
+                BlackListInfo black = new BlackListInfo();
+                black.setNumber(number);
+                black.setRemoveState(CallFilterConstants.REMOVE);
+                infos.add(black);
+                addBlackList(infos, true);
             }
             cr.delete(uri, selection, selectionArgs);
         }
@@ -979,15 +981,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (isContactUse) {
                 continue;
             }
-//            Bitmap icon = info.getIcon();
-//            String area = info.getNumberArea();
             int addBlackNumber = info.getAddBlackNumber();
             int markerType = info.getMarkerType();
             int markerNum = info.getMarkerNumber();
-            boolean uploadState = true;
-            boolean locHd = info.isLocHandler();
-            int locHdType = info.getIsLocHandlerType();
-//            boolean readState = info.isReadState();
 
             ContentResolver cr = mContext.getContentResolver();
             Uri uri = CallFilterConstants.BLACK_LIST_URI;
@@ -998,34 +994,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (!TextUtils.isEmpty(number)) {
                 value.put(CallFilterConstants.BLACK_PHONE_NUMBER, number);
             }
-//            if (icon != null) {
-//                byte[] iconByte = PrivacyContactUtils.formateImg(icon);
-//                value.put(CallFilterConstants.BLACK_ICON, iconByte);
-//            }
-//            if (!TextUtils.isEmpty(area)) {
-//                value.put(CallFilterConstants.BLACK_NUMBER_AREA, area);
-//            }
             value.put(CallFilterConstants.BLACK_ADD_NUMBER, addBlackNumber);
             value.put(CallFilterConstants.MARKER_TYPE, markerType);
             value.put(CallFilterConstants.MARKER_NUMBER, markerNum);
-            if (uploadState) {
-                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD);
-            } else {
-                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-            }
-            if (locHd) {
-                value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
-            } else {
-                value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
-            }
-
-            value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, locHdType);
-
-//            if (readState) {
-//                value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ);
-//            } else {
-//                value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
-//            }
 
             try {
                 String table = CallFilterConstants.BLACK_LIST_TAB;

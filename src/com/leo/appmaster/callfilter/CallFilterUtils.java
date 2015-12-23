@@ -42,10 +42,11 @@ public class CallFilterUtils {
      * @param numberArea     null
      * @param addBlackNumber 0
      * @param markerNumber   0
-     * @param uploadState    false
-     * @param readState      false
+     * @param uploadState    -1(无该属性)
+     * @param readState      -1(无该属性)
      * @param locHd          -1(无该属性)(0:未处理，1：已处理)
      * @param locHdType      -1(无该属性)
+     * @param removeState    -1(无该属性)
      * @return
      */
     public static BlackListInfo getBlackListInfo(int id, String number,
@@ -55,10 +56,11 @@ public class CallFilterUtils {
                                                  String numberArea,
                                                  int addBlackNumber,
                                                  int markerNumber,
-                                                 boolean uploadState,
+                                                 int uploadState,
                                                  int locHd,
                                                  int locHdType,
-                                                 boolean readState) {
+                                                 int readState,
+                                                 int removeState) {
         BlackListInfo info = new BlackListInfo();
         if (id != -1) {
             info.setId(id);
@@ -80,19 +82,13 @@ public class CallFilterUtils {
         info.setMarkerNumber(markerNumber);
         info.setUploadState(uploadState);
         if (locHd != -1) {
-            switch (locHd) {
-                case CallFilterConstants.LOC_HD:
-                    info.setLocHandler(true);
-                    break;
-                case CallFilterConstants.NO_LOC_HD:
-                    info.setLocHandler(false);
-                    break;
-                default:
-                    break;
-            }
+            info.setLocHandler(locHd);
         }
         if (locHdType != -1) {
             info.setIsLocHandlerType(locHdType);
+        }
+        if (removeState != -1) {
+            info.setRemoveState(removeState);
         }
 
         info.setReadState(readState);
@@ -244,14 +240,8 @@ public class CallFilterUtils {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         List<BlackListInfo> list = new ArrayList<BlackListInfo>();
         for (int i = 0; i < 10; i++) {
-//            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110", "测试", 0, null,
-//                    null, 23, 25, false, 1, 1, false);
-            BlackListInfo info = new BlackListInfo();
-            info.setNumberName("SB");
-            info.setNumber("12113");
-            info.setLocHandler(true);
-            info.setIsLocHandlerType(0);
-            info.setUploadState(false);
+            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110", "测试", 0, null,
+                    null, 23, 25, 0, 1, 1, 0, 1);
             list.add(info);
         }
 
@@ -347,7 +337,7 @@ public class CallFilterUtils {
         return false;
     }
 
-    public static List<BlackListInfo> getBlackList(Uri uri,String[] projection , String selects, String[] selectArgs, String sortOrder) {
+    public static List<BlackListInfo> getBlackList(Uri uri, String[] projection, String selects, String[] selectArgs, String sortOrder) {
         Context context = AppMasterApplication.getInstance();
         ContentResolver cr = context.getContentResolver();
         Cursor cursor = null;
@@ -369,6 +359,7 @@ public class CallFilterUtils {
                     int locHdColum = cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD);
                     int locHdTypeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                     int readStateColum = cursor.getColumnIndex(CallFilterConstants.BLACK_READ_STATE);
+                    int removeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_REMOVE_STATE);
 
                     int id = cursor.getInt(idColum);
                     String name = cursor.getString(nameColum);
@@ -391,31 +382,10 @@ public class CallFilterUtils {
                     int locHd = cursor.getInt(locHdColum);
                     int locHdType = cursor.getInt(locHdTypeColum);
                     int readStateType = cursor.getInt(readStateColum);
-                    boolean uploadState = false;
-                    boolean readState = false;
-                    switch (uploadStateType) {
-                        case CallFilterConstants.UPLOAD:
-                            uploadState = true;
-                            break;
-                        case CallFilterConstants.UPLOAD_NO:
-                            uploadState = false;
-                            break;
-                        default:
-                            break;
-                    }
-                    switch (readStateType) {
-                        case CallFilterConstants.READ:
-                            readState = true;
-                            break;
-                        case CallFilterConstants.READ_NO:
-                            readState = false;
-                            break;
-                        default:
-                            break;
-                    }
+                    int removeStateType = cursor.getInt(removeColum);
 
                     BlackListInfo info = CallFilterUtils.getBlackListInfo(id, number, name, markerType, icon,
-                            numberArea, addBlackNum, markerNum, uploadState, locHd, locHdType, readState);
+                            numberArea, addBlackNum, markerNum, uploadStateType, locHd, locHdType, readStateType, removeStateType);
                     blackListInfoList.add(info);
                 }
             }
@@ -429,7 +399,7 @@ public class CallFilterUtils {
         return blackListInfoList;
     }
 
-    public static List<BlackListInfo> getNoUpBlack(Uri uri,String selection,String[] selectionArgs,String sortOrder){
+    public static List<BlackListInfo> getNoUpBlack(Uri uri, String selection, String[] selectionArgs, String sortOrder) {
         Context context = AppMasterApplication.getInstance();
         ContentResolver cr = context.getContentResolver();
         List<BlackListInfo> blackListInfoList = null;
@@ -451,6 +421,7 @@ public class CallFilterUtils {
                     int locHdColum = cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD);
                     int locHdTypeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                     int readStateColum = cursor.getColumnIndex(CallFilterConstants.BLACK_READ_STATE);
+                    int removeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_REMOVE_STATE);
 
                     int id = cursor.getInt(idColum);
                     String name = cursor.getString(nameColum);
@@ -474,31 +445,10 @@ public class CallFilterUtils {
                     int locHd = cursor.getInt(locHdColum);
                     int locHdType = cursor.getInt(locHdTypeColum);
                     int readStateType = cursor.getInt(readStateColum);
-                    boolean uploadState = false;
-                    boolean readState = false;
-                    switch (uploadStateType) {
-                        case CallFilterConstants.UPLOAD:
-                            uploadState = true;
-                            break;
-                        case CallFilterConstants.UPLOAD_NO:
-                            uploadState = false;
-                            break;
-                        default:
-                            break;
-                    }
+                    int removeStateType = cursor.getInt(removeColum);
 
-                    switch (readStateType) {
-                        case CallFilterConstants.READ:
-                            readState = true;
-                            break;
-                        case CallFilterConstants.READ_NO:
-                            readState = false;
-                            break;
-                        default:
-                            break;
-                    }
                     BlackListInfo info = CallFilterUtils.getBlackListInfo(id, number, name, markerType, icon,
-                            numberArea, addBlackNum, markerNum, uploadState, locHd, locHdType, readState);
+                            numberArea, addBlackNum, markerNum, uploadStateType, locHd, locHdType, readStateType, removeStateType);
                     blackListInfoList.add(info);
                 }
             }
