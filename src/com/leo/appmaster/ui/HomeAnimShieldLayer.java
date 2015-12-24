@@ -112,8 +112,8 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     private boolean mMemoryLess =false;
 
-    private LayerDecor mFlipDecor;
-    private LayerDecor mBurstDecor;
+    private ShieldFlipDecor mFlipDecor;
+    private BurstDecor mBurstDecor;
 
     HomeAnimShieldLayer(HomeAnimView view) {
         super(view);
@@ -385,6 +385,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mShieldDrawable.getPaint().setAlpha(shieldAlpha);
         mShieldMatrix.setScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
         mShieldMatrix.postTranslate(0, -shieldOffsetY);
+        mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
         canvas.setMatrix(mShieldMatrix);
 
         mTextPaint.setColor(textColor);
@@ -392,8 +393,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             if (shieldOffsetY <= 0) {
                 canvas.drawCircle(mCirclePx, mCirclePy, mShieldBgRadius, mTextPaint);
             }
-            mFlipDecor.setParentLayer(this);
-            mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
+//            mFlipDecor.setParentLayer(this);
             mShieldDrawable.draw(canvas);
         }
 
@@ -415,7 +415,16 @@ public class HomeAnimShieldLayer extends AnimLayer {
             pointer = mText1Pos;
         }
         mTextPaint.setTextSize(mScoreSize);
-        canvas.drawText(score + "", pointer[0], pointer[1], mTextPaint);
+        
+        if (score ==100) {
+            if (mFlipDecor.getNeedFlipScore() % 2 == 1) {
+                canvas.drawText("001", pointer[0], pointer[1], mTextPaint);
+            } else {
+                canvas.drawText("100", pointer[0], pointer[1], mTextPaint);
+            }
+        } else {
+            canvas.drawText(score + "", pointer[0], pointer[1], mTextPaint);
+        }
 
         if (shieldAlpha > 0) {
             canvas.setMatrix(mShieldMatrix);
