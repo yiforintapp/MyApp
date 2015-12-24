@@ -159,6 +159,8 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
         mFlipDecor = new ShieldFlipDecor();
         mBurstDecor = new BurstDecor();
+        mFlipDecor.setParentLayer(this);
+        mBurstDecor.setParentLayer(this);
     }
 
     public void setMaxOffsetY(int maxOffseteY) {
