@@ -1,8 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:id="@+id/lv_content"
+    android:id="@+id/lv_content"
     android:layout_width="fill_parent"
     android:layout_height="@dimen/dialog_list_item_height"
-    android:background="@color/white" >
+    android:background="@drawable/manager_backup_list_selecter"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
     <TextView
         android:id="@+id/tv_showday"
@@ -22,5 +24,11 @@
         android:paddingLeft="5dp"
         android:paddingRight="16dp"
         android:src="@drawable/dialog_check_off" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c5" />
 
 </RelativeLayout>

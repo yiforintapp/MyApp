@@ -10,9 +10,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,8 +35,17 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
     private RippleView mRvRight;
     private RippleView mRvLeft;
     private ListView mLvMain;
+    private MyAdapter mAdapter;
 
     private OnDiaogClickListener mListener;
+
+    private int nowItemPosition = 0;
+
+    public void setNowItemPosition(int position) {
+        nowItemPosition = position;
+
+        mAdapter.notifyDataSetChanged();
+    }
 
     public interface OnDiaogClickListener {
         public void onClick(int which);
@@ -155,58 +166,63 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
                 DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvRight
                         .getTag();
                 try {
-                    lListener.onClick(MultiChoicesWitchSummaryDialog.this, 1);
+                    lListener.onClick(MultiChoicesWitchSummaryDialog.this, nowItemPosition);
                 } catch (Exception e) {
                 }
             }
         });
-//        mRvRight.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-//
-//            @Override
-//            public void onRippleComplete(RippleView arg0) {
-//                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvRight
-//                        .getTag();
-//                try {
-//                    lListener.onClick(LEOAlarmDialog.this, 1);
-//                } catch (Exception e) {
-//                }
-//            }
-//        });
     }
 
-    public void fillData(final String[] itemContent, final int currentPosition) {
-        mLvMain.setAdapter(new BaseAdapter() {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = getLayoutInflater().inflate(R.layout.traffic_day_list, parent, false);
-                }
-                TextView tvContent = (TextView) convertView.findViewById(R.id.tv_showday);
-                ImageView ivCheckBox = (ImageView) convertView.findViewById(R.id.iv_showday);
-                tvContent.setText(itemContent[position]);
-                if (position == currentPosition) {
-                    ivCheckBox.setImageResource(R.drawable.dialog_check_on);
-                } else {
-                    ivCheckBox.setImageResource(R.drawable.dialog_check_off);
-                }
-                return convertView;
-            }
+    private class MyAdapter extends BaseAdapter {
+        private Context mContext;
 
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
+        public MyAdapter(Context ctx) {
+            this.mContext = ctx;
+        }
 
-            @Override
-            public Object getItem(int position) {
-                return null;
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.traffic_day_list, parent, false);
             }
+            TextView tvContent = (TextView) convertView.findViewById(R.id.tv_showday);
+            ImageView ivCheckBox = (ImageView) convertView.findViewById(R.id.iv_showday);
+            tvContent.setText(strings[position]);
 
-            @Override
-            public int getCount() {
-                return itemContent.length;
+            if (nowItemPosition == position) {
+                ivCheckBox.setImageResource(R.drawable.dialog_check_on);
+            } else {
+                ivCheckBox.setImageResource(R.drawable.dialog_check_off);
             }
-        });
+            return convertView;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return strings.length;
+        }
+
+    }
+
+    private String[] strings;
+
+    public void fillData(String[] itemContent) {
+        strings = itemContent;
+        mLvMain.setAdapter(mAdapter);
+    }
+
+    public ListView getListView() {
+        return mLvMain;
     }
 
     private void initUI() {
@@ -216,6 +232,7 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mSummary = (TextView) dlgView.findViewById(R.id.tv_summary);
         mLvMain = (ListView) dlgView.findViewById(R.id.lv_main);
+        mAdapter = new MyAdapter(mContext);
         mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
         mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);

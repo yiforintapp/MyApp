@@ -140,11 +140,16 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intent = new Intent(mActivity, CallFilterRecordActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("data", mFilterList.get(i));
-        intent.putExtras(bundle);
-        startActivity(intent);
+        Intent intent;
+        try {
+            intent = new Intent(mActivity, CallFilterRecordActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("data", mFilterList.get(i));
+            intent.putExtras(bundle);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -186,7 +191,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         }
 
         MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
-                getCallHandleDialogWithSummary(title, mActivity, false);
+                getCallHandleDialogWithSummary(title, mActivity, false, 0);
         dialog.show();
     }
 

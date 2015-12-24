@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,8 +45,21 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
     private void processUI() {
         String numberName = info.getNumberName();
         String number = info.getNumber();
+        int mark = info.filterType;
         if (Utilities.isEmpty(numberName) || numberName.equals(number)) {
-            mTvTitleName.setVisibility(View.GONE);
+            if (mark == 0) {
+                mTvTitleName.setVisibility(View.GONE);
+            } else {
+                String string;
+                if (mark == 1) {
+                    string = this.getString(R.string.filter_number_type_saorao);
+                } else if (mark == 2) {
+                    string = this.getString(R.string.filter_number_type_ad);
+                } else {
+                    string = this.getString(R.string.filter_number_type_zhapian);
+                }
+                mTvTitleName.setText(string);
+            }
         } else {
             mMark.setVisibility(View.GONE);
         }
@@ -83,11 +97,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
 
     private void fillData() {
         mRecordTime.clear();
-        mRecordTime = mCallManger.getFilterDetListFroNum(info.getNumber());
-//        mRecordTime.add("4:43 am");
-//        mRecordTime.add("5:10 am");
-//        mRecordTime.add("6:28 am");
-//        mRecordTime.add("9:28 am");
+        mRecordTime = mCallManger.getFilterDetListFroId(info.getBlackId());
         mLvMain.setAdapter(mAdapter);
     }
 
@@ -108,15 +118,80 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 } else {
                     title = info.getNumberName();
                 }
-                MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
-                        getCallHandleDialogWithSummary(title, this, false);
-                dialog.show();
+
+                showMarkDialog(title);
 
                 break;
             default:
                 break;
         }
     }
+
+    private void showMarkDialog(String title) {
+        final MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
+                getCallHandleDialogWithSummary(title, this, false, getPositionFromTextname());
+        dialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                dialog.setNowItemPosition(position);
+
+            }
+        });
+
+        dialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position) {
+
+                String string = "";
+                if (mTvTitleName.getVisibility() == View.GONE) {
+                    mTvTitleName.setVisibility(View.VISIBLE);
+                }
+
+                if (position == 0) {
+                    info.setFilterType(0);
+                    string = CallFilterRecordActivity.this.
+                            getString(R.string.filter_number_type_saorao);
+                } else if (position == 1) {
+                    info.setFilterType(1);
+                    string = CallFilterRecordActivity.this.
+                            getString(R.string.filter_number_type_ad);
+                } else if (position == 2) {
+                    info.setFilterType(2);
+                    string = CallFilterRecordActivity.this.
+                            getString(R.string.filter_number_type_zhapian);
+                }
+                mTvTitleName.setText(string);
+
+
+                List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
+                CallFilterInfo newInfo = info;
+                list.add(newInfo);
+                mCallManger.addFilterDet(list, true);
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private int getPositionFromTextname() {
+        int position = 0;
+        if (mTvTitleName != null) {
+            String text = (String) mTvTitleName.getText();
+            if (text.equals(CallFilterRecordActivity.this.
+                    getString(R.string.filter_number_type_saorao))) {
+                position = 0;
+            } else if (text.equals(CallFilterRecordActivity.this.
+                    getString(R.string.filter_number_type_ad))) {
+                position = 1;
+            } else {
+                position = 2;
+            }
+        }
+        return position;
+    }
+
 
     private void showRemoveDialog() {
         final LEOWithSingleCheckboxDialog mDialog = CallFIlterUIHelper.getInstance().
@@ -163,7 +238,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ItemHolder holder = null;
+            ItemHolder holder;
             if (convertView == null) {
                 holder = new ItemHolder();
                 View view = LayoutInflater.from(CallFilterRecordActivity.this).inflate(R.layout.item_callfilter_record, null);

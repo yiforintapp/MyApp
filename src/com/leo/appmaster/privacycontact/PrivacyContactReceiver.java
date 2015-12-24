@@ -161,7 +161,7 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                             //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
                             if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
                                 LeoLog.i("temp", System.currentTimeMillis() - mLastOffHookTime + " vs max :" + mCFCManager.getCallDurationMax());
-                                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(),true).show();
+                                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(),true,0).show();
                             }
                                 break;  
                         case TelephonyManager.CALL_STATE_OFFHOOK:  

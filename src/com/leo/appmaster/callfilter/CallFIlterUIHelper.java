@@ -9,6 +9,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
+import com.leo.appmaster.utils.Utilities;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -47,7 +48,7 @@ public class CallFIlterUIHelper {
     }
 
     public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title, Context context,
-                                                                         boolean isContentShow) {
+                                                                         boolean isContentShow, int position) {
         MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
         dialog.setTitle(title);
         dialog.setContentVisible(isContentShow);
@@ -56,13 +57,15 @@ public class CallFIlterUIHelper {
                 context.getResources().getString(R.string.call_filter_mark_as_tx),
                 context.getResources().getString(R.string.call_filter_mark_as_zp)};
         dialog.setCanceledOnTouchOutside(true);
-        dialog.fillData(itemContent, 0);
+        dialog.fillData(itemContent);
+
+        if (position > -1 && position < 3) {
+            dialog.setNowItemPosition(position);
+        }
+
         return dialog;
     }
 
-    //    public static Dialog getConfirmRemoveFromBlacklistDialog() {
-//        return null;
-//    }
     public static synchronized CallFIlterUIHelper getInstance() {
         if (mInstance == null) {
             mInstance = new CallFIlterUIHelper();
