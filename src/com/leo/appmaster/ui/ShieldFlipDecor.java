@@ -45,7 +45,7 @@ public class ShieldFlipDecor extends BaseDecor {
         camera.rotateY(mFlipDegreeY);  
 //        camera.ro
         camera.getMatrix(matrix);
-        int centerX = mParent.centerX() - shieldLayer.getMaxOffsetX();
+        int centerX = mParent.centerX();
         int centerY = mParent.centerY();
         matrix.preTranslate(-centerX, -centerY);  
         matrix.postTranslate(centerX, centerY); 

@@ -314,6 +314,7 @@
     <dimen name="f3">16dp</dimen>
     <dimen name="f4">14dp</dimen>
     <dimen name="f5">13dp</dimen>
+    <dimen name="f5a">12dp</dimen>
     <dimen name="f6">11dp</dimen>
 
     <!-- 3.1 -->
