@@ -112,6 +112,9 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     private boolean mMemoryLess =false;
 
+    private LayerDecor mFlipDecor;
+    private LayerDecor mBurstDecor;
+
     HomeAnimShieldLayer(HomeAnimView view) {
         super(view);
         mOutCircleMatrix = new Matrix();
@@ -384,6 +387,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             if (shieldOffsetY <= 0) {
                 canvas.drawCircle(mCirclePx, mCirclePy, mShieldBgRadius, mTextPaint);
             }
+            mFlipDecor.applyDecor(canvas, mShieldMatrix);
             mShieldDrawable.draw(canvas);
         }
 
