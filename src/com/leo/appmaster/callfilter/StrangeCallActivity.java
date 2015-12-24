@@ -32,7 +32,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.privacycontact.AddFromContactListActivity;
 import com.leo.appmaster.privacycontact.CircleImageView;
+import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
@@ -49,15 +51,13 @@ import com.leo.appmaster.utils.Utilities;
 
 public class StrangeCallActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private static final String TAG = "AddFromCallLogListActivity";
+    private static final int HAVE_BLACK_LIST = -2;
     private List<ContactCallLog> mCallLogList;
     private CommonToolbar mTitleBar;
     private CallLogAdapter mCallLogAdapter;
     private ListView mListCallLog;
     private LEORoundProgressDialog mProgressDialog;
     private List<ContactCallLog> mAddPrivacyCallLog;
-    private LEOAlarmDialog mAddCallLogDialog;
-    private List<MessageBean> mAddMessages;
-    private List<ContactCallLog> mAddCallLogs;
     private boolean mLogFlag = false;
     private ProgressBar mProgressBar;
     private String mFrom;
@@ -70,6 +70,15 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         @Override
         public void handleMessage(Message msg) {
             int currentValue = msg.what;
+
+            if (currentValue == HAVE_BLACK_LIST) {
+                Context context = StrangeCallActivity.this;
+                String str = getResources().getString(R.string.call_filter_have_add_black_num);
+                Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
             if (currentValue >= mAddPrivacyCallLog.size()) {
                 if (!mLogFlag) {
                     if (mProgressDialog != null) {
@@ -131,9 +140,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     public void onBackPressed() {
         if (mProgressDialog != null) {
             mProgressDialog.cancel();
-        }
-        if (mAddCallLogDialog != null) {
-            mAddCallLogDialog.cancel();
         }
         super.onBackPressed();
     }
@@ -219,8 +225,25 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         if (mLoadDone) {
             if (mCallLogList != null && mCallLogList.size() > 0) {
                 if (mAddPrivacyCallLog.size() > 0 && mAddPrivacyCallLog != null) {
-                    showProgressDialog(mAddPrivacyCallLog.size(), 0);
-                    sendImpLogHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
+
+                    if (mAddPrivacyCallLog.size() == 1) {
+                        boolean isHaveBlackNum = mCallManger.
+                                isExistBlackList(mAddPrivacyCallLog.get(0).getCallLogNumber());
+                        if (isHaveBlackNum) {
+                            Message messge = new Message();
+                            messge.what = HAVE_BLACK_LIST;
+                            if (messge != null && mHandler != null) {
+                                mHandler.sendMessage(messge);
+                            }
+                        } else {
+                            showProgressDialog(mAddPrivacyCallLog.size(), 0);
+                            sendImpLogHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
+                        }
+                    } else {
+                        showProgressDialog(mAddPrivacyCallLog.size(), 0);
+                        sendImpLogHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
+                    }
+
                 } else {
                     Toast.makeText(StrangeCallActivity.this,
                             getResources().getString(R.string.privacy_contact_toast_no_choose),
@@ -338,8 +361,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         ContentResolver cr = getContentResolver();
                         if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(model)) {
                             List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
-                            //TODO blacklist去重
-                            //TODO 删除系统记录？
                             for (ContactCallLog contact : mAddPrivacyCallLog) {
                                 String name = contact.getCallLogName();
                                 String contactNumber = contact.getCallLogNumber();
@@ -347,132 +368,24 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                 /*隐私联系人去重,判断是否为隐私联系人*/
                                 boolean isPryCont = PrivacyContactUtils.pryContRemovSame(contactNumber);
                                 if (!isPryCont) {
-                                    boolean isHaveBlackNum = false;
+                                    boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
                                     if (!isHaveBlackNum) {
 
                                         BlackListInfo info = new BlackListInfo();
                                         info.setNumberName(name);
                                         info.setNumber(number);
-                                        info.setLocHandler(CallFilterConstants.LOC_HD);
-                                        info.setLocHandlerType(0);
-                                        info.setUploadState(CallFilterConstants.UPLOAD_NO);
                                         blackList.add(info);
-
-                                        Context context = StrangeCallActivity.this;
-                                        /*4.4以上不去做短信操作*/
-                                        boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
-                                        if (isLessLeve19) {
-                                            if (mAddMessages == null) {
-                                                mAddMessages = PrivacyContactManager.getInstance(context).
-                                                        queryMsmsForNumber(contactNumber);
-                                            } else {
-                                                List<MessageBean> addMessages = PrivacyContactManager.
-                                                        getInstance(context).queryMsmsForNumber(contactNumber);
-                                                mAddMessages.addAll(addMessages);
-                                            }
-                                        }
-
-                                        if (mAddCallLogs == null) {
-                                            mAddCallLogs = PrivacyContactManager.getInstance(context).
-                                                    queryCallsForNumber(contactNumber);
-                                        } else {
-                                            List<ContactCallLog> addCalllog = PrivacyContactManager.
-                                                    getInstance(context).queryCallsForNumber(contactNumber);
-                                            mAddCallLogs.addAll(addCalllog);
-                                        }
-                                        if (isExistLog == 0) {
-                                            if ((mAddMessages != null && mAddMessages.size() != 0)
-                                                    || (mAddCallLogs != null && mAddCallLogs.size() != 0)) {
-                                                isExistLog = PrivacyContactUtils.EXIST_LOG;
-                                                mLogFlag = true;
-                                            }
-                                        }
 
                                     }
                                 }
-                                //cancel Process Dialog
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;
                                 if (messge != null && mHandler != null) {
                                     mHandler.sendMessage(messge);
                                 }
-                                //TODO EventBus更新列表
                                 mCallManger.addBlackList(blackList, false);
                             }
-                        } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(model)) {
-                            // 导入通话记录
-                            if (mAddCallLogs != null) {
-                                for (ContactCallLog calllog : mAddCallLogs) {
-                                    String number = calllog.getCallLogNumber();
-                                    String name = calllog.getCallLogName();
-                                    String date = calllog.getClallLogDate();
-                                    int type = calllog.getClallLogType();
-                                    ContentValues values = new ContentValues();
-                                    values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER, number);
-                                    values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, name);
-                                    values.put(Constants.COLUMN_CALL_LOG_DATE, date);
-                                    values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
-                                    values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
-                                    values.put(Constants.COLUMN_CALL_LOG_DURATION, calllog.getCallLogDuraction());
-                                    Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
-                                    PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
-                                            StrangeCallActivity.this);
-                                    if (callLogFlag != null && mHandler != null) {
-                                        Message messge = Message.obtain();
-                                        count = count + 1;
-                                        messge.what = count;
-                                        mHandler.sendMessage(messge);
-                                    }
-                                }
-
-                            }
-                            // 导入短信和通话记录
-                            if (mAddMessages != null) {
-                                for (MessageBean message : mAddMessages) {
-                                    String number = message.getPhoneNumber();
-                                    String name = message.getMessageName();
-                                    String body = message.getMessageBody();
-                                    String time = message.getMessageTime();
-                                    String threadId = message.getMessageThreadId();
-                                    int isRead = 1;// 0未读，1已读
-                                    int type = message.getMessageType();// 短信类型1是接收到的，2是已发出
-                                    ContentValues values = new ContentValues();
-                                    values.put(Constants.COLUMN_MESSAGE_PHONE_NUMBER, number);
-                                    values.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, name);
-                                    String bodyTrim = body.trim();
-                                    values.put(Constants.COLUMN_MESSAGE_BODY, bodyTrim);
-                                    values.put(Constants.COLUMN_MESSAGE_DATE, time);
-                                    int thread = PrivacyContactUtils.queryContactId(
-                                            StrangeCallActivity.this, message.getPhoneNumber());
-                                    values.put(Constants.COLUMN_MESSAGE_THREAD_ID, thread);
-                                    values.put(Constants.COLUMN_MESSAGE_IS_READ, isRead);
-                                    values.put(Constants.COLUMN_MESSAGE_TYPE, type);
-                                    Uri messageFlag = cr.insert(Constants.PRIVACY_MESSAGE_URI, values);
-                                    PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
-                                            new String[]{
-                                                    number
-                                            }, StrangeCallActivity.this);
-                                    if (messageFlag != null && mHandler != null) {
-                                        Message messge = Message.obtain();
-                                        count = count + 1;
-                                        messge.what = count;
-                                        mHandler.sendMessage(messge);
-                                    }
-                                }
-                            }
-                            if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
-                                LeoEventBus.getDefaultBus().post(
-                                        new PrivacyEditFloatEvent(
-                                                PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
-                            }
-                            if (mAddMessages != null && mAddMessages.size() != 0) {
-
-                                LeoEventBus.getDefaultBus().post(
-                                        new PrivacyEditFloatEvent(
-                                                PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
-                            }
-                            isExistLog = PrivacyContactUtils.NO_EXIST_LOG;
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -506,68 +419,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         }
     }
 
-    private void showAddCallLogDialog(String title, String content) {
-        if (mAddCallLogDialog == null) {
-            mAddCallLogDialog = new LEOAlarmDialog(this);
-        }
-        mAddCallLogDialog.setOnClickListener(new OnDiaogClickListener() {
-            @Override
-            public void onClick(int which) {
-                LeoLog.i("caocao", "laile");
-                if (which == 1) {
-                    mHandler = new Handler() {
-                        @Override
-                        public void handleMessage(Message msg) {
-                            int currentValue = msg.what;
-                            int totalSize = 0;
-                            if (mAddCallLogs != null) {
-                                totalSize = mAddCallLogs.size();
-                            }
-                            if (mAddMessages != null) {
-                                totalSize = totalSize + mAddMessages.size();
-                            }
-                            if (currentValue >= totalSize) {
-                                if (mProgressDialog != null) {
-                                    mProgressDialog.cancel();
-                                }
-                                StrangeCallActivity.this.finish();
-                            } else {
-                                mProgressDialog.setProgress(currentValue);
-                            }
-                            super.handleMessage(msg);
-                        }
-                    };
-                    int totalSize = 0;
-                    if (mAddCallLogs != null) {
-                        totalSize = mAddCallLogs.size();
-                    }
-                    if (mAddMessages != null) {
-                        totalSize = totalSize + mAddMessages.size();
-                    }
-                    showProgressDialog(totalSize, 0);
-                    sendImpLogHandler(PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL);
-                    SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd",
-                            "import");
-                } else if (which == 0) {
-                    SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd",
-                            "unimport");
-                    if (mAddCallLogDialog != null) {
-                        mAddCallLogDialog.cancel();
-                    }
-                    StrangeCallActivity.this.finish();
-                }
-
-            }
-        });
-        mAddCallLogDialog.setCanceledOnTouchOutside(false);
-        mAddCallLogDialog.setTitle(title);
-        mAddCallLogDialog.setContent(content);
-        try {
-            mAddCallLogDialog.show();
-        } catch (Exception e) {
-
-        }
-    }
 
     private class AddFromCallHandler extends Handler {
         @Override
@@ -598,24 +449,10 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     }
                     break;
                 case PrivacyContactUtils.MSG_CALL_QU:
-                    LeoLog.d("testCallLog", "come to MSG_CALL_QU");
                     try {
-                        if (msg.arg1 == PrivacyContactUtils.EXIST_LOG) {
-                            LeoLog.d("testCallLog", "EXIST_LOG");
-                            if (mProgressDialog != null) {
-                                mProgressDialog.cancel();
-                            }
-                            String title = getResources().getString(
-                                    R.string.privacy_contact_add_log_dialog_title);
-                            String content = getResources().getString(
-                                    R.string.privacy_contact_add_log_dialog_dialog_content);
-                            showAddCallLogDialog(title, content);
-                            mHandler = null;
-                        } else {
-                            LeoLog.d("testCallLog", "EXIST_LOG else");
-                            if (mProgressDialog != null) {
-                                mProgressDialog.cancel();
-                            }
+                        LeoLog.d("testCallLog", "EXIST_LOG else");
+                        if (mProgressDialog != null) {
+                            mProgressDialog.cancel();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -634,12 +471,14 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 @Override
                 public void run() {
                     mProgressBar.setVisibility(View.VISIBLE);
+//                    List<ContactCallLog> callLogList = PrivacyContactUtils.
+//                            getSysCallLog(StrangeCallActivity.this, null, null, false, false);
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
-                            getSysCallLog(StrangeCallActivity.this, null, null, false, false);
-//                    callLogList = removeNoNameInfo(callLogList);
+                            getSysCallLogNoContact(StrangeCallActivity.this, null, null, false, false);
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                     }
+
                     Message msg = new Message();
                     msg.what = PrivacyContactUtils.MSG_ADD_CALL;
                     msg.obj = callLogList;
@@ -647,16 +486,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 }
             });
         }
-    }
-
-    private List<ContactCallLog> removeNoNameInfo(List<ContactCallLog> callLogList) {
-        for (int i = 0; i < callLogList.size(); i++) {
-            ContactCallLog info = callLogList.get(i);
-            if (Utilities.isEmpty(info.getCallLogName())) {
-                callLogList.remove(i);
-            }
-        }
-        return callLogList;
     }
 
 }

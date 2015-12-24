@@ -34,6 +34,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
+import com.leo.appmaster.phoneSecurity.AddSecurityNumberActivity;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
@@ -485,6 +486,87 @@ public class PrivacyContactUtils {
             }
         }
         return contacts;
+    }
+
+    public static List<ContactCallLog> getSysCallLogNoContact(Context context, String selection, String[] selectionArgs, boolean isDetailList, boolean isFreContacts) {
+        List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(context, null, null, false);
+
+        SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
+        Cursor cursor = null;
+
+        try {
+            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+            cursor = mgr.getSystemCalls(selection, selectionArgs);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+
+                    int numberColum = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+                    int nameColum = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+                    int dateColum = cursor.getColumnIndex(CallLog.Calls.DATE);
+                    int callTypeColum = cursor.getColumnIndex(CallLog.Calls.TYPE);
+                    int callDurationColum = cursor.getColumnIndex(CallLog.Calls.DURATION);
+
+                    ContactCallLog callLog = new ContactCallLog();
+                    int count = cursor.getCount();
+                    String number = null;
+                    if (isFreContacts) {
+                        number = simpleFromateNumber(cursor.getString(numberColum));
+                    } else {
+                        number = cursor.getString(numberColum);
+                    }
+                    Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
+                            context, number);
+                    if (icon != null) {
+                        int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
+                        icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
+                        callLog.setContactIcon(icon);
+                    } else {
+                        BitmapDrawable bitDra = (BitmapDrawable) context.getResources().getDrawable(R.drawable.default_user_avatar);
+                        Bitmap bitmapIcon = bitDra.getBitmap();
+                        callLog.setContactIcon(bitmapIcon);
+                    }
+                    String name = cursor.getString(nameColum);
+                    Date date = new Date(Long.parseLong(cursor.getString(dateColum)));
+                    String time = sfd.format(date);
+                    long durationTime = cursor.getLong(callDurationColum);
+                    int type = (cursor.getInt(callTypeColum));
+
+                    callLog.setCallLogCount(count);
+                    callLog.setCallLogDuraction(durationTime);
+                    callLog.setCallLogName(name);
+                    callLog.setCallLogNumber(number);
+                    callLog.setClallLogDate(time);
+                    callLog.setClallLogType(type);
+
+                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                    boolean isExistContact = false;
+                    for (ContactBean contactBean : contactsList) {
+                        String contactNumber = contactBean.getContactNumber();
+                        contactNumber = PrivacyContactUtils.simpleFromateNumber(contactNumber);
+                        if (contactNumber != null && formateNumber != null && contactNumber.contains(formateNumber)) {
+                            isExistContact = true;
+                            break;
+                        }
+                    }
+
+                    if (!isExistContact && number != null) {
+                        calllogs.add(callLog);
+                    }
+
+
+                }
+
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+
+        return calllogs;
     }
 
     /**
