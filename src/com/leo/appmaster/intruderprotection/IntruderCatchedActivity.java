@@ -115,8 +115,10 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         init();
 
         // 3.2 add advertise
-        loadAd();
-        
+        if (AppMasterPreference.getInstance(this).getADIntruder() == 1) {
+            loadAd();
+        }
+
 //        Intent i = new Intent(this, GradeTipActivity.class);
 //        startActivity(i);
     }

@@ -293,6 +293,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_AD_APPWAL_UPDATE = "ad_appwall_update";
     public static final String PREF_AD_LAST_LOAD_TIME = "ad_last_load_time";
     public static final String PREF_ISWIPE_UPDATE_TIP = "pref_iswipe_update_tip";
+    // 3.2 ad
+    public static final String PREF_AD_INTRUDER = "pref_ad_intruder";
+    public static final String PREF_AD_AFTER_SCAN = "pref_ad_after_scan";
+
     //intruder
 //    public static final String KEY_SWITCH_FOR_INTRUDER_PROTECTION = "switch_for_intruder_protection";
 //    public static final String KEY_TIMES_OF_CATCH_INTRUDER = "times_of_catch_intruder";
@@ -2784,6 +2788,27 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getADWifiScan() {
         return mPref.getInt(PREF_AD_WIFI_SCAN_RESULT,
+                AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
+    }
+
+
+    // 3.2 入侵者防护广告开关
+    public void setADIntruder(int flag) {
+        commitAsync(mPref.edit().putInt(PREF_AD_INTRUDER, flag));
+    }
+
+    public int getADIntruder() {
+        return mPref.getInt(PREF_AD_INTRUDER,
+                AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
+    }
+
+    // 3.2 扫描完成页广告开关
+    public void setADAfterScan(int flag) {
+        commitAsync(mPref.edit().putInt(PREF_AD_AFTER_SCAN, flag));
+    }
+
+    public int getADAfterScan() {
+        return mPref.getInt(PREF_AD_AFTER_SCAN,
                 AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
     }
 

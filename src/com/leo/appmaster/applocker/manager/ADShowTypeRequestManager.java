@@ -60,6 +60,11 @@ public class ADShowTypeRequestManager {
     private static final String AD_MAIN_SWITCHER = "s";
     /* 3.1 拉取广告时间间隔 */
     private static final String AD_FETCH_INTERVAL = "t";
+    /* 3.2 intruder */
+    private static final String AD_INTRUDER = "v";
+    /* 3.2 after privacy scan */
+    private static final String AD_AFTER_SCAN = "u";
+
     /* 如果后台配置本地没有的广告形式时，默认广告类型 */
     public static final int DEFAULT_AD_SHOW_TYPE = 3;
     /* 关闭Lock页所有广告指令 */
@@ -169,9 +174,9 @@ public class ADShowTypeRequestManager {
             /* 满足两个条件：1,不再本地广告形式内，2，不为关闭广告指令 */
             adtype = DEFAULT_AD_SHOW_TYPE;
         }
-        mSp.setADShowType(forceClose?CLOSE_LOCK_AD_SHOW:adtype);
+        mSp.setADShowType(forceClose ? CLOSE_LOCK_AD_SHOW : adtype);
     }
-    
+
     private void updateLargeADInLockScreenConfig(JSONObject response, boolean forceClose) {
         int largeBannerAdSwitch = mSp.getLockBannerADShowProbability();
         try {
@@ -222,7 +227,7 @@ public class ADShowTypeRequestManager {
     private void updateADAtWifiScanConfig(JSONObject response, boolean forceClose) {
         try {
             if (response.getInt(AD_WIFI_SCAN) != mSp.getADWifiScan()) {
-                mSp.setADWifiScan(forceClose?0:(response.getInt(AD_WIFI_SCAN)));
+                mSp.setADWifiScan(forceClose ? 0 : (response.getInt(AD_WIFI_SCAN)));
                 if (mSp.getADWifiScan() == 1) {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_on");
                 } else {
@@ -279,6 +284,30 @@ public class ADShowTypeRequestManager {
         } catch (JSONException e) {
             e.printStackTrace();
             return;
+        }
+    }
+
+    private void updateIntruderAdConfig(JSONObject response, boolean forceClose) {
+        try {
+            int value = forceClose?0:(response.getInt(AD_INTRUDER));
+            LeoLog.d("poha", "请求成功，入侵者防护开关:" + value);
+            if (value != mSp.getADIntruder()) {
+                mSp.setADIntruder(value);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateAfterScanAdConfig(JSONObject response, boolean forceClose) {
+        try {
+            int value = forceClose?0:(response.getInt(AD_AFTER_SCAN));
+            LeoLog.d("poha", "请求成功，扫描结果页开关:" + value);
+            if (value != mSp.getADAfterScan()) {
+                mSp.setADAfterScan(value);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
     
@@ -340,6 +369,10 @@ public class ADShowTypeRequestManager {
                     updateADAtThemeListConfig(response, forceClose);
                     //锁屏界面的礼物盒是否作更新显示的配置
                     updateGiftBoxNeedJump(response, forceClose);
+                    // 3.2 入侵者检测广告配置
+                    updateIntruderAdConfig(response, forceClose);
+                    // 3.2 扫描结果页广告配置
+                    updateAfterScanAdConfig(response, forceClose);
                     // 注意：下述3个非广告开关
                     mSp.setVersionUpdateTipsAfterUnlockOpen((response.getInt(VERSION_UPDATE_AFTER_UNLOCK)));
                     LeoLog.d("poha", "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));
