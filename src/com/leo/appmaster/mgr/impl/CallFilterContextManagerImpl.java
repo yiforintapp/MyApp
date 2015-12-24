@@ -28,6 +28,8 @@ import java.util.List;
  * Created by runlee on 15-12-18.
  */
 public class CallFilterContextManagerImpl extends CallFilterContextManager {
+    public static final int PAGE_SIZE = 100;
+
     @Override
     public List<BlackListInfo> getBlackList() {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
@@ -242,7 +244,34 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
-    public List<BlackListInfo> getNoUpBlackListLimit() {
+    public BlackListInfo getBlackListFroNum(String number) {
+        if (TextUtils.isEmpty(number)) {
+            return null;
+        }
+        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
+        BlackListInfo info = new BlackListInfo();
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ");
+        String selects = sb.toString();
+        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
+                String.valueOf(CallFilterConstants.REMOVE_NO), ("%" + formateNum)};
+        List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
+        if (infos != null && infos.size() > 0) {
+            for (BlackListInfo black : infos) {
+                info = black;
+                break;
+            }
+        }
+
+        return info;
+    }
+
+    @Override
+    public List<BlackListInfo> getNoUpBlackListLimit(int page) {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
@@ -250,7 +279,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         String selection = sb.toString();
         String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD_NO),
                 String.valueOf(CallFilterConstants.LOC_HD)};
-        String sortOrder = null;
+        int pageSize = PAGE_SIZE;
+        int currentOffset = (page - 1) * PAGE_SIZE;
+        StringBuilder sbOr = new StringBuilder();
+        sbOr.append(CallFilterConstants.BLACK_ID);
+        sbOr.append(" " + CallFilterConstants.DESC);
+        sbOr.append(" limit  " + pageSize + " offset " + currentOffset);
+        String sortOrder = sbOr.toString();
         return CallFilterUtils.getNoUpBlack(uri, selection, selectionArgs, sortOrder);
     }
 
@@ -293,7 +328,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     long duration = cursor.getLong(durationColum);
                     int callType = cursor.getInt(callTypeColum);
                     int readState = cursor.getInt(readStateColum);
-                    int filterType = cursor.getInt(filterTypeColum);
+                    int filterType = -1;
+                    BlackListInfo black = getBlackListFroNum(number);
+                    if (black != null) {
+                        filterType = black.getLocHandlerType();
+                    }
+
                     /*默认值-1*/
                     int filterGrId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
@@ -561,8 +601,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     long duration = cursor.getLong(durationColum);
                     int callType = cursor.getInt(callTypeColum);
                     int readState = cursor.getInt(readStateColum);
-                    int filterType = cursor.getInt(filterTypeColum);
-
+//                    int filterType = cursor.getInt(filterTypeColum);
+                    int filterType = -1;
+                    BlackListInfo black = getBlackListFroNum(number);
+                    if (black != null) {
+                        filterType = black.getLocHandlerType();
+                    }
                     int filterNumber = -1;
                     int blackId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, numberN, numberArea, blackId,

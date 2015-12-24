@@ -68,11 +68,17 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract List<BlackListInfo> getNoUploadBlackList();
 
     /**
+     * 指定查询黑名单列表
+     */
+    public abstract BlackListInfo getBlackListFroNum(String number);
+
+
+    /**
      * 分页查询为上传到服务器的黑名单列表
      *
      * @return
      */
-    public abstract List<BlackListInfo> getNoUpBlackListLimit();
+    public abstract List<BlackListInfo> getNoUpBlackListLimit(int page);
 
     /*拦截分组*/
 
@@ -239,6 +245,7 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract void setStraNotiTipParam(int params);
+
     /**
      * 倍率参数：黑名单，标记名单显示值
      *
@@ -380,10 +387,11 @@ public abstract class CallFilterContextManager extends Manager {
 
     /**
      * 查询指定号码隐私联系人时候使用
+     *
      * @param number
      * @return
      */
-    public abstract  boolean isPrivacyConUse(String number);
+    public abstract boolean isPrivacyConUse(String number);
 
 
 }

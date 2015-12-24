@@ -345,9 +345,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (DBG) {
                         int[] pix = AppUtil.getScreenPix(getActivity());
                         LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//                        CallFilterUtils.addData();
-//                    BlackUploadFetchJob.startWork();
-                        BlackDownLoadFetchJob.startWork();
+                        CallFilterUtils.addData();
+                    BlackUploadFetchJob.startWork();
+//                        BlackDownLoadFetchJob.startWork();
 
 //                        StringBuilder sbName = new StringBuilder();
 //                        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());

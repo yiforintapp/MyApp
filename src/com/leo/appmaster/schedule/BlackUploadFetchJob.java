@@ -7,6 +7,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterUtils;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
@@ -60,15 +62,25 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         BlackUploadFetchJob job = new BlackUploadFetchJob();
         FetchScheduleListener listener = job.newJsonObjListener();
         Context context = AppMasterApplication.getInstance();
-        List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
-        //TODO
-        for (int i = 0; i < 200; i++) {
-            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "20000" + i, "测试", 0, null,
-                    null, 23, 25, 0, 1, 1, 0, 1);
-            infos.add(info);
+
+//        for (int i = 0; i < 200; i++) {
+//            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "20000" + i, "测试", 0, null,
+//                    null, 23, 25, 0, 1, 1, 0, 1);
+//            infos.add(info);
+//        }
+
+        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        int i = 0;
+        while (true) {
+            List<BlackListInfo> infos = pm.getNoUpBlackListLimit(i);
+            if (infos == null || infos.size() < 0) {
+                break;
+            }
+            i = i + 1;
+            String bodyString = getJsonString(infos);
+            HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
         }
-        String bodyString = getJsonString(infos);
-        HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
+
     }
 
     public static String getJsonString(List<BlackListInfo> infos) {
