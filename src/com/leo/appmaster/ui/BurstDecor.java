@@ -1,6 +1,7 @@
 package com.leo.appmaster.ui;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.Animator.AnimatorListener;
 import com.leo.tools.animator.ObjectAnimator;
@@ -103,6 +104,7 @@ public class BurstDecor extends BaseDecor {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
 //                float animatedValue = (Float) animation.getAnimatedValue("currentProcess");
+                LeoLog.i("tesi", "mCurrentProcess = " + mCurrentProcess);
                 calculatePosition();
             }
         });
