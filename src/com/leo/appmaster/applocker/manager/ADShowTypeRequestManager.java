@@ -138,97 +138,169 @@ public class ADShowTypeRequestManager {
     }
     
     private void updateADInLockScreenConfig(JSONObject response ,boolean forceClose) {
-        int currentType = mSp.getADShowType();
-        int adtype = currentType;
         try {
-            adtype = response.getInt(AD_NEW_SHOW_TYPE);
+            int value = forceClose ? 0 : (response.getInt(AD_NEW_SHOW_TYPE));
+            LeoLog.d("poha", "请求成功，广告展示形式是：" + response.getInt(AD_NEW_SHOW_TYPE));
+            if (value != mSp.getADShowType()) {
+                if (value == 1) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_banner");
+                }
+                if (value == 2) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_bannerpop");
+                }
+                if (value == 3) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_draw");
+                }
+                if (value == 4) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
+                }
+                if (value == 5) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_superman");
+                }
+                if (value == 6) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_submarine");
+                }
+                List<String> list = Arrays.asList(LOCAL_AD_SHOW_TYPE);
+                String adTypeString = String.valueOf(value);
+                if (!(list.contains(adTypeString)) && value != CLOSE_LOCK_AD_SHOW) {
+                    /* 满足两个条件：1,不再本地广告形式内，2，不为关闭广告指令 */
+                    value = DEFAULT_AD_SHOW_TYPE;
+                }
+                mSp.setADShowType(value);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
-        LeoLog.d("poha", "请求成功，广告展示形式是：" + adtype);
-        if (adtype != currentType) {
-            if (adtype == 1) {
-                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_banner");
-            }
-            if (adtype == 2) {
-                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_bannerpop");
-            }
-            if (adtype == 3) {
-                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_draw");
-            }
-            if (adtype == 4) {
-                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
-            }
-            if (adtype == 5) {
-                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_superman");
-            }
-            if (adtype == 6) {
-                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_submarine");
-            }
-        }
-        /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
-        List<String> list = Arrays.asList(LOCAL_AD_SHOW_TYPE);
-        String adTypeString = String.valueOf(adtype);
-        if (!(list.contains(adTypeString)) && adtype != CLOSE_LOCK_AD_SHOW) {
-            /* 满足两个条件：1,不再本地广告形式内，2，不为关闭广告指令 */
-            adtype = DEFAULT_AD_SHOW_TYPE;
-        }
-        mSp.setADShowType(forceClose ? CLOSE_LOCK_AD_SHOW : adtype);
+//        int currentType = mSp.getADShowType();
+//        int adtype = currentType;
+//        try {
+//            adtype = response.getInt(AD_NEW_SHOW_TYPE);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//        LeoLog.d("poha", "请求成功，广告展示形式是：" + adtype);
+//        if (adtype != currentType) {
+//            if (adtype == 1) {
+//                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_banner");
+//            }
+//            if (adtype == 2) {
+//                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_bannerpop");
+//            }
+//            if (adtype == 3) {
+//                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_draw");
+//            }
+//            if (adtype == 4) {
+//                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
+//            }
+//            if (adtype == 5) {
+//                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_superman");
+//            }
+//            if (adtype == 6) {
+//                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_submarine");
+//            }
+//        }
+//        /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
+//        List<String> list = Arrays.asList(LOCAL_AD_SHOW_TYPE);
+//        String adTypeString = String.valueOf(adtype);
+//        if (!(list.contains(adTypeString)) && adtype != CLOSE_LOCK_AD_SHOW) {
+//            /* 满足两个条件：1,不再本地广告形式内，2，不为关闭广告指令 */
+//            adtype = DEFAULT_AD_SHOW_TYPE;
+//        }
+//        mSp.setADShowType(forceClose ? CLOSE_LOCK_AD_SHOW : adtype);
     }
 
     private void updateLargeADInLockScreenConfig(JSONObject response, boolean forceClose) {
-        int largeBannerAdSwitch = mSp.getLockBannerADShowProbability();
         try {
-            largeBannerAdSwitch = response.getInt(AD_LARGE_BANNER_PROBABILITY);
+            LeoLog.d("poha", "请求成功，解锁界面大图banner 直接显示的概率：" + response.getInt(AD_LARGE_BANNER_PROBABILITY));
+            int value = forceClose ? 0 : (response.getInt(AD_LARGE_BANNER_PROBABILITY));
+            if (value != mSp.getLockBannerADShowProbability()) {
+                mSp.setLockBannerADShowProbability(value);
+                if (value == 0) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_picad_off");
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
-        mSp.setLockBannerADShowProbability(forceClose?0:largeBannerAdSwitch);
-        if (largeBannerAdSwitch == 0) {
-            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_picad_off");
-        }
-        LeoLog.d("poha", "请求成功，解锁界面大图banner 直接显示的概率：" + mSp.getLockBannerADShowProbability());
+//        int largeBannerAdSwitch = mSp.getLockBannerADShowProbability();
+//        try {
+//            largeBannerAdSwitch = response.getInt(AD_LARGE_BANNER_PROBABILITY);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//        mSp.setLockBannerADShowProbability(forceClose?0:largeBannerAdSwitch);
+//        if (largeBannerAdSwitch == 0) {
+//            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_picad_off");
+//        }
+//        LeoLog.d("poha", "请求成功，解锁界面大图banner 直接显示的概率：" + mSp.getLockBannerADShowProbability());
     }
 
     private void updateUFOADConfig(JSONObject response, boolean forceClose) {
-        try{
-            mSp.setUFOAnimType(forceClose?0:(response.getInt(UFO_ANIM_TYPE)));
-            mSp.setThemeChanceAfterUFO(forceClose?Integer.MAX_VALUE:(response.getInt(THEME_CHANCE_AFTER_UFO)));
+        try {
             LeoLog.d("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
             LeoLog.d("poha","请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
+            int value = forceClose ? 0 : (response.getInt(UFO_ANIM_TYPE));
+            int value2 = forceClose ? Integer.MAX_VALUE : (response.getInt(THEME_CHANCE_AFTER_UFO));
+
+            if (value != mSp.getUFOAnimType()) {
+                mSp.setLockBannerADShowProbability(value);
+            }
+            if (value2 != mSp.getThemeChanceAfterUFO()) {
+                mSp.setLockBannerADShowProbability(value2);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
     }
     
     private void updateADAfterAcceleratingConfig(JSONObject response, boolean forceClose) {
-        int currentType = mSp.getADChanceAfterAccelerating();
-        int adtype = currentType;
         try {
-            adtype = response.getInt(AD_NEW_ACCELERATING);
+            LeoLog.d("poha", "请求成功，加速后出现广告：" + response.getInt(AD_NEW_ACCELERATING));
+            int value = forceClose ? 0 : (response.getInt(AD_NEW_ACCELERATING));
+            if (value != mSp.getADChanceAfterAccelerating()) {
+                mSp.setADChanceAfterAccelerating(value);
+                if (value == 1) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
+                } else {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_off");
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
-        if (adtype != currentType) {
-            mSp.setADChanceAfterAccelerating(forceClose?0:adtype);
-            if (mSp.getADChanceAfterAccelerating() == 1) {
-                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
-            } else {
-                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_off");
-            }
-        }
-        LeoLog.d("poha", "请求成功，加速后出现广告：" + adtype);
+        
+//        int currentType = mSp.getADChanceAfterAccelerating();
+//        int adtype = currentType;
+//        try {
+//            adtype = response.getInt(AD_NEW_ACCELERATING);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//        if (forceClose) {
+//            mSp.setADChanceAfterAccelerating(0);
+//        } else {
+//            if (adtype != currentType) {
+//                mSp.setADChanceAfterAccelerating(adtype);
+//                if (mSp.getADChanceAfterAccelerating() == 1) {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
+//                } else {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_off");
+//                }
+//            }
+//        }
+//        LeoLog.d("poha", "请求成功，加速后出现广告：" + adtype);
     }
     
     private void updateADAtWifiScanConfig(JSONObject response, boolean forceClose) {
         try {
-            if (response.getInt(AD_WIFI_SCAN) != mSp.getADWifiScan()) {
-                mSp.setADWifiScan(forceClose ? 0 : (response.getInt(AD_WIFI_SCAN)));
-                if (mSp.getADWifiScan() == 1) {
+            LeoLog.d("poha", "请求成功，wifi扫描开关:" + response.getInt(AD_WIFI_SCAN));
+            int value = forceClose ? 0 : (response.getInt(AD_WIFI_SCAN));
+            if (value != mSp.getADWifiScan()) {
+                mSp.setADWifiScan(value);
+                if (value == 1) {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_on");
                 } else {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_off");
@@ -236,39 +308,85 @@ public class ADShowTypeRequestManager {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
+//        if (forceClose) {
+//            mSp.setADChanceAfterAccelerating(0);
+//        } else {
+//            try {
+//                if (response.getInt(AD_WIFI_SCAN) != mSp.getADWifiScan()) {
+//                    mSp.setADWifiScan(forceClose ? 0 : (response.getInt(AD_WIFI_SCAN)));
+//                    if (mSp.getADWifiScan() == 1) {
+//                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_on");
+//                    } else {
+//                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_wifi_off");
+//                    }
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                return;
+//            }
+//        }
     }
     
     private void updateADAtPrivacyProtectionConfig(JSONObject response, boolean forceClose) {
-        int currentType = mSp.getIsADAfterPrivacyProtectionOpen();
-        int adtype = currentType;
         try {
-            adtype = response.getInt(AD_AFTER_PRIVACY_PROTECTION);
-            if (currentType != adtype) {
-                mSp.setIsADAfterPrivacyProtectionOpen(forceClose ? 0 : adtype);
-                if (adtype == 1) {
+            LeoLog.d("poha", "请求成功，隐私保护后出现广告的开关：" + response.getInt(AD_AFTER_PRIVACY_PROTECTION));
+            int value = forceClose ? 0 : (response.getInt(AD_AFTER_PRIVACY_PROTECTION));
+            if (value != mSp.getIsADAfterPrivacyProtectionOpen()) {
+                mSp.setIsADAfterPrivacyProtectionOpen(value);
+                if (value == 1) {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_on");
                 } else {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_off");
                 }
             }
-            LeoLog.d("poha", "请求成功，隐私保护后出现广告的开关：" + adtype);
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
+        
+        
+//        int currentType = mSp.getIsADAfterPrivacyProtectionOpen();
+//        int adtype = currentType;
+//        try {
+//            adtype = response.getInt(AD_AFTER_PRIVACY_PROTECTION);
+//            if (currentType != adtype) {
+//                mSp.setIsADAfterPrivacyProtectionOpen(forceClose ? 0 : adtype);
+//                if (adtype == 1) {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_on");
+//                } else {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_off");
+//                }
+//            }
+//            LeoLog.d("poha", "请求成功，隐私保护后出现广告的开关：" + adtype);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            return;
+//        }
     }
     
     private void updateADEntryAtHomeActivityConfig(JSONObject response, boolean forceClose) {
         try {
-            mSp.setIsADAtAppLockFragmentOpen(forceClose ? 0 : (response.getInt(AD_AT_APPLOCK_FRAGMENT)));
-            HomeActivity.mHomeAdSwitchOpen = response.getInt(AD_AT_APPLOCK_FRAGMENT);
             LeoLog.d("poha","请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+            int value = forceClose ? 0 : (response.getInt(AD_AT_APPLOCK_FRAGMENT));
+            if (value != mSp.getIsADAtAppLockFragmentOpen()) {
+                mSp.setIsADAtAppLockFragmentOpen(value);
+//                if (value == 1) {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_on");
+//                } else {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "adv_scanRST_off");
+//                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
+//        try {
+//            mSp.setIsADAtAppLockFragmentOpen(forceClose ? 0 : (response.getInt(AD_AT_APPLOCK_FRAGMENT)));
+//            HomeActivity.mHomeAdSwitchOpen = response.getInt(AD_AT_APPLOCK_FRAGMENT);
+//            LeoLog.d("poha","请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            return;
+//        }
     }
     
     private void updateGiftBoxNeedJump(JSONObject response, boolean forceClose) {
@@ -289,7 +407,7 @@ public class ADShowTypeRequestManager {
 
     private void updateIntruderAdConfig(JSONObject response, boolean forceClose) {
         try {
-            int value = forceClose?0:(response.getInt(AD_INTRUDER));
+            int value = forceClose ? 0 : (response.getInt(AD_INTRUDER));
             LeoLog.d("poha", "请求成功，入侵者防护开关:" + value);
             if (value != mSp.getADIntruder()) {
                 mSp.setADIntruder(value);
@@ -301,8 +419,8 @@ public class ADShowTypeRequestManager {
 
     private void updateAfterScanAdConfig(JSONObject response, boolean forceClose) {
         try {
+            LeoLog.d("poha", "请求成功，扫描结果页开关:" + response.getInt(AD_AFTER_SCAN));
             int value = forceClose?0:(response.getInt(AD_AFTER_SCAN));
-            LeoLog.d("poha", "请求成功，扫描结果页开关:" + value);
             if (value != mSp.getADAfterScan()) {
                 mSp.setADAfterScan(value);
             }
@@ -312,26 +430,44 @@ public class ADShowTypeRequestManager {
     }
     
     private void updateADAtThemeListConfig(JSONObject response, boolean forceClose) {
-        int currentType = mSp.getIsADAtLockThemeOpen();
-        int adtype = currentType;
         try {
-            adtype = response.getInt(AD_AT_THEME);
-            if (adtype != currentType) {
-                if (adtype == 1) {
+            int value = forceClose ? 0 : (response.getInt(AD_AT_THEME));
+            if (value != mSp.getIsADAtLockThemeOpen()) {
+                mSp.setIsADAtLockThemeOpen(value);
+                if (value == 1) {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_local");
-                } else if (adtype == 2) {
+                } else if (value == 2) {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_online");
                 } else {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_off");
                 }
             }
-            mSp.setIsADAtLockThemeOpen(forceClose ? 0 : adtype);
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
+        
+//        int currentType = mSp.getIsADAtLockThemeOpen();
+//        int adtype = currentType;
+//        try {
+//            adtype = response.getInt(AD_AT_THEME);
+//            if (adtype != currentType) {
+//                if (adtype == 1) {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_local");
+//                } else if (adtype == 2) {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_online");
+//                } else {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_off");
+//                }
+//            }
+//            mSp.setIsADAtLockThemeOpen(forceClose ? 0 : adtype);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            return;
+//        }
     }
     
     private class UpdateADShowTypeRequestListener extends RequestListener<AppMasterApplication> {
@@ -349,10 +485,11 @@ public class ADShowTypeRequestManager {
             if (response != null) {
                 boolean forceClose = false;
                 try {
+                    //TODO
                     // 中国大陆总开关
                     forceClose = updateADMainConfig(response);
                     // 旧的锁屏界面N选一的广告展示形式
-                    updateADInLockScreenConfig(response, forceClose);
+                    updateADInLockScreenConfig(response, forceClose);  
                     // 锁屏界面的大图广告配置
                     updateLargeADInLockScreenConfig(response, forceClose);
                     // UFO动画的特有配置

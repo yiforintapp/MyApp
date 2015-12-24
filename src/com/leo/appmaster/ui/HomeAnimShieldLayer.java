@@ -415,6 +415,11 @@ public class HomeAnimShieldLayer extends AnimLayer {
             shieldAlpha = mShieldAlpha;
         }
         mShieldDrawable.getPaint().setAlpha(shieldAlpha);
+//<<<<<<< Upstream, based on branch 'lishuai_dev_3.2' of http://gitlab.leoers.com/leo/appmaster.git
+//=======
+//        mShieldMatrix.setScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
+//        mShieldMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
+//>>>>>>> f3617c4 满分动画1 整理广告配置相关代码
         mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
         mShieldMatrix.postScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
         mShieldMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
