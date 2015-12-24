@@ -622,7 +622,7 @@ public class HomePrivacyFragment extends Fragment {
     public void startDirectConfirmAnim() {
         LeoLog.i("tesi", "startDirectConfirmAnim" );
         int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
-        if (score != 100) {
+        if (score == 100) {
             // 启动翻转、火花动画
             final HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
             shieldLayer.getFlipDecor().startFlipAnim(500, new ShieldFlipDecor.OnFlipEndListener() {
