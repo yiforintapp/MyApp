@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
  * Created by runlee on 15-12-19.
  */
 public class BlackListInfo {
-    private int id;
+    private int id = -1;
     private String number;
     private String numberName;
     /**

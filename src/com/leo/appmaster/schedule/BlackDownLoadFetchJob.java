@@ -126,7 +126,7 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
         super.onFetchFail(error);
     }
 
-    private static void startWork() {
+    public static void startWork() {
         BlackDownLoadFetchJob job = new BlackDownLoadFetchJob();
         FetchScheduleListener listener = job.newJsonObjListener();
         Context context = AppMasterApplication.getInstance();

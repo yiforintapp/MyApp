@@ -202,7 +202,7 @@ public class CallFilterUtils {
         return info;
     }
 
-    public static Cursor getCursor(String table, String[] colums, String number) {
+    public static Cursor getCursor(String table, String[] colums, String number, boolean isLoc) {
         SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
         SQLiteDatabase sd = dbHelper.getReadableDatabase();
         if (sd == null) {
@@ -210,8 +210,16 @@ public class CallFilterUtils {
         }
         Cursor cursor = null;
         try {
+            String sel = null;
+            if (isLoc) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(" and ");
+                sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+                sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
+                sel = sb.toString();
+            }
             number = PrivacyContactUtils.formatePhoneNumber(number);
-            cursor = sd.query(table, colums, colums[0] + " LIKE ? ",
+            cursor = sd.query(table, colums, colums[0] + " LIKE ? " + sel,
                     new String[]{"%" + number}, null, null, null);
             if (cursor != null) {
                 return cursor;
@@ -225,7 +233,7 @@ public class CallFilterUtils {
     public static boolean isDbKeyExist(String table, String[] colums, String number) {
         Cursor cursor = null;
         try {
-            cursor = getCursor(table, colums, number);
+            cursor = getCursor(table, colums, number,false);
             if (cursor != null) {
                 return cursor.getCount() > 0;
             }

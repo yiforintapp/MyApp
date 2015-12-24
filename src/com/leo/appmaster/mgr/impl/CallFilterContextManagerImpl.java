@@ -79,13 +79,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (TextUtils.isEmpty(info.getNumber())) {
                 continue;
             }
+            int id = info.getId();
             String name = info.getNumberName();
             String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
-            //TODO
-            boolean isContactUse = CallFilterUtils.isNumberUsePrivacy(number);
-            if (isContactUse) {
-                continue;
-            }
             Bitmap icon = info.getIcon();
             String area = info.getNumberArea();
             int uploadState = info.getUploadState();
@@ -97,6 +93,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             ContentResolver cr = mContext.getContentResolver();
             Uri uri = CallFilterConstants.BLACK_LIST_URI;
             ContentValues value = new ContentValues();
+
             if (!TextUtils.isEmpty(name)) {
                 value.put(CallFilterConstants.BLACK_NAME, name);
             }
@@ -136,7 +133,17 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 String upColum = CallFilterConstants.BLACK_UPLOAD_STATE;
                 String locHdTypeColum = CallFilterConstants.BLACK_LOC_HD_TYPE;
                 String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
-                Cursor cur = CallFilterUtils.getCursor(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, info.getNumber());
+                SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
+                SQLiteDatabase sd = dbHelper.getReadableDatabase();
+                StringBuilder sb = new StringBuilder();
+                sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+                sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
+                String sel = sb.toString();
+                number = PrivacyContactUtils.formatePhoneNumber(number);
+                Cursor cur = sd.query(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, numbColum + " LIKE ? and " + sel,
+                        new String[]{"%" + number, String.valueOf(CallFilterConstants.LOC_HD),
+                                String.valueOf(CallFilterConstants.REMOVE_NO)}, null, null, null);
+
                 int curCount = cur.getCount();
                 if (cur != null && curCount > 0) {
                     while (cur.moveToNext()) {
@@ -148,7 +155,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             if (locHdTypeFlag != locHdType) {
                                 value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
                             }
-                            cr.update(CallFilterConstants.BLACK_LIST_URI, value, null, null);
+                            String where = CallFilterConstants.BLACK_ID + " = ? ";
+                            String[] selectArgs = new String[]{String.valueOf(id)};
+                            cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                         } else {
                             value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
                             value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
@@ -176,32 +185,20 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (blackList == null || blackList.size() <= 0) {
             return false;
         }
-        ContentResolver cr = mContext.getContentResolver();
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String selection = null;
-        String[] selectionArgs = null;
         for (BlackListInfo info : blackList) {
             if (TextUtils.isEmpty(info.getNumber())) {
                 continue;
             }
-//            int id = info.getId();
             String number = info.getNumber();
-//            if (id >= 0) {
-//                selection = CallFilterConstants.BLACK_ID + " = ? ";
-//                selectionArgs = new String[]{String.valueOf(id)};
-//            } else
             if (!TextUtils.isEmpty(number)) {
-                selection = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
-                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                selectionArgs = new String[]{formateNumber};
                 List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
                 BlackListInfo black = new BlackListInfo();
+                black.setId(info.getId());
                 black.setNumber(number);
                 black.setRemoveState(CallFilterConstants.REMOVE);
                 infos.add(black);
                 addBlackList(infos, true);
             }
-            cr.delete(uri, selection, selectionArgs);
         }
 
         return true;
@@ -396,7 +393,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     String colum1 = CallFilterConstants.FIL_GR_PH_NUMB;
                     String colum2 = CallFilterConstants.FIL_GR_DATE;
                     String colum3 = CallFilterConstants.FIL_CALL_TYPE;
-                    Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3}, number);
+                    Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3}, number, false);
                     boolean isKeyExist = (cur != null) ? cur.getCount() > 0 : false;
                     if (isKeyExist) {
                         int idColum = cur.getColumnIndex(CallFilterConstants.FIL_GR_ID);

@@ -28,6 +28,7 @@ import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
+import com.leo.appmaster.schedule.BlackDownLoadFetchJob;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
@@ -338,8 +339,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (DBG) {
                         int[] pix = AppUtil.getScreenPix(getActivity());
                         LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-                        CallFilterUtils.addData();
+//                        CallFilterUtils.addData();
 //                    BlackUploadFetchJob.startWork();
+                        BlackDownLoadFetchJob.startWork();
                     }
                     break;
             }
