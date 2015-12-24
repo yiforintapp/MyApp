@@ -97,7 +97,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
 
     private void fillData() {
         mRecordTime.clear();
-        mRecordTime = mCallManger.getFilterDetListFroId(info.getBlackId());
+        mRecordTime = mCallManger.getFilterDetListFroNum(info.getNumber());
         mLvMain.setAdapter(mAdapter);
     }
 
@@ -149,15 +149,15 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 }
 
                 if (position == 0) {
-                    info.setFilterType(0);
+                    info.setFilterType(1);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_saorao);
                 } else if (position == 1) {
-                    info.setFilterType(1);
+                    info.setFilterType(2);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_ad);
                 } else if (position == 2) {
-                    info.setFilterType(2);
+                    info.setFilterType(3);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_zhapian);
                 }
@@ -180,13 +180,13 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
         if (mTvTitleName != null) {
             String text = (String) mTvTitleName.getText();
             if (text.equals(CallFilterRecordActivity.this.
-                    getString(R.string.filter_number_type_saorao))) {
-                position = 0;
+                    getString(R.string.filter_number_type_zhapian))) {
+                position = 2;
             } else if (text.equals(CallFilterRecordActivity.this.
                     getString(R.string.filter_number_type_ad))) {
                 position = 1;
             } else {
-                position = 2;
+                position = 0;
             }
         }
         return position;
