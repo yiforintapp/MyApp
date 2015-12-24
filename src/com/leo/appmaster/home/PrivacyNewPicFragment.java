@@ -121,9 +121,11 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
         mPicList = (HeaderGridView) view.findViewById(R.id.pic_gv);
         mPicList.setOnScrollListener(this);
 
+        mAppName = "";
         mPicList.addHeaderView(getEmptyHeader());
         mPicList.setAdapter(mAdaper);
         mPicList.setOnItemClickListener(this);
+        mAppNotifyLayout.setVisibility(View.GONE);
 
         setLabelCount(mDataList.size());
         setProcessContent(R.string.pri_pro_hide_pic);

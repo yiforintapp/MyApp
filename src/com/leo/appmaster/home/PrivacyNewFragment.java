@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.CheckBox;
@@ -43,7 +44,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
 
     private int mToolbarHeight;
     private int mEmptyHeight;
-    private int mStickyHeight;
+    protected int mStickyHeight;
 
     private LEOAlarmDialog mIgnoreDlg;
 
@@ -51,6 +52,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
 
     protected RelativeLayout mAppNotifyLayout;
     protected TextView mAppNotifyText;
+    protected String mAppName;
 
     public void setData(List<? extends Object> list, String text) {
     }
@@ -62,7 +64,6 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
 
         mToolbarHeight = activity.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
         mEmptyHeight = activity.getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
-        mStickyHeight = activity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new_sticky);
     }
 
     @Override
@@ -143,6 +144,11 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
     }
 
     protected View getEmptyHeader() {
+        if (TextUtils.isEmpty(mAppName)) {
+            mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
+        } else {
+            mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new_sticky);
+        }
         TextView textView = new TextView(getActivity());
         textView.setLayoutParams(new AbsListView.LayoutParams(1, mEmptyHeight + mStickyHeight));
         textView.setBackgroundResource(R.color.transparent);

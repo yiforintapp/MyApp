@@ -45,24 +45,49 @@
         android:scrollbars="none">
 
         <LinearLayout
+            android:id="@+id/scrollView_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.leo.appmaster.ui.MaterialRippleLayout
+            <LinearLayout
                 android:id="@+id/scan_new_app_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                leo:rippleAlpha="0.5"
-                leo:rippleColor="@color/white_list_item_ripple"
-                leo:rippleDuration="250"
-                leo:rippleHover="true"
-                leo:rippleOverlay="true"
-                android:visibility="invisible">
+                android:visibility="gone"
+                android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="30dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp">
+
+
+                    <ImageView
+                        android:id="@+id/scan_new_app_icon"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:scaleType="centerCrop"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_launcher" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/scan_new_app_icon"
+                        android:layout_centerHorizontal="true"
+                        android:background="#000000"/>
+
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/home_tab_selector">
 
                     <ImageView
@@ -70,26 +95,27 @@
                         android:layout_width="21dp"
                         android:layout_height="21dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="invisible"/>
 
-                    <TextView
-                        android:id="@+id/scan_new_app_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/pri_new_app_item"
+                    <com.leo.appmaster.ui.LoadingView
+                        android:id="@+id/scan_new_app_loading"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center_vertical"
-                        android:text="+5分"/>
+                        android:layout_marginRight="10dp" />
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="12dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_toLeftOf="@id/scan_new_app_score"
-                        android:layout_toRightOf="@id/scan_new_app_img"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/scan_new_app_img"
+                        android:layout_alignParentLeft="true"
                         android:orientation="vertical">
 
                         <TextView
@@ -106,31 +132,61 @@
                             android:id="@+id/scan_new_app_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_app_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:includeFontPadding="false"
                             android:singleLine="true"
-                            android:textColor="@color/c4"
-                            android:textSize="13dp" />
+                            android:textColor="@color/c2"
+                            android:textSize="13dp"
+                            android:layout_marginBottom="10dp"/>
                     </LinearLayout>
 
                 </RelativeLayout>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
+            </LinearLayout>
 
-            <com.leo.appmaster.ui.MaterialRippleLayout
+            <LinearLayout
                 android:id="@+id/scan_new_pic_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                leo:rippleAlpha="0.5"
-                leo:rippleColor="@color/white_list_item_ripple"
-                leo:rippleDuration="250"
-                leo:rippleHover="true"
-                leo:rippleOverlay="true"
-                android:visibility="invisible">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="30dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp">
+
+
+                    <ImageView
+                        android:id="@+id/scan_new_pic_icon"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:scaleType="centerCrop"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_launcher" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/scan_new_pic_icon"
+                        android:layout_centerHorizontal="true"
+                        android:background="#000000"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/home_tab_selector">
 
                     <ImageView
@@ -138,26 +194,27 @@
                         android:layout_width="21dp"
                         android:layout_height="21dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="invisible" />
 
-                    <TextView
-                        android:id="@+id/scan_new_pic_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/pri_new_app_item"
+                    <com.leo.appmaster.ui.LoadingView
+                        android:id="@+id/scan_new_pic_loading"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:text="+5分"/>
+                        android:layout_marginRight="10dp" />
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="12dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_toLeftOf="@id/scan_new_pic_score"
-                        android:layout_toRightOf="@id/scan_new_pic_img"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/scan_new_pic_img"
+                        android:layout_alignParentLeft="true"
                         android:orientation="vertical">
 
                         <TextView
@@ -174,30 +231,58 @@
                             android:id="@+id/scan_new_pic_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_pic_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
                             android:ellipsize="end"
                             android:includeFontPadding="false"
                             android:singleLine="true"
-                            android:textColor="@color/c4"
+                            android:textColor="@color/c2"
                             android:textSize="13dp" />
                     </LinearLayout>
 
                 </RelativeLayout>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
+            </LinearLayout>
 
-            <com.leo.appmaster.ui.MaterialRippleLayout
+            <LinearLayout
                 android:id="@+id/scan_new_vid_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                leo:rippleAlpha="0.5"
-                leo:rippleColor="@color/white_list_item_ripple"
-                leo:rippleDuration="250"
-                leo:rippleHover="true"
-                leo:rippleOverlay="true"
-                android:visibility="invisible">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp">
+
+                    <ImageView
+                        android:id="@+id/scan_new_vid_icon"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:scaleType="centerCrop"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_launcher" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/scan_new_vid_icon"
+                        android:layout_centerHorizontal="true"
+                        android:background="#000000"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/home_tab_selector">
 
@@ -206,26 +291,26 @@
                         android:layout_width="21dp"
                         android:layout_height="21dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="invisible" />
 
-                    <TextView
-                        android:id="@+id/scan_new_vid_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/pri_new_app_item"
+                    <com.leo.appmaster.ui.LoadingView
+                        android:id="@+id/scan_new_vid_loading"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:text="+5分"/>
+                        android:layout_marginRight="10dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="12dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_toLeftOf="@id/scan_new_vid_score"
-                        android:layout_toRightOf="@id/scan_new_vid_img"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/scan_new_vid_img"
+                        android:layout_alignParentLeft="true"
                         android:orientation="vertical">
 
                         <TextView
@@ -242,30 +327,249 @@
                             android:id="@+id/scan_new_vid_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_vid_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/scan_new_lost_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp">
+
+                    <ImageView
+                        android:id="@+id/scan_new_lost_icon"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:scaleType="centerCrop"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_launcher" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/scan_new_lost_icon"
+                        android:layout_centerHorizontal="true"
+                        android:background="#000000"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_tab_selector">
+
+                    <ImageView
+                        android:id="@+id/scan_new_lost_img"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="invisible" />
+
+                    <com.leo.appmaster.ui.LoadingView
+                        android:id="@+id/scan_new_lost_loading"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/scan_new_lost_img"
+                        android:layout_alignParentLeft="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/scan_new_lost_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_lost_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_lost_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/scan_new_wifi_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp">
+
+                    <ImageView
+                        android:id="@+id/scan_new_wifi_icon"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:scaleType="centerCrop"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_launcher" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/scan_new_wifi_icon"
+                        android:layout_centerHorizontal="true"
+                        android:background="#000000"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/home_tab_selector">
+
+                    <ImageView
+                        android:id="@+id/scan_new_wifi_img"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="invisible" />
+
+                    <com.leo.appmaster.ui.LoadingView
+                        android:id="@+id/scan_new_wifi_loading"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/scan_new_wifi_img"
+                        android:layout_alignParentLeft="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/scan_new_wifi_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/c2"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_wifi_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:includeFontPadding="false"
                             android:singleLine="true"
                             android:textColor="@color/c4"
                             android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_wifi_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c2"
+                            android:textSize="13dp" />
                     </LinearLayout>
 
                 </RelativeLayout>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
+            </LinearLayout>
 
-            <com.leo.appmaster.ui.MaterialRippleLayout
+            <LinearLayout
                 android:id="@+id/scan_new_instruct_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                leo:rippleAlpha="0.5"
-                leo:rippleColor="@color/white_list_item_ripple"
-                leo:rippleDuration="250"
-                leo:rippleHover="true"
-                leo:rippleOverlay="true"
-                android:visibility="invisible">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp">
+
+                    <ImageView
+                        android:id="@+id/scan_new_instruct_icon"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:scaleType="centerCrop"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_launcher" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/scan_new_instruct_icon"
+                        android:layout_centerHorizontal="true"
+                        android:background="#000000"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/home_tab_selector">
 
@@ -274,26 +578,26 @@
                         android:layout_width="21dp"
                         android:layout_height="21dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="invisible" />
 
-                    <TextView
-                        android:id="@+id/scan_new_instruct_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/pri_new_app_item"
+                    <com.leo.appmaster.ui.LoadingView
+                        android:id="@+id/scan_new_instruct_loading"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:text="+5分"/>
+                        android:layout_marginRight="10dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="12dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_toLeftOf="@id/scan_new_instruct_score"
-                        android:layout_toRightOf="@id/scan_new_instruct_img"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/scan_new_instruct_img"
+                        android:layout_alignParentLeft="true"
                         android:orientation="vertical">
 
                         <TextView
@@ -310,103 +614,134 @@
                             android:id="@+id/scan_new_instruct_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_instruct_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
                             android:ellipsize="end"
                             android:includeFontPadding="false"
                             android:singleLine="true"
-                            android:textColor="@color/c4"
+                            android:textColor="@color/c2"
                             android:textSize="13dp" />
                     </LinearLayout>
 
                 </RelativeLayout>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
+            </LinearLayout>
 
-            <com.leo.appmaster.ui.MaterialRippleLayout
-                android:id="@+id/scan_new_wifi_layout"
+            <LinearLayout
+                android:id="@+id/scan_new_contact_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                leo:rippleAlpha="0.5"
-                leo:rippleColor="@color/white_list_item_ripple"
-                leo:rippleDuration="250"
-                leo:rippleHover="true"
-                leo:rippleOverlay="true"
-                android:visibility="invisible">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp">
+
+                    <ImageView
+                        android:id="@+id/scan_new_contact_icon"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:scaleType="centerCrop"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_launcher" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/home_tab_selector">
 
                     <ImageView
-                        android:id="@+id/scan_new_wifi_img"
+                        android:id="@+id/scan_new_contact_img"
                         android:layout_width="21dp"
                         android:layout_height="21dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="invisible" />
 
-                    <TextView
-                        android:id="@+id/scan_new_wifi_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/pri_new_app_item"
+                    <com.leo.appmaster.ui.LoadingView
+                        android:id="@+id/scan_new_contact_loading"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:text="+5分"/>
+                        android:layout_marginRight="10dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="12dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_toLeftOf="@id/scan_new_wifi_score"
-                        android:layout_toRightOf="@id/scan_new_wifi_img"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/scan_new_contact_img"
+                        android:layout_alignParentLeft="true"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/scan_new_wifi_title"
+                            android:id="@+id/scan_new_contact_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/c2"
+                            android:textSize="17dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_contact_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:includeFontPadding="false"
+                            android:singleLine="true"
+                            android:textColor="@color/c4"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/scan_new_contact_score"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:includeFontPadding="false"
                             android:singleLine="true"
                             android:textColor="@color/c2"
-                            android:textSize="17dp" />
-
-                        <TextView
-                            android:id="@+id/scan_new_wifi_content"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="7dp"
-                            android:ellipsize="end"
-                            android:includeFontPadding="false"
-                            android:singleLine="true"
-                            android:textColor="@color/c4"
                             android:textSize="13dp" />
                     </LinearLayout>
 
                 </RelativeLayout>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:paddingBottom="15dp"
-        android:background="@color/black">
+        android:background="@color/white">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#48000000"/>
 
         <com.leo.appmaster.ui.MaterialRippleLayout
             android:id="@+id/scan_cancel_rv"
             android:layout_width="210dp"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/scan_cancel_btn"
-            leo:rippleAlpha="0.5"
+            android:layout_centerInParent="true"
+            android:background="@drawable/green_radius_shape_disable"
             leo:rippleColor="@color/white_list_item_ripple"
             leo:rippleDuration="250"
             leo:rippleHover="true"
@@ -429,15 +764,13 @@
             android:id="@+id/scan_process_rv"
             android:layout_width="210dp"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/scan_process_btn"
+            android:layout_centerInParent="true"
             android:visibility="gone"
-            leo:rippleAlpha="0.5"
-            leo:rippleColor="@color/white_list_item_ripple"
+            leo:rippleOverlay="true"
+            android:background="@drawable/green_radius_btn_shape"
+            leo:rippleColor="@color/green_button_ripple"
             leo:rippleDuration="250"
-            leo:rippleHover="true"
-            leo:rippleOverlay="true">
+            leo:rippleHover="true">
 
             <TextView
                 android:id="@+id/scan_process_tv"

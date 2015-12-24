@@ -1,11 +1,10 @@
 package com.leo.appmaster.home;
 
-import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.LinearLayout;
 
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.ScanningImageView;
 import com.leo.appmaster.ui.ScanningTextView;
 import com.leo.appmaster.utils.LeoLog;
@@ -53,60 +52,75 @@ public class HomeScanningController {
 
     private int mDurationPrivacy;
 
-    private MaterialRippleLayout mNewAppLayout;
-    private MaterialRippleLayout mNewPicLayout;
-    private MaterialRippleLayout mNewVidLayout;
-    private MaterialRippleLayout mNewInstructLayout;
-    private MaterialRippleLayout mNewWifiLayout;
+    private LinearLayout mNewAppLayout;
+    private LinearLayout mNewPicLayout;
+    private LinearLayout mNewVidLayout;
+    private LinearLayout mNewLostLayout;
+    private LinearLayout mNewWifiLayout;
+    private LinearLayout mNewInstructLayout;
+    private LinearLayout mNewContactLayout;
     private ObjectAnimator mNewAppAnim;
     private ObjectAnimator mNewPicAnim;
     private ObjectAnimator mNewVidAnim;
-    private ObjectAnimator mNewInstructAnim;
+    private ObjectAnimator mNewLostAnim;
     private ObjectAnimator mNewWifiAnim;
-    private static final int NEW_PER_APP = 20;
-    private static final int NEW_PER_PIC = 40;
-    private static final int NEW_PER_VID = 60;
-    private static final int NEW_PER_INS = 80;
+    private ObjectAnimator mNewInstructAnim;
+    private ObjectAnimator mNewContactAnim;
+
+    private static final int NEW_PER_CONTACT = 7;
+    private static final int NEW_PER_INS = 14;
+    private static final int NEW_PER_WIFI = 20;
+    private static final int NEW_PER_LOST = 30;
+    private static final int NEW_PER_VID = 50;
+    private static final int NEW_PER_PIC = 80;
+    private static final int NEW_PER_APP = 100;
+
     private static final int NEW_PER_PRI = 100;
 
-    private static final int NEW_UP_LIMIT_APP = 3500;
-    private static final int NEW_UP_LIMIT_PIC = 3500;
-    private static final int NEW_UP_LIMIT_PIC_PROCESSED = 5000;
-    private static final int NEW_UP_LIMIT_VID = 1500;
-    private static final int NEW_UP_LIMIT_INS = 1500;
-
-    public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
-                                  ScanningImageView appImg, ScanningTextView appText,
-                                  ScanningImageView picImg, ScanningTextView picText,
-                                  ScanningImageView vidImg, ScanningTextView vidText,
-                                  ScanningImageView privacyImg, ScanningTextView privacyText) {
-        mActivity = activity;
-        mFragment = fragment;
-
-        mAppImg = appImg;
-        mAppText = appText;
-        mPicImg = picImg;
-        mPicText = picText;
-        mVidImg = vidImg;
-        mVidText = vidText;
-        mPrivacyImg = privacyImg;
-        mPrivacyText = privacyText;
-    }
+    private static final int NEW_UP_LIMIT_APP = 4000;
+    private static final int NEW_UP_LIMIT_PIC = 8000;
+    private static final int NEW_UP_LIMIT_PIC_PROCESSED = 2000;
+    private static final int NEW_UP_LIMIT_VID = 2000;
+    private static final int NEW_UP_LIMIT_LOST = 500;
+    private static final int NEW_UP_LIMIT_WIFI = 500;
+    private static final int NEW_UP_LIMIT_INS = 500;
+    private static final int NEW_UP_LIMIT_CONTACT = 500;
 
 //    public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
-//           MaterialRippleLayout newAppLayout, MaterialRippleLayout newPicLayout,
-//           MaterialRippleLayout newVidLayout, MaterialRippleLayout newInstructLayout,
-//           MaterialRippleLayout newWifiLayout) {
-//
+//                                  ScanningImageView appImg, ScanningTextView appText,
+//                                  ScanningImageView picImg, ScanningTextView picText,
+//                                  ScanningImageView vidImg, ScanningTextView vidText,
+//                                  ScanningImageView privacyImg, ScanningTextView privacyText) {
 //        mActivity = activity;
 //        mFragment = fragment;
 //
-//        mNewAppLayout = newAppLayout;
-//        mNewPicLayout = newPicLayout;
-//        mNewVidLayout = newVidLayout;
-//        mNewInstructLayout = newInstructLayout;
-//        mNewWifiLayout = newWifiLayout;
+//        mAppImg = appImg;
+//        mAppText = appText;
+//        mPicImg = picImg;
+//        mPicText = picText;
+//        mVidImg = vidImg;
+//        mVidText = vidText;
+//        mPrivacyImg = privacyImg;
+//        mPrivacyText = privacyText;
 //    }
+
+    public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
+                                  LinearLayout newAppLayout, LinearLayout newPicLayout,
+                                  LinearLayout newVidLayout, LinearLayout newLostLayout,
+                                  LinearLayout newWifiLayout, LinearLayout newInstructLayout,
+                                  LinearLayout newContactLayout) {
+
+        mActivity = activity;
+        mFragment = fragment;
+
+        mNewAppLayout = newAppLayout;
+        mNewPicLayout = newPicLayout;
+        mNewVidLayout = newVidLayout;
+        mNewLostLayout = newLostLayout;
+        mNewWifiLayout = newWifiLayout;
+        mNewInstructLayout = newInstructLayout;
+        mNewContactLayout = newContactLayout;
+    }
 
     private AnimEntry createScanningAnim(final ScanningImageView imageView, ScanningTextView textView) {
         AnimEntry entry = new AnimEntry();
@@ -199,14 +213,13 @@ public class HomeScanningController {
 
     public void startScanning() {
         LeoLog.d(TAG, "startScanning...");
-        mAppAnim = createScanningAnim(mAppImg, mAppText);
-
-        mAppAnim.totalAnim.start();
-        mActivity.scanningFromPercent(UP_LIMIT_APP, 0, PER_APP);
-//        mNewAppAnim = getItemAnimation(mNewAppLayout);
-//        mNewAppAnim.setStartDelay(600);
-//        mNewAppAnim.start();
-//        mActivity.scanningFromPercent(NEW_UP_LIMIT_APP, 0, NEW_PER_APP);
+//        mAppAnim = createScanningAnim(mAppImg, mAppText);
+//
+//        mAppAnim.totalAnim.start();
+//        mActivity.scanningFromPercent(UP_LIMIT_APP, 0, PER_APP);
+        mNewContactAnim = getItemAnimation(mNewContactLayout);
+        mNewContactAnim.start();
+        mActivity.scanningFromPercent(NEW_UP_LIMIT_CONTACT, 0, NEW_PER_CONTACT);
     }
 
     private void onAnimatorEnd(Animator animation) {
@@ -307,13 +320,29 @@ public class HomeScanningController {
         public Animator innerScaleAnim;
     }
 
-    private ObjectAnimator getItemAnimation(final MaterialRippleLayout layout) {
-        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(layout, "alpha", 0f, 1f);
-        alphaAnim.setDuration(1000);
+    private ObjectAnimator getItemAnimation(final LinearLayout layout) {
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(layout, "scaleY", 1f, 1f);
+        if (layout == mNewContactLayout) {
+            alphaAnim.setDuration(NEW_UP_LIMIT_CONTACT);
+        } else if (layout == mNewInstructLayout) {
+            alphaAnim.setDuration(NEW_UP_LIMIT_INS);
+        } else if (layout == mNewWifiLayout) {
+            alphaAnim.setDuration(NEW_UP_LIMIT_WIFI);
+        } else if (layout == mNewLostLayout) {
+            alphaAnim.setDuration(NEW_UP_LIMIT_LOST);
+        } else if (layout == mNewVidLayout) {
+            alphaAnim.setDuration(NEW_UP_LIMIT_VID);
+        } else if (layout == mNewPicLayout) {
+            alphaAnim.setDuration(NEW_UP_LIMIT_PIC);
+        }  else if (layout == mNewAppLayout) {
+            alphaAnim.setDuration(NEW_UP_LIMIT_APP);
+        }
+
         alphaAnim.addListener(new AnimatorListenerAdapter() {
+
             @Override
             public void onAnimationStart(Animator animation) {
-                layout.setVisibility(View.VISIBLE);
+                onItemAnimationStart(animation);
             }
 
             @Override
@@ -325,47 +354,86 @@ public class HomeScanningController {
         return alphaAnim;
     }
 
+    private void onItemAnimationStart(Animator animation) {
+        if (mFragment.isRemoving() || mFragment.isDetached()) return;
+
+        LeoLog.d(TAG, "onAnimationStart...");
+        if (animation == mNewContactAnim) {
+            mFragment.OnItemAnimationStart(mNewContactLayout);
+            LeoLog.e(TAG, "mNewContactAnim start");
+        } else if (animation == mNewInstructAnim) {
+            mFragment.OnItemAnimationStart(mNewInstructLayout);
+            LeoLog.e(TAG, "mNewInstructAnim start");
+        } else if (animation == mNewWifiAnim) {
+            mFragment.OnItemAnimationStart(mNewWifiLayout);
+            LeoLog.e(TAG, "mNewWifiAnim start");
+        } else if (animation == mNewLostAnim) {
+            mFragment.OnItemAnimationStart(mNewLostLayout);
+            LeoLog.e(TAG, "mNewLostAnim start");
+        } else if (animation == mNewVidAnim) {
+            mFragment.OnItemAnimationStart(mNewVidLayout);
+            LeoLog.e(TAG, "mNewVidAnim start");
+        } else if (animation == mNewPicAnim) {
+            mFragment.OnItemAnimationStart(mNewPicLayout);
+            LeoLog.e(TAG, "mNewPicAnim start");
+        } else {
+            mFragment.OnItemAnimationStart(mNewAppLayout);
+        }
+    }
+
     private void onItemAnimationEnd(Animator animation) {
         if (mFragment.isRemoving() || mFragment.isDetached()) return;
 
         LeoLog.d(TAG, "onAnimatorEnd...");
-        if (animation == mNewAppAnim) {
-            mFragment.OnItemAnimationEnd(mNewAppLayout);
-
-            mNewPicAnim = getItemAnimation(mNewPicLayout);
-            int currPct = mActivity.getScanningPercent();
-            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-            boolean picConsumed = preferenceTable.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
-            int duration = picConsumed ? NEW_UP_LIMIT_PIC_PROCESSED : NEW_UP_LIMIT_PIC;
-            mActivity.scanningFromPercent(duration, currPct, NEW_PER_PIC);
-            LeoLog.e(TAG, "mNewAppAnim end");
-            mNewPicAnim.start();
-        } else if (animation == mNewPicAnim) {
-            mFragment.OnItemAnimationEnd(mNewPicLayout);
-
-            mNewVidAnim = getItemAnimation(mNewVidLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_VID, currPct, NEW_PER_VID);
-            LeoLog.e(TAG, "mNewPicAnim end");
-            mNewVidAnim.start();
-        } else if (animation == mNewVidAnim) {
-            mFragment.OnItemAnimationEnd(mNewVidLayout);
+        if (animation == mNewContactAnim) {
+            mFragment.OnItemAnimationEnd(mNewContactLayout);
 
             mNewInstructAnim = getItemAnimation(mNewInstructLayout);
             int currPct = mActivity.getScanningPercent();
             mActivity.scanningFromPercent(NEW_UP_LIMIT_INS, currPct, NEW_PER_INS);
-            LeoLog.e(TAG, "mNewVidAnim end");
+            LeoLog.e(TAG, "mNewContactAnim end");
             mNewInstructAnim.start();
         } else if (animation == mNewInstructAnim) {
             mFragment.OnItemAnimationEnd(mNewInstructLayout);
 
             mNewWifiAnim = getItemAnimation(mNewWifiLayout);
             int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(1000, currPct, NEW_PER_PRI + 1);
+            mActivity.scanningFromPercent(NEW_UP_LIMIT_WIFI, currPct, NEW_PER_WIFI);
             LeoLog.e(TAG, "mNewInstructAnim end");
             mNewWifiAnim.start();
-        } else {
+        } else if (animation == mNewWifiAnim) {
             mFragment.OnItemAnimationEnd(mNewWifiLayout);
+            mNewLostAnim = getItemAnimation(mNewLostLayout);
+            int currPct = mActivity.getScanningPercent();
+            mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
+            LeoLog.e(TAG, "mNewWifiAnim end");
+            mNewLostAnim.start();
+        } else if (animation == mNewLostAnim) {
+            mFragment.OnItemAnimationEnd(mNewLostLayout);
+            mNewVidAnim = getItemAnimation(mNewVidLayout);
+            int currPct = mActivity.getScanningPercent();
+            mActivity.scanningFromPercent(NEW_UP_LIMIT_VID, currPct, NEW_PER_VID);
+            LeoLog.e(TAG, "mNewLostAnim end");
+            mNewVidAnim.start();
+        } else if (animation == mNewVidAnim) {
+            mFragment.OnItemAnimationEnd(mNewVidLayout);
+            mNewPicAnim = getItemAnimation(mNewPicLayout);
+            int currPct = mActivity.getScanningPercent();
+            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+            boolean picConsumed = preferenceTable.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
+            int duration = picConsumed ? NEW_UP_LIMIT_PIC_PROCESSED : NEW_UP_LIMIT_PIC;
+            mActivity.scanningFromPercent(duration, currPct, NEW_PER_PIC);
+            LeoLog.e(TAG, "mNewVidAnim end");
+            mNewPicAnim.start();
+        } else if (animation == mNewPicAnim) {
+            mFragment.OnItemAnimationEnd(mNewPicLayout);
+            mNewAppAnim = getItemAnimation(mNewAppLayout);
+            int currPct = mActivity.getScanningPercent();
+            mActivity.scanningFromPercent(NEW_UP_LIMIT_APP, currPct, NEW_PER_PRI + 1);
+            LeoLog.e(TAG, "mNewPicAnim end");
+            mNewAppAnim.start();
+        } else {
+            mFragment.OnItemAnimationEnd(mNewAppLayout);
         }
     }
 
@@ -375,6 +443,8 @@ public class HomeScanningController {
          endAnim(mNewVidAnim);
          endAnim(mNewInstructAnim);
          endAnim(mNewWifiAnim);
+         endAnim(mNewLostAnim);
+         endAnim(mNewContactAnim);
     }
 
     private void endAnim(Animator animator) {
@@ -383,4 +453,5 @@ public class HomeScanningController {
             animator = null;
         }
     }
+
 }

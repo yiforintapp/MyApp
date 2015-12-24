@@ -338,7 +338,7 @@
     <dimen name="home_guide_marg">50dp</dimen>
     <dimen name="home_guide_marg_up">45dp</dimen>
 
-    <dimen name="pri_pro_new_sticky">82dp</dimen>
+    <dimen name="pri_pro_new_sticky">92dp</dimen>
 
     <!-- 3.2 -->
     <dimen name="pp_shield_x_padding">10dp</dimen>

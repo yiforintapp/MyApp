@@ -54,7 +54,7 @@
     <RelativeLayout
         android:id="@+id/app_notify_layout"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_gravity="bottom"
         android:visibility="visible"
         android:background="#48000000">
@@ -66,9 +66,9 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
+
             android:ellipsize="end"
             android:includeFontPadding="false"
-            android:singleLine="true"
             android:textColor="@color/c4"
             android:textSize="13dp" />
 

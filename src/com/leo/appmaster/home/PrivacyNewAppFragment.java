@@ -155,6 +155,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         mAppList = (ListView) view.findViewById(R.id.app_lv);
         mAppList.setOnScrollListener(this);
         mAppList.setOnItemClickListener(this);
+        mAppName = mAppString;
         mAppList.addHeaderView(getEmptyHeader());
         mAppList.setAdapter(mAdaper);
 
