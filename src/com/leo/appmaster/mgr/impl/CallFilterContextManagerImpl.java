@@ -541,17 +541,20 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
-    public List<CallFilterInfo> getFilterDetListFroId(int grId) {
+    public List<CallFilterInfo> getFilterDetListFroNum(String number) {
         List<CallFilterInfo> filterInfos = null;
         ContentResolver cr = mContext.getContentResolver();
         Uri uri = CallFilterConstants.FILTER_DETAIL_URI;
+        String numberFromate = PrivacyContactUtils.formatePhoneNumber(number);
         Cursor cursor = null;
-        String where = CallFilterConstants.FIL_DET_TO_GR_ID + " = ?";
-        String[] selectionArgs = new String[]{String.valueOf(grId)};
+        String where = CallFilterConstants.FIL_DET_PHONE_NUMBER + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + numberFromate};
+//        String where = null;
+//        String[] selectionArgs = null;
         String sortOrder = CallFilterConstants.FIL_DET_DATE + " " + CallFilterConstants.DESC;
         try {
             cursor = cr.query(uri, null, where, selectionArgs, sortOrder);
-            if (cursor != null) {
+            if (cursor != null && cursor.getCount() > 0) {
                 filterInfos = new ArrayList<CallFilterInfo>();
                 while (cursor.moveToNext()) {
 
@@ -568,7 +571,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                     int id = cursor.getInt(idColum);
                     String name = cursor.getString(nameColum);
-                    String number = cursor.getString(numberColum);
+                    String numberN = cursor.getString(numberColum);
                     if (TextUtils.isEmpty(name)) {
                         name = number;
                     }
@@ -594,7 +597,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                     int filterNumber = -1;
                     int blackId = -1;
-                    CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
+                    CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, numberN, numberArea, blackId,
                             filterNumber, date, duration, callType, isRead, filterType, filterGrId);
                     filterInfos.add(filterInfo);
                 }
@@ -680,6 +683,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                 boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum1, colum2}, number);
                 if (update && isKeyExist) {
+                    where = CallFilterConstants.FIL_NUMBER + " LIKE ? ";
+                    String[] selectArgs = new String[]{String.valueOf("%" + number)};
                     cr.update(uri, values, where, selectionArgs);
                 } else {
                     cr.insert(uri, values);
@@ -1031,7 +1036,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 String colum = CallFilterConstants.BLACK_PHONE_NUMBER;
                 boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum}, number);
                 if (isKeyExist) {
-                    cr.update(CallFilterConstants.BLACK_LIST_URI, value, null, null);
+                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                    String where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
+                    String[] selectArgs = new String[]{String.valueOf("%" + formateNumber)};
+                    cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                 } else {
                     cr.insert(uri, value);
                 }

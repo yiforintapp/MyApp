@@ -2,11 +2,13 @@ package com.leo.appmaster.schedule;
 
 import android.content.Context;
 
+import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.utils.NetWorkUtil;
+import com.leo.appmaster.utils.Utilities;
 
 /**
  * Created by runlee on 15-12-24.
@@ -24,14 +26,28 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
         startWork();
     }
 
+    @Override
+    protected void onFetchSuccess(Object response, boolean noMidify) {
+        super.onFetchSuccess(response, noMidify);
+    }
 
-    private static void startWork() {
+    @Override
+    protected void onFetchFail(VolleyError error) {
+        super.onFetchFail(error);
+    }
+
+    public static void startWork() {
         DownBlackFileFetchJob job = new DownBlackFileFetchJob();
         FetchScheduleListener listener = job.newJsonObjListener();
         Context context = AppMasterApplication.getInstance();
+        StringBuilder sbName = new StringBuilder();
+        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
+        sbName.append(countryId);
+        sbName.append(CallFilterConstants.GZIP);
+
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterUtils.getBlackPath());
-        sb.append(CallFilterConstants.BLACK_FILE_NAME);
+        sb.append(sbName.toString());
         String filePath = sb.toString();
         HttpRequestAgent.getInstance(context).downloadBlackList(filePath, listener, listener);
     }

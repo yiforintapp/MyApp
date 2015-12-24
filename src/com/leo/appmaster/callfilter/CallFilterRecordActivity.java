@@ -83,7 +83,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
 
     private void fillData() {
         mRecordTime.clear();
-        mRecordTime = mCallManger.getFilterDetListFroId(info.getBlackId());
+        mRecordTime = mCallManger.getFilterDetListFroNum(info.getNumber());
 //        mRecordTime.add("4:43 am");
 //        mRecordTime.add("5:10 am");
 //        mRecordTime.add("6:28 am");

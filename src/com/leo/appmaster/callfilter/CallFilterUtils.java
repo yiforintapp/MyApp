@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
@@ -23,10 +24,14 @@ import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 import com.leo.appmaster.utils.Utilities;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -233,7 +238,7 @@ public class CallFilterUtils {
     public static boolean isDbKeyExist(String table, String[] colums, String number) {
         Cursor cursor = null;
         try {
-            cursor = getCursor(table, colums, number,false);
+            cursor = getCursor(table, colums, number, false);
             if (cursor != null) {
                 return cursor.getCount() > 0;
             }
@@ -499,4 +504,53 @@ public class CallFilterUtils {
         }
         return null;
     }
+
+    /**
+     * 解析黑名单列表文件
+     */
+    public static void parseBlactList(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists() || file.isDirectory()) {
+            return;
+        }
+        try {
+            final List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String temp = null;
+            StringBuffer sb = new StringBuffer();
+            temp = br.readLine();
+            while (temp != null) {
+                String[] dates = temp.split(",");
+                final String number = dates[0];
+                String blackCountStr = dates[1];
+                String markTypeStr = dates[2];
+                String markCountStr = dates[3];
+                final int blackCount = Float.valueOf(blackCountStr).intValue();
+                final int markType = Float.valueOf(markTypeStr).intValue();
+                final int markCount = Float.valueOf(markCountStr).intValue();
+                LeoLog.i("parseBlactList", "number" + number);
+                LeoLog.i("parseBlactList", "blackCount" + blackCount);
+                LeoLog.i("parseBlactList", "markType" + markType);
+                LeoLog.i("parseBlactList", "markCount" + markCount);
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                        BlackListInfo info = new BlackListInfo();
+                        info.setNumber(number);
+                        info.setAddBlackNumber(blackCount);
+                        info.setMarkerType(markType);
+                        info.setMarkerNumber(markCount);
+                        pm.addSerBlackList(infos);
+                    }
+                });
+
+                temp = br.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

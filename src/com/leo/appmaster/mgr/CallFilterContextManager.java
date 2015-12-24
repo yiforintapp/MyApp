@@ -119,10 +119,10 @@ public abstract class CallFilterContextManager extends Manager {
     /**
      * 指定ID查询拦截详细列表
      *
-     * @param griId
+     * @param number
      * @return
      */
-    public abstract List<CallFilterInfo> getFilterDetListFroId(int griId);
+    public abstract List<CallFilterInfo> getFilterDetListFroNum(String number);
 
     /**
      * 查询拦截详细列表

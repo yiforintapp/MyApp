@@ -20,6 +20,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.leo.appmaster.cloud.UploadRequest;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.DeviceUtil;
@@ -568,10 +570,11 @@ public class HttpRequestAgent {
 //        String url = LeoUrls.URI_BLACK_LIST;
 //        url = Utilities.getURL(url);
         String url = "http://192.168.1.205/app/config";
-        LeoLog.i(TAG, "黑名单配置数据：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);
+        request.setBodyNeedCompress();
+        request.setBodyNeedEncrypt();
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
@@ -587,13 +590,16 @@ public class HttpRequestAgent {
      * @param errorListener
      */
     public void downloadBlackList(String filePath, Listener<File> listener, ErrorListener errorListener) {
-        String uri = null;
+        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        String uri = pm.getSerBlackFilePath();
         FileRequest request = new FileRequest(Method.GET, uri, filePath, listener, errorListener);
         request.setShouldCache(true);
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
+        request.setBodyNeedCompress();
+        request.setBodyNeedEncrypt();
         mRequestQueue.add(request);
     }
 

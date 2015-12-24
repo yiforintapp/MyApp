@@ -6,11 +6,13 @@ import android.text.TextUtils;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
-import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
+import com.leo.appmaster.utils.Utilities;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,7 +97,22 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
             }
             /*下载黑名单链接*/
             if (!TextUtils.isEmpty(blkFileStr)) {
-                lsm.setSerBlackFilePath(blkFileStr);
+                StringBuilder sb = new StringBuilder();
+                String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
+                sb.append(blkFileStr);
+                sb.append(countryId);
+                sb.append(CallFilterConstants.GZIP);
+                String file = sb.toString();
+                if (DBG) {
+                    file = "http://192.168.1.205/telintercept/cn.gz";
+                }
+                lsm.setSerBlackFilePath(file);
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DownBlackFileFetchJob.startWork();
+                    }
+                });
             }
             if (starNotiTip > 0) {
                 lsm.setStraNotiTipParam(starNotiTip);
@@ -106,15 +123,26 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
             if (markTip > 0) {
                 lsm.setSerMarkTipNum(markTip);
             }
-            if(DBG) {
-                LeoLog.i("BlackDownLoadFetchJob:","user-"+user);
-                LeoLog.i("BlackDownLoadFetchJob","tipUser:"+""+tipUser);
-                LeoLog.i("BlackDownLoadFetchJob","duration:"+""+duration);
-                LeoLog.i("BlackDownLoadFetchJob","blkMarkTpPar:"+""+blkMarkTpPar);
-                LeoLog.i("BlackDownLoadFetchJob","blkFileStr:"+""+blkFileStr);
-                LeoLog.i("BlackDownLoadFetchJob","starNotiTip:"+""+starNotiTip);
-                LeoLog.i("BlackDownLoadFetchJob","blkTip:"+""+blkTip);
-                LeoLog.i("BlackDownLoadFetchJob","markTip:"+""+markTip);
+            if (DBG) {
+                LeoLog.i("BlackDownLoadFetchJob:", "user-" + user);
+                LeoLog.i("BlackDownLoadFetchJob", "tipUser:" + "" + tipUser);
+                LeoLog.i("BlackDownLoadFetchJob", "duration:" + "" + duration);
+                LeoLog.i("BlackDownLoadFetchJob", "blkMarkTpPar:" + "" + blkMarkTpPar);
+                LeoLog.i("BlackDownLoadFetchJob", "blkFileStr:" + "" + blkFileStr);
+                LeoLog.i("BlackDownLoadFetchJob", "starNotiTip:" + "" + starNotiTip);
+                LeoLog.i("BlackDownLoadFetchJob", "blkTip:" + "" + blkTip);
+                LeoLog.i("BlackDownLoadFetchJob", "markTip:" + "" + markTip);
+
+                //查看是否保存成功
+                LeoLog.i("BlackDownLoadFetchJob:", "------是否保存成功----------");
+                LeoLog.i("BlackDownLoadFetchJob:", "否保存user-" + lsm.getFilterUserNumber());
+                LeoLog.i("BlackDownLoadFetchJob", "否保存tipUser:" + "" + lsm.getFilterTipFroUser());
+                LeoLog.i("BlackDownLoadFetchJob", "否保存duration:" + "" + lsm.getCallDurationMax());
+                LeoLog.i("BlackDownLoadFetchJob", "否保存blkMarkTpPar:" + "" + lsm.getBlackMarkTipParam());
+                LeoLog.i("BlackDownLoadFetchJob", "否保存blkFileStr:" + "" + lsm.getSerBlackFilePath());
+                LeoLog.i("BlackDownLoadFetchJob", "否保存starNotiTip:" + "" + lsm.getStraNotiTipParam());
+                LeoLog.i("BlackDownLoadFetchJob", "否保存blkTip:" + "" + lsm.getSerBlackTipCount());
+                LeoLog.i("BlackDownLoadFetchJob", "否保存markTip:" + "" + lsm.getSerMarkTipCount());
             }
         } catch (JSONException e) {
             e.printStackTrace();

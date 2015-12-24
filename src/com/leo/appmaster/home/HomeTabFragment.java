@@ -14,12 +14,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.LockManager;
@@ -35,6 +37,7 @@ import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
 /**
@@ -44,7 +47,7 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
  */
 public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTabFragment";
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
 
     private ImageView mRedDot;
     // 首页4个tab
@@ -341,7 +344,17 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
 //                        CallFilterUtils.addData();
 //                    BlackUploadFetchJob.startWork();
-                        BlackDownLoadFetchJob.startWork();
+//                        BlackDownLoadFetchJob.startWork();
+                        StringBuilder sbName = new StringBuilder();
+                        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
+                        sbName.append(countryId);
+                        sbName.append(CallFilterConstants.GZIP);
+
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(CallFilterUtils.getBlackPath());
+                        sb.append(sbName.toString());
+                        String filePath = sb.toString();
+                        CallFilterUtils.parseBlactList(filePath);
                     }
                     break;
             }
