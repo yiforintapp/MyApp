@@ -50,6 +50,74 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Advertise -->
+            <RelativeLayout
+                android:id="@+id/ad_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/wifi_result_1px_bg"
+                android:paddingBottom="9dp"
+                android:paddingLeft="9dp"
+                android:paddingRight="9dp"
+                android:paddingTop="9dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/preview_title_layout"
+                    android:layout_width="306dp"
+                    android:layout_height="149dp"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:id="@+id/item_ad_preview"
+                        android:layout_width="306dp"
+                        android:layout_height="149dp" />
+
+                    <LinearLayout
+                        android:id="@+id/item_header_ll"
+                        style="@style/ItemHeader"
+                        android:layout_height="36dp"
+                        android:orientation="horizontal"
+                        android:layout_alignBottom="@id/item_ad_preview"
+                        android:background="#7F000000">
+
+                        <ImageView
+                            android:layout_weight="0"
+                            android:id="@+id/ad_icon"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginTop="5dp" />
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:id="@+id/item_title"
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="100dp"
+                            style="@style/ItemAdTitle" />
+
+                        <Button
+                            android:layout_weight="0"
+                            android:id="@+id/ad_result_cta"
+                            android:layout_marginRight="7dp"
+                            android:layout_width="72dp"
+                            android:layout_height="26dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/green_radius_btn_shape"
+                            android:clickable="false"
+                            android:textColor="@color/white"
+                            android:textSize="13dp" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <!-- Advertise -->
+
             <LinearLayout
                 android:id="@+id/scan_new_app_layout"
                 android:layout_width="match_parent"

@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -15,13 +16,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -41,6 +46,10 @@ import com.leo.appmaster.ui.ScanningTextView;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoItemBean;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -52,6 +61,11 @@ import java.util.List;
 public class HomeScanningFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
+
+    // 3.2 advertise
+    private static final String AD_AFTER_SCAN = Constants.UNIT_ID_243;
+    private boolean mAdLoaded;
+    private View mRootView;
 
     private View mCancelBtn;
     private TextView mCancelTv;
@@ -195,7 +209,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
 //        mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
@@ -311,6 +325,14 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 startScanController();
             }
         }, 200);
+
+        mRootView = view;
+        ThreadManager.executeOnSubThread(new Runnable() {
+            @Override
+            public void run() {
+                loadAd();
+            }
+        });
     }
 
     @Nullable
@@ -323,6 +345,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     public void onDetach() {
         super.onDetach();
 //        mController.detachController();
+        destroyAd();
         mController.detachTheController();
     }
 
@@ -460,6 +483,90 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         return false;
     }
+
+    /* 3.2 advertise begin */
+    private void loadAd() {
+        mAdLoaded = false;
+        AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
+        if (amp.getADAfterScan() == 1) {
+            MobvistaEngine.getInstance(mActivity).loadMobvista(AD_AFTER_SCAN, new MobvistaEngine.MobvistaListener() {
+
+                @Override
+                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
+                    if (code == MobvistaEngine.ERR_OK) {
+                        LeoLog.d("AfterPrivacyScan", "onMobvistaFinished: " + campaign.getAppName());
+                        sAdImageListener = new AdPreviewLoaderListener(HomeScanningFragment.this, campaign);
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                    }
+                }
+
+                @Override
+                public void onMobvistaClick(Campaign campaign) {
+                    LeoLog.d("AfterPrivacyScan", "onMobvistaClick");
+                    LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                    lm.filterSelfOneMinites();
+                }
+            });
+        }
+    }
+
+    private void destroyAd() {
+        MobvistaEngine.getInstance(mActivity).release(AD_AFTER_SCAN);
+    }
+
+    public static class AdPreviewLoaderListener implements ImageLoadingListener {
+        WeakReference<HomeScanningFragment> mFragment;
+        Campaign mCampaign;
+
+        public AdPreviewLoaderListener(HomeScanningFragment fragment, final Campaign campaign) {
+            mFragment = new WeakReference<HomeScanningFragment>(fragment);
+            mCampaign = campaign;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            HomeScanningFragment fragment = mFragment.get();
+            if (loadedImage != null && fragment != null) {
+                fragment.mAdLoaded = true;
+                LeoLog.d("AfterPrivacyScan", "[HomeScanningFragment] onLoadingComplete -> " + imageUri);
+
+                fragment.initAdLayout(fragment.mRootView,
+                        mCampaign, loadedImage);
+            }
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+
+        }
+    }
+    private static AdPreviewLoaderListener sAdImageListener;
+
+    private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
+        View adView = rootView.findViewById(R.id.ad_content);
+        TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
+        tvTitle.setText(campaign.getAppName());
+        Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
+        btnCTA.setText(campaign.getAdCall());
+        ImageView preview = (ImageView) adView.findViewById(R.id.item_ad_preview);
+        preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        preview.setImageBitmap(previewImage);
+        ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
+        ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
+        adView.setVisibility(View.VISIBLE);
+        MobvistaEngine.getInstance(mActivity).registerView(AD_AFTER_SCAN, adView);
+    }
+    /* 3.2 advertise end */
 
     private WeakRunnable mAppRunnable = new WeakRunnable(this, new Runnable() {
         @Override
