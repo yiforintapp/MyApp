@@ -393,31 +393,37 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     String colum1 = CallFilterConstants.FIL_GR_PH_NUMB;
                     String colum2 = CallFilterConstants.FIL_GR_DATE;
                     String colum3 = CallFilterConstants.FIL_CALL_TYPE;
-                    Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3}, number, false);
+                    String colum4 = CallFilterConstants.FIL_NUMBER;
+                    Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3, colum4}, number, false);
                     boolean isKeyExist = (cur != null) ? cur.getCount() > 0 : false;
                     if (isKeyExist) {
                         int idColum = cur.getColumnIndex(CallFilterConstants.FIL_GR_ID);
                         int dateColum = cur.getColumnIndex(CallFilterConstants.FIL_GR_DATE);
                         int callTypeColum = cur.getColumnIndex(CallFilterConstants.FIL_CALL_TYPE);
+                        int filterNumberColum = cur.getColumnIndex(CallFilterConstants.FIL_NUMBER);
 
                         int grId = cur.getInt(idColum);
                         long grDate = cur.getLong(dateColum);
                         int grCallType = cur.getInt(callTypeColum);
-
+                        int filterCountT = cur.getInt(filterNumberColum);
+                        filterCountT = filterCountT + 1;
+                        where = CallFilterConstants.FIL_GR_ID + " = ? ";
+                        selectionArgs = new String[]{String.valueOf(grId)};
+                        ContentValues upValues = new ContentValues();
+                        upValues.put(CallFilterConstants.FIL_NUMBER, filterCountT);
                         if (duration > grDate) {
-                            where = CallFilterConstants.FIL_GR_ID + " = ? ";
-                            selectionArgs = new String[]{String.valueOf(grId)};
-                            ContentValues upValues = new ContentValues();
                             upValues.put(CallFilterConstants.FIL_GR_DATE, grDate);
                             if (grCallType != -1) {
                                 upValues.put(CallFilterConstants.FIL_CALL_TYPE, grCallType);
                             }
-                            cr.update(uri, values, where, selectionArgs);
                         }
+                        cr.update(uri, values, where, selectionArgs);
                     } else {
+                        values.put(CallFilterConstants.FIL_NUMBER, 1);
                         cr.insert(uri, values);
                     }
                 } else {
+                    values.put(CallFilterConstants.FIL_NUMBER, 1);
                     cr.insert(uri, values);
                 }
             } catch (Exception e) {
