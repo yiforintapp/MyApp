@@ -156,6 +156,9 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
         mWhiteColor = res.getColor(R.color.white);
         mMaxFinalOffsetY = res.getDimensionPixelSize(R.dimen.toolbar_height) / 2;
+
+        mFlipDecor = new ShieldFlipDecor();
+        mBurstDecor = new BurstDecor();
     }
 
     public void setMaxOffsetY(int maxOffseteY) {
@@ -387,7 +390,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             if (shieldOffsetY <= 0) {
                 canvas.drawCircle(mCirclePx, mCirclePy, mShieldBgRadius, mTextPaint);
             }
-//            mFlipDecor.applyDecor(canvas, mShieldMatrix);
+            mFlipDecor.applyDecor(canvas, mShieldMatrix);
             mShieldDrawable.draw(canvas);
         }
 
@@ -416,6 +419,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             mTextPaint.setTextSize(mStatusSize);
             canvas.drawText(mPrivacyStatus, mPrivacyStatusPos[0], mPrivacyStatusPos[1], mTextPaint);
         }
+        mBurstDecor.applyDecor(canvas, null);
     }
 
     /**
