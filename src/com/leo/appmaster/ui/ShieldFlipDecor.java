@@ -50,7 +50,7 @@ public class ShieldFlipDecor extends BaseDecor {
         matrix.postTranslate(centerX, centerY); 
     }
     
-    public void startFlipAnim(long duration) {
+    public void startFlipAnim(long duration, final OnFlipEndListener listener) {
         PropertyValuesHolder v1 = PropertyValuesHolder.ofFloat("flipDegreeY", 0f, 180f);
         final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(this, v1);
         animatorI.addUpdateListener(new AnimatorUpdateListener() {
@@ -62,27 +62,29 @@ public class ShieldFlipDecor extends BaseDecor {
                 }
             }
         });
-//        animatorI.addListener(new AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animation) {
-//                mNeedFlipScore = false;
-//            }
-//            
-//            @Override
-//            public void onAnimationRepeat(Animator animation) {
-//            }
-//            
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                mNeedFlipScore =false;
-//            }
-//            
-//            @Override
-//            public void onAnimationCancel(Animator animation) {
-//                mNeedFlipScore = false;
-//            }
-//        });
+        animatorI.addListener(new AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+            
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                listener.OnFlipEnd();
+            }
+            
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+        });
         animatorI.setDuration(duration);
         animatorI.start();
+    }
+    
+    public interface OnFlipEndListener {
+        public void OnFlipEnd();
     }
 }
