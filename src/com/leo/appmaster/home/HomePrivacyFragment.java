@@ -635,6 +635,11 @@ public class HomePrivacyFragment extends Fragment {
                             startDirectTranslation();
                         }
                     });
+
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "firstWaveRatio", 0f, 1f);
+                    animator.setDuration(500);
+                    animator.setInterpolator(new LinearInterpolator());
+                    animator.start();
                 }
             });
         } else {

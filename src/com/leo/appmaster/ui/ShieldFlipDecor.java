@@ -45,14 +45,8 @@ public class ShieldFlipDecor extends BaseDecor {
         camera.rotateY(mFlipDegreeY);  
 //        camera.ro
         camera.getMatrix(matrix);
-//<<<<<<< Upstream, based on branch 'lishuai_dev_3.2' of http://gitlab.leoers.com/leo/appmaster.git
-//        int centerX = mParent.centerX();
-//=======
         int centerX = mParent.centerX() - shieldLayer.getMaxOffsetX();
-//        int centerX = mParent.centerX();
-//        int centerX = (int) shieldLayer.mCirclePx;
         LeoLog.i("tesiX", "centerX = " + centerX);
-//>>>>>>> e809fac 满分动画3
         int centerY = mParent.centerY();
         matrix.preTranslate(-centerX, -centerY);  
         matrix.postTranslate(centerX, centerY); 

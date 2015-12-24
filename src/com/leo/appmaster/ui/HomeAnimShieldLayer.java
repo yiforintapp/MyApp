@@ -361,11 +361,12 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     private void drawWave(Canvas canvas, float ratio) {
         int shieldOffsetY = mShieldOffsetY;
+        int shieldOffsetX = mShieldOffsetX;
 
         float scale = MIN_WAVE_RATIO * (1f + ratio);
         int alpha = (int) (255f * (1f - ratio));
         mWaveMatrix.setScale(scale, scale, mShieldPx, mShieldPy);
-        mWaveMatrix.postTranslate(0, -shieldOffsetY);
+        mWaveMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
         canvas.setMatrix(mWaveMatrix);
         mWaveDrawable.getPaint().setAlpha(alpha);
 
@@ -417,6 +418,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             shieldAlpha = mShieldAlpha;
         }
         mShieldDrawable.getPaint().setAlpha(shieldAlpha);
+        mShieldMatrix.set(Matrix.IDENTITY_MATRIX);
         mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
         mShieldMatrix.postScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
         mShieldMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
