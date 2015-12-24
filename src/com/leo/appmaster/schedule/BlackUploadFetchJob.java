@@ -62,8 +62,8 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         Context context = AppMasterApplication.getInstance();
         List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
         //TODO
-        for (int i = 0; i < 10; i++) {
-            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110" + i, "测试", 0, null,
+        for (int i = 0; i < 200; i++) {
+            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "20000" + i, "测试", 0, null,
                     null, 23, 25, 0, 1, 1, 0, 1);
             infos.add(info);
         }

@@ -217,6 +217,14 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract long getCallDurationMax();
 
     /**
+     * 设置通话时长阀值，判断是否显示提示
+     * @param duration
+     * @return
+     */
+    public abstract long setCallDurationMax(long duration);
+
+
+    /**
      * 倍率参数：陌生号码通知提示显示
      *
      * @return
@@ -229,6 +237,12 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract int getBlackMarkTipParam();
+
+    /**
+     * 设置倍率参数：黑名单，标记名单显示值
+     * @param number
+     */
+    public abstract void  setBlackMarkTipParam(int number);
 
     /**
      * 骚扰拦截用户量

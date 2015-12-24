@@ -182,4 +182,6 @@ public class PrefConst {
      * 骚扰拦截显示基数
      */
     public static final String KEY_FILTER_TIP_USER = "filter_tip_user";
+
+    public static final String KEY_BLK_MARK_TIP = "blk_mark_tip";
 }

@@ -84,7 +84,10 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
                 lsm.setFilterTipFroUser(tipUser);
             }
             if (duration > 0) {
-//                lsm.set
+                lsm.setCallDurationMax(duration);
+            }
+            if (blkMarkTpPar > 0) {
+//                lsm
             }
         } catch (JSONException e) {
             e.printStackTrace();

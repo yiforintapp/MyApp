@@ -17,6 +17,7 @@ import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.leo.appmaster.cloud.UploadRequest;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
@@ -30,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
@@ -530,19 +532,32 @@ public class HttpRequestAgent {
      * @param errorListener
      * @param bodyString
      */
-    public void commitBlackList(Listener<JSONObject> listener,
-                                ErrorListener errorListener, String bodyString) {
+    public void commitBlackList(Listener<String> listener,
+                                ErrorListener errorListener, final String bodyString) {
         int method = Method.POST;
-        JsonObjectRequest request = new JsonObjectRequest(method, "http://192.168.1.205/report", bodyString, listener, errorListener);
+        StringRequest request = new StringRequest(method, "http://192.168.1.205/report", listener, errorListener) {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                byte[] bytes = null;
+                try {
+                    bytes = bodyString.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return bytes;
+            }
+        };
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
+        request.setBodyNeedCompress();
+        request.setBodyNeedEncrypt();
         request.setShouldCache(false);
         mRequestQueue.add(request);
     }
 
-    public  void loadBlackList(Listener<JSONObject> listener, ErrorListener errorListener) {
+    public void loadBlackList(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
         String url = LeoUrls.URI_BLACK_LIST;
         url = Utilities.getURL(url);

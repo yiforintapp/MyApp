@@ -339,7 +339,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         int[] pix = AppUtil.getScreenPix(getActivity());
                         LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
                         CallFilterUtils.addData();
-                    BlackUploadFetchJob.startWork();
+//                    BlackUploadFetchJob.startWork();
                     }
                     break;
             }

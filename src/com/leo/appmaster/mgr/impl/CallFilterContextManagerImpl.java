@@ -135,9 +135,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 String upColum = CallFilterConstants.BLACK_UPLOAD_STATE;
                 String locHdTypeColum = CallFilterConstants.BLACK_LOC_HD_TYPE;
                 String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
-                Cursor cur = CallFilterUtils.getCursor(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, number);
-                if (cur != null) {
-                    boolean flag = false;
+                Cursor cur = CallFilterUtils.getCursor(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, info.getNumber());
+                int curCount = cur.getCount();
+                if (cur != null && curCount > 0) {
+//                    boolean flag = false;
                     while (cur.moveToFirst()) {
                         int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                         int locHdTypeFlag = cur.getInt(locHdTypeCom);
@@ -151,11 +152,11 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         } else {
                             cr.insert(uri, value);
                         }
-                        flag = true;
+//                        flag = true;
                     }
-                    if (!flag) {
-                        cr.insert(uri, value);
-                    }
+//                    if (!flag) {
+//                        cr.insert(uri, value);
+//                    }
                 } else {
                     cr.insert(uri, value);
                 }
@@ -942,6 +943,11 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
+    public long setCallDurationMax(long duration) {
+        return 0;
+    }
+
+    @Override
     public int getStraNotiTipParam() {
         return 0;
     }
@@ -949,6 +955,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public int getBlackMarkTipParam() {
         return 0;
+    }
+
+    @Override
+    public void setBlackMarkTipParam(int number) {
+        PreferenceTable pt = PreferenceTable.getInstance();
+        pt.putInt(PrefConst.KEY_BLK_MARK_TIP, number);
     }
 
     @Override
