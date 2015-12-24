@@ -100,6 +100,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private List<AppItemInfo> mAppList;
     private PhotoList mPhotoList;
     private List<VideoItemBean> mVideoList;
+    private List<ContactBean> mContactList;
 
     private boolean mAppScanFinish;
     private boolean mPhotoScanFinish;
@@ -545,7 +546,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             long start = SystemClock.elapsedRealtime();
             mAppList = lm.getNewAppList();
             try {
-                mScanAppName = DataUtils.getThreeRandomAppName(mAppList);
+                mScanAppName = DataUtils.getThreeRandomAppName(mAppList, mActivity);
             } catch (Exception e) {
                 e.printStackTrace();
                 mScanAppName = "Exception.";
@@ -595,8 +596,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         public void run() {
             long start = SystemClock.elapsedRealtime();
             PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-            List<ContactBean> contactBeans = pcm.getFrequentContacts();
-            mActivity.setContactList(contactBeans);
+            mContactList = pcm.getFrequentContacts();
+            mActivity.setContactList(mContactList);
 //            updateNewContactList();
             LeoLog.i(TAG, "contactBeans, cost: " + (SystemClock.elapsedRealtime() - start));
         }
@@ -723,7 +724,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mProcessBtn.setVisibility(View.VISIBLE);
                 mScannTitleTv.setText(R.string.pri_pro_scanning_finish);
 //                mProcessTv.setTextColor(mActivity.getToolbarColor());
-                mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, mAppNotifyText);
+                mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, mScanAppName);
             }
         });
     }
@@ -732,19 +733,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         int count = mAppList == null ? 0 : mAppList.size();
         mNewAppImg.setImageResource(count > 0 ? R.drawable.ic_scan_error : R.drawable.ic_scan_safe);
         mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_title, count));
-        if (count == 0) {
-            mAppNotifyText = mActivity.getResources().
-                    getString(R.string.scan_app_content_zero);
-            mNewAppContent.setText(mAppNotifyText);
-        } else if (count <= 3){
-            mAppNotifyText = mActivity.getResources().
-                    getString(R.string.scan_app_content_less_three, mScanAppName);
-            mNewAppContent.setText(mAppNotifyText);
-        } else {
-            mAppNotifyText = mActivity.getResources().
-                    getString(R.string.scan_app_content, mScanAppName);
-            mNewAppContent.setText(mAppNotifyText);
-        }
+        mNewAppContent.setText(mScanAppName);
         mNewAppScore.setText("处理+5分");
         mNewAppLoading.setVisibility(View.GONE);
         mNewAppImg.setVisibility(View.VISIBLE);
@@ -775,9 +764,15 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private void updateNewInstructList() {
         LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         boolean flag = manager.isUsePhoneSecurity();
-        mNewInstructImg.setImageResource(flag ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
-        mNewInstructContent.setText(mActivity.getResources().
-                getString(R.string.scan_instruct_content));
+        if (flag) {
+            mNewInstructImg.setImageResource(R.drawable.ic_scan_safe);
+        } else {
+            mNewInstructImg.setImageResource(R.drawable.ic_scan_error);
+            mNewInstructContent.setText(mActivity.getResources().
+                    getString(R.string.scan_instruct_content));
+            mNewInstructScore.setText("隐私防护 +5");
+            mNewInstructScore.setVisibility(View.VISIBLE);
+        }
         mNewInstructLoading.setVisibility(View.GONE);
         mNewInstructImg.setVisibility(View.VISIBLE);
     }
@@ -788,13 +783,15 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         boolean isScnnedEver = wsm.getLastScanState();
         if (wsm.getWifiState() == WifiSecurityManager.NO_WIFI) {
             mNewWifiImg.setImageResource(R.drawable.ic_scan_error);
+
         } else {
-            mNewWifiImg.setImageResource(
-                    isScnnedEver ? R.drawable.ic_scan_safe: R.drawable.ic_scan_error);
+            if (isScnnedEver) {
+                mNewWifiImg.setImageResource(R.drawable.ic_scan_safe);
+            } else {
+                mNewWifiImg.setImageResource(R.drawable.ic_scan_error);
+            }
+
         }
-        mNewWifiScore.setText("处理+5分");
-        mNewWifiContent.setText(mActivity.getResources().
-                getString(R.string.scan_wifi_content));
         mNewWifiLoading.setVisibility(View.GONE);
         mNewWifiImg.setVisibility(View.VISIBLE);
     }
@@ -814,9 +811,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void updateNewContactList() {
-        mNewContactImg.setImageResource(R.drawable.ic_scan_error);
-        mNewContactContent.setText("隐私联系人功能");
-        mNewContactScore.setText("处理+5分");
+        if (mContactList == null) {
+            mNewContactImg.setImageResource(R.drawable.ic_scan_error);
+        } else if (mContactList != null && mContactList.size() == 0) {
+            mNewContactImg.setImageResource(R.drawable.ic_scan_safe);
+        } else if (mContactList != null && mContactList.size() > 0) {
+            mNewContactImg.setImageResource(R.drawable.ic_scan_error);
+        }
         mNewContactLoading.setVisibility(View.GONE);
         mNewContactImg.setVisibility(View.VISIBLE);
     }

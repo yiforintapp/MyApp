@@ -868,9 +868,10 @@
 	<string name="call_filter_ask_add_to_blacklist">监测到您的通话时间"&lt;"5秒，是否将该号码标记并加入黑名单</string>
 	
     <string name="scan_app_title">发现%1$s个应用</string>
-    <string name="scan_app_content_less_three">其中高危项有%1$s</string>
-    <string name="scan_app_content">其中高危项有%1$s等3个应用</string>
+    <string name="scan_app_content_less_three">其中高危隐私应用有%1$s</string>
+    <string name="scan_app_content">其中高危隐私应用有%1$s等%2$s个应用</string>
     <string name="scan_app_content_zero">可能会对您的隐私造成危害，建议立即加锁</string>
+    <string name="scan_app_content_only_high">高危，建议加锁</string>
     <string name="scan_pic_title">发现%1$s张图片</string>
     <string name="scan_pic_content">可能暴露您的隐私，建议隐藏</string>
     <string name="scan_vid_title">扫描到%1$s个视频</string>

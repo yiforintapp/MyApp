@@ -199,7 +199,8 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_marginBottom="10dp"
+                        android:visibility="invisible"/>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -299,6 +300,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
+                        android:visibility="invisible"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
@@ -396,6 +398,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
+                        android:visibility="invisible"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
@@ -491,6 +494,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
+                        android:visibility="invisible"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
@@ -586,6 +590,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
+                        android:visibility="invisible"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
@@ -680,6 +685,7 @@
                         android:textColor="@color/cb2"
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
+                        android:visibility="invisible"
                         android:textSize="@dimen/f4"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
@@ -770,6 +776,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
+                        android:visibility="invisible"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
