@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private static final String AD_AFTER_SCAN = Constants.UNIT_ID_243;
     private boolean mAdLoaded;
     private View mRootView;
+    private View mAdLayout;
 
     private View mCancelBtn;
     private TextView mCancelTv;
@@ -313,7 +315,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mTransition.getAnimator(LayoutTransition.CHANGE_APPEARING));
 //        mTransition.setAnimator(LayoutTransition.APPEARING,
 //                mTransition.getAnimator(LayoutTransition.APPEARING));
-//        mScrollLayout.setLayoutTransition(mTransition);
+        mScrollLayout.setLayoutTransition(mTransition);
 
 
         mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
@@ -511,6 +513,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void destroyAd() {
+        mAdLayout.setVisibility(View.GONE);
+        mAdLayout.setScaleY(0.0f);
         MobvistaEngine.getInstance(mActivity).release(AD_AFTER_SCAN);
     }
 
@@ -554,6 +558,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
         View adView = rootView.findViewById(R.id.ad_content);
+        mAdLayout = adView;
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
         Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
@@ -563,7 +568,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         preview.setImageBitmap(previewImage);
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
-        adView.setVisibility(View.VISIBLE);
         MobvistaEngine.getInstance(mActivity).registerView(AD_AFTER_SCAN, adView);
     }
     /* 3.2 advertise end */
@@ -674,6 +678,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             ThreadManager.executeOnAsyncThread(mPhotoRunnable);
         } else if (layout == mNewPicLayout){
             ThreadManager.executeOnAsyncThread(mAppRunnable);
+        } else if (layout == mNewAppLayout) {
+            /* show Ad here */
+            if (mAdLoaded) {
+                mAdLayout.setVisibility(View.VISIBLE);
+                mAdLayout.animate().setDuration(500)
+                        .scaleY(1.0f);
+            }
         }
     }
 
