@@ -116,7 +116,7 @@ public class CallFilterUtils {
      * @param date         0
      * @param duration     0
      * @param callType     -1（无该属性） 通话类型
-     * @param readState    false
+     * @param readState    -1（无该属性）
      * @param filterType   0（无） ，标记类型
      * @param filterGrId   -1（无该属性）
      * @return
@@ -130,7 +130,7 @@ public class CallFilterUtils {
                                                long date,
                                                long duration,
                                                int callType,
-                                               boolean readState,
+                                               int readState,
                                                int filterType,
                                                int filterGrId) {
         CallFilterInfo filter = new CallFilterInfo();
@@ -157,7 +157,9 @@ public class CallFilterUtils {
         if (callType != -1) {
             filter.setCallType(callType);
         }
-        filter.setReadState(readState);
+        if (readState != -1) {
+            filter.setReadState(readState);
+        }
         filter.setFilterType(filterType);
         if (filterGrId != -1) {
             filter.setFilterGrId(filterGrId);

@@ -27,15 +27,15 @@ public class CallFilterInfo implements Serializable {
      */
     public String numberType;
 
-    private int blackId;
+    private int blackId = -1;
     /**
      * 每个拦截号码的数量
      */
-    private int filterCount;
-    private boolean readState;
-    private int callType;
+    private int filterCount = -1;
+    private int readState = -1;
+    private int callType = -1;
     private long duration;
-    private int filterGrId;
+    private int filterGrId = -1;
 
 
     public int getBlackId() {
@@ -102,11 +102,11 @@ public class CallFilterInfo implements Serializable {
         this.numberType = numberType;
     }
 
-    public boolean isReadState() {
+    public int getReadState() {
         return readState;
     }
 
-    public void setReadState(boolean readState) {
+    public void setReadState(int readState) {
         this.readState = readState;
     }
 

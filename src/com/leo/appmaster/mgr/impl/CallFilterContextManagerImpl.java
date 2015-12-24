@@ -293,23 +293,11 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     long duration = cursor.getLong(durationColum);
                     int callType = cursor.getInt(callTypeColum);
                     int readState = cursor.getInt(readStateColum);
-                    boolean isRead = false;
-                    switch (readState) {
-                        case CallFilterConstants.READ:
-                            isRead = true;
-                            break;
-                        case CallFilterConstants.READ_NO:
-                            isRead = false;
-                            break;
-                        default:
-                            break;
-
-                    }
                     int filterType = cursor.getInt(filterTypeColum);
                     /*默认值-1*/
                     int filterGrId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
-                            filterNumber, date, duration, callType, isRead, filterType, filterGrId);
+                            filterNumber, date, duration, callType, readState, filterType, filterGrId);
                     infoList.add(filterInfo);
                 }
             }
@@ -370,7 +358,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             int filterType = info.getFilterType();
             String numberType = info.getNumberType();
             long date = info.getTimeLong();
-            boolean isRead = info.isReadState();
+            int isRead = info.getReadState();
 
             values.put(CallFilterConstants.FIL_GR_NAME, name);
             values.put(CallFilterConstants.FIL_GR_PH_NUMB, number);
@@ -381,10 +369,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             values.put(CallFilterConstants.FIL_CALL_TYPE, callType);
             values.put(CallFilterConstants.FIL_GR_TYPE, filterType);
             values.put(CallFilterConstants.FIL_GR_NUM_AREA, numberType);
-            if (isRead) {
-                values.put(CallFilterConstants.FIL_READ_STATE, CallFilterConstants.READ);
-            } else {
-                values.put(CallFilterConstants.FIL_READ_STATE, CallFilterConstants.READ_NO);
+            if (isRead != -1) {
+                values.put(CallFilterConstants.FIL_READ_STATE, isRead);
             }
 
             try {
@@ -514,24 +500,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     long duration = cursor.getLong(durationColum);
                     int callType = cursor.getInt(callTypeColum);
                     int readState = cursor.getInt(readStateColum);
-                    boolean isRead = false;
-                    switch (readState) {
-                        case CallFilterConstants.READ:
-                            isRead = true;
-                            break;
-                        case CallFilterConstants.READ_NO:
-                            isRead = false;
-                            break;
-                        default:
-                            break;
-
-                    }
                     int filterType = cursor.getInt(filterTypeColum);
 
                     int filterNumber = -1;
                     int blackId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
-                            filterNumber, date, duration, callType, isRead, filterType, filterGrId);
+                            filterNumber, date, duration, callType, readState, filterType, filterGrId);
                     filterInfos.add(filterInfo);
                 }
             }
@@ -587,24 +561,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     long duration = cursor.getLong(durationColum);
                     int callType = cursor.getInt(callTypeColum);
                     int readState = cursor.getInt(readStateColum);
-                    boolean isRead = false;
-                    switch (readState) {
-                        case CallFilterConstants.READ:
-                            isRead = true;
-                            break;
-                        case CallFilterConstants.READ_NO:
-                            isRead = false;
-                            break;
-                        default:
-                            break;
-
-                    }
                     int filterType = cursor.getInt(filterTypeColum);
 
                     int filterNumber = -1;
                     int blackId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, numberN, numberArea, blackId,
-                            filterNumber, date, duration, callType, isRead, filterType, filterGrId);
+                            filterNumber, date, duration, callType, readState, filterType, filterGrId);
                     filterInfos.add(filterInfo);
                 }
             }
@@ -666,22 +628,23 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             int filterType = info.getFilterType();
             String numberType = info.getNumberType();
             long date = info.getTimeLong();
-            boolean isRead = info.isReadState();
+            int isRead = info.getReadState();
 
             values.put(CallFilterConstants.FIL_DET_PHONE_NUMBER, number);
             values.put(CallFilterConstants.FIL_DET_NAME, name);
             values.put(CallFilterConstants.FIL_DET_NUM_AREA, numberType);
-            values.put(CallFilterConstants.FIL_DET_TO_GR_ID, filterGrId);
+            if (filterGrId != -1) {
+                values.put(CallFilterConstants.FIL_DET_TO_GR_ID, filterGrId);
+            }
             values.put(CallFilterConstants.FIL_DET_DATE, date);
             values.put(CallFilterConstants.FIL_DET_DURATION, duration);
-            values.put(CallFilterConstants.FIL_DET_CALL_TYPE, callType);
-            values.put(CallFilterConstants.FIL_DET_TYPE, filterType);
-            if (isRead) {
-                values.put(CallFilterConstants.FIL_DET_READ_STATE, CallFilterConstants.READ);
-            } else {
-                values.put(CallFilterConstants.FIL_DET_READ_STATE, CallFilterConstants.READ_NO);
+            if (callType != -1) {
+                values.put(CallFilterConstants.FIL_DET_CALL_TYPE, callType);
             }
-
+            values.put(CallFilterConstants.FIL_DET_TYPE, filterType);
+            if (isRead != -1) {
+                values.put(CallFilterConstants.FIL_DET_READ_STATE, isRead);
+            }
             try {
                 String table = CallFilterConstants.FILTER_DETAIL_TAB;
                 String colum1 = CallFilterConstants.FIL_DET_PHONE_NUMBER;
@@ -689,13 +652,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                 boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum1, colum2}, number);
                 if (update && isKeyExist) {
-                    where = CallFilterConstants.FIL_NUMBER + " LIKE ? ";
+                    where = CallFilterConstants.FIL_DET_PHONE_NUMBER + " LIKE ? ";
                     String[] selectArgs = new String[]{String.valueOf("%" + number)};
                     cr.update(uri, values, where, selectionArgs);
                 } else {
                     cr.insert(uri, values);
                 }
-
                 addFilterGr.add(info);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -999,8 +961,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     public List<BlackListInfo> getServerBlackList() {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        String selects = CallFilterConstants.BLACK_LOC_HD + " = ? ";
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD)};
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
+        String selects = sb.toString();
+        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD),
+                String.valueOf(CallFilterConstants.REMOVE)};
         return CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
     }
 
