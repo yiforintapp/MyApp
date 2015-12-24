@@ -512,15 +512,33 @@ public class HomePrivacyFragment extends Fragment {
             return;
         }
 
+        mHomeAnimView.getShieldLayer().setOutCircleAlpha(0);
         showScanningPercent(-1);
 
+        mHomeAnimView.setShowStep(true);
         mHomeAnimView.setTotalStepCount(stepCount);
-        int offsetY = mHomeAnimView.getShieldLayer().getMaxOffsetY();
-        mShieldOffsetYAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetY", 0, offsetY);
+//        int offsetY = mHomeAnimView.getShieldLayer().getMaxOffsetY();
+//        mShieldOffsetYAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetY", 0, offsetY);
+//        int duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);
+//        mShieldOffsetYAnim.setDuration(duration);
+//        mShieldOffsetYAnim.setInterpolator(new LinearInterpolator());
+//        mShieldOffsetYAnim.start();
+        int offsetX = mHomeAnimView.getShieldLayer().getMaxOffsetX();
+        mShieldOffsetYAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetX", offsetX, 0);
         int duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);
         mShieldOffsetYAnim.setDuration(duration);
         mShieldOffsetYAnim.setInterpolator(new LinearInterpolator());
         mShieldOffsetYAnim.start();
+
+        // 盾牌放大
+        ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
+                HomeAnimShieldLayer.SHIELD_SCANNING_RATIO, HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
+        shieldScaleAnim.setInterpolator(new LinearInterpolator());
+        shieldScaleAnim.setDuration(200);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(mShieldOffsetYAnim, shieldScaleAnim);
+        animatorSet.start();
     }
 
     /**
@@ -555,7 +573,7 @@ public class HomePrivacyFragment extends Fragment {
 
         // 盾牌缩小
         ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
-                HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO, 0.6f);
+                HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO, HomeAnimShieldLayer.SHIELD_SCANNING_RATIO);
         shieldScaleAnim.setInterpolator(new LinearInterpolator());
         shieldScaleAnim.setDuration(200);
         animators.add(shieldScaleAnim);
@@ -672,6 +690,7 @@ public class HomePrivacyFragment extends Fragment {
     public void reset() {
         showScanningPercent(-1);
         stopFinalAnim();
+        mHomeAnimView.setShowStep(false);
         mHomeAnimView.setShowProcessLoading(false, 0);
 
         HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
@@ -681,6 +700,7 @@ public class HomePrivacyFragment extends Fragment {
         shieldLayer.setOutCircleScaleRatio(HomeAnimShieldLayer.MAX_OUT_CIRCLE_SCALE_RATIO);
         shieldLayer.setShieldScale(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
         shieldLayer.setInCircleAlpha(255);
+        shieldLayer.setOutCircleAlpha(255);
 
         if (mShieldOffsetYAnim != null) {
             mShieldOffsetYAnim.end();

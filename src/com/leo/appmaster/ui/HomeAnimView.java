@@ -42,6 +42,7 @@ public class HomeAnimView extends View {
     private int mFinalMaxStepOffsetY;
 
     private boolean mMemoryLess = false;
+    private boolean mShowStep;
 
     public HomeAnimView(Context context) {
         this(context, null);
@@ -128,7 +129,7 @@ public class HomeAnimView extends View {
 
         canvas.setMatrix(Matrix.IDENTITY_MATRIX);
         float offsetRatio = mShieldLayer.getShieldOffsetRatio();
-        if (offsetRatio > 0 && offsetRatio <= 1 && mStepLayer.getTotalStepCount() > 1) {
+        if (mShowStep && mStepLayer.getTotalStepCount() > 1) {
             float offsetY = offsetRatio * mMaxStepOffsetY;
             float finalRatio = mShieldLayer.getShieldOffsetFinalRatio();
             if (offsetRatio == 1 && finalRatio > 0) {
@@ -173,6 +174,10 @@ public class HomeAnimView extends View {
 
     public boolean isLayouted() {
         return mLayouted;
+    }
+
+    public void setShowStep(boolean showStep) {
+        mShowStep = showStep;
     }
 
     /**

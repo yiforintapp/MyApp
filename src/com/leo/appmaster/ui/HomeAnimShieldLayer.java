@@ -34,6 +34,8 @@ public class HomeAnimShieldLayer extends AnimLayer {
     public static final float MIN_SHIELD_SCALE_RATIO = 0.76f;
     // 盾牌最大缩放比例
     public static final float MAX_SHIELD_SCALE_RATIO = 1f;
+    // 盾牌扫描时的比例
+    public static final float SHIELD_SCANNING_RATIO = 0.65f;
 
     public static final float MAX_WAVE_RATIO = 1.6f;
     public static final float MIN_WAVE_RATIO = 0.8f;
@@ -489,6 +491,10 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mOutCircleScaleRatio = outCircleScaleRatio;
     }
 
+    public float getOutCircleScaleRatio() {
+        return mOutCircleScaleRatio;
+    }
+
     /**
      * 设置内光环缩放比率
      *
@@ -538,14 +544,21 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mShieldOffsetY = shieldOffsetY;
     }
 
+    public int getShieldOffsetY() {
+        return mShieldOffsetY;
+    }
+
     public void setShieldOffsetX(int shieldOffsetX) {
         mShieldOffsetX = shieldOffsetX;
     }
 
     public float getShieldOffsetRatio() {
-        float shieldOffsetY = mShieldOffsetY;
+//        float shieldOffsetY = mShieldOffsetY;
+//        float maxShieldOffsetY = mMaxOffseteY;
+//        return shieldOffsetY / maxShieldOffsetY;
+        float shieldOffsetX = mShieldOffsetX;
         float maxShieldOffsetY = mMaxOffseteY;
-        return shieldOffsetY / maxShieldOffsetY;
+        return (maxShieldOffsetY - shieldOffsetX) / maxShieldOffsetY;
     }
 
     public float getShieldOffsetFinalRatio() {
