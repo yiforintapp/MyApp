@@ -9,11 +9,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -167,40 +165,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private LinearLayout mScrollLayout;
     private LayoutTransition mTransition;
 
-    private static final int SCAN_NEW_WIFI_DONE = 0;
-    private static final int SCAN_NEW_INSTRUCT_DONE = 1;
-    private static final int SCAN_NEW_VID_DONE = 2;
-    private static final int SCAN_NEW_PIC_DONE = 3;
-    private static final int SCAN_NEW_APP_DONE = 4;
-    private static final int LOADING_TIME = 500;
-    private Handler mHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            if (mActivity != null) {
-                switch (msg.what) {
-                    case SCAN_NEW_WIFI_DONE:
-                        mNewWifiLoading.setVisibility(View.GONE);
-                        mNewWifiImg.setVisibility(View.VISIBLE);
-                        break;
-                    case SCAN_NEW_INSTRUCT_DONE:
-                        mNewInstructLoading.setVisibility(View.GONE);
-                        mNewInstructImg.setVisibility(View.VISIBLE);
-                        break;
-                    case SCAN_NEW_VID_DONE:
-                        mNewVidLoading.setVisibility(View.GONE);
-                        mNewVidImg.setVisibility(View.VISIBLE);
-                        break;
-                    case SCAN_NEW_PIC_DONE:
-                        mNewPicLoading.setVisibility(View.GONE);
-                        mNewPicImg.setVisibility(View.VISIBLE);
-                        break;
-                    case SCAN_NEW_APP_DONE:
-                        mNewAppLoading.setVisibility(View.GONE);
-                        mNewAppImg.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
-        }
-    };
 
     @Override
     public void onAttach(Activity activity) {
@@ -315,7 +279,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mTransition.getAnimator(LayoutTransition.CHANGE_APPEARING));
 //        mTransition.setAnimator(LayoutTransition.APPEARING,
 //                mTransition.getAnimator(LayoutTransition.APPEARING));
-        mScrollLayout.setLayoutTransition(mTransition);
+//        mScrollLayout.setLayoutTransition(mTransition);
 
 
         mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
@@ -779,6 +743,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                     getString(R.string.scan_app_content, mScanAppName);
             mNewAppContent.setText(mAppNotifyText);
         }
+        mNewAppScore.setText("处理+5分");
         mNewAppLoading.setVisibility(View.GONE);
         mNewAppImg.setVisibility(View.VISIBLE);
     }
@@ -789,6 +754,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewPicTitle.setText(mActivity.getResources().getString(R.string.scan_pic_title, count));
         mNewPicContent.setText(mActivity.getResources().
                 getString(R.string.scan_pic_content));
+        mNewPicScore.setText("处理+5分");
         mNewPicLoading.setVisibility(View.GONE);
         mNewPicImg.setVisibility(View.VISIBLE);
     }
@@ -799,6 +765,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewVidTitle.setText(mActivity.getResources().getString(R.string.scan_vid_title, count));
         mNewVidContent.setText(mActivity.getResources().
                 getString(R.string.scan_vid_content));
+        mNewVidScore.setText("处理+5分");
         mNewVidLoading.setVisibility(View.GONE);
         mNewVidImg.setVisibility(View.VISIBLE);
     }
@@ -823,6 +790,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewWifiImg.setImageResource(
                     isScnnedEver ? R.drawable.ic_scan_safe: R.drawable.ic_scan_error);
         }
+        mNewWifiScore.setText("处理+5分");
         mNewWifiContent.setText(mActivity.getResources().
                 getString(R.string.scan_wifi_content));
         mNewWifiLoading.setVisibility(View.GONE);
@@ -868,7 +836,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mScrollLayout.setLayoutTransition(mTransition);
+                if (layout != mNewContactLayout) {
+                    mScrollLayout.setLayoutTransition(mTransition);
+                }
             }
         });
 

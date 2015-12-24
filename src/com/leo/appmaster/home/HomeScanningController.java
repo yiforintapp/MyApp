@@ -81,10 +81,10 @@ public class HomeScanningController {
     private static final int NEW_UP_LIMIT_PIC = 8000;
     private static final int NEW_UP_LIMIT_PIC_PROCESSED = 2000;
     private static final int NEW_UP_LIMIT_VID = 2000;
-    private static final int NEW_UP_LIMIT_LOST = 500;
-    private static final int NEW_UP_LIMIT_WIFI = 500;
-    private static final int NEW_UP_LIMIT_INS = 500;
-    private static final int NEW_UP_LIMIT_CONTACT = 500;
+    private static final int NEW_UP_LIMIT_LOST = 1000;
+    private static final int NEW_UP_LIMIT_WIFI = 1000;
+    private static final int NEW_UP_LIMIT_INS = 1000;
+    private static final int NEW_UP_LIMIT_CONTACT = 1000;
 
 //    public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
 //                                  ScanningImageView appImg, ScanningTextView appText,
