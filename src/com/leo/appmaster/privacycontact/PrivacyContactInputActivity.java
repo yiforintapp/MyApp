@@ -130,23 +130,17 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private void blackListProcess(boolean flagContact) {
         if (!flagContact) {
 
-            boolean isHaveBlackNum = false;
+            boolean isHaveBlackNum = mCallManger.isExistBlackList(mPhoneNumber);
 
             if (!isHaveBlackNum) {
-
                 List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                 BlackListInfo info = new BlackListInfo();
                 info.setNumberName(mPhoneName);
                 info.setNumber(mPhoneNumber);
-                info.setLocHandler(CallFilterConstants.LOC_HD);
-                info.setLocHandlerType(0);
-                info.setUploadState(CallFilterConstants.UPLOAD_NO);
-
                 list.add(info);
 
                 mCallManger.addBlackList(list, false);
                 finish();
-
             } else {
                 Context context = PrivacyContactInputActivity.this;
                 String str = getResources().getString(R.string.call_filter_have_add_black_num);

@@ -54,6 +54,7 @@ import com.leo.appmaster.utils.Utilities;
 
 public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
     private static final String TAG = "AddFromMessageListActivity";
+    private static final int HAVE_BLACK_LIST = -2;
     private ListView mListMessage;
     private MyMessageAdapter mAdapter;
     private List<MessageBean> mMessageList;
@@ -75,6 +76,14 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         @Override
         public void handleMessage(Message msg) {
             int currentValue = msg.what;
+
+            if (currentValue == HAVE_BLACK_LIST) {
+                Context context = AddFromMessageListActivity.this;
+                String str = getResources().getString(R.string.call_filter_have_add_black_num);
+                Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (currentValue >= mAddPrivacyMessage.size()) {
                 if (!mLogFlag) {
                     if (mProgressDialog != null) {
@@ -114,13 +123,23 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         rippleView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* SDK */
-                SDKWrapper.addEvent(AddFromMessageListActivity.this, SDKWrapper.P1, "contactsadd",
-                        "smsemptyadd");
-                Intent intent = new Intent(AddFromMessageListActivity.this,
-                        PrivacyContactInputActivity.class);
-                intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
-                startActivity(intent);
+                if (!Utilities.isEmpty(mFrom) &&
+                        mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+                    Intent intent = new Intent(AddFromMessageListActivity.this,
+                            PrivacyContactInputActivity.class);
+                    intent.putExtra(CallFilterConstants.FROMWHERE,
+                            CallFilterConstants.FROM_BLACK_LIST);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    /* SDK */
+                    SDKWrapper.addEvent(AddFromMessageListActivity.this, SDKWrapper.P1, "contactsadd",
+                            "smsemptyadd");
+                    Intent intent = new Intent(AddFromMessageListActivity.this,
+                            PrivacyContactInputActivity.class);
+                    intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
+                    startActivity(intent);
+                }
             }
         });
         mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
@@ -134,11 +153,27 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
             public void onClick(View arg0) {
                 if (mMessageList != null && mMessageList.size() > 0) {
                     if (mAddPrivacyMessage.size() > 0 && mAddPrivacyMessage != null) {
-                        showProgressDialog(mAddPrivacyMessage.size(), 0);
                         if (!Utilities.isEmpty(mFrom) &&
                                 mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
-                            sendImpMsmHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
+                            if (mAddPrivacyMessage.size() == 1) {
+                                boolean isHaveBlackNum = mCallManger.
+                                        isExistBlackList(mAddPrivacyMessage.get(0).getPhoneNumber());
+                                if (isHaveBlackNum) {
+                                    Message messge = new Message();
+                                    messge.what = HAVE_BLACK_LIST;
+                                    if (messge != null && mHandler != null) {
+                                        mHandler.sendMessage(messge);
+                                    }
+                                } else {
+                                    showProgressDialog(mAddPrivacyMessage.size(), 0);
+                                    sendImpMsmHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
+                                }
+                            } else {
+                                showProgressDialog(mAddPrivacyMessage.size(), 0);
+                                sendImpMsmHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
+                            }
                         } else {
+                            showProgressDialog(mAddPrivacyMessage.size(), 0);
                             sendImpMsmHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
                         }
                     } else {
@@ -432,9 +467,6 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                             }
                         } else if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(flag)) {
                             List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
-                            //TODO blacklist去重
-                            //TODO 删除系统记录？
-
                             for (MessageBean message : mAddPrivacyMessage) {
                                 String name = message.getMessageName();
                                 String contactNumber = message.getPhoneNumber();
@@ -442,56 +474,21 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 /*隐私联系人去重*/
                                 boolean flagContact = PrivacyContactUtils.pryContRemovSame(contactNumber);
                                 if (!flagContact) {
-                                    boolean isHaveBlackNum = false;
+                                    boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
                                     if (!isHaveBlackNum) {
-
                                         BlackListInfo info = new BlackListInfo();
                                         info.setNumberName(name);
                                         info.setNumber(number);
-                                        info.setLocHandler(CallFilterConstants.LOC_HD);
-                                        info.setLocHandlerType(0);
-                                        info.setUploadState(CallFilterConstants.UPLOAD_NO);
                                         blackList.add(info);
-
-                                        Context context = AddFromMessageListActivity.this;
-                                        /*4.4以上不去做短信操作*/
-                                        boolean isLessLeve19 = PrivacyContactUtils.isLessApiLeve19();
-                                        if (isLessLeve19) {
-                                            if (mAddMessages == null) {
-                                                mAddMessages = PrivacyContactManager.getInstance(context).
-                                                        queryMsmsForNumber(contactNumber);
-                                            } else {
-                                                List<MessageBean> addMessages = PrivacyContactManager.
-                                                        getInstance(context).queryMsmsForNumber(contactNumber);
-                                                mAddMessages.addAll(addMessages);
-                                            }
-                                        }
-                                        if (mAddCallLogs == null) {
-                                            mAddCallLogs = PrivacyContactManager.getInstance(context).
-                                                    queryCallsForNumber(contactNumber);
-                                        } else {
-                                            List<ContactCallLog> addCalllog = PrivacyContactManager.
-                                                    getInstance(context).queryCallsForNumber(contactNumber);
-                                            mAddCallLogs.addAll(addCalllog);
-                                        }
-                                        if (isOtherLogs == PrivacyContactUtils.NO_EXIST_LOG) {
-                                            if ((mAddMessages != null && mAddMessages.size() != 0)
-                                                    || (mAddCallLogs != null && mAddCallLogs.size() != 0)) {
-                                                isOtherLogs = PrivacyContactUtils.EXIST_LOG;
-                                                mLogFlag = true;
-                                            }
-                                        }
                                     }
                                 }
-                                //cancel Process Dialog
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;
                                 if (messge != null && mHandler != null) {
                                     mHandler.sendMessage(messge);
                                 }
-                                //TODO EventBus更新列表
-                                mCallManger.addBlackList(blackList,false);
+                                mCallManger.addBlackList(blackList, false);
                             }
 
                         } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
@@ -885,9 +882,23 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     if (messageList != null && messageList.size() > 0) {
                         Collections.sort(messageList, PrivacyContactUtils.mMessageCamparator);
                     }
+
                     Message msg = new Message();
                     msg.what = PrivacyContactUtils.MSG_ADD_MSM;
-                    msg.obj = messageList;
+                    List<MessageBean> newMessageList = new ArrayList<MessageBean>();
+                    //blacklist remove 隐私联系人
+                    if (!Utilities.isEmpty(mFrom) &&
+                            mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+                        for (int i = 0; i < messageList.size(); i++) {
+                            MessageBean bean = messageList.get(i);
+                            if (!mCallManger.isPrivacyConUse(bean.getPhoneNumber())) {
+                                newMessageList.add(bean);
+                            }
+                        }
+                        msg.obj = newMessageList;
+                    } else {
+                        msg.obj = messageList;
+                    }
                     mAddFromMsmHandler.sendMessage(msg);
                 }
             });
