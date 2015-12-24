@@ -578,7 +578,7 @@ public class HomePrivacyFragment extends Fragment {
         shieldScaleAnim.setDuration(200);
         animators.add(shieldScaleAnim);
         // 盾牌透明
-        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "shieldAlpha", 1f, 0f);
+        ObjectAnimator alphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "shieldAlpha", 255, 0);
         shieldScaleAnim.setInterpolator(new LinearInterpolator());
         shieldScaleAnim.setDuration(200);
         animators.add(alphaAnim);
@@ -616,9 +616,62 @@ public class HomePrivacyFragment extends Fragment {
     }
 
     /**
+     * 启动从扫描页面，直接跳转到隐私建议页面的动画
+     */
+    public void startDirectConfirmAnim() {
+        int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
+        if (score == 100) {
+            // 启动翻转、火花动画
+            mHomeAnimView.getShieldLayer().startMaxScoreAnim();
+        } else {
+            startDirectTranslation();
+        }
+    }
+
+    public void startDirectTranslation() {
+        int duration = 400;
+        List<Animator> animators = new ArrayList<Animator>();
+
+        ObjectAnimator shieldRatio = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(),
+                "finalShieldRatio", 0f, 1f);
+        shieldRatio.setDuration(duration);
+        shieldRatio.setInterpolator(new LinearInterpolator());
+        animators.add(shieldRatio);
+
+        // 盾牌向右移动
+        HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+        int maxOffsetX = shieldLayer.getMaxOffsetX();
+        ObjectAnimator shieldTran = ObjectAnimator.ofInt(shieldLayer, "shieldOffsetX", maxOffsetX, 0);
+        shieldTran.setDuration(duration);
+        shieldTran.setInterpolator(new LinearInterpolator());
+        animators.add(shieldTran);
+
+        // 盾牌以透明
+        ObjectAnimator alphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "shieldAlpha", 255, 0);
+        alphaAnim.setInterpolator(new LinearInterpolator());
+        alphaAnim.setDuration(duration);
+        animators.add(alphaAnim);
+
+        // 分数变大
+        ObjectAnimator textFinalAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(),
+                "finalTextRatio", 0.76f, 1.6f);
+        textFinalAnim.setDuration(duration);
+        textFinalAnim.setInterpolator(new LinearInterpolator());
+        animators.add(textFinalAnim);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animators);
+        animatorSet.start();
+    }
+
+    /**
      * 开启隐私完成页面的盾牌上移、分数放大动画
      */
     public void startFinalAnim() {
+        if (mHomeAnimView.getStepLayer().getTotalStepCount() == 1) {
+            startDirectConfirmAnim();
+            return;
+        }
         ObjectAnimator shieldRatio = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(),
                 "finalShieldRatio", 0f, 1f);
         shieldRatio.setDuration(480);
