@@ -292,10 +292,12 @@ public class HomeAnimShieldLayer extends AnimLayer {
         int shieldOffsetY = mShieldOffsetY;
         int inCircleAlpha = mInCircleAlpha;
         int outCircleAlpha = mOutCircleAlpha;
+
+        int scanningPct = mScanningPercent;
 //        if (circleAlpha != 0 && shieldOffsetY != mMaxOffseteY) {
             // 绘制外环
 //            circleAlpha = (int) (((float) mMaxOffseteY - (float) shieldOffsetY) / (float) mMaxOffseteY * 255f);
-        if (outCircleAlpha > 0) {
+        if (outCircleAlpha > 0 && scanningPct < 101) {
             mOutCircleMatrix.setRotate(rotate, mCirclePx, mCirclePy);
             mOutCircleMatrix.postScale(outCircleScale, outCircleScale, mCirclePx, mCirclePy);
             if (shieldOffsetY > 0) {
@@ -307,7 +309,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             mOutCircleDrawable.draw(canvas);
         }
 
-        if (inCircleAlpha > 0) {
+        if (inCircleAlpha > 0 && scanningPct < 101) {
             // 绘制内环
             mInCircleMatrix.setRotate(-rotate, mCirclePx, mCirclePy);
             mInCircleMatrix.postScale(inCircleScale, inCircleScale, mCirclePx, mCirclePy);
@@ -413,9 +415,9 @@ public class HomeAnimShieldLayer extends AnimLayer {
             shieldAlpha = mShieldAlpha;
         }
         mShieldDrawable.getPaint().setAlpha(shieldAlpha);
-        mShieldMatrix.setScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
-        mShieldMatrix.postTranslate(-shieldOffset, -shieldOffsetY);
         mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
+        mShieldMatrix.postScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
+        mShieldMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
         canvas.setMatrix(mShieldMatrix);
 
         mTextPaint.setColor(textColor);
@@ -423,7 +425,6 @@ public class HomeAnimShieldLayer extends AnimLayer {
             if (shieldOffsetY <= 0) {
                 canvas.drawCircle(mCirclePx, mCirclePy, mShieldBgRadius, mTextPaint);
             }
-//            mFlipDecor.setParentLayer(this);
             mShieldDrawable.draw(canvas);
         }
 
