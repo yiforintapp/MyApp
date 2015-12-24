@@ -154,6 +154,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         }
                     }
                 } else {
+                    value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
+                    value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
+                    value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
+                    value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
                     cr.insert(uri, value);
                 }
             } catch (Exception e) {

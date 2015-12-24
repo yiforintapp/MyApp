@@ -8,10 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.mgr.MgrContext;
@@ -20,9 +22,11 @@ import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
+import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.imageloader.utils.IoUtils;
 import com.leo.appmaster.utils.Utilities;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,7 +245,7 @@ public class CallFilterUtils {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         List<BlackListInfo> list = new ArrayList<BlackListInfo>();
         for (int i = 0; i < 10; i++) {
-            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110"+i, "测试", 0, null,
+            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110" + i, "测试", 0, null,
                     null, 23, 25, 0, 1, 1, 0, 1);
             list.add(info);
         }
@@ -462,5 +466,29 @@ public class CallFilterUtils {
             }
         }
         return blackListInfoList;
+    }
+
+    /* 获取黑名单保存路径*/
+    public static String getBlackPath() {
+        if (FileOperationUtil.isSDReady()) {
+            String path = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath();
+            if (TextUtils.isEmpty(path)) {
+                return null;
+            }
+            if (!path.endsWith(File.separator)) {
+                path += File.separator;
+            }
+            path += CallFilterConstants.BLACK_FILE_PATH;
+            File backupDir = new File(path);
+            if (!backupDir.exists()) {
+                boolean success = backupDir.mkdirs();
+                if (!success) {
+                    return null;
+                }
+            }
+            return path;
+        }
+        return null;
     }
 }

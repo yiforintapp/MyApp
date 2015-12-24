@@ -565,8 +565,9 @@ public class HttpRequestAgent {
      */
     public void loadBlackList(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
-        String url = LeoUrls.URI_BLACK_LIST;
-        url = Utilities.getURL(url);
+//        String url = LeoUrls.URI_BLACK_LIST;
+//        url = Utilities.getURL(url);
+        String url = "http://192.168.1.205/app/config";
         LeoLog.i(TAG, "黑名单配置数据：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);

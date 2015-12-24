@@ -9,6 +9,7 @@ import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 
 import org.json.JSONException;
@@ -18,6 +19,8 @@ import org.json.JSONObject;
  * Created by runlee on 15-12-23.
  */
 public class BlackDownLoadFetchJob extends FetchScheduleJob {
+
+    public static final boolean DBG = true;
 
     /**
      * 骚扰拦截用户数量参数
@@ -103,7 +106,16 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
             if (markTip > 0) {
                 lsm.setSerMarkTipNum(markTip);
             }
-
+            if(DBG) {
+                LeoLog.i("BlackDownLoadFetchJob:","user-"+user);
+                LeoLog.i("BlackDownLoadFetchJob","tipUser:"+""+tipUser);
+                LeoLog.i("BlackDownLoadFetchJob","duration:"+""+duration);
+                LeoLog.i("BlackDownLoadFetchJob","blkMarkTpPar:"+""+blkMarkTpPar);
+                LeoLog.i("BlackDownLoadFetchJob","blkFileStr:"+""+blkFileStr);
+                LeoLog.i("BlackDownLoadFetchJob","starNotiTip:"+""+starNotiTip);
+                LeoLog.i("BlackDownLoadFetchJob","blkTip:"+""+blkTip);
+                LeoLog.i("BlackDownLoadFetchJob","markTip:"+""+markTip);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

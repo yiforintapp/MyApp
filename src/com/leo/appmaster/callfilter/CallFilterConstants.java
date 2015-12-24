@@ -268,6 +268,15 @@ public class CallFilterConstants {
     /**
      * 指定号码是否满足弹框条件（0,不满足;1,满足）
      */
-    public static final int[] IS_TIP_DIA = {0,1};
+    public static final int[] IS_TIP_DIA = {0, 1};
+
+    /**
+     * 黑名单保存路径
+     */
+    public static final String BLACK_FILE_PATH = "appmaster/backup/";
+    /**
+     * 黑名单保存名称
+     */
+    public static final String BLACK_FILE_NAME = "black_list.txt";
 
 }
