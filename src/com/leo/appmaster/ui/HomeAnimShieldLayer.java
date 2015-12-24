@@ -39,6 +39,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
     public static final float MIN_WAVE_RATIO = 0.8f;
 
     private int mMaxOffseteY;
+    private int mMaxOffseteX;
 
     // 盾牌缩放比例
     private float mShieldScale = MAX_SHIELD_SCALE_RATIO;
@@ -54,13 +55,18 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private static final int SHADOW_RADIUS = 4;
 
     private int mCircleAlpha = 0;
+    private int mShieldAlpha = 0;
+    private int mInCircleAlpha = 0;
+    private int mOutCircleAlpha = 0;
     private int mSecurityScore = 100;
+    private float mScanningScale = 1f;
 
     private Matrix mOutCircleMatrix;
     private Matrix mInCircleMatrix;
     private Matrix mShieldMatrix;
     private Matrix mEmptyMatrix;
     private Matrix mWaveMatrix;
+    private Matrix mScanningMatrix;
 
     private Matrix mScoreMatrix;
 
@@ -99,6 +105,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private int mScanningPercent = -1;
 
     private int mShieldOffsetY;
+    private int mShieldOffsetX;
 
     private BitmapDrawable mWaveDrawable;
     // 盾牌周围的波浪，0 ~ 1
@@ -122,6 +129,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mShieldMatrix = new Matrix();
         mEmptyMatrix = new Matrix();
         mScoreMatrix = new Matrix();
+        mScanningMatrix = new Matrix();
 
         Resources res = mParent.getResources();
         mPercentPaint = new Paint();
@@ -167,8 +175,16 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mMaxOffseteY = maxOffseteY;
     }
 
+    public void setMaxOffsetX(int maxOffsetX) {
+        mMaxOffseteX = maxOffsetX;
+    }
+
     public int getMaxOffsetY() {
         return mMaxOffseteY;
+    }
+
+    public int getMaxOffsetX() {
+        return mMaxOffseteX;
     }
 
     @Override
@@ -272,30 +288,35 @@ public class HomeAnimShieldLayer extends AnimLayer {
         float inCircleScale = mInCircleScaleRatio;
         float outCircleScale = mOutCircleScaleRatio;
 
+        int shieldOffsetX = mShieldOffsetX;
         int shieldOffsetY = mShieldOffsetY;
-        int circleAlpha = mCircleAlpha;
-        if (circleAlpha != 0 && shieldOffsetY != mMaxOffseteY) {
+        int inCircleAlpha = mInCircleAlpha;
+        int outCircleAlpha = mOutCircleAlpha;
+//        if (circleAlpha != 0 && shieldOffsetY != mMaxOffseteY) {
             // 绘制外环
-            circleAlpha = (int) (((float) mMaxOffseteY - (float) shieldOffsetY) / (float) mMaxOffseteY * 255f);
+//            circleAlpha = (int) (((float) mMaxOffseteY - (float) shieldOffsetY) / (float) mMaxOffseteY * 255f);
+        if (outCircleAlpha > 0) {
             mOutCircleMatrix.setRotate(rotate, mCirclePx, mCirclePy);
-            if (shieldOffsetY > 0) {
-                mOutCircleMatrix.postTranslate(0, -shieldOffsetY);
-            }
             mOutCircleMatrix.postScale(outCircleScale, outCircleScale, mCirclePx, mCirclePy);
+            if (shieldOffsetY > 0) {
+                mOutCircleMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
+            }
             canvas.setMatrix(mOutCircleMatrix);
             Paint paint = mOutCircleDrawable.getPaint();
-            paint.setAlpha(circleAlpha);
+            paint.setAlpha(outCircleAlpha);
             mOutCircleDrawable.draw(canvas);
+        }
 
+        if (inCircleAlpha > 0) {
             // 绘制内环
             mInCircleMatrix.setRotate(-rotate, mCirclePx, mCirclePy);
-            if (shieldOffsetY > 0) {
-                mInCircleMatrix.postTranslate(0, -shieldOffsetY);
-            }
             mInCircleMatrix.postScale(inCircleScale, inCircleScale, mCirclePx, mCirclePy);
+            if (shieldOffsetY > 0) {
+                mInCircleMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
+            }
             canvas.setMatrix(mInCircleMatrix);
-            paint = mOutCircleDrawable.getPaint();
-            paint.setAlpha(circleAlpha);
+            Paint paint = mInCircleDrawable.getPaint();
+            paint.setAlpha(inCircleAlpha);
             mInCircleDrawable.draw(canvas);
         }
 
@@ -348,6 +369,12 @@ public class HomeAnimShieldLayer extends AnimLayer {
     }
 
     private void drawPercent(Canvas canvas) {
+        int shieldOffsetX = mShieldOffsetX;
+        int shieldOffsetY = mShieldOffsetY;
+        float scanningScale = mScanningScale;
+        mScanningMatrix.setScale(scanningScale, scanningScale, mCirclePx, mCirclePy);
+        mScanningMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
+        canvas.setMatrix(mScanningMatrix);
         float centerX = (getLeft() + getRight()) / 2;
         float centerY = (getTop() + getBottom()) / 2;
 
@@ -366,6 +393,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     private void drawShieldScore(Canvas canvas) {
         int shieldOffsetY = mShieldOffsetY;
+        int shieldOffsetX = mShieldOffsetX;
 
         HomeAnimView parent = (HomeAnimView) mParent;
         int score = mSecurityScore;
@@ -381,10 +409,12 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
             shieldAlpha = (int) (255f * (1f - finalShieldRatio));
             shieldOffsetY += finalShieldRatio * mMaxFinalOffsetY;
+        } else if (mShieldAlpha != 0) {
+            shieldAlpha = mShieldAlpha;
         }
         mShieldDrawable.getPaint().setAlpha(shieldAlpha);
         mShieldMatrix.setScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
-        mShieldMatrix.postTranslate(0, -shieldOffsetY);
+        mShieldMatrix.postTranslate(-shieldOffset, -shieldOffsetY);
         mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
         canvas.setMatrix(mShieldMatrix);
 
@@ -400,11 +430,8 @@ public class HomeAnimShieldLayer extends AnimLayer {
         float finalTextRatio = mFinalTextRatio;
         if (finalTextRatio > MIN_SHIELD_SCALE_RATIO) {
             mScoreMatrix.setScale(finalTextRatio, finalTextRatio, mShieldPx, mShieldPy);
-            mScoreMatrix.postTranslate(0, -shieldOffsetY);
+            mScoreMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
             canvas.setMatrix(mScoreMatrix);
-//            mTextPaint.setShadowLayer(SHADOW_RADIUS, 0, SHADOW_Y, SHADOW_COLOR);
-        } else {
-//            mTextPaint.setShadowLayer(0, 0, 0, SHADOW_COLOR);
         }
         float[] pointer = null;
         if (score < 10) {
@@ -505,6 +532,10 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mShieldOffsetY = shieldOffsetY;
     }
 
+    public void setShieldOffsetX(int shieldOffsetX) {
+        mShieldOffsetX = shieldOffsetX;
+    }
+
     public float getShieldOffsetRatio() {
         float shieldOffsetY = mShieldOffsetY;
         float maxShieldOffsetY = mMaxOffseteY;
@@ -564,7 +595,43 @@ public class HomeAnimShieldLayer extends AnimLayer {
         }
     }
 
+    /**
+     * 设置盾牌透明度
+     * @param shieldAlpha
+     */
+    public void setShieldAlpha(int shieldAlpha) {
+        mShieldAlpha = shieldAlpha;
+        mParent.invalidate();
+    }
+
+    /**
+     * 设置内环透明度
+     * @param inCircleAlpha
+     */
+    public void setInCircleAlpha(int inCircleAlpha) {
+        mInCircleAlpha = inCircleAlpha;
+        mParent.invalidate();
+    }
+
+    /**
+     * 设置外环透明度
+     * @param outCircleAlpha
+     */
+    public void setOutCircleAlpha(int outCircleAlpha) {
+        mOutCircleAlpha = outCircleAlpha;
+        mParent.invalidate();
+    }
+
     public void setMemoryLess(boolean isMemoryLess) {
         mMemoryLess = isMemoryLess;
+    }
+
+    /**
+     * 设置扫描百分比
+     * @param scanningScale
+     */
+    public void setScanningScale(float scanningScale) {
+        mScanningScale = scanningScale;
+        mParent.invalidate();
     }
 }

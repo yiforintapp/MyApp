@@ -77,6 +77,7 @@ public class HomePrivacyFragment extends Fragment {
 
     private int mCurrentPercent;
     private ObjectAnimator mShieldOffsetYAnim;
+    private ObjectAnimator mShieldOffsetXAnim;
     private boolean mInterceptRaise;
 
 
@@ -240,10 +241,15 @@ public class HomePrivacyFragment extends Fragment {
         animators.add(shieldScaleAnim);
 
         // 内环、外环透明度
-        ObjectAnimator shieldAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView, "circleAlpha", 0, 255);
-        shieldScaleAnim.setInterpolator(new LinearInterpolator());
-        shieldScaleAnim.setDuration(600);
-        animators.add(shieldAlphaAnim);
+        ObjectAnimator inCircleAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "inCircleAlpha", 0, 255);
+        inCircleAlphaAnim.setInterpolator(new LinearInterpolator());
+        inCircleAlphaAnim.setDuration(600);
+        animators.add(inCircleAlphaAnim);
+
+        ObjectAnimator outCircleAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "outCircleAlpha", 0, 255);
+        outCircleAlphaAnim.setInterpolator(new LinearInterpolator());
+        outCircleAlphaAnim.setDuration(600);
+        animators.add(outCircleAlphaAnim);
 
         AnimatorSet secondAnimSet = new AnimatorSet();
         secondAnimSet.playTogether(animators);
@@ -518,6 +524,80 @@ public class HomePrivacyFragment extends Fragment {
     }
 
     /**
+     * 启动开始扫描动画
+     * 1 盾牌、内环，缩小+透明
+     * 2 外环缩小至0.5
+     * 3 盾牌区域向左、上移动
+     */
+    public void startScanningAnim() {
+        if (isRemoving() || isDetached() || getActivity() == null
+                || mHomeAnimView == null
+                || mHomeAnimView.getShieldLayer() == null) {
+            return;
+        }
+
+        List<Animator> animators = new ArrayList<Animator>();
+
+        // 盾牌区域向左、上移动
+        int offsetY = mHomeAnimView.getShieldLayer().getMaxOffsetY();
+        mShieldOffsetYAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetY", 0, offsetY);
+        int duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);
+        mShieldOffsetYAnim.setDuration(duration);
+        mShieldOffsetYAnim.setInterpolator(new LinearInterpolator());
+        animators.add(mShieldOffsetYAnim);
+
+        int offsetX = mHomeAnimView.getShieldLayer().getMaxOffsetX();
+        mShieldOffsetXAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetX", 0, offsetX);
+        duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);
+        mShieldOffsetXAnim.setDuration(duration);
+        mShieldOffsetXAnim.setInterpolator(new LinearInterpolator());
+        animators.add(mShieldOffsetXAnim);
+
+        // 盾牌缩小
+        ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
+                HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO, 0.6f);
+        shieldScaleAnim.setInterpolator(new LinearInterpolator());
+        shieldScaleAnim.setDuration(200);
+        animators.add(shieldScaleAnim);
+        // 盾牌透明
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "shieldAlpha", 1f, 0f);
+        shieldScaleAnim.setInterpolator(new LinearInterpolator());
+        shieldScaleAnim.setDuration(200);
+        animators.add(alphaAnim);
+        // 内环缩小
+        ObjectAnimator inScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "inCircleScaleRatio",
+                HomeAnimShieldLayer.MAX_IN_CIRCLE_SCALE_RATIO, 0.4f);
+        inScaleAnim.setInterpolator(new LinearInterpolator());
+        inScaleAnim.setDuration(200);
+        animators.add(inScaleAnim);
+        // 内环透明
+        ObjectAnimator inAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "inCircleAlpha", 255, 0);
+        inAlphaAnim.setInterpolator(new LinearInterpolator());
+        inAlphaAnim.setDuration(200);
+        animators.add(inAlphaAnim);
+        // 外环缩小至0.5
+        ObjectAnimator outScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "outCircleScaleRatio", 1f, 0.5f);
+        outScaleAnim.setInterpolator(new LinearInterpolator());
+        outScaleAnim.setDuration(200);
+        animators.add(outScaleAnim);
+        // 虚线框缩小至0.5
+        ObjectAnimator dashScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "scanningScale", 1f, 0.7f);
+        dashScaleAnim.setInterpolator(new LinearInterpolator());
+        dashScaleAnim.setDuration(200);
+        animators.add(dashScaleAnim);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animators);
+        animatorSet.start();
+        animatorSet.addListener(new SimpleAnimatorListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        });
+    }
+
+    /**
      * 开启隐私完成页面的盾牌上移、分数放大动画
      */
     public void startFinalAnim() {
@@ -593,13 +673,20 @@ public class HomePrivacyFragment extends Fragment {
         showScanningPercent(-1);
         stopFinalAnim();
         mHomeAnimView.setShowProcessLoading(false, 0);
-        mHomeAnimView.getShieldLayer().setFinalShieldRatio(0);
-        mHomeAnimView.getShieldLayer().setFinalTextRatio(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
+
+        HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+        shieldLayer.setFinalShieldRatio(0);
+        shieldLayer.setFinalTextRatio(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
+        shieldLayer.setInCircleScaleRatio(HomeAnimShieldLayer.MAX_IN_CIRCLE_SCALE_RATIO);
+        shieldLayer.setOutCircleScaleRatio(HomeAnimShieldLayer.MAX_OUT_CIRCLE_SCALE_RATIO);
+        shieldLayer.setShieldScale(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
+        shieldLayer.setInCircleAlpha(255);
 
         if (mShieldOffsetYAnim != null) {
             mShieldOffsetYAnim.end();
         }
         mHomeAnimView.setShieldOffsetY(0);
+        mHomeAnimView.setShieldOffsetX(0);
     }
 
     public int getToolbarColor() {

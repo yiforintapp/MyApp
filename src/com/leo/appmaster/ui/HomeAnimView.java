@@ -93,7 +93,10 @@ public class HomeAnimView extends View {
         mShieldLayer.setBounds(rect.left, rect.top, rect.right, rect.bottom);
         int emptyHeaderH = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
         int maxOffsetY = mShieldLayer.centerY() - emptyHeaderH / 2 - toolbarH / 2;
+        int paddingX = getResources().getDimensionPixelSize(R.dimen.pp_shield_x_padding);
+        int maxOffsetX = mShieldLayer.centerX() - paddingX - mShieldLayer.getWidth() / 3;
         mShieldLayer.setMaxOffsetY(maxOffsetY);
+        mShieldLayer.setMaxOffsetX(maxOffsetX);
 
         mLoadingLayer.setBounds(getLeft(), getTop(), getRight(), getBottom());
 
@@ -268,6 +271,13 @@ public class HomeAnimView extends View {
 
     public void setShieldOffsetY(int shieldOffsetY) {
         mShieldLayer.setShieldOffsetY(shieldOffsetY);
+        if (mMemoryLess) {
+            invalidate();
+        }
+    }
+
+    public void setShieldOffsetX(int shieldOffsetX) {
+        mShieldLayer.setShieldOffsetX(shieldOffsetX);
         if (mMemoryLess) {
             invalidate();
         }

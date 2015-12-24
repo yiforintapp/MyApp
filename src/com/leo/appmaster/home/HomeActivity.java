@@ -347,6 +347,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             if (securityScore == 100) {
                 startProcess();
             } else {
+                mPrivacyFragment.startScanningAnim();
                 mScanningFragment = new HomeScanningFragment();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);

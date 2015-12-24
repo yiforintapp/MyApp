@@ -167,7 +167,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         mController = new HomeScanningController(mActivity, this, mNewAppIv, mNewAppText,
                 mNewPhotoIv, mNewPhotoText, mNewVideoIv, mNewVideoText, mNewPrivacyIv, mNewPrivacyText);
-        startScanController();
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startScanController();
+            }
+        }, 200);
 
 //        mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
 //        mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
