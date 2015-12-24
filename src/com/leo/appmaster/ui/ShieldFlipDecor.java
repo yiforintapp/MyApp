@@ -40,11 +40,12 @@ public class ShieldFlipDecor extends BaseDecor {
     @Override
     public void applyDecor(Canvas canvas, Matrix matrix) {
 //        setParentLayer(mParent);
+        HomeAnimShieldLayer shieldLayer = (HomeAnimShieldLayer) mParent;
         Camera camera = new Camera();
         camera.rotateY(mFlipDegreeY);  
 //        camera.ro
         camera.getMatrix(matrix);
-        int centerX = mParent.centerX();
+        int centerX = mParent.centerX() - shieldLayer.getMaxOffsetX();
         int centerY = mParent.centerY();
         matrix.preTranslate(-centerX, -centerY);  
         matrix.postTranslate(centerX, centerY); 

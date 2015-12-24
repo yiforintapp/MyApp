@@ -465,7 +465,25 @@ public class HomeAnimShieldLayer extends AnimLayer {
     }
 
     public void startMaxScoreAnim() {
+        mFlipDecor.startFlipAnim(500, new ShieldFlipDecor.OnFlipEndListener() {
+            @Override
+            public void OnFlipEnd() {
+                mBurstDecor.startBurstAnim(500, new BurstDecor.OnBurstEndListener() {
+                    @Override
+                    public void OnBurstEnd() {
 
+                    }
+                });
+            }
+        });
+    }
+
+    public ShieldFlipDecor getFlipDecor() {
+        return mFlipDecor;
+    }
+
+    public BurstDecor getBurstDecor() {
+        return mBurstDecor;
     }
 
     /**

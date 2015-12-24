@@ -27,9 +27,11 @@ import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.SecurityScoreEvent;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.ui.BurstDecor;
 import com.leo.appmaster.ui.HomeAnimLoadingLayer;
 import com.leo.appmaster.ui.HomeAnimShieldLayer;
 import com.leo.appmaster.ui.HomeAnimView;
+import com.leo.appmaster.ui.ShieldFlipDecor;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.tools.animator.Animator;
@@ -620,9 +622,20 @@ public class HomePrivacyFragment extends Fragment {
      */
     public void startDirectConfirmAnim() {
         int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
-        if (score == 100) {
+        if (score != 100) {
             // 启动翻转、火花动画
-            mHomeAnimView.getShieldLayer().startMaxScoreAnim();
+            final HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+            shieldLayer.getFlipDecor().startFlipAnim(500, new ShieldFlipDecor.OnFlipEndListener() {
+                @Override
+                public void OnFlipEnd() {
+                    shieldLayer.getBurstDecor().startBurstAnim(500, new BurstDecor.OnBurstEndListener() {
+                        @Override
+                        public void OnBurstEnd() {
+                            startDirectTranslation();
+                        }
+                    });
+                }
+            });
         } else {
             startDirectTranslation();
         }

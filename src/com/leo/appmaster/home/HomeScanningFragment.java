@@ -477,8 +477,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void destroyAd() {
-        mAdLayout.setVisibility(View.GONE);
-        mAdLayout.setScaleY(0.0f);
+        if (mAdLayout != null) {
+            mAdLayout.setVisibility(View.GONE);
+            mAdLayout.setScaleY(0.0f);
+        }
         MobvistaEngine.getInstance(mActivity).release(AD_AFTER_SCAN);
     }
 
