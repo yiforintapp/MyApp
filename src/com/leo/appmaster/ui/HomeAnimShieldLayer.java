@@ -387,7 +387,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             if (shieldOffsetY <= 0) {
                 canvas.drawCircle(mCirclePx, mCirclePy, mShieldBgRadius, mTextPaint);
             }
-            mFlipDecor.applyDecor(canvas, mShieldMatrix);
+//            mFlipDecor.applyDecor(canvas, mShieldMatrix);
             mShieldDrawable.draw(canvas);
         }
 
