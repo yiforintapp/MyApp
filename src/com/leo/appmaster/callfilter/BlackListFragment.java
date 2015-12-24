@@ -49,7 +49,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
 
     private void loadDone() {
         mProgressBar.setVisibility(View.GONE);
-        if (mBlackList.size() < 1) {
+        if (mBlackList != null && mBlackList.size() < 1) {
             showEmpty();
         } else {
             mNothingToShowView.setVisibility(View.GONE);
@@ -92,8 +92,8 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-//                mBlackList = mCallManger.getBlackList();
-                mBlackList = mCallManger.getSerBlackList();
+                mBlackList = mCallManger.getBlackList();
+//                mBlackList = mCallManger.getSerBlackList();
                 //load done
                 handler.sendEmptyMessage(CallFilterConstants.BLACK_LIST_LOAD_DONE);
             }

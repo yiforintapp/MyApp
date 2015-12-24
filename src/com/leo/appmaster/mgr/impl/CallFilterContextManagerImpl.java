@@ -629,15 +629,24 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             String numberType = info.getNumberType();
             long date = info.getTimeLong();
             int isRead = info.getReadState();
-
-            values.put(CallFilterConstants.FIL_DET_PHONE_NUMBER, number);
-            values.put(CallFilterConstants.FIL_DET_NAME, name);
-            values.put(CallFilterConstants.FIL_DET_NUM_AREA, numberType);
+            if (!TextUtils.isEmpty(number)) {
+                values.put(CallFilterConstants.FIL_DET_PHONE_NUMBER, number);
+            }
+            if (!TextUtils.isEmpty(name)) {
+                values.put(CallFilterConstants.FIL_DET_NAME, name);
+            }
+            if (!TextUtils.isEmpty(numberType)) {
+                values.put(CallFilterConstants.FIL_DET_NUM_AREA, numberType);
+            }
             if (filterGrId != -1) {
                 values.put(CallFilterConstants.FIL_DET_TO_GR_ID, filterGrId);
             }
-            values.put(CallFilterConstants.FIL_DET_DATE, date);
-            values.put(CallFilterConstants.FIL_DET_DURATION, duration);
+            if (date > 0) {
+                values.put(CallFilterConstants.FIL_DET_DATE, date);
+            }
+            if (date > 0) {
+                values.put(CallFilterConstants.FIL_DET_DURATION, duration);
+            }
             if (callType != -1) {
                 values.put(CallFilterConstants.FIL_DET_CALL_TYPE, callType);
             }

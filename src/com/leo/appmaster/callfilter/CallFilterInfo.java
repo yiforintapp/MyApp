@@ -18,7 +18,7 @@ public class CallFilterInfo implements Serializable {
      */
     public int filterType;
 
-    public long timeLong;
+    public long timeLong = -1;
 
     public String timeStr;
 
@@ -34,7 +34,7 @@ public class CallFilterInfo implements Serializable {
     private int filterCount = -1;
     private int readState = -1;
     private int callType = -1;
-    private long duration;
+    private long duration = -1;
     private int filterGrId = -1;
 
 
