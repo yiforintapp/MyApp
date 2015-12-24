@@ -139,7 +139,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 Cursor cur = CallFilterUtils.getCursor(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, info.getNumber());
                 int curCount = cur.getCount();
                 if (cur != null && curCount > 0) {
-                    while (cur.moveToFirst()) {
+                    while (cur.moveToNext()) {
                         int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                         int locHdTypeFlag = cur.getInt(locHdTypeCom);
                         boolean isKeyExist = cur.getCount() > 0 ? true : false;
@@ -150,6 +150,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             }
                             cr.update(CallFilterConstants.BLACK_LIST_URI, value, null, null);
                         } else {
+                            value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
+                            value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
+                            value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
+                            value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
                             cr.insert(uri, value);
                         }
                     }
