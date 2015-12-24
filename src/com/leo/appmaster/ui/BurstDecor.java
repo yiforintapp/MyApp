@@ -29,7 +29,7 @@ public class BurstDecor extends BaseDecor {
     private float[] mPositionSecondWave = new float[10];
     private float[] mPositionThirdWave = new float[10];
     private float mCurrentProcess = 0;
-    
+    private Paint mPaint;
     public float getCurrentProcess() {
         return mCurrentProcess;
     }
@@ -42,35 +42,40 @@ public class BurstDecor extends BaseDecor {
     public void applyDecor(Canvas canvas, Matrix matrix) {
         canvas.save();
 //        canvas.rotate(90f, mParent.centerX(), mParent.centerY());
-        Paint paint = new Paint();
-        paint.setAlpha(100);
-        paint.setColor(Color.WHITE);    //设置画笔的颜色为白色
-        paint.setAntiAlias(true);    //消除锯齿
-        paint.setStyle(Style.STROKE);    //设置画笔风格为描边
-        paint.setStrokeWidth(15f);    //设置描边的宽度为3
+        if (mPaint == null) {
+            mPaint = new Paint();
+        }
+        mPaint.setAlpha(100);
+        mPaint.setColor(Color.WHITE);    //设置画笔的颜色为白色
+        mPaint.setAntiAlias(true);    //消除锯齿
+        mPaint.setStyle(Style.STROKE);    //设置画笔风格为描边
+        mPaint.setStrokeWidth(15f);    //设置描边的宽度为3
         if (mCurrentProcess >= 1) {
             return;
         }
         
         if (mCurrentProcess >= 0.8f) {
-            paint.setAlpha(paint.getAlpha() + 30);
+            mPaint.setAlpha(mPaint.getAlpha() + 30);
         }
         
         for (int i = 0; i < mPositionFirstWave.length; i++) {
 //            canvas.drawCircle(cx, cy, radius, paint)
-            canvas.drawCircle(mParent.centerX() + mPositionFirstWave[i] * (float)Math.cos(mBurstDegrees[i]), mParent.centerY() + mPositionFirstWave[i] * (float)Math.sin(mBurstDegrees[i]), 2, paint);
+            canvas.drawCircle(mParent.centerX() + mPositionFirstWave[i] * (float)Math.cos(mBurstDegrees[i]), 
+                    mParent.centerY() + mPositionFirstWave[i] * (float)Math.sin(mBurstDegrees[i]), 2, mPaint);
         }
         for (int i = 0; i < mPositionSecondWave.length; i++) {
 //            if (mCurrentProcess >= 0.8f) {
 //                paint.setAlpha(paint.getAlpha() + 30);
 //            }
-            canvas.drawCircle(mParent.centerX() + mPositionSecondWave[i] * (float)Math.cos(mBurstDegrees[i]), mParent.centerY() + mPositionSecondWave[i] * 0.95f *(float)Math.sin(mBurstDegrees[i]),2, paint);
+            canvas.drawCircle(mParent.centerX() + mPositionSecondWave[i] * (float)Math.cos(mBurstDegrees[i]), 
+                    mParent.centerY() + mPositionSecondWave[i] * 0.95f *(float)Math.sin(mBurstDegrees[i]),2, mPaint);
         }
         for (int i = 0; i < mPositionThirdWave.length; i++) {
 //            if (mCurrentProcess >= 0.8f) {
 //                paint.setAlpha(paint.getAlpha() + 30);
 //            }
-            canvas.drawCircle(mParent.centerX() + mPositionThirdWave[i] * 0.95f * (float)Math.cos(mBurstDegrees[i]), mParent.centerY() + mPositionThirdWave[i] * (float)Math.sin(mBurstDegrees[i]),2, paint);
+            canvas.drawCircle(mParent.centerX() + mPositionThirdWave[i] * 0.95f * (float)Math.cos(mBurstDegrees[i]), 
+                    mParent.centerY() + mPositionThirdWave[i] * (float)Math.sin(mBurstDegrees[i]),2, mPaint);
         }
         
 //        mCurrentProcess += 0.02f;
@@ -98,12 +103,15 @@ public class BurstDecor extends BaseDecor {
     
     
     public void startBurstAnim(long duration, final OnBurstEndListener listener) {
+        LeoLog.i("tesi", "start Burst " );
         PropertyValuesHolder v1 = PropertyValuesHolder.ofFloat("currentProcess", 0f, 1f);
         final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(this, v1);
         animatorI.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-//                float animatedValue = (Float) animation.getAnimatedValue("currentProcess");
+                float animatedValue = (Float) animation.getAnimatedValue("currentProcess");
+                
+                mCurrentProcess = animatedValue / 1f;
                 LeoLog.i("tesi", "mCurrentProcess = " + mCurrentProcess);
                 calculatePosition();
             }
@@ -119,7 +127,9 @@ public class BurstDecor extends BaseDecor {
             }
             @Override
             public void onAnimationEnd(Animator animation) {
-                listener.OnBurstEnd();
+                if (listener != null) {
+                    listener.OnBurstEnd();
+                }
             }
             
             @Override

@@ -78,7 +78,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
     // 扫描时的虚线外框
     private Drawable mDashCircle;
 
-    private float mCirclePx;
+    public float mCirclePx;
     private float mCirclePy;
 
     private float mShieldPx;

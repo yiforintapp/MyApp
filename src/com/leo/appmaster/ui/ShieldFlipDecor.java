@@ -45,7 +45,14 @@ public class ShieldFlipDecor extends BaseDecor {
         camera.rotateY(mFlipDegreeY);  
 //        camera.ro
         camera.getMatrix(matrix);
-        int centerX = mParent.centerX();
+//<<<<<<< Upstream, based on branch 'lishuai_dev_3.2' of http://gitlab.leoers.com/leo/appmaster.git
+//        int centerX = mParent.centerX();
+//=======
+        int centerX = mParent.centerX() - shieldLayer.getMaxOffsetX();
+//        int centerX = mParent.centerX();
+//        int centerX = (int) shieldLayer.mCirclePx;
+        LeoLog.i("tesiX", "centerX = " + centerX);
+//>>>>>>> e809fac 满分动画3
         int centerY = mParent.centerY();
         matrix.preTranslate(-centerX, -centerY);  
         matrix.postTranslate(centerX, centerY); 
@@ -57,6 +64,7 @@ public class ShieldFlipDecor extends BaseDecor {
         animatorI.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                LeoLog.i("tesi", "mFlipDegreeY = " + mFlipDegreeY);
                 float animatedValue = (Float) animation.getAnimatedValue("flipDegreeY");
                 if (animatedValue == 90f) {
                     mCurrentStatus ++;
@@ -74,7 +82,9 @@ public class ShieldFlipDecor extends BaseDecor {
             
             @Override
             public void onAnimationEnd(Animator animation) {
-                listener.OnFlipEnd();
+                if (listener != null) {
+                    listener.OnFlipEnd();
+                }
             }
             
             @Override

@@ -97,7 +97,6 @@ public class HomePrivacyFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         mHandler = new FastHandler(this);
         mHomeAnimView = (HomeAnimView) view.findViewById(R.id.home_wave_tv);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -621,6 +620,7 @@ public class HomePrivacyFragment extends Fragment {
      * 启动从扫描页面，直接跳转到隐私建议页面的动画
      */
     public void startDirectConfirmAnim() {
+        LeoLog.i("tesi", "startDirectConfirmAnim" );
         int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
         if (score != 100) {
             // 启动翻转、火花动画
@@ -628,6 +628,7 @@ public class HomePrivacyFragment extends Fragment {
             shieldLayer.getFlipDecor().startFlipAnim(500, new ShieldFlipDecor.OnFlipEndListener() {
                 @Override
                 public void OnFlipEnd() {
+                    LeoLog.i("tesi", "flip end , to start Burst " );
                     shieldLayer.getBurstDecor().startBurstAnim(500, new BurstDecor.OnBurstEndListener() {
                         @Override
                         public void OnBurstEnd() {
