@@ -516,7 +516,7 @@ public class CallFilterUtils {
             return;
         }
         try {
-            final List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
+            List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
             BufferedReader br = new BufferedReader(new FileReader(file));
             String temp = null;
             StringBuffer sb = new StringBuffer();
@@ -530,22 +530,20 @@ public class CallFilterUtils {
                 final int blackCount = Float.valueOf(blackCountStr).intValue();
                 final int markType = Float.valueOf(markTypeStr).intValue();
                 final int markCount = Float.valueOf(markCountStr).intValue();
+
                 LeoLog.i("parseBlactList", "number" + number);
                 LeoLog.i("parseBlactList", "blackCount" + blackCount);
                 LeoLog.i("parseBlactList", "markType" + markType);
                 LeoLog.i("parseBlactList", "markCount" + markCount);
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                        BlackListInfo info = new BlackListInfo();
-                        info.setNumber(number);
-                        info.setAddBlackNumber(blackCount);
-                        info.setMarkerType(markType);
-                        info.setMarkerNumber(markCount);
-                        pm.addSerBlackList(infos);
-                    }
-                });
+
+                CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                BlackListInfo info = new BlackListInfo();
+                info.setNumber(number);
+                info.setAddBlackNumber(blackCount);
+                info.setMarkerType(markType);
+                info.setMarkerNumber(markCount);
+                infos.add(info);
+                pm.addSerBlackList(infos);
 
                 temp = br.readLine();
             }
@@ -553,6 +551,7 @@ public class CallFilterUtils {
             e.printStackTrace();
         }
     }
+
 
 
 }

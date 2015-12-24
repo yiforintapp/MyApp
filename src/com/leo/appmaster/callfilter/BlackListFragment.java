@@ -93,7 +93,6 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
             @Override
             public void run() {
                 mBlackList = mCallManger.getBlackList();
-//                mBlackList = mCallManger.getSerBlackList();
                 //load done
                 handler.sendEmptyMessage(CallFilterConstants.BLACK_LIST_LOAD_DONE);
             }

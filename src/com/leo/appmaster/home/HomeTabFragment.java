@@ -26,6 +26,7 @@ import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
@@ -47,7 +48,7 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
  */
 public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTabFragment";
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
 
     private ImageView mRedDot;
     // 首页4个tab
@@ -331,8 +332,10 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
                     startActivity(mIntent);
                     if(DBG) {
-                        CallFilterUtils.queryData(getActivity());
+//                        CallFilterUtils.queryData(getActivity());
 //                        CallFilterUtils.queryNoUploadData(getActivity());
+                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                        pm.isCallFilterTip("1004");
                     }
                     break;
                 case R.id.home_lost_tab:
@@ -344,17 +347,18 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
 //                        CallFilterUtils.addData();
 //                    BlackUploadFetchJob.startWork();
-//                        BlackDownLoadFetchJob.startWork();
-                        StringBuilder sbName = new StringBuilder();
-                        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
-                        sbName.append(countryId);
-                        sbName.append(CallFilterConstants.GZIP);
+                        BlackDownLoadFetchJob.startWork();
 
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(CallFilterUtils.getBlackPath());
-                        sb.append(sbName.toString());
-                        String filePath = sb.toString();
-                        CallFilterUtils.parseBlactList(filePath);
+//                        StringBuilder sbName = new StringBuilder();
+//                        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
+//                        sbName.append(countryId);
+//                        sbName.append(CallFilterConstants.GZIP);
+//
+//                        StringBuilder sb = new StringBuilder();
+//                        sb.append(CallFilterUtils.getBlackPath());
+//                        sb.append(sbName.toString());
+//                        String filePath = sb.toString();
+//                        CallFilterUtils.parseBlactList(filePath);
                     }
                     break;
             }

@@ -1,6 +1,7 @@
 package com.leo.appmaster.schedule;
 
 import android.content.Context;
+import android.telecom.Call;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
@@ -29,6 +30,16 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
+        StringBuilder sbName = new StringBuilder();
+        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
+        sbName.append(countryId);
+        sbName.append(CallFilterConstants.GZIP);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterUtils.getBlackPath());
+        sb.append(sbName.toString());
+        String filePath = sb.toString();
+        CallFilterUtils.parseBlactList(filePath);
     }
 
     @Override

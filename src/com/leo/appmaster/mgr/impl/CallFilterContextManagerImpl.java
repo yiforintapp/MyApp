@@ -886,7 +886,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         int addBlackCount = 0;
         int markCount = 0;
         List<BlackListInfo> blacks = getSerBlackListFroNum(number);
-        if (blacks != null || blacks.size() <= 0) {
+        if (blacks != null && blacks.size() > 0) {
             for (BlackListInfo info : blacks) {
                 addBlackCount = info.getAddBlackNumber();
                 markCount = info.getMarkerNumber();
@@ -972,10 +972,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
         String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD),
-                String.valueOf(CallFilterConstants.REMOVE)};
+        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD)};
         return CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
     }
 
@@ -1022,6 +1020,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     String[] selectArgs = new String[]{String.valueOf("%" + formateNumber)};
                     cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                 } else {
+                    value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
                     cr.insert(uri, value);
                 }
 
