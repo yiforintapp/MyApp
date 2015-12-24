@@ -115,9 +115,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         init();
 
         // 3.2 add advertise
-        if (AppMasterPreference.getInstance(this).getADIntruder() == 1) {
-            loadAd();
-        }
+        loadAd();
 
 //        Intent i = new Intent(this, GradeTipActivity.class);
 //        startActivity(i);
@@ -292,7 +290,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     /* 3.2 advertise stuff - begin */
     private void loadAd() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        if (amp.getADWifiScan() == 1) {
+        if (amp.getADIntruder() == 1) {
             MobvistaEngine.getInstance(this).loadMobvista(INTRUDER_AD_ID, new MobvistaEngine.MobvistaListener() {
 
                 @Override
