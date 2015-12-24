@@ -1,6 +1,7 @@
 package com.leo.appmaster.schedule;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
@@ -72,7 +73,7 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
             int tipUser = jo.getInt(FIL_TP);
             long duration = jo.getLong(CALL_DR);
             int blkMarkTpPar = jo.getInt(BLK_TP_PAR);
-            String blkFile = jo.getString(BLK_LIST);
+            String blkFileStr = jo.getString(BLK_LIST);
             int starNotiTip = jo.getInt(STRA_TP);
             int blkTip = jo.getInt(BLK_TP);
             int markTip = jo.getInt(MARK_TP);
@@ -87,8 +88,22 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
                 lsm.setCallDurationMax(duration);
             }
             if (blkMarkTpPar > 0) {
-//                lsm
+                lsm.setBlackMarkTipParam(blkMarkTpPar);
             }
+            /*下载黑名单链接*/
+            if (!TextUtils.isEmpty(blkFileStr)) {
+                lsm.setSerBlackFilePath(blkFileStr);
+            }
+            if (starNotiTip > 0) {
+                lsm.setStraNotiTipParam(starNotiTip);
+            }
+            if (blkTip > 0) {
+                lsm.setSerBlackTipNum(blkTip);
+            }
+            if (markTip > 0) {
+                lsm.setSerMarkTipNum(markTip);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

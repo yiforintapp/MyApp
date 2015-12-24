@@ -81,6 +81,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             }
             String name = info.getNumberName();
             String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
+            //TODO
             boolean isContactUse = CallFilterUtils.isNumberUsePrivacy(number);
             if (isContactUse) {
                 continue;
@@ -138,7 +139,6 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 Cursor cur = CallFilterUtils.getCursor(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, info.getNumber());
                 int curCount = cur.getCount();
                 if (cur != null && curCount > 0) {
-//                    boolean flag = false;
                     while (cur.moveToFirst()) {
                         int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                         int locHdTypeFlag = cur.getInt(locHdTypeCom);
@@ -152,11 +152,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         } else {
                             cr.insert(uri, value);
                         }
-//                        flag = true;
                     }
-//                    if (!flag) {
-//                        cr.insert(uri, value);
-//                    }
                 } else {
                     cr.insert(uri, value);
                 }
@@ -949,12 +945,20 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public int getStraNotiTipParam() {
-        return 0;
+        PreferenceTable pt = PreferenceTable.getInstance();
+        return pt.getInt(PrefConst.KEY_STRA_NOTI_PAR, 0);
+    }
+
+    @Override
+    public void setStraNotiTipParam(int params) {
+        PreferenceTable pt = PreferenceTable.getInstance();
+        pt.putInt(PrefConst.KEY_STRA_NOTI_PAR, params);
     }
 
     @Override
     public int getBlackMarkTipParam() {
-        return 0;
+        PreferenceTable pt = PreferenceTable.getInstance();
+        return pt.getInt(PrefConst.KEY_BLK_MARK_TIP, 0);
     }
 
     @Override
@@ -1119,5 +1123,22 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     public void setFilterUserNumber(int number) {
         PreferenceTable pt = PreferenceTable.getInstance();
         pt.putInt(PrefConst.KEY_FILTER_USER, number);
+    }
+
+    @Override
+    public void setSerBlackFilePath(String filePath) {
+        PreferenceTable pt = PreferenceTable.getInstance();
+        pt.putString(PrefConst.KEY_SER_BLK_PATH, filePath);
+    }
+
+    @Override
+    public String getSerBlackFilePath() {
+        PreferenceTable pt = PreferenceTable.getInstance();
+        return pt.getString(PrefConst.KEY_SER_BLK_PATH);
+    }
+
+    @Override
+    public boolean isPrivacyConUse(String number) {
+        return CallFilterUtils.isNumberUsePrivacy(number);
     }
 }

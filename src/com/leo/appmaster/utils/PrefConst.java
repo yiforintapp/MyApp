@@ -183,5 +183,16 @@ public class PrefConst {
      */
     public static final String KEY_FILTER_TIP_USER = "filter_tip_user";
 
+    /**
+     * 黑名单和标记的显示倍率
+     */
     public static final String KEY_BLK_MARK_TIP = "blk_mark_tip";
+    /**
+     * 后台下发的黑名单下载链接
+     */
+    public static final String KEY_SER_BLK_PATH = "SER_BLK_PATH";
+    /**
+     * 陌生人提示倍率参数
+     */
+    public static final String KEY_STRA_NOTI_PAR = "STRA_NOTI_PAR";
 }

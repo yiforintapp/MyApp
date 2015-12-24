@@ -218,6 +218,7 @@ public abstract class CallFilterContextManager extends Manager {
 
     /**
      * 设置通话时长阀值，判断是否显示提示
+     *
      * @param duration
      * @return
      */
@@ -231,6 +232,13 @@ public abstract class CallFilterContextManager extends Manager {
      */
     public abstract int getStraNotiTipParam();
 
+
+    /**
+     * 设置倍率参数：陌生号码通知提示显示
+     *
+     * @return
+     */
+    public abstract void setStraNotiTipParam(int params);
     /**
      * 倍率参数：黑名单，标记名单显示值
      *
@@ -240,9 +248,10 @@ public abstract class CallFilterContextManager extends Manager {
 
     /**
      * 设置倍率参数：黑名单，标记名单显示值
+     *
      * @param number
      */
-    public abstract void  setBlackMarkTipParam(int number);
+    public abstract void setBlackMarkTipParam(int number);
 
     /**
      * 骚扰拦截用户量
@@ -253,6 +262,7 @@ public abstract class CallFilterContextManager extends Manager {
 
     /**
      * 设置链接用户量
+     *
      * @param number
      */
     public abstract void setFilterUserNumber(int number);
@@ -273,9 +283,11 @@ public abstract class CallFilterContextManager extends Manager {
 
     /**
      * 设置骚扰拦截显示提示框：通过指定用户量参数值对比显示
+     *
      * @param number
      */
-    public abstract  void setFilterTipFroUser(int number);
+    public abstract void setFilterTipFroUser(int number);
+
     /**
      * 添加服务器下发黑名单
      *
@@ -312,6 +324,7 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract int getSerBlackNumFroNum(String number);
+
     /**
      * 通过指定的号码，查询服务器下发标记人数
      *
@@ -349,6 +362,28 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract void setSerMarkTipNum(int num);
+
+    /**
+     * 设置服务器下发黑名单列表的链接
+     *
+     * @param filePath
+     * @return
+     */
+    public abstract void setSerBlackFilePath(String filePath);
+
+    /**
+     * 获取服务器下发黑名单列表的链接
+     *
+     * @return
+     */
+    public abstract String getSerBlackFilePath();
+
+    /**
+     * 查询指定号码隐私联系人时候使用
+     * @param number
+     * @return
+     */
+    public abstract  boolean isPrivacyConUse(String number);
 
 
 }

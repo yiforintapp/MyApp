@@ -557,6 +557,12 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
+    /**
+     * 加载黑名单的配置文件
+     *
+     * @param listener
+     * @param errorListener
+     */
     public void loadBlackList(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
         String url = LeoUrls.URI_BLACK_LIST;
@@ -564,6 +570,24 @@ public class HttpRequestAgent {
         LeoLog.i(TAG, "黑名单配置数据：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
+        request.setShouldCache(true);
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
+        mRequestQueue.add(request);
+    }
+
+    /**
+     * 下载黑名单列表文件
+     *
+     * @param filePath
+     * @param listener
+     * @param errorListener
+     */
+    public void downloadBlackList(String filePath, Listener<File> listener, ErrorListener errorListener) {
+        String uri = null;
+        FileRequest request = new FileRequest(Method.GET, uri, filePath, listener, errorListener);
         request.setShouldCache(true);
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
