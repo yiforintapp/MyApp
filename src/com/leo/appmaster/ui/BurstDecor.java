@@ -42,6 +42,10 @@ public class BurstDecor extends BaseDecor {
     public void applyDecor(Canvas canvas, Matrix matrix) {
         canvas.save();
 //        canvas.rotate(90f, mParent.centerX(), mParent.centerY());
+        if (mCurrentProcess == 0) {
+            return;
+        }
+        
         if (mPaint == null) {
             mPaint = new Paint();
         }

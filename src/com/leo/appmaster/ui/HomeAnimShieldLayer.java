@@ -106,8 +106,8 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private boolean mTouchHit;
     private int mScanningPercent = -1;
 
-    private int mShieldOffsetY;
-    private int mShieldOffsetX;
+    public int mShieldOffsetY;
+    public int mShieldOffsetX;
 
     private BitmapDrawable mWaveDrawable;
     // 盾牌周围的波浪，0 ~ 1
@@ -567,6 +567,10 @@ public class HomeAnimShieldLayer extends AnimLayer {
         return mShieldOffsetY;
     }
 
+    public int getShieldOffsetX() {
+        return mShieldOffsetX;
+    }
+    
     public void setShieldOffsetX(int shieldOffsetX) {
         mShieldOffsetX = shieldOffsetX;
     }

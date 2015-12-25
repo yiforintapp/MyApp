@@ -51,10 +51,10 @@ public class ShieldFlipDecor extends BaseDecor {
         if (matrix == null || mCurrDegree == 0f || mCurrDegree == 180f) {
             return;
         }
-        mMatrix.set(Matrix.IDENTITY_MATRIX);
-        int centerX = mParent.centerX();
-        int centerY = mParent.centerY();
-
+        HomeAnimShieldLayer p = (HomeAnimShieldLayer)mParent;
+        int centerX = p.centerX();
+        int centerY = p.centerY() - p.getMaxOffsetY();
+        LeoLog.i("tesiX", "centerX = " +centerX);
         Camera camera = new Camera();
         camera.rotateY(mFlipDegreeY);
         camera.getMatrix(mMatrix);
@@ -70,7 +70,7 @@ public class ShieldFlipDecor extends BaseDecor {
         animatorI.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                LeoLog.i("tesi", "mFlipDegreeY = " + mFlipDegreeY);
+                LeoLog.i("tesi", "mParent.left = " +mParent.getLeft());
                 float animatedValue = (Float) animation.getAnimatedValue("flipDegreeY");
                 mCurrDegree = animatedValue;
                 if (animatedValue == 90f) {
