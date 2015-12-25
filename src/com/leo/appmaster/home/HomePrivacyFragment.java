@@ -625,7 +625,7 @@ public class HomePrivacyFragment extends Fragment {
         if (score != 100) {
             // 启动翻转、火花动画
             final HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
-            shieldLayer.getFlipDecor().startFlipAnim(500, new ShieldFlipDecor.OnFlipEndListener() {
+            shieldLayer.getFlipDecor().startFlipAnim(1000, new ShieldFlipDecor.OnFlipEndListener() {
                 @Override
                 public void OnFlipEnd() {
                     LeoLog.i("tesi", "flip end , to start Burst " );

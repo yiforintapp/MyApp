@@ -20,6 +20,7 @@ import android.graphics.Matrix;
 public class ShieldFlipDecor extends BaseDecor {
     private Matrix mMatrix;
     
+    private boolean mNeedPlay = false;
     private float mFlipDegreeY = 0f;
     private int mCurrentStatus = 0;
 
@@ -80,6 +81,7 @@ public class ShieldFlipDecor extends BaseDecor {
         animatorI.addListener(new AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                mNeedPlay = true;
             }
             
             @Override
@@ -91,10 +93,12 @@ public class ShieldFlipDecor extends BaseDecor {
                 if (listener != null) {
                     listener.OnFlipEnd();
                 }
+                mNeedPlay = false;
             }
             
             @Override
             public void onAnimationCancel(Animator animation) {
+                mNeedPlay = false;
             }
         });
         animatorI.setDuration(duration);
