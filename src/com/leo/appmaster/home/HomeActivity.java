@@ -386,7 +386,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mAppList = appList;
         mPhotoList = photoItems;
         mVideoList = videoItemBeans;
-       mAppScanText = appScanText;
+        mAppScanText = appScanText;
         mPrivacyFragment.tryPlayFullScoreAnim();
     }
 
@@ -447,6 +447,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             count++;
         }
         mPrivacyFragment.startProcessing(count);
+        if (count == 1) {
+            mPrivacyFragment.startFinalAnim();
+        }
         jumpToNextFragment();
         mScanningFragment = null;
     }
@@ -485,7 +488,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mVideoList = null;
             mCurrentFragment = fragment;
         } else {
-            mPrivacyFragment.startFinalAnim();
             PrivacyConfirmFragment fragment = PrivacyConfirmFragment.newInstance(mShowContact);
             fragment.setDataList(mContactList);
             ft.replace(R.id.pri_pro_content, fragment);

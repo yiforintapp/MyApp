@@ -630,8 +630,10 @@ public class HomePrivacyFragment extends Fragment {
                 public void OnFlipEnd() {
                     LeoLog.i("tesi", "flip end , to start Burst " );
                     shieldLayer.getBurstDecor().startBurstAnim(500, new BurstDecor.OnBurstEndListener() {
+
                         @Override
                         public void OnBurstEnd() {
+                            mActivity.jumpToNextFragment();
                             startDirectTranslation();
                         }
                     });
@@ -648,7 +650,7 @@ public class HomePrivacyFragment extends Fragment {
     }
 
     public void startDirectTranslation() {
-        int duration = 400;
+        int duration = 580;
         List<Animator> animators = new ArrayList<Animator>();
 
         ObjectAnimator shieldRatio = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(),
