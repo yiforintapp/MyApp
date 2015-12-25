@@ -57,7 +57,7 @@ import java.util.Date;
 
 /**
  * 主线程核心业务初始化
- * 
+ *
  * @author Jasper
  */
 public class InitCoreBootstrap extends Bootstrap {
@@ -196,6 +196,7 @@ public class InitCoreBootstrap extends Bootstrap {
         filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3);
         filter.addAction(PrivacyContactUtils.CALL_RECEIVER_ACTION);
         filter.addAction(PrivacyContactUtils.SENT_SMS_ACTION);
+        filter.addAction(PrivacyContactUtils.NEW_OUTGOING_CALL);
         mApp.registerReceiver(mPrivacyReceiver, filter);
     }
 

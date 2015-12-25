@@ -1,5 +1,7 @@
 package com.leo.appmaster.mgr;
 
+import android.content.ContentValues;
+
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterInfo;
 import com.leo.appmaster.callfilter.StrangerInfo;
@@ -175,10 +177,9 @@ public abstract class CallFilterContextManager extends Manager {
      * 增加陌生人分组
      *
      * @param infos
-     * @param update
      * @return
      */
-    public abstract boolean addStrangerGr(List<StrangerInfo> infos, boolean update);
+    public abstract boolean addStrangerGr(List<StrangerInfo> infos);
 
     /**
      * 删除陌生人分组
@@ -312,13 +313,6 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract boolean removeSerBlackList(List<BlackListInfo> infos);
 
     /**
-     * 查询 服务器下发黑名单
-     *
-     * @return
-     */
-    public abstract List<BlackListInfo> getSerBlackList();
-
-    /**
      * 通过指定的号码，查询服务器下发黑名单
      *
      * @return
@@ -392,6 +386,13 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract boolean isPrivacyConUse(String number);
+
+    /**
+     * 向系统通话数据库中插入数据
+      * @param info
+     * @return
+     */
+    public abstract boolean insertCallToSys(CallFilterInfo info);
 
 
 }

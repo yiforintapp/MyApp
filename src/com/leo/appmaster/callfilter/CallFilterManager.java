@@ -8,6 +8,18 @@ import android.content.Context;
 public class CallFilterManager {
     private static CallFilterManager mInstance;
     private Context mContext;
+    /**
+     * 拨出电话
+     */
+    private boolean mIsComingOut = false;
+
+    public boolean isComingOut() {
+        return mIsComingOut;
+    }
+
+    public void setIsComingOut(boolean isComingOut) {
+        this.mIsComingOut = isComingOut;
+    }
 
     public static synchronized CallFilterManager getInstance(Context context) {
         if (mInstance == null) {

@@ -13,7 +13,7 @@ public class StrangerInfo {
      * 每个陌生人的通话数量
      */
     private int starCount;
-    private boolean tipState;
+    private int tipState = -1;
     /**
      * 号码归属地
      */
@@ -88,11 +88,11 @@ public class StrangerInfo {
         this.starCount = starCount;
     }
 
-    public boolean isTipState() {
+    public int getTipState() {
         return tipState;
     }
 
-    public void setTipState(boolean tipState) {
+    public void setTipState(int tipState) {
         this.tipState = tipState;
     }
 

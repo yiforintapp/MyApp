@@ -70,7 +70,7 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         int i = 1;
         while (true) {
             List<BlackListInfo> infos = pm.getNoUpBlackListLimit(i);
-            if (infos == null || infos.size() < 0) {
+            if (infos == null || infos.size() <= 0) {
                 break;
             }
             i = i + 1;

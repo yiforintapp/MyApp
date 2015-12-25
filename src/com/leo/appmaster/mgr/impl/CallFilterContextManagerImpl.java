@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.CallLog;
+import android.telecom.Call;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -146,27 +148,17 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         new String[]{"%" + number, String.valueOf(CallFilterConstants.LOC_HD),
                                 String.valueOf(CallFilterConstants.REMOVE_NO)}, null, null, null);
 
-                int curCount = cur.getCount();
-                if (cur != null && curCount > 0) {
+                if (cur != null && cur.getCount() > 0) {
                     while (cur.moveToNext()) {
                         int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                         int locHdTypeFlag = cur.getInt(locHdTypeCom);
-                        boolean isKeyExist = cur.getCount() > 0 ? true : false;
-                        if (isKeyExist) {
-                            //本地标记类型
-                            if (locHdTypeFlag != locHdType) {
-                                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-                            }
-                            String where = CallFilterConstants.BLACK_ID + " = ? ";
-                            String[] selectArgs = new String[]{String.valueOf(id)};
-                            cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
-                        } else {
-                            value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
+                        //本地标记类型
+                        if (locHdTypeFlag != locHdType) {
                             value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-                            value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
-                            value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
-                            cr.insert(uri, value);
                         }
+                        String where = CallFilterConstants.BLACK_ID + " = ? ";
+                        String[] selectArgs = new String[]{String.valueOf(id)};
+                        cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                     }
                 } else {
                     value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
@@ -423,7 +415,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     String colum2 = CallFilterConstants.FIL_GR_DATE;
                     String colum3 = CallFilterConstants.FIL_CALL_TYPE;
                     String colum4 = CallFilterConstants.FIL_NUMBER;
-                    Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3, colum4}, number, false);
+                    Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3, colum4}, number);
                     boolean isKeyExist = (cur != null) ? cur.getCount() > 0 : false;
                     if (isKeyExist) {
                         int idColum = cur.getColumnIndex(CallFilterConstants.FIL_GR_ID);
@@ -826,7 +818,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
-    public boolean addStrangerGr(List<StrangerInfo> infos, boolean update) {
+    public boolean addStrangerGr(List<StrangerInfo> infos) {
         if (infos == null || infos.size() <= 0) {
             return false;
         }
@@ -844,25 +836,25 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                 String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
                 long date = info.getDate();
-                boolean tipState = info.isTipState();
+                int tipState = info.getTipState();
                 int tipType = info.getTipType();
 
                 values.put(CallFilterConstants.STR_TP_NUM, number);
                 values.put(CallFilterConstants.STR_TP_DATE, date);
 
-                if (tipState) {
-                    values.put(CallFilterConstants.STR_TP_STATE, CallFilterConstants.FILTER_TIP);
-                } else {
-                    values.put(CallFilterConstants.STR_TP_STATE, CallFilterConstants.FILTER_TIP_NO);
+                if (tipState != -1) {
+                    values.put(CallFilterConstants.STR_TP_STATE, tipState);
                 }
                 values.put(CallFilterConstants.STR_TP_TYPE, tipType);
 
                 String table = CallFilterConstants.STRANGER_TP_TAB;
-                String colum1 = CallFilterConstants.STR_TP_NUM;
-                String colum2 = CallFilterConstants.STR_TP_DATE;
+                String colum = CallFilterConstants.STR_TP_NUM;
 
-                boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum1, colum2}, number);
-                if (update && isKeyExist) {
+                boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum}, number);
+                if (isKeyExist) {
+                    String numFormate = PrivacyContactUtils.formatePhoneNumber(number);
+                    where = CallFilterConstants.STR_TP_NUM + " LIKE ? ";
+                    selectionArgs = new String[]{"%" + numFormate};
                     cr.update(uri, values, where, selectionArgs);
                 } else {
                     cr.insert(uri, values);
@@ -980,7 +972,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public int getStraNotiTipParam() {
         PreferenceTable pt = PreferenceTable.getInstance();
-        return pt.getInt(PrefConst.KEY_STRA_NOTI_PAR, 0);
+        return pt.getInt(PrefConst.KEY_STRA_NOTI_PAR, -1);
     }
 
     @Override
@@ -992,7 +984,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public int getBlackMarkTipParam() {
         PreferenceTable pt = PreferenceTable.getInstance();
-        return pt.getInt(PrefConst.KEY_BLK_MARK_TIP, 0);
+        return pt.getInt(PrefConst.KEY_BLK_MARK_TIP, -1);
     }
 
     @Override
@@ -1004,13 +996,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public int getFilterUserNumber() {
         PreferenceTable pt = PreferenceTable.getInstance();
-        return pt.getInt(PrefConst.KEY_FILTER_USER, 0);
+        return pt.getInt(PrefConst.KEY_FILTER_USER, -1);
     }
 
     @Override
     public int getFilterTipFroUser() {
         PreferenceTable pt = PreferenceTable.getInstance();
-        return pt.getInt(PrefConst.KEY_FILTER_TIP_USER, 0);
+        return pt.getInt(PrefConst.KEY_FILTER_TIP_USER, -1);
     }
 
     @Override
@@ -1087,12 +1079,6 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
-    public List<BlackListInfo> getSerBlackList() {
-
-        return null;
-    }
-
-    @Override
     public List<BlackListInfo> getSerBlackListFroNum(String number) {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
@@ -1132,13 +1118,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public int getSerBlackTipCount() {
         PreferenceTable pt = PreferenceTable.getInstance();
-        return pt.getInt(PrefConst.KEY_BLACK_TIP, 0);
+        return pt.getInt(PrefConst.KEY_BLACK_TIP, -1);
     }
 
     @Override
     public int getSerMarkTipCount() {
         PreferenceTable pt = PreferenceTable.getInstance();
-        return pt.getInt(PrefConst.KEY_MARKER_TIP, 0);
+        return pt.getInt(PrefConst.KEY_MARKER_TIP, -1);
     }
 
     @Override
@@ -1180,5 +1166,22 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public boolean isPrivacyConUse(String number) {
         return CallFilterUtils.isNumberUsePrivacy(number);
+    }
+
+    @Override
+    public boolean insertCallToSys(CallFilterInfo info) {
+        ContentResolver cr = mContext.getContentResolver();
+        try {
+//            int nameColum = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+            ContentValues values = new ContentValues();
+            values.put(CallLog.Calls.NUMBER, info.getNumber());
+            values.put(CallLog.Calls.TYPE, info.getCallType());
+            values.put(CallLog.Calls.DATE, info.getTimeLong());
+            values.put(CallLog.Calls.DURATION, info.getDuration());
+            cr.insert(PrivacyContactUtils.CALL_LOG_URI, values);
+            return true;
+        } catch (Exception e) {
+        }
+        return false;
     }
 }

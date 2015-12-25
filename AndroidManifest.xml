@@ -96,6 +96,7 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
     <application
         android:name=".AppMasterApplication"
         android:excludeFromRecents="true"
@@ -103,12 +104,12 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/activity_theme" >
+        android:theme="@style/activity_theme">
         <activity
             android:name=".home.SplashActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home" >
+            android:taskAffinity="com.leo.appmaster.home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -122,29 +123,25 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.proxy"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".home.GooglePlayGuideActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent"></activity>
         <activity
             android:name=".home.GradeTipActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent"></activity>
         <activity
             android:name=".applocker.LockSettingActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".applocker.LockScreenActivity"
             android:clearTaskOnLaunch="true"
@@ -153,7 +150,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.lockscreen"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -165,188 +162,161 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
             android:name=".intruderprotection.IntruderprotectionActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".intruderprotection.IntruderCatchedActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".intruderprotection.IntruderGalleryActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".applocker.AppLockListActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".wifiSecurity.WifiSecurityActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".wifiSecurity.WifiSettingActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".callfilter.CallFilterSettingActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".callfilter.CallFilterRecordActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".wifiSecurity.WifiResultActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".callfilter.CallFilterMainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".callfilter.StrangeCallActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".msgcenter.MsgCenterActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTask"
             android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".msgcenter.MsgCenterBrowserActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".home.MenuFaqBrowserActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".applocker.LockModeActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".applocker.LockModeEditActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".applocker.TimeLockEditActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
             android:name=".applocker.LocationLockEditActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
             android:name=".applocker.LockOptionActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".applocker.PasswdTipActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".applocker.WaitActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".activity.AboutActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".imagehide.ImageHideMainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".imagehide.ImageGalleryActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".imagehide.ImageGridActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".imagehide.PictureViewPager"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
 
         <!-- appWall -->
         <activity
@@ -366,8 +336,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.UpdateDialog.NoFrame" >
-        </activity>
+            android:theme="@style/Theme.UpdateDialog.NoFrame"></activity>
 
         <activity
             android:name=".feedback.FeedbackActivity"
@@ -375,14 +344,13 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
             android:name=".lockertheme.LockerTheme"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
+            android:theme="@style/Theme.PageIndicatorDefaults">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -391,8 +359,7 @@
         <activity
             android:name=".lockertheme.LockerThemeGuideActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/Theme.UpdateDialog.NoFrame" >
-        </activity>
+            android:theme="@style/Theme.UpdateDialog.NoFrame"></activity>
         <activity
             android:name=".videohide.VideoGriActivity"
             android:excludeFromRecents="true"
@@ -420,183 +387,155 @@
             android:exported="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".applocker.RecommentAppLockListActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".applocker.SuccessAppLockListActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".applocker.LockHelpSettingTip"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".applocker.LockTimeSetting"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".privacycontact.PrivacyContactActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".privacycontact.AddFromContactListActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".privacycontact.AddFromMessageListActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".privacycontact.AddFromCallLogListActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".privacycontact.PrivacyMessageItemActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
             android:name=".privacycontact.PrivacyCallLogListActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".privacycontact.PrivacyContactInputActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name=".appmanage.BackUpActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".appmanage.UninstallActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".appmanage.FlowActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".applocker.WeiZhuangFirstIn"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".activity.QuickHelperActivity"
-            android:exported="true"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".applocker.WeiZhuangActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".applocker.UnKnowCallActivity5"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".applocker.BeautyWeiZhuang"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".applocker.ErrorWeiZhuang"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".applocker.UFOActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/translucent" >
-        </activity>
+            android:theme="@style/translucent"></activity>
         <activity
             android:name=".applocker.ZhiWenActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".appmanage.EleActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".appmanage.TrafficSetting"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".appmanage.HotAppActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
-        </activity>
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".privacycontact.PrivacyMessageSendActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name=".privacycontact.EditPrivacyContactActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name=".sdk.push.ui.WebViewActivity"
             android:configChanges="orientation|screenSize"
@@ -606,8 +545,7 @@
             android:launchMode="singleInstance"
             android:noHistory="false"
             android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".home.DeskProxyActivity"
@@ -616,40 +554,35 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.proxy"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".applocker.FamilyModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.lockscreen"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".applocker.OfficeModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.lockscreen"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".applocker.UnlockAllModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.lockscreen"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".applocker.VisitorModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.lockscreen"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".cleanmemory.HomeBoostActivity"
             android:excludeFromRecents="true"
@@ -658,42 +591,37 @@
             android:label="@string/accelerate"
             android:launchMode="singleInstance"
             android:noHistory="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".applocker.MobvistaProxyActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".phoneSecurity.PhoneSecurityGuideActivity"
-            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/activity_theme"  >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
 
         <service
             android:name=".applocker.service.TaskDetectService"
-            android:exported="true" >
+            android:exported="true">
 
             <!-- <intent-filter android:priority="1000" > -->
             <!-- </intent-filter> -->
         </service>
         <service
             android:name=".applocker.service.PhantomService"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
         <service
             android:name=".applocker.service.StatusBarEventService"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
 
         <receiver
             android:name=".applocker.receiver.LockReceiver"
-            android:exported="true" >
-            <intent-filter android:priority="1000" >
+            android:exported="true">
+            <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
@@ -704,14 +632,14 @@
         </receiver>
         <receiver
             android:name=".applocker.receiver.showTrafficAlof"
-            android:exported="true" >
-            <intent-filter android:priority="1000" >
+            android:exported="true">
+            <intent-filter android:priority="1000">
                 <action android:name="com.leo.appmaster.traffic.alot" />
                 <action android:name="com.leo.appmaster.traffic.finish" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".applocker.receiver.DeviceReceiver" >
+        <receiver android:name=".applocker.receiver.DeviceReceiver">
             <meta-data
                 android:name="android.app.device_admin"
                 android:resource="@xml/my_admin" />
@@ -723,19 +651,20 @@
         </receiver>
         <receiver
             android:name=".privacycontact.PrivacyContactReceiver"
-            android:exported="true" >
-            <intent-filter android:priority="2147483647" >
+            android:exported="true">
+            <intent-filter android:priority="2147483647">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
                 <action android:name="android.provider.Telephony.GSM_SMS_RECEIVED" />
                 <action android:name="android.provider.Telephony.SMS_RECEIVED_2" />
                 <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
 
         <receiver
             android:name=".quickgestures.receiver.QuickSwitchReceiver"
-            android:exported="true" >
-            <intent-filter android:priority="10000" >
+            android:exported="true">
+            <intent-filter android:priority="10000">
                 <action android:name="android.intent.action.AIRPLANE_MODE" />
             </intent-filter>
         </receiver>
@@ -743,14 +672,14 @@
         <provider
             android:name=".db.AppMasterProvider"
             android:authorities="com.leo.appmaster.provider"
-            android:exported="false" >
-        </provider>
+            android:exported="false"></provider>
 
         <!-- for Baidu MTJ begin -->
         <!-- 您从百度网站获取的APP KEY -->
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
-            android:value="c7881de475" /> <!-- debug key -->
+            android:value="c7881de475" />
+        <!-- debug key -->
         <!-- <meta-data android:name="BaiduMobAd_STAT_ID" android:value="1004e462a2" /> -->
         <!-- release key -->
         <!-- 渠道商编号 -->
@@ -786,8 +715,8 @@
         <!-- for LEO update sdk -->
         <receiver
             android:name=".sdk.update.UIHelper"
-            android:exported="true" >
-            <intent-filter android:priority="10000" >
+            android:exported="true">
+            <intent-filter android:priority="10000">
                 <action android:name="com.leo.appmaster.update.remind" />
             </intent-filter>
         </receiver>
@@ -796,14 +725,13 @@
         <activity
             android:name="com.mobvista.sdk.m.core.AdMobvistaAct"
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <service
             android:name=".applocker.gesture.ISwipeService"
             android:enabled="true"
             android:exported="true"
-            android:permission="com.leo.appmaster.permission.CONNECT_ISWIPE_SERVICE" >
+            android:permission="com.leo.appmaster.permission.CONNECT_ISWIPE_SERVICE">
             <intent-filter>
                 <action android:name="com.leo.appmaster.ISWIPE_SERVICE" />
             </intent-filter>
@@ -812,7 +740,7 @@
         <receiver
             android:name=".schedule.ScheduleReceiver"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.leo.appmaster.action.SCHEDULE" />
             </intent-filter>
@@ -832,7 +760,7 @@
             android:name=".mgr.service.IpcRequestService"
             android:enabled="true"
             android:exported="true"
-            android:permission="com.leo.appmaster.permission.IPC_REQUEST" >
+            android:permission="com.leo.appmaster.permission.IPC_REQUEST">
             <intent-filter>
                 <action android:name="com.leo.appmaster.IPC_REQUEST" />
             </intent-filter>
@@ -841,18 +769,16 @@
         <activity
             android:name=".home.HomeActivity"
             android:excludeFromRecents="true"
-            android:launchMode="singleTask"
             android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home"
-            android:theme="@style/activity_theme" >
-        </activity>
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".activity.PrivacyOptionActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
+            android:theme="@style/Theme"></activity>
 
         <uses-library
             android:name="com.google.android.wearable"
@@ -860,24 +786,21 @@
 
         <activity
             android:name=".phoneSecurity.PhoneSecurityActivity"
-            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing"></activity>
         <activity
             android:name=".phoneSecurity.AddSecurityNumberActivity"
-            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
-            android:theme="@style/activity_theme"  >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".activity.DebugActivity"
-            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
             android:exported="false"
-            android:theme="@style/activity_theme"  >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
     </application>
 
 </manifest>

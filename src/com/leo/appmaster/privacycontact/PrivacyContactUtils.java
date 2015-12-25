@@ -139,6 +139,8 @@ public class PrivacyContactUtils {
     public static final String PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT = "privacy_contact_activity_call_log_cancel_red_tip";
     public static final String PRIVACY_MSM_CALL_NOTI = "message_call_notifi";
     public static final String PRIVACY_MSM_NORI = "message_notifi";
+    public static final String NEW_OUTGOING_CALL = "android.intent.action.NEW_OUTGOING_CALL";
+
     public static final int ID = 0;
 
     public static final int DATE = 1;

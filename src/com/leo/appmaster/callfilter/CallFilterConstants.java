@@ -280,7 +280,7 @@ public class CallFilterConstants {
 //    public static final String BLACK_FILE_NAME = "black_list.txt";
 
     /**
-     * 黑名单列表文件爱呢压缩类型
+     * 黑名单列表文件的压缩类型
      */
     public static final String GZIP = ".gz";
 

@@ -56,6 +56,7 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
         DownBlackFileFetchJob job = new DownBlackFileFetchJob();
         FetchScheduleListener listener = job.newJsonObjListener();
         Context context = AppMasterApplication.getInstance();
+
         StringBuilder sbName = new StringBuilder();
         String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
         sbName.append(countryId);

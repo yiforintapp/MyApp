@@ -34,6 +34,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFIlterUIHelper;
+import com.leo.appmaster.callfilter.CallFilterManager;
+import com.leo.appmaster.callfilter.CallFilterToast;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.CallFilterContextManager;
@@ -54,9 +56,9 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
     private long mSendDate;
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
-    private CallFilterContextManager mCFCManager ;
+    private CallFilterContextManager mCFCManager;
     private long mLastOffHookTime = 0;
-    
+
     public PrivacyContactReceiver() {
     }
 
@@ -146,39 +148,70 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             } catch (Error error) {
 
             }
-        } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
+        } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)
+                || PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
             //数据初始化和准备
-            TelephonyManager tm = (TelephonyManager)context.getSystemService(Service.TELEPHONY_SERVICE);     
-            final String phoneNumber =intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
+            final String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
             mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-            //定义接听状态的监听
-            PhoneStateListener listener=new PhoneStateListener() {
-                @Override
-                public void onCallStateChanged(int state, String incomingNumber) {
-                    super.onCallStateChanged(state, incomingNumber);
-                    switch(state){  
-                        case TelephonyManager.CALL_STATE_IDLE:  
-                            //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
-                            if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
-                                LeoLog.i("temp", System.currentTimeMillis() - mLastOffHookTime + " vs max :" + mCFCManager.getCallDurationMax());
-                                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(),true,0).show();
-                            }
-                                break;  
-                        case TelephonyManager.CALL_STATE_OFFHOOK:  
-                            mLastOffHookTime = System.currentTimeMillis(); 
-                                break;  
-                        case TelephonyManager.CALL_STATE_RINGING:  
-                                break;  
-                        }  
+            if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
+                /*拨出*/
+                CallFilterManager.getInstance(mContext).setIsComingOut(true);
+                LeoLog.i(TAG, "拨打电话");
+            } else {
+                /*1.来电，2.无状态*/
+                LeoLog.i(TAG, "来电电话");
+                final CallFilterToast toast = CallFilterToast.makeText(mContext, "13632840685", "已被1234人拉入", "黑名单");
+                boolean isComOut = CallFilterManager.getInstance(mContext).isComingOut();
+                if (!isComOut) {
+                    toast.show();
                 }
-            };
-            tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);  
-            
-            
-            
+                String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+                String inNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+                if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
+
+                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+                    CallFilterManager.getInstance(mContext).setIsComingOut(false);
+                    toast.hide();
+                    //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
+                    if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
+                        CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
+                    }
+                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+                    mLastOffHookTime = System.currentTimeMillis();
+                }
+            }
+            //定义接听状态的监听
+//            PhoneStateListener listener = new PhoneStateListener() {
+//                @Override
+//                public void onCallStateChanged(int state, String incomingNumber) {
+//                    super.onCallStateChanged(state, incomingNumber);
+//                    switch (state) {
+//                        case TelephonyManager.CALL_STATE_IDLE:
+//                            CallFilterManager.getInstance(mContext).setIsComingOut(false);
+//                            toast.hide();
+//                            //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
+//                            if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
+//                                LeoLog.i("temp", System.currentTimeMillis() - mLastOffHookTime + " vs max :" + mCFCManager.getCallDurationMax());
+//                                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
+//                            }
+//                            break;
+//                        case TelephonyManager.CALL_STATE_OFFHOOK:
+//                            mLastOffHookTime = System.currentTimeMillis();
+//                            break;
+//                        case TelephonyManager.CALL_STATE_RINGING:
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                }
+//            };
+//            tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
+
+
             PrivacyContactManager.getInstance(mContext).testValue = true;
             // 获取来电号码
-            
+
             // 没有隐私联系人时直接结束
             if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0 && mCFCManager.getBlackListCount() == 0) {
                 return;
@@ -195,9 +228,9 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                 ContactBean privacyConatact = PrivacyContactManager.getInstance(mContext).getPrivateMessage(formateNumber, mContext);
                 PrivacyContactManager.getInstance(mContext).setLastCall(privacyConatact);
                 if (cb != null) {
-                    
+
                     LeoLog.i("temp", "ys");
-                    
+
                     String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
                     if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
                         // 先静音处理
@@ -234,14 +267,14 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                             e.printStackTrace();
                         }
                         CallFIlterUIHelper.getInstance().showReceiveCallNotification();
-                    } else  {
-                        
+                    } else {
+
 //                        List<BlackListInfo> serBlackList = mCFCManager.gets
-                        
+
                     }
-                    
+
                 }
-                
+
             }
         } else if (PrivacyContactUtils.SENT_SMS_ACTION.equals(action)) {
             switch (getResultCode()) {

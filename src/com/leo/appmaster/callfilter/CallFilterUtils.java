@@ -193,23 +193,14 @@ public class CallFilterUtils {
 
         info.setDate(date);
         if (tipState != -1) {
-            switch (tipState) {
-                case CallFilterConstants.FILTER_TIP:
-                    info.setTipState(true);
-                    break;
-                case CallFilterConstants.FILTER_TIP_NO:
-                    info.setTipState(false);
-                    break;
-                default:
-                    break;
-            }
+            info.setTipState(tipState);
         }
         info.setTipType(type);
 
         return info;
     }
 
-    public static Cursor getCursor(String table, String[] colums, String number, boolean isLoc) {
+    public static Cursor getCursor(String table, String[] colums, String number) {
         SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
         SQLiteDatabase sd = dbHelper.getReadableDatabase();
         if (sd == null) {
@@ -217,16 +208,8 @@ public class CallFilterUtils {
         }
         Cursor cursor = null;
         try {
-            String sel = null;
-            if (isLoc) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(" and ");
-                sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-                sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
-                sel = sb.toString();
-            }
             number = PrivacyContactUtils.formatePhoneNumber(number);
-            cursor = sd.query(table, colums, colums[0] + " LIKE ? " + sel,
+            cursor = sd.query(table, colums, colums[0] + " LIKE ? ",
                     new String[]{"%" + number}, null, null, null);
             if (cursor != null) {
                 return cursor;
@@ -240,7 +223,7 @@ public class CallFilterUtils {
     public static boolean isDbKeyExist(String table, String[] colums, String number) {
         Cursor cursor = null;
         try {
-            cursor = getCursor(table, colums, number, false);
+            cursor = getCursor(table, colums, number);
             if (cursor != null) {
                 return cursor.getCount() > 0;
             }
@@ -294,9 +277,9 @@ public class CallFilterUtils {
     public static void queryData(Context context) {
         CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         int count = 0;
-        List<BlackListInfo> strangerInfos = mp.getNoUploadBlackList();
+        List<BlackListInfo> strangerInfos = mp.getServerBlackList();
         if (strangerInfos != null) {
-            count = mp.getNoUploadBlackList().size();
+            count = mp.getServerBlackList().size();
         }
 
         Toast.makeText(context, "" + count, Toast.LENGTH_SHORT).show();
@@ -531,10 +514,10 @@ public class CallFilterUtils {
                 final int markType = Float.valueOf(markTypeStr).intValue();
                 final int markCount = Float.valueOf(markCountStr).intValue();
 
-                LeoLog.i("parseBlactList", "number" + number);
-                LeoLog.i("parseBlactList", "blackCount" + blackCount);
-                LeoLog.i("parseBlactList", "markType" + markType);
-                LeoLog.i("parseBlactList", "markCount" + markCount);
+                LeoLog.i("DownBlackFileFetchJob", "number-" + number);
+                LeoLog.i("DownBlackFileFetchJob", "blackCount-" + blackCount);
+                LeoLog.i("DownBlackFileFetchJob", "markType-" + markType);
+                LeoLog.i("DownBlackFileFetchJob", "markCount-" + markCount);
 
                 CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 BlackListInfo info = new BlackListInfo();
@@ -551,7 +534,6 @@ public class CallFilterUtils {
             e.printStackTrace();
         }
     }
-
 
 
 }

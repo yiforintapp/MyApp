@@ -17,11 +17,13 @@ import android.widget.ImageView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterInfo;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.LockManager;
@@ -33,6 +35,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.schedule.BlackDownLoadFetchJob;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
+import com.leo.appmaster.schedule.DownBlackFileFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.AppUtil;
@@ -60,7 +63,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private ImageView mIvTabIcon2;
     private ImageView mIvTabIcon3;
     private ImageView mIvTabIcon4;
-    
+
     private View mRootView;
     private HomeActivity mActivity;
 
@@ -141,18 +144,18 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .create();
         mLostSecurityView.setOnClickListener(this);
         mRedDot = (ImageView) view.findViewById(R.id.have_theme_red_dot);
-        
+
         mIvTabIcon1 = (ImageView) view.findViewById(R.id.home_ic_applcok_img);
         mIvTabIcon2 = (ImageView) view.findViewById(R.id.home_ic_wifi_img);
         mIvTabIcon3 = (ImageView) view.findViewById(R.id.home_ic_lost_img);
         mIvTabIcon4 = (ImageView) view.findViewById(R.id.home_ic_intruder_img);
-        
+
         tryChangeToChrismasTheme();
     }
 
     private void tryChangeToChrismasTheme() {
         Drawable drawable1 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB1, getActivity());
-        if(drawable1 != null) {
+        if (drawable1 != null) {
             mIvTabIcon1.setImageDrawable(drawable1);
             LayoutParams layoutParams = mIvTabIcon1.getLayoutParams();
             layoutParams.height = DipPixelUtil.dip2px(mActivity, 38);
@@ -160,7 +163,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
             mIvTabIcon1.setLayoutParams(layoutParams);
         }
         Drawable drawable2 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB2, getActivity());
-        if(drawable2 != null) {
+        if (drawable2 != null) {
             mIvTabIcon2.setImageDrawable(drawable2);
             LayoutParams layoutParams = mIvTabIcon2.getLayoutParams();
             layoutParams.height = DipPixelUtil.dip2px(mActivity, 38);
@@ -168,7 +171,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
             mIvTabIcon2.setLayoutParams(layoutParams);
         }
         Drawable drawable3 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB3, getActivity());
-        if(drawable3 != null) {
+        if (drawable3 != null) {
             mIvTabIcon3.setImageDrawable(drawable3);
             LayoutParams layoutParams = mIvTabIcon3.getLayoutParams();
             layoutParams.height = DipPixelUtil.dip2px(mActivity, 38);
@@ -176,7 +179,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
             mIvTabIcon3.setLayoutParams(layoutParams);
         }
         Drawable drawable4 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB4, getActivity());
-        if(drawable4 != null) {
+        if (drawable4 != null) {
             mIvTabIcon4.setImageDrawable(drawable4);
             LayoutParams layoutParams = mIvTabIcon4.getLayoutParams();
             layoutParams.height = DipPixelUtil.dip2px(mActivity, 38);
@@ -319,7 +322,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
                     Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
                     startActivity(intent);
-                    if(DBG){
+                    if (DBG) {
                         CallFilterUtils.removeDate(getActivity());
                     }
                     break;
@@ -328,11 +331,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
                     Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
                     startActivity(mIntent);
-                    if(DBG) {
-//                        CallFilterUtils.queryData(getActivity());
-//                        CallFilterUtils.queryNoUploadData(getActivity());
-                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                        pm.isCallFilterTip("1004");
+                    if (DBG) {
+                        CallFilterUtils.queryData(getActivity());
                     }
                     break;
                 case R.id.home_lost_tab:
@@ -342,20 +342,14 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (DBG) {
                         int[] pix = AppUtil.getScreenPix(getActivity());
                         LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-                        CallFilterUtils.addData();
-                    BlackUploadFetchJob.startWork();
-//                        BlackDownLoadFetchJob.startWork();
+//                        CallFilterUtils.addData();
+                        ThreadManager.executeOnAsyncThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DownBlackFileFetchJob.startWork();
+                            }
+                        });
 
-//                        StringBuilder sbName = new StringBuilder();
-//                        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
-//                        sbName.append(countryId);
-//                        sbName.append(CallFilterConstants.GZIP);
-//
-//                        StringBuilder sb = new StringBuilder();
-//                        sb.append(CallFilterUtils.getBlackPath());
-//                        sb.append(sbName.toString());
-//                        String filePath = sb.toString()\;
-//                        CallFilterUtils.parseBlactList(filePath);
                     }
                     break;
             }
