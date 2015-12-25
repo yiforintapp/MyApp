@@ -392,7 +392,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         canvas.drawText("%", x + 5, mPercentBaseY, mLabelPaint);
 
         float rotate = mCircleRotateRatio;
-        canvas.rotate(rotate, centerX, centerY);
+        canvas.rotate(-rotate, centerX, centerY);
         mDashCircle.draw(canvas);
     }
 
