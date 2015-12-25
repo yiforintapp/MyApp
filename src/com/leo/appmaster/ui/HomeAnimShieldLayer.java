@@ -419,7 +419,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         }
         mShieldDrawable.getPaint().setAlpha(shieldAlpha);
         mShieldMatrix.set(Matrix.IDENTITY_MATRIX);
-//        mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
+        mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
         mShieldMatrix.postScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
         mShieldMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
         canvas.setMatrix(mShieldMatrix);

@@ -18,9 +18,17 @@ import android.graphics.Matrix;
  * Created by Jasper on 2015/12/24.
  */
 public class ShieldFlipDecor extends BaseDecor {
+    private Matrix mMatrix;
     
     private float mFlipDegreeY = 0f;
     private int mCurrentStatus = 0;
+
+    private float mCurrDegree;
+
+    public ShieldFlipDecor() {
+        super();
+        mMatrix = new Matrix();
+    }
     public int getNeedFlipScore() {
         return mCurrentStatus;
     }
@@ -39,17 +47,20 @@ public class ShieldFlipDecor extends BaseDecor {
     
     @Override
     public void applyDecor(Canvas canvas, Matrix matrix) {
-//        setParentLayer(mParent);
-        HomeAnimShieldLayer shieldLayer = (HomeAnimShieldLayer) mParent;
-        Camera camera = new Camera();
-        camera.rotateY(mFlipDegreeY);  
-//        camera.ro
-        camera.getMatrix(matrix);
-        int centerX = mParent.centerX() - shieldLayer.getMaxOffsetX();
-        LeoLog.i("tesiX", "centerX = " + centerX);
+        if (matrix == null || mCurrDegree == 0f || mCurrDegree == 180f) {
+            return;
+        }
+        mMatrix.set(Matrix.IDENTITY_MATRIX);
+        int centerX = mParent.centerX();
         int centerY = mParent.centerY();
-        matrix.preTranslate(-centerX, -centerY);  
-        matrix.postTranslate(centerX, centerY); 
+
+        Camera camera = new Camera();
+        camera.rotateY(mFlipDegreeY);
+        camera.getMatrix(mMatrix);
+        mMatrix.preTranslate(-centerX, -centerY);
+        mMatrix.postTranslate(centerX, centerY);
+
+        matrix.postConcat(mMatrix);
     }
     
     public void startFlipAnim(long duration, final OnFlipEndListener listener) {
@@ -60,6 +71,7 @@ public class ShieldFlipDecor extends BaseDecor {
             public void onAnimationUpdate(ValueAnimator animation) {
                 LeoLog.i("tesi", "mFlipDegreeY = " + mFlipDegreeY);
                 float animatedValue = (Float) animation.getAnimatedValue("flipDegreeY");
+                mCurrDegree = animatedValue;
                 if (animatedValue == 90f) {
                     mCurrentStatus ++;
                 }
