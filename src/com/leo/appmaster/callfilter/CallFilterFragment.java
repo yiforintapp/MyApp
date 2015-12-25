@@ -139,6 +139,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         dialog.show();
     }
 
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent;
@@ -148,6 +149,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             bundle.putSerializable("data", mFilterList.get(i));
             intent.putExtras(bundle);
             startActivity(intent);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
