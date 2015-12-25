@@ -162,7 +162,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
         int stringId = R.string.pri_pro_new_app;
         if (!processed) {
-            stringId = R.string.pri_pro_scan_app;
+            stringId = R.string.scan_find_app;
         }
         String content = AppMasterApplication.getInstance().getString(stringId, mDataList == null ? 0 : mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));
