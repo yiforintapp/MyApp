@@ -37,7 +37,7 @@ public class Constants {
 
     public static final String PLACEMENT_ID_58 = "1474823452846141_1475968499398303";
     // placement ids for lock screen - begin
-    public static final String PLACEMENT_ID_59 = "1474823452846141_1475969219398231";
+    public static final String PLACEMENT_ID_59 = "1474823452846141_1486339348361218";
     public static final String PLACEMENT_ID_178 = "1474823452846141_1501677476827405";
     public static final String PLACEMENT_ID_179 = "1474823452846141_1501677663494053";
     // placement ids for lock screen - end
