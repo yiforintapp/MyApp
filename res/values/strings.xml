@@ -866,7 +866,8 @@
 	<string name="call_filter_mark_as_zp">诈骗电话</string>
 	<string name="call_filter_confirm_clear_record">确定清空所有记录吗？</string>
 	<string name="call_filter_ask_add_to_blacklist">监测到您的通话时间"&lt;"5秒，是否将该号码标记并加入黑名单</string>
-	
+
+    <string name="scan_score">处理+%1$s分</string>
     <string name="scan_app_title">发现%1$s个应用</string>
     <string name="scan_app_content_less_three">其中高危隐私应用有%1$s</string>
     <string name="scan_app_content">其中高危隐私应用有%1$s等%2$s个应用</string>
@@ -876,10 +877,19 @@
     <string name="scan_pic_content">可能暴露您的隐私，建议隐藏</string>
     <string name="scan_vid_title">扫描到%1$s个视频</string>
     <string name="scan_vid_content">可能暴露您的隐私，建议隐藏</string>
-    <string name="scan_instruct_title">手机防盗</string>
-    <string name="scan_instruct_content">开启手机防盗，找回被盗手机</string>
+    <string name="scan_instruct_title">入侵者防护</string>
+    <string name="scan_instruct_content">开启入侵者防护功能，看看有那些人在偷看你的手机</string>
+    <string name="scan_lost_title">手机防盗</string>
+    <string name="scan_lost_content">开启手机防盗,找回被盗手机</string>
+    <string name="scan_contact_title">频繁隐私联系人</string>
     <string name="scan_wifi_title">Wifi安全</string>
     <string name="scan_wifi_content">Wifi安全模式</string>
+    <string name="scan_app_start">正在扫描应用</string>
+    <string name="scan_pic_start">正在扫描图片</string>
+    <string name="scan_vid_start">正在扫描视频</string>
+    <string name="scan_vid_none">未发现新增视频</string>
+    <string name="scan_pic_none">未发现新增图片</string>
+    <string name="scan_app_none">未发现新增应用</string>
     <string name="call_filter_add_strange_num">加入黑名单</string>
     <string name="call_filter_clear_all_black">清空所有</string>
 

@@ -105,12 +105,15 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private boolean mAppScanFinish;
     private boolean mPhotoScanFinish;
     private boolean mVideoScanFinish;
+    private boolean mContactScanFinish;
 
     private boolean mScanning;
 
     private PrivacyHelper mPrivacyHelper;
     private HomeScanningController mController;
     private int mPicScore;
+    private int mAppScore;
+    private int mVidScore;
 
     private ImageView mNewAppImg;
     private TextView mNewAppTitle;
@@ -552,9 +555,14 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mScanAppName = "Exception.";
             }
             mAppScanFinish = true;
-            int appScore = lm.getSecurityScore(mAppList);
-            mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, appScore);
+            mAppScore = lm.getSecurityScore(mAppList);
+            mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, mAppScore);
 //            updateNewAppList();
+//            com.leo.tools.animator.ObjectAnimator appAnim = mController.getNewAppAnim();
+//            if (appAnim != null) {
+//                appAnim.end();
+//                appAnim.cancel();
+//            }
             LeoLog.i(TAG, "appList, cost: " + (SystemClock.elapsedRealtime() - start));
         }
     });
@@ -571,7 +579,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.photoItems.size());
 
             mPhotoList.inDifferentDir = DataUtils.differentDirPic(photoItems);
-//            updateNewPicList();
+//            com.leo.tools.animator.ObjectAnimator picAnim = mController.getNewPicAnim();
+//            if (picAnim != null) {
+//                picAnim.end();
+//                picAnim.cancel();
+//            }
             LeoLog.i(TAG, "photoItems, cost: " + (SystemClock.elapsedRealtime() - start));
         }
     });
@@ -583,11 +595,16 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
             mVideoList = pdm.getAddVid();
             mVideoScanFinish = true;
-            int vidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
+            mVidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
             LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
 
-            mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + vidScore);
+            mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
 //            updateNewVidList();
+//            com.leo.tools.animator.ObjectAnimator vidAnim = mController.getNewVidAnim();
+//            if (vidAnim != null) {
+//                vidAnim.end();
+//                vidAnim.cancel();
+//            }
         }
     });
 
@@ -598,10 +615,23 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
             mContactList = pcm.getFrequentContacts();
             mActivity.setContactList(mContactList);
-//            updateNewContactList();
+            mContactScanFinish = true;
+
             LeoLog.i(TAG, "contactBeans, cost: " + (SystemClock.elapsedRealtime() - start));
         }
     });
+
+    public boolean isItemScanFinish(LinearLayout layout) {
+        if (layout == mNewAppLayout) {
+            return mAppScanFinish;
+        } else if (layout == mNewPicLayout) {
+            return mPhotoScanFinish;
+        } else if (layout == mNewVidLayout) {
+            return mVideoScanFinish;
+        }
+
+        return false;
+    }
 
     private static class WeakRunnable implements Runnable {
         WeakReference<HomeScanningFragment> weakReference;
@@ -661,25 +691,25 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         Context context = AppMasterApplication.getInstance();
         if (layout == mNewAppLayout) {
             updateAppStartList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
+//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
         } else if (layout == mNewPicLayout) {
             updatePicStartList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
+//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
         } else if (layout == mNewVidLayout) {
             updateVidStartList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
+//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
         } else if (layout == mNewInstructLayout) {
             updateInstructStartList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
+//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
         } else if (layout == mNewWifiLayout) {
             updateWifiStartList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
+//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
         } else if (layout == mNewLostLayout) {
             updateLostStartList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
         } else if (layout == mNewContactLayout) {
             updateContactStartList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
+//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
         }
     }
 
@@ -690,25 +720,25 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (layout == mNewAppLayout) {
             updateNewAppList();
             updateNewContactList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
             onViewScanningFinish(mAppList, mPhotoList, mVideoList);
         } else if (layout == mNewPicLayout) {
             updateNewPicList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
         } else if (layout == mNewVidLayout) {
             updateNewVidList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
         } else if (layout == mNewInstructLayout) {
             updateNewInstructList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
         } else if (layout == mNewWifiLayout) {
             updateNewWifiList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
         } else if (layout == mNewLostLayout) {
             updateNewLostList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
         } else if (layout == mNewContactLayout) {
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
         }
     }
 
@@ -731,47 +761,78 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void updateNewAppList() {
         int count = mAppList == null ? 0 : mAppList.size();
-        mNewAppImg.setImageResource(count > 0 ? R.drawable.ic_scan_error : R.drawable.ic_scan_safe);
-        mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_title, count));
-        mNewAppContent.setText(mScanAppName);
-        mNewAppScore.setText("处理+5分");
+        if (count > 0) {
+            mNewAppImg.setImageResource(R.drawable.ic_scan_error);
+            mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_title, count));
+            mNewAppContent.setText(mScanAppName);
+            if (mAppScore > 0) {
+                mNewAppScore.setText(mActivity.getResources().
+                        getString(R.string.scan_score, mAppScore));
+                mNewAppScore.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mNewAppImg.setImageResource(R.drawable.ic_scan_safe);
+            mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_none));
+        }
         mNewAppLoading.setVisibility(View.GONE);
         mNewAppImg.setVisibility(View.VISIBLE);
     }
 
     private void updateNewPicList() {
         int count = mPhotoList == null ? 0 : mPhotoList.photoItems.size();
-        mNewPicImg.setImageResource(count > 0 ? R.drawable.ic_scan_error : R.drawable.ic_scan_safe);
-        mNewPicTitle.setText(mActivity.getResources().getString(R.string.scan_pic_title, count));
-        mNewPicContent.setText(mActivity.getResources().
-                getString(R.string.scan_pic_content));
-        mNewPicScore.setText("处理+5分");
+        if (count > 0) {
+            mNewPicImg.setImageResource(R.drawable.ic_scan_error);
+            mNewPicTitle.setText(mActivity.getResources().getString(R.string.scan_pic_title, count));
+            mNewPicContent.setText(mActivity.getResources().
+                    getString(R.string.scan_pic_content));
+            if (mPicScore > 0) {
+                mNewPicScore.setText(mActivity.getResources().
+                        getString(R.string.scan_score, mPicScore));
+                mNewPicScore.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mNewPicImg.setImageResource(R.drawable.ic_scan_safe);
+            mNewPicTitle.setText(mActivity.getResources().getString(R.string.scan_pic_none));
+        }
+
         mNewPicLoading.setVisibility(View.GONE);
         mNewPicImg.setVisibility(View.VISIBLE);
     }
 
     private void updateNewVidList() {
         int count = mVideoList == null ? 0 : mVideoList.size();
-        mNewVidImg.setImageResource(count > 0 ? R.drawable.ic_scan_error : R.drawable.ic_scan_safe);
-        mNewVidTitle.setText(mActivity.getResources().getString(R.string.scan_vid_title, count));
-        mNewVidContent.setText(mActivity.getResources().
-                getString(R.string.scan_vid_content));
-        mNewVidScore.setText("处理+5分");
+        if (count > 0) {
+            mNewVidImg.setImageResource(R.drawable.ic_scan_error);
+            mNewVidTitle.setText(mActivity.getResources().getString(R.string.scan_vid_title, count));
+            mNewVidContent.setText(mActivity.getResources().
+                    getString(R.string.scan_vid_content));
+            if (mVidScore > 0) {
+                mNewVidScore.setText(mActivity.getResources().
+                        getString(R.string.scan_score, mVidScore));
+                mNewVidScore.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mNewVidImg.setImageResource(R.drawable.ic_scan_safe);
+            mNewVidTitle.setText(mActivity.getResources().getString(R.string.scan_vid_none));
+        }
         mNewVidLoading.setVisibility(View.GONE);
         mNewVidImg.setVisibility(View.VISIBLE);
     }
 
     private void updateNewInstructList() {
-        LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-        boolean flag = manager.isUsePhoneSecurity();
+        IntrudeSecurityManager manager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        boolean flag = manager.getIntruderMode();
         if (flag) {
             mNewInstructImg.setImageResource(R.drawable.ic_scan_safe);
         } else {
             mNewInstructImg.setImageResource(R.drawable.ic_scan_error);
             mNewInstructContent.setText(mActivity.getResources().
                     getString(R.string.scan_instruct_content));
-            mNewInstructScore.setText("隐私防护 +5");
-            mNewInstructScore.setVisibility(View.VISIBLE);
+            if (manager.getMaxScore() > 0) {
+                mNewInstructScore.setText(mActivity.getResources().
+                        getString(R.string.scan_score, manager.getMaxScore()));
+                mNewInstructScore.setVisibility(View.VISIBLE);
+            }
         }
         mNewInstructLoading.setVisibility(View.GONE);
         mNewInstructImg.setVisibility(View.VISIBLE);
@@ -803,8 +864,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewLostImg.setImageResource(R.drawable.ic_scan_safe);
         } else {
             mNewLostImg.setImageResource(R.drawable.ic_scan_error);
-            mNewLostContent.setText("开启入侵者防护功能");
-            mNewLostScore.setText("处理+5分");
+            mNewLostContent.setText(R.string.scan_lost_content);
+            if (manager.getMaxScore() > 0) {
+                mNewLostScore.setText(mActivity.getResources().
+                        getString(R.string.scan_score, manager.getMaxScore()));
+                mNewLostScore.setVisibility(View.VISIBLE);
+            }
         }
         mNewLostLoading.setVisibility(View.GONE);
         mNewLostImg.setVisibility(View.VISIBLE);
@@ -849,37 +914,30 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void updateContactStartList() {
-        mNewContactTitle.setText("频繁联系人");
         startAnimator(mNewContactLayout);
     }
 
     private void updateInstructStartList() {
-        mNewInstructTitle.setText(mActivity.getResources().getString(R.string.scan_instruct_title));
         startAnimator(mNewInstructLayout);
     }
 
     private void updateWifiStartList() {
-        mNewWifiTitle.setText(mActivity.getResources().getString(R.string.scan_wifi_title));
         startAnimator(mNewWifiLayout);
     }
 
     private void updateLostStartList() {
-        mNewLostTitle.setText("手机防盗");
         startAnimator(mNewLostLayout);
     }
 
     private void updateVidStartList() {
-        mNewVidTitle.setText("正在扫描视频");
         startAnimator(mNewVidLayout);
     }
 
     private void updatePicStartList() {
-        mNewPicTitle.setText("正在扫描图片");
         startAnimator(mNewPicLayout);
     }
 
     private void updateAppStartList() {
-        mNewAppTitle.setText("正在扫描应用");
         startAnimator(mNewAppLayout);
     }
 }

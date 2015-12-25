@@ -67,6 +67,14 @@ public class HomeScanningController {
     private ObjectAnimator mNewInstructAnim;
     private ObjectAnimator mNewContactAnim;
 
+    private ObjectAnimator mNewAppLayoutAnim;
+    private ObjectAnimator mNewPicLayoutAnim;
+    private ObjectAnimator mNewVidLayoutAnim;
+    private ObjectAnimator mNewLostLayoutAnim;
+    private ObjectAnimator mNewWifiLayoutAnim;
+    private ObjectAnimator mNewInstructLayoutAnim;
+    private ObjectAnimator mNewContactLayoutAnim;
+
     private static final int NEW_PER_CONTACT = 7;
     private static final int NEW_PER_INS = 14;
     private static final int NEW_PER_WIFI = 20;
@@ -218,9 +226,64 @@ public class HomeScanningController {
 //        mAppAnim.totalAnim.start();
 //        mActivity.scanningFromPercent(UP_LIMIT_APP, 0, PER_APP);
         mNewContactAnim = getItemAnimation(mNewContactLayout);
+        mNewContactLayoutAnim = getLayoutItemAnim(mNewContactLayout);
+        mNewContactLayoutAnim.start();
         mNewContactAnim.start();
         mActivity.scanningFromPercent(NEW_UP_LIMIT_CONTACT, 0, NEW_PER_CONTACT);
     }
+
+    private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {
+        ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(layout, "scaleY", 1f, 1f);
+        layoutAnim.setDuration(500);
+        layoutAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                onLayoutAnimEnd(animation);
+            }
+        });
+
+        return  layoutAnim;
+    }
+
+    private void onLayoutAnimEnd(Animator animation) {
+        if (mFragment.isRemoving() || mFragment.isDetached()) return;
+
+        LeoLog.d(TAG, "onAnimationStart...");
+        if (animation == mNewContactLayoutAnim) {
+            mFragment.OnItemAnimationStart(mNewContactLayout);
+            mNewInstructLayoutAnim = getLayoutItemAnim(mNewInstructLayout);
+            mNewInstructLayoutAnim.start();
+            LeoLog.e(TAG, "mNewContactAnim start");
+        } else if (animation == mNewInstructLayoutAnim) {
+            mFragment.OnItemAnimationStart(mNewInstructLayout);
+            mNewWifiLayoutAnim = getLayoutItemAnim(mNewWifiLayout);
+            mNewWifiLayoutAnim.start();
+            LeoLog.e(TAG, "mNewInstructAnim start");
+        } else if (animation == mNewWifiLayoutAnim) {
+            mFragment.OnItemAnimationStart(mNewWifiLayout);
+            mNewLostLayoutAnim = getLayoutItemAnim(mNewLostLayout);
+            mNewLostLayoutAnim.start();
+            LeoLog.e(TAG, "mNewWifiAnim start");
+        } else if (animation == mNewLostLayoutAnim) {
+            mFragment.OnItemAnimationStart(mNewLostLayout);
+            mNewVidLayoutAnim = getLayoutItemAnim(mNewVidLayout);
+            mNewVidLayoutAnim.start();
+            LeoLog.e(TAG, "mNewLostAnim start");
+        } else if (animation == mNewVidLayoutAnim) {
+            mFragment.OnItemAnimationStart(mNewVidLayout);
+            mNewPicLayoutAnim = getLayoutItemAnim(mNewPicLayout);
+            mNewPicLayoutAnim.start();
+            LeoLog.e(TAG, "mNewVidAnim start");
+        } else if (animation == mNewPicLayoutAnim) {
+            mFragment.OnItemAnimationStart(mNewPicLayout);
+            mNewAppLayoutAnim = getLayoutItemAnim(mNewAppLayout);
+            mNewAppLayoutAnim.start();
+            LeoLog.e(TAG, "mNewPicAnim start");
+        } else {
+            mFragment.OnItemAnimationStart(mNewAppLayout);
+        }
+    }
+
 
     private void onAnimatorEnd(Animator animation) {
         if (mFragment.isRemoving() || mFragment.isDetached()) return;
@@ -321,69 +384,58 @@ public class HomeScanningController {
     }
 
     private ObjectAnimator getItemAnimation(final LinearLayout layout) {
-        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(layout, "scaleY", 1f, 1f);
-        if (layout == mNewContactLayout) {
-            alphaAnim.setDuration(NEW_UP_LIMIT_CONTACT);
-        } else if (layout == mNewInstructLayout) {
-            alphaAnim.setDuration(NEW_UP_LIMIT_INS);
-        } else if (layout == mNewWifiLayout) {
-            alphaAnim.setDuration(NEW_UP_LIMIT_WIFI);
-        } else if (layout == mNewLostLayout) {
-            alphaAnim.setDuration(NEW_UP_LIMIT_LOST);
-        } else if (layout == mNewVidLayout) {
-            alphaAnim.setDuration(NEW_UP_LIMIT_VID);
-        } else if (layout == mNewPicLayout) {
-            alphaAnim.setDuration(NEW_UP_LIMIT_PIC);
-        }  else if (layout == mNewAppLayout) {
-            alphaAnim.setDuration(NEW_UP_LIMIT_APP);
-        }
-
-        alphaAnim.addListener(new AnimatorListenerAdapter() {
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(this, "scaleX", 1f, 1f);
+        alphaAnim.setDuration(1000);
+        alphaAnim.setRepeatCount(ValueAnimator.INFINITE);
+        alphaAnim.addListener(new SimpleAnimatorListener() {
 
             @Override
-            public void onAnimationStart(Animator animation) {
-                onItemAnimationStart(animation);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                onItemAnimationEnd(animation);
+            public void onAnimationRepeat(Animator animation) {
+                onItemAnimRepeat(animation);
             }
         });
 
         return alphaAnim;
     }
 
-    private void onItemAnimationStart(Animator animation) {
+    private void onItemAnimRepeat(Animator animation) {
         if (mFragment.isRemoving() || mFragment.isDetached()) return;
 
-        LeoLog.d(TAG, "onAnimationStart...");
-        if (animation == mNewContactAnim) {
-            mFragment.OnItemAnimationStart(mNewContactLayout);
-            LeoLog.e(TAG, "mNewContactAnim start");
-        } else if (animation == mNewInstructAnim) {
-            mFragment.OnItemAnimationStart(mNewInstructLayout);
-            LeoLog.e(TAG, "mNewInstructAnim start");
-        } else if (animation == mNewWifiAnim) {
-            mFragment.OnItemAnimationStart(mNewWifiLayout);
-            LeoLog.e(TAG, "mNewWifiAnim start");
-        } else if (animation == mNewLostAnim) {
-            mFragment.OnItemAnimationStart(mNewLostLayout);
-            LeoLog.e(TAG, "mNewLostAnim start");
-        } else if (animation == mNewVidAnim) {
-            mFragment.OnItemAnimationStart(mNewVidLayout);
-            LeoLog.e(TAG, "mNewVidAnim start");
+        LeoLog.d(TAG, "onAnimatorRepeat...");
+        if (animation == mNewAppAnim) {
+            if (mFragment.isItemScanFinish(mNewAppLayout)) {
+                onItemAnimationEnd(mNewAppAnim);
+            }
         } else if (animation == mNewPicAnim) {
-            mFragment.OnItemAnimationStart(mNewPicLayout);
-            LeoLog.e(TAG, "mNewPicAnim start");
-        } else {
-            mFragment.OnItemAnimationStart(mNewAppLayout);
+            if (mFragment.isItemScanFinish(mNewPicLayout)) {
+                onItemAnimationEnd(mNewPicAnim);
+            }
+        } else if (animation == mNewVidAnim) {
+            if (mFragment.isItemScanFinish(mNewVidLayout)) {
+                onItemAnimationEnd(mNewVidAnim);
+            }
+        } else if (animation == mNewLostAnim) {
+            onItemAnimationEnd(mNewLostAnim);
+        } else if (animation == mNewWifiAnim) {
+            onItemAnimationEnd(mNewWifiAnim);
+        } else if (animation == mNewInstructAnim) {
+            onItemAnimationEnd(mNewInstructAnim);
+        } else if (animation == mNewContactAnim) {
+            onItemAnimationEnd(mNewContactAnim);
         }
     }
 
-    private void onItemAnimationEnd(Animator animation) {
+
+    public void onItemAnimationEnd(final Animator animation) {
         if (mFragment.isRemoving() || mFragment.isDetached()) return;
 
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                animation.end();
+                animation.cancel();
+            }
+        }, 100);
         LeoLog.d(TAG, "onAnimatorEnd...");
         if (animation == mNewContactAnim) {
             mFragment.OnItemAnimationEnd(mNewContactLayout);
@@ -429,7 +481,7 @@ public class HomeScanningController {
             mFragment.OnItemAnimationEnd(mNewPicLayout);
             mNewAppAnim = getItemAnimation(mNewAppLayout);
             int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_APP, currPct, NEW_PER_PRI + 1);
+            mActivity.scanningFromPercent(1000, currPct, NEW_PER_PRI + 1);
             LeoLog.e(TAG, "mNewPicAnim end");
             mNewAppAnim.start();
         } else {
@@ -450,6 +502,7 @@ public class HomeScanningController {
     private void endAnim(Animator animator) {
         if (animator != null) {
             animator.end();
+            animator.cancel();
             animator = null;
         }
     }
