@@ -129,13 +129,11 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
 
     private void showMarkDialog(String title) {
         final MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
-                getCallHandleDialogWithSummary(title, this, false, getPositionFromTextname());
+                getCallHandleDialogWithSummary(title, this, false, info.getFilterType());
         dialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
                 dialog.setNowItemPosition(position);
-
             }
         });
 

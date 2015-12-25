@@ -104,6 +104,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
+        LeoLog.d("testResume", "Dialog resume");
         if (!isFristIn) {
             loadData();
         }
@@ -156,8 +157,16 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
         if (mFilterList.size() > 0) {
             CallFilterInfo info = mFilterList.get(i);
+
+            boolean isNeedMarkItem = true;
+            if (!Utilities.isEmpty(info.getNumberName()) &&
+                    (info.getNumberName().equals(info.getNumber()))) {
+                isNeedMarkItem = false;
+            }
+
             final LEOChoiceDialog dialog = CallFIlterUIHelper.getInstance().
-                    getCallHandleDialog(info.numberName, mActivity);
+                    getCallHandleDialog(info.numberName, mActivity, isNeedMarkItem);
+
             dialog.getItemsListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -182,7 +191,8 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         return false;
     }
 
-    private void showChoiseDialog(int i) {
+    private void showChoiseDialog(final int i) {
+        final CallFilterInfo info = mFilterList.get(i);
         String title;
         if (Utilities.isEmpty(mFilterList.get(i).getNumberName())) {
             title = mFilterList.get(i).getNumber();
@@ -190,8 +200,42 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             title = mFilterList.get(i).getNumberName();
         }
 
-        MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
-                getCallHandleDialogWithSummary(title, mActivity, false, 0);
+        final MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
+                getCallHandleDialogWithSummary(title, mActivity, false, mFilterList.get(i).getFilterType());
+
+        dialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                dialog.setNowItemPosition(position);
+
+            }
+        });
+
+        dialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position) {
+
+                CallFilterInfo info = mFilterList.get(i);
+
+                if (position == 0) {
+                    info.setFilterType(1);
+                } else if (position == 1) {
+                    info.setFilterType(2);
+                } else if (position == 2) {
+                    info.setFilterType(3);
+                }
+
+                List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
+                list.add(info);
+                mCallManger.addFilterDet(list, true);
+
+                mAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+
+
         dialog.show();
     }
 

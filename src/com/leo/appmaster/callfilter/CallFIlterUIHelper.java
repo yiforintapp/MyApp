@@ -33,12 +33,14 @@ public class CallFIlterUIHelper {
         return dialog;
     }
 
-    public LEOChoiceDialog getCallHandleDialog(String title, Context context) {
+    public LEOChoiceDialog getCallHandleDialog(String title, Context context, boolean isNeedMarkItem) {
         LEOChoiceDialog dialog = new LEOChoiceDialog(context);
         ArrayList<String> list = new ArrayList<String>();
         list.add(context.getResources().getString(R.string.call_filter_delete_record));
         list.add(context.getResources().getString(R.string.call_filter_remove_from_blacklist));
-        list.add(context.getResources().getString(R.string.call_filter_mark));
+        if (isNeedMarkItem) {
+            list.add(context.getResources().getString(R.string.call_filter_mark));
+        }
         dialog.setNeedCheckbox(false);
         dialog.setTitle(title);
         dialog.setTitleGravity(Gravity.CENTER);
@@ -48,7 +50,7 @@ public class CallFIlterUIHelper {
     }
 
     public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title, Context context,
-                                                                         boolean isContentShow, int position) {
+                                                                         boolean isContentShow, int filterType) {
         MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
         dialog.setTitle(title);
         dialog.setContentVisible(isContentShow);
@@ -59,8 +61,10 @@ public class CallFIlterUIHelper {
         dialog.setCanceledOnTouchOutside(true);
         dialog.fillData(itemContent);
 
-        if (position > -1 && position < 3) {
-            dialog.setNowItemPosition(position);
+        if (filterType > 0 && filterType < 4) {
+            dialog.setNowItemPosition(filterType - 1);
+        }else{
+            dialog.setNowItemPosition(0);
         }
 
         return dialog;
