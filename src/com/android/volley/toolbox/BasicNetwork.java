@@ -269,11 +269,11 @@ public class BasicNetwork implements Network {
 		byte[] buffer = null;
 		try {
 			InputStream in = entity.getContent();
-			if (supportGzip) {
-			    in = new GZIPInputStream(in);
-			}
 			if (supportAes) {
 				in = CryptoUtils.newInputStream(in);
+			}
+			if (supportGzip) {
+			    in = new GZIPInputStream(in);
 			}
 			if (in == null) {
 				throw new ServerError();
