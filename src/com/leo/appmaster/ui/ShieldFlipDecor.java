@@ -23,7 +23,7 @@ public class ShieldFlipDecor extends BaseDecor {
     private boolean mNeedPlay = false;
     private float mFlipDegreeY = 0f;
     private int mCurrentStatus = 0;
-
+    private boolean mNeedCheat =false;
     private float mCurrDegree;
 
     public ShieldFlipDecor() {
@@ -56,7 +56,7 @@ public class ShieldFlipDecor extends BaseDecor {
         int centerY = p.centerY() - p.getMaxOffsetY();
         LeoLog.i("tesiX", "centerX = " +centerX);
         Camera camera = new Camera();
-        camera.rotateY(mFlipDegreeY);
+        camera.rotateY(mNeedCheat ?mFlipDegreeY + 180f: mFlipDegreeY);
         camera.getMatrix(mMatrix);
         mMatrix.preTranslate(-centerX, -centerY);
         mMatrix.postTranslate(centerX, centerY);
@@ -73,8 +73,9 @@ public class ShieldFlipDecor extends BaseDecor {
                 LeoLog.i("tesi", "mParent.left = " +mParent.getLeft());
                 float animatedValue = (Float) animation.getAnimatedValue("flipDegreeY");
                 mCurrDegree = animatedValue;
-                if (animatedValue == 90f) {
+                if (animatedValue >= 90f) {
                     mCurrentStatus ++;
+                    mNeedCheat = true;
                 }
             }
         });
@@ -82,6 +83,7 @@ public class ShieldFlipDecor extends BaseDecor {
             @Override
             public void onAnimationStart(Animator animation) {
                 mNeedPlay = true;
+                mNeedCheat = false;
             }
             
             @Override
@@ -94,11 +96,13 @@ public class ShieldFlipDecor extends BaseDecor {
                     listener.OnFlipEnd();
                 }
                 mNeedPlay = false;
+                mNeedCheat = false;
             }
             
             @Override
             public void onAnimationCancel(Animator animation) {
                 mNeedPlay = false;
+                mNeedCheat = false;
             }
         });
         animatorI.setDuration(duration);
