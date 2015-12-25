@@ -448,15 +448,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         }
         mTextPaint.setTextSize(mScoreSize);
         
-        if (score ==100) {
-            if (mFlipDecor.getNeedFlipScore() % 2 == 1) {
-                canvas.drawText("001", pointer[0], pointer[1], mTextPaint);
-            } else {
-                canvas.drawText("100", pointer[0], pointer[1], mTextPaint);
-            }
-        } else {
-            canvas.drawText(score + "", pointer[0], pointer[1], mTextPaint);
-        }
+        canvas.drawText(score + "", pointer[0], pointer[1], mTextPaint);
 
         if (shieldAlpha > 0) {
             canvas.setMatrix(mShieldMatrix);

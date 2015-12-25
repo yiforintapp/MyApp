@@ -20,22 +20,14 @@ import android.graphics.Matrix;
 public class ShieldFlipDecor extends BaseDecor {
     private Matrix mMatrix;
     
-    private boolean mNeedPlay = false;
     private float mFlipDegreeY = 0f;
-    private int mCurrentStatus = 0;
+    //这个用于标记是否需要在camera旋转时增加180度，以解决盾牌上的文字的翻转问题
     private boolean mNeedCheat =false;
     private float mCurrDegree;
 
     public ShieldFlipDecor() {
         super();
         mMatrix = new Matrix();
-    }
-    public int getNeedFlipScore() {
-        return mCurrentStatus;
-    }
-
-    public void setNeedFlipScore(int currentStatus) {
-        this.mCurrentStatus = currentStatus;
     }
 
     public float getFlipDegreeY() {
@@ -54,10 +46,10 @@ public class ShieldFlipDecor extends BaseDecor {
         HomeAnimShieldLayer p = (HomeAnimShieldLayer)mParent;
         int centerX = p.centerX();
         int centerY = p.centerY() - p.getMaxOffsetY();
-        LeoLog.i("tesiX", "centerX = " +centerX);
         Camera camera = new Camera();
         camera.rotateY(mNeedCheat ?mFlipDegreeY + 180f: mFlipDegreeY);
         camera.getMatrix(mMatrix);
+        //绕(centerX，centerY)点水平翻转
         mMatrix.preTranslate(-centerX, -centerY);
         mMatrix.postTranslate(centerX, centerY);
 
@@ -74,7 +66,6 @@ public class ShieldFlipDecor extends BaseDecor {
                 float animatedValue = (Float) animation.getAnimatedValue("flipDegreeY");
                 mCurrDegree = animatedValue;
                 if (animatedValue >= 90f) {
-                    mCurrentStatus ++;
                     mNeedCheat = true;
                 }
             }
@@ -82,7 +73,6 @@ public class ShieldFlipDecor extends BaseDecor {
         animatorI.addListener(new AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                mNeedPlay = true;
                 mNeedCheat = false;
             }
             
@@ -95,13 +85,11 @@ public class ShieldFlipDecor extends BaseDecor {
                 if (listener != null) {
                     listener.OnFlipEnd();
                 }
-                mNeedPlay = false;
                 mNeedCheat = false;
             }
             
             @Override
             public void onAnimationCancel(Animator animation) {
-                mNeedPlay = false;
                 mNeedCheat = false;
             }
         });
