@@ -1390,27 +1390,18 @@ public class LockManagerImpl extends LockManager {
 
     @Override
     public int ignore() {
-        int oldScore = mCachedScore;
-        if (mCachedScore < 0) {
-            oldScore = 0;
-        }
+        int oldScore = mCachedScore < 0 ? 0 : mCachedScore;
 
         int addedScore = MAX_SCORE - oldScore;
-        addedScore = addedScore < 0 ? 0 : addedScore;
 
-        if (mNewList != null) {
-            mNewList.clear();
-        }
         ThreadManager.executeOnAsyncThread(new Runnable() {
-
             @Override
             public void run() {
                 List<AppItemInfo> itemInfos = AppLoadEngine.getInstance(mContext).getAllPkgInfo();
                 InstalledAppTable.getInstance().insertIgnoreItemList(itemInfos);
             }
         });
-
-        mCachedScore = MAX_SCORE;
+        addedScore = addedScore < 0 ? 0 : addedScore;
         return addedScore;
     }
 

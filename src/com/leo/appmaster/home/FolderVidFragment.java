@@ -80,17 +80,31 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
 
     @Override
     protected void onIgnoreClick() {
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_cnts");
-        if (mIgnoreDlg == null) {
-            initIgnoreDlg();
-        }
-        if (mActivity.shownIgnoreDlg()) {
-            mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_direct");
-        } else {
-            mIgnoreDlg.show();
-            mActivity.setShownIngoreDlg();
-        }
+//        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_cnts");
+//        if (mIgnoreDlg == null) {
+//            initIgnoreDlg();
+//        }
+//        if (mActivity.shownIgnoreDlg()) {
+//            mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
+//            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_direct");
+//        } else {
+//            mIgnoreDlg.show();
+//            mActivity.setShownIngoreDlg();
+//        }
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_direct");
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                final int incScore = pdm.haveCheckedVid();
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mActivity.onIgnoreClick(incScore, MgrContext.MGR_PRIVACY_DATA);
+                    }
+                });
+            }
+        });
     }
 
     @Override

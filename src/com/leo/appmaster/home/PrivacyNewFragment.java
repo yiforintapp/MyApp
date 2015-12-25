@@ -183,15 +183,16 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
                 onProcessClick();
                 break;
             case R.id.pp_process_ignore_rv_click:
-                if (mIgnoreDlg == null) {
-                    initIgnoreDlg();
-                }
-                if (mActivity.shownIgnoreDlg()) {
-                    onIgnoreClick(true);
-                } else {
-                    mIgnoreDlg.show();
-                    mActivity.setShownIngoreDlg();
-                }
+//                if (mIgnoreDlg == null) {
+//                    initIgnoreDlg();
+//                }
+//                if (mActivity.shownIgnoreDlg()) {
+//                    onIgnoreClick(true);
+//                } else {
+//                    mIgnoreDlg.show();
+//                    mActivity.setShownIngoreDlg();
+//                }
+                onIgnoreClick(true);
                 break;
         }
     }

@@ -1337,8 +1337,13 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onIgnoreClick(int increaseScore, String mgr) {
-        jumpToNextFragment(false);
+        if (increaseScore > 0) {
+            mPrivacyHelper.increaseScore(mgr, increaseScore);
+        }
+        LeoLog.d(TAG, "onIgnoreClick, increaseScore again: " + increaseScore);
+        mPrivacyFragment.startIncreaseSocreAnim(increaseScore);
         mPrivacyFragment.increaseStepAnim();
+        jumpToNextFragment(false);
     }
 
     public void resetToolbarColor() {

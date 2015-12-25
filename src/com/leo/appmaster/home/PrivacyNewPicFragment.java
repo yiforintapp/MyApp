@@ -194,7 +194,19 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
 
     @Override
     protected void onIgnoreClick(boolean direct) {
-        mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                final int incScore = pdm.haveCheckedPic();
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mActivity.onIgnoreClick(incScore, MgrContext.MGR_PRIVACY_DATA);
+                    }
+                });
+            }
+        });
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_cnts");
         if (direct) {
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_direct");

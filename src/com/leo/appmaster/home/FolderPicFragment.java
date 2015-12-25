@@ -108,17 +108,31 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
 
     @Override
     protected void onIgnoreClick() {
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_cnts");
-        if (mIgnoreDlg == null) {
-            initIgnoreDlg();
-        }
-        if (mActivity.shownIgnoreDlg()) {
-            mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_direct");
-        } else {
-            mIgnoreDlg.show();
-            mActivity.setShownIngoreDlg();
-        }
+//        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_cnts");
+//        if (mIgnoreDlg == null) {
+//            initIgnoreDlg();
+//        }
+//        if (mActivity.shownIgnoreDlg()) {
+//            mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
+//            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_direct");
+//        } else {
+//            mIgnoreDlg.show();
+//            mActivity.setShownIngoreDlg();
+//        }
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_direct");
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                final int incScore = pdm.haveCheckedPic();
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mActivity.onIgnoreClick(incScore, MgrContext.MGR_PRIVACY_DATA);
+                    }
+                });
+            }
+        });
     }
 
     @Override
