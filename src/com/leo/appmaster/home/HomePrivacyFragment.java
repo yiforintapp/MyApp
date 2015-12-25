@@ -83,6 +83,8 @@ public class HomePrivacyFragment extends Fragment {
     private ObjectAnimator mShieldOffsetXAnim;
     private boolean mInterceptRaise;
 
+    private static boolean mMemoryLess = false;
+
 
     public HomePrivacyFragment() {
 
@@ -233,6 +235,7 @@ public class HomePrivacyFragment extends Fragment {
         } else {
             mCircleRotateAnim.setRepeatCount(3);
             mHomeAnimView.setLessMemory();
+            mMemoryLess = true;
         }
         animators.add(mCircleRotateAnim);
 
@@ -320,6 +323,9 @@ public class HomePrivacyFragment extends Fragment {
         super.onStop();
 //        endWaveAnim();
 //        mStopped = true;
+        if (mCircleRotateAnim != null && mMemoryLess) {
+            mCircleRotateAnim.cancel();
+        }
     }
 
     public void onEventMainThread(SecurityScoreEvent event) {
