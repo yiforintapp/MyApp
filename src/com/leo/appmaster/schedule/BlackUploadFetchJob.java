@@ -34,7 +34,10 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     public static final String COUNTRY = "country";
     public static final String ANDROID_ID = "android_id";
     public static final String BODY = "body";
-
+    /**
+     * 拉取间隔，24小时
+     */
+    private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
 
     public static void startImmediately() {
         /*存在wifi网络再去拉取*/
@@ -63,14 +66,8 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         FetchScheduleListener listener = job.newJsonObjListener();
         Context context = AppMasterApplication.getInstance();
 
-//        for (int i = 0; i < 200; i++) {
-//            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "20000" + i, "测试", 0, null,
-//                    null, 23, 25, 0, 1, 1, 0, 1);
-//            infos.add(info);
-//        }
-
         CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        int i = 0;
+        int i = 1;
         while (true) {
             List<BlackListInfo> infos = pm.getNoUpBlackListLimit(i);
             if (infos == null || infos.size() < 0) {
@@ -113,5 +110,8 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         return sb.toString();
     }
 
-
+    @Override
+    protected int getPeriod() {
+        return FETCH_PERIOD;
+    }
 }

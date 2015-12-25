@@ -313,9 +313,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         Intent intent = new Intent(getActivity(), AppLockListActivity.class);
                         startActivity(intent);
                     }
-                    if(DBG){
-                        BlackUploadFetchJob.startImmediately();
-                    }
                     break;
                 case R.id.home_intruder_tv:
                     // 入侵者防护
@@ -357,7 +354,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                        StringBuilder sb = new StringBuilder();
 //                        sb.append(CallFilterUtils.getBlackPath());
 //                        sb.append(sbName.toString());
-//                        String filePath = sb.toString();
+//                        String filePath = sb.toString()\;
 //                        CallFilterUtils.parseBlactList(filePath);
                     }
                     break;

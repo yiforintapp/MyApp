@@ -275,10 +275,11 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? ");
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ?");
         String selection = sb.toString();
         String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD_NO),
-                String.valueOf(CallFilterConstants.LOC_HD)};
+                String.valueOf(CallFilterConstants.LOC_HD), String.valueOf(CallFilterConstants.REMOVE_NO)};
         int pageSize = PAGE_SIZE;
         int currentOffset = (page - 1) * PAGE_SIZE;
         StringBuilder sbOr = new StringBuilder();
@@ -313,14 +314,11 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     int durationColum = cursor.getColumnIndex(CallFilterConstants.FIL_CALL_DURATION);
                     int callTypeColum = cursor.getColumnIndex(CallFilterConstants.FIL_CALL_TYPE);
                     int readStateColum = cursor.getColumnIndex(CallFilterConstants.FIL_READ_STATE);
-                    int filterTypeColum = cursor.getColumnIndex(CallFilterConstants.FIL_GR_TYPE);
+//                    int filterTypeColum = cursor.getColumnIndex(CallFilterConstants.FIL_GR_TYPE);
 
                     int id = cursor.getInt(idColum);
-                    String name = cursor.getString(nameColum);
+//                    String name = cursor.getString(nameColum);
                     String number = cursor.getString(numberColum);
-                    if (TextUtils.isEmpty(name)) {
-                        name = number;
-                    }
                     String numberArea = cursor.getString(numberAreaColum);
                     int blackId = cursor.getInt(blackIdColum);
                     int filterNumber = cursor.getInt(filterNumberColum);
@@ -329,9 +327,14 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     int callType = cursor.getInt(callTypeColum);
                     int readState = cursor.getInt(readStateColum);
                     int filterType = -1;
+                    String name = null;
                     BlackListInfo black = getBlackListFroNum(number);
                     if (black != null) {
                         filterType = black.getLocHandlerType();
+                        name = black.getNumberName();
+                        if (!TextUtils.isEmpty(black.getNumberName())) {
+                            name = black.getNumberName();
+                        }
                     }
 
                     /*默认值-1*/

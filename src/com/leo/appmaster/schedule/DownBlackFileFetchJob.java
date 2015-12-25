@@ -15,6 +15,11 @@ import com.leo.appmaster.utils.Utilities;
  * Created by runlee on 15-12-24.
  */
 public class DownBlackFileFetchJob extends FetchScheduleJob {
+    /**
+     * 拉取间隔，24小时
+     */
+    private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
+
     public static void startImmediately() {
         /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
@@ -61,5 +66,10 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
         sb.append(sbName.toString());
         String filePath = sb.toString();
         HttpRequestAgent.getInstance(context).downloadBlackList(filePath, listener, listener);
+    }
+
+    @Override
+    protected int getPeriod() {
+        return FETCH_PERIOD;
     }
 }

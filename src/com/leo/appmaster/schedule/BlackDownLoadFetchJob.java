@@ -56,6 +56,10 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
      * 标记来电提示显示的人数参数
      */
     public static final String MARK_TP = "mark_tp";
+    /**
+     * 拉取间隔，24小时
+     */
+    private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
 
     public static void startImmediately() {
         /*存在wifi网络再去拉取*/
@@ -159,5 +163,9 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
         FetchScheduleListener listener = job.newJsonObjListener();
         Context context = AppMasterApplication.getInstance();
         HttpRequestAgent.getInstance(context).loadBlackList(listener, listener);
+    }
+    @Override
+    protected int getPeriod() {
+        return FETCH_PERIOD;
     }
 }
