@@ -108,7 +108,7 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
         boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_VID, false);
         int stringId = R.string.pri_pro_new_vid;
         if (!processed) {
-            stringId = R.string.pri_pro_scan_vid;
+            stringId = R.string.scan_find_vid;
         }
         String content = AppMasterApplication.getInstance().getString(stringId, count);
         mNewLabelTv.setText(Html.fromHtml(content));

@@ -75,11 +75,11 @@ public class HomeScanningController {
     private ObjectAnimator mNewInstructLayoutAnim;
     private ObjectAnimator mNewContactLayoutAnim;
 
-    private static final int NEW_PER_CONTACT = 7;
-    private static final int NEW_PER_INS = 14;
-    private static final int NEW_PER_WIFI = 20;
-    private static final int NEW_PER_LOST = 30;
-    private static final int NEW_PER_VID = 50;
+    private static final int NEW_PER_CONTACT = 10;
+    private static final int NEW_PER_INS = 20;
+    private static final int NEW_PER_WIFI = 30;
+    private static final int NEW_PER_LOST = 40;
+    private static final int NEW_PER_VID = 60;
     private static final int NEW_PER_PIC = 80;
     private static final int NEW_PER_APP = 100;
 

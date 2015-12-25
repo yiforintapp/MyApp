@@ -890,6 +890,9 @@
     <string name="scan_vid_none">未发现新增视频</string>
     <string name="scan_pic_none">未发现新增图片</string>
     <string name="scan_app_none">未发现新增应用</string>
+    <string name="scan_find_app">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个应用，建议加锁</string>
+    <string name="scan_find_pic">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张图片，建议隐藏</string>
+    <string name="scan_find_vid">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个视频，建议隐藏</string>
     <string name="call_filter_add_strange_num">加入黑名单</string>
     <string name="call_filter_clear_all_black">清空所有</string>
 

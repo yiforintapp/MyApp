@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -169,6 +171,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private LinearLayout mScrollLayout;
     private LayoutTransition mTransition;
 
+    private Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            updateNewContactList();
+        }
+    };
 
     @Override
     public void onAttach(Activity activity) {
@@ -616,7 +625,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mContactList = pcm.getFrequentContacts();
             mActivity.setContactList(mContactList);
             mContactScanFinish = true;
-
+            if (mHandler != null) {
+                mHandler.obtainMessage().sendToTarget();
+            }
             LeoLog.i(TAG, "contactBeans, cost: " + (SystemClock.elapsedRealtime() - start));
         }
     });
@@ -719,7 +730,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         Context context = AppMasterApplication.getInstance();
         if (layout == mNewAppLayout) {
             updateNewAppList();
-            updateNewContactList();
+            if (!mContactScanFinish) {
+                updateNewContactList();
+            }
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
             onViewScanningFinish(mAppList, mPhotoList, mVideoList);
         } else if (layout == mNewPicLayout) {

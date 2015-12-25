@@ -139,7 +139,7 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
         boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_PIC, false);
         int stringId = R.string.pri_pro_new_pic;
         if (!processed) {
-            stringId = R.string.pri_pro_scan_pic;
+            stringId = R.string.scan_find_pic;
         }
         String content = AppMasterApplication.getInstance().getString(stringId, count);
         mNewLabelTv.setText(Html.fromHtml(content));
