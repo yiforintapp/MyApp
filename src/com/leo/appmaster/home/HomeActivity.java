@@ -62,7 +62,6 @@ import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.msgcenter.MsgCenterBrowserActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
@@ -388,6 +387,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mVideoList = videoItemBeans;
         mAppScanText = appScanText;
         mPrivacyFragment.tryPlayFullScoreAnim();
+
+        int score = mPrivacyHelper.getSecurityScore();
+        if (score == 100) {
+            mPrivacyFragment.startDirectBurstAnim();
+        }
     }
 
     public void onExitScanning() {
@@ -447,10 +451,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             count++;
         }
         mPrivacyFragment.startProcessing(count);
+        int score = mPrivacyHelper.getSecurityScore();
         if (count == 1) {
-            mPrivacyFragment.startFinalAnim();
+            if (score == 100) {
+                mPrivacyFragment.startDirectBurstAnim();
+            } else {
+                mPrivacyFragment.startDirectTranslation();
+                jumpToNextFragment(true);
+            }
+        } else {
+            jumpToNextFragment(true);
         }
-        jumpToNextFragment();
         mScanningFragment = null;
     }
 
@@ -458,7 +469,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         return mPrivacyFragment.getToolbarColor();
     }
 
-    public void jumpToNextFragment() {
+    public void jumpToNextFragment(boolean startByFirst) {
         mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_NONE);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -488,6 +499,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mVideoList = null;
             mCurrentFragment = fragment;
         } else {
+            if (!startByFirst) {
+                mPrivacyFragment.startFinalAnim();
+            }
             PrivacyConfirmFragment fragment = PrivacyConfirmFragment.newInstance(mShowContact);
             fragment.setDataList(mContactList);
             ft.replace(R.id.pri_pro_content, fragment);
@@ -1323,7 +1337,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onIgnoreClick(int increaseScore, String mgr) {
-        jumpToNextFragment();
+        jumpToNextFragment(false);
         mPrivacyFragment.increaseStepAnim();
     }
 

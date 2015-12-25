@@ -46,6 +46,7 @@ import java.util.List;
 
 /**
  * 隐私等级扫描
+ *
  * @author lishuai
  */
 public class HomePrivacyFragment extends Fragment {
@@ -134,6 +135,7 @@ public class HomePrivacyFragment extends Fragment {
     /**
      * 开始上升动画及后续动画
      * 点击处理之后的场景
+     *
      * @param increaseScore
      */
     public void startLoadingRiseAnim(final int increaseScore) {
@@ -294,8 +296,8 @@ public class HomePrivacyFragment extends Fragment {
 //        }
 
     }
-    
-    private void startAnim(long duration){
+
+    private void startAnim(long duration) {
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -305,10 +307,10 @@ public class HomePrivacyFragment extends Fragment {
     }
 
     private void startWaveDelay() {
-        if("HUAWEI P6-T00".equals(android.os.Build.MODEL)){
+        if ("HUAWEI P6-T00".equals(android.os.Build.MODEL)) {
             LeoLog.i("dhdh", "in if");
             startAnim(500);
-        }else{
+        } else {
             startAnim(400);
         }
     }
@@ -372,7 +374,7 @@ public class HomePrivacyFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (!mInterceptRaise) {
-                    mActivity.jumpToNextFragment();
+                    mActivity.jumpToNextFragment(false);
                     mHomeAnimView.increaseCurrentStep();
                     startStepAnim();
                 }
@@ -444,6 +446,7 @@ public class HomePrivacyFragment extends Fragment {
 
     /**
      * 显示进度百分比动画
+     *
      * @param duration 时常，-1则不显示
      */
     public void showScanningPercent(int duration) {
@@ -471,6 +474,7 @@ public class HomePrivacyFragment extends Fragment {
 
     /**
      * 显示进度百分比动画
+     *
      * @param duration 时常，-1则不显示
      */
     public void showScanningPercent(int duration, int from, int to) {
@@ -540,6 +544,10 @@ public class HomePrivacyFragment extends Fragment {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(mShieldOffsetYAnim, shieldScaleAnim);
         animatorSet.start();
+    }
+
+    public int getTotalStepCount() {
+        return mHomeAnimView.getStepLayer().getTotalStepCount();
     }
 
     /**
@@ -619,34 +627,29 @@ public class HomePrivacyFragment extends Fragment {
     /**
      * 启动从扫描页面，直接跳转到隐私建议页面的动画
      */
-    public void startDirectConfirmAnim() {
-        LeoLog.i("tesi", "startDirectConfirmAnim" );
-        int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
-        if (score != 100) {
-            // 启动翻转、火花动画
-            final HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
-            shieldLayer.getFlipDecor().startFlipAnim(1000, new ShieldFlipDecor.OnFlipEndListener() {
-                @Override
-                public void OnFlipEnd() {
-                    LeoLog.i("tesi", "flip end , to start Burst " );
-                    shieldLayer.getBurstDecor().startBurstAnim(500, new BurstDecor.OnBurstEndListener() {
+    public void startDirectBurstAnim() {
+        LeoLog.i("tesi", "startDirectBurstAnim");
+        // 启动翻转、火花动画
+        final HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+        shieldLayer.getFlipDecor().startFlipAnim(1000, new ShieldFlipDecor.OnFlipEndListener() {
+            @Override
+            public void OnFlipEnd() {
+                LeoLog.i("tesi", "flip end , to start Burst ");
+                shieldLayer.getBurstDecor().startBurstAnim(500, new BurstDecor.OnBurstEndListener() {
 
-                        @Override
-                        public void OnBurstEnd() {
-                            mActivity.jumpToNextFragment();
-                            startDirectTranslation();
-                        }
-                    });
+                    @Override
+                    public void OnBurstEnd() {
+                        mActivity.jumpToNextFragment(true);
+                        startDirectTranslation();
+                    }
+                });
 
-                    ObjectAnimator animator = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "firstWaveRatio", 0f, 1f);
-                    animator.setDuration(500);
-                    animator.setInterpolator(new LinearInterpolator());
-                    animator.start();
-                }
-            });
-        } else {
-            startDirectTranslation();
-        }
+                ObjectAnimator animator = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "firstWaveRatio", 0f, 1f);
+                animator.setDuration(500);
+                animator.setInterpolator(new LinearInterpolator());
+                animator.start();
+            }
+        });
     }
 
     public void startDirectTranslation() {
@@ -689,10 +692,6 @@ public class HomePrivacyFragment extends Fragment {
      * 开启隐私完成页面的盾牌上移、分数放大动画
      */
     public void startFinalAnim() {
-        if (mHomeAnimView.getStepLayer().getTotalStepCount() == 1) {
-            startDirectConfirmAnim();
-            return;
-        }
         ObjectAnimator shieldRatio = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(),
                 "finalShieldRatio", 0f, 1f);
         shieldRatio.setDuration(480);
@@ -793,6 +792,7 @@ public class HomePrivacyFragment extends Fragment {
 
     private static class FastHandler extends Handler {
         WeakReference<HomePrivacyFragment> weakRef;
+
         FastHandler(HomePrivacyFragment fragment) {
             weakRef = new WeakReference<HomePrivacyFragment>(fragment);
         }
@@ -823,7 +823,7 @@ public class HomePrivacyFragment extends Fragment {
 //            final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(mHomeAnimView, v1);
 //            animatorI.setDuration(2000);
 //            animatorI.start();
-            
+
 //            int left = mHomeAnimView.getShieldLayer().getLeft();
 //            int top = mHomeAnimView.getShieldLayer().getTop();
 //            ViewParent parent = mHomeAnimView.getParent();
@@ -856,12 +856,12 @@ public class HomePrivacyFragment extends Fragment {
 //                }
 //            });
 //            tt.startAnimation(ra);
-            
+
 //            HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
 //            ThreeDimensionalRotationAnimation ra = new ThreeDimensionalRotationAnimation(0, 360, mHomeAnimView.getWidth() / 2, mHomeAnimView.getHeight() /2, 0, false);
 //            ra.setDuration(1500);
 //            mHomeAnimView.startAnimation(ra);
-            
+
         }
     }
 
