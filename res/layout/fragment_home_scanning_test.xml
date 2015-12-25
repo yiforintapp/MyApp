@@ -77,6 +77,13 @@
                         android:layout_width="306dp"
                         android:layout_height="149dp" />
 
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/ad_after_scan_maker"
+                        android:layout_alignRight="@id/item_ad_preview"
+                        android:layout_alignTop="@id/item_ad_preview"/>
+
                     <LinearLayout
                         android:id="@+id/item_header_ll"
                         style="@style/ItemHeader"
