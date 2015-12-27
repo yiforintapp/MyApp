@@ -40,10 +40,8 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
 
     public static void startImmediately() {
-        /*存在wifi网络再去拉取*/
-        if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
-            startWork();
-        }
+
+        startWork();
     }
 
     @Override
@@ -62,22 +60,24 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     }
 
     public static void startWork() {
-        BlackUploadFetchJob job = new BlackUploadFetchJob();
-        FetchScheduleListener listener = job.newJsonObjListener();
-        Context context = AppMasterApplication.getInstance();
+         /*存在wifi网络再去拉取*/
+        if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
+            BlackUploadFetchJob job = new BlackUploadFetchJob();
+            FetchScheduleListener listener = job.newJsonObjListener();
+            Context context = AppMasterApplication.getInstance();
 
-        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        int i = 1;
-        while (true) {
-            List<BlackListInfo> infos = pm.getNoUpBlackListLimit(i);
-            if (infos == null || infos.size() <= 0) {
-                break;
+            CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            int i = 1;
+            while (true) {
+                List<BlackListInfo> infos = pm.getNoUpBlackListLimit(i);
+                if (infos == null || infos.size() <= 0) {
+                    break;
+                }
+                i = i + 1;
+                String bodyString = getJsonString(infos);
+                HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
             }
-            i = i + 1;
-            String bodyString = getJsonString(infos);
-            HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
         }
-
     }
 
     public static String getJsonString(List<BlackListInfo> infos) {

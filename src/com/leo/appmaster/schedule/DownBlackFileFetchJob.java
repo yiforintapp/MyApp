@@ -21,10 +21,7 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
     private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
 
     public static void startImmediately() {
-        /*存在wifi网络再去拉取*/
-        if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
-            startWork();
-        }
+        startWork();
     }
 
     @Override
@@ -53,20 +50,23 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
     }
 
     public static void startWork() {
-        DownBlackFileFetchJob job = new DownBlackFileFetchJob();
-        FetchScheduleListener listener = job.newJsonObjListener();
-        Context context = AppMasterApplication.getInstance();
+         /*存在wifi网络再去拉取*/
+        if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
+            DownBlackFileFetchJob job = new DownBlackFileFetchJob();
+            FetchScheduleListener listener = job.newJsonObjListener();
+            Context context = AppMasterApplication.getInstance();
 
-        StringBuilder sbName = new StringBuilder();
-        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
-        sbName.append(countryId);
-        sbName.append(CallFilterConstants.GZIP);
+            StringBuilder sbName = new StringBuilder();
+            String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
+            sbName.append(countryId);
+            sbName.append(CallFilterConstants.GZIP);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterUtils.getBlackPath());
-        sb.append(sbName.toString());
-        String filePath = sb.toString();
-        HttpRequestAgent.getInstance(context).downloadBlackList(filePath, listener, listener);
+            StringBuilder sb = new StringBuilder();
+            sb.append(CallFilterUtils.getBlackPath());
+            sb.append(sbName.toString());
+            String filePath = sb.toString();
+            HttpRequestAgent.getInstance(context).downloadBlackList(filePath, listener, listener);
+        }
     }
 
     @Override

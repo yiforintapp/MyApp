@@ -23,6 +23,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -56,11 +57,6 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
     private long mSendDate;
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
-    private CallFilterContextManager mCFCManager;
-    private long mLastOffHookTime = 0;
-
-    public PrivacyContactReceiver() {
-    }
 
     public PrivacyContactReceiver(ITelephony itelephony, AudioManager audioManager) {
         this.mITelephony = itelephony;
@@ -153,85 +149,33 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             //数据初始化和准备
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
             final String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-            mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-            if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
-                /*拨出*/
-                CallFilterManager.getInstance(mContext).setIsComingOut(true);
-                LeoLog.i(TAG, "拨打电话");
-            } else {
-                /*1.来电，2.无状态*/
-                LeoLog.i(TAG, "来电电话");
-                final CallFilterToast toast = CallFilterToast.makeText(mContext, "13632840685", "已被1234人拉入", "黑名单");
-                boolean isComOut = CallFilterManager.getInstance(mContext).isComingOut();
-                if (!isComOut) {
-                    toast.show();
-                }
-                String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-                String inNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-                if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
-
-                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
-                    CallFilterManager.getInstance(mContext).setIsComingOut(false);
-                    toast.hide();
-                    //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
-                    if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
-                        CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
-                    }
-                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-                    mLastOffHookTime = System.currentTimeMillis();
-                }
-            }
-            //定义接听状态的监听
-//            PhoneStateListener listener = new PhoneStateListener() {
-//                @Override
-//                public void onCallStateChanged(int state, String incomingNumber) {
-//                    super.onCallStateChanged(state, incomingNumber);
-//                    switch (state) {
-//                        case TelephonyManager.CALL_STATE_IDLE:
-//                            CallFilterManager.getInstance(mContext).setIsComingOut(false);
-//                            toast.hide();
-//                            //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
-//                            if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
-//                                LeoLog.i("temp", System.currentTimeMillis() - mLastOffHookTime + " vs max :" + mCFCManager.getCallDurationMax());
-//                                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
-//                            }
-//                            break;
-//                        case TelephonyManager.CALL_STATE_OFFHOOK:
-//                            mLastOffHookTime = System.currentTimeMillis();
-//                            break;
-//                        case TelephonyManager.CALL_STATE_RINGING:
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//                }
-//            };
-//            tm.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
-
-
+            String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             PrivacyContactManager.getInstance(mContext).testValue = true;
-            // 获取来电号码
-
-            // 没有隐私联系人时直接结束
-            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0 && mCFCManager.getBlackListCount() == 0) {
+            CallFilterContextManager mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0 /*隐私联系人*/
+                    && mCFCManager.getBlackListCount() == 0 /*黑名单*/) {
                 return;
             }
+
+            /**
+             * 骚扰拦截处理
+             */
+            CallFilterManager.getInstance(mContext).filterCallHandler(action, phoneNumber, state);
+            /**
+             * 隐私联系人处理
+             */
             // 获取当前时间
             if (mSimpleDateFormate == null) {
                 mSimpleDateFormate = new SimpleDateFormat(Constants.PATTERN_DATE);
             }
-            if (phoneNumber != null && !"".equals(phoneNumber)) {
+            if (!TextUtils.isEmpty(phoneNumber)) {
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(phoneNumber);
-                // 查询该号码是否挂断拦截
-                ContactBean cb = PrivacyContactManager.getInstance(mContext).getPrivateContact(formateNumber);
-                // 查询该号码是否为隐私联系人
+                /*查询该号码是否挂断拦截*/
+                ContactBean contact = PrivacyContactManager.getInstance(mContext).getPrivateContact(formateNumber);
+                /*查询该号码是否为隐私联系人*/
                 ContactBean privacyConatact = PrivacyContactManager.getInstance(mContext).getPrivateMessage(formateNumber, mContext);
                 PrivacyContactManager.getInstance(mContext).setLastCall(privacyConatact);
-                if (cb != null) {
-
-                    LeoLog.i("temp", "ys");
-
-                    String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+                if (contact != null) {
                     if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
                         // 先静音处理
                         if (mAudioManager != null) {
@@ -245,9 +189,8 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                             try {
                                 /* 挂断电话*/
                                 mITelephony.endCall();
-
                                 /* 判断是否为5.0系统，特别处理*/
-                                PrivacyContactUtils.saveCallLog(cb);
+                                PrivacyContactUtils.saveCallLog(contact);
                             } catch (Exception e) {
                             }
 
@@ -256,9 +199,7 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                         }
                     }
                 } else {
-                    //TODO PH
-                    LeoLog.i("temp", "lj");
-                    //不是隐私联系人，判断是否黑名单，是则挂断
+                    /*不是隐私联系人，判断是否黑名单，是则挂断*/
                     int[] callFilterTip = mCFCManager.isCallFilterTip(phoneNumber);
                     if (callFilterTip[0] == 1) {
                         try {
@@ -267,12 +208,7 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                             e.printStackTrace();
                         }
                         CallFIlterUIHelper.getInstance().showReceiveCallNotification();
-                    } else {
-
-//                        List<BlackListInfo> serBlackList = mCFCManager.gets
-
                     }
-
                 }
 
             }

@@ -62,10 +62,7 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
     private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
 
     public static void startImmediately() {
-        /*存在wifi网络再去拉取*/
-        if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
-            startWork();
-        }
+        startWork();
     }
 
     @Override
@@ -159,11 +156,15 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
     }
 
     public static void startWork() {
-        BlackDownLoadFetchJob job = new BlackDownLoadFetchJob();
-        FetchScheduleListener listener = job.newJsonObjListener();
-        Context context = AppMasterApplication.getInstance();
-        HttpRequestAgent.getInstance(context).loadBlackList(listener, listener);
+         /*存在wifi网络再去拉取*/
+        if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
+            BlackDownLoadFetchJob job = new BlackDownLoadFetchJob();
+            FetchScheduleListener listener = job.newJsonObjListener();
+            Context context = AppMasterApplication.getInstance();
+            HttpRequestAgent.getInstance(context).loadBlackList(listener, listener);
+        }
     }
+
     @Override
     protected int getPeriod() {
         return FETCH_PERIOD;
