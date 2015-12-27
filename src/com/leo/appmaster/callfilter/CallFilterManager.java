@@ -155,13 +155,8 @@ public class CallFilterManager {
 
         LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
         setIsReceiver(true);
-//<<<<<<< Upstream, based on branch 'lishuai_dev_3.2' of http://gitlab.leoers.com/leo/appmaster.git
-//
-//        CallFilterContextManager mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-//=======
         final CallFilterContextManager mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean isShortTime = false;
-//>>>>>>> 2d6e3a7 dialog
         int serBlackCt = getSerBlackCount();
         int blackCt = getBlackListCount();
         if (serBlackCt <= 0 && blackCt <= 0) {
@@ -293,9 +288,6 @@ public class CallFilterManager {
                   });
                   callHandleDialogWithSummary.show();
                 } else if(!mIsOffHook) {
-                    if (filterTip == null) {
-                        LeoLog.i(TAG, "filterTip2 == null");
-                    }
                     int tipType = filterTip[1];
                     //TODO 这里开始判断条件然后弹出对应的对话框
                     final LEOAlarmDialog confirmAddToBlacklistDialog = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
