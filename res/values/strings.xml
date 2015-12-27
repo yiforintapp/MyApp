@@ -856,6 +856,7 @@
     <string name="call_filter_have_add_black_num">该号码已存在黑名单中</string>
     <string name="call_filter_dialog_add_black">添加黑名单</string>
     <string name="call_filter_dialog_add_black_new">添加新黑名单</string>
+    <string name="add_black_list_done">号码已加入黑名单</string>
 	<string name="call_filter_record">拦截记录</string>
 	<string name="call_filter_clear_record">清空记录</string>
 	<string name="call_filter_remove_from_blacklist">移出黑名单</string>

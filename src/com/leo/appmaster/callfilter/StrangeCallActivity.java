@@ -84,6 +84,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     if (mProgressDialog != null) {
                         mProgressDialog.cancel();
                     }
+                    Context context = StrangeCallActivity.this;
+                    String str = getResources().getString(R.string.add_black_list_done);
+                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                     StrangeCallActivity.this.finish();
                 } else {
                     if (mProgressDialog != null) {
