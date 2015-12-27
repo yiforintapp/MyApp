@@ -52,7 +52,7 @@
                 android:id="@+id/pp_process_ignore_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pri_pro_ignore"
+                android:text="@string/pri_pro_ignore2"
                 android:textColor="@color/c2"
                 android:textSize="17dp" />
         </RelativeLayout>

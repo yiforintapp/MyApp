@@ -609,7 +609,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mVidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
             LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
 
-            mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
+//            mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
 //            updateNewVidList();
 //            com.leo.tools.animator.ObjectAnimator vidAnim = mController.getNewVidAnim();
 //            if (vidAnim != null) {
