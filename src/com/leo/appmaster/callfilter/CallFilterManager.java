@@ -15,6 +15,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LeoLog;
@@ -27,14 +28,15 @@ import java.util.List;
  */
 public class CallFilterManager {
     public static final String TAG = "CallFilterManager";
+    private static final boolean DBG = false;
 
     private static CallFilterManager mInstance;
     private Context mContext;
-    private CallFilterContextManager mCFCManager;
     private long mLastOffHookTime = 0;
     private List<BlackListInfo> mBlackList;
     private List<BlackListInfo> mSerBlackList;
     private CallFilterToast mTipToast;
+    private long mCurrentCallTime = -1;
     /**
      * 拨出电话
      */
@@ -107,6 +109,7 @@ public class CallFilterManager {
      */
     public void filterCallHandler(String action, final String phoneNumber, String state, final ITelephony iTelephony) {
         LeoLog.i(TAG, "state:" + state);
+         CallFilterContextManager mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean isShortTime = false;
         int serBlackCt = getSerBlackCount();
         int blackCt = getBlackListCount();
@@ -136,10 +139,15 @@ public class CallFilterManager {
                     mTipToast = null;
                 }
                 //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
+                long durationMax = mCFCManager.getCallDurationMax();
+                if (System.currentTimeMillis() - mLastOffHookTime < durationMax) {
+                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
                 if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
                     isShortTime = true;
 //                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
                 }
+                /*恢复默认值*/
+                mCurrentCallTime = -1;
             } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
                 mLastOffHookTime = System.currentTimeMillis();
             }
@@ -167,8 +175,12 @@ public class CallFilterManager {
                 LeoLog.i(TAG, "iTelephony endCall()");
                 List<CallFilterInfo> infos = new ArrayList<CallFilterInfo>();
                 CallFilterInfo callInfo = new CallFilterInfo();
+                long time = System.currentTimeMillis();
+                if (time == mCurrentCallTime) {
+                    return;
+                }
+                callInfo.setTimeLong(time);
                 callInfo.setNumber(PrivacyContactUtils.simpleFromateNumber(phoneNumber));
-                callInfo.setTimeLong(System.currentTimeMillis());
                 callInfo.setCallType(CallLog.Calls.INCOMING_TYPE);
                 callInfo.setReadState(CallFilterConstants.READ_NO);
                 infos.add(callInfo);
@@ -177,9 +189,7 @@ public class CallFilterManager {
                 e.printStackTrace();
             }
             CallFIlterUIHelper.getInstance().showReceiveCallNotification();
-        } else if (serInfo != null)
-
-        {
+        } else if (serInfo != null) {
                     /*为服务器黑名单：弹窗提醒*/
 
             int[] filterTip = mCFCManager.isCallFilterTip(phoneNumber);
@@ -272,6 +282,15 @@ public class CallFilterManager {
             //服务器和本地都没有记录，判断时间是不是过短，是则弹出提醒对话框
             if (isShortTime) {
                 CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();//TODO 
+                    //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
+                    if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
+                        CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
+                    }
+                   /*恢复默认值*/
+                    mCurrentCallTime = -1;
+                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+                    mLastOffHookTime = System.currentTimeMillis();
+                }
             }
         }
 
@@ -396,6 +415,36 @@ public class CallFilterManager {
         info.setMarkerNumber(markCount);
         infos.add(info);
         pm.addSerBlackList(infos);
+    }
+
+    /**
+     * 陌生人多个来电通知处理
+     */
+    public void filterNotiTipHandler() {
+        String selection = CallLog.Calls.TYPE + " = ? and " + CallLog.Calls.NEW + " = ? ";
+        String[] selectionArgs = new String[]{
+                String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1)
+        };
+
+        ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
+                .getSysCallLog(mContext, selection, selectionArgs, false, false);
+        if (callLogs != null && callLogs.size() > 0) {
+            int count = callLogs.size();
+            CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            int param = pm.getStraNotiTipParam();
+
+            if (DBG) {
+                count = 3;
+                param = 1;
+            }
+
+            int remainder = count % param;
+            if (remainder == 0) {
+                CallFIlterUIHelper.getInstance().showStrangerNotification(count);
+            }
+        } else {
+            return;
+        }
     }
 
 

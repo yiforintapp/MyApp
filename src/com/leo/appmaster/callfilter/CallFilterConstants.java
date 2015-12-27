@@ -286,5 +286,10 @@ public class CallFilterConstants {
      */
     public static final String GZIP = ".gz";
 
+    /**
+     * 陌生人通知id
+     */
+    public static final int NOTI_ID_STRA = 20140905;
+
 
 }

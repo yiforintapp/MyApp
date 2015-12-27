@@ -195,4 +195,8 @@ public class PrefConst {
      * 陌生人提示倍率参数
      */
     public static final String KEY_STRA_NOTI_PAR = "STRA_NOTI_PAR";
+    /**
+     * 拦截挂断电话提示倍率参数
+     */
+    public static final String KEY_FIL_TIME_PAR = "FIL_TIME_PAR";
 }

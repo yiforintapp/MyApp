@@ -63,7 +63,7 @@ public class CallFIlterUIHelper {
 
         if (filterType > 0 && filterType < 4) {
             dialog.setNowItemPosition(filterType - 1);
-        }else{
+        } else {
             dialog.setNowItemPosition(0);
         }
 
@@ -104,6 +104,25 @@ public class CallFIlterUIHelper {
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_launcher);
         mNotificationManager.notify(1, mBuilder.build());
+    }
+
+    public void showStrangerNotification(int count) {
+        Context context = AppMasterApplication.getInstance();
+        AppMasterApplication ama = AppMasterApplication.getInstance();
+        Intent intent = new Intent(ama, IntruderprotectionActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
+        String title = String.format(context.getResources().getString(R.string.str_noti_title_txt), count);
+        String content = String.format(context.getResources().getString(R.string.str_noti_content_txt), count);
+        mBuilder.setContentTitle(title)
+                .setContentText(content)
+                .setContentIntent(pendingIntent)
+                .setWhen(System.currentTimeMillis())
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_launcher);
+        mNotificationManager.notify(CallFilterConstants.NOTI_ID_STRA, mBuilder.build());
     }
 
     public LEOAlarmDialog getConfirmAddToBlacklistDialog(Context context, String number, String markedPeople) {

@@ -1,32 +1,17 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.ContentObserver;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Handler;
-import android.provider.CallLog;
-import android.provider.CallLog.Calls;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
 
 @SuppressLint("NewApi")
 public class PrivacyMessageContentObserver extends ContentObserver {
@@ -96,6 +81,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
              */
             PrivacyContactManager.getInstance(mContext).noReadMsmTipForQuickGesture();
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
+            /**
+             * 骚扰拦截
+             */
+            CallFilterManager.getInstance(mContext).filterNotiTipHandler();
             /**
              * 通话拦截功能
              */

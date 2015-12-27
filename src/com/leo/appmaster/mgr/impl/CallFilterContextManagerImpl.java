@@ -969,11 +969,14 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public long getCallDurationMax() {
-        return 0;
+        PreferenceTable pt = PreferenceTable.getInstance();
+        return pt.getLong(PrefConst.KEY_FIL_TIME_PAR, 0);
     }
 
     @Override
     public long setCallDurationMax(long duration) {
+        PreferenceTable pt = PreferenceTable.getInstance();
+        pt.putLong(PrefConst.KEY_FIL_TIME_PAR, duration);
         return 0;
     }
 
