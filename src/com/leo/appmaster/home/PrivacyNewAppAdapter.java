@@ -29,9 +29,10 @@ public class PrivacyNewAppAdapter extends PrivacyNewAdaper<AppItemInfo> {
         ThreadManager.getUiThreadHandler().post(new Runnable() {
             @Override
             public void run() {
-                for (AppItemInfo info : dataList) {
-                    if (info.topPos != -1) {
-                        toggle(info);
+                for (int i = 0; i < dataList.size(); i++) {
+                    AppItemInfo itemInfo = dataList.get(i);
+                    if (itemInfo.topPos != -1) {
+                        toggle(i);
                     }
                 }
             }
@@ -68,7 +69,7 @@ public class PrivacyNewAppAdapter extends PrivacyNewAdaper<AppItemInfo> {
         holder.imageView.setImageDrawable(info.icon);
         holder.title.setText(info.label);
 
-        if (isChecked(info)) {
+        if (isChecked(position)) {
             holder.checkBox.setChecked(true);
         } else {
             holder.checkBox.setChecked(false);

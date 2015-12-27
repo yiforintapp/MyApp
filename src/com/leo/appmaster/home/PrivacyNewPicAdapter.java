@@ -25,7 +25,7 @@ public class PrivacyNewPicAdapter extends PrivacyNewAdaper<PhotoItem> {
         mImageLoader = ImageLoader.getInstance();
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         PrivacyNewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.pri_pro_new_pic_item, null);
@@ -43,7 +43,7 @@ public class PrivacyNewPicAdapter extends PrivacyNewAdaper<PhotoItem> {
         String url = "file://" + item.getPath();
 
         mImageLoader.displayImage(url, holder.imageView, getMediaOptions());
-        boolean isChecked = isChecked(item);
+        boolean isChecked = isChecked(position);
         holder.checkBox.setChecked(isChecked);
         if (holder.imageView instanceof MaskImageView) {
             ((MaskImageView) holder.imageView).setChecked(isChecked);
@@ -52,7 +52,7 @@ public class PrivacyNewPicAdapter extends PrivacyNewAdaper<PhotoItem> {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggle(item);
+                toggle(position);
             }
         });
         mItemsView.put(convertView, item);

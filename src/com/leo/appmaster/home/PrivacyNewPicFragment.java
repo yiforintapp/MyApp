@@ -225,7 +225,7 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         PhotoItem item = (PhotoItem) mAdaper.getItem(position);
-        mAdaper.toggle(item);
+        mAdaper.toggle(position);
 
     }
 

@@ -198,8 +198,8 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         if (mDataList.size() > 0) {
-            AppItemInfo info = mDataList.get(i - 1);
-            mAdaper.toggle(info);
+//            AppItemInfo info = mDataList.get(i - 1);
+            mAdaper.toggle(i - 1);
         }
     }
 }

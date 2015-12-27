@@ -23,6 +23,7 @@ import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +34,8 @@ import java.util.List;
 public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
 
     private static final int GROUP_EXPANDED = 1;
-
+    private static final byte SELECTED = 0x01;
+    private static final byte UNSELECTED = 0x00;
 
     public interface OnFolderClickListener {
         public void onGroupClick(int groupPosition, boolean isExpanded);
@@ -47,7 +49,8 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
 
     private List<T> mSrcList;
     protected List<ItemsWrapper> mDataList;
-    private List<T> mSelectData;
+//    private List<T> mSelectData;
+    private List<SelectionInfo> mSelectionInfo;
 
     protected LayoutInflater mInflater;
     protected Context mContext;
@@ -64,7 +67,6 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
     public FolderAdapter() {
         mSrcList = new ArrayList<T>();
         mDataList = new ArrayList<ItemsWrapper>();
-        mSelectData = new ArrayList<T>();
 
         mContext = AppMasterApplication.getInstance();
         mInflater = LayoutInflater.from(mContext);
@@ -92,12 +94,10 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
                 mSrcList.addAll(dataList);
                 mDataList.addAll(format(dataList));
 
-                Iterator<T> iterator = mSelectData.iterator();
-                while (iterator.hasNext()) {
-                    T itemBean = iterator.next();
-                    if (!mDataList.contains(itemBean)) {
-                        iterator.remove();
-                    }
+                mSelectionInfo = new ArrayList<SelectionInfo>(mDataList.size());
+                for (ItemsWrapper wrapper : mDataList) {
+                    SelectionInfo info = new SelectionInfo();
+                    info.selectedArray = new byte[wrapper.items.size()];
                 }
                 notifyDataSetChanged();
                 initGroupIndexArray();
@@ -108,7 +108,17 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
     protected abstract void initGroupIndexArray();
 
     public List<T> getSelectData() {
-        return mSelectData;
+        List<T> result = new ArrayList<T>();
+        for (int i = 0; i < mSelectionInfo.size(); i++) {
+            SelectionInfo info = mSelectionInfo.get(i);
+            ItemsWrapper<T> wrapper = mDataList.get(i);
+            for (int j = 0; j < info.selectedArray.length; j++) {
+                if (info.selectedArray[j] == SELECTED) {
+                    result.add(wrapper.items.get(j));
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -180,16 +190,19 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         return 0;
     }
 
-    protected void toggle(T data) {
-        if (mSelectData.contains(data)) {
-            mSelectData.remove(data);
+    protected void toggle(int group, int child) {
+        SelectionInfo info = mSelectionInfo.get(group);
+        byte selection = info.selectedArray[child];
+        if (selection == SELECTED) {
+            info.selectedArray[child] = UNSELECTED;
+            info.selectedCount--;
         } else {
-            mSelectData.add(data);
+            info.selectedArray[child] = SELECTED;
+            info.selectedCount++;
         }
 
-        int group = getGroupPosition(data);
         ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(group);
-        boolean isGroupChecked = isGroupChecked(wrapper);
+        boolean isGroupChecked = isGroupChecked(group);
         if (mListener != null) {
             mListener.onGroupCheckChanged(group, isGroupChecked);
         }
@@ -204,19 +217,26 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         }
 
         if (mListener != null) {
-            mListener.onSelectionChange(mSelectData.size() == mSrcList.size(), mSelectData.size());
+            int selectedCount = 0;
+            for (SelectionInfo selectionInfo : mSelectionInfo) {
+                selectedCount += selectionInfo.selectedCount;
+            }
+            mListener.onSelectionChange(selectedCount == mSrcList.size(), selectedCount);
         }
     }
 
-    protected boolean isChildChecked(T data) {
-        return mSelectData.contains(data);
+    protected boolean isChildChecked(int group, int child) {
+        SelectionInfo info = mSelectionInfo.get(group);
+        byte selection = info.selectedArray[child];
+
+        return selection == SELECTED;
     }
 
-    protected boolean isGroupChecked(ItemsWrapper<T> wrapper) {
-        for (T photoItem : wrapper.items) {
-            if (!isChildChecked(photoItem)) return false;
-        }
-        return true;
+    protected boolean isGroupChecked(int group) {
+        ItemsWrapper<T> wrapper = mDataList.get(group);
+        SelectionInfo info = mSelectionInfo.get(group);
+
+        return info.selectedCount == wrapper.items.size();
     }
 
     public void setLableContent(TextView textView, String content, int count) {
@@ -239,53 +259,41 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
 
     public void selectAll(int groupPosition) {
         ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(groupPosition);
-        for (T photoItem : wrapper.items) {
-            if (mSelectData.contains(photoItem)) continue;
+        SelectionInfo info = mSelectionInfo.get(groupPosition);
+        if (info.selectedCount != wrapper.items.size()) {
+            Arrays.fill(info.selectedArray, SELECTED);
+            info.selectedCount = wrapper.items.size();
 
-            mSelectData.add(photoItem);
-            for (View view : mItemViews.keySet()) {
-                T item = mItemViews.get(view);
-                if (item == photoItem) {
-                    PrivacyNewHolder holder = (PrivacyNewHolder) view.getTag(getChildTagId());
-                    if (holder != null) {
-                        holder.checkBox.setChecked(true);
-                        if (holder.imageView instanceof MaskImageView) {
-                            ((MaskImageView) holder.imageView).setChecked(true);
-                        }
-                    }
-                }
+            notifyDataSetChanged();
+
+            int totalCount = 0;
+            for (SelectionInfo selectionInfo : mSelectionInfo) {
+                totalCount += selectionInfo.selectedCount;
+            }
+            if (mListener != null) {
+                mListener.onSelectionChange(totalCount == mSrcList.size(), totalCount);
             }
         }
-        if (mListener != null) {
-            mListener.onSelectionChange(mSelectData.size() == mSrcList.size(), mSelectData.size());
-        }
-        notifyDataSetChanged();
     }
 
     public void deselectAll(int groupPosition) {
         ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(groupPosition);
-        for (T photoItem : wrapper.items) {
-            if (mSelectData.contains(photoItem)) {
-                mSelectData.remove(photoItem);
+        SelectionInfo info = mSelectionInfo.get(groupPosition);
+        if (info.selectedCount == wrapper.items.size()) {
+            Arrays.fill(info.selectedArray, UNSELECTED);
+            info.selectedCount = 0;
 
-                for (View view : mItemViews.keySet()) {
-                    T item = mItemViews.get(view);
-                    if (item == photoItem) {
-                        PrivacyNewHolder holder = (PrivacyNewHolder) view.getTag(getChildTagId());
-                        if (holder != null) {
-                            holder.checkBox.setChecked(false);
-                            if (holder.imageView instanceof MaskImageView) {
-                                ((MaskImageView) holder.imageView).setChecked(false);
-                            }
-                        }
-                    }
-                }
+            notifyDataSetChanged();
+
+            int totalCount = 0;
+            for (SelectionInfo selectionInfo : mSelectionInfo) {
+                totalCount += selectionInfo.selectedCount;
+            }
+            if (mListener != null) {
+                mListener.onSelectionChange(totalCount == mSrcList.size(), totalCount);
             }
         }
-        if (mListener != null) {
-            mListener.onSelectionChange(mSelectData.size() == mSrcList.size(), mSelectData.size());
-        }
-        notifyDataSetChanged();
+
     }
 
     protected DisplayImageOptions getMediaOptions() {
@@ -372,5 +380,10 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         RippleView clickRv;
         ImageView arrow;
         TextView count;
+    }
+
+    private static class SelectionInfo {
+        public int selectedCount;
+        public byte[] selectedArray;
     }
 }

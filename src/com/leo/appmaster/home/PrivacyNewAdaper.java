@@ -2,6 +2,8 @@ package com.leo.appmaster.home;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -18,8 +20,8 @@ import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,8 +33,13 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
         public void onSelectionChange(boolean selectAll, int selectedCount);
     }
 
+    private static final byte SELECTED = 0x01;
+    private static final byte UNSELECTED = 0x00;
+
     private List<T> mDataList;
-    private List<T> mSelectedList;
+//    private List<T> mSelectedList;
+    private byte[] mSelectedArray;
+    private int mSelectedCount;
 
     protected SelectionChangeListener mListener;
 
@@ -43,7 +50,7 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
 
     public PrivacyNewAdaper() {
         mDataList = new ArrayList<T>();
-        mSelectedList = new ArrayList<T>();
+//        mSelectedList = new ArrayList<T>();
 
         mContext = AppMasterApplication.getInstance();
         mInflater = LayoutInflater.from(mContext);
@@ -58,14 +65,8 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
             public void run() {
                 mDataList.clear();
                 mDataList.addAll(dataList);
+                mSelectedArray = new byte[dataList.size()];
 
-                Iterator<T> iterator = mSelectedList.iterator();
-                while (iterator.hasNext()) {
-                    T data = iterator.next();
-                    if (!mDataList.contains(data)) {
-                        iterator.remove();
-                    }
-                }
                 notifyDataSetChanged();
             }
         });
@@ -90,26 +91,30 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
         return 0;
     }
 
-    public void toggle(T data) {
+    public void toggle(int pos) {
         boolean isChecked = false;
-        if (mSelectedList.contains(data)) {
-            mSelectedList.remove(data);
+        int selection = mSelectedArray[pos];
+        if (selection == SELECTED) {
+            mSelectedArray[pos] = UNSELECTED;
+            mSelectedCount--;
         } else {
-            mSelectedList.add(data);
+            mSelectedArray[pos] = SELECTED;
+            mSelectedCount++;
             isChecked = true;
         }
 
-        if (mSelectedList.size() == mDataList.size()) {
+        if (mSelectedCount == mDataList.size()) {
             if (mListener != null) {
                 mListener.onSelectionChange(true, mDataList.size());
             }
         } else {
             if (mListener != null) {
-                mListener.onSelectionChange(false, mSelectedList.size());
+                mListener.onSelectionChange(false, mSelectedCount);
             }
         }
         for (View view : mItemsView.keySet()) {
             T item = mItemsView.get(view);
+            T data = (T) getItem(pos);
             if (item == data) {
                 PrivacyNewHolder holder = (PrivacyNewHolder) view.getTag();
                 if (holder == null) continue;
@@ -123,44 +128,27 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
     }
 
     public void selectAll() {
-        if (mSelectedList.size() != mDataList.size()) {
-            mSelectedList.clear();
-            mSelectedList.addAll(mDataList);
-
+        if (mSelectedCount != mDataList.size()) {
+            mSelectedCount = mDataList.size();
+            Arrays.fill(mSelectedArray, SELECTED);
             if (mListener != null) {
-                mListener.onSelectionChange(true, mSelectedList.size());
+                mListener.onSelectionChange(true, mSelectedCount);
             }
 
-//            updateSelectItem();
             updateSelectItem(true);
         }
     }
 
     public void deselectAll() {
-        mSelectedList.clear();
-        if (mListener != null) {
-            mListener.onSelectionChange(false, 0);
-        }
+        if (mSelectedCount != 0) {
+            mSelectedCount = 0;
+            Arrays.fill(mSelectedArray, UNSELECTED);
 
-//        updateSelectItem();
-        updateSelectItem(false);
-    }
-
-    private void updateSelectItem() {
-        for (T t : mDataList) {
-            boolean isChecked = isChecked(t);
-            for (View view : mItemsView.keySet()) {
-                T data = mItemsView.get(view);
-                if (data != t) continue;
-
-                PrivacyNewHolder holder = (PrivacyNewHolder) view.getTag();
-                if (holder == null) continue;
-
-                holder.checkBox.setChecked(isChecked);
-                if (holder.imageView instanceof MaskImageView) {
-                    ((MaskImageView) holder.imageView).setChecked(isChecked);
-                }
+            if (mListener != null) {
+                mListener.onSelectionChange(false, 0);
             }
+
+            updateSelectItem(false);
         }
     }
 
@@ -177,7 +165,13 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
     }
 
     public List<T> getSelectedList() {
-        return mSelectedList;
+        List result = new ArrayList(mSelectedCount);
+        for (int i = 0; i < mSelectedArray.length; i++) {
+            if (mSelectedArray[i] == SELECTED) {
+                result.add(mDataList.get(i));
+            }
+        }
+        return result;
     }
 
     public DisplayImageOptions getMediaOptions() {
@@ -212,8 +206,11 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
         return options;
     }
 
-    public boolean isChecked(T data) {
-        return mSelectedList.contains(data);
+    public boolean isChecked(int pos) {
+        if (pos < 0 || pos >= mSelectedArray.length) {
+            return false;
+        }
+        return mSelectedArray[pos] == SELECTED;
     }
 
     public static class PrivacyNewHolder {

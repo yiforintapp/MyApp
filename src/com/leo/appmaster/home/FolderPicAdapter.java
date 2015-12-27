@@ -83,7 +83,7 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
             mImageLoader.displayImage(url, holder.imageView, PrivacyNewAdaper.getOptions());
         }
 
-        holder.checkBox.setChecked(isGroupChecked(wrapper));
+        holder.checkBox.setChecked(isGroupChecked(groupPosition));
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +121,7 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         PrivacyNewAdaper.PrivacyNewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.pri_pro_new_pic_item, null);
@@ -140,7 +140,7 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
 
         mImageLoader.displayImage(url, holder.imageView, getMediaOptions());
         holder.checkBox.setClickable(false);
-        boolean isChecked = isChildChecked(item);
+        boolean isChecked = isChildChecked(groupPosition, childPosition);
         holder.checkBox.setChecked(isChecked);
         if (holder.imageView instanceof MaskImageView) {
             ((MaskImageView) holder.imageView).setChecked(isChecked);
@@ -152,8 +152,8 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggle(item);
-                boolean isChecked = isChildChecked(item);
+                toggle(groupPosition, childPosition);
+                boolean isChecked = isChildChecked(groupPosition, childPosition);
                 checkBox.setChecked(isChecked);
                 if (imageView instanceof MaskImageView) {
                     ((MaskImageView) imageView).setChecked(isChecked);

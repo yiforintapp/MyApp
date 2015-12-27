@@ -43,7 +43,7 @@ public class PrivacyNewVideoAdapter extends PrivacyNewAdaper<VideoItemBean> {
         mImageLoader.displayImage(url, holder.imageView, getMediaOptions());
         holder.title.setText(info.getName());
 
-        if (isChecked(info)) {
+        if (isChecked(position)) {
             holder.checkBox.setChecked(true);
         } else {
             holder.checkBox.setChecked(false);

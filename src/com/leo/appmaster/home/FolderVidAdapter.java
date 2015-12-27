@@ -95,7 +95,7 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
         }
 
         holder.checkBox.setClickable(false);
-        holder.checkBox.setChecked(isGroupChecked(wrapper));
+        holder.checkBox.setChecked(isGroupChecked(groupPosition));
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,14 +118,6 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
                 }
             }
         });
-//        holder.clickRv.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-//            @Override
-//            public void onRippleComplete(RippleView rippleView) {
-//                if (mListener != null) {
-//                    mListener.onGroupClick(groupPosition, isExpanded);
-//                }
-//            }
-//        });
 
         if (isExpanded) {
             mWrapperViews.put(convertView, wrapper);
@@ -155,7 +147,7 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
         mImageLoader.displayImage(url, holder.imageView, getMediaOptions());
         holder.title.setText(info.getName());
 
-        if (isChildChecked(info)) {
+        if (isChildChecked(groupPosition, childPosition)) {
             holder.checkBox.setChecked(true);
         } else {
             holder.checkBox.setChecked(false);

@@ -142,13 +142,15 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         if (scrollY > maxScrollHeight && mListView.isGroupExpanded(0)) {
             mFloatingView.setVisibility(View.VISIBLE);
 
-            FolderAdapter.ItemsWrapper<T> wrapper = (FolderAdapter.ItemsWrapper<T>)
-                    mAdapter.getFirstVisibleGroup(firstVisibleItem);
+//            FolderAdapter.ItemsWrapper<T> wrapper = (FolderAdapter.ItemsWrapper<T>)
+//                    mAdapter.getFirstVisibleGroup(firstVisibleItem);
+            int group = mAdapter.getFirstVisibleGroupPosition(firstVisibleItem);
+            FolderAdapter.ItemsWrapper<T> wrapper = (FolderAdapter.ItemsWrapper<T>) mAdapter.getGroup(group);
             if (wrapper == null) return;
             mCurrentGroup = mAdapter.getFirstVisibleGroupPosition(firstVisibleItem);
             if (mCurrentGroup != mLastGroup) {
                 mAdapter.setLableContent(mFloatingTv, wrapper.parentName, wrapper.items.size());
-                mFloatingCb.setChecked(mAdapter.isGroupChecked(wrapper));
+                mFloatingCb.setChecked(mAdapter.isGroupChecked(group));
                 mFloatingView.setTranslationY(0);
             } else if (mLastGroup != -1) {
                 int nextPosition = mAdapter.getNextPositionOfAllDatas(mCurrentGroup);

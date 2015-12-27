@@ -226,7 +226,7 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
         int pos = i - 1;
         if (view != null && pos > -1 && mDataList.size() > pos) {
             VideoItemBean info = mDataList.get(pos);
-            mAdaper.toggle(info);
+            mAdaper.toggle(i);
         }
     }
 }
