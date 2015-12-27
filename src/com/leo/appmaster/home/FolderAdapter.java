@@ -98,6 +98,7 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
                 for (ItemsWrapper wrapper : mDataList) {
                     SelectionInfo info = new SelectionInfo();
                     info.selectedArray = new byte[wrapper.items.size()];
+                    mSelectionInfo.add(info);
                 }
                 notifyDataSetChanged();
                 initGroupIndexArray();
