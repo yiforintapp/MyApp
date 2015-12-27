@@ -228,10 +228,12 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 mTvTitleName.setText(string);
 
 
-                List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
-                CallFilterInfo newInfo = info;
+                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+                BlackListInfo newInfo = new BlackListInfo();
+                newInfo.setNumber(info.getNumber());
+                newInfo.setLocHandlerType(position + 1);
                 list.add(newInfo);
-                mCallManger.addFilterDet(list, true);
+                mCallManger.addBlackList(list, true);
 
                 dialog.dismiss();
             }

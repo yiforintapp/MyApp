@@ -254,9 +254,12 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                     info.setFilterType(3);
                 }
 
-                List<CallFilterInfo> list = new ArrayList<CallFilterInfo>();
-                list.add(info);
-                mCallManger.addFilterDet(list, true);
+                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+                BlackListInfo newInfo = new BlackListInfo();
+                newInfo.setNumber(info.getNumber());
+                newInfo.setLocHandlerType(position + 1);
+                list.add(newInfo);
+                mCallManger.addBlackList(list, true);
 
                 mAdapter.notifyDataSetChanged();
                 dialog.dismiss();

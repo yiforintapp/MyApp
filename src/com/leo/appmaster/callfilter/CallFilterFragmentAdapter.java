@@ -64,6 +64,8 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
             holder.imageView = (ImageView) convertView.findViewById(R.id.iv_icon);
             holder.title = (TextView) convertView.findViewById(R.id.tv_title);
             holder.desc = (TextView) convertView.findViewById(R.id.tv_desc);
+            holder.time = (TextView) convertView.findViewById(R.id.tv_call_time);
+            holder.filternum = (TextView) convertView.findViewById(R.id.tv_call_times);
 
             convertView.setTag(holder);
         } else {
@@ -77,7 +79,14 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         String numberName = info.numberName;
         String number = info.number;
         int filterType = info.filterType;
+        long time = info.getTimeLong();
+        int filternum = info.getFilterCount();
+        if (filternum < 1) {
+            filternum = 1;
+        }
 
+        holder.time.setText(time + "");
+        holder.filternum.setText(filternum + "");
         if (Utilities.isEmpty(numberName) || numberName.equals(number)) {
             if (filterType == 0) {
                 holder.title.setText(number);
@@ -107,6 +116,8 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         ImageView imageView;
         TextView title;
         TextView desc;
+        TextView filternum;
+        TextView time;
     }
 
     public void setData(List<CallFilterInfo> infoList) {
