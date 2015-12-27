@@ -342,30 +342,25 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (!mTabFragment.isTabDismiss()) {
             mPrivacyFragment.setShowColorProgress(true);
         } else {
-            int securityScore = mPrivacyHelper.getSecurityScore();
-            if (securityScore == 100) {
-                startProcess();
-            } else {
-                mPrivacyFragment.startScanningAnim();
-                mScanningFragment = new HomeScanningFragment();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);
-                ft.addToBackStack(null);
-                ft.replace(R.id.pri_pro_content, mScanningFragment);
-                boolean commited = false;
+            mPrivacyFragment.startScanningAnim();
+            mScanningFragment = new HomeScanningFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);
+            ft.addToBackStack(null);
+            ft.replace(R.id.pri_pro_content, mScanningFragment);
+            boolean commited = false;
+            try {
+                ft.commit();
+                commited = true;
+            } catch (Exception e) {
+            }
+            if (!commited) {
                 try {
-                    ft.commit();
-                    commited = true;
+                    ft.commitAllowingStateLoss();
                 } catch (Exception e) {
                 }
-                if (!commited) {
-                    try {
-                        ft.commitAllowingStateLoss();
-                    } catch (Exception e) {
-                    }
-                }
-                mCurrentFragment = mScanningFragment;
             }
+            mCurrentFragment = mScanningFragment;
         }
     }
 
