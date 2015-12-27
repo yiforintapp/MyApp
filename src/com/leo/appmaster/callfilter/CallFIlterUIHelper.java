@@ -106,6 +106,17 @@ public class CallFIlterUIHelper {
         mNotificationManager.notify(1, mBuilder.build());
     }
 
-
+    public LEOAlarmDialog getConfirmAddToBlacklistDialog(Context context, String number, String markedPeople) {
+        LEOAlarmDialog dialog = new LEOAlarmDialog(context);
+        String titleS = context.getResources().getString(R.string.call_filter_confirm_add_to_blacklist);
+        String titleF = String.format(titleS, number);
+        String summaryS = context.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
+        String summaryF = String.format(summaryS, markedPeople);
+        dialog.setTitle(titleF);
+        dialog.setContent(summaryF);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setDialogIconVisibility(false);
+        return dialog;
+    }
 
 }

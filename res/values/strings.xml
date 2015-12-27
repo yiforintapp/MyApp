@@ -867,6 +867,8 @@
 	<string name="call_filter_mark_as_zp">诈骗电话</string>
 	<string name="call_filter_confirm_clear_record">确定清空所有记录吗？</string>
 	<string name="call_filter_ask_add_to_blacklist">监测到您的通话时间"&lt;"5秒，是否将该号码标记并加入黑名单</string>
+	<string name="call_filter_confirm_add_to_blacklist">是否将%1$s加入黑名单</string>
+	<string name="call_filter_confirm_add_to_blacklist_summary">已有%1$s人将该号码加入黑名单</string>
 
     <string name="scan_score">处理+%1$s分</string>
     <string name="scan_app_title">发现%1$s个应用</string>

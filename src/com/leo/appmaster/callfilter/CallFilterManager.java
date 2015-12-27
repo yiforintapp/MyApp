@@ -1,6 +1,8 @@
 package com.leo.appmaster.callfilter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.RemoteException;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
@@ -14,6 +16,7 @@ import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
@@ -102,8 +105,9 @@ public class CallFilterManager {
      * @param state
      * @param iTelephony
      */
-    public void filterCallHandler(String action, String phoneNumber, String state, final ITelephony iTelephony) {
+    public void filterCallHandler(String action, final String phoneNumber, String state, final ITelephony iTelephony) {
         LeoLog.i(TAG, "state:" + state);
+        boolean isShortTime = false;
         int serBlackCt = getSerBlackCount();
         int blackCt = getBlackListCount();
         if (serBlackCt <= 0 && blackCt <= 0) {
@@ -133,7 +137,8 @@ public class CallFilterManager {
                 }
                 //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
                 if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
-                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
+                    isShortTime = true;
+//                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
                 }
             } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
                 mLastOffHookTime = System.currentTimeMillis();
@@ -203,7 +208,7 @@ public class CallFilterManager {
                         mTipToast = CallFilterToast.makeText(mContext, phoneNumber, "已被" + String.valueOf(showValue) + "人拉入", "标记");
                     } else {
                         /*黑名单弹框*/
-                        mTipToast = CallFilterToast.makeText(mContext, "13632840685", "已被" + String.valueOf(showValue) + "人拉入", "黑名单");
+                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, "已被" + String.valueOf(showValue) + "人拉入", "黑名单");
                     }
                     if (mTipToast != null) {
                         mTipToast.show();
@@ -218,14 +223,35 @@ public class CallFilterManager {
                     if (mTipToast != null) {
                         mTipToast.hide();
                         mTipToast = null;
+                        //TODO 这里开始判断条件然后弹出对应的对话框
+                        final LEOAlarmDialog confirmAddToBlacklistDialog = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, phoneNumber, String.valueOf(showValue));
+                        if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
+                            //点击确定后弹选择标记的对话框
+                            confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    confirmAddToBlacklistDialog.dismiss();
+                                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();//TODO
+                                }
+                            });
+                        } else {
+                            //点击确定后直接添加记录
+                            confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //TODO
+                                    
+//                                    mCFCManager.addBlackList(blackList, update);
+                                }
+                            });
+                        }
                     }
-                    //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
-                    if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
-                        CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
-                    }
-                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-                    mLastOffHookTime = System.currentTimeMillis();
-                }
+                } 
+            }
+        } else {
+            //服务器和本地都没有记录，判断时间是不是过短，是则弹出提醒对话框
+            if (isShortTime) {
+                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();//TODO 
             }
         }
 
