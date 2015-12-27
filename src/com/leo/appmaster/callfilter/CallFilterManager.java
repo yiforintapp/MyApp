@@ -18,6 +18,7 @@ import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
@@ -41,7 +42,10 @@ public class CallFilterManager {
      * 拨出电话
      */
     private boolean mIsComingOut = false;
-
+    
+    private boolean mIsOffHook = false;
+    
+    
     /**
      * 是否加载过黑名单
      */
@@ -144,6 +148,7 @@ public class CallFilterManager {
             if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
 
             } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+                int[] filterTip = mCFCManager.isCallFilterTip(phoneNumber);
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
                 if (mTipToast != null) {
                     mTipToast.hide();
@@ -151,13 +156,51 @@ public class CallFilterManager {
                 }
                 //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
                 long durationMax = mCFCManager.getCallDurationMax();
-                if (System.currentTimeMillis() - mLastOffHookTime < durationMax) {
+                if (System.currentTimeMillis() - mLastOffHookTime < durationMax && info == null && serInfo == null) {
                     CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
                     /*恢复默认值*/
                     mCurrentCallTime = -1;
-                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-                    mLastOffHookTime = System.currentTimeMillis();
+                } else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1]) {
+//                  挂断后接听 询问是否家黑名单且展示标记人数
+                  final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
+                  callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                          callHandleDialogWithSummary.dismiss();
+                      }
+                  });
+                } else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1]) {
+                  //挂断后接听 询问是否加入黑名单且展示加入黑名单人数
+                    final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
+                  callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                          callHandleDialogWithSummary.dismiss();
+                      }
+                  });
                 }
+//                else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1]){
+//                    //挂断后接听 询问是否家黑名单且展示标记人数
+//                    MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
+//                    callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                        }
+//                    });
+//                } 
+//                else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1]){
+//                    //挂断后接听 询问是否加入黑名单且展示加入黑名单人数
+//                    MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
+//                    callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                        }
+//                    });
+
+                
+            } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+                mLastOffHookTime = System.currentTimeMillis();
+                mIsOffHook = true;
             }
             return;
         }
@@ -265,20 +308,21 @@ public class CallFilterManager {
                     }
                 }
             }
-        } else {
-            //服务器和本地都没有记录，判断时间是不是过短，是则弹出提醒对话框
-            if (isShortTime) {
-                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();//TODO
-                //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
-                if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
-                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
-                }
-                   /*恢复默认值*/
-                mCurrentCallTime = -1;
-            } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-                mLastOffHookTime = System.currentTimeMillis();
-            }
-        }
+        } 
+//        else {
+//            //服务器和本地都没有记录，判断时间是不是过短，是则弹出提醒对话框
+//            if (isShortTime) {
+//                CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();//TODO
+//                //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
+//                if (System.currentTimeMillis() - mLastOffHookTime < 1000) {
+//                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();
+//                }
+//                   /*恢复默认值*/
+//                mCurrentCallTime = -1;
+//            } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+//                mLastOffHookTime = System.currentTimeMillis();
+//            }
+//        }
     }
 
 
