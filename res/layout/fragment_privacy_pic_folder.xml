@@ -58,6 +58,7 @@
         <com.leo.appmaster.ui.ImageLoadingView
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="@drawable/img_loading_bg"
             android:layout_centerInParent="true" />
 
     </RelativeLayout>

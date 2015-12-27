@@ -994,7 +994,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 }
 
                 boolean isInstall = AppMasterPreference.getInstance(HomeActivity.this).getAdDeskIcon();
-                if (!isInstall) {
+                boolean iswipeInstalled = AppUtil.isInstallPkgName(HomeActivity.this, Constants.ISWIPE_PACKAGE);
+                if (!isInstall && !iswipeInstalled) {
                     Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                     appWallShortIntent.putExtra("from_quickhelper", true);
                     appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mAd);

@@ -3,7 +3,6 @@ package com.leo.appmaster.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,7 +13,6 @@ import com.leo.appmaster.R;
  * Created by Jasper on 2015/12/27.
  */
 public class ImageLoadingView extends View {
-        public static final int FULL_COLOR = Color.parseColor("#ff00ff");
     private LoadingLayer loadingLayer;
     private int padding;
 
@@ -27,12 +25,8 @@ public class ImageLoadingView extends View {
         mPaint = new Paint();
 
         Resources res = context.getResources();
-        mPaint.setAntiAlias(true);
-//        mPaint.setColor(res.getColor(R.color.pp_img_load_bg));
-        mPaint.setColor(FULL_COLOR);
-
         loadingLayer = new LoadingLayer(this);
-//        loadingLayer.setBarColor(res.getColor(R.color.c1));
+        loadingLayer.setBarColor(res.getColor(R.color.c1));
         loadingLayer.setBarStokeWidth(res.getDimensionPixelSize(R.dimen.pp_img_loading_stroke));
     }
 
@@ -47,11 +41,6 @@ public class ImageLoadingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), mPaint);
-//
-        int centerX = loadingLayer.centerX();
-        int centerY = loadingLayer.centerY();
-        canvas.drawCircle(centerX, centerY, getWidth() / 2, mPaint);
         loadingLayer.draw(canvas);
         invalidate();
     }
