@@ -234,7 +234,7 @@ public class HomeScanningController {
 
     private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {
         ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(layout, "scaleY", 1f, 1f);
-        layoutAnim.setDuration(500);
+        layoutAnim.setDuration(800);
         layoutAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -384,7 +384,7 @@ public class HomeScanningController {
     }
 
     private ObjectAnimator getItemAnimation(final LinearLayout layout) {
-        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(this, "scaleX", 1f, 1f);
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(layout, "scaleX", 1f, 1f);
         alphaAnim.setDuration(1000);
         alphaAnim.setRepeatCount(ValueAnimator.INFINITE);
         alphaAnim.addListener(new SimpleAnimatorListener() {
@@ -497,6 +497,13 @@ public class HomeScanningController {
          endAnim(mNewWifiAnim);
          endAnim(mNewLostAnim);
          endAnim(mNewContactAnim);
+         endAnim(mNewAppLayoutAnim);
+         endAnim(mNewPicLayoutAnim);
+         endAnim(mNewVidLayoutAnim);
+         endAnim(mNewInstructLayoutAnim);
+         endAnim(mNewWifiLayoutAnim);
+         endAnim(mNewLostLayoutAnim);
+         endAnim(mNewContactLayoutAnim);
     }
 
     private void endAnim(Animator animator) {

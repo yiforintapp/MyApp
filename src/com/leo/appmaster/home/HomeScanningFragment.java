@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -168,7 +169,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private String mScanAppName;
     private String mAppNotifyText;
-    private LinearLayout mScrollLayout;
+    private RelativeLayout mScrollLayout;
     private LayoutTransition mTransition;
 
     private Handler mHandler = new Handler() {
@@ -227,7 +228,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
         mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
-        mScrollLayout = (LinearLayout) view.findViewById(R.id.scrollView_layout);
+        mScrollLayout = (RelativeLayout) view.findViewById(R.id.scrollView_layout);
 
         mCancelBtn = view.findViewById(R.id.scan_cancel_rv);
         mCancelTv = (TextView) view.findViewById(R.id.scan_cancel_tv);
@@ -778,9 +779,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewAppImg.setImageResource(R.drawable.ic_scan_error);
             mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_title, count));
             mNewAppContent.setText(mScanAppName);
-            if (mAppScore > 0) {
+            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            int score = lm.getIncreaseScore(count);
+            if (score > 0) {
                 mNewAppScore.setText(mActivity.getResources().
-                        getString(R.string.scan_score, mAppScore));
+                        getString(R.string.scan_score, score));
                 mNewAppScore.setVisibility(View.VISIBLE);
             }
         } else {
@@ -798,9 +801,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewPicTitle.setText(mActivity.getResources().getString(R.string.scan_pic_title, count));
             mNewPicContent.setText(mActivity.getResources().
                     getString(R.string.scan_pic_content));
-            if (mPicScore > 0) {
+            PrivacyDataManager pdm = (PrivacyDataManager)
+                    MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+            int score = pdm.getPicShouldScore(count);
+            if (score > 0) {
                 mNewPicScore.setText(mActivity.getResources().
-                        getString(R.string.scan_score, mPicScore));
+                        getString(R.string.scan_score, score));
                 mNewPicScore.setVisibility(View.VISIBLE);
             }
         } else {
@@ -819,9 +825,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewVidTitle.setText(mActivity.getResources().getString(R.string.scan_vid_title, count));
             mNewVidContent.setText(mActivity.getResources().
                     getString(R.string.scan_vid_content));
-            if (mVidScore > 0) {
+            PrivacyDataManager pdm = (PrivacyDataManager)
+                    MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+            int score = pdm.getVidShouldScore(count);
+            if (score > 0) {
                 mNewVidScore.setText(mActivity.getResources().
-                        getString(R.string.scan_score, mVidScore));
+                        getString(R.string.scan_score, score));
                 mNewVidScore.setVisibility(View.VISIBLE);
             }
         } else {
