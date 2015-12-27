@@ -225,26 +225,46 @@ public class CallFilterManager {
                         mTipToast = null;
                         //TODO 这里开始判断条件然后弹出对应的对话框
                         final LEOAlarmDialog confirmAddToBlacklistDialog = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, phoneNumber, String.valueOf(showValue));
-                        if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
-                            //点击确定后弹选择标记的对话框
-                            confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    confirmAddToBlacklistDialog.dismiss();
-                                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();//TODO
-                                }
-                            });
-                        } else {
-                            //点击确定后直接添加记录
-                            confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //TODO
-                                    
-//                                    mCFCManager.addBlackList(blackList, update);
-                                }
-                            });
-                        }
+                        confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO  插入数据 info类的各个属性还没设置完全
+                                List<BlackListInfo> records = new ArrayList<BlackListInfo>();
+                                BlackListInfo info = new BlackListInfo();
+                                info.setNumber(PrivacyContactUtils.simpleFromateNumber(phoneNumber));
+                                info.setReadState(CallFilterConstants.READ_NO);
+                                info.setMarkerType(0);
+                                records.add(info);
+                                mCFCManager.addBlackList(records, false);
+                                confirmAddToBlacklistDialog.dismiss();
+                            }
+                        });
+//                        if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
+//                            //点击确定后弹选择标记的对话框
+//                            confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    confirmAddToBlacklistDialog.dismiss();
+//                                    CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, AppMasterApplication.getInstance(), true, 0).show();//TODO
+//                                }
+//                            });
+//                        } else {
+//                            //点击确定后直接添加记录
+//                            confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    //TODO  插入数据 info类的各个属性还没设置完全
+//                                    List<BlackListInfo> records = new ArrayList<BlackListInfo>();
+//                                    BlackListInfo info = new BlackListInfo();
+//                                    info.setNumber(PrivacyContactUtils.simpleFromateNumber(phoneNumber));
+//                                    info.setReadState(CallFilterConstants.READ_NO);
+//                                    info.setMarkerType(0);
+//                                    records.add(info);
+//                                    mCFCManager.addBlackList(records, false);
+//                                    confirmAddToBlacklistDialog.dismiss();
+//                                }
+//                            });
+//                        }
                     }
                 } 
             }
