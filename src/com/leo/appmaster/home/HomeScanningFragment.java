@@ -589,6 +589,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.photoItems.size());
 
             mPhotoList.inDifferentDir = DataUtils.differentDirPic(photoItems);
+            mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
 //            com.leo.tools.animator.ObjectAnimator picAnim = mController.getNewPicAnim();
 //            if (picAnim != null) {
 //                picAnim.end();
