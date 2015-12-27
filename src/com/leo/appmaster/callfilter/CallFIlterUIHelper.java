@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
+import android.view.WindowManager;
 
 public class CallFIlterUIHelper {
     //    private static LEOWithSIngleCheckboxDialog mConfirmRemoveFromBlacklistDialog;
@@ -53,6 +54,7 @@ public class CallFIlterUIHelper {
                                                                          boolean isContentShow, int filterType) {
         MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
         dialog.setTitle(title);
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.setContentVisible(isContentShow);
         dialog.setContent(context.getResources().getString(R.string.call_filter_ask_add_to_blacklist));
         String[] itemContent = {context.getResources().getString(R.string.call_filter_mark_as_sr),
@@ -132,6 +134,7 @@ public class CallFIlterUIHelper {
         String summaryS = context.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
         String summaryF = String.format(summaryS, markedPeople);
         dialog.setTitle(titleF);
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.setContent(summaryF);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setDialogIconVisibility(false);
