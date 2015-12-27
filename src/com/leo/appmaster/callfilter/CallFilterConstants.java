@@ -291,5 +291,10 @@ public class CallFilterConstants {
      */
     public static final int NOTI_ID_STRA = 20140905;
 
+    /**
+     * 连续两次触发 Call Receiver 时间间隔
+     */
+    public static final long CALL_RECEIV_DURAT = 200;
+
 
 }

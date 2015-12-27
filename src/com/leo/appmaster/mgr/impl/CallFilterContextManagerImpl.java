@@ -917,6 +917,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public int[] isCallFilterTip(String number) {
+        if(TextUtils.isEmpty(number)){
+            return null;
+        }
         boolean isUse = CallFilterUtils.isNumberUsePrivacy(number);
         if (isUse) {
             return null;
