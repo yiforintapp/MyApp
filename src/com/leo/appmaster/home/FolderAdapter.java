@@ -85,23 +85,31 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
     public void setList(final List<T> dataList) {
         if (dataList == null || dataList.isEmpty()) return;
 
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                List<ItemsWrapper> wrapperList = format(dataList);
+                mSrcList.clear();
+                mSrcList.addAll(dataList);
+                setListInner(wrapperList);
+            }
+        });
+    }
+
+    private void setListInner(final List<ItemsWrapper> dataList) {
         ThreadManager.getUiThreadHandler().post(new Runnable() {
             @Override
             public void run() {
-                mSrcList.clear();
                 mDataList.clear();
-
-                mSrcList.addAll(dataList);
-                mDataList.addAll(format(dataList));
-
+                mDataList.addAll(dataList);
                 mSelectionInfo = new ArrayList<SelectionInfo>(mDataList.size());
                 for (ItemsWrapper wrapper : mDataList) {
                     SelectionInfo info = new SelectionInfo();
                     info.selectedArray = new byte[wrapper.items.size()];
                     mSelectionInfo.add(info);
                 }
-                notifyDataSetChanged();
                 initGroupIndexArray();
+                notifyDataSetChanged();
             }
         });
     }

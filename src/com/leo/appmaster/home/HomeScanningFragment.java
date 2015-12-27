@@ -446,7 +446,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.scan_process_tv:
                 mActivity.startProcess();
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "instant");
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "scan", "instant");
                 break;
         }
     }

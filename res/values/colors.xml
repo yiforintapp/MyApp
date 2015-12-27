@@ -172,4 +172,5 @@
     <color name="cgy_40">#66cbcbcb</color>
 
     <color name="contact_no_select">#cbcbcb</color>
+    <color name="pp_img_load_bg">#4d000000</color>
 </resources>

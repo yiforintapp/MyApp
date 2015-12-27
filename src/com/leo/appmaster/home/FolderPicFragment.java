@@ -47,6 +47,9 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mProcessTv.setText(R.string.pri_pro_hide_pic);
+
+        View emptyView = view.findViewById(R.id.pic_loading_rl);
+        mListView.setEmptyView(emptyView);
     }
 
     @Override

@@ -73,6 +73,9 @@ public class LoadingLayer extends AnimLayer {
 //        mHideIcon.setBounds(iconL, iconTop, iconL + iconW, iconTop + iconH);
 
 
+        if (mLoadingSize > iconW) {
+            mLoadingSize = iconW;
+        }
         int loadingL = (iconW - mLoadingSize) / 2;
         int loadingT = (iconH - mLoadingSize) / 2;
 
@@ -84,6 +87,15 @@ public class LoadingLayer extends AnimLayer {
 
     public void setBarColor(int colorId) {
         mPaint.setColor(colorId);
+    }
+
+    public void setBarStokeWidth(int stokeWidth) {
+        mPaint.setStrokeWidth(stokeWidth);
+    }
+
+    public void setLoadingSize(int size) {
+        mLoadingSize = size;
+        onSizeChanged();
     }
 
     @Override

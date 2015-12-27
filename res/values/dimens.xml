@@ -343,4 +343,6 @@
 
     <!-- 3.2 -->
     <dimen name="pp_shield_x_padding">10dp</dimen>
+    <dimen name="pp_img_loading_padding">9dp</dimen>
+    <dimen name="pp_img_loading_stroke">4dp</dimen>
 </resources>
