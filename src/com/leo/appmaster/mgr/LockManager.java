@@ -169,6 +169,13 @@ public abstract class LockManager extends Manager {
      */
     public abstract int lockAddedApp(List<String> pkgList);
 
+    /**
+     * 根据新增应用个数，获取处理后的得分
+     * @param appNum
+     * @return
+     */
+    public abstract int getIncreaseScore(int appNum);
+
     private static final String ACTION_FIRST_USE_LOCK_MODE = "com.leo.appmaster.ACTION_FIRST_USE_LOCK_MODE";
     private static final String ACTION_LOCK_MODE_CHANGE = "com.leo.appmaster.ACTION_LOCK_MODE_CHANGE";
     private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";

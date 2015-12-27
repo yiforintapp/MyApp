@@ -1389,6 +1389,15 @@ public class LockManagerImpl extends LockManager {
     }
 
     @Override
+    public int getIncreaseScore(int appNum) {
+        int oldScore = mCachedScore < 0 ? 0 : mCachedScore;
+
+        int addedScore = MAX_SCORE - oldScore;
+
+        return addedScore;
+    }
+
+    @Override
     public int ignore() {
         int oldScore = mCachedScore < 0 ? 0 : mCachedScore;
 
