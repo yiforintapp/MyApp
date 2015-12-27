@@ -59,6 +59,16 @@ public class CallFilterManager {
 
     private boolean mIsReceiver = false;
 
+    private boolean mReceiverHanl = false;
+
+    public boolean isReceiverHanl() {
+        return mReceiverHanl;
+    }
+
+    public void setReceiverHanl(boolean receiverHanl) {
+        this.mReceiverHanl = receiverHanl;
+    }
+
     public boolean isReceiver() {
         return mIsReceiver;
     }
@@ -259,7 +269,7 @@ public class CallFilterManager {
                 /*存在于隐私联系人中*/
                 return;
             }
-                    /*判断是否满足弹框条件*/
+            /*判断是否满足弹框条件*/
             int isTip = filterTip[0];
             int tipType = filterTip[1];
             int showValue = filterTip[2];

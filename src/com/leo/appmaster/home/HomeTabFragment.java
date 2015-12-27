@@ -1,6 +1,8 @@
 package com.leo.appmaster.home;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackDownLoadFetchJob;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.schedule.DownBlackFileFetchJob;
@@ -334,7 +337,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
                     startActivity(mIntent);
                     if (DBG) {
-                        CallFilterUtils.queryData(getActivity());
+//                        CallFilterUtils.queryData(getActivity());
                     }
                     break;
                 case R.id.home_lost_tab:

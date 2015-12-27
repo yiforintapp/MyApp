@@ -158,7 +158,8 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             /**
              * 骚扰拦截处理
              */
-            CallFilterManager.getInstance(mContext).filterCallHandler(action, phoneNumber, state, mITelephony);
+            CallFilterManager cfm = CallFilterManager.getInstance(mContext);
+            cfm.filterCallHandler(action, phoneNumber, state, mITelephony);
             /**
              * 隐私联系人处理
              */
