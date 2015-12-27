@@ -164,7 +164,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
                     info.setTimeLong(System.currentTimeMillis());
                     list.add(info);
                 }
-                mCallManger.addFilterDet(list,false);
+                mCallManger.addFilterDet(list, false);
                 break;
         }
     }
@@ -194,6 +194,10 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         if (mCallFilterFragment != null) {
             mCallFilterFragment.showEmpty();
         }
+    }
+
+    public void moveToFilterFragment() {
+        mViewPager.setCurrentItem(1);
     }
 
 }

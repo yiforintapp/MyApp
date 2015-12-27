@@ -6,6 +6,8 @@ import java.util.List;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +18,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.privacycontact.ContactBean;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -34,6 +39,20 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
     private CallFilterInfo info;
     private MyAdapter mAdapter;
     private View mClearFilter;
+    private boolean isSysContact;
+    private List<ContactBean> mSysContacts;
+    private boolean isFirstIn = true;
+
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case CallFilterConstants.FILTER_INFO_SYS_CONTACT:
+                    processUI();
+                    break;
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +64,8 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
     }
 
     private void processUI() {
-        String numberName = info.getNumberName();
-        String number = info.getNumber();
         int mark = info.filterType;
-        if (Utilities.isEmpty(numberName) || numberName.equals(number)) {
+        if (!isSysContact) {
             if (mark == 0) {
                 mTvTitleName.setVisibility(View.GONE);
             } else {
@@ -70,6 +87,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
     private void handleIntent() {
         Intent intent = getIntent();
         info = (CallFilterInfo) intent.getExtras().get("data");
+        isSysContact = intent.getBooleanExtra("isSysContact", false);
     }
 
     private void initUI() {
@@ -97,6 +115,31 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
     protected void onResume() {
         super.onResume();
         fillData();
+        if (!isFirstIn) {
+            loadSysContact();
+        }
+        isFirstIn = false;
+    }
+
+    private void loadSysContact() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                mSysContacts = PrivacyContactUtils.
+                        getSysContact(CallFilterRecordActivity.this, null, null, true);
+                isSysContact = checkIsSysContact(info.getNumber());
+                handler.sendEmptyMessage(CallFilterConstants.FILTER_INFO_SYS_CONTACT);
+            }
+        });
+    }
+
+    private boolean checkIsSysContact(String number) {
+        for (int i = 0; i < mSysContacts.size(); i++) {
+            if (mSysContacts.get(i).getContactNumber().equals(number)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void fillData() {
@@ -194,23 +237,6 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
             }
         });
         dialog.show();
-    }
-
-    private int getPositionFromTextname() {
-        int position = 0;
-        if (mTvTitleName != null) {
-            String text = (String) mTvTitleName.getText();
-            if (text.equals(CallFilterRecordActivity.this.
-                    getString(R.string.filter_number_type_zhapian))) {
-                position = 2;
-            } else if (text.equals(CallFilterRecordActivity.this.
-                    getString(R.string.filter_number_type_ad))) {
-                position = 1;
-            } else {
-                position = 0;
-            }
-        }
-        return position;
     }
 
 

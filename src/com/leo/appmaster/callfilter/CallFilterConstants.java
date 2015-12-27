@@ -18,6 +18,7 @@ public class CallFilterConstants {
 
     public final static int BLACK_LIST_LOAD_DONE = 01;
     public final static int CALL_FILTER_LIST_LOAD_DONE = 102;
+    public final static int FILTER_INFO_SYS_CONTACT = 33;
     public final static String ADAPTER_FLAG_BLACK_LIST = "black_list_adapter";
     public final static String ADAPTER_FLAG_CALL_FILTER = "call_filter_adapter";
     /*降序*/

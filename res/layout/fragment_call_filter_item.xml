@@ -90,7 +90,6 @@
                     android:layout_marginLeft="3dp"
                     android:layout_toRightOf="@id/tv_call_times"
                     android:src="@drawable/call_filter_fragment" />
-
             </RelativeLayout>
 
 

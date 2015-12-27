@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,6 +15,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.privacycontact.ContactBean;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
@@ -33,22 +36,28 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     private CallFilterFragmentAdapter mAdapter;
     private List<CallFilterInfo> mFilterList;
     private boolean isFristIn = true;
+    private List<ContactBean> mSysContacts;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case CallFilterConstants.CALL_FILTER_LIST_LOAD_DONE:
-                    loadDone();
+                    boolean isFistLoad = (Boolean) msg.obj;
+                    loadDone(isFistLoad);
                     break;
             }
         }
     };
 
-    private void loadDone() {
+    private void loadDone(boolean isFirstLoadDone) {
         mProgressBar.setVisibility(View.GONE);
         if (mFilterList.size() < 1) {
             showEmpty();
         } else {
+            if (isFirstLoadDone) {
+                CallFilterMainActivity activity = (CallFilterMainActivity) mActivity;
+                activity.moveToFilterFragment();
+            }
             mNothingToShowView.setVisibility(View.GONE);
             mCallListView.setVisibility(View.VISIBLE);
             mAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_CALL_FILTER);
@@ -81,16 +90,24 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         mCallListView.setOnItemLongClickListener(this);
         mNothingToShowView = findViewById(R.id.content_show_nothing);
 
-        loadData();
+        loadData(true);
     }
 
-    private void loadData() {
+    private void loadData(final boolean isFristLoad) {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 mFilterList = mCallManger.getCallFilterGrList();
+
+                mSysContacts = PrivacyContactUtils.getSysContact(mActivity, null, null, true);
+
                 //load done
-                handler.sendEmptyMessage(CallFilterConstants.CALL_FILTER_LIST_LOAD_DONE);
+                Message msg = Message.obtain();
+                msg.obj = isFristLoad;
+                msg.what = CallFilterConstants.CALL_FILTER_LIST_LOAD_DONE;
+                handler.sendMessage(msg);
+
+
             }
         });
     }
@@ -106,7 +123,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         super.onResume();
         LeoLog.d("testResume", "Dialog resume");
         if (!isFristIn) {
-            loadData();
+            loadData(false);
         }
         isFristIn = false;
     }
@@ -148,6 +165,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", mFilterList.get(i));
             intent.putExtras(bundle);
+            intent.putExtra("isSysContact", checkIsSysContact(mFilterList.get(i).getNumber()));
             startActivity(intent);
 
         } catch (Exception e) {
@@ -161,9 +179,8 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             CallFilterInfo info = mFilterList.get(i);
 
             boolean isNeedMarkItem = true;
-            if (!Utilities.isEmpty(info.getNumberName()) &&
-                    (info.getNumberName().equals(info.getNumber()))) {
-                isNeedMarkItem = false;
+            if (mSysContacts.size() > 0) {
+                isNeedMarkItem = !checkIsSysContact(info.getNumber());
             }
 
             final LEOChoiceDialog dialog = CallFIlterUIHelper.getInstance().
@@ -189,6 +206,15 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             });
             dialog.show();
 
+        }
+        return false;
+    }
+
+    private boolean checkIsSysContact(String number) {
+        for (int i = 0; i < mSysContacts.size(); i++) {
+            if (mSysContacts.get(i).getContactNumber().equals(number)) {
+                return true;
+            }
         }
         return false;
     }
