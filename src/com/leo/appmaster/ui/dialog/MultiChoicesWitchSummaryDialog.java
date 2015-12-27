@@ -46,6 +46,10 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
 
         mAdapter.notifyDataSetChanged();
     }
+    
+    public int getNowItemPosition() {
+        return nowItemPosition;
+    }
 
     public interface OnDiaogClickListener {
         public void onClick(int which);
