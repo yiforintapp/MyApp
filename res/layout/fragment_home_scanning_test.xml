@@ -68,9 +68,15 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="750dp"
+                android:layout_height="450dp"
                 android:background="@color/white"
                 android:layout_below="@+id/empty_header"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_below="@+id/empty_header">
 
             <!-- Advertise -->
             <RelativeLayout
@@ -86,7 +92,6 @@
                 android:paddingRight="9dp"
                 android:paddingTop="9dp"
                 android:scaleY="0.0"
-                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -764,8 +769,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/scan_new_instruct_layout"
                 android:layout_marginBottom="18dp"
+                android:layout_below="@+id/scan_new_instruct_layout"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -851,9 +856,9 @@
                         android:layout_marginTop="10dp"/>
                 </RelativeLayout>
             </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
