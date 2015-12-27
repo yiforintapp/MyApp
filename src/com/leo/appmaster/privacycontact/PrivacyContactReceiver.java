@@ -58,6 +58,9 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
 
+    public PrivacyContactReceiver() {
+    }
+
     public PrivacyContactReceiver(ITelephony itelephony, AudioManager audioManager) {
         this.mITelephony = itelephony;
         this.mAudioManager = audioManager;
@@ -151,19 +154,18 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             final String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             PrivacyContactManager.getInstance(mContext).testValue = true;
-            CallFilterContextManager mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0 /*隐私联系人*/
-                    && mCFCManager.getBlackListCount() == 0 /*黑名单*/) {
-                return;
-            }
-
+            CallFilterManager cm = CallFilterManager.getInstance(mContext);
             /**
              * 骚扰拦截处理
              */
-            CallFilterManager.getInstance(mContext).filterCallHandler(action, phoneNumber, state);
+            CallFilterManager.getInstance(mContext).filterCallHandler(action, phoneNumber, state, mITelephony);
             /**
              * 隐私联系人处理
              */
+            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+                return;
+            }
+
             // 获取当前时间
             if (mSimpleDateFormate == null) {
                 mSimpleDateFormate = new SimpleDateFormat(Constants.PATTERN_DATE);
@@ -198,19 +200,7 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                             mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                         }
                     }
-                } else {
-                    /*不是隐私联系人，判断是否黑名单，是则挂断*/
-                    int[] callFilterTip = mCFCManager.isCallFilterTip(phoneNumber);
-                    if (callFilterTip[0] == 1) {
-                        try {
-                            mITelephony.endCall();
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                        CallFIlterUIHelper.getInstance().showReceiveCallNotification();
-                    }
                 }
-
             }
         } else if (PrivacyContactUtils.SENT_SMS_ACTION.equals(action)) {
             switch (getResultCode()) {

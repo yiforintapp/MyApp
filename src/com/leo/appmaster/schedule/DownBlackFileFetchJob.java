@@ -55,16 +55,7 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
             DownBlackFileFetchJob job = new DownBlackFileFetchJob();
             FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
-
-            StringBuilder sbName = new StringBuilder();
-            String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
-            sbName.append(countryId);
-            sbName.append(CallFilterConstants.GZIP);
-
-            StringBuilder sb = new StringBuilder();
-            sb.append(CallFilterUtils.getBlackPath());
-            sb.append(sbName.toString());
-            String filePath = sb.toString();
+            String filePath = getBlackFilePath();
             HttpRequestAgent.getInstance(context).downloadBlackList(filePath, listener, listener);
         }
     }
@@ -72,5 +63,17 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
     @Override
     protected int getPeriod() {
         return FETCH_PERIOD;
+    }
+
+    public static  String getBlackFilePath() {
+        StringBuilder sbName = new StringBuilder();
+        String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
+        sbName.append(countryId);
+        sbName.append(CallFilterConstants.GZIP);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterUtils.getBlackPath());
+        sb.append(sbName.toString());
+        return sb.toString();
     }
 }

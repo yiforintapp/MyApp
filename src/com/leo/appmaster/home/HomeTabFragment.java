@@ -22,8 +22,10 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
+import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.LockManager;
@@ -342,13 +344,16 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (DBG) {
                         int[] pix = AppUtil.getScreenPix(getActivity());
                         LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//                        CallFilterUtils.addData();
-                        ThreadManager.executeOnAsyncThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                DownBlackFileFetchJob.startWork();
-                            }
-                        });
+                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                        pm.setFilterUserNumber(50000);
+                        pm.setFilterTipFroUser(3000);
+                        BlackListInfo info = new BlackListInfo();
+                        info.setNumber("18790729990");
+                        info.setAddBlackNumber(2258);
+                        info.setMarkerType(2);
+                        info.setMarkerNumber(30000);
+                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
+                        cm.addFilterFroParse(info);
 
                     }
                     break;

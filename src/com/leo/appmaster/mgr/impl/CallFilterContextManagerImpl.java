@@ -15,6 +15,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
+import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.StrangerInfo;
 import com.leo.appmaster.db.AppMasterDBHelper;
@@ -920,34 +921,40 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (isUse) {
             return null;
         }
-        int[] type = new int[2];
+        CallFilterManager cm = CallFilterManager.getInstance(mContext);
+        boolean isTip = cm.isIsCallFilterTip();
+        cm.setIsCallFilterTip(true);
+        int[] type = new int[3];
+//        if (!isTip) {
         type[0] = -1;
         int addBlackCount = 0;
         int markCount = 0;
-        List<BlackListInfo> blacks = getSerBlackListFroNum(number);
-        if (blacks != null && blacks.size() > 0) {
-            for (BlackListInfo info : blacks) {
-                addBlackCount = info.getAddBlackNumber();
-                markCount = info.getMarkerNumber();
-                break;
-            }
+        BlackListInfo blacks = cm.getSerBlackForNum(number);
+        if (blacks != null) {
+            addBlackCount = blacks.getAddBlackNumber();
+            markCount = blacks.getMarkerNumber();
+        } else {
+            return null;
         }
 
         int filUser = getFilterUserNumber();
         int filUserPar = getFilterTipFroUser();
         int blackTip = getSerBlackTipCount();
         int markerTip = getSerMarkTipCount();
+        int showPar = getBlackMarkTipParam();
         type[1] = -1;
         if ((filUser >= filUserPar) && (blackTip > 0 || markerTip > 0)) {
             if (markCount >= markerTip) {
                 //优先显示标记
                 type[1] = CallFilterConstants.DIALOG_TYPE[0];
                 type[0] = CallFilterConstants.IS_TIP_DIA[1];
+                type[2] = markCount * showPar;
             } else {
                 if (addBlackCount >= blackTip) {
                     //显示黑名单
                     type[1] = CallFilterConstants.DIALOG_TYPE[1];
                     type[0] = CallFilterConstants.IS_TIP_DIA[1];
+                    type[2] = addBlackCount * showPar;
                 } else {
                     type[0] = CallFilterConstants.IS_TIP_DIA[0];
                 }
@@ -955,7 +962,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         } else {
             type[0] = CallFilterConstants.IS_TIP_DIA[0];
         }
-
+        cm.setIsCallFilterTip(false);
+//        }
         return type;
     }
 
@@ -1052,17 +1060,26 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             try {
                 String table = CallFilterConstants.BLACK_LIST_TAB;
                 String colum = CallFilterConstants.BLACK_PHONE_NUMBER;
-                boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum}, number);
-                if (isKeyExist) {
-                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                    String where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
-                    String[] selectArgs = new String[]{String.valueOf("%" + formateNumber)};
-                    cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
+                String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
+                Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum, removeColum}, number);
+                if (cur != null && cur.getCount() > 0) {
+                    while (cur.moveToNext()) {
+                        int remove = cur.getInt(cur.getColumnIndex(removeColum));
+                        if (CallFilterConstants.REMOVE == remove) {
+                            value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
+                        }
+                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                        String where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
+                        String[] selectArgs = new String[]{String.valueOf("%" + formateNumber)};
+                        cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
+                    }
                 } else {
                     value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
                     cr.insert(uri, value);
                 }
-
+                if (cur != null) {
+                    cur.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

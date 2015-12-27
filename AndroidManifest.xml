@@ -650,7 +650,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".privacycontact.PrivacyContactReceiver"
+            android:name="com.leo.appmaster.privacycontact.PrivacyContactReceiver"
             android:exported="true">
             <intent-filter android:priority="2147483647">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

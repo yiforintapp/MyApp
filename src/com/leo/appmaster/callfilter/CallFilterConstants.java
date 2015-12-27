@@ -235,14 +235,15 @@ public class CallFilterConstants {
     /*黑名单已上传*/
     public static final int UPLOAD = 1;
 
-    /*记录已删除*/
-    public static final int REMOVE_NO = 0;
+
     /*记录未删除*/
+    public static final int REMOVE_NO = 0;
+    /*记录已删除*/
     public static final int REMOVE = 1;
 
-    /*记录读*/
-    public static final int READ_NO = 0;
     /*记录未读*/
+    public static final int READ_NO = 0;
+    /*记录读*/
     public static final int READ = 1;
 
 

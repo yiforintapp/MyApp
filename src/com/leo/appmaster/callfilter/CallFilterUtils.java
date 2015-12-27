@@ -17,12 +17,14 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.AppMasterDBHelper;
+import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
+import com.leo.appmaster.schedule.DownBlackFileFetchJob;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -499,7 +501,6 @@ public class CallFilterUtils {
             return;
         }
         try {
-            List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
             BufferedReader br = new BufferedReader(new FileReader(file));
             String temp = null;
             StringBuffer sb = new StringBuffer();
@@ -519,21 +520,38 @@ public class CallFilterUtils {
                 LeoLog.i("DownBlackFileFetchJob", "markType-" + markType);
                 LeoLog.i("DownBlackFileFetchJob", "markCount-" + markCount);
 
-                CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 BlackListInfo info = new BlackListInfo();
                 info.setNumber(number);
                 info.setAddBlackNumber(blackCount);
                 info.setMarkerType(markType);
                 info.setMarkerNumber(markCount);
-                infos.add(info);
-                pm.addSerBlackList(infos);
-
+                CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
+                cm.addFilterFroParse(info);
                 temp = br.readLine();
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            /*删除文件*/
+            String filePaht = DownBlackFileFetchJob.getBlackFilePath();
+            deleteFile(filePaht);
         }
     }
 
+    /*删除文件*/
+    public static boolean deleteFile(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            return false;
+        }
+        try {
+            file.delete();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
 
 }

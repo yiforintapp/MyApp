@@ -207,7 +207,7 @@ public abstract class CallFilterContextManager extends Manager {
     /**
      * int[0]指定号码是否满足？：0,不满足;1,满足
      * int[1]哪个弹框类型？：0,标记;1,黑名单
-     *
+     *int[2]该弹框人数
      * @param number
      * @return
      */
