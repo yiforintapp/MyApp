@@ -220,7 +220,6 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     }
 
     private void showChoiseDialog(final int i) {
-        final CallFilterInfo info = mFilterList.get(i);
         String title;
         if (Utilities.isEmpty(mFilterList.get(i).getNumberName())) {
             title = mFilterList.get(i).getNumber();

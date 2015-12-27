@@ -1,5 +1,6 @@
 package com.leo.appmaster.callfilter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -296,7 +297,11 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
             } else {
                 holder = (ItemHolder) convertView.getTag();
             }
-            holder.tv.setText(mRecordTime.get(position).getTimeLong() + "");
+
+            long time = mRecordTime.get(position).getTimeLong();
+            SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+            holder.tv.setText(finalFormat.format(time));
+
             return convertView;
         }
     }
