@@ -313,15 +313,13 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 convertView = relativelayout.inflate(R.layout.activity_add_strange_call_log_item,
                         null);
                 vh.name = (TextView) convertView.findViewById(R.id.add_from_call_log_item_nameTV);
-
                 vh.addnum = (TextView) convertView
                         .findViewById(R.id.add_from_call_log_item_dateTV);
 
 //                vh.date = (TextView) convertView
-//                        .findViewById(R.id.tv_call_time);
-//
+//                        .findViewById(R.id.str_time);
 //                vh.callduration = (TextView) convertView
-//                        .findViewById(R.id.tv_call_total_time);
+//                        .findViewById(R.id.str_duration);
 
                 vh.checkImage = (ImageView) convertView
                         .findViewById(R.id.calllog_item_check_typeIV);
@@ -338,7 +336,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             }
 
 //            vh.date.setText(mb.getClallLogDate());
-
+//            vh.callduration.setText(mb.getCallLogDuraction() + "");
 
             if (mb.isCheck()) {
                 vh.checkImage.setImageResource(R.drawable.select);

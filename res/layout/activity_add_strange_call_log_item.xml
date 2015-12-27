@@ -21,7 +21,7 @@
             android:layout_width="@dimen/privacy_contact_icon_size"
             android:layout_height="@dimen/privacy_contact_icon_size"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="6dp"
+            android:layout_marginLeft="5dp"
             android:src="@drawable/default_user_avatar" />
 
         <LinearLayout
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/contactIV"
             android:orientation="vertical">
 
@@ -39,17 +39,17 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="理奥网络"
-                android:textColor="#333333"
+                android:textColor="@color/c2"
                 android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/add_from_call_log_item_dateTV"
                 android:layout_width="@dimen/app_manager_backup_item_text_width"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/privacy_contact_list_item_layout_marginTop"
+                android:layout_marginTop="10dp"
                 android:singleLine="true"
                 android:text="2312 add to Black List"
-                android:textColor="#9b9b9b"
+                android:textColor="@color/c4"
                 android:textSize="13dp" />
         </LinearLayout>
 

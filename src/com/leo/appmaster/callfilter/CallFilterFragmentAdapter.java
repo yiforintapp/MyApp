@@ -15,6 +15,8 @@ import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import java.util.List;
  * Created by qili on 15-10-10.
  */
 public class CallFilterFragmentAdapter extends BaseAdapter {
+    private static final long DAY_COUNT = 86400000;
     private List<CallFilterInfo> mList;
     private String mFlag;
     private Context mContext;
@@ -75,6 +78,7 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         RippleView view = (RippleView) convertView;
         view.setNeedLongClick(true);
 
+
         CallFilterInfo info = mList.get(i);
         String numberName = info.numberName;
         String number = info.number;
@@ -85,8 +89,10 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
             filternum = 1;
         }
 
-        holder.time.setText(time + "");
+
+        holder.time.setText(getTime(time));
         holder.filternum.setText(filternum + "");
+
         if (Utilities.isEmpty(numberName) || numberName.equals(number)) {
             if (filterType == 0) {
                 holder.title.setText(number);
@@ -109,6 +115,38 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         }
 
         return convertView;
+    }
+
+    private String getTime(long time) {
+        boolean showDay = false;
+        boolean showYear = false;
+        SimpleDateFormat finalFormat;
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        String thatYear = yearFormat.format(time);
+        String toYear = yearFormat.format(System.currentTimeMillis());
+        if (!thatYear.equals(toYear)) {
+            showYear = true;
+        }
+
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+        String thatDay = dayFormat.format(time);
+        String toDay = dayFormat.format(System.currentTimeMillis());
+        if (!thatDay.equals(toDay)) {
+            showDay = true;
+        }
+
+
+        if (showYear) {
+            finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+        } else if (showDay) {
+            finalFormat = new SimpleDateFormat("MM-dd hh:mm a");
+        } else {
+            finalFormat = new SimpleDateFormat("hh:mm a");
+        }
+
+        String finalString = finalFormat.format(time);
+
+        return finalString;
     }
 
 
