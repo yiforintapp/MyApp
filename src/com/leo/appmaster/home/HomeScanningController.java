@@ -5,6 +5,8 @@ import android.widget.LinearLayout;
 
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.ui.ScanningImageView;
 import com.leo.appmaster.ui.ScanningTextView;
 import com.leo.appmaster.utils.LeoLog;
@@ -233,7 +235,7 @@ public class HomeScanningController {
     }
 
     private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {
-        ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(layout, "scaleY", 1f, 1f);
+        ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(this, "scaleY", 1f, 1f);
         layoutAnim.setDuration(800);
         layoutAnim.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -251,8 +253,15 @@ public class HomeScanningController {
         LeoLog.d(TAG, "onAnimationStart...");
         if (animation == mNewContactLayoutAnim) {
             mFragment.OnItemAnimationStart(mNewContactLayout);
-            mNewInstructLayoutAnim = getLayoutItemAnim(mNewInstructLayout);
-            mNewInstructLayoutAnim.start();
+            IntrudeSecurityManager manager = (IntrudeSecurityManager)
+                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+            if (!manager.getIsIntruderSecurityAvailable()) {
+                mNewWifiLayoutAnim = getLayoutItemAnim(mNewWifiLayout);
+                mNewWifiLayoutAnim.start();
+            } else {
+                mNewInstructLayoutAnim = getLayoutItemAnim(mNewInstructLayout);
+                mNewInstructLayoutAnim.start();
+            }
             LeoLog.e(TAG, "mNewContactAnim start");
         } else if (animation == mNewInstructLayoutAnim) {
             mFragment.OnItemAnimationStart(mNewInstructLayout);
@@ -384,7 +393,7 @@ public class HomeScanningController {
     }
 
     private ObjectAnimator getItemAnimation(final LinearLayout layout) {
-        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(layout, "scaleX", 1f, 1f);
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(this, "scaleX", 1f, 1f);
         alphaAnim.setDuration(1000);
         alphaAnim.setRepeatCount(ValueAnimator.INFINITE);
         alphaAnim.addListener(new SimpleAnimatorListener() {
@@ -440,11 +449,22 @@ public class HomeScanningController {
         if (animation == mNewContactAnim) {
             mFragment.OnItemAnimationEnd(mNewContactLayout);
 
-            mNewInstructAnim = getItemAnimation(mNewInstructLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_INS, currPct, NEW_PER_INS);
-            LeoLog.e(TAG, "mNewContactAnim end");
-            mNewInstructAnim.start();
+            IntrudeSecurityManager manager = (IntrudeSecurityManager)
+                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+            if (!manager.getIsIntruderSecurityAvailable()) {
+                mNewWifiAnim = getItemAnimation(mNewWifiLayout);
+                int currPct = mActivity.getScanningPercent();
+                mActivity.scanningFromPercent(NEW_UP_LIMIT_WIFI, currPct, NEW_PER_WIFI);
+                LeoLog.e(TAG, "mNewInstructAnim end");
+                mNewWifiAnim.start();
+            } else {
+                mNewInstructAnim = getItemAnimation(mNewInstructLayout);
+                int currPct = mActivity.getScanningPercent();
+                mActivity.scanningFromPercent(NEW_UP_LIMIT_INS, currPct, NEW_PER_INS);
+                LeoLog.e(TAG, "mNewContactAnim end");
+                mNewInstructAnim.start();
+            }
+
         } else if (animation == mNewInstructAnim) {
             mFragment.OnItemAnimationEnd(mNewInstructLayout);
 

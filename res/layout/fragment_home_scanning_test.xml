@@ -72,11 +72,6 @@
                 android:background="@color/white"
                 android:layout_below="@+id/empty_header"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_below="@+id/empty_header">
 
             <!-- Advertise -->
             <RelativeLayout
@@ -92,6 +87,7 @@
                 android:paddingRight="9dp"
                 android:paddingTop="9dp"
                 android:scaleY="0.0"
+                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -158,6 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                android:background="@color/white"
                 android:layout_below="@+id/ad_content"
                 android:orientation="horizontal">
 
@@ -222,8 +219,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
                         android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"
-                        android:visibility="gone"/>
+                        android:textSize="@dimen/f4"/>
 
                     <TextView
                         android:id="@+id/scan_new_app_score"
@@ -268,6 +264,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@color/white"
                 android:layout_below="@+id/scan_new_app_layout"
                 android:visibility="gone">
 
@@ -326,8 +323,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
                         android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"
-                        android:visibility="gone"/>
+                        android:textSize="@dimen/f4"/>
 
                     <TextView
                         android:id="@+id/scan_new_pic_score"
@@ -373,6 +369,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@color/white"
                 android:layout_below="@+id/scan_new_pic_layout"
                 android:visibility="gone">
 
@@ -427,8 +424,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
                         android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"
-                        android:visibility="gone"/>
+                        android:textSize="@dimen/f4"/>
 
                     <TextView
                         android:id="@+id/scan_new_vid_score"
@@ -472,6 +468,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@color/white"
                 android:layout_below="@+id/scan_new_vid_layout"
                 android:visibility="gone">
 
@@ -526,8 +523,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
                         android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"
-                        android:visibility="gone"/>
+                        android:textSize="@dimen/f4"/>
 
                     <TextView
                         android:id="@+id/scan_new_lost_score"
@@ -571,6 +567,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@color/white"
                 android:layout_below="@+id/scan_new_lost_layout"
                 android:visibility="gone">
 
@@ -625,8 +622,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
                         android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"
-                        android:visibility="gone"/>
+                        android:textSize="@dimen/f4"/>
 
                     <TextView
                         android:id="@+id/scan_new_wifi_score"
@@ -670,6 +666,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@color/white"
                 android:layout_below="@+id/scan_new_wifi_layout"
                 android:visibility="gone">
 
@@ -724,8 +721,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
                         android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"
-                        android:visibility="gone"/>
+                        android:textSize="@dimen/f4"/>
 
                     <TextView
                         android:id="@+id/scan_new_instruct_score"
@@ -770,6 +766,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="18dp"
+                android:background="@color/white"
                 android:layout_below="@+id/scan_new_instruct_layout"
                 android:visibility="gone">
 
@@ -817,8 +814,7 @@
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
                         android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"
-                        android:visibility="gone"/>
+                        android:textSize="@dimen/f4"/>
 
                     <TextView
                         android:id="@+id/scan_new_contact_score"
@@ -856,7 +852,7 @@
                         android:layout_marginTop="10dp"/>
                 </RelativeLayout>
             </LinearLayout>
-            </RelativeLayout>
+
         </RelativeLayout>
     </ScrollView>
 
