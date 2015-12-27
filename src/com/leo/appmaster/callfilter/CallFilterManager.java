@@ -171,6 +171,7 @@ public class CallFilterManager {
                     public void run() {
                         try {
                             if (iTelephony != null) {
+                                setIsReceiver(false);
                                 iTelephony.endCall();
                             }
                         } catch (RemoteException e) {
