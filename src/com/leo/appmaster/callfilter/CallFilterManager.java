@@ -52,6 +52,16 @@ public class CallFilterManager {
      */
     private boolean mIsCallFilterTip = false;
 
+    private boolean mIsReceiver = false;
+
+    public boolean isReceiver() {
+        return mIsReceiver;
+    }
+
+    public void setIsReceiver(boolean isReceiver) {
+        this.mIsReceiver = isReceiver;
+    }
+
     public boolean isIsCallFilterTip() {
         return mIsCallFilterTip;
     }
@@ -109,6 +119,7 @@ public class CallFilterManager {
      */
     public void filterCallHandler(String action, final String phoneNumber, String state, final ITelephony iTelephony) {
         LeoLog.i(TAG, "state:" + state);
+        setIsReceiver(true);
         CallFilterContextManager mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean isShortTime = false;
         int serBlackCt = getSerBlackCount();
@@ -414,9 +425,17 @@ public class CallFilterManager {
 
             int remainder = count % param;
             if (remainder == 0) {
+                /*多个未接来电为指定倍数通知提示*/
                 CallFIlterUIHelper.getInstance().showStrangerNotification(count);
+            } else {
+                /*未接陌生人来电通知提示*/
+                if (isReceiver()) {
+                    CallFIlterUIHelper.getInstance().showStrangerNotification(count);
+                }
             }
+            setIsReceiver(false);
         } else {
+            setIsReceiver(false);
             return;
         }
     }
