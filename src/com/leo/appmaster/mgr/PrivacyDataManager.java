@@ -152,22 +152,26 @@ public abstract class PrivacyDataManager extends Manager {
 
 
     public abstract void registerMediaListener();
+
     public abstract void unregisterMediaListener();
 
     /**
      * 获取最大可被扣除分数的图片数量
+     *
      * @return
      */
     public abstract int getMaxPicNum();
 
     /**
      * 获取最大可被扣除分数的视频数量
+     *
      * @return
      */
     public abstract int getMaxVidNum();
 
     /**
      * 根据新增图片个数获取图片的分数
+     *
      * @param newPicNum 新增图片个数
      * @return
      */
@@ -175,9 +179,14 @@ public abstract class PrivacyDataManager extends Manager {
 
     /**
      * 根据新增图片个数获取视频的分数
+     *
      * @param newVidNum 新增视频个数
      * @return
      */
     public abstract int getVidScore(int newVidNum);
+
+    public abstract int getPicShouldScore(int newPicNum);
+
+    public abstract int getVidShouldScore(int newVidNum);
 
 }

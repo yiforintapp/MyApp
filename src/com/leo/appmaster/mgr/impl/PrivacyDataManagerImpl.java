@@ -940,6 +940,24 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     }
 
     @Override
+    public int getPicShouldScore(int newPicNum) {
+        int picScore = MAX_PIC_SCORE;
+        if (getMaxPicNum() > newPicNum) {
+            picScore = newPicNum * SPA_PIC;
+        }
+        return picScore;
+    }
+
+    @Override
+    public int getVidShouldScore(int newVidNum) {
+        int vidScore = MAX_VID_SCORE;
+        if (getMaxVidNum() > newVidNum) {
+            vidScore = newVidNum * SPA_VID;
+        }
+        return vidScore;
+    }
+
+    @Override
     public int haveCheckedVid() {
         int i = getAddVidNum();
         int lastRecord = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);
