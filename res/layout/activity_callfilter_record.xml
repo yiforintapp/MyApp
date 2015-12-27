@@ -11,27 +11,29 @@
         android:layout_height="58dp"
         android:background="@color/cb">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
             <TextView
                 android:id="@+id/tv_callfilter_record_title_name"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:textColor="@color/white" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/c1"
+                android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/tv_callfilter_record_title_number"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3"
-                android:gravity="center"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_callfilter_record_title_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/c150"
+                android:textSize="13dp" />
+        </RelativeLayout>
 
         <com.leo.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rv_back"
@@ -61,22 +63,55 @@
     <RelativeLayout
         android:id="@+id/rl_catagery"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="58dp"
         android:layout_below="@id/rl_title">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
             android:text="@string/call_filter_record"
-            android:textColor="@color/black" />
+            android:textColor="@color/c2"
+            android:textSize="16dp" />
 
-        <TextView
+        <com.leo.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/clear_all_fliter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:text="@string/call_filter_clear_record" />
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:padding="12dp"
+            app:rippleAlpha="1"
+            app:rippleColor="@color/home_tab_pressed"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="false">
+
+            <ImageView
+                android:id="@+id/iv_clear_all_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/delete_clear_filter" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@id/iv_clear_all_filter"
+                android:text="@string/call_filter_clear_record"
+                android:textColor="@color/c4"
+                android:textSize="14dp" />
+        </com.leo.appmaster.ui.RippleView>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/c4" />
+
     </RelativeLayout>
 
     <ListView
@@ -85,14 +120,10 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/v_line"
         android:layout_below="@id/rl_catagery"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:background="@color/white"
-        android:divider="@color/c5"
-        android:dividerHeight="1px"
+        android:divider="#00000000"
         android:listSelector="#00000000"
-        android:overScrollMode="never"
-        android:scrollbars="none" />
+        android:overScrollMode="never" />
 
     <View
         android:id="@+id/v_line"

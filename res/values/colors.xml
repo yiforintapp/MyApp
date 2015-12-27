@@ -139,6 +139,8 @@
 
     <!--白色字-->
     <color name="c1">#ffffff</color>
+    <!--50%白色字-->
+    <color name="c150">#e0ffffff</color>
     <!--深色字-->
     <color name="c2">#333333</color>
     <!--中色字-->

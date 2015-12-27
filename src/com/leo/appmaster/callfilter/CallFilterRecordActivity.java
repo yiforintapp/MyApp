@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.Utilities;
@@ -32,6 +33,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
     private List<CallFilterInfo> mRecordTime;
     private CallFilterInfo info;
     private MyAdapter mAdapter;
+    private View mClearFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +78,11 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
         mTvTitleNumber = (TextView) findViewById(R.id.tv_callfilter_record_title_number);
         mTvTitleNumber.setText(info.getNumber());
 
+        mClearFilter = findViewById(R.id.clear_all_fliter);
+        mClearFilter.setOnClickListener(this);
+
         mLvMain = (ListView) findViewById(R.id.lv_callfilter_record_main);
         mAdapter = new MyAdapter();
-
 
         mBackBtn = (RippleView) findViewById(R.id.rv_back);
         mBackBtn.setOnClickListener(this);
@@ -118,13 +122,32 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 } else {
                     title = info.getNumberName();
                 }
-
                 showMarkDialog(title);
-
+                break;
+            case R.id.clear_all_fliter:
+                showRemoveAllFilter();
                 break;
             default:
                 break;
         }
+    }
+
+    private void showRemoveAllFilter() {
+        final LEOAlarmDialog dialog = CallFIlterUIHelper.getInstance().
+                getConfirmClearAllRecordDialog(this);
+        dialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
+                removeFilterList.add(info);
+                mCallManger.removeFilterGr(removeFilterList);
+
+                dialog.dismiss();
+                onBackPressed();
+            }
+        });
+        dialog.show();
     }
 
     private void showMarkDialog(String title) {
@@ -198,7 +221,6 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                showRemoveDialog();
                 List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                 BlackListInfo blacklistInfo = new BlackListInfo();
                 blacklistInfo.setNumber(info.getNumber());
