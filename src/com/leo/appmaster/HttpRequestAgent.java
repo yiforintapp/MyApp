@@ -538,8 +538,8 @@ public class HttpRequestAgent {
     public void commitBlackList(Listener<String> listener,
                                 ErrorListener errorListener, final String bodyString) {
         int method = Method.POST;
-        String uri = LeoUrls.URL_UPLOAD_BLACK;
-//        String uri = "http://192.168.1.205/report";
+//        String uri = LeoUrls.URL_UPLOAD_BLACK;
+        String uri = "http://192.168.1.205/report";
         StringRequest request = new StringRequest(method, uri, listener, errorListener) {
             @Override
             public byte[] getBody() throws AuthFailureError {
@@ -578,9 +578,9 @@ public class HttpRequestAgent {
      */
     public void loadBlackList(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
-        String url = LeoUrls.URI_BLACK_LIST;
-        url = Utilities.getURL(url);
-//        String url = "http://192.168.1.205/app/config";
+//        String url = LeoUrls.URI_BLACK_LIST;
+        String url = "http://192.168.1.205/app/config";
+        LeoLog.i("BlackDownLoadFetchJob",url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);
