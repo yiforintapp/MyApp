@@ -155,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:background="@color/white"
-                android:layout_below="@+id/ad_content"
+                android:layout_below="@id/ad_content"
                 android:orientation="horizontal">
 
                 <RelativeLayout

@@ -309,12 +309,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }, 200);
 
         mRootView = view;
-        ThreadManager.executeOnSubThread(new Runnable() {
+/*        ThreadManager.executeOnSubThread(new Runnable() {
             @Override
-            public void run() {
+            public void run() {*/
                 loadAd();
-            }
-        });
+/*            }
+        });*/
     }
 
     @Nullable
@@ -498,7 +498,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mAdLayout.setVisibility(View.GONE);
             mAdLayout.setScaleY(0.0f);
         }
+        LeoLog.e(TAG, "start release");
         MobvistaEngine.getInstance(mActivity).release(AD_AFTER_SCAN);
+        LeoLog.e(TAG, "release");
     }
 
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
@@ -551,7 +553,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         preview.setImageBitmap(previewImage);
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
+        LeoLog.e(TAG,"start registerView");
         MobvistaEngine.getInstance(mActivity).registerView(AD_AFTER_SCAN, adView);
+        LeoLog.e(TAG,"registerView");
     }
     /* 3.2 advertise end */
 
@@ -853,7 +857,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void updateNewInstructList() {
-        IntrudeSecurityManager manager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        IntrudeSecurityManager manager = (IntrudeSecurityManager)
+                MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         boolean flag = manager.getIntruderMode();
         if (flag) {
             mNewInstructImg.setImageResource(R.drawable.ic_scan_safe);
@@ -892,7 +897,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void updateNewLostList() {
-        LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+        LostSecurityManagerImpl manager = (LostSecurityManagerImpl)
+                MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         boolean flag = manager.isUsePhoneSecurity();
         if (flag) {
             mNewLostImg.setImageResource(R.drawable.ic_scan_safe);

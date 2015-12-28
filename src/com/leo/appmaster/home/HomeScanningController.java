@@ -407,7 +407,7 @@ public class HomeScanningController {
         return alphaAnim;
     }
 
-    private void onItemAnimRepeat(Animator animation) {
+    private void onItemAnimRepeat(final Animator animation) {
         if (mFragment.isRemoving() || mFragment.isDetached()) return;
 
         LeoLog.d(TAG, "onAnimatorRepeat...");
@@ -438,13 +438,14 @@ public class HomeScanningController {
     public void onItemAnimationEnd(final Animator animation) {
         if (mFragment.isRemoving() || mFragment.isDetached()) return;
 
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+        ThreadManager.getUiThreadHandler().post(new Runnable() {
             @Override
             public void run() {
                 animation.end();
                 animation.cancel();
             }
-        }, 100);
+        });
+
         LeoLog.d(TAG, "onAnimatorEnd...");
         if (animation == mNewContactAnim) {
             mFragment.OnItemAnimationEnd(mNewContactLayout);
