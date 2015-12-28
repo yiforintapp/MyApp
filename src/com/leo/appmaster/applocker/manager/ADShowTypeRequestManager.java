@@ -139,7 +139,7 @@ public class ADShowTypeRequestManager {
     
     private void updateADInLockScreenConfig(JSONObject response ,boolean forceClose) {
         try {
-            int value = forceClose ? 0 : (response.getInt(AD_NEW_SHOW_TYPE));
+            int value = forceClose ? CLOSE_LOCK_AD_SHOW : (response.getInt(AD_NEW_SHOW_TYPE));
             LeoLog.d("poha", "请求成功，广告展示形式是：" + response.getInt(AD_NEW_SHOW_TYPE));
             if (value != mSp.getADShowType()) {
                 if (value == 1) {
