@@ -168,8 +168,6 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             intent.putExtra("isSysContact", checkIsSysContact(mFilterList.get(i).getNumber()));
             startActivity(intent);
 
-            CallFilterToast toast = CallFilterToast.makeText(mActivity,"13654684689","500 add to black","list");
-            toast.show();
         } catch (Exception e) {
             e.printStackTrace();
         }

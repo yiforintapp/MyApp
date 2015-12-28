@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,13 @@ import com.leo.tools.animator.ObjectAnimator;
 
 public class CallFilterToast {
     private static final int API_LEVEL_19 = 19;
-    public static TextView mTextOne, mTextTwo;
+    public static final int BLACK_LIST_TYPE = 0;
+    public static final int FILTER_TYPE = 1;
+    public static final int TYPE_ANNOY = 1;
+    public static final int TYPE_AD = 2;
+    public static final int TYPE_CHEAT = 3;
+
+    public static TextView mTextOne, mTextTwo, mTextThree;
     private static Context mContext;
 
     private static Handler handler = new Handler() {
@@ -43,21 +50,41 @@ public class CallFilterToast {
         }
     };
 
-
-    public static CallFilterToast makeText(final Context context, String title, int partone, int parttwoType, String parttwo) {
+    public static CallFilterToast makeText(final Context context, String title, int peopleNum, int toastType, int filterType) {
         CallFilterToast result = new CallFilterToast(context);
         mContext = context;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.call_filter_toast, null);
 
         mTextOne = (TextView) view.findViewById(R.id.tv_number);
-        mTextOne.setText(title);
         mTextTwo = (TextView) view.findViewById(R.id.tv_desc);
-        mTextTwo.setText(partone + parttwo);
+        mTextThree = (TextView) view.findViewById(R.id.tv_desc2);
+
+        mTextOne.setText(title);
+        if (toastType == BLACK_LIST_TYPE) {
+            String partOne = context.getString(R.string.number_toast_text_black, peopleNum);
+            String times1 = context.getString(R.string.number_toast_color,
+                    context.getString(R.string.call_filter_black_list_tab));
+            mTextTwo.setText(partOne);
+            mTextThree.setText(Html.fromHtml(times1));
+        } else {
+            String partOne = context.getString(R.string.number_toast_text_mark, peopleNum);
+            String times2;
+            if (filterType == TYPE_ANNOY) {
+                times2 = context.getString(R.string.number_toast_color,
+                        context.getString(R.string.filter_number_type_saorao));
+            } else if (filterType == TYPE_AD) {
+                times2 = context.getString(R.string.number_toast_color,
+                        context.getString(R.string.filter_number_type_ad));
+            } else {
+                times2 = context.getString(R.string.number_toast_color,
+                        context.getString(R.string.filter_number_type_zhapian));
+            }
+            mTextTwo.setText(partOne);
+            mTextThree.setText(Html.fromHtml(times2));
+        }
 
         result.mNextView = view;
-//        result.mDuration = duration;
-
         return result;
     }
 

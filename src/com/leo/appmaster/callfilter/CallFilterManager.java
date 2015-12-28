@@ -144,7 +144,7 @@ public class CallFilterManager {
      * @param state
      * @param iTelephony
      */
-    public  void filterCallHandler(String action, final String phoneNumber, String state, final ITelephony iTelephony) {
+    public void filterCallHandler(String action, final String phoneNumber, String state, final ITelephony iTelephony) {
         /*去除重复广播*/
         long time = System.currentTimeMillis();
         if ((time - getCurrentCallTime()) < CallFilterConstants.CALL_RECEIV_DURAT) {
@@ -200,14 +200,14 @@ public class CallFilterManager {
                     dialog1.getListView().setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
+                                                long id) {
                             dialog1.setNowItemPosition(position);
                         }
                     });
                     dialog1.setRightBtnListener(new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            List<BlackListInfo> infost = new ArrayList<BlackListInfo> ();
+                            List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
                             BlackListInfo infot = new BlackListInfo();
                             int nowItemPosition = dialog1.getNowItemPosition();
                             infot.setNumber(mPhoneNumber);
@@ -235,59 +235,59 @@ public class CallFilterManager {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                     mIsOffHook = false;
 //                  挂断后接听 询问是否家黑名单且展示标记人数
-                  final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
-                  String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
-                  String summaryF = String.format(summaryS, filterTip[2], filterTip[2]);
-                  callHandleDialogWithSummary.setContent(summaryF);
-                  callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
-                      @Override
-                      public void onItemClick(AdapterView<?> parent, View view, int position,
-                              long id) {
-                          callHandleDialogWithSummary.setNowItemPosition(position);
-                      }
-                  });
-                  callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
-                      @Override
-                      public void onClick(DialogInterface dialog, int which) {
-                          List<BlackListInfo> infost = new ArrayList<BlackListInfo> ();
-                          BlackListInfo infot = new BlackListInfo();
-                          int nowItemPosition = callHandleDialogWithSummary.getNowItemPosition();
-                          infot.setNumber(mPhoneNumber);
-                          switch (nowItemPosition) {
-                              case 0:
-                                  infot.setMarkerType(CallFilterConstants.FILTER_CALL_TYPE);
-                                  break;
-                              case 1:
-                                  infot.setMarkerType(CallFilterConstants.AD_SALE_TYPE);
-                                  break;
-                              case 2:
-                                  infot.setMarkerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                                  break;
-                              default:
-                                  break;
-                          }
-                          infost.add(infot);
-                          mCFCManager.addBlackList(infost, false);
-                          callHandleDialogWithSummary.dismiss();
-                      }
-                  });
-                  callHandleDialogWithSummary.show();
+                    final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
+                    String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
+                    String summaryF = String.format(summaryS, filterTip[2], filterTip[2]);
+                    callHandleDialogWithSummary.setContent(summaryF);
+                    callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                                long id) {
+                            callHandleDialogWithSummary.setNowItemPosition(position);
+                        }
+                    });
+                    callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                            BlackListInfo infot = new BlackListInfo();
+                            int nowItemPosition = callHandleDialogWithSummary.getNowItemPosition();
+                            infot.setNumber(mPhoneNumber);
+                            switch (nowItemPosition) {
+                                case 0:
+                                    infot.setMarkerType(CallFilterConstants.FILTER_CALL_TYPE);
+                                    break;
+                                case 1:
+                                    infot.setMarkerType(CallFilterConstants.AD_SALE_TYPE);
+                                    break;
+                                case 2:
+                                    infot.setMarkerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            infost.add(infot);
+                            mCFCManager.addBlackList(infost, false);
+                            callHandleDialogWithSummary.dismiss();
+                        }
+                    });
+                    callHandleDialogWithSummary.show();
                 } else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1]) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                     mIsOffHook = false;
-                  //挂断后接听 询问是否加入黑名单且展示加入黑名单人数
-                  final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
-                  String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
-                  String summaryF = String.format(summaryS, filterTip[2]);
-                  callHandleDialogWithSummary.setContent(summaryF);
-                  callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
-                      @Override
-                      public void onClick(DialogInterface dialog, int which) {
-                          callHandleDialogWithSummary.dismiss();
-                      }
-                  });
-                  callHandleDialogWithSummary.show();
-                } else if(!mIsOffHook) {
+                    //挂断后接听 询问是否加入黑名单且展示加入黑名单人数
+                    final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
+                    String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
+                    String summaryF = String.format(summaryS, filterTip[2]);
+                    callHandleDialogWithSummary.setContent(summaryF);
+                    callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            callHandleDialogWithSummary.dismiss();
+                        }
+                    });
+                    callHandleDialogWithSummary.show();
+                } else if (!mIsOffHook) {
                     int tipType = filterTip[1];
                     //TODO 这里开始判断条件然后弹出对应的对话框
                     final LEOAlarmDialog confirmAddToBlacklistDialog = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
@@ -353,6 +353,7 @@ public class CallFilterManager {
             int isTip = filterTip[0];
             int tipType = filterTip[1];
             int showValue = filterTip[2];
+            int filterType = filterTip[3];
             if (CallFilterConstants.IS_TIP_DIA[0] == isTip) {
                 return;
             }
@@ -367,10 +368,10 @@ public class CallFilterManager {
                 if (!isComOut) {
                     if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
                         /*标记弹框*/
-                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, "已被" + String.valueOf(showValue) + "人拉入", "标记");
+                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.FILTER_TYPE, filterType);
                     } else {
                         /*黑名单弹框*/
-                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, "已被" + String.valueOf(showValue) + "人拉入", "黑名单");
+                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.BLACK_LIST_TYPE, 0);
                     }
                     if (mTipToast != null) {
                         mTipToast.show();
