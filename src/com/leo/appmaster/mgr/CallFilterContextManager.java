@@ -205,6 +205,22 @@ public abstract class CallFilterContextManager extends Manager {
      */
     public abstract void setFilterOpenState(boolean flag);
 
+
+    /**
+     * 骚扰拦截通知是否开启
+     *
+     * @return
+     */
+    public abstract boolean getFilterNotiOpState();
+
+    /**
+     * 设置骚扰拦截通知开启状态
+     *
+     * @param flag
+     */
+    public abstract void setFilterNotiOpState(boolean flag);
+
+
     /**
      * int[0]指定号码是否满足？：0,不满足;1,满足
      * int[1]哪个弹框类型？：0,标记;1,黑名单

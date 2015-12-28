@@ -199,4 +199,9 @@ public class PrefConst {
      * 拦截挂断电话提示倍率参数
      */
     public static final String KEY_FIL_TIME_PAR = "FIL_TIME_PAR";
+
+    /**
+     * 拦截通知状态
+     */
+    public static final String KEY_FIL_NOTI_STATE = "FIL_NOTI_STATE";
 }

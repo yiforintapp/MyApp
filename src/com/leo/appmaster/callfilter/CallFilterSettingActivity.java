@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
@@ -78,27 +80,34 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
             case R.id.content_item_filter:
                 boolean isFilterSelected = PreferenceTable.getInstance().
                         getBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
+                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+
                 if (!isFilterSelected) {
-                    PreferenceTable.getInstance().
-                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
+//                    PreferenceTable.getInstance().
+//                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
                     checkBox.setImageResource(R.drawable.switch_on);
+                    cmp.setFilterOpenState(true);
                 } else {
-                    PreferenceTable.getInstance().
-                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, false);
+//                    PreferenceTable.getInstance().
+//                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, false);
                     checkBox.setImageResource(R.drawable.switch_off);
+                    cmp.setFilterOpenState(false);
                 }
                 break;
             case R.id.content_item_noti:
+                CallFilterContextManagerImpl cmpi = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 boolean isNotiSelected = PreferenceTable.getInstance().
                         getBoolean(CallFilterConstants.SETTING_NOTI_FLAG, true);
                 if (!isNotiSelected) {
-                    PreferenceTable.getInstance().
-                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, true);
+//                    PreferenceTable.getInstance().
+//                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, true);
                     checkBoxTwo.setImageResource(R.drawable.switch_on);
+                    cmpi.setFilterNotiOpState(true);
                 } else {
-                    PreferenceTable.getInstance().
-                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, false);
+//                    PreferenceTable.getInstance().
+//                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, false);
                     checkBoxTwo.setImageResource(R.drawable.switch_off);
+                    cmpi.setFilterNotiOpState(false);
                 }
                 break;
         }

@@ -161,6 +161,13 @@ public class CallFilterManager {
      * @param iTelephony
      */
     public void filterCallHandler(String action, final String phoneNumber, String state, final ITelephony iTelephony) {
+        /*判断骚扰拦截是否打开*/
+        final CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        boolean filOpSta = cmp.getFilterOpenState();
+        if (!filOpSta) {
+            return;
+        }
+
         /*去除重复广播*/
         long time = System.currentTimeMillis();
         if ((time - getCurrentCallTime()) < CallFilterConstants.CALL_RECEIV_DURAT) {
@@ -170,7 +177,6 @@ public class CallFilterManager {
 
         LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
         setIsReceiver(true);
-        final CallFilterContextManager mCFCManager = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean isShortTime = false;
         int serBlackCt = getSerBlackCount();
         int blackCt = getBlackListCount();
@@ -190,7 +196,7 @@ public class CallFilterManager {
 ////                return;        //TODH PH
 //            }
         } else {
-            
+
             if (TextUtils.isEmpty(state)) {
                 return;
             }
@@ -201,7 +207,7 @@ public class CallFilterManager {
                 setCurrentCallTime(-1);
                 info = getBlackFroNum(mPhoneNumber);
                 serInfo = getSerBlackForNum(mPhoneNumber);
-                int[] filterTip = mCFCManager.isCallFilterTip(mPhoneNumber);
+                int[] filterTip = cmp.isCallFilterTip(mPhoneNumber);
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
 
                 if (mTipToast != null) {
@@ -209,7 +215,7 @@ public class CallFilterManager {
                     mTipToast = null;
                 }
                 //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
-                long durationMax = mCFCManager.getCallDurationMax();
+                long durationMax = cmp.getCallDurationMax();
                 durationMax = 7000;
 //                if (filterTip == null) {
 //                    return;
@@ -251,21 +257,21 @@ public class CallFilterManager {
                                     break;
                             }
                             infost.add(infot);
-                            mCFCManager.addBlackList(infost, false);
+                            cmp.addBlackList(infost, false);
                             Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                             dialog1.dismiss();
                         }
                     });
                     dialog1.show();
                     // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
-                } else if (mIsOffHook && info == null && filterTip != null &&CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null) {
+                } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                     mIsOffHook = false;
 //                  挂断后接听 询问是否家黑名单且展示标记人数
-                  final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
-                  String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
-                  String mark = "";
-                  switch (filterTip[3]) {
+                    final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
+                    String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
+                    String mark = "";
+                    switch (filterTip[3]) {
                         case CallFilterConstants.FILTER_CALL_TYPE:
                             mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
                             break;
@@ -276,45 +282,45 @@ public class CallFilterManager {
                             mark = mContext.getResources().getString(R.string.call_filter_mark_as_zp);
                             break;
                         default:
-                        break;
-                }
-                  String summaryF = String.format(summaryS, filterTip[2], mark);
-                  callHandleDialogWithSummary.setContent(summaryF);
-                  callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
-                      @Override
-                      public void onItemClick(AdapterView<?> parent, View view, int position,
-                              long id) {
-                          callHandleDialogWithSummary.setNowItemPosition(position);
-                      }
-                  });
-                  callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
-                      @Override
-                      public void onClick(DialogInterface dialog, int which) {
-                          List<BlackListInfo> infost = new ArrayList<BlackListInfo> ();
-                          BlackListInfo infot = new BlackListInfo();
-                          int nowItemPosition = callHandleDialogWithSummary.getNowItemPosition();
-                          infot.setNumber(mPhoneNumber);
-                          switch (nowItemPosition) {
-                              case 0:
-                                  infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-                                  break;
-                              case 1:
-                                  infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-                                  break;
-                              case 2:
-                                  infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                                  break;
-                              default:
-                                  break;
-                          }
-                          infost.add(infot);
-                          mCFCManager.addBlackList(infost, false);
-                          Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
-                          callHandleDialogWithSummary.dismiss();
-                      }
-                  });
-                  
-                  callHandleDialogWithSummary.show();
+                            break;
+                    }
+                    String summaryF = String.format(summaryS, filterTip[2], mark);
+                    callHandleDialogWithSummary.setContent(summaryF);
+                    callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                                long id) {
+                            callHandleDialogWithSummary.setNowItemPosition(position);
+                        }
+                    });
+                    callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                            BlackListInfo infot = new BlackListInfo();
+                            int nowItemPosition = callHandleDialogWithSummary.getNowItemPosition();
+                            infot.setNumber(mPhoneNumber);
+                            switch (nowItemPosition) {
+                                case 0:
+                                    infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+                                    break;
+                                case 1:
+                                    infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                                    break;
+                                case 2:
+                                    infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            infost.add(infot);
+                            cmp.addBlackList(infost, false);
+                            Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
+                            callHandleDialogWithSummary.dismiss();
+                        }
+                    });
+
+                    callHandleDialogWithSummary.show();
                 } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1] && info == null && serInfo != null) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                     mIsOffHook = false;
@@ -333,7 +339,7 @@ public class CallFilterManager {
                     callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            List<BlackListInfo> infost = new ArrayList<BlackListInfo> ();
+                            List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
                             BlackListInfo infot = new BlackListInfo();
                             int nowItemPosition = callHandleDialogWithSummary.getNowItemPosition();
                             infot.setNumber(mPhoneNumber);
@@ -351,13 +357,13 @@ public class CallFilterManager {
                                     break;
                             }
                             infost.add(infot);
-                            mCFCManager.addBlackList(infost, false);
+                            cmp.addBlackList(infost, false);
                             Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                             callHandleDialogWithSummary.dismiss();
                         }
                     });
                     callHandleDialogWithSummary.show();
-                } else if (!mIsOffHook && info == null && filterTip != null &&  serInfo != null) {
+                } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null) {
                     int tipType = filterTip[1];
                     final LEOAlarmDialog confirmAddToBlacklistDialog = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
                     confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
@@ -365,12 +371,12 @@ public class CallFilterManager {
                         public void onClick(DialogInterface dialog, int which) {
                             //TODO
                             //点击确定后直接添加记录
-                                 List<BlackListInfo> infost = new ArrayList<BlackListInfo> ();
+                            List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
                             BlackListInfo infot = new BlackListInfo();
                             infot.setNumber(mPhoneNumber);
                             infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
                             infost.add(infot);
-                            mCFCManager.addBlackList(infost, false);
+                            cmp.addBlackList(infost, false);
                             Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                             confirmAddToBlacklistDialog.dismiss();
                         }
@@ -413,11 +419,11 @@ public class CallFilterManager {
                 callInfo.setReadState(CallFilterConstants.READ_NO);
                 infos.add(callInfo);
                 LeoLog.i(TAG, "add fiter detail ");
-                boolean addState = mCFCManager.addFilterDet(infos, false);
-                if(addState){
+                boolean addState = cmp.addFilterDet(infos, false);
+                if (addState) {
                     int id = EventId.EVENT_LOAD_FIL_GR_ID;
                     String msg = CallFilterConstants.EVENT_MSG_LOAD_FIL_GR;
-                    CommonEvent event = new CommonEvent(id,msg);
+                    CommonEvent event = new CommonEvent(id, msg);
                     LeoEventBus.getDefaultBus().post(event);
                 }
             } catch (Exception e) {
@@ -426,7 +432,7 @@ public class CallFilterManager {
             CallFIlterUIHelper.getInstance().showReceiveCallNotification(phoneNumber);
         } else if (serInfo != null) {
             /*为服务器黑名单：弹窗提醒*/
-            int[] filterTip = mCFCManager.isCallFilterTip(phoneNumber);
+            int[] filterTip = cmp.isCallFilterTip(phoneNumber);
             if (filterTip == null) {
                 /*存在于隐私联系人中*/
                 return;

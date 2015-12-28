@@ -7,6 +7,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
+import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
@@ -94,6 +96,13 @@ public class CallFIlterUIHelper {
     }
 
     public void showReceiveCallNotification(String number) {
+        /*判断通知提示是否打开*/
+        CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        boolean filOpSta = cmp.getFilterNotiOpState();
+        if (!filOpSta) {
+            return;
+        }
+
         AppMasterApplication ama = AppMasterApplication.getInstance();
         Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
         intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mFilterNoti);
