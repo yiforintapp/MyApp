@@ -856,7 +856,6 @@
     <string name="call_filter_add_black_num">该号码是隐私联系人号码，请先从隐私联系人中移除</string>
     <string name="call_filter_have_add_black_num">该号码已存在黑名单中</string>
     <string name="call_filter_dialog_add_black">添加黑名单</string>
-    <string name="call_filter_dialog_add_black_new">添加新黑名单</string>
     <string name="add_black_list_done">号码已加入黑名单</string>
 	<string name="call_filter_add_to_blacklist_people_tips">已被%1$s人拉入黑名单</string>
 	<string name="call_filter_marked_people_tips">已被%1$s人标记为%2$s</string>

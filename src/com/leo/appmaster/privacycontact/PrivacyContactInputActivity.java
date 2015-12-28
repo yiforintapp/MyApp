@@ -264,7 +264,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
         mTtileBar.setToolbarColorResource(R.color.cb);
         if (!Utilities.isEmpty(mFrom) &&
                 mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
-            mTtileBar.setToolbarTitle(R.string.call_filter_dialog_add_black_new);
+            mTtileBar.setToolbarTitle(R.string.call_filter_dialog_add_black);
         } else {
             mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_add_new_privacy_contact);
         }
