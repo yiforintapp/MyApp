@@ -90,6 +90,8 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         holder.clickView.setOnClickListener(BlackListAdapter.this);
         if (info.getIcon() != null) {
             holder.imageView.setImageBitmap(info.getIcon());
+        }else{
+            holder.imageView.setImageResource(R.drawable.default_user_avatar);
         }
         holder.clickView.setTag(R.id.bg_delete, i);
 

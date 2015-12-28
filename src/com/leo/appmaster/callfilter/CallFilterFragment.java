@@ -125,7 +125,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     public void onEventMainThread(CommonEvent event) {
         String msg = event.eventMsg;
         if (CallFilterConstants.EVENT_MSG_LOAD_FIL_GR.equals(msg)) {
-                loadData(false);
+            loadData(false);
         }
 
     }
@@ -317,5 +317,8 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
 
         mFilterList.remove(position);
         mAdapter.notifyDataSetChanged();
+        if (mFilterList != null && mFilterList.size() <= 0) {
+            showEmpty();
+        }
     }
 }
