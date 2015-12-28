@@ -238,6 +238,7 @@ public class ADShowTypeRequestManager {
     }
 
     private void updateUFOADConfig(JSONObject response, boolean forceClose) {
+    /* UFO 广告位已被去掉
         try {
             LeoLog.d("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
             LeoLog.d("poha","请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
@@ -253,6 +254,7 @@ public class ADShowTypeRequestManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    */
     }
     
     private void updateADAfterAcceleratingConfig(JSONObject response, boolean forceClose) {
