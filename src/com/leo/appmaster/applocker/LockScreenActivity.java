@@ -1171,7 +1171,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAdBitmapMap.clear();
         if (mAdapterCycle != null) {
             mBannerContainer.removeAllViews();
-            mAdapterCycle.getViews().clear();
+//            mAdapterCycle.getViews().clear();
             mAdapterCycle = null;
         }
         asyncLoadAd();
