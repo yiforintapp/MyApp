@@ -132,6 +132,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mEmptyView = findViewById(R.id.add_call_log_default_tv);
         mAddBtn = (RippleView) findViewById(R.id.rv_button_backup);
         mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         mAddBtn.setOnClickListener(this);
         mListCallLog = (ListView) findViewById(R.id.add_privacy_call_logLV);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
@@ -147,8 +148,10 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         sendMsgHandler();
         if (mAddPrivacyCallLog.size() != 0) {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
         } else {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         }
     }
 
@@ -205,8 +208,10 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         }
         if (mAddPrivacyCallLog.size() != 0) {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
         } else {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         }
     }
 
