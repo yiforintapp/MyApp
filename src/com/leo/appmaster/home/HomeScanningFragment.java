@@ -539,6 +539,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         }
     }
+
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
@@ -769,7 +770,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void onViewScanningFinish(final List<AppItemInfo> appList, final PhotoList photoItems,
-                                 final List<VideoItemBean> videoItemBeans) {
+                                      final List<VideoItemBean> videoItemBeans) {
         if (getActivity() == null || isDetached() || isRemoving()) return;
 
         getActivity().runOnUiThread(new Runnable() {
@@ -931,8 +932,23 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void startAnimator(final LinearLayout layout) {
 
+        layout.setVisibility(View.VISIBLE);
+        layout.setVisibility(View.INVISIBLE);
+        layout.post(new Runnable() {
+            @Override
+            public void run() {
+                startRealAnimator(layout);
+            }
+        });
+
+
+    }
+
+    private List<LinearLayout> lists = new ArrayList<LinearLayout>();
+
+    private void startRealAnimator(final LinearLayout layout) {
         AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -100, layout.getTranslationY());
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -layout.getHeight(), layout.getTranslationY());
         objectAnimator.setDuration(300);
         ObjectAnimator alpha = objectAnimator.ofFloat(layout, "alpha", 0f, 0.0f, 0.3f, 1f);
         alpha.setDuration(400);
@@ -941,13 +957,20 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             @Override
             public void onAnimationStart(Animator animation) {
                 layout.setVisibility(View.VISIBLE);
+                if (lists.size() > 0) {
+                    makeItemMove(layout);
+                }
             }
+
             @Override
             public void onAnimationEnd(Animator animation) {
+                layout.setBackgroundResource(R.color.white);
+                lists.add(layout);
                 mScrollLayout.setLayoutTransition(null);
             }
         });
         objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 if (layout != mNewContactLayout) {
@@ -957,7 +980,47 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         });
 
         animatorSet.start();
+    }
 
+    private void makeItemMove(LinearLayout layout) {
+        for (int i = 0; i < lists.size(); i++) {
+            LinearLayout oldLayout = lists.get(i);
+            oldLayout.setTranslationY(layout.getHeight());
+            oldLayoutAnimation(oldLayout, layout.getHeight());
+        }
+    }
+
+    private void oldLayoutAnimation(final LinearLayout oldLayout, int height) {
+        LeoLog.d("testLayout", "layout top : " + oldLayout.getTop());
+        LeoLog.d("testLayout", "layout bottom : " + oldLayout.getBottom());
+        LeoLog.d("testLayout", "layout Y : " + oldLayout.getTranslationY());
+        LeoLog.d("testLayout", "layout height : " + oldLayout.getHeight());
+        LeoLog.d("testLayout", "layout width : " + oldLayout.getWidth());
+        LeoLog.d("testLayout", "-------------------------------------------");
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
+                oldLayout, "translationY", -height, oldLayout.getTranslationY() - height);
+        objectAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        });
+
+        objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                long duration = valueAnimator.getCurrentPlayTime();
+            }
+        });
+
+        objectAnimator.setDuration(300);
+        objectAnimator.start();
     }
 
     private void updateContactStartList() {

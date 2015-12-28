@@ -65,13 +65,11 @@
                 android:layout_width="1dp"
                 android:layout_height="144dp" />
 
-
             <View
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
+                android:layout_height="500dp"
                 android:background="@color/white"
                 android:layout_below="@+id/empty_header"/>
-
 
             <!-- Advertise -->
             <RelativeLayout
@@ -154,8 +152,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:background="@color/white"
-                android:layout_below="@id/ad_content"
+                android:background="@color/transparent"
+                android:layout_below="@+id/ad_content"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -265,7 +263,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@color/white"
+                android:background="@color/transparent"
                 android:layout_below="@+id/scan_new_app_layout"
                 android:visibility="gone">
 
@@ -379,7 +377,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@color/white"
+                android:background="@color/transparent"
                 android:layout_below="@+id/scan_new_pic_layout"
                 android:visibility="gone">
 
@@ -487,7 +485,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@color/white"
+                android:background="@color/transparent"
                 android:layout_below="@+id/scan_new_vid_layout"
                 android:visibility="gone">
 
@@ -596,7 +594,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@color/white"
+                android:background="@color/transparent"
                 android:layout_below="@+id/scan_new_lost_layout"
                 android:visibility="gone">
 
@@ -704,7 +702,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@color/white"
+                android:background="@color/transparent"
                 android:layout_below="@+id/scan_new_instruct_layout"
                 android:visibility="gone">
 
@@ -813,7 +811,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="18dp"
-                android:background="@color/white"
+                android:background="@color/transparent"
                 android:layout_below="@+id/scan_new_wifi_layout"
                 android:visibility="gone">
 
