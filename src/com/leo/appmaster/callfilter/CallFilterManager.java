@@ -146,12 +146,11 @@ public class CallFilterManager {
      */
     public  void filterCallHandler(String action, final String phoneNumber, String state, final ITelephony iTelephony) {
         /*去除重复广播*/
-//        setCurrentCallTime(System.currentTimeMillis());
-//        long time = System.currentTimeMillis();
-//        if ((time - getCurrentCallTime()) < CallFilterConstants.CALL_RECEIV_DURAT) {
-//            setCurrentCallTime(-1);
-//            return;
-//        }
+        long time = System.currentTimeMillis();
+        if ((time - getCurrentCallTime()) < CallFilterConstants.CALL_RECEIV_DURAT) {
+            setCurrentCallTime(-1);
+            return;
+        }
 
         LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
         setIsReceiver(true);
@@ -389,6 +388,7 @@ public class CallFilterManager {
                 }
             }
         }
+        setCurrentCallTime(System.currentTimeMillis());
     }
 
 
