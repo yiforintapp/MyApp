@@ -59,7 +59,7 @@ import java.util.List;
  */
 public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTabFragment";
-    private static final boolean DBG = true;//TODO PH
+    private static final boolean DBG = false;
 
     private ImageView mRedDot;
     // 首页4个tab

@@ -176,13 +176,7 @@ public class CallFilterManager {
 
         LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
         setIsReceiver(true);
-        boolean isShortTime = false;
-        int serBlackCt = getSerBlackCount();
-        int blackCt = getBlackListCount();
-//        if (serBlackCt <= 0 && blackCt <= 0) {
-//            /*黑名单无数据*/
-////            return;   TODO PH
-//        }
+
         BlackListInfo info = null;
         BlackListInfo serInfo = null;
         if (!TextUtils.isEmpty(phoneNumber)) {
@@ -190,10 +184,7 @@ public class CallFilterManager {
             mPhoneNumber = phoneNumber;
             info = getBlackFroNum(phoneNumber);
             serInfo = getSerBlackForNum(phoneNumber);
-//            if (info == null && serInfo == null) {
-//            /*该号码不存在黑名单中*/
-////                return;        //TODH PH
-//            }
+
         } else {
 
             if (TextUtils.isEmpty(state)) {
@@ -215,10 +206,7 @@ public class CallFilterManager {
                 }
                 //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
                 long durationMax = cmp.getCallDurationMax();
-                durationMax = 7000;
-//                if (filterTip == null) {
-//                    return;
-//                }
+
                 LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
                 long currentTime = System.currentTimeMillis();
                 LeoLog.i(TAG, "idle : System.currentTimeMillis() =" + currentTime);
