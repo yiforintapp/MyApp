@@ -290,7 +290,9 @@ public class CallFilterConstants {
     /**
      * 连续两次触发 Call Receiver 时间间隔
      */
-    public static final long CALL_RECEIV_DURAT = 200;
+    public static final long CALL_RECEIV_DURAT = 500;
+
+    public static final String EVENT_MSG_LOAD_FIL_GR = "MSG_LOAD_FIL_GR";
 
 
 }

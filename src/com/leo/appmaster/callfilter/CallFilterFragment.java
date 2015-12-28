@@ -10,10 +10,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.CommonEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -76,6 +80,12 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        LeoEventBus.getDefaultBus().register(this);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     protected void onInitUI() {
         mClearAll = (RippleView) findViewById(R.id.clear_all);
         mClearAll.setOnClickListener(this);
@@ -112,9 +122,17 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         });
     }
 
+    public void onEventMainThread(CommonEvent event) {
+        String msg = event.eventMsg;
+        if (CallFilterConstants.EVENT_MSG_LOAD_FIL_GR.equals(msg)) {
+                loadData(false);
+        }
+
+    }
 
     @Override
     public void onDestroy() {
+        LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
     }
 

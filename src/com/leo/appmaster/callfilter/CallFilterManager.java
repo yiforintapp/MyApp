@@ -16,6 +16,9 @@ import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.CommonEvent;
+import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
@@ -75,7 +78,7 @@ public class CallFilterManager {
     }
 
     public void setCurrentRecePhNum(String currentRecePhNum) {
-        this.mCurrentRecePhNum = mCurrentRecePhNum;
+        this.mCurrentRecePhNum = currentRecePhNum;
     }
 
     public long getCurrentCallTime() {
@@ -194,6 +197,8 @@ public class CallFilterManager {
             if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
 
             } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+                /*恢复默认值*/
+                setCurrentCallTime(-1);
                 info = getBlackFroNum(mPhoneNumber);
                 serInfo = getSerBlackForNum(mPhoneNumber);
                 int[] filterTip = mCFCManager.isCallFilterTip(mPhoneNumber);
@@ -252,8 +257,6 @@ public class CallFilterManager {
                         }
                     });
                     dialog1.show();
-                    /*恢复默认值*/
-                    setCurrentCallTime(-1);
                     // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
                 } else if (mIsOffHook && info == null && filterTip != null &&CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
@@ -323,7 +326,7 @@ public class CallFilterManager {
                     callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
+                                                long id) {
                             callHandleDialogWithSummary.setNowItemPosition(position);
                         }
                     });
@@ -410,7 +413,13 @@ public class CallFilterManager {
                 callInfo.setReadState(CallFilterConstants.READ_NO);
                 infos.add(callInfo);
                 LeoLog.i(TAG, "add fiter detail ");
-                mCFCManager.addFilterDet(infos, false);
+                boolean addState = mCFCManager.addFilterDet(infos, false);
+                if(addState){
+                    int id = EventId.EVENT_LOAD_FIL_GR_ID;
+                    String msg = CallFilterConstants.EVENT_MSG_LOAD_FIL_GR;
+                    CommonEvent event = new CommonEvent(id,msg);
+                    LeoEventBus.getDefaultBus().post(event);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -599,17 +608,11 @@ public class CallFilterManager {
         };
 
         ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
-                .getSysCallLog(mContext, selection, selectionArgs, false, false);
+                .getSysCallLog(mContext, selection, selectionArgs, true, false);
         if (callLogs != null && callLogs.size() > 0) {
             int count = callLogs.size();
             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
             int param = pm.getStraNotiTipParam();
-
-            if (DBG) {
-                count = 3;
-                param = 1;
-            }
-
             try {
                 int remainder = count % param;
                 if (remainder == 0) {
@@ -634,7 +637,7 @@ public class CallFilterManager {
                 e.printStackTrace();
             } finally {
                 setIsReceiver(false);
-                setCurrentRecePhNum(null);
+//                setCurrentRecePhNum(null);
             }
         } else {
             setIsReceiver(false);
