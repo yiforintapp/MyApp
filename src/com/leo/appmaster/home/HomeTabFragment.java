@@ -49,6 +49,9 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 首页下方4个tab
  *

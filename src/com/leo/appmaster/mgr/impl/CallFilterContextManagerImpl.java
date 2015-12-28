@@ -443,7 +443,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             upValues.put(CallFilterConstants.FIL_GR_PH_NUMB, number);
                             upValues.put(CallFilterConstants.FIL_NUMBER, filterCountT);
                             if (date > grDate) {
-                                upValues.put(CallFilterConstants.FIL_GR_DATE, grDate);
+                                upValues.put(CallFilterConstants.FIL_GR_DATE, date);
                                 if (grCallType != -1) {
                                     upValues.put(CallFilterConstants.FIL_CALL_TYPE, grCallType);
                                 }
@@ -696,7 +696,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (date > 0) {
                 values.put(CallFilterConstants.FIL_DET_DATE, date);
             }
-            if (date > 0) {
+            if (duration > 0) {
                 values.put(CallFilterConstants.FIL_DET_DURATION, duration);
             }
             if (callType != -1) {
