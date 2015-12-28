@@ -9,6 +9,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
     private RippleView mRvRight;
     private RippleView mRvLeft;
     private TextView mTvCheckboxText;
+    private CheckBox mCheck;
 
     private OnDiaogClickListener mListener;
 
@@ -58,11 +60,11 @@ public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
             mTitle.setText(R.string.tips);
         }
     }
-    
+
     public void setCheckboxText(String titleStr) {
         if (titleStr != null) {
             mTvCheckboxText.setText(titleStr);
-        } 
+        }
     }
 
 //    public void setContent(String titleStr) {
@@ -162,7 +164,7 @@ public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
         mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
-
+        mCheck = (CheckBox) dlgView.findViewById(R.id.checkb);
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
             @Override
@@ -178,6 +180,11 @@ public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
         setRightBtnListener(listener);
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    public boolean getCheckBoxState() {
+
+        return mCheck.isChecked();
     }
 
 //    public void setDialogIcon(int id) {

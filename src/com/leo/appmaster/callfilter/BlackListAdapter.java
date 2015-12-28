@@ -2,16 +2,20 @@ package com.leo.appmaster.callfilter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.provider.CallLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
@@ -90,7 +94,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         holder.clickView.setOnClickListener(BlackListAdapter.this);
         if (info.getIcon() != null) {
             holder.imageView.setImageBitmap(info.getIcon());
-        }else{
+        } else {
             holder.imageView.setImageResource(R.drawable.default_user_avatar);
         }
         holder.clickView.setTag(R.id.bg_delete, i);
@@ -117,11 +121,27 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 List<BlackListInfo> list = new ArrayList<BlackListInfo>();
-                BlackListInfo info = mList.get(position);
+                final BlackListInfo info = mList.get(position);
                 list.add(info);
                 mCallManger.removeBlackList(list);
-
                 mList.remove(position);
+                boolean restrLog = mDialog.getCheckBoxState();
+                if (restrLog) {
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+
+                            List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
+                            if (infos != null && infos.size() > 0) {
+                                for (CallFilterInfo info : infos) {
+                                    cmp.insertCallToSys(info);
+                                }
+                            }
+                        }
+                    });
+                }
+
                 if (mList.size() == 0) {
                     CallFilterMainActivity callFilterMainActivity =
                             (CallFilterMainActivity) mContext;

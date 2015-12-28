@@ -32,12 +32,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
-            <CheckBox 
+            <CheckBox
+                android:id="@+id/checkb"
                 android:button="@null"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/check_box_selector"
-                />
+                android:checked="false" />
             
             <TextView 
                 android:id="@+id/tv_checkbox_text"
