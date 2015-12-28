@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -249,17 +251,31 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (mDialog.getCheckStatus()) {
                     List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                     BlackListInfo blacklistInfo = new BlackListInfo();
                     blacklistInfo.setNumber(info.getNumber());
                     list.add(blacklistInfo);
                     mCallManger.removeBlackList(list);
+                    boolean restrLog = mDialog.getCheckBoxState();
 
                     List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
                     removeFilterList.add(info);
                     mCallManger.removeFilterGr(removeFilterList);
-                }
+                    if (restrLog) {
+                        ThreadManager.executeOnAsyncThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+
+                                List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
+                                if (infos != null && infos.size() > 0) {
+                                    for (CallFilterInfo info : infos) {
+                                        cmp.insertCallToSys(info);
+                                    }
+                                }
+                            }
+                        });
+                    }
                 mDialog.dismiss();
                 onBackPressed();
             }
