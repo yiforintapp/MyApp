@@ -1,8 +1,10 @@
 
 package com.leo.appmaster.callfilter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import android.content.ContentResolver;
@@ -51,6 +53,9 @@ import com.leo.appmaster.utils.Utilities;
 
 public class StrangeCallActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private static final String TAG = "AddFromCallLogListActivity";
+    private static final int MINUTE = 60;
+    private static final int HOUR = 60 * 60;
+
     private static final int HAVE_BLACK_LIST = -2;
     private List<ContactCallLog> mCallLogList;
     private CommonToolbar mTitleBar;
@@ -300,7 +305,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         }
 
         class ViewHolder {
-            CircleImageView contactIcon;
+            ImageView contactIcon;
             TextView name, date, addnum, callduration;
             ImageView checkImage, typeImage;
         }
@@ -321,22 +326,38 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         .findViewById(R.id.duration_strange);
                 vh.checkImage = (ImageView) convertView
                         .findViewById(R.id.calllog_item_check_typeIV);
-                vh.contactIcon = (CircleImageView) convertView.findViewById(R.id.contactIV);
+                vh.contactIcon = (ImageView) convertView.findViewById(R.id.contactIV);
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
 
             ContactCallLog mb = callLog.get(position);
-            if (mb.getCallLogName() != null && !mb.getCallLogName().equals("")) {
-                vh.name.setText(mb.getCallLogName());
+            vh.name.setText(mb.getCallLogNumber());
+
+            BlackListInfo info = mCallManger.getSerBlackFroNum(mb.getCallLogNumber());
+            if (info != null) {
+                int addToBlackNum = info.getAddBlackNumber();
+                if (addToBlackNum > 0) {
+                    vh.addnum.setVisibility(View.VISIBLE);
+                    vh.addnum.setText(StrangeCallActivity.this.getString(
+                            R.string.call_filter_add_to_blacklist_people_tips, addToBlackNum));
+                } else {
+                    vh.addnum.setVisibility(View.GONE);
+                }
             } else {
-                vh.name.setText(mb.getCallLogNumber());
+                vh.addnum.setVisibility(View.GONE);
             }
 
+            String newDate = changeToNewDate(mb.getClallLogDate());
+            vh.date.setText(newDate);
+            vh.callduration.setText(getRightTime(mb.getCallLogDuraction()));
 
-//            vh.date.setText(mb.getClallLogDate());
-//            vh.callduration.setText(mb.getCallLogDuraction() + "");
+            if (mb.getCallLogDuraction() > 0) {
+                vh.contactIcon.setImageResource(R.drawable.pick_up_call);
+            } else {
+                vh.contactIcon.setImageResource(R.drawable.no_pick_up_call);
+            }
 
             if (mb.isCheck()) {
                 vh.checkImage.setImageResource(R.drawable.select);
@@ -344,11 +365,42 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 vh.checkImage.setImageResource(R.drawable.unselect);
             }
 
-            Bitmap icon = mb.getContactIcon();
-            vh.contactIcon.setImageBitmap(icon);
+//            Bitmap icon = mb.getContactIcon();
+//            vh.contactIcon.setImageBitmap(icon);
 
             return convertView;
         }
+
+    }
+
+    private String getRightTime(long mSecond) {
+        String string;
+        if (mSecond < MINUTE) {
+            string = StrangeCallActivity.this.getString(
+                    R.string.number_call_duration_s, mSecond);
+        } else if (mSecond < HOUR) {
+            string = StrangeCallActivity.this.getString(
+                    R.string.number_call_duration_m, mSecond / MINUTE);
+        } else {
+            string = StrangeCallActivity.this.getString(
+                    R.string.number_call_duration_h, mSecond / HOUR);
+        }
+        return string;
+    }
+
+    private String changeToNewDate(String clallLogDate) {
+        String newString = clallLogDate;
+        SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            Date date = sfd.parse(clallLogDate);
+            long time = date.getTime();
+
+            SimpleDateFormat newFormat = new SimpleDateFormat("MM-dd HH:mm a");
+            newString = newFormat.format(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newString;
     }
 
     /*加载通话通话列表*/

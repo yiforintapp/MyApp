@@ -15,13 +15,12 @@
         android:layout_height="68dp"
         android:background="@drawable/new_list_selecter">
 
-        <com.leo.appmaster.privacycontact.CircleImageView
+        <ImageView
             android:id="@+id/contactIV"
-            android:layout_width="@dimen/privacy_contact_icon_size"
-            android:layout_height="@dimen/privacy_contact_icon_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/default_user_avatar" />
+            android:layout_marginLeft="5dp" />
 
         <LinearLayout
             android:id="@+id/add_from_call_log_itemLT"
@@ -47,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
-                android:text="2312 add to Black List"
                 android:textColor="@color/c4"
                 android:textSize="11dp" />
         </LinearLayout>

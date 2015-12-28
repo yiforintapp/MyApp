@@ -18,7 +18,7 @@ public class BlackListInfo {
     private int markerType;
     private Bitmap icon;
     private String numberArea;
-    private int addBlackNumber;
+    private int addBlackNumber = -1;
     private int markerNumber;
     /**
      * 0:未上传
