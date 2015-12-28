@@ -195,9 +195,9 @@ public class CallFilterManager {
                 }
                 LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
                 if (System.currentTimeMillis() - mLastOffHookTime < durationMax && info == null && serInfo == null) {
+                    //通话时间过短的提醒加入黑名单对话框
                     final MultiChoicesWitchSummaryDialog dialog1 = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0);
                     dialog1.getListView().setOnItemClickListener(new OnItemClickListener() {
-
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
@@ -229,7 +229,6 @@ public class CallFilterManager {
                             dialog1.dismiss();
                         }
                     });
-//                    CallFilterToast.makeText(mContext, phoneNumber, "已被" + "dfasdfasdf" + "人拉入", "标记").show();
                     /*恢复默认值*/
                     setCurrentCallTime(-1);
                 } else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1]) {
@@ -237,11 +236,10 @@ public class CallFilterManager {
                     mIsOffHook = false;
 //                  挂断后接听 询问是否家黑名单且展示标记人数
                   final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
-                  String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
-                  String summaryF = String.format(summaryS, filterTip[2]);
+                  String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
+                  String summaryF = String.format(summaryS, filterTip[2], filterTip[2]);
                   callHandleDialogWithSummary.setContent(summaryF);
                   callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
-
                       @Override
                       public void onItemClick(AdapterView<?> parent, View view, int position,
                               long id) {
@@ -279,6 +277,9 @@ public class CallFilterManager {
                     mIsOffHook = false;
                   //挂断后接听 询问是否加入黑名单且展示加入黑名单人数
                   final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
+                  String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
+                  String summaryF = String.format(summaryS, filterTip[2]);
+                  callHandleDialogWithSummary.setContent(summaryF);
                   callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
                       @Override
                       public void onClick(DialogInterface dialog, int which) {
