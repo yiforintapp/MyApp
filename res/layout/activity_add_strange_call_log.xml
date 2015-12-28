@@ -48,12 +48,12 @@
             ripple:rippleHover="true"
             ripple:rippleOverlay="true">
 
+<!--                 android:background="@drawable/green_radius_btn_shape" -->
             <TextView
                 android:id="@+id/tv_button_backup"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/green_radius_btn_shape"
                 android:gravity="center"
                 android:text="@string/call_filter_add_strange_num"
                 android:textColor="@color/white"
