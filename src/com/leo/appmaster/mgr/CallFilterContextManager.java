@@ -395,5 +395,12 @@ public abstract class CallFilterContextManager extends Manager {
      */
     public abstract boolean insertCallToSys(CallFilterInfo info);
 
+    /**
+     *指定号码查询服务器下发黑名单
+     * @param number
+     * @return
+     */
+    public abstract BlackListInfo getSerBlackFroNum(String number);
+
 
 }

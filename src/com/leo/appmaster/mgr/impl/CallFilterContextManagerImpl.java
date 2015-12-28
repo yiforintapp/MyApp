@@ -1221,4 +1221,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         }
         return false;
     }
+
+    @Override
+    public BlackListInfo getSerBlackFroNum(String number) {
+        CallFilterManager cm = CallFilterManager.getInstance(mContext);
+        return cm.getSerBlackForNum(number);
+    }
 }
