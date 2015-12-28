@@ -58,6 +58,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
     private static final int HAVE_BLACK_LIST = -2;
     private List<ContactCallLog> mCallLogList;
+    private List<ContactCallLog> mSrcBackupList;
     private CommonToolbar mTitleBar;
     private CallLogAdapter mCallLogAdapter;
     private ListView mListCallLog;
@@ -69,6 +70,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private ImageView mAddAll;
     private View mEmptyView;
     private RippleView mAddBtn;
+    private final int MAX_ITEM_SIZE = 100;
     private boolean mLoadDone = false;
     private AddFromCallHandler mAddFromCallHandler = new AddFromCallHandler();
     private Handler mHandler = new Handler() {
@@ -135,6 +137,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
         mListCallLog.setOnItemClickListener(this);
         mCallLogList = new ArrayList<ContactCallLog>();
+        mSrcBackupList = new ArrayList<ContactCallLog>();
         mAddPrivacyCallLog = new ArrayList<ContactCallLog>();
     }
 
@@ -289,7 +292,12 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
         @Override
         public int getCount() {
-            return (callLog != null) ? callLog.size() : 0;
+            if (callLog != null) {    
+                return Math.min(callLog.size(), MAX_ITEM_SIZE);
+            } else {
+                return 0;
+            }
+//            return (callLog != null) ? callLog.size() : 0;
         }
 
         @Override
@@ -487,6 +495,11 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                             mCallLogList.clear();
                         }
                         mCallLogList = calls;
+                        //备份一份onCreate时获取的原始数据 
+                        if (mSrcBackupList != null) {
+                            mSrcBackupList.clear();
+                            mSrcBackupList.addAll(mCallLogList);
+                        }
                         try {
                             mProgressBar.setVisibility(View.GONE);
                             if (mCallLogList != null && mCallLogList.size() > 0) {
@@ -495,6 +508,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                 mEmptyView.setVisibility(View.VISIBLE);
                             }
                             mCallLogAdapter = new CallLogAdapter(mCallLogList);
+                            fillOutBlacklistNumber(mCallLogList);
                             mListCallLog.setAdapter(mCallLogAdapter);
                             mLoadDone = true;
                         } catch (Exception e) {
@@ -516,8 +530,29 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     break;
             }
         }
+
     }
 
+    private void fillOutBlacklistNumber(List<ContactCallLog> mCallLogList) {
+        LeoLog.i(TAG, "start fill "+mCallLogList.size());
+        List<BlackListInfo> blackList = mCallManger.getBlackList();
+        List<String> numbers = new ArrayList<String>();
+        List<ContactCallLog> toRemove = new ArrayList<ContactCallLog>();
+        for (int i = 0; i < blackList.size(); i++) {
+            numbers.add(blackList.get(i).getNumber());
+            LeoLog.i(TAG, "numbers " + i +" : "+ numbers.get(numbers.size() -1));
+        }
+        for (int i = 0; i < mCallLogList.size(); i++) {
+            LeoLog.i(TAG, "phoneNumber " + i +" : "+ mCallLogList.get(i).getCallLogNumber());
+            if (numbers.contains(mCallLogList.get(i).getCallLogNumber())) {
+//                mCallLogList.remove(i);
+                toRemove.add(mCallLogList.get(i));
+            }
+        }
+        mCallLogList.removeAll(toRemove);
+        LeoLog.i(TAG, "end fill " + mCallLogList.size());
+    }
+    
     /*加载通话通话列表*/
     private void sendMsgHandler() {
         if (mAddFromCallHandler != null) {
@@ -532,7 +567,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                     }
-
                     Message msg = new Message();
                     msg.what = PrivacyContactUtils.MSG_ADD_CALL;
                     msg.obj = callLogList;
