@@ -338,7 +338,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             name = black.getNumberName();
                         }
                     }
-                    Bitmap icon = null;
+                    Bitmap icon = getBlackIcon(number);
 
                     /*默认值-1*/
                     int filterGrId = -1;
@@ -547,8 +547,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     int callType = cursor.getInt(callTypeColum);
                     int readState = cursor.getInt(readStateColum);
                     int filterType = cursor.getInt(filterTypeColum);
-                    Bitmap icon = null;
-
+                    Bitmap icon = getBlackIcon(number);
                     int filterNumber = -1;
                     int blackId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
@@ -614,9 +613,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     if (black != null) {
                         filterType = black.getLocHandlerType();
                     }
-                    Bitmap icon = null;
-
-
+                    Bitmap icon = getBlackIcon(number);
                     int filterNumber = -1;
                     int blackId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, numberN, numberArea, blackId,
@@ -1235,6 +1232,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public Bitmap getBlackIcon(String number) {
+        if (TextUtils.isEmpty(number)) {
+            return null;
+        }
         CallFilterManager cm = CallFilterManager.getInstance(mContext);
         BlackListInfo info = cm.getBlackFroNum(number);
         if (info != null) {
