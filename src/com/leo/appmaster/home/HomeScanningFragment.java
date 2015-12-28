@@ -697,15 +697,21 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (layout == mNewLostLayout) {
             ThreadManager.executeOnAsyncThread(mVidRunnable);
         } else if (layout == mNewVidLayout) {
-//            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
+
         } else if (layout == mNewPicLayout){
             ThreadManager.executeOnAsyncThread(mAppRunnable);
         } else if (layout == mNewAppLayout) {
             /* show Ad here */
             if (mAdLoaded) {
-                mAdLayout.setVisibility(View.VISIBLE);
-                mAdLayout.animate().setDuration(500)
-                        .scaleY(1.0f);
+//                mAdLayout.setVisibility(View.VISIBLE);
+//                mAdLayout.animate().setDuration(500)
+//                        .scaleY(1.0f);
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startAnimator(mAdLayout);
+                    }
+                }, 1000);
             }
         }
     }
@@ -930,7 +936,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void startAnimator(final LinearLayout layout) {
+    private void startAnimator(final View layout) {
 
         layout.setVisibility(View.VISIBLE);
         layout.setVisibility(View.INVISIBLE);
@@ -944,9 +950,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     }
 
-    private List<LinearLayout> lists = new ArrayList<LinearLayout>();
+    private List<View> lists = new ArrayList<View>();
 
-    private void startRealAnimator(final LinearLayout layout) {
+    private void startRealAnimator(final View layout) {
         AnimatorSet animatorSet = new AnimatorSet();
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -layout.getHeight(), layout.getTranslationY());
         objectAnimator.setDuration(300);
@@ -982,15 +988,15 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         animatorSet.start();
     }
 
-    private void makeItemMove(LinearLayout layout) {
+    private void makeItemMove(View layout) {
         for (int i = 0; i < lists.size(); i++) {
-            LinearLayout oldLayout = lists.get(i);
+            View oldLayout = lists.get(i);
             oldLayout.setTranslationY(layout.getHeight());
             oldLayoutAnimation(oldLayout, layout.getHeight());
         }
     }
 
-    private void oldLayoutAnimation(final LinearLayout oldLayout, int height) {
+    private void oldLayoutAnimation(final View oldLayout, int height) {
         LeoLog.d("testLayout", "layout top : " + oldLayout.getTop());
         LeoLog.d("testLayout", "layout bottom : " + oldLayout.getBottom());
         LeoLog.d("testLayout", "layout Y : " + oldLayout.getTranslationY());
