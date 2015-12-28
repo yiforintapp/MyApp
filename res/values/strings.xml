@@ -880,6 +880,10 @@
     <string name="number_toast_text_black">已被%1$s人拉入</string>
     <string name="number_toast_text_mark">已被%1$s人标记为</string>
     <string name="number_toast_color"><Data><![CDATA[<b><font color="#00eaff">%1$d</font></b>]]></Data></string>
+    <string name="number_add_to_black_list">被%1$s人拉黑</string>
+    <string name="number_call_duration_s">通话时长：%1$s秒</string>
+    <string name="number_call_duration_m">通话时长：%1$s分</string>
+    <string name="number_call_duration_h">通话时长：%1$s时</string>
 
     <string name="scan_score">处理+%1$s分</string>
     <string name="scan_app_title">发现%1$s个应用</string>

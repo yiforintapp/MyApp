@@ -44,7 +44,7 @@ public class CallFilterToast {
     };
 
 
-    public static CallFilterToast makeText(final Context context, String title, String partone, String parttwo) {
+    public static CallFilterToast makeText(final Context context, String title, int partone, int parttwoType, String parttwo) {
         CallFilterToast result = new CallFilterToast(context);
         mContext = context;
         LayoutInflater inflater = LayoutInflater.from(context);
