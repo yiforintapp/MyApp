@@ -249,17 +249,17 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                if (mDialog.getCheckStatus()) {
+                    List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+                    BlackListInfo blacklistInfo = new BlackListInfo();
+                    blacklistInfo.setNumber(info.getNumber());
+                    list.add(blacklistInfo);
+                    mCallManger.removeBlackList(list);
 
-                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
-                BlackListInfo blacklistInfo = new BlackListInfo();
-                blacklistInfo.setNumber(info.getNumber());
-                list.add(blacklistInfo);
-                mCallManger.removeBlackList(list);
-
-                List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
-                removeFilterList.add(info);
-                mCallManger.removeFilterGr(removeFilterList);
-
+                    List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
+                    removeFilterList.add(info);
+                    mCallManger.removeFilterGr(removeFilterList);
+                }
                 mDialog.dismiss();
                 onBackPressed();
             }

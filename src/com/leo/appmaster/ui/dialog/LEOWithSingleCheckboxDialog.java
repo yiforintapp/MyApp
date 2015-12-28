@@ -21,7 +21,7 @@ public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
     public static final String TAG = "LEOWithSIngleCheckboxDialog";
 
     private Context mContext;
-
+    private CheckBox mCbMain;
     private TextView mTitle;
     private TextView mContent;
     private TextView mLeftBtn;
@@ -154,12 +154,17 @@ public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
         });
     }
 
+    public boolean getCheckStatus() {
+        return mCbMain.isChecked();
+    }
+    
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_with_checkbox, null);
         mTvCheckboxText = (TextView) dlgView.findViewById(R.id.tv_checkbox_text);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
-
+        mCbMain = (CheckBox) dlgView.findViewById(R.id.cb_main);
+        mCbMain.setChecked(true);
         mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
         mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
