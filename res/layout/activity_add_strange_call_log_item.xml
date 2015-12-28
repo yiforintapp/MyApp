@@ -3,7 +3,6 @@
     android:id="@+id/messageRT"
     android:layout_width="match_parent"
     android:layout_height="68dp"
-    android:gravity="center_vertical"
     app:rippleAlpha="1"
     app:rippleColor="@color/home_tab_pressed"
     app:rippleDuration="250"
@@ -40,27 +39,65 @@
                 android:singleLine="true"
                 android:text="理奥网络"
                 android:textColor="@color/c2"
-                android:textSize="17dp" />
+                android:textSize="13dp" />
 
             <TextView
                 android:id="@+id/add_from_call_log_item_dateTV"
                 android:layout_width="@dimen/app_manager_backup_item_text_width"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:singleLine="true"
                 android:text="2312 add to Black List"
                 android:textColor="@color/c4"
-                android:textSize="13dp" />
+                android:textSize="11dp" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/calllog_item_check_typeIV"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
-            android:src="@drawable/unselect" />
+            android:layout_marginRight="12dp">
+
+            <RelativeLayout
+                android:id="@+id/two_tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/time_strange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="add to Black List"
+                    android:textColor="@color/c4"
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:id="@+id/duration_strange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/time_strange"
+                    android:layout_marginTop="5dp"
+                    android:singleLine="true"
+                    android:text="add to Black List"
+                    android:textColor="@color/c4"
+                    android:textSize="11dp" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/calllog_item_check_typeIV"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/two_tv_content"
+                android:src="@drawable/unselect" />
+
+        </RelativeLayout>
+
 
         <TextView
             android:layout_width="match_parent"

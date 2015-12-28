@@ -315,12 +315,10 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 vh.name = (TextView) convertView.findViewById(R.id.add_from_call_log_item_nameTV);
                 vh.addnum = (TextView) convertView
                         .findViewById(R.id.add_from_call_log_item_dateTV);
-
-//                vh.date = (TextView) convertView
-//                        .findViewById(R.id.str_time);
-//                vh.callduration = (TextView) convertView
-//                        .findViewById(R.id.str_duration);
-
+                vh.date = (TextView) convertView
+                        .findViewById(R.id.time_strange);
+                vh.callduration = (TextView) convertView
+                        .findViewById(R.id.duration_strange);
                 vh.checkImage = (ImageView) convertView
                         .findViewById(R.id.calllog_item_check_typeIV);
                 vh.contactIcon = (CircleImageView) convertView.findViewById(R.id.contactIV);
@@ -328,12 +326,14 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
+
             ContactCallLog mb = callLog.get(position);
             if (mb.getCallLogName() != null && !mb.getCallLogName().equals("")) {
                 vh.name.setText(mb.getCallLogName());
             } else {
                 vh.name.setText(mb.getCallLogNumber());
             }
+
 
 //            vh.date.setText(mb.getClallLogDate());
 //            vh.callduration.setText(mb.getCallLogDuraction() + "");
@@ -343,6 +343,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             } else {
                 vh.checkImage.setImageResource(R.drawable.unselect);
             }
+
             Bitmap icon = mb.getContactIcon();
             vh.contactIcon.setImageBitmap(icon);
 
