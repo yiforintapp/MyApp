@@ -2,6 +2,7 @@
 package com.leo.appmaster;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -537,7 +538,9 @@ public class HttpRequestAgent {
     public void commitBlackList(Listener<String> listener,
                                 ErrorListener errorListener, final String bodyString) {
         int method = Method.POST;
-        StringRequest request = new StringRequest(method, "http://192.168.1.205/report", listener, errorListener) {
+        String uri = LeoUrls.URL_UPLOAD_BLACK;
+//        String uri = "http://192.168.1.205/report";
+        StringRequest request = new StringRequest(method, uri, listener, errorListener) {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 byte[] bytes = null;
@@ -556,6 +559,14 @@ public class HttpRequestAgent {
         request.setBodyNeedCompress();
         request.setBodyNeedEncrypt();
         request.setShouldCache(false);
+        Context context = AppMasterApplication.getInstance();
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            String versionCode = String.valueOf(info.versionCode);
+            request.addEncryptHeader("ver_cd", versionCode);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
         mRequestQueue.add(request);
     }
 
@@ -567,9 +578,9 @@ public class HttpRequestAgent {
      */
     public void loadBlackList(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
-//        String url = LeoUrls.URI_BLACK_LIST;
-//        url = Utilities.getURL(url);
-        String url = "http://192.168.1.205/app/config";
+        String url = LeoUrls.URI_BLACK_LIST;
+        url = Utilities.getURL(url);
+//        String url = "http://192.168.1.205/app/config";
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);
@@ -579,6 +590,14 @@ public class HttpRequestAgent {
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
+        Context context = AppMasterApplication.getInstance();
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            String versionCode = String.valueOf(info.versionCode);
+            request.addEncryptHeader("ver_cd", versionCode);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
         mRequestQueue.add(request);
     }
 
@@ -600,6 +619,14 @@ public class HttpRequestAgent {
         request.setRetryPolicy(policy);
         request.setBodyNeedCompress();
         request.setBodyNeedEncrypt();
+        Context context = AppMasterApplication.getInstance();
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            String versionCode = String.valueOf(info.versionCode);
+            request.addEncryptHeader("ver_cd", versionCode);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
         mRequestQueue.add(request);
     }
 
