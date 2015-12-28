@@ -185,11 +185,11 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
                     }
                 }
 
-                if (addIntruderSocreAutoly()) {
-                    // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
-                    totalScore += ism.getMaxScore();
-                    mScoreMap.put(MgrContext.MGR_INTRUDE_SECURITY, ism.getMaxScore());
-                }
+//                if (addIntruderSocreAutoly()) {
+//                    // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
+//                    totalScore += ism.getMaxScore();
+//                    mScoreMap.put(MgrContext.MGR_INTRUDE_SECURITY, ism.getMaxScore());
+//                }
 
                 if (mSecurityScore != totalScore) {
                     mSecurityScore = totalScore;

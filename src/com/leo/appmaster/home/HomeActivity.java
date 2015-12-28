@@ -1287,23 +1287,23 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         LeoLog.d(TAG, "onProcessFinish, increaseScore again: " + increaseScore);
 
-        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(
-                MgrContext.MGR_INTRUDE_SECURITY);
-        boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
-                PrefConst.KEY_INTRUDER_ADDED, false);
-        int intruderScore = 0;
-        if (!ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && !intruderAdded) {
-            // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
-            intruderScore = ism.getMaxScore();
-            mPrivacyHelper.increaseScore(MgrContext.MGR_INTRUDE_SECURITY, intruderScore);
-            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
-        }
+//        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(
+//                MgrContext.MGR_INTRUDE_SECURITY);
+//        boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
+//                PrefConst.KEY_INTRUDER_ADDED, false);
+//        int intruderScore = 0;
+//        if (!ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && !intruderAdded) {
+//            // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
+//            intruderScore = ism.getMaxScore();
+//            mPrivacyHelper.increaseScore(MgrContext.MGR_INTRUDE_SECURITY, intruderScore);
+//            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
+//        }
 
         if (increaseScore > 0) {
             mPrivacyHelper.increaseScore(mgr, increaseScore);
         }
         mProcessedMgr = mgr;
-        increaseScore += intruderScore;
+//        increaseScore += intruderScore;
         mProcessedScore = increaseScore;
         LeoLog.d(TAG, "onProcessFinish, increaseScore again: " + increaseScore +
                 " | mProcessTimeout:" + mProcessAlreadyTimeout);

@@ -20,8 +20,18 @@ import com.leo.appmaster.utils.LeoLog;
  */
 public abstract class LockManager extends Manager {
     // 每新增一个应用扣除的分数
+
+    public static int MAX_SCORE = 40;
+    static {
+        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        if (ism.getIsIntruderSecurityAvailable()) {
+            MAX_SCORE = 40;
+        } else {
+            MAX_SCORE = 40 + ism.getMaxScore();
+        }
+    }
+
     public static final int SPA = 4;
-    public static final int MAX_SCORE = 40;
 
     public static final int LOCK_MODE_FULL = 1;
     public static final int LOCK_MODE_PURE = 2;
