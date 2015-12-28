@@ -360,7 +360,7 @@ public class CallFilterManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            CallFIlterUIHelper.getInstance().showReceiveCallNotification();
+            CallFIlterUIHelper.getInstance().showReceiveCallNotification(phoneNumber);
         } else if (serInfo != null) {
             /*为服务器黑名单：弹窗提醒*/
             int[] filterTip = mCFCManager.isCallFilterTip(phoneNumber);
