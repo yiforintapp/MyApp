@@ -89,6 +89,9 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                     }
                     AddFromContactListActivity
                             .notificationUpdatePrivacyContactList();
+                    Context context = AddFromCallLogListActivity.this;
+                    String str = getResources().getString(R.string.add_black_list_done);
+                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                     AddFromCallLogListActivity.this.finish();
                 } else {
                     if (mProgressDialog != null) {

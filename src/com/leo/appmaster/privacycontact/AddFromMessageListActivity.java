@@ -89,6 +89,9 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     if (mProgressDialog != null) {
                         mProgressDialog.cancel();
                     }
+                    Context context = AddFromMessageListActivity.this;
+                    String str = getResources().getString(R.string.add_black_list_done);
+                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                     AddFromMessageListActivity.this.finish();
                 } else {
                     if (mProgressDialog != null) {

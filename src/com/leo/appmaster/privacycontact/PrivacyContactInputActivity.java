@@ -140,6 +140,9 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 list.add(info);
 
                 mCallManger.addBlackList(list, false);
+                Context context = this;
+                String str = getResources().getString(R.string.add_black_list_done);
+                Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 Context context = PrivacyContactInputActivity.this;
