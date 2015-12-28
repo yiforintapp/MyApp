@@ -300,13 +300,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
                 mNewVidLayout, mNewLostLayout, mNewWifiLayout, mNewInstructLayout, mNewContactLayout);
-//
-//             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
+
+             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 startScanController();
-//            }
-//        }, 200);
+            }
+        }, 200);
 
         mRootView = view;
         ThreadManager.executeOnSubThread(new Runnable() {
@@ -363,7 +363,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     public void onAnimatorEnd(ScanningImageView imageView) {
         updateUIOnAnimEnd(imageView);
         if (imageView == mNewAppIv) {
-//            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
+            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
         } else if (imageView == mNewPhotoIv) {
             ThreadManager.executeOnAsyncThread(mVidRunnable);
         }
@@ -688,7 +688,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (layout == mNewLostLayout) {
             ThreadManager.executeOnAsyncThread(mVidRunnable);
         } else if (layout == mNewVidLayout) {
-            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
+//            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
         } else if (layout == mNewPicLayout){
             ThreadManager.executeOnAsyncThread(mAppRunnable);
         } else if (layout == mNewAppLayout) {
@@ -920,6 +920,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
 
     private void startAnimator(final LinearLayout layout) {
+
         AnimatorSet animatorSet = new AnimatorSet();
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -100, layout.getTranslationY());
         objectAnimator.setDuration(300);

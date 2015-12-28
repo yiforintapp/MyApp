@@ -36,7 +36,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
     private MaterialRippleLayout mIgnoreBtn;
     private View mIgnoreClick;
 
-    private View mStickView;
+    public View mStickView;
     private CheckBox mStickyCb;
     protected TextView mNewLabelTv;
 

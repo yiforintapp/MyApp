@@ -170,12 +170,18 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         String content = AppMasterApplication.getInstance().getString(stringId, mDataList == null ? 0 : mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));
         setProcessContent(R.string.pri_pro_lock_app);
+        ViewGroup.LayoutParams layoutParams = mStickView.getLayoutParams();
         if (!TextUtils.isEmpty(mAppString)) {
             mAppNotifyLayout.setVisibility(View.VISIBLE);
+            mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new_sticky);
+            layoutParams.height = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new_sticky);
             mAppNotifyText.setText(mAppString);
         } else {
             mAppNotifyLayout.setVisibility(View.GONE);
+            mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
+            layoutParams.height = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
         }
+        mStickView.setLayoutParams(layoutParams);
     }
 
     private void setLabelCount(int count) {
