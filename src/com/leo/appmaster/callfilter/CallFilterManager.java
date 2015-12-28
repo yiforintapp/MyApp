@@ -171,10 +171,10 @@ public class CallFilterManager {
         boolean isShortTime = false;
         int serBlackCt = getSerBlackCount();
         int blackCt = getBlackListCount();
-        if (serBlackCt <= 0 && blackCt <= 0) {
-            /*黑名单无数据*/
-//            return;   TODO PH
-        }
+//        if (serBlackCt <= 0 && blackCt <= 0) {
+//            /*黑名单无数据*/
+////            return;   TODO PH
+//        }
         BlackListInfo info = null;
         BlackListInfo serInfo = null;
         if (!TextUtils.isEmpty(phoneNumber)) {
@@ -182,10 +182,10 @@ public class CallFilterManager {
             mPhoneNumber = phoneNumber;
             info = getBlackFroNum(phoneNumber);
             serInfo = getSerBlackForNum(phoneNumber);
-            if (info == null && serInfo == null) {
-            /*该号码不存在黑名单中*/
-                return;
-            }
+//            if (info == null && serInfo == null) {
+//            /*该号码不存在黑名单中*/
+////                return;        //TODH PH
+//            }
         } else {
             if (TextUtils.isEmpty(state)) {
                 return;
@@ -244,13 +244,27 @@ public class CallFilterManager {
                     });
                     /*恢复默认值*/
                     setCurrentCallTime(-1);
-                } else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1]) {
+                } else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && info != null) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                     mIsOffHook = false;
 //                  挂断后接听 询问是否家黑名单且展示标记人数
                   final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
                   String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
-                  String summaryF = String.format(summaryS, filterTip[2], filterTip[3]);
+                  String mark = "";
+                  switch (filterTip[3]) {
+                        case CallFilterConstants.FILTER_CALL_TYPE:
+                            mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
+                            break;
+                        case CallFilterConstants.AD_SALE_TYPE:
+                            mark = mContext.getResources().getString(R.string.call_filter_mark_as_tx);
+                            break;
+                        case CallFilterConstants.CHEAT_NUM_TYPE:
+                            mark = mContext.getResources().getString(R.string.call_filter_mark_as_zp);
+                            break;
+                        default:
+                        break;
+                }
+                  String summaryF = String.format(summaryS, filterTip[2], mark);
                   callHandleDialogWithSummary.setContent(summaryF);
                   callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
                       @Override
@@ -284,8 +298,9 @@ public class CallFilterManager {
                           callHandleDialogWithSummary.dismiss();
                       }
                   });
+                  
                   callHandleDialogWithSummary.show();
-                } else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1]) {
+                } else if (mIsOffHook && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1] && info != null) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                     mIsOffHook = false;
                     //挂断后接听 询问是否加入黑名单且展示加入黑名单人数
@@ -300,7 +315,7 @@ public class CallFilterManager {
                         }
                     });
                     callHandleDialogWithSummary.show();
-                } else if (!mIsOffHook) {
+                } else if (!mIsOffHook && info != null) {
                     int tipType = filterTip[1];
                     //TODO 这里开始判断条件然后弹出对应的对话框
                     final LEOAlarmDialog confirmAddToBlacklistDialog = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));

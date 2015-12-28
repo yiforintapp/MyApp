@@ -351,7 +351,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         pm.setFilterUserNumber(50000);
                         pm.setFilterTipFroUser(3000);
                         BlackListInfo info = new BlackListInfo();
-                        info.setNumber("18790729990");
+                        info.setNumber("18575561740");
                         info.setAddBlackNumber(2258);
                         info.setMarkerType(2);
                         info.setMarkerNumber(30000);
