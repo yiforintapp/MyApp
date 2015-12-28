@@ -141,4 +141,27 @@ public class CallFIlterUIHelper {
         return dialog;
     }
 
+    /**
+     * 未接通知提示
+     * @param count
+     * @param number
+     */
+    public void showMissCallNotification(int count, String number) {
+        Context context = AppMasterApplication.getInstance();
+        AppMasterApplication ama = AppMasterApplication.getInstance();
+        Intent intent = new Intent(ama, IntruderprotectionActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
+        String title = context.getResources().getString(R.string.miss_noti_tit);
+        String content = String.format(context.getResources().getString(R.string.miss_noti_content), number, count);
+        mBuilder.setContentTitle(title)
+                .setContentText(content)
+                .setContentIntent(pendingIntent)
+                .setWhen(System.currentTimeMillis())
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_launcher);
+        mNotificationManager.notify(CallFilterConstants.NOTI_ID_STRA, mBuilder.build());
+    }
 }

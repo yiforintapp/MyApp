@@ -937,15 +937,17 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         CallFilterManager cm = CallFilterManager.getInstance(mContext);
         boolean isTip = cm.isIsCallFilterTip();
         cm.setIsCallFilterTip(true);
-        int[] type = new int[3];
+        int[] type = new int[4];
 //        if (!isTip) {
         type[0] = -1;
         int addBlackCount = 0;
         int markCount = 0;
+        int markType = -1;
         BlackListInfo blacks = cm.getSerBlackForNum(number);
         if (blacks != null) {
             addBlackCount = blacks.getAddBlackNumber();
             markCount = blacks.getMarkerNumber();
+            markType = blacks.getMarkerType();
         } else {
             return null;
         }
@@ -962,12 +964,14 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 type[1] = CallFilterConstants.DIALOG_TYPE[0];
                 type[0] = CallFilterConstants.IS_TIP_DIA[1];
                 type[2] = markCount * showPar;
+                type[3] = markType;
             } else {
                 if (addBlackCount >= blackTip) {
                     //显示黑名单
                     type[1] = CallFilterConstants.DIALOG_TYPE[1];
                     type[0] = CallFilterConstants.IS_TIP_DIA[1];
                     type[2] = addBlackCount * showPar;
+                    type[3] = markType;
                 } else {
                     type[0] = CallFilterConstants.IS_TIP_DIA[0];
                 }
