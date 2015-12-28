@@ -1,17 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -51,9 +39,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -129,10 +117,23 @@ import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 import com.mobvista.sdk.m.core.entity.Campaign;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */{
@@ -179,7 +180,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
-    private String[] mBannerAdids = {Constants.UNIT_ID_59, Constants.UNIT_ID_178, Constants.UNIT_ID_179};
+    private String[] mBannerAdids = {Constants.UNIT_ID_59};
 
     private RelativeLayout mPretendLayout;
     private PretendFragment mPretendFragment;
@@ -1170,6 +1171,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAdBitmapMap.clear();
         if (mAdapterCycle != null) {
             mBannerContainer.removeAllViews();
+            mAdapterCycle.getViews().clear();
             mAdapterCycle = null;
         }
         asyncLoadAd();
@@ -1202,15 +1204,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 mAdBitmapMap.put(unitId, loadedImage);
                                 mAdUnitIdList.add(unitId);
                                 if (mAdapterCycle == null) {
+                                    mBannerContainer.setVisibility(View.INVISIBLE);
                                     mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList);
                                     mBannerContainer.setAdapter(mAdapterCycle);
                                     if ((int) (Math.random() * (10)+1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()){
                                         mBannerContainer.setCurrentItem(1,false);
                                         mAdapterCycle.setLasterSlectedPage(1);
+                                        showAdAnimaiton();
                                         delayBannerHideAnim();
                                         hideIconAndPswTips();
-                                        
                                     } else {
+                                        mBannerContainer.setVisibility(View.VISIBLE);
                                         mBannerContainer.setCurrentItem(0,false);
                                         mAdapterCycle.setLasterSlectedPage(0);
                                     }
@@ -1263,6 +1267,47 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
     }
 
+    private void showAdAnimaiton() {
+        View animView = mAdapterCycle.getViews().get(1);
+        final int itemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
+        final int itemHeight = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
+        int offset = (getWindowWidth() - itemWidth) / 2;
+        /*mBannerContainer*/animView.setX(getWindowWidth() - offset);
+        /*mBannerContainer*/animView.setScaleX(0.7f);
+        /*mBannerContainer*/animView.setScaleY(0.7f);
+
+        ObjectAnimator animatorTrans1 = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "translationX", getWindowWidth() - offset, -offset);
+        animatorTrans1.setDuration(500);
+        ObjectAnimator animatorTrans2 = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "translationX", -offset, 0);
+
+        ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "scaleX", 0.7f, 1.0f);
+        ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "scaleY", 0.7f, 1.0f);
+        animatorScaleX.setDuration(500);
+        animatorScaleY.setDuration(500);
+
+        /*mBannerContainer*/animView.setPivotX(0);
+        /*mBannerContainer*/animView.setPivotY(itemHeight / 2);
+        animatorScaleX.setInterpolator(new DecelerateInterpolator());
+        animatorScaleY.setInterpolator(new DecelerateInterpolator());
+
+        final AnimatorSet animatorSet = new AnimatorSet();
+
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mBannerContainer.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+            }
+
+        });
+
+        animatorSet.play(animatorTrans2).with(animatorScaleX).with(animatorScaleY).after(animatorTrans1);
+        animatorSet.setStartDelay(300);
+        animatorSet.start();
+    }
 
     private void hideIconAndPswTips() {
         //隐藏图标和密码提示
@@ -1276,6 +1321,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
     
     private void delayBannerHideAnim() {
+        mHandler.removeMessages(LARGE_BANNER_HIDE);
+
         Message msg = Message.obtain();
         msg.what = LARGE_BANNER_HIDE;
         mHandler.sendMessageDelayed(msg, 6000);
@@ -2363,6 +2410,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mViews.add(view);
             notifyDataSetChanged();
         }
+
+        public LinkedList<View> getViews() {
+            return mViews;
+        }
+
 
     }
 
