@@ -97,10 +97,10 @@ public class CallFIlterUIHelper {
         PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, Notification.FLAG_AUTO_CANCEL);
         NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
-        mBuilder.setContentTitle("拦截到以下来电")
+        mBuilder.setContentTitle(ama.getResources().getString(R.string.call_filter_notifacation))
                 .setContentText("13510261550")
                 .setContentIntent(pendingIntent)
-                .setTicker("拦截到以下来电")
+//                .setTicker("拦截到以下来电")
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
