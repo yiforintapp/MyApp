@@ -160,7 +160,7 @@ public class CallFilterManager {
         int blackCt = getBlackListCount();
         if (serBlackCt <= 0 && blackCt <= 0) {
             /*黑名单无数据*/
-//            return;   TODO
+//            return;   TODO PH
         }
         BlackListInfo info = null;
         BlackListInfo serInfo = null;

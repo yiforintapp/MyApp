@@ -862,6 +862,9 @@
 	<string name="call_filter_remove_from_blacklist">移出黑名单</string>
 	<string name="call_filter_mark">标记</string>
 	<string name="call_filter_delete_record">删除拦截记录</string>
+	<string name="call_filter_add_to_blacklist_people_tips">已被%1$s人拉入黑名单</string>
+	<string name="call_filter_marked_people_tips">已被%1$s人标记为%2$s</string>
+	<string name="call_filter_marked_and_add_tips">标记%1$s并加入黑名单</string>
 	<string name="call_filter_mark_as_sr">骚扰电话</string>
 	<string name="call_filter_mark_as_tx">广告推销</string>
 	<string name="call_filter_mark_as_zp">诈骗电话</string>
@@ -869,7 +872,8 @@
 	<string name="call_filter_ask_add_to_blacklist">监测到您的通话时间"&lt;"5秒，是否将该号码标记并加入黑名单</string>
 	<string name="call_filter_confirm_add_to_blacklist">是否将%1$s加入黑名单</string>
 	<string name="call_filter_confirm_add_to_blacklist_summary">已有%1$s人将该号码加入黑名单</string>
-
+	<string name="call_filter_confirm_ask_mark_summary">已有%1$s人将该号码标记为%2$s</string>
+	
     <string name="scan_score">处理+%1$s分</string>
     <string name="scan_app_title">发现%1$s个应用</string>
     <string name="scan_app_content_less_three">其中高危隐私应用有%1$s</string>
