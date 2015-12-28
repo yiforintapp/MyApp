@@ -10,39 +10,47 @@
         android:layout_height="wrap_content"
         android:background="@color/cb" />
 
-    <RelativeLayout
+    <com.leo.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/normal_problem"
         android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:background="@color/fl">
+        android:layout_height="wrap_content"
+        app:rippleColor="@color/button_blue_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
-        <ImageView
-            android:id="@+id/iv_main_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/faq_question_new" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:background="@color/fl">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/iv_main_icon"
-            android:text="@string/feedback_problem_text"
-            android:textColor="@color/c2"
-            android:textSize="16dp" />
+            <ImageView
+                android:id="@+id/iv_main_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/faq_question_new" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/arrow_faq" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_main_icon"
+                android:text="@string/feedback_problem_text"
+                android:textColor="@color/c2"
+                android:textSize="16dp" />
 
-    </RelativeLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/arrow_faq" />
+        </RelativeLayout>
+    </com.leo.appmaster.ui.RippleView>
 
     <ScrollView
         android:id="@+id/scroll"
