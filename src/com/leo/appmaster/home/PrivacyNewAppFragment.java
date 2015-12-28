@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,8 +170,12 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         String content = AppMasterApplication.getInstance().getString(stringId, mDataList == null ? 0 : mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));
         setProcessContent(R.string.pri_pro_lock_app);
-        mAppNotifyLayout.setVisibility(View.VISIBLE);
-        mAppNotifyText.setText(mAppString);
+        if (!TextUtils.isEmpty(mAppString)) {
+            mAppNotifyLayout.setVisibility(View.VISIBLE);
+            mAppNotifyText.setText(mAppString);
+        } else {
+            mAppNotifyLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setLabelCount(int count) {

@@ -185,6 +185,7 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
+                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_app_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"/>
@@ -234,7 +235,7 @@
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
                         android:layout_marginBottom="10dp"
-                        android:visibility="invisible"/>
+                        android:visibility="gone"/>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -274,18 +275,27 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="14dp">
 
+                    <View
+                        android:id="@+id/scan_new_pic_top_line"
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/c4"/>
+
 
                     <ImageView
                         android:id="@+id/scan_new_pic_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
+                        android:layout_below="@+id/scan_new_pic_top_line"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/pic_scan" />
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
+                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_pic_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"/>
@@ -298,7 +308,7 @@
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
@@ -337,7 +347,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
@@ -351,14 +361,14 @@
                         android:id="@+id/scan_new_pic_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="30dp"
                         android:visibility="invisible"/>
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_pic_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="30dp"/>
                 </RelativeLayout>
 
 
@@ -379,17 +389,26 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="14dp">
 
+                    <View
+                        android:id="@+id/scan_new_vid_top_line"
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/c4"/>
+
                     <ImageView
                         android:id="@+id/scan_new_vid_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
+                        android:layout_below="@+id/scan_new_vid_top_line"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/video_scan" />
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
+                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_vid_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"/>
@@ -399,7 +418,7 @@
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
@@ -438,7 +457,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
@@ -452,14 +471,14 @@
                         android:id="@+id/scan_new_vid_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="30dp"
                         android:visibility="invisible"/>
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_vid_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="30dp"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -478,17 +497,26 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="14dp">
 
+                    <View
+                        android:id="@+id/scan_new_lost_top_line"
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/c4"/>
+
                     <ImageView
                         android:id="@+id/scan_new_lost_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
+                        android:layout_below="@+id/scan_new_lost_top_line"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/phone_scan" />
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
+                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_lost_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"/>
@@ -498,7 +526,7 @@
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
@@ -537,7 +565,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
@@ -551,19 +579,20 @@
                         android:id="@+id/scan_new_lost_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="30dp"
                         android:visibility="invisible"/>
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_lost_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="30dp"/>
                 </RelativeLayout>
             </LinearLayout>
 
+
             <LinearLayout
-                android:id="@+id/scan_new_wifi_layout"
+                android:id="@+id/scan_new_instruct_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -577,17 +606,134 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="14dp">
 
+                    <View
+                        android:id="@+id/scan_new_instruct_top_line"
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/c4"/>
+
+                    <ImageView
+                        android:id="@+id/scan_new_instruct_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:layout_below="@+id/scan_new_instruct_top_line"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/security_scan" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:minHeight="20dp"
+                        android:layout_below="@+id/scan_new_instruct_icon"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/c4"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="34dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/scan_new_instruct_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:textColor="@color/c2"
+                        android:textSize="@dimen/f3"
+                        android:text="@string/scan_instruct_title"/>
+
+                    <TextView
+                        android:id="@+id/scan_new_instruct_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/c4"
+                        android:layout_marginTop="6dp"
+                        android:textSize="@dimen/f4"/>
+
+                    <TextView
+                        android:id="@+id/scan_new_instruct_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:layout_marginTop="9dp"
+                        android:textColor="@color/cb2"
+                        android:drawableLeft="@drawable/tip_scan"
+                        android:drawablePadding="5dp"
+                        android:visibility="gone"
+                        android:textSize="@dimen/f4"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/scan_new_instruct">
+
+                    <ImageView
+                        android:id="@+id/scan_new_instruct_img"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="30dp"
+                        android:visibility="invisible"/>
+
+                    <com.leo.appmaster.ui.LoadingView
+                        android:id="@+id/scan_new_instruct_loading"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="30dp"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/scan_new_wifi_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_below="@+id/scan_new_instruct_layout"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="14dp">
+
+                    <View
+                        android:id="@+id/scan_new_wifi_top_line"
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/c4"/>
+
                     <ImageView
                         android:id="@+id/scan_new_wifi_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
+                        android:layout_below="@+id/scan_new_wifi_top_line"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/wifi_scan" />
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
+                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_wifi_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"/>
@@ -597,7 +743,7 @@
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
@@ -636,7 +782,7 @@
                         android:drawableLeft="@drawable/tip_scan"
                         android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:layout_marginBottom="10dp"/>
                 </LinearLayout>
 
@@ -650,113 +796,14 @@
                         android:id="@+id/scan_new_wifi_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="30dp"
                         android:visibility="invisible"/>
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_wifi_loading"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="30dp"
                         android:layout_width="25dp"
                         android:layout_height="25dp"/>
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/scan_new_instruct_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/white"
-                android:layout_below="@+id/scan_new_wifi_layout"
-                android:visibility="gone">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="14dp">
-
-                    <ImageView
-                        android:id="@+id/scan_new_instruct_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/security_scan" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_below="@+id/scan_new_instruct_icon"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
-
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_marginTop="14dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/scan_new_instruct_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:includeFontPadding="false"
-                        android:singleLine="true"
-                        android:textColor="@color/c2"
-                        android:textSize="@dimen/f3"
-                        android:text="@string/scan_instruct_title"/>
-
-                    <TextView
-                        android:id="@+id/scan_new_instruct_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/c4"
-                        android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"/>
-
-                    <TextView
-                        android:id="@+id/scan_new_instruct_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:includeFontPadding="false"
-                        android:singleLine="true"
-                        android:layout_marginTop="9dp"
-                        android:textColor="@color/cb2"
-                        android:drawableLeft="@drawable/tip_scan"
-                        android:drawablePadding="5dp"
-                        android:visibility="invisible"
-                        android:textSize="@dimen/f4"
-                        android:layout_marginBottom="10dp"/>
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:id="@+id/scan_new_instruct">
-
-                    <ImageView
-                        android:id="@+id/scan_new_instruct_img"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
-                        android:visibility="invisible"/>
-
-                    <com.leo.appmaster.ui.LoadingView
-                        android:id="@+id/scan_new_instruct_loading"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="10dp"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -767,20 +814,28 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="18dp"
                 android:background="@color/white"
-                android:layout_below="@+id/scan_new_instruct_layout"
+                android:layout_below="@+id/scan_new_wifi_layout"
                 android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="14dp">
+
+                    <View
+                        android:id="@+id/scan_new_contact_top_line"
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/c4"/>
 
                     <ImageView
                         android:id="@+id/scan_new_contact_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
+                        android:layout_below="@+id/scan_new_contact_top_line"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/contact_scan" />
 
@@ -789,7 +844,7 @@
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
@@ -842,14 +897,14 @@
                         android:id="@+id/scan_new_contact_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="30dp"
                         android:visibility="invisible"/>
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_contact_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="30dp"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -873,7 +928,7 @@
             android:layout_width="210dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/green_radius_shape_disable"
+            android:background="@drawable/green_radius_btn_shape"
             leo:rippleColor="@color/white_list_item_ripple"
             leo:rippleDuration="250"
             leo:rippleHover="true"

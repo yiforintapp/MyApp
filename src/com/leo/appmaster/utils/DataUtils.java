@@ -110,7 +110,7 @@ public class DataUtils {
         StringBuffer appNameBuilder = new StringBuffer();
         int theHighSize = highList.size();
 
-        if (theSize == 0) {  //无推荐应用未加锁
+        if (theHighSize == 0) {  //无推荐应用未加锁
            return context.getResources().getString(R.string.scan_app_content_zero);
 
         } else if (theHighSize == 1 && theSize == 1) { // 只有1个应用且是推荐应用
@@ -118,7 +118,7 @@ public class DataUtils {
 
         } else if (theHighSize == 1 && theSize > 1) { // 有1个推荐应用和其他应用
             for (AppItemInfo appItemInfo:highList) {
-                appNameBuilder.append(appItemInfo.packageName).append("、");
+                appNameBuilder.append(appItemInfo.label).append("、");
             }
             String appName = appNameBuilder.toString().substring(0, appNameBuilder.length() - 1);
             return  context.getResources().getString(
@@ -129,7 +129,7 @@ public class DataUtils {
 
         } else if (theHighSize == 2 && theSize > 2) { // 有2个推荐应用和其他应用
             for (AppItemInfo appItemInfo:highList) {
-                appNameBuilder.append(appItemInfo.packageName).append("、");
+                appNameBuilder.append(appItemInfo.label).append("、");
             }
             String appName = appNameBuilder.toString().substring(0, appNameBuilder.length() - 1);
             return  context.getResources().getString(
@@ -140,7 +140,7 @@ public class DataUtils {
 
         } else if (theHighSize == 3 && theSize > 3) { // 有3个推荐应用和其他应用
             for (AppItemInfo appItemInfo:highList) {
-                appNameBuilder.append(appItemInfo.packageName).append("、");
+                appNameBuilder.append(appItemInfo.label).append("、");
             }
             String appName = appNameBuilder.toString().substring(0, appNameBuilder.length() - 1);
             return  context.getResources().getString(
@@ -164,6 +164,7 @@ public class DataUtils {
 
     /** 获得随机数集合 */
     private static void randomSet(int size, int n, HashSet<Integer> set) {
+        int length = 3;
 
         for (int i = 0; i < n; i++) {
             Random random = new Random();
@@ -172,8 +173,8 @@ public class DataUtils {
         }
         int setSize = set.size();
 
-        if (setSize < n) {
-            randomSet(size, n - setSize, set);// 递归
+        if (setSize < length) {
+            randomSet(size, length - setSize, set);// 递归
         }
     }
 }

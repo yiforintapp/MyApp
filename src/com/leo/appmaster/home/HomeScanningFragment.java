@@ -2,6 +2,7 @@ package com.leo.appmaster.home;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -299,13 +300,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
                 mNewVidLayout, mNewLostLayout, mNewWifiLayout, mNewInstructLayout, mNewContactLayout);
-
-             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+//
+//             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
                 startScanController();
-            }
-        }, 200);
+//            }
+//        }, 200);
 
         mRootView = view;
         ThreadManager.executeOnSubThread(new Runnable() {
@@ -325,7 +326,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     @Override
     public void onDetach() {
         super.onDetach();
-//        mController.detachController();
+//      mController.detachController();
         destroyAd();
         mController.detachTheController();
     }
@@ -339,6 +340,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         LeoLog.i(TAG, "start to scaning.");
         mController.startScanning();
         ThreadManager.executeOnSubThread(mContactRunnable);
+        ThreadManager.executeOnAsyncThread(mPhotoRunnable);
     }
 
     private void onScannigFinish(final List<AppItemInfo> appList, final PhotoList photoItems,
@@ -361,7 +363,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     public void onAnimatorEnd(ScanningImageView imageView) {
         updateUIOnAnimEnd(imageView);
         if (imageView == mNewAppIv) {
-            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
+//            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
         } else if (imageView == mNewPhotoIv) {
             ThreadManager.executeOnAsyncThread(mVidRunnable);
         }
@@ -746,10 +748,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
         } else if (layout == mNewInstructLayout) {
             updateNewInstructList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
         } else if (layout == mNewWifiLayout) {
             updateNewWifiList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
+            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
         } else if (layout == mNewLostLayout) {
             updateNewLostList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
@@ -918,8 +920,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
 
     private void startAnimator(final LinearLayout layout) {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -80, layout.getTranslationY());
+        AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -100, layout.getTranslationY());
         objectAnimator.setDuration(300);
+        ObjectAnimator alpha = objectAnimator.ofFloat(layout, "alpha", 0f, 0.0f, 0.3f, 1f);
+        alpha.setDuration(400);
+        animatorSet.playTogether(objectAnimator, alpha);
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -939,7 +945,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             }
         });
 
-        objectAnimator.start();
+        animatorSet.start();
 
     }
 

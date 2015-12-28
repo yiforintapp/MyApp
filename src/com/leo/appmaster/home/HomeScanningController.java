@@ -78,8 +78,8 @@ public class HomeScanningController {
     private ObjectAnimator mNewContactLayoutAnim;
 
     private static final int NEW_PER_CONTACT = 10;
-    private static final int NEW_PER_INS = 20;
-    private static final int NEW_PER_WIFI = 30;
+    private static final int NEW_PER_INS = 30;
+    private static final int NEW_PER_WIFI = 20;
     private static final int NEW_PER_LOST = 40;
     private static final int NEW_PER_VID = 60;
     private static final int NEW_PER_PIC = 80;
@@ -89,7 +89,7 @@ public class HomeScanningController {
 
     private static final int NEW_UP_LIMIT_APP = 4000;
     private static final int NEW_UP_LIMIT_PIC = 8000;
-    private static final int NEW_UP_LIMIT_PIC_PROCESSED = 2000;
+    private static final int NEW_UP_LIMIT_PIC_PROCESSED = 6000;
     private static final int NEW_UP_LIMIT_VID = 2000;
     private static final int NEW_UP_LIMIT_LOST = 1000;
     private static final int NEW_UP_LIMIT_WIFI = 1000;
@@ -253,23 +253,23 @@ public class HomeScanningController {
         LeoLog.d(TAG, "onAnimationStart...");
         if (animation == mNewContactLayoutAnim) {
             mFragment.OnItemAnimationStart(mNewContactLayout);
+            mNewWifiLayoutAnim = getLayoutItemAnim(mNewWifiLayout);
+            mNewWifiLayoutAnim.start();
+            LeoLog.e(TAG, "mNewContactAnim start");
+        } else if (animation == mNewWifiLayoutAnim) {
+            mFragment.OnItemAnimationStart(mNewWifiLayout);
             IntrudeSecurityManager manager = (IntrudeSecurityManager)
                     MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
             if (!manager.getIsIntruderSecurityAvailable()) {
-                mNewWifiLayoutAnim = getLayoutItemAnim(mNewWifiLayout);
-                mNewWifiLayoutAnim.start();
+                mNewLostLayoutAnim = getLayoutItemAnim(mNewLostLayout);
+                mNewLostLayoutAnim.start();
             } else {
                 mNewInstructLayoutAnim = getLayoutItemAnim(mNewInstructLayout);
                 mNewInstructLayoutAnim.start();
             }
-            LeoLog.e(TAG, "mNewContactAnim start");
+            LeoLog.e(TAG, "mNewInstructAnim start");
         } else if (animation == mNewInstructLayoutAnim) {
             mFragment.OnItemAnimationStart(mNewInstructLayout);
-            mNewWifiLayoutAnim = getLayoutItemAnim(mNewWifiLayout);
-            mNewWifiLayoutAnim.start();
-            LeoLog.e(TAG, "mNewInstructAnim start");
-        } else if (animation == mNewWifiLayoutAnim) {
-            mFragment.OnItemAnimationStart(mNewWifiLayout);
             mNewLostLayoutAnim = getLayoutItemAnim(mNewLostLayout);
             mNewLostLayoutAnim.start();
             LeoLog.e(TAG, "mNewWifiAnim start");
@@ -448,15 +448,29 @@ public class HomeScanningController {
         LeoLog.d(TAG, "onAnimatorEnd...");
         if (animation == mNewContactAnim) {
             mFragment.OnItemAnimationEnd(mNewContactLayout);
+            mNewWifiAnim = getItemAnimation(mNewWifiLayout);
+            int currPct = mActivity.getScanningPercent();
+            mActivity.scanningFromPercent(NEW_UP_LIMIT_WIFI, currPct, NEW_PER_WIFI);
+            LeoLog.e(TAG, "mNewContactAnim end");
+            mNewWifiAnim.start();
+        } else if (animation == mNewInstructAnim) {
+            mFragment.OnItemAnimationEnd(mNewInstructLayout);
 
+            mNewLostAnim = getItemAnimation(mNewLostLayout);
+            int currPct = mActivity.getScanningPercent();
+            mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
+            LeoLog.e(TAG, "mNewInstructAnim end");
+            mNewLostAnim.start();
+        } else if (animation == mNewWifiAnim) {
+            mFragment.OnItemAnimationEnd(mNewWifiLayout);
             IntrudeSecurityManager manager = (IntrudeSecurityManager)
                     MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
             if (!manager.getIsIntruderSecurityAvailable()) {
-                mNewWifiAnim = getItemAnimation(mNewWifiLayout);
+                mNewLostAnim = getItemAnimation(mNewLostLayout);
                 int currPct = mActivity.getScanningPercent();
-                mActivity.scanningFromPercent(NEW_UP_LIMIT_WIFI, currPct, NEW_PER_WIFI);
+                mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
                 LeoLog.e(TAG, "mNewInstructAnim end");
-                mNewWifiAnim.start();
+                mNewLostAnim.start();
             } else {
                 mNewInstructAnim = getItemAnimation(mNewInstructLayout);
                 int currPct = mActivity.getScanningPercent();
@@ -464,22 +478,6 @@ public class HomeScanningController {
                 LeoLog.e(TAG, "mNewContactAnim end");
                 mNewInstructAnim.start();
             }
-
-        } else if (animation == mNewInstructAnim) {
-            mFragment.OnItemAnimationEnd(mNewInstructLayout);
-
-            mNewWifiAnim = getItemAnimation(mNewWifiLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_WIFI, currPct, NEW_PER_WIFI);
-            LeoLog.e(TAG, "mNewInstructAnim end");
-            mNewWifiAnim.start();
-        } else if (animation == mNewWifiAnim) {
-            mFragment.OnItemAnimationEnd(mNewWifiLayout);
-            mNewLostAnim = getItemAnimation(mNewLostLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
-            LeoLog.e(TAG, "mNewWifiAnim end");
-            mNewLostAnim.start();
         } else if (animation == mNewLostAnim) {
             mFragment.OnItemAnimationEnd(mNewLostLayout);
             mNewVidAnim = getItemAnimation(mNewVidLayout);
