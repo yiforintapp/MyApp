@@ -49,6 +49,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.imageloader.core.BaseImageDecoder;
 
 public class AddFromContactListActivity extends BaseActivity implements OnItemClickListener {
     public static final String TAG = "AddFromContactListActivity";
@@ -450,6 +451,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                 String name = contact.getContactName();
                                 String number = PrivacyContactUtils.
                                         simpleFromateNumber(contact.getContactNumber());
+                                Bitmap icon = contact.getContactIcon();
                                 boolean flagContact = PrivacyContactUtils.pryContRemovSame(number);
                                 if (!flagContact) {
                                     boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
@@ -457,7 +459,11 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                         BlackListInfo info = new BlackListInfo();
                                         info.setNumberName(name);
                                         info.setNumber(number);
+                                        if (icon != null) {
+                                            info.setIcon(icon);
+                                        }
                                         blackList.add(info);
+
                                     }
                                 }
                                 Message messge = new Message();

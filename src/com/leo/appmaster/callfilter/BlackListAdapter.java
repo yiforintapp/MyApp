@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -63,7 +64,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.black_list_item, null);
             holder = new BlackListHolder();
-            holder.imageView = (ImageView) convertView.findViewById(R.id.iv_icon);
+            holder.imageView = (CircleImageView) convertView.findViewById(R.id.iv_icon);
             holder.title = (TextView) convertView.findViewById(R.id.tv_title);
             holder.desc = (TextView) convertView.findViewById(R.id.tv_desc);
             holder.clickView = (ImageView) convertView.findViewById(R.id.bg_delete);
@@ -87,6 +88,9 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         }
 
         holder.clickView.setOnClickListener(BlackListAdapter.this);
+        if (info.getIcon() != null) {
+            holder.imageView.setImageBitmap(info.getIcon());
+        }
         holder.clickView.setTag(R.id.bg_delete, i);
 
         return convertView;
@@ -129,7 +133,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     }
 
     public static class BlackListHolder {
-        ImageView imageView;
+        CircleImageView imageView;
         TextView title;
         TextView desc;
         ImageView clickView;

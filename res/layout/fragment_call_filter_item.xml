@@ -15,15 +15,13 @@
         android:layout_height="68dp"
         android:background="@drawable/new_list_selecter">
 
-        <ImageView
+        <com.leo.appmaster.privacycontact.CircleImageView
             android:id="@+id/iv_icon"
             android:layout_width="@dimen/app_manager_lv_item_icon_width_height"
             android:layout_height="@dimen/app_manager_lv_item_icon_width_height"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/default_user_avatar"
-            android:gravity="center"
-            android:scaleType="centerInside" />
+            android:src="@drawable/default_user_avatar" />
 
         <LinearLayout
             android:id="@+id/content_name_size"

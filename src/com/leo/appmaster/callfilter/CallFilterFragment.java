@@ -163,7 +163,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         try {
             intent = new Intent(mActivity, CallFilterRecordActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("data", mFilterList.get(i));
+            CallFilterInfo info = mFilterList.get(i);
+            info.setIcon(null);
+            bundle.putSerializable("data", info);
             intent.putExtras(bundle);
             intent.putExtra("isSysContact", checkIsSysContact(mFilterList.get(i).getNumber()));
             startActivity(intent);

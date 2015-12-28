@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
@@ -64,7 +65,7 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.fragment_call_filter_item, null);
 
             holder = new BlackListHolder();
-            holder.imageView = (ImageView) convertView.findViewById(R.id.iv_icon);
+            holder.imageView = (CircleImageView) convertView.findViewById(R.id.iv_icon);
             holder.title = (TextView) convertView.findViewById(R.id.tv_title);
             holder.desc = (TextView) convertView.findViewById(R.id.tv_desc);
             holder.time = (TextView) convertView.findViewById(R.id.tv_call_time);
@@ -88,7 +89,9 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         if (filternum < 1) {
             filternum = 1;
         }
-
+        if (info.getIcon() != null) {
+            holder.imageView.setImageBitmap(info.getIcon());
+        }
 
         holder.time.setText(getTime(time));
         holder.filternum.setText(filternum + "");
@@ -151,7 +154,7 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
 
 
     public static class BlackListHolder {
-        ImageView imageView;
+        CircleImageView imageView;
         TextView title;
         TextView desc;
         TextView filternum;

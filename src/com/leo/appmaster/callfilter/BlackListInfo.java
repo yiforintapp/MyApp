@@ -2,10 +2,12 @@ package com.leo.appmaster.callfilter;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by runlee on 15-12-19.
  */
-public class BlackListInfo {
+public class BlackListInfo implements Serializable {
     private int id = -1;
     private String number;
     private String numberName;
