@@ -922,10 +922,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public void setFilterOpenState(boolean flag) {
         PreferenceTable pre = PreferenceTable.getInstance();
-        boolean state = pre.getBoolean(PrefConst.KEY_FIL_OP_STA, false);
-        if (state != flag) {
-            pre.putBoolean(PrefConst.KEY_FIL_OP_STA, flag);
-        }
+        pre.putBoolean(PrefConst.KEY_FIL_OP_STA, flag);
     }
 
     @Override
@@ -937,10 +934,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public void setFilterNotiOpState(boolean flag) {
         PreferenceTable pre = PreferenceTable.getInstance();
-        boolean state = pre.getBoolean(PrefConst.KEY_FIL_NOTI_STATE, false);
-        if (state != flag) {
-            pre.putBoolean(PrefConst.KEY_FIL_NOTI_STATE, flag);
-        }
+        pre.putBoolean(PrefConst.KEY_FIL_NOTI_STATE, flag);
     }
 
     @Override

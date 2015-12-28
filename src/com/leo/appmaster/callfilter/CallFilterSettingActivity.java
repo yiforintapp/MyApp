@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -32,16 +33,15 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
     }
 
     private void fillData() {
-        boolean isFilterSelected = PreferenceTable.getInstance().
-                getBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
+         CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        boolean isFilterSelected = cmp.getFilterOpenState();
         if (isFilterSelected) {
             checkBox.setImageResource(R.drawable.switch_on);
         } else {
             checkBox.setImageResource(R.drawable.switch_off);
         }
 
-        boolean isNotiSelected = PreferenceTable.getInstance().
-                getBoolean(CallFilterConstants.SETTING_NOTI_FLAG, true);
+        boolean isNotiSelected = cmp.getFilterNotiOpState();
         if (isNotiSelected) {
             checkBoxTwo.setImageResource(R.drawable.switch_on);
         } else {
@@ -78,10 +78,9 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.content_item_filter:
-                boolean isFilterSelected = PreferenceTable.getInstance().
-                        getBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
-                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
+                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                boolean isFilterSelected =cmp.getFilterOpenState();
                 if (!isFilterSelected) {
 //                    PreferenceTable.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
@@ -96,8 +95,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.content_item_noti:
                 CallFilterContextManagerImpl cmpi = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                boolean isNotiSelected = PreferenceTable.getInstance().
-                        getBoolean(CallFilterConstants.SETTING_NOTI_FLAG, true);
+                boolean isNotiSelected = cmpi.getFilterNotiOpState();
                 if (!isNotiSelected) {
 //                    PreferenceTable.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, true);
