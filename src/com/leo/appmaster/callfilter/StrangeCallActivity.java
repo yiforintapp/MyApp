@@ -114,7 +114,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         setContentView(R.layout.activity_add_strange_call_log);
         handleIntent();
         initUI();
-        sendMsgHandler();
     }
 
     private void handleIntent() {
@@ -132,6 +131,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mAddAll.setOnClickListener(this);
         mEmptyView = findViewById(R.id.add_call_log_default_tv);
         mAddBtn = (RippleView) findViewById(R.id.rv_button_backup);
+        mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
         mAddBtn.setOnClickListener(this);
         mListCallLog = (ListView) findViewById(R.id.add_privacy_call_logLV);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
@@ -144,7 +144,12 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     @Override
     protected void onResume() {
         super.onResume();
-
+        sendMsgHandler();
+        if (mAddPrivacyCallLog.size() != 0) {
+            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+        } else {
+            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+        }
     }
 
     @Override
@@ -197,6 +202,11 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 mAddAll.setImageDrawable(getResources().getDrawable(R.drawable.unselect));
             }
 
+        }
+        if (mAddPrivacyCallLog.size() != 0) {
+            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+        } else {
+            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
         }
     }
 

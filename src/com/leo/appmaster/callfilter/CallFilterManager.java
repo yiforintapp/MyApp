@@ -167,7 +167,6 @@ public class CallFilterManager {
         if (!filOpSta) {
             return;
         }
-
         /*去除重复广播*/
         long time = System.currentTimeMillis();
         if ((time - getCurrentCallTime()) < CallFilterConstants.CALL_RECEIV_DURAT) {

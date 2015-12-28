@@ -21,7 +21,6 @@ public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
     public static final String TAG = "LEOWithSIngleCheckboxDialog";
 
     private Context mContext;
-    private CheckBox mCbMain;
     private TextView mTitle;
     private TextView mContent;
     private TextView mLeftBtn;
