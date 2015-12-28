@@ -171,6 +171,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private String mAppNotifyText;
     private RelativeLayout mScrollLayout;
     private LayoutTransition mTransition;
+    private float mCurrentY;
 
     private Handler mHandler = new Handler() {
 
@@ -918,7 +919,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void startAnimator(final LinearLayout layout) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -80, layout.getTranslationY());
-        objectAnimator.setDuration(50);
+        objectAnimator.setDuration(300);
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -939,6 +940,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         });
 
         objectAnimator.start();
+
     }
 
     private void updateContactStartList() {
