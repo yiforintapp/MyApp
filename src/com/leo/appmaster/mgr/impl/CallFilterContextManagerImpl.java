@@ -442,7 +442,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             ContentValues upValues = new ContentValues();
                             upValues.put(CallFilterConstants.FIL_GR_PH_NUMB, number);
                             upValues.put(CallFilterConstants.FIL_NUMBER, filterCountT);
-                            if (duration > grDate) {
+                            if (date > grDate) {
                                 upValues.put(CallFilterConstants.FIL_GR_DATE, grDate);
                                 if (grCallType != -1) {
                                     upValues.put(CallFilterConstants.FIL_CALL_TYPE, grCallType);
