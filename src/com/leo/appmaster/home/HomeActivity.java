@@ -381,7 +381,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mPhotoList = photoItems;
         mVideoList = videoItemBeans;
         mAppScanText = appScanText;
-        mPrivacyFragment.tryPlayFullScoreAnim();
 
         int score = mPrivacyHelper.getSecurityScore();
         if (score == 100) {
