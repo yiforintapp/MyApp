@@ -18,7 +18,7 @@ public class PropertyInfoUtil {
         return mi.availMem;
 //      return Formatter.formatFileSize(context, mi.availMem);
     }
-    
+
 //    @SuppressLint("NewApi")
 //	public static long getTotalMemory2(Context context) {
 //        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -27,23 +27,24 @@ public class PropertyInfoUtil {
 //        return mi.totalMem;
 ////      return Formatter.formatFileSize(context, mi.availMem);
 //    }
-    
+
     public static long getTotalMemory(Context context) {
         String str1 = "/proc/meminfo";
         String str2;
         String[] arrayOfString;
         long initial_memory = 0;
         try {
-        FileReader localFileReader = new FileReader(str1);
-        BufferedReader localBufferedReader = new BufferedReader(
-        localFileReader, 8192);
-        str2 = localBufferedReader.readLine();
-        arrayOfString = str2.split("\\s+");
-        for (String num : arrayOfString) {
-            LeoLog.i("PropertyInfoUtil", str2+" : "+num + "\t");
-        }
-        initial_memory = Integer.valueOf(arrayOfString[1]).intValue() * 1024;
-        localBufferedReader.close();
+            FileReader localFileReader = new FileReader(str1);
+            BufferedReader localBufferedReader = new BufferedReader(
+                    localFileReader, 8192);
+            str2 = localBufferedReader.readLine();
+            arrayOfString = str2.split("\\s+");
+            for (String num : arrayOfString) {
+                LeoLog.i("PropertyInfoUtil", str2 + " : " + num + "\t");
+            }
+            int memory = Integer.valueOf(arrayOfString[1]).intValue();
+            initial_memory = memory;
+            localBufferedReader.close();
 
         } catch (IOException e) {
         }

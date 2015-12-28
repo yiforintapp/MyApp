@@ -52,7 +52,7 @@ public class Constants {
     public static final String PLACEMENT_ID_243 = "1474823452846141_1501676993494120";
 
     public static final String INTRUDER_PHOTO_TIMESTAMP_FORMAT = "yyyy/MM/dd-HH:mm:ss";
-    public static final long TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY = 512 * 1024 * 1024;
+    public static final long TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY = 512 * 1024;
     
     public static final String TABLE_DOWNLOAD = "download";
     public static final String TABLE_FEEDBACK = "feedback";
