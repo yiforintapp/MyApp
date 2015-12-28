@@ -485,7 +485,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             } else if (!TextUtils.isEmpty(number)) {
                 selection = CallFilterConstants.FIL_GR_PH_NUMB + " LIKE ? ";
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                selectionArgs = new String[]{formateNumber};
+                selectionArgs = new String[]{"%"+formateNumber};
                 List<CallFilterInfo> calls = new ArrayList<CallFilterInfo>();
                 CallFilterInfo call = new CallFilterInfo();
                 call.setNumber(number);
@@ -742,7 +742,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             } else if (!TextUtils.isEmpty(number)) {
                 selection = CallFilterConstants.FIL_DET_PHONE_NUMBER + " LIKE ? ";
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                selectionArgs = new String[]{formateNumber};
+                selectionArgs = new String[]{"%"+formateNumber};
             }
             cr.delete(uri, selection, selectionArgs);
         }
@@ -891,7 +891,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             } else if (!TextUtils.isEmpty(number)) {
                 selection = CallFilterConstants.STR_TP_NUM + " LIKE ? ";
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                selectionArgs = new String[]{formateNumber};
+                selectionArgs = new String[]{"%"+formateNumber};
             }
             cr.delete(uri, selection, selectionArgs);
         }
@@ -1110,7 +1110,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? and ");
         sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? ");
         String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(formateNum), String.valueOf(CallFilterConstants.NO_LOC_HD)};
+        String[] selectArgs = new String[]{"%"+String.valueOf(formateNum), String.valueOf(CallFilterConstants.NO_LOC_HD)};
         return CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
     }
 
