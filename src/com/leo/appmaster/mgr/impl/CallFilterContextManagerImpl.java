@@ -338,11 +338,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             name = black.getNumberName();
                         }
                     }
+                    Bitmap icon = null;
 
                     /*默认值-1*/
                     int filterGrId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
-                            filterNumber, date, duration, callType, readState, filterType, filterGrId);
+                            filterNumber, date, duration, callType, readState, filterType, filterGrId, icon);
                     infoList.add(filterInfo);
                 }
             }
@@ -546,11 +547,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     int callType = cursor.getInt(callTypeColum);
                     int readState = cursor.getInt(readStateColum);
                     int filterType = cursor.getInt(filterTypeColum);
+                    Bitmap icon = null;
 
                     int filterNumber = -1;
                     int blackId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, number, numberArea, blackId,
-                            filterNumber, date, duration, callType, readState, filterType, filterGrId);
+                            filterNumber, date, duration, callType, readState, filterType, filterGrId, icon);
                     filterInfos.add(filterInfo);
                 }
             }
@@ -612,10 +614,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     if (black != null) {
                         filterType = black.getLocHandlerType();
                     }
+                    Bitmap icon = null;
+
+
                     int filterNumber = -1;
                     int blackId = -1;
                     CallFilterInfo filterInfo = CallFilterUtils.getFilterInfo(id, name, numberN, numberArea, blackId,
-                            filterNumber, date, duration, callType, readState, filterType, filterGrId);
+                            filterNumber, date, duration, callType, readState, filterType, filterGrId, icon);
                     filterInfos.add(filterInfo);
                 }
             }
@@ -1226,5 +1231,18 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     public BlackListInfo getSerBlackFroNum(String number) {
         CallFilterManager cm = CallFilterManager.getInstance(mContext);
         return cm.getSerBlackForNum(number);
+    }
+
+    @Override
+    public Bitmap getBlackIcon(String number) {
+        CallFilterManager cm = CallFilterManager.getInstance(mContext);
+        BlackListInfo info = cm.getBlackFroNum(number);
+        if (info != null) {
+            Bitmap icon = info.getIcon();
+            if (icon != null) {
+                return icon;
+            }
+        }
+        return null;
     }
 }

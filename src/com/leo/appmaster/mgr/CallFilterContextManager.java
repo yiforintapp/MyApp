@@ -1,6 +1,7 @@
 package com.leo.appmaster.mgr;
 
 import android.content.ContentValues;
+import android.graphics.Bitmap;
 
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterInfo;
@@ -207,8 +208,9 @@ public abstract class CallFilterContextManager extends Manager {
     /**
      * int[0]指定号码是否满足？：0,不满足;1,满足
      * int[1]哪个弹框类型？：0,标记;1,黑名单
-     *int[2]该弹框人数
-     *int[3]标记类型
+     * int[2]该弹框人数
+     * int[3]标记类型
+     *
      * @param number
      * @return
      */
@@ -390,17 +392,25 @@ public abstract class CallFilterContextManager extends Manager {
 
     /**
      * 向系统通话数据库中插入数据
-      * @param info
+     *
+     * @param info
      * @return
      */
     public abstract boolean insertCallToSys(CallFilterInfo info);
 
     /**
-     *指定号码查询服务器下发黑名单
+     * 指定号码查询服务器下发黑名单
+     *
      * @param number
      * @return
      */
     public abstract BlackListInfo getSerBlackFroNum(String number);
 
+    /**
+     * 指定号码查询头像
+     * @param number
+     * @return
+     */
+    public abstract Bitmap getBlackIcon(String number);
 
 }

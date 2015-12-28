@@ -121,6 +121,7 @@ public class CallFilterUtils {
      * @param readState    -1（无该属性）
      * @param filterType   0（无） ，标记类型
      * @param filterGrId   -1（无该属性）
+     * @param icon         null
      * @return
      */
     public static CallFilterInfo getFilterInfo(int id,
@@ -134,7 +135,8 @@ public class CallFilterUtils {
                                                int callType,
                                                int readState,
                                                int filterType,
-                                               int filterGrId) {
+                                               int filterGrId,
+                                               Bitmap icon) {
         CallFilterInfo filter = new CallFilterInfo();
         if (id != -1) {
             filter.setId(id);
@@ -165,6 +167,9 @@ public class CallFilterUtils {
         filter.setFilterType(filterType);
         if (filterGrId != -1) {
             filter.setFilterGrId(filterGrId);
+        }
+        if (icon != null) {
+            filter.setIcon(icon);
         }
         return filter;
     }

@@ -2,6 +2,8 @@
 package com.leo.appmaster.callfilter;
 
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class CallFilterInfo implements Serializable {
@@ -36,6 +38,7 @@ public class CallFilterInfo implements Serializable {
     private int callType = -1;
     private long duration = -1;
     private int filterGrId = -1;
+    private Bitmap icon;
 
 
     public int getBlackId() {
@@ -140,5 +143,13 @@ public class CallFilterInfo implements Serializable {
 
     public void setFilterGrId(int filterGrId) {
         this.filterGrId = filterGrId;
+    }
+
+    public Bitmap getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Bitmap icon) {
+        this.icon = icon;
     }
 }
