@@ -7,6 +7,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -67,6 +68,7 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
                     runningTask.put(usageStats.getLastTimeUsed(), usageStats);
                 }
             }
+            logTasks(runningTask);
             if (runningTask.isEmpty()) {
                 LeoLog.i(TAG, "there is no app found.");
             } else {
@@ -83,5 +85,22 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
     @Override
     public int getTimeoutMs(ProcessAdj proAdj) {
         return WAIT_TIMEOUT;
+    }
+
+    private void logTasks(SortedMap<Long, UsageStats> runningTask) {
+        if (AppMasterConfig.LOGGABLE) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("{");
+            for (Long aLong : runningTask.keySet()) {
+                builder.append("[")
+                        .append(aLong)
+                        .append("->")
+                        .append(runningTask.get(aLong))
+                        .append("]")
+                        .append(",");
+            }
+            builder.append("}");
+            LeoLog.d(TAG, builder.toString());
+        }
     }
 }
