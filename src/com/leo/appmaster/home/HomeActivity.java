@@ -345,7 +345,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mPrivacyFragment.startScanningAnim();
             mScanningFragment = new HomeScanningFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);
+            ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, 0);
             ft.addToBackStack(null);
             ft.replace(R.id.pri_pro_content, mScanningFragment);
             boolean commited = false;
