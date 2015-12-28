@@ -920,4 +920,7 @@
     <string name="str_noti_title_txt">最近陌生来电%1$s</string>
     <string name="str_noti_content_txt">%1$s个陌生来电</string>
     <string name="pri_pro_ignore2">忽略</string>
+    <string name="miss_noti_tit">未接来电</string>
+    <string name="miss_noti_content">%1$s被%2$s人拉黑，建议拉黑</string>
+    <string name="fil_noti_bt">查看</string>
 </resources>

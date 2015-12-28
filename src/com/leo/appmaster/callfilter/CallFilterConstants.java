@@ -276,10 +276,6 @@ public class CallFilterConstants {
      * 黑名单保存路径
      */
     public static final String BLACK_FILE_PATH = "appmaster/backup/";
-    /**
-     * 黑名单保存名称
-     */
-//    public static final String BLACK_FILE_NAME = "black_list.txt";
 
     /**
      * 黑名单列表文件的压缩类型

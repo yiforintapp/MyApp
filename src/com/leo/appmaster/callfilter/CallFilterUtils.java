@@ -538,7 +538,12 @@ public class CallFilterUtils {
         }
     }
 
-    /*删除文件*/
+    /**
+     * 删除文件
+     *
+     * @param path
+     * @return
+     */
     public static boolean deleteFile(String path) {
         File file = new File(path);
         if (!file.exists()) {
