@@ -920,7 +920,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 R.drawable.menu_feedbacks_icon, false));
         /* 常见问题 */
         listItems.add(new MenuItem(resources.getString(R.string.menu_left_item_problem),
-                R.drawable.theme_icon_black, false));
+                R.drawable.faq_question_new, false));
         /* 检查升级 */
         if (SDKWrapper.isUpdateAvailable()) {
             listItems.add(new MenuItem(resources.getString(R.string.app_setting_update),
@@ -1186,7 +1186,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         LeoLog.d("testFaq", "url : " + url);
 
 
-        Toast.makeText(this, "" + url, Toast.LENGTH_LONG).show();
 //        mLockManager.filterSelfOneMinites();
         MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
     }

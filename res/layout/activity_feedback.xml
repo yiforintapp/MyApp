@@ -2,7 +2,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
@@ -13,17 +13,26 @@
     <RelativeLayout
         android:id="@+id/normal_problem"
         android:layout_width="match_parent"
-        android:background="@color/white_list_item_ripple"
-        android:layout_height="45dp">
+        android:layout_height="43dp"
+        android:background="@color/fl">
+
+        <ImageView
+            android:id="@+id/iv_main_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/faq_question_new" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_main_icon"
             android:text="@string/feedback_problem_text"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            android:textSize="17dp"/>
+            android:textColor="@color/c2"
+            android:textSize="16dp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -31,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:src="@drawable/selector_pref_more" />
+            android:src="@drawable/arrow_faq" />
 
     </RelativeLayout>
 
@@ -39,12 +48,12 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" >
+        android:scrollbars="none">
 
         <RelativeLayout
-            android:paddingBottom="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp">
 
             <TextView
                 android:id="@+id/feedback_category_guide"
@@ -65,7 +74,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/textbox_bg_selector"
-                android:clickable="true" >
+                android:clickable="true">
 
                 <TextView
                     android:id="@+id/feedback_category_title"
@@ -100,7 +109,7 @@
                 android:textColor="@color/c2"
                 android:textSize="@dimen/f3" />
 
-     <FrameLayout
+            <FrameLayout
                 android:id="@+id/feedback_email_layout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -108,7 +117,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/message_item_text_box_selecter" >
+                android:background="@drawable/message_item_text_box_selecter">
 
                 <EditText
                     android:id="@+id/feedback_email"
