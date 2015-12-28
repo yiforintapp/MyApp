@@ -1187,7 +1187,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 
         Toast.makeText(this, "" + url, Toast.LENGTH_LONG).show();
-        mLockManager.filterSelfOneMinites();
+//        mLockManager.filterSelfOneMinites();
         MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
     }
 
