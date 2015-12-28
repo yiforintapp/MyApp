@@ -592,7 +592,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.photoItems.size());
 
             mPhotoList.inDifferentDir = DataUtils.differentDirPic(photoItems);
-            mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
+            if (mVideoScanFinish) {
+                mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
+            }
 //            com.leo.tools.animator.ObjectAnimator picAnim = mController.getNewPicAnim();
 //            if (picAnim != null) {
 //                picAnim.end();
@@ -612,7 +614,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mVidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
             LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
 
-//            mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
+            if (mPhotoScanFinish) {
+                mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
+            }
 //            updateNewVidList();
 //            com.leo.tools.animator.ObjectAnimator vidAnim = mController.getNewVidAnim();
 //            if (vidAnim != null) {
