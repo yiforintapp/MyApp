@@ -20,6 +20,8 @@ import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
+import com.leo.appmaster.callfilter.CallFilterMainActivity;
+import com.leo.appmaster.callfilter.StrangeCallActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.LockManager;
@@ -49,6 +51,11 @@ public class DeskProxyActivity extends Activity {
 
     public static final int mWifi = 13;
     public static final int mQuickHelper = 14;
+    
+    public static final int mFilterNoti =15;
+    public static final int mStrangerCallNoti =16;
+//    public static final int mMissCallNoti =17;
+    
 
     private MobvistaAdWall wallAd;
 
@@ -61,7 +68,7 @@ public class DeskProxyActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        LeoLog.i("proxy", "entered!");
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         Intent intent = getIntent();
         int type = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
@@ -76,6 +83,10 @@ public class DeskProxyActivity extends Activity {
                 if (type == mFlow) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
                     goToFlow(type);
+                } else if (type == mStrangerCallNoti) {
+                    goToStrangerCall(type);
+                } else if (type == mFilterNoti) {
+                    goToBlackList(type);
                 } else if (type == mElec) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
                     gotoEle(type);
@@ -140,6 +151,16 @@ public class DeskProxyActivity extends Activity {
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "videoHide");
                         goToHideVio(type);
+                        break;
+                    case mStrangerCallNoti:
+//                        SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
+//                                "videoHide");
+                        goToStrangerCall(type);
+                        break;
+                    case mFilterNoti:
+//                        SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
+//                                "videoHide");
+                        goToBlackList(type);
                         break;
                     case mPrivateSms:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
@@ -234,7 +255,21 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+    
+    private void goToStrangerCall(int type) {
+        mLockManager.filterPackage(this.getPackageName(), 1000);
+        Intent intent = new Intent(this, StrangeCallActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
+    private void goToBlackList(int type) {
+        mLockManager.filterPackage(this.getPackageName(), 1000);
+        Intent intent = new Intent(this, CallFilterMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+    
     private void gotoBackUp(int type) {
         if (getIntent().getBooleanExtra("from_quickhelper", false)) {
             SDKWrapper.addEvent(this, SDKWrapper.P1,

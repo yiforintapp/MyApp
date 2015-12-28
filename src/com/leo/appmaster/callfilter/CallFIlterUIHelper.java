@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
@@ -93,7 +95,9 @@ public class CallFIlterUIHelper {
 
     public void showReceiveCallNotification(String number) {
         AppMasterApplication ama = AppMasterApplication.getInstance();
-        Intent intent = new Intent(ama, IntruderprotectionActivity.class);
+        Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
+        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mFilterNoti);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, Notification.FLAG_AUTO_CANCEL);
         NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
@@ -106,12 +110,15 @@ public class CallFIlterUIHelper {
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_launcher);
         mNotificationManager.notify(1, mBuilder.build());
+        
     }
 
     public void showStrangerNotification(int count) {
         Context context = AppMasterApplication.getInstance();
         AppMasterApplication ama = AppMasterApplication.getInstance();
-        Intent intent = new Intent(ama, IntruderprotectionActivity.class);
+        Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
+        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mStrangerCallNoti);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
@@ -149,7 +156,9 @@ public class CallFIlterUIHelper {
     public void showMissCallNotification(int count, String number) {
         Context context = AppMasterApplication.getInstance();
         AppMasterApplication ama = AppMasterApplication.getInstance();
-        Intent intent = new Intent(ama, IntruderprotectionActivity.class);
+        Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
+        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mStrangerCallNoti);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
