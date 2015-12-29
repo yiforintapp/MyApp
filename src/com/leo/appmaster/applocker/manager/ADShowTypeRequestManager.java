@@ -413,6 +413,8 @@ public class ADShowTypeRequestManager {
             LeoLog.d("poha", "请求成功，入侵者防护开关:" + value);
             if (value != mSp.getADIntruder()) {
                 mSp.setADIntruder(value);
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull",
+                        (value == 1) ? "adv_capture_on" : "adv_capture_off");
             }
         } catch (JSONException e) {
             e.printStackTrace();

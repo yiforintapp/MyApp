@@ -305,6 +305,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 @Override
                 public void onMobvistaClick(Campaign campaign) {
                     LeoLog.d("IntruderAd", "onMobvistaClick");
+                    SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
+                            "ad_cli", "adv_cnts_capture");
                     LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                     lm.filterSelfOneMinites();
                 }
@@ -369,6 +371,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
         MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
+        SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
+                "ad_act", "adv_shws_capture");
     }
     /* 3.2 advertise stuff - end */
 
