@@ -273,7 +273,8 @@ public class CallFilterManager {
 //                  挂断后接听 询问是否家黑名单且展示标记人数
                     final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
                     String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
-                    String mark = "";
+                    String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
+                    
                     switch (filterTip[3]) {
                         case CallFilterConstants.FILTER_CALL_TYPE:
                             mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
