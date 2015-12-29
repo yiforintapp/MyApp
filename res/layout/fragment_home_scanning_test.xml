@@ -165,7 +165,7 @@
                     <View
                         android:id="@+id/scan_new_app_view"
                         android:layout_width="1px"
-                        android:layout_height="10dp"
+                        android:layout_height="8dp"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4" />
@@ -186,7 +186,7 @@
                         android:layout_below="@+id/scan_new_app_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"
-                        android:minHeight="20dp" />
+                        android:minHeight="15dp" />
 
                 </RelativeLayout>
 
@@ -276,7 +276,7 @@
                     <View
                         android:id="@+id/scan_new_pic_top_line"
                         android:layout_width="1px"
-                        android:layout_height="10dp"
+                        android:layout_height="15dp"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4" />
 
@@ -296,7 +296,7 @@
                         android:layout_below="@+id/scan_new_pic_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"
-                        android:minHeight="20dp" />
+                        android:minHeight="15dp" />
 
                 </RelativeLayout>
 
@@ -388,7 +388,7 @@
                     <View
                         android:id="@+id/scan_new_vid_top_line"
                         android:layout_width="1px"
-                        android:layout_height="10dp"
+                        android:layout_height="15dp"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4" />
 
@@ -407,7 +407,7 @@
                         android:layout_below="@+id/scan_new_vid_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"
-                        android:minHeight="20dp" />
+                        android:minHeight="15dp"/>
 
                 </RelativeLayout>
 
@@ -496,7 +496,7 @@
                     <View
                         android:id="@+id/scan_new_lost_top_line"
                         android:layout_width="1px"
-                        android:layout_height="10dp"
+                        android:layout_height="15dp"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4" />
 
@@ -515,7 +515,7 @@
                         android:layout_below="@+id/scan_new_lost_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"
-                        android:minHeight="20dp" />
+                        android:minHeight="15dp"/>
 
                 </RelativeLayout>
 
@@ -605,7 +605,7 @@
                     <View
                         android:id="@+id/scan_new_instruct_top_line"
                         android:layout_width="1px"
-                        android:layout_height="10dp"
+                        android:layout_height="15dp"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4" />
 
@@ -624,7 +624,7 @@
                         android:layout_below="@+id/scan_new_instruct_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"
-                        android:minHeight="20dp" />
+                        android:minHeight="15dp" />
 
                 </RelativeLayout>
 
@@ -713,7 +713,7 @@
                     <View
                         android:id="@+id/scan_new_wifi_top_line"
                         android:layout_width="1px"
-                        android:layout_height="10dp"
+                        android:layout_height="15dp"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4" />
 
@@ -732,7 +732,7 @@
                         android:layout_below="@+id/scan_new_wifi_icon"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4"
-                        android:minHeight="20dp" />
+                        android:minHeight="15dp" />
 
                 </RelativeLayout>
 
@@ -822,7 +822,7 @@
                     <View
                         android:id="@+id/scan_new_contact_top_line"
                         android:layout_width="1px"
-                        android:layout_height="10dp"
+                        android:layout_height="15dp"
                         android:layout_centerHorizontal="true"
                         android:background="@color/c4" />
 
