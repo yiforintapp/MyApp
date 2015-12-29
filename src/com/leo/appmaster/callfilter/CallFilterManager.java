@@ -185,6 +185,10 @@ public class CallFilterManager {
             info = getBlackFroNum(phoneNumber);
             serInfo = getSerBlackForNum(phoneNumber);
 
+            if (info == null && serInfo == null) {
+            /*该号码不存在黑名单中*/
+                LeoLog.i("allnull", "all null");
+            }
         } else {
 
             if (TextUtils.isEmpty(state)) {

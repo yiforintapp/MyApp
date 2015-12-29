@@ -148,9 +148,11 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         sendMsgHandler();
         if (mAddPrivacyCallLog.size() != 0) {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+            mAddBtn.setEnabled(true);
             mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
         } else {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+            mAddBtn.setEnabled(false);
             mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         }
     }
@@ -208,9 +210,11 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         }
         if (mAddPrivacyCallLog.size() != 0) {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+            mAddBtn.setEnabled(true);
             mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
         } else {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+            mAddBtn.setEnabled(false);
             mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         }
     }
