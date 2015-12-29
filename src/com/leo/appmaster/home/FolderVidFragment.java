@@ -2,17 +2,18 @@ package com.leo.appmaster.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.videohide.VideoItemBean;
@@ -173,5 +174,18 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
         mAdapter.toggle(i, i1);
         mAdapter.setCheck(view, mAdapter.isChildChecked(i, i1));
         return false;
+    }
+
+    @Override
+    protected View getEmptyHeader() {
+
+        View view = mActivity.getLayoutInflater().inflate(R.layout.pri_folder_top_view, null);
+//        view.setLayoutParams(new AbsListView.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT, mEmptyHeight - mToolbarHeight));
+        TextView title = (TextView) view.findViewById(R.id.pri_pro_new_label_tv);
+        title.setText(Html.fromHtml(mActivity.getResources().getString(
+                R.string.scan_find_vid, mDataList.size())));
+
+        return view;
     }
 }

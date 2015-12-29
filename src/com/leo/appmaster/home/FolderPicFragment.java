@@ -2,9 +2,11 @@ package com.leo.appmaster.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -12,7 +14,6 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -169,5 +170,18 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
             str += " (" + selectedCount + ")";
         }
         mProcessTv.setText(str);
+    }
+
+    @Override
+    protected View getEmptyHeader() {
+
+         View view = mActivity.getLayoutInflater().inflate(R.layout.pri_folder_top_view, null);
+//        view.setLayoutParams(new AbsListView.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT, mEmptyHeight - ));
+         TextView title = (TextView) view.findViewById(R.id.pri_pro_new_label_tv);
+         title.setText(Html.fromHtml(mActivity.getResources().getString(
+                R.string.scan_find_pic, mDataList.size())));
+
+         return view;
     }
 }

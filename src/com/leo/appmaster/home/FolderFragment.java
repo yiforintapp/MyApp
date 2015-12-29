@@ -37,9 +37,9 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
 
     protected TextView mProcessTv;
 
-    private int mEmptyHeight;
+    protected int mEmptyHeight;
 
-    private int mToolbarHeight;
+    protected int mToolbarHeight;
 
     private View mFloatingView;
     private TextView mFloatingTv;
@@ -275,14 +275,8 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
     }
 
     protected View getEmptyHeader() {
-        TextView textView = new TextView(getActivity());
-        textView.setLayoutParams(new AbsListView.LayoutParams(1, mEmptyHeight - mToolbarHeight));
-        textView.setBackgroundResource(R.color.transparent);
-        textView.setClickable(false);
-        textView.setEnabled(false);
-        textView.setWidth(1);
 
-        return textView;
+        return null;
     }
 
     protected abstract int getListViewId();

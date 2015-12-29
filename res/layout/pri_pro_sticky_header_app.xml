@@ -28,34 +28,37 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="52dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="5dp"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/pri_pro_cb">
 
-        <TextView
-            android:id="@+id/pri_pro_new_label_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:includeFontPadding="false"
-            android:singleLine="true"
-            android:layout_alignParentLeft="true"
-            android:text="@string/pri_pro_new_app"
-            android:textColor="@color/c2"
-            android:textSize="@dimen/pri_pro_new_label" />
+            <TextView
+                android:id="@+id/pri_pro_new_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/pri_pro_new_app"
+                android:textColor="@color/c2"
+                android:textSize="@dimen/pri_pro_new_label" />
 
-        <TextView
-            android:id="@+id/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/pri_pro_new_label_tv"
-            android:textColor="@color/c4"
-            android:textSize="@dimen/f5a"/>
+            <TextView
+                android:id="@+id/app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/pri_pro_new_label_tv"
+                android:textColor="@color/c4"
+                android:background="#f0ffff"
+                android:textSize="@dimen/f5a"/>
 
         </RelativeLayout>
 
