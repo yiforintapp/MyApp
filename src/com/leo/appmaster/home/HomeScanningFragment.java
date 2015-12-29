@@ -171,6 +171,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private LinearLayout mNewContactLayout;
 
     private String mScanAppName;
+    private String mScanAppNameStep;
     private String mAppNotifyText;
     private RelativeLayout mScrollLayout;
     private LayoutTransition mTransition;
@@ -581,7 +582,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             long start = SystemClock.elapsedRealtime();
             mAppList = lm.getNewAppList();
             try {
-                mScanAppName = DataUtils.getThreeRandomAppName(mAppList, mActivity);
+                mScanAppName = DataUtils.getThreeRandomAppName(mAppList, mActivity).get(0);
+                mScanAppNameStep = DataUtils.getThreeRandomAppName(mAppList, mActivity).get(1);
             } catch (Exception e) {
                 e.printStackTrace();
                 mScanAppName = "Exception.";

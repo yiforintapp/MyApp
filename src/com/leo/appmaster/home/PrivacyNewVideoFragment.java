@@ -203,9 +203,9 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
         mVideoList.setOnScrollListener(this);
         mVideoList.setOnItemClickListener(this);
         mAppName = "";
+        mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
         mVideoList.addHeaderView(getEmptyHeader());
         mVideoList.setAdapter(mAdaper);
-        mAppNotifyLayout.setVisibility(View.GONE);
 
         setLabelCount(mDataList == null ? 0 : mDataList.size());
         setProcessContent(R.string.pri_pro_hide_vid);

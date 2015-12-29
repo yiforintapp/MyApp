@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -43,15 +41,14 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
     private View mEmptyBg;
 
     private int mToolbarHeight;
-    private int mEmptyHeight;
+    protected int mEmptyHeight;
     protected int mStickyHeight;
 
     private LEOAlarmDialog mIgnoreDlg;
 
     private List<? extends Object> mDataList;
 
-    protected RelativeLayout mAppNotifyLayout;
-    protected TextView mAppNotifyText;
+    protected TextView mAppText;
     protected String mAppName;
 
     public void setData(List<? extends Object> list, String text) {
@@ -85,8 +82,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
         mStickView = view.findViewById(R.id.pri_pro_sticky_header);
         mStickyCb = (CheckBox) view.findViewById(R.id.pri_pro_cb);
         mNewLabelTv = (TextView) view.findViewById(R.id.pri_pro_new_label_tv);
-        mAppNotifyLayout = (RelativeLayout) view.findViewById(R.id.app_notify_layout);
-        mAppNotifyText = (TextView) view.findViewById(R.id.app_notify_text);
+        mAppText = (TextView) view.findViewById(R.id.app_name);
         mStickyCb.setOnClickListener(this);
         mAdaper.setOnSelectionChangeListener(this);
 
@@ -144,11 +140,6 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
     }
 
     protected View getEmptyHeader() {
-        if (TextUtils.isEmpty(mAppName)) {
-            mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
-        } else {
-            mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new_sticky);
-        }
         TextView textView = new TextView(getActivity());
         textView.setLayoutParams(new AbsListView.LayoutParams(1, mEmptyHeight + mStickyHeight));
         textView.setBackgroundResource(R.color.transparent);

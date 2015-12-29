@@ -34,10 +34,11 @@
     <!-- 全选、取消全选 -->
     <include
         android:id="@+id/pri_pro_sticky_header"
-        layout="@layout/pri_pro_sticky_header"
+        layout="@layout/pri_pro_sticky_header_app"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/pri_pro_new_sticky"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/pri_pro_header" />
+
 
     <!-- 底部操作区域 -->
     <include

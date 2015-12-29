@@ -7,8 +7,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
@@ -159,8 +161,18 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         mAppList.setOnScrollListener(this);
         mAppList.setOnItemClickListener(this);
         mAppName = mAppString;
-        mAppList.addHeaderView(getEmptyHeader());
-        mAppList.setAdapter(mAdaper);
+        if (!TextUtils.isEmpty(mAppString)) {
+            if (mAppString.indexOf("font") != -1) {
+                mAppText.setText(Html.fromHtml(mAppString));
+            } else {
+                mAppText.setText(mAppString);
+            }
+            mAppText.setVisibility(View.VISIBLE);
+        } else {
+            mAppText.setVisibility(View.GONE);
+        }
+
+
 
         boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
         int stringId = R.string.pri_pro_new_app;
@@ -170,18 +182,6 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         String content = AppMasterApplication.getInstance().getString(stringId, mDataList == null ? 0 : mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));
         setProcessContent(R.string.pri_pro_lock_app);
-        ViewGroup.LayoutParams layoutParams = mStickView.getLayoutParams();
-        if (!TextUtils.isEmpty(mAppString)) {
-            mAppNotifyLayout.setVisibility(View.VISIBLE);
-            mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new_sticky);
-            layoutParams.height = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new_sticky);
-            mAppNotifyText.setText(mAppString);
-        } else {
-            mAppNotifyLayout.setVisibility(View.GONE);
-            mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
-            layoutParams.height = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
-        }
-        mStickView.setLayoutParams(layoutParams);
     }
 
     private void setLabelCount(int count) {
@@ -212,5 +212,25 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
 //            AppItemInfo info = mDataList.get(i - 1);
             mAdaper.toggle(i - 1);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAppList.addHeaderView(getEmptyHeader());
+        mAppList.setAdapter(mAdaper);
+    }
+
+    @Override
+    protected View getEmptyHeader() {
+        mStickyHeight = mStickView.getHeight();
+        TextView textView = new TextView(getActivity());
+        textView.setLayoutParams(new AbsListView.LayoutParams(1, mEmptyHeight + mStickyHeight));
+        textView.setBackgroundResource(R.color.transparent);
+        textView.setClickable(false);
+        textView.setEnabled(false);
+        textView.setWidth(1);
+
+        return textView;
     }
 }

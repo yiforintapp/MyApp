@@ -98,7 +98,7 @@ public class DataUtils {
     }
 
     /** 获得高危应用需要展示的应用 */
-    public static String getThreeRandomAppName(List<AppItemInfo> list, Context context) {
+    public static ArrayList<String> getThreeRandomAppName(List<AppItemInfo> list, Context context) {
         changeTopPos(list);
         int theSize =list.size();
         List<AppItemInfo> highList = new ArrayList<AppItemInfo>();
@@ -107,44 +107,62 @@ public class DataUtils {
                 highList.add(info);
             }
         }
+        ArrayList arrayList = new ArrayList();
         StringBuffer appNameBuilder = new StringBuffer();
         int theHighSize = highList.size();
 
         if (theHighSize == 0) {  //无推荐应用未加锁
-           return context.getResources().getString(R.string.scan_app_content_zero);
+            arrayList.add(context.getResources().getString(R.string.scan_app_content_zero));
+            arrayList.add("");
+           return arrayList;
 
         } else if (theHighSize == 1 && theSize == 1) { // 只有1个应用且是推荐应用
-            return context.getResources().getString(R.string.scan_app_content_only_high);
+            arrayList.add(context.getResources().getString(R.string.scan_app_content_only_high));
+            arrayList.add(context.getResources().getString(R.string.scan_app_content_only_high));
+            return arrayList;
 
         } else if (theHighSize == 1 && theSize > 1) { // 有1个推荐应用和其他应用
             for (AppItemInfo appItemInfo:highList) {
-                appNameBuilder.append(appItemInfo.label).append("、");
+                appNameBuilder.append(appItemInfo.label).append(",");
             }
             String appName = appNameBuilder.toString().substring(0, appNameBuilder.length() - 1);
-            return  context.getResources().getString(
-                    R.string.scan_app_content_less_three, appName);
+            arrayList.add(context.getResources().getString(
+                    R.string.scan_app_content_less_three, appName));
+            arrayList.add(context.getResources().getString(
+                    R.string.scan_app_content_less_three_app, appName));
+            return  arrayList;
 
         } else if (theHighSize == 2 && theSize == 2) {  // 有2个应用且都是推荐应用
-            return context.getResources().getString(R.string.scan_app_content_only_high);
+            arrayList.add(context.getResources().getString(R.string.scan_app_content_only_high));
+            arrayList.add(context.getResources().getString(R.string.scan_app_content_only_high));
+            return arrayList;
 
         } else if (theHighSize == 2 && theSize > 2) { // 有2个推荐应用和其他应用
             for (AppItemInfo appItemInfo:highList) {
-                appNameBuilder.append(appItemInfo.label).append("、");
+                appNameBuilder.append(appItemInfo.label).append(",");
             }
             String appName = appNameBuilder.toString().substring(0, appNameBuilder.length() - 1);
-            return  context.getResources().getString(
-                    R.string.scan_app_content_less_three, appName);
+            arrayList.add(context.getResources().getString(
+                    R.string.scan_app_content_less_three, appName));
+            arrayList.add(context.getResources().getString(
+                    R.string.scan_app_content_less_three_app, appName));
+            return  arrayList;
 
         } else if (theHighSize == 3 && theSize == 3) { // 有3个应用且都是推荐应用
-           return context.getResources().getString(R.string.scan_app_content_only_high);
+            arrayList.add(context.getResources().getString(R.string.scan_app_content_only_high));
+            arrayList.add(context.getResources().getString(R.string.scan_app_content_only_high));
+            return arrayList;
 
         } else if (theHighSize == 3 && theSize > 3) { // 有3个推荐应用和其他应用
             for (AppItemInfo appItemInfo:highList) {
                 appNameBuilder.append(appItemInfo.label).append("、");
             }
             String appName = appNameBuilder.toString().substring(0, appNameBuilder.length() - 1);
-            return  context.getResources().getString(
-                    R.string.scan_app_content_less_three, appName);
+            arrayList.add(context.getResources().getString(
+                    R.string.scan_app_content_less_three, appName));
+            arrayList.add(context.getResources().getString(
+                    R.string.scan_app_content_less_three_app, appName));
+            return  arrayList;
 
         } else if (theHighSize > 3) { //  超过3个推荐应用
             HashSet<Integer> set = new HashSet<Integer>();
@@ -154,11 +172,16 @@ public class DataUtils {
                 appNameBuilder.append(highList.get(iterator.next()).label).append(",");
             }
             String appName = appNameBuilder.toString().substring(0, appNameBuilder.length() - 1);
-            return  context.getResources().getString(
-                    R.string.scan_app_content, appName, theHighSize);
+            arrayList.add(context.getResources().getString(
+                    R.string.scan_app_content, appName));
+            arrayList.add(context.getResources().getString(
+                    R.string.scan_app_content_app, appName));
+            return  arrayList;
         }
 
-        return "";
+        arrayList.add("");
+        arrayList.add("");
+        return arrayList;
 
     }
 
