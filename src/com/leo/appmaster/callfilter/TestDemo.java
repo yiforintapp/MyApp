@@ -2,16 +2,22 @@ package com.leo.appmaster.callfilter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
+import com.leo.appmaster.schedule.DownBlackFileFetchJob;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +25,7 @@ import java.util.List;
 public class TestDemo extends Activity implements View.OnClickListener {
     private Button b1;
     private Button b2;
-    private int mI=1;
+    private int mI = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,29 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //            }
 //            mp.addBlackList(list, false);
 //            break;
+            case R.id.B3:
+                CallFilterContextManagerImpl lsm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                int user = lsm.getFilterUserNumber();
+                int tipUser = lsm.getFilterTipFroUser();
+                long dration = lsm.getCallDurationMax();
+                int showTipPar = lsm.getBlackMarkTipParam();
+                String path = lsm.getSerBlackFilePath();
+                int notiTipPar = lsm.getStraNotiTipParam();
+                int blackCount = lsm.getSerBlackTipCount();
+                int markCount = lsm.getSerMarkTipCount();
+                StringBuilder sb = new StringBuilder();
+                sb.append("user = "+user);
+                sb.append("tipUser = "+tipUser);
+                sb.append("dration = "+dration);
+                sb.append("showTipPar = "+showTipPar);
+                sb.append("path = "+path);
+                sb.append("notiTipPar = "+notiTipPar);
+                sb.append("blackCount = "+blackCount);
+                sb.append("markCount = "+markCount);
+
+
+                Toast.makeText(TestDemo.this,sb.toString(),Toast.LENGTH_LONG).show();
+                break;
         }
     }
 }

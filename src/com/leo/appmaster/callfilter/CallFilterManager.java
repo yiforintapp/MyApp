@@ -182,6 +182,11 @@ public class CallFilterManager {
 
         BlackListInfo info = null;
         BlackListInfo serInfo = null;
+        if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
+                /*通话类型：拨出*/
+            CallFilterManager.getInstance(mContext).setIsComingOut(true);
+            LeoLog.i("PrivacyContactReceiver", "拨打电话");
+        }
         //判断广播带不带号码，带说明是刚刚来电
         if (!TextUtils.isEmpty(phoneNumber)) {
             //刚刚受到来电 （还没有接听）
@@ -197,7 +202,7 @@ public class CallFilterManager {
         } else {
             //
 
-            if (TextUtils.isEmpty(state)) {
+            if (TextUtils.isEmpty(state) || isComingOut()) {
                 return;
             }
             if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
@@ -462,13 +467,12 @@ public class CallFilterManager {
             if (CallFilterConstants.IS_TIP_DIA[0] == isTip) {
                 return;
             }
-            if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
-                /*通话类型：拨出*/
-                CallFilterManager.getInstance(mContext).setIsComingOut(true);
-                LeoLog.i("PrivacyContactReceiver", "拨打电话");
-            } else {
+//            if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
+//                /*通话类型：拨出*/
+//                CallFilterManager.getInstance(mContext).setIsComingOut(true);
+//                LeoLog.i("PrivacyContactReceiver", "拨打电话");
+//            } else {
                 /*通话类型：来电，无状态*/
-                LeoLog.i("PrivacyContactReceiver", "来电电话");
                 boolean isComOut = CallFilterManager.getInstance(mContext).isComingOut();
                 if (!isComOut) {
                     if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
@@ -483,18 +487,18 @@ public class CallFilterManager {
                     }
                     LeoLog.i(TAG, "Black and marker tip show!");
                 }
-                if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
-
-                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
-                    LeoLog.i(TAG, "挂断！");
-                    CallFilterManager.getInstance(mContext).setIsComingOut(false);
-                    if (mTipToast != null) {
-                        mTipToast.hide();
-                        mTipToast = null;
-                    }
-                }
+//                if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
+//
+//                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+//                    LeoLog.i(TAG, "挂断！");
+//                    CallFilterManager.getInstance(mContext).setIsComingOut(false);
+//                    if (mTipToast != null) {
+//                        mTipToast.hide();
+//                        mTipToast = null;
+//                    }
+//                }
             }
-        }
+//        }
         setCurrentCallTime(System.currentTimeMillis());
     }
 

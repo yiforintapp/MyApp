@@ -23,7 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="上报黑名单" />
-
+        <Button
+            android:id="@+id/B3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看后台拉去配置数据"/>
 
     </LinearLayout>
 </RelativeLayout>
