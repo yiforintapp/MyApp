@@ -15,7 +15,6 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -913,7 +912,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mProcessBtn.setVisibility(View.VISIBLE);
                 mScannTitleTv.setText(R.string.pri_pro_scanning_finish);
 //                mProcessTv.setTextColor(mActivity.getToolbarColor());
-                mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, mScanAppName);
+                mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, mScanAppNameStep);
             }
         });
     }
