@@ -128,17 +128,24 @@ public class CallFIlterUIHelper {
 
     public void showStrangerNotification(int count) {
         Context context = AppMasterApplication.getInstance();
-        AppMasterApplication ama = AppMasterApplication.getInstance();
+        String title = String.format(context.getResources().getString(R.string.str_noti_title_txt), count);
+        String content = String.format(context.getResources().getString(R.string.str_noti_content_txt), count);
+        RemoteViews mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.remoteview_callfilter);
+        mRemoteViews.setTextViewText(R.id.tv_title, title);
+        mRemoteViews.setTextViewText(R.id.tv_content, content);
+        mRemoteViews.setImageViewResource(R.id.iv_ic, R.drawable.ic_launcher);
+        
+//        AppMasterApplication ama = AppMasterApplication.getInstance();
         Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
         intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mStrangerCallNoti);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
-        String title = String.format(context.getResources().getString(R.string.str_noti_title_txt), count);
-        String content = String.format(context.getResources().getString(R.string.str_noti_content_txt), count);
-        mBuilder.setContentTitle(title)
-                .setContentText(content)
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+//        String title = String.format(context.getResources().getString(R.string.str_noti_title_txt), count);
+//        String content = String.format(context.getResources().getString(R.string.str_noti_content_txt), count);
+        mBuilder.setContent(mRemoteViews)
+//                .setContentText(content)
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_DEFAULT)
