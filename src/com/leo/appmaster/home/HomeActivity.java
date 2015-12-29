@@ -155,6 +155,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     };
     private int mScoreBeforeProcess;
 
+    private View mTabWhiteBg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         removeFragments();
@@ -340,6 +342,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (isFinishing()) return;
 
         if (!mTabFragment.isTabDismiss()) {
+            mTabWhiteBg.setVisibility(View.VISIBLE);
             mPrivacyFragment.setShowColorProgress(true);
         } else {
             mPrivacyFragment.startScanningAnim();
@@ -431,6 +434,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void startProcess() {
+        mTabWhiteBg.setVisibility(View.INVISIBLE);
         mShownIgnoreDlg = false;
         int count = 1;
         if (mAppList != null && mAppList.size() > 0) {
@@ -506,6 +510,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void initUI() {
+        mTabWhiteBg = findViewById(R.id.home_tab_white_bg);
         mMoreFragment = (HomeMoreFragment) getSupportFragmentManager().findFragmentById(R.id.home_more_ft);
         mPrivacyFragment = (HomePrivacyFragment) getSupportFragmentManager().findFragmentById(R.id.home_anim_ft);
         mTabFragment = (HomeTabFragment) getSupportFragmentManager().findFragmentById(R.id.home_tab_ft);
