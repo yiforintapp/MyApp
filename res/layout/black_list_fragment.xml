@@ -14,17 +14,24 @@
         android:overScrollMode="never"
         android:scrollbars="none" />
 
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="64dp"
+        >
+    
     <RelativeLayout
         android:id="@+id/content_show_nothing"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:visibility="gone">
 
         <ImageView
             android:id="@+id/just_nothing_show_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/privacy_default_image_width"
+            android:layout_height="@dimen/privacy_default_image_height"
             android:layout_centerHorizontal="true"
             android:background="@drawable/def_black" />
 
@@ -38,6 +45,7 @@
             android:text="@string/black_list_is_empty"
             android:textColor="@color/nothing_show_text"
             android:textSize="@dimen/kongbaiye_text_size" />
+    </RelativeLayout>
     </RelativeLayout>
 
     <ProgressBar
