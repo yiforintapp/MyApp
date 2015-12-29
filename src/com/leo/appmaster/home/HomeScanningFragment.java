@@ -970,7 +970,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                layout.setBackgroundResource(R.color.white);
+                if (layout != mAdLayout) {
+                    layout.setBackgroundResource(R.color.white);
+                }
                 lists.add(layout);
                 mScrollLayout.setLayoutTransition(null);
             }

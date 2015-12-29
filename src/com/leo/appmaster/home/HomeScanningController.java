@@ -236,7 +236,7 @@ public class HomeScanningController {
 
     private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {
         ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(this, "scaleY", 1f, 1f);
-        layoutAnim.setDuration(800);
+        layoutAnim.setDuration(500);
         layoutAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
