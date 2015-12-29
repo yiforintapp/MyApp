@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:background="@color/transparent"
-                android:layout_below="@+id/ad_content"
+                android:layout_below="@+id/empty_header"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -263,7 +263,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/transparent"
-                android:layout_below="@+id/scan_new_app_layout"
+                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -377,7 +377,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/transparent"
-                android:layout_below="@+id/scan_new_pic_layout"
+                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -485,7 +485,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/transparent"
-                android:layout_below="@+id/scan_new_vid_layout"
+                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -594,7 +594,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/transparent"
-                android:layout_below="@+id/scan_new_lost_layout"
+                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -702,7 +702,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/transparent"
-                android:layout_below="@+id/scan_new_instruct_layout"
+                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -811,7 +811,7 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="18dp"
                 android:background="@color/transparent"
-                android:layout_below="@+id/scan_new_wifi_layout"
+                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout

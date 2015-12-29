@@ -744,8 +744,18 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    public void updateUIOnAnimationEnd(LinearLayout layout) {
+    public void updateUIOnAnimationEnd(final LinearLayout layout) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
+
+
+//        LeoLog.d("testfinishL", "layout top : " + layout.getTop());
+//        LeoLog.d("testfinishL", "layout bottom : " + layout.getBottom());
+//        LeoLog.d("testfinishL", "layout Y : " + layout.getTranslationY());
+        LeoLog.d("testfinishL", "layout height : " + layout.getHeight());
+//        LeoLog.d("testfinishL", "layout width : " + layout.getWidth());
+        LeoLog.d("testfinishL", "-------------------------------------------");
+
+        final int firLocation = layout.getHeight();
 
         Context context = AppMasterApplication.getInstance();
         if (layout == mNewAppLayout) {
@@ -755,25 +765,85 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             }
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
             onViewScanningFinish(mAppList, mPhotoList, mVideoList);
+
+            layout.post(new Runnable() {
+                @Override
+                public void run() {
+                    setItemPlace(layout, 6, firLocation);
+                }
+            });
+
         } else if (layout == mNewPicLayout) {
             updateNewPicList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
+            layout.post(new Runnable() {
+                @Override
+                public void run() {
+                    setItemPlace(layout, 5, firLocation);
+                }
+            });
         } else if (layout == mNewVidLayout) {
             updateNewVidList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
+            layout.post(new Runnable() {
+                @Override
+                public void run() {
+                    setItemPlace(layout, 4, firLocation);
+                }
+            });
         } else if (layout == mNewInstructLayout) {
             updateNewInstructList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
+            layout.post(new Runnable() {
+                @Override
+                public void run() {
+                    setItemPlace(layout, 2, firLocation);
+                }
+            });
         } else if (layout == mNewWifiLayout) {
             updateNewWifiList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
+
+            layout.post(new Runnable() {
+                @Override
+                public void run() {
+                    setItemPlace(layout, 1, firLocation);
+                }
+            });
+
         } else if (layout == mNewLostLayout) {
             updateNewLostList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+            layout.post(new Runnable() {
+                @Override
+                public void run() {
+                    setItemPlace(layout, 3, firLocation);
+                }
+            });
         } else if (layout == mNewContactLayout) {
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
         }
     }
+
+    public void setItemPlace(View nowLayout, int position, int height) {
+//        LeoLog.d("testEndMove", "list size : " + lists.size());
+//        LeoLog.d("testEndMove", "position : " + position);
+//        LeoLog.d("testEndMove", "nowLayout height : " + nowLayout.getHeight());
+//        int moveDistance = nowLayout.getHeight() - height;
+//        LeoLog.d("testEndMove", "moveDistance : " + moveDistance);
+//        if (lists.size() > position) {
+//            for (int i = 0; i < lists.size(); i++) {
+//                if (i < position) {
+//                    LeoLog.d("testEndMove", "move item : " + i);
+//                    View oldlayout = lists.get(position);
+//                    oldlayout.setY(oldlayout.getY() + moveDistance);
+//                }
+//            }
+//        }
+//        LeoLog.d("testEndMove", "-------------------");
+    }
+
+
 
     private void onViewScanningFinish(final List<AppItemInfo> appList, final PhotoList photoItems,
                                       final List<VideoItemBean> videoItemBeans) {
@@ -991,22 +1061,24 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void makeItemMove(View layout) {
+
+        LeoLog.d("testLayout", "layout top : " + layout.getTop());
+        LeoLog.d("testLayout", "layout bottom : " + layout.getBottom());
+        LeoLog.d("testLayout", "layout Y : " + layout.getTranslationY());
+        LeoLog.d("testLayout", "layout height : " + layout.getHeight());
+        LeoLog.d("testLayout", "layout width : " + layout.getWidth());
+        LeoLog.d("testLayout", "-------------------------------------------");
+
         for (int i = 0; i < lists.size(); i++) {
             View oldLayout = lists.get(i);
-            oldLayout.setTranslationY(layout.getHeight());
-            oldLayoutAnimation(oldLayout, layout.getHeight());
+//            oldLayout.setTranslationY(layout.getHeight());
+            oldLayoutAnimation(oldLayout, layout, i, lists.size() - 1);
         }
     }
 
-    private void oldLayoutAnimation(final View oldLayout, int height) {
-        LeoLog.d("testLayout", "layout top : " + oldLayout.getTop());
-        LeoLog.d("testLayout", "layout bottom : " + oldLayout.getBottom());
-        LeoLog.d("testLayout", "layout Y : " + oldLayout.getTranslationY());
-        LeoLog.d("testLayout", "layout height : " + oldLayout.getHeight());
-        LeoLog.d("testLayout", "layout width : " + oldLayout.getWidth());
-        LeoLog.d("testLayout", "-------------------------------------------");
+    private void oldLayoutAnimation(final View oldLayout, final View layout, final int nowItem, final int moveItem) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
-                oldLayout, "translationY", -height, oldLayout.getTranslationY() - height);
+                oldLayout, "translationY", oldLayout.getTranslationY(), oldLayout.getTranslationY() + layout.getHeight());
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -1016,6 +1088,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                if (nowItem == moveItem) {
+                    oldLayout.setY(layout.getY() + layout.getHeight());
+                }
             }
         });
 
@@ -1023,7 +1098,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                long duration = valueAnimator.getCurrentPlayTime();
+
             }
         });
 
