@@ -331,24 +331,18 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
                     Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
                     startActivity(intent);
-                    if (DBG) {
-                        CallFilterUtils.removeDate(getActivity());
-                    }
                     break;
                 case R.id.home_wifi_tab:
 //                     wifi安全
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
                     Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
                     startActivity(mIntent);
-                    if (DBG) {
-//                        CallFilterUtils.queryData(getActivity());
-                    }
                     break;
                 case R.id.home_lost_tab:
                     // 手机防盗
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
                     startPhoneSecurity();
-//                    if (DBG) {
+                    if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());
 //                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
 //                        
@@ -364,11 +358,10 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                        info.setMarkerNumber(50000);
 //                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
 //                        cm.addFilterFroParse(info);
-//                        Intent intent2 = new Intent(getActivity(), TestDemo.class);
-//                        startActivity(intent2);
-//                        
-////
-//                    }
+                        Intent intent2 = new Intent(getActivity(), TestDemo.class);
+                        startActivity(intent2);
+//
+                    }
                     break;
             }
         }

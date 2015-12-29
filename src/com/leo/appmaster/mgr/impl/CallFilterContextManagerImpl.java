@@ -94,7 +94,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             int locHdType = info.getLocHandlerType();
             int readState = info.getReadState();
             int removeState = info.getRemoveState();
-            int filUpState =info.getFiltUpState();
+            int filUpState = info.getFiltUpState();
 
             ContentResolver cr = mContext.getContentResolver();
             Uri uri = CallFilterConstants.BLACK_LIST_URI;
@@ -133,7 +133,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 value.put(CallFilterConstants.BLACK_READ_STATE, readState);
             }
             //是否为拦截上传
-            if(filUpState != -1){
+            if (filUpState != -1) {
                 value.put(CallFilterConstants.BLACK_FIL_UP, filUpState);
             }
 
@@ -159,11 +159,18 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                         int locHdTypeFlag = cur.getInt(locHdTypeCom);
                         //本地标记类型
-                        if (locHdTypeFlag != locHdType) {
+                        if (locHdType != -1 && (locHdTypeFlag != locHdType)) {
                             value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
                         }
-                        String where = CallFilterConstants.BLACK_ID + " = ? ";
-                        String[] selectArgs = new String[]{String.valueOf(id)};
+                        String where = null;
+                        String[] selectArgs = null;
+                        if (id > 0) {
+                            where = CallFilterConstants.BLACK_ID + " = ? ";
+                            selectArgs = new String[]{String.valueOf(id)};
+                        } else {
+                            where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
+                            selectArgs = new String[]{"%" + number};
+                        }
                         cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                     }
                 } else {

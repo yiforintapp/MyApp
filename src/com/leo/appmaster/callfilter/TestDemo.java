@@ -1,6 +1,7 @@
 package com.leo.appmaster.callfilter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -26,6 +27,8 @@ public class TestDemo extends Activity implements View.OnClickListener {
     private Button b1;
     private Button b2;
     private Button b3;
+    private Button b4;
+    private Button b5;
     private int mI = 1;
 
     @Override
@@ -38,6 +41,10 @@ public class TestDemo extends Activity implements View.OnClickListener {
         b2.setOnClickListener(this);
         b3 = (Button) findViewById(R.id.B3);
         b3.setOnClickListener(this);
+        b4 = (Button) findViewById(R.id.B4);
+        b4.setOnClickListener(this);
+        b5 = (Button) findViewById(R.id.B5);
+        b5.setOnClickListener(this);
     }
 
     @Override
@@ -59,16 +66,6 @@ public class TestDemo extends Activity implements View.OnClickListener {
             case R.id.B2:
                 BlackUploadFetchJob.startWork();
                 break;
-//            case:
-//            CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-//            List<BlackListInfo> list = new ArrayList<BlackListInfo>();
-//            for (int i = 0; i < 10; i++) {
-//                BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110" + i, "测试", 0, null,
-//                        null, 23, 25, 0, 1, 1, 0, 1, -1);
-//                list.add(info);
-//            }
-//            mp.addBlackList(list, false);
-//            break;
             case R.id.B3:
                 CallFilterContextManagerImpl lsm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 int user = lsm.getFilterUserNumber();
@@ -80,17 +77,51 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 int blackCount = lsm.getSerBlackTipCount();
                 int markCount = lsm.getSerMarkTipCount();
                 StringBuilder sb = new StringBuilder();
-                sb.append("user = "+user);
-                sb.append("tipUser = "+tipUser);
-                sb.append("dration = "+dration);
-                sb.append("showTipPar = "+showTipPar);
-                sb.append("path = "+path);
-                sb.append("notiTipPar = "+notiTipPar);
-                sb.append("blackCount = "+blackCount);
-                sb.append("markCount = "+markCount);
-
-
-                Toast.makeText(TestDemo.this,sb.toString(),Toast.LENGTH_LONG).show();
+                sb.append("user = " + user);
+                sb.append("tipUser = " + tipUser);
+                sb.append("dration = " + dration);
+                sb.append("showTipPar = " + showTipPar);
+                sb.append("path = " + path);
+                sb.append("notiTipPar = " + notiTipPar);
+                sb.append("blackCount = " + blackCount);
+                sb.append("markCount = " + markCount);
+                Toast.makeText(TestDemo.this, sb.toString(), Toast.LENGTH_LONG).show();
+                break;
+            case R.id.B4:
+                List<BlackListInfo> blacks = new ArrayList<BlackListInfo>();
+                for (int i = 0; i <= 9; i++) {
+                    BlackListInfo black = new BlackListInfo();
+                    black.setNumber("121212278" + i);
+                    black.setFiltUpState(CallFilterConstants.FIL_UP);
+                    black.setLocHandler(CallFilterConstants.LOC_HD);
+                    black.setUploadState(CallFilterConstants.UPLOAD);
+                    blacks.add(black);
+                }
+                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                cmp.addBlackList(blacks, true);
+                break;
+            case R.id.B5:
+                CallFilterContextManagerImpl cmps = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                int i = 1;
+                //已上传的拦截名单
+                List<BlackListInfo> filInfos = cmps.getUpBlackListLimit(1);
+                List<BlackListInfo> tmpFilInfos = new ArrayList<BlackListInfo>();
+                if (filInfos != null && filInfos.size() > 0) {
+                    for (BlackListInfo info1 : filInfos) {
+                        if (info1.getFiltUpState() == CallFilterConstants.FIL_UP) {
+                            tmpFilInfos.add(info1);
+                        }
+                    }
+                }
+                if (tmpFilInfos != null && tmpFilInfos.size() > 0) {
+                    for (BlackListInfo info2 : tmpFilInfos) {
+                        BlackListInfo black = new BlackListInfo();
+                        black.setNumber(info2.getNumber());
+                        black.setFiltUpState(CallFilterConstants.FIL_UP_NO);
+                        Context context = AppMasterApplication.getInstance();
+                        CallFilterManager.getInstance(context).updateUpBlack(black);
+                    }
+                }
                 break;
         }
     }
