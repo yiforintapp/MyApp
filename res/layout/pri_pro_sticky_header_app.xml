@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.appmaster.ui.XHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pri_pro_sticky_rl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -73,4 +73,4 @@
 
 
 
-</LinearLayout>
+</com.leo.appmaster.ui.XHeaderView>

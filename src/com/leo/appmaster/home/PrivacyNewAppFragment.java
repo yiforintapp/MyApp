@@ -22,6 +22,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -172,8 +173,6 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
             mAppText.setVisibility(View.GONE);
         }
 
-
-
         boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
         int stringId = R.string.pri_pro_new_app;
         if (!processed) {
@@ -182,6 +181,18 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         String content = AppMasterApplication.getInstance().getString(stringId, mDataList == null ? 0 : mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));
         setProcessContent(R.string.pri_pro_lock_app);
+
+        XHeaderView headerView = (XHeaderView) mStickView;
+        headerView.setOnHeaderLayoutListener(new XHeaderView.OnHeaderLayoutListener() {
+            @Override
+            public void onHeaderLayout(int height) {
+                if (mAppList.getAdapter() == null) {
+                    mStickyHeight = height;
+                    mAppList.addHeaderView(getEmptyHeader());
+                    mAppList.setAdapter(mAdaper);
+                }
+            }
+        });
     }
 
     private void setLabelCount(int count) {
@@ -214,23 +225,4 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mAppList.addHeaderView(getEmptyHeader());
-        mAppList.setAdapter(mAdaper);
-    }
-
-    @Override
-    protected View getEmptyHeader() {
-        mStickyHeight = mStickView.getHeight();
-        TextView textView = new TextView(getActivity());
-        textView.setLayoutParams(new AbsListView.LayoutParams(1, mEmptyHeight + mStickyHeight));
-        textView.setBackgroundResource(R.color.transparent);
-        textView.setClickable(false);
-        textView.setEnabled(false);
-        textView.setWidth(1);
-
-        return textView;
-    }
 }
