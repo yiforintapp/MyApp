@@ -215,8 +215,9 @@ public class CallFilterManager {
                 long currentTime = System.currentTimeMillis();
                 LeoLog.i(TAG, "idle : System.currentTimeMillis() =" + currentTime);
                 long deltaTime = currentTime - mLastOffHookTime;
+                LeoLog.i("allnull", "deltaTime = " + deltaTime);
                 //时间过短 且 服务器和本地都没有数据 
-                if (deltaTime < durationMax && info == null && serInfo == null) {
+                if (deltaTime < 5000 && info == null && serInfo == null) {
                     //通话时间过短的提醒加入黑名单对话框
                     final MultiChoicesWitchSummaryDialog dialog1 = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0);
                     dialog1.getListView().setOnItemClickListener(new OnItemClickListener() {

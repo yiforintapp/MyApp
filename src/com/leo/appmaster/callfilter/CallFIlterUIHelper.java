@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.WindowManager;
+import android.widget.RemoteViews;
 
 public class CallFIlterUIHelper {
     //    private static LEOWithSIngleCheckboxDialog mConfirmRemoveFromBlacklistDialog;
@@ -102,18 +103,21 @@ public class CallFIlterUIHelper {
         if (!filOpSta) {
             return;
         }
-
         AppMasterApplication ama = AppMasterApplication.getInstance();
+        RemoteViews mRemoteViews = new RemoteViews(ama.getPackageName(), R.layout.remoteview_callfilter);
+        mRemoteViews.setTextViewText(R.id.tv_title, ama.getResources().getString(R.string.call_filter_notifacation));
+        mRemoteViews.setTextViewText(R.id.tv_content, number);
+        mRemoteViews.setImageViewResource(R.id.iv_ic, R.drawable.ic_launcher);
+
         Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
         intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mFilterNoti);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, Notification.FLAG_AUTO_CANCEL);
         NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
-        mBuilder.setContentTitle(ama.getResources().getString(R.string.call_filter_notifacation))
-                .setContentText(number)
+//        mBuilder.setContentTitle(ama.getResources().getString(R.string.call_filter_notifacation))
+        mBuilder.setContent(mRemoteViews)
                 .setContentIntent(pendingIntent)
-//                .setTicker("拦截到以下来电")
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
