@@ -162,6 +162,8 @@ public class LEOWithSingleCheckboxDialog extends LEOBaseDialog {
         mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
+        mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mCheck = (CheckBox) dlgView.findViewById(R.id.checkb);
         mCheck.setChecked(true);
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {

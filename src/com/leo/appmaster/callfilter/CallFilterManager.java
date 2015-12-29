@@ -615,21 +615,22 @@ public class CallFilterManager {
                 if (remainder == 0) {
                     /*多个未接来电为指定倍数通知提示*/
                     CallFIlterUIHelper.getInstance().showStrangerNotification(count);
-                } else {
-                    /*未接陌生人来电通知提示*/
-                    if (isReceiver()) {
-                        String phoneNumber = getCurrentRecePhNum();
-                        if (TextUtils.isEmpty(phoneNumber)) {
-                            return;
-                        }
-                        BlackListInfo serInfo = getSerBlackForNum(phoneNumber);
-                        if (serInfo == null) {
-                            /*该号码不存在黑名单中*/
-                            return;
-                        }
-                        CallFIlterUIHelper.getInstance().showMissCallNotification(serInfo.getAddBlackNumber(), phoneNumber);
-                    }
                 }
+//                else {
+//                    /*未接陌生人来电通知提示*/
+//                    if (isReceiver()) {
+//                        String phoneNumber = getCurrentRecePhNum();
+//                        if (TextUtils.isEmpty(phoneNumber)) {
+//                            return;
+//                        }
+//                        BlackListInfo serInfo = getSerBlackForNum(phoneNumber);
+//                        if (serInfo == null) {
+//                            /*该号码不存在黑名单中*/
+//                            return;
+//                        }
+//                        CallFIlterUIHelper.getInstance().showMissCallNotification(serInfo.getAddBlackNumber(), phoneNumber);
+//                    }
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
