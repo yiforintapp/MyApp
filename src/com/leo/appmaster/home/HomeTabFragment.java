@@ -348,23 +348,23 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     // 手机防盗
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
                     startPhoneSecurity();
-                    if (DBG) {
-                        int[] pix = AppUtil.getScreenPix(getActivity());
-                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
+//                    if (DBG) {
+//                        int[] pix = AppUtil.getScreenPix(getActivity());
+//                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
 //                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                        pm.setFilterUserNumber(50000);
 //                        pm.setFilterTipFroUser(3000);
 //                        BlackListInfo info = new BlackListInfo();
-//                        info.setNumber("18575561740");
+//                        info.setNumber("13632840685");
 //                        info.setAddBlackNumber(2258);
 //                        info.setMarkerType(0);
 //                        info.setMarkerNumber(30);
 //                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
 //                        cm.addFilterFroParse(info);
-                        Intent intent2 = new Intent(getActivity(), TestDemo.class);
-                        startActivity(intent2);
-
-                    }
+//                        Intent intent2 = new Intent(getActivity(), TestDemo.class);
+//                        startActivity(intent2);
+//
+//                    }
                     break;
             }
         }

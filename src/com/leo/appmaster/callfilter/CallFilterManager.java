@@ -267,7 +267,7 @@ public class CallFilterManager {
                     });
                     dialog1.show();
                     // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
-                } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null) {
+                } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null && CallFilterConstants.IS_TIP_DIA[1]== filterTip[0]) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                     mIsOffHook = false;
 //                  挂断后接听 询问是否家黑名单且展示标记人数
@@ -324,7 +324,7 @@ public class CallFilterManager {
                     });
 
                     callHandleDialogWithSummary.show();
-                } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1] && info == null && serInfo != null) {
+                } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1] && info == null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                     mIsOffHook = false;
                     //挂断后接听 询问是否加入黑名单且展示加入黑名单人数
@@ -366,7 +366,7 @@ public class CallFilterManager {
                         }
                     });
                     callHandleDialogWithSummary.show();
-                } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null) {
+                } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                     int tipType = filterTip[1];
                     final LEOAlarmDialog confirmAddToBlacklistDialog = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
                     confirmAddToBlacklistDialog.setRightBtnListener(new OnClickListener() {
