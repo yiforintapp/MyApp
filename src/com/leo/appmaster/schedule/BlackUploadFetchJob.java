@@ -76,7 +76,6 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
 
         if (mFilUpInfos != null && mFilUpInfos.size() > 0) {
             for (BlackListInfo info : mFilUpInfos) {
-                info.setFiltUpState(CallFilterConstants.FIL_UP_NO);
                 BlackListInfo black = new BlackListInfo();
                 black.setNumber(info.getNumber());
                 black.setFiltUpState(CallFilterConstants.FIL_UP_NO);
@@ -130,14 +129,11 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
             }
 
             //未上传的黑名单
-//            while (true) {
             List<BlackListInfo> infos = new ArrayList<BlackListInfo>(100);
             infos = pm.getNoUpBlackListLimit(i);
             if (infos == null) {
-//                    break;
                 infos = new ArrayList<BlackListInfo>();
             }
-//                i = i + 1;
             mInfos.addAll(infos);
 
             infos.addAll(tmpFilInfos);

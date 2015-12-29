@@ -29,5 +29,16 @@
             android:layout_height="wrap_content"
             android:text="查看后台拉去配置数据"/>
 
+        <Button
+            android:id="@+id/B4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="插入拦截上报数据"/>
+        <Button
+            android:id="@+id/B5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拦截插入后更新数据库"/>
+
     </LinearLayout>
 </RelativeLayout>
