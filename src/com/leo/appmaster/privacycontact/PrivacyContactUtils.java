@@ -493,79 +493,33 @@ public class PrivacyContactUtils {
     public static List<ContactCallLog> getSysCallLogNoContact(Context context, String selection, String[] selectionArgs, boolean isDetailList, boolean isFreContacts) {
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(context, null, null, false);
 
-        SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
-        Cursor cursor = null;
-
         try {
-            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-            cursor = mgr.getSystemCalls(selection, selectionArgs);
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
+            List<ContactCallLog> calls = getSysCallLog(context, selection, selectionArgs, isDetailList, isFreContacts);
+            if (calls == null || calls.size() <= 0) {
+                return calllogs;
+            }
 
-                    int numberColum = cursor.getColumnIndex(CallLog.Calls.NUMBER);
-                    int nameColum = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
-                    int dateColum = cursor.getColumnIndex(CallLog.Calls.DATE);
-                    int callTypeColum = cursor.getColumnIndex(CallLog.Calls.TYPE);
-                    int callDurationColum = cursor.getColumnIndex(CallLog.Calls.DURATION);
+            for (ContactCallLog call : calls) {
 
-                    ContactCallLog callLog = new ContactCallLog();
-                    int count = cursor.getCount();
-                    String number = null;
-                    if (isFreContacts) {
-                        number = simpleFromateNumber(cursor.getString(numberColum));
-                    } else {
-                        number = cursor.getString(numberColum);
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(call.getCallLogNumber());
+                boolean isExistContact = false;
+                for (ContactBean contactBean : contactsList) {
+                    String contactNumber = contactBean.getContactNumber();
+                    contactNumber = PrivacyContactUtils.simpleFromateNumber(contactNumber);
+                    if (contactNumber != null && formateNumber != null && contactNumber.contains(formateNumber)) {
+                        isExistContact = true;
+                        break;
                     }
-                    Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
-                            context, number);
-                    if (icon != null) {
-                        int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
-                        icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
-                        callLog.setContactIcon(icon);
-                    } else {
-                        BitmapDrawable bitDra = (BitmapDrawable) context.getResources().getDrawable(R.drawable.default_user_avatar);
-                        Bitmap bitmapIcon = bitDra.getBitmap();
-                        callLog.setContactIcon(bitmapIcon);
-                    }
-                    String name = cursor.getString(nameColum);
-                    Date date = new Date(Long.parseLong(cursor.getString(dateColum)));
-                    String time = sfd.format(date);
-                    long durationTime = cursor.getLong(callDurationColum);
-                    int type = (cursor.getInt(callTypeColum));
-
-                    callLog.setCallLogCount(count);
-                    callLog.setCallLogDuraction(durationTime);
-                    callLog.setCallLogName(name);
-                    callLog.setCallLogNumber(number);
-                    callLog.setClallLogDate(time);
-                    callLog.setClallLogType(type);
-
-                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                    boolean isExistContact = false;
-                    for (ContactBean contactBean : contactsList) {
-                        String contactNumber = contactBean.getContactNumber();
-                        contactNumber = PrivacyContactUtils.simpleFromateNumber(contactNumber);
-                        if (contactNumber != null && formateNumber != null && contactNumber.contains(formateNumber)) {
-                            isExistContact = true;
-                            break;
-                        }
-                    }
-
-                    if (!isExistContact && number != null) {
-                        calllogs.add(callLog);
-                    }
-
-
                 }
 
+                if (!isExistContact && call.getCallLogNumber() != null) {
+                    calllogs.add(call);
+                }
             }
-        } catch (Exception e) {
 
-        } finally {
-            if (!BuildProperties.isApiLevel14()) {
-                IoUtils.closeSilently(cursor);
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return calllogs;
@@ -654,21 +608,10 @@ public class PrivacyContactUtils {
                     Cursor cur = null;
                     try {
                         if (isFreContacts) {
-//                            String selectionCall = selection + " and number LIKE ? ";
-//                            String[] selectionArgsCall = null;
-//                            if (selectionArgs.length <= 1) {
-//                                selectionArgsCall = new String[]{selectionArgs[0], "%" + formateNumber};
-//                            } else if (selectionArgs.length <= 2) {
-//                                selectionArgsCall = new String[]{selectionArgs[0], selectionArgs[1], "%" + formateNumber};
-//                            }
-//                            cur = mgr.getSystemCalls(selectionCall, selectionArgsCall);
                             countCall = countCalls(callBeans, number);
                         } else {
-//                            cur = mgr.getSystemCalls("number" + " LIKE ? ", new String[]{"%" + formateNumber});
                             countCall = countCalls(callBeans, number);
                         }
-
-//                        contactCallLog.setCallLogCount(cur.getCount());
                         contactCallLog.setCallLogCount(countCall);
                         calllogs.add(contactCallLog);
                     } finally {

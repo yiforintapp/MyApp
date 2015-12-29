@@ -25,6 +25,7 @@ import java.util.List;
 public class TestDemo extends Activity implements View.OnClickListener {
     private Button b1;
     private Button b2;
+    private Button b3;
     private int mI = 1;
 
     @Override
@@ -35,6 +36,8 @@ public class TestDemo extends Activity implements View.OnClickListener {
         b1.setOnClickListener(this);
         b2 = (Button) findViewById(R.id.B2);
         b2.setOnClickListener(this);
+        b3 = (Button) findViewById(R.id.B3);
+        b3.setOnClickListener(this);
     }
 
     @Override
