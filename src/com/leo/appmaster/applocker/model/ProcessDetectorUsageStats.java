@@ -5,6 +5,7 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
@@ -23,7 +24,9 @@ import java.util.TreeMap;
  */
 @SuppressLint("NewApi")
 public class ProcessDetectorUsageStats extends ProcessDetector {
-    private static final String TAG = "ProcessDetectorUsageStats";
+    private static final String TAG = "PDectorUsageStats";
+
+    private static final boolean DBG = false;
 
     private static final int WAIT_TIMEOUT = 200;
 
@@ -62,7 +65,7 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
 
         ProcessAdj processAdj = null;
         if (stats != null) {
-            SortedMap<Long, UsageStats> runningTask = new TreeMap<Long,UsageStats>();
+            SortedMap<Long, UsageStats> runningTask = new TreeMap<Long, UsageStats>();
             for (UsageStats usageStats : stats) {
                 if (usageStats.mLastEvent == UsageEvents.Event.MOVE_TO_FOREGROUND) {
                     runningTask.put(usageStats.getLastTimeUsed(), usageStats);
@@ -70,9 +73,15 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
             }
             logTasks(runningTask);
             if (runningTask.isEmpty()) {
+                if (DBG) {
+                    Log.d(TAG, "there is no app found.");
+                }
                 LeoLog.i(TAG, "there is no app found.");
             } else {
-                String pkg =  runningTask.get(runningTask.lastKey()).getPackageName();
+                String pkg = runningTask.get(runningTask.lastKey()).getPackageName();
+                if (DBG) {
+                    Log.i(TAG, "pkg: " + pkg);
+                }
                 LeoLog.i(TAG, "pkg: " + pkg);
                 processAdj = new ProcessAdj();
                 processAdj.pkg = pkg;
@@ -88,7 +97,7 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
     }
 
     private void logTasks(SortedMap<Long, UsageStats> runningTask) {
-        if (AppMasterConfig.LOGGABLE) {
+        if (DBG) {
             StringBuilder builder = new StringBuilder();
             builder.append("{");
             for (Long aLong : runningTask.keySet()) {
@@ -100,7 +109,7 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
                         .append(",");
             }
             builder.append("}");
-            LeoLog.d(TAG, builder.toString());
+            Log.d(TAG, builder.toString());
         }
     }
 }
