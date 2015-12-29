@@ -648,7 +648,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mActivity.setContactList(mContactList);
             mContactScanFinish = true;
             if (mHandler != null) {
-                mHandler.obtainMessage().sendToTarget();
+//                mHandler.obtainMessage().sendToTarget();
             }
             LeoLog.i(TAG, "contactBeans, cost: " + (SystemClock.elapsedRealtime() - start));
         }
@@ -832,6 +832,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewContactLayout) {
+            updateNewContactList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
 
             layout.post(new Runnable() {
