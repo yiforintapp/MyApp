@@ -614,7 +614,7 @@ public class HomePrivacyFragment extends Fragment {
         outScaleAnim.setDuration(200);
         animators.add(outScaleAnim);
         // 虚线框缩小至0.5
-        ObjectAnimator dashScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "scanningScale", 1f, 0.7f);
+        ObjectAnimator dashScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "scanningScale", 1f, 0.64f);
         dashScaleAnim.setInterpolator(new LinearInterpolator());
         dashScaleAnim.setDuration(200);
         animators.add(dashScaleAnim);
