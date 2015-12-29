@@ -94,6 +94,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             int locHdType = info.getLocHandlerType();
             int readState = info.getReadState();
             int removeState = info.getRemoveState();
+            int filUpState =info.getFiltUpState();
 
             ContentResolver cr = mContext.getContentResolver();
             Uri uri = CallFilterConstants.BLACK_LIST_URI;
@@ -131,6 +132,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (readState != -1) {
                 value.put(CallFilterConstants.BLACK_READ_STATE, readState);
             }
+            //是否为拦截上传
+            if(filUpState != -1){
+                value.put(CallFilterConstants.BLACK_FIL_UP, filUpState);
+            }
 
             try {
                 String table = CallFilterConstants.BLACK_LIST_TAB;
@@ -166,6 +171,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
                     value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
                     value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
+                    value.put(CallFilterConstants.BLACK_FIL_UP, CallFilterConstants.FIL_UP_NO);
                     cr.insert(uri, value);
                 }
             } catch (Exception e) {
@@ -238,10 +244,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? ");
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ?");
         String selection = sb.toString();
         String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD_NO),
-                String.valueOf(CallFilterConstants.LOC_HD)};
+                String.valueOf(CallFilterConstants.LOC_HD), String.valueOf(CallFilterConstants.REMOVE_NO)};
+
         return CallFilterUtils.getNoUpBlack(uri, selection, selectionArgs, null);
     }
 
@@ -1255,5 +1263,38 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<BlackListInfo> getUpBlackListLimit(int page) {
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ?");
+        String selection = sb.toString();
+        String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD),
+                String.valueOf(CallFilterConstants.LOC_HD), String.valueOf(CallFilterConstants.REMOVE_NO)};
+        int pageSize = PAGE_SIZE;
+        int currentOffset = (page - 1) * PAGE_SIZE;
+        StringBuilder sbOr = new StringBuilder();
+        sbOr.append(CallFilterConstants.BLACK_ID);
+        sbOr.append(" " + CallFilterConstants.DESC);
+        sbOr.append(" limit  " + pageSize + " offset " + currentOffset);
+        String sortOrder = sbOr.toString();
+        return CallFilterUtils.getNoUpBlack(uri, selection, selectionArgs, sortOrder);
+    }
+
+    @Override
+    public List<BlackListInfo> getUploadBlackList() {
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ?");
+        String selection = sb.toString();
+        String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD),
+                String.valueOf(CallFilterConstants.LOC_HD), String.valueOf(CallFilterConstants.REMOVE_NO)};
+        return CallFilterUtils.getNoUpBlack(uri, selection, selectionArgs, null);
     }
 }

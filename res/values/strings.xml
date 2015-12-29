@@ -927,4 +927,7 @@
     <string name="miss_noti_tit">未接来电</string>
     <string name="miss_noti_content">%1$s被%2$s人拉黑，建议拉黑</string>
     <string name="fil_noti_bt">查看</string>
+    <string name="title_activity_test_demo">TestDemo</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

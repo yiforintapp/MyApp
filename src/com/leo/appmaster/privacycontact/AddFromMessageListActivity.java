@@ -469,8 +469,8 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 }
                             }
                         } else if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(flag)) {
-                            List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
                             for (MessageBean message : mAddPrivacyMessage) {
+                                List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
                                 String name = message.getMessageName();
                                 String contactNumber = message.getPhoneNumber();
                                 String number = PrivacyContactUtils.simpleFromateNumber(contactNumber);

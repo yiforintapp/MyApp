@@ -58,6 +58,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
             LeoLog.d("testBlackList", "list size : " + mBlackList.size());
             mBlackListAdapter.setData(mBlackList);
         }
+
     }
 
     public void showEmpty() {

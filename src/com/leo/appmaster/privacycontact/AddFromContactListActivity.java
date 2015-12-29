@@ -193,6 +193,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     sendImpLogHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
                                 }
                             } else {
+                                LeoLog.d("testAddContact", "mAddPrivacyContact.size()= : " + mAddPrivacyContact.size());
                                 showProgressDialog(mAddPrivacyContact.size(), 0);
                                 sendImpLogHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
                             }
@@ -449,8 +450,8 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                 }
                             }
                         } else if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(flag)) {
-                            List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
                             for (ContactBean contact : mAddPrivacyContact) {
+                                List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
                                 String name = contact.getContactName();
                                 String number = PrivacyContactUtils.
                                         simpleFromateNumber(contact.getContactNumber());
@@ -469,6 +470,8 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
 
                                     }
                                 }
+
+                                mCallManger.addBlackList(blackList, false);
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;
@@ -476,7 +479,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     mHandler.sendMessage(messge);
                                 }
                             }
-                            mCallManger.addBlackList(blackList, false);
 
                         } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
                             List<String> addNumber = new ArrayList<String>();
@@ -580,7 +582,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         mProgressDialog.setMessage(content);
         mProgressDialog.setMax(maxValue);
         mProgressDialog.setProgress(currentValue);
-        mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         try {

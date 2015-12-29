@@ -29,6 +29,7 @@ import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
 import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterUtils;
+import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -350,16 +351,18 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (DBG) {
                         int[] pix = AppUtil.getScreenPix(getActivity());
                         LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                        pm.setFilterUserNumber(50000);
-                        pm.setFilterTipFroUser(3000);
-                        BlackListInfo info = new BlackListInfo();
-                        info.setNumber("18575561740");
-                        info.setAddBlackNumber(2258);
-                        info.setMarkerType(0);
-                        info.setMarkerNumber(30);
-                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
-                        cm.addFilterFroParse(info);
+//                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                        pm.setFilterUserNumber(50000);
+//                        pm.setFilterTipFroUser(3000);
+//                        BlackListInfo info = new BlackListInfo();
+//                        info.setNumber("18575561740");
+//                        info.setAddBlackNumber(2258);
+//                        info.setMarkerType(0);
+//                        info.setMarkerNumber(30);
+//                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
+//                        cm.addFilterFroParse(info);
+                        Intent intent2 = new Intent(getActivity(), TestDemo.class);
+                        startActivity(intent2);
 
                     }
                     break;

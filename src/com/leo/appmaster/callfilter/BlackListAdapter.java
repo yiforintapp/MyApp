@@ -167,6 +167,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
                             (CallFilterMainActivity) mContext;
                     callFilterMainActivity.blackListShowEmpty();
                 }
+                notifyDataSetChanged();
                 mDialog.dismiss();
             }
         });

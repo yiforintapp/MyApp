@@ -35,6 +35,7 @@ public class BlackListInfo implements Serializable {
      * 服务器下发黑名单是否存在语本地黑名单
      */
     private boolean existState;
+    private int filtUpState = -1;
 
     public int getAddBlackNumber() {
         return addBlackNumber;
@@ -147,5 +148,13 @@ public class BlackListInfo implements Serializable {
 
     public void setUploadState(int uploadState) {
         this.uploadState = uploadState;
+    }
+
+    public int getFiltUpState() {
+        return filtUpState;
+    }
+
+    public void setFiltUpState(int filtUpState) {
+        this.filtUpState = filtUpState;
     }
 }

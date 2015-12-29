@@ -72,7 +72,8 @@ public class CallFilterUtils {
                                                  int locHd,
                                                  int locHdType,
                                                  int readState,
-                                                 int removeState) {
+                                                 int removeState,
+                                                 int filUpState) {
         BlackListInfo info = new BlackListInfo();
         if (id != -1) {
             info.setId(id);
@@ -102,7 +103,9 @@ public class CallFilterUtils {
         if (removeState != -1) {
             info.setRemoveState(removeState);
         }
-
+        if (filUpState != -1) {
+            info.setFiltUpState(filUpState);
+        }
         info.setReadState(readState);
         return info;
     }
@@ -251,7 +254,7 @@ public class CallFilterUtils {
         List<BlackListInfo> list = new ArrayList<BlackListInfo>();
         for (int i = 0; i < 10; i++) {
             BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110" + i, "测试", 0, null,
-                    null, 23, 25, 0, 1, 1, 0, 1);
+                    null, 23, 25, 0, 1, 1, 0, 1, -1);
             list.add(info);
         }
 //        BlackUploadFetchJob.getJsonString(list);
@@ -371,6 +374,7 @@ public class CallFilterUtils {
                     int locHdTypeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                     int readStateColum = cursor.getColumnIndex(CallFilterConstants.BLACK_READ_STATE);
                     int removeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_REMOVE_STATE);
+                    int filUpCOlum = cursor.getColumnIndex(CallFilterConstants.BLACK_FIL_UP);
 
                     int id = cursor.getInt(idColum);
                     String name = cursor.getString(nameColum);
@@ -394,9 +398,10 @@ public class CallFilterUtils {
                     int locHdType = cursor.getInt(locHdTypeColum);
                     int readStateType = cursor.getInt(readStateColum);
                     int removeStateType = cursor.getInt(removeColum);
+                    int filUpState = cursor.getInt(filUpCOlum);
 
                     BlackListInfo info = CallFilterUtils.getBlackListInfo(id, number, name, markerType, icon,
-                            numberArea, addBlackNum, markerNum, uploadStateType, locHd, locHdType, readStateType, removeStateType);
+                            numberArea, addBlackNum, markerNum, uploadStateType, locHd, locHdType, readStateType, removeStateType, filUpState);
                     blackListInfoList.add(info);
                 }
             }
@@ -433,7 +438,7 @@ public class CallFilterUtils {
                     int locHdTypeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                     int readStateColum = cursor.getColumnIndex(CallFilterConstants.BLACK_READ_STATE);
                     int removeColum = cursor.getColumnIndex(CallFilterConstants.BLACK_REMOVE_STATE);
-
+                    int filUpColum = cursor.getColumnIndex(CallFilterConstants.BLACK_FIL_UP);
                     int id = cursor.getInt(idColum);
                     String name = cursor.getString(nameColum);
                     String number = cursor.getString(numberColum);
@@ -457,9 +462,10 @@ public class CallFilterUtils {
                     int locHdType = cursor.getInt(locHdTypeColum);
                     int readStateType = cursor.getInt(readStateColum);
                     int removeStateType = cursor.getInt(removeColum);
-
+                    int filUpState = cursor.getInt(filUpColum);
                     BlackListInfo info = CallFilterUtils.getBlackListInfo(id, number, name, markerType, icon,
-                            numberArea, addBlackNum, markerNum, uploadStateType, locHd, locHdType, readStateType, removeStateType);
+                            numberArea, addBlackNum, markerNum, uploadStateType, locHd, locHdType, readStateType,
+                            removeStateType, filUpState);
                     blackListInfoList.add(info);
                 }
             }

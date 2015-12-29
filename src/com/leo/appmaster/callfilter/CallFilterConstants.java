@@ -57,6 +57,7 @@ public class CallFilterConstants {
     public static final String BLACK_UPLOAD_STATE = "upload_state";
     public static final String BLACK_READ_STATE = "read_state";
     public static final String BLACK_REMOVE_STATE = "remove_state";
+    public static final String BLACK_FIL_UP = "BLACK_FIL_UP";
     /**
      * 本地是否处理
      * 0：未处理
@@ -101,6 +102,8 @@ public class CallFilterConstants {
             + BLACK_READ_STATE
             + " INTEGER,"
             + BLACK_REMOVE_STATE
+            + " INTEGER,"
+            + BLACK_FIL_UP
             + " INTEGER,"
             + BLACK_OTHER_FLAG
             + " TEXT"
@@ -293,6 +296,9 @@ public class CallFilterConstants {
     public static final long CALL_RECEIV_DURAT = 500;
 
     public static final String EVENT_MSG_LOAD_FIL_GR = "MSG_LOAD_FIL_GR";
+
+    public static final int FIL_UP = 1;
+    public static final int FIL_UP_NO = 0;
 
 
 }

@@ -1,8 +1,11 @@
 package com.leo.appmaster.callfilter;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
@@ -420,6 +423,25 @@ public class CallFilterManager {
                     String msg = CallFilterConstants.EVENT_MSG_LOAD_FIL_GR;
                     CommonEvent event = new CommonEvent(id, msg);
                     LeoEventBus.getDefaultBus().post(event);
+
+                    //已经上传的列表
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<BlackListInfo> upBlack = cmp.getUploadBlackList();
+                            if (upBlack != null && upBlack.size() > 0) {
+                                String formateNum = PrivacyContactUtils.formatePhoneNumber(phoneNumber);
+                                for (BlackListInfo black : upBlack) {
+                                    if (black.getNumber().contains(formateNum)) {
+                                        black.setNumber(PrivacyContactUtils.simpleFromateNumber(phoneNumber));
+                                        black.setFiltUpState(CallFilterConstants.FIL_UP);
+                                        updateUpBlack(black);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -647,5 +669,24 @@ public class CallFilterManager {
         }
     }
 
+    /**
+     * 更新上传后的黑名单
+     *
+     * @param info
+     */
+    public void updateUpBlack(BlackListInfo info) {
+
+        if (info == null) {
+            return;
+        }
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        String where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
+        String[] selectionArgs = new String[]{"%" + PrivacyContactUtils.formatePhoneNumber(info.getNumber())};
+        ContentResolver cr = mContext.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(CallFilterConstants.BLACK_PHONE_NUMBER, info.getNumber());
+        values.put(CallFilterConstants.BLACK_FIL_UP, info.getFiltUpState());
+        cr.update(uri, values, where, selectionArgs);
+    }
 
 }

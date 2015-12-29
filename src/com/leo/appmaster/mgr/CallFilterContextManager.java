@@ -428,5 +428,16 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract Bitmap getBlackIcon(String number);
-
+    /**
+     * 分页查询为拦截上传到服务器的黑名单列表
+     *
+     * @return
+     */
+    public abstract List<BlackListInfo> getUpBlackListLimit(int page);
+    /**
+     * 查询为上传到服务器的黑名单列表
+     *
+     * @return
+     */
+    public abstract List<BlackListInfo> getUploadBlackList();
 }

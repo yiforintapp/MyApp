@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
     android:versionCode="64"
-    android:versionName="@string/version_name" >
+    android:versionName="@string/version_name">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -345,13 +345,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
-        
+
         <activity
             android:name=".lockertheme.LockerTheme"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
+            android:theme="@style/Theme.PageIndicatorDefaults">
             <meta-data
                 android:name="LEO_PRIORTY"
                 android:value="0" />
@@ -802,6 +802,12 @@
             android:theme="@style/activity_theme"></activity>
         <activity
             android:name=".activity.DebugActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+        <activity
+            android:name="com.leo.appmaster.callfilter.TestDemo"
             android:excludeFromRecents="true"
             android:exported="false"
             android:screenOrientation="portrait"

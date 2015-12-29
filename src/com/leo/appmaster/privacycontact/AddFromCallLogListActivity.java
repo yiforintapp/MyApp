@@ -414,9 +414,8 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                 }
                             }
                         } else if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(model)) {
-                            List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
-
                             for (ContactCallLog contact : mAddPrivacyCallLog) {
+                                List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
                                 String name = contact.getCallLogName();
                                 String contactNumber = contact.getCallLogNumber();
                                 String number = PrivacyContactUtils.simpleFromateNumber(contact.getCallLogNumber());
@@ -735,7 +734,6 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
         mAddCallLogDialog.setOnClickListener(new OnDiaogClickListener() {
             @Override
             public void onClick(int which) {
-                LeoLog.i("caocao", "laile");
                 if (which == 1) {
                     mHandler = new Handler() {
                         @Override

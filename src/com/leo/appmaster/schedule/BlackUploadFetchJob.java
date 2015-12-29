@@ -1,14 +1,20 @@
 package com.leo.appmaster.schedule;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.callfilter.BlackListInfo;
+import com.leo.appmaster.callfilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterUtils;
+import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
@@ -38,6 +44,9 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
      * 拉取间隔，24小时
      */
     private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
+    private static List<BlackListInfo> mInfos;
+    private static List<BlackListInfo> mFilUpInfos;
+
 
     public static void startImmediately() {
 
@@ -52,11 +61,45 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
+
+        CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        List<BlackListInfo> blacks = new ArrayList<BlackListInfo>();
+        if (mInfos != null && mInfos.size() > 0) {
+            for (BlackListInfo info : mInfos) {
+                info.setUploadState(CallFilterConstants.UPLOAD);
+                blacks.add(info);
+            }
+            mInfos.clear();
+            mInfos = null;
+        }
+        cmp.addBlackList(blacks, true);
+
+        if (mFilUpInfos != null && mFilUpInfos.size() > 0) {
+            for (BlackListInfo info : mFilUpInfos) {
+                info.setFiltUpState(CallFilterConstants.FIL_UP_NO);
+                BlackListInfo black = new BlackListInfo();
+                black.setNumber(info.getNumber());
+                black.setFiltUpState(CallFilterConstants.FIL_UP_NO);
+                Context context = AppMasterApplication.getInstance();
+                CallFilterManager.getInstance(context).updateUpBlack(black);
+            }
+            mFilUpInfos.clear();
+            mFilUpInfos = null;
+        }
+
     }
 
     @Override
     protected void onFetchFail(VolleyError error) {
         super.onFetchFail(error);
+        if (mInfos != null) {
+            mInfos.clear();
+            mInfos = null;
+        }
+        if (mFilUpInfos != null) {
+            mFilUpInfos.clear();
+            mFilUpInfos = null;
+        }
     }
 
     public static void startWork() {
@@ -67,16 +110,44 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
             Context context = AppMasterApplication.getInstance();
 
             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-            int i = 1;
-            while (true) {
-                List<BlackListInfo> infos = pm.getNoUpBlackListLimit(i);
-                if (infos == null || infos.size() <= 0) {
-                    break;
-                }
-                i = i + 1;
-                String bodyString = getJsonString(infos);
-                HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
+            if (mInfos == null) {
+                mInfos = new ArrayList<BlackListInfo>();
             }
+            if (mFilUpInfos == null) {
+                mFilUpInfos = new ArrayList<BlackListInfo>();
+            }
+            int i = 1;
+            //已上传的拦截名单
+            List<BlackListInfo> filInfos = pm.getUpBlackListLimit(i);
+            List<BlackListInfo> tmpFilInfos = new ArrayList<BlackListInfo>();
+            if (filInfos != null && filInfos.size() > 0) {
+                for (BlackListInfo info : filInfos) {
+                    if (info.getFiltUpState() == CallFilterConstants.FIL_UP) {
+                        tmpFilInfos.add(info);
+                    }
+                }
+                mFilUpInfos.addAll(tmpFilInfos);
+            }
+
+            //未上传的黑名单
+//            while (true) {
+            List<BlackListInfo> infos = new ArrayList<BlackListInfo>(100);
+            infos = pm.getNoUpBlackListLimit(i);
+            if (infos == null) {
+//                    break;
+                infos = new ArrayList<BlackListInfo>();
+            }
+//                i = i + 1;
+            mInfos.addAll(infos);
+
+            infos.addAll(tmpFilInfos);
+            if (infos == null || infos.size() <= 0) {
+                return;
+            }
+            String bodyString = getJsonString(infos);
+
+            HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
+//            }
         }
     }
 
@@ -89,6 +160,12 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (int i = 1; i <= infos.size(); i++) {
+            int type = 0;
+            if (infos.get(i - 1).getFiltUpState() == CallFilterConstants.FIL_UP) {
+                type = -1;
+            } else {
+                type = infos.get(i - 1).getLocHandlerType();
+            }
             sb.append("{");
             sb.append("\"" + NUMBER + "\":");
             String number = infos.get(i - 1).getNumber();
@@ -96,7 +173,6 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
             sb.append("\"" + COUNTRY + "\":");
             sb.append("\"" + Utilities.getCountryID(context) + "\",");
             sb.append("\"" + TYPE + "\":");
-            int type = infos.get(i - 1).getLocHandlerType();
             sb.append(type + ",");
             sb.append("\"" + ANDROID_ID + "\":");
             sb.append("\"" + DeviceUtil.getAndroidId(context) + "\"");
@@ -114,4 +190,33 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     protected int getPeriod() {
         return FETCH_PERIOD;
     }
+
+    public static void filterUpload(String number) {
+        if (TextUtils.isEmpty(number)) {
+            return;
+        }
+        CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        List<BlackListInfo> blacks = cmp.getNoUploadBlackList();
+        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
+        for (BlackListInfo info : blacks) {
+            if (info.getNumber().contains(formateNum)) {
+                BlackUploadFetchJob job = new BlackUploadFetchJob();
+                FetchScheduleListener listener = job.newJsonObjListener();
+                Context context = AppMasterApplication.getInstance();
+                CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
+                BlackListInfo black = new BlackListInfo();
+                black.setNumber(info.getNumber());
+                black.setLocHandlerType(-1);
+                infos.add(black);
+                String bodyString = getJsonString(infos);
+
+                HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
+
+                break;
+            }
+
+        }
+    }
+
 }
