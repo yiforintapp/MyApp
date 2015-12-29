@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="查看"
+                android:text="@string/fil_noti_bt"
                 android:textColor="@color/white"
                 android:textSize="@dimen/noti_spe_content_small_text_size" />
         </RelativeLayout>
