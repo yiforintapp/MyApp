@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.CommonEvent;
+import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
@@ -126,6 +129,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
                 mCallManger.removeBlackList(list);
                 mList.remove(position);
                 boolean restrLog = mDialog.getCheckBoxState();
+                //恢复拦截记录到系统
                 if (restrLog) {
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
@@ -141,6 +145,22 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
                         }
                     });
                 }
+                //删除拦截,通知更新拦截列表
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
+                        CallFilterInfo callFil = new CallFilterInfo();
+                        callFil.setNumber(info.getNumber());
+                        removeFilterList.add(callFil);
+                        mCallManger.removeFilterGr(removeFilterList);
+                        int id = EventId.EVENT_LOAD_FIL_GR_ID;
+                        String msg = CallFilterConstants.EVENT_MSG_LOAD_FIL_GR;
+                        CommonEvent event = new CommonEvent(id, msg);
+                        LeoEventBus.getDefaultBus().post(event);
+                    }
+                });
+
 
                 if (mList.size() == 0) {
                     CallFilterMainActivity callFilterMainActivity =

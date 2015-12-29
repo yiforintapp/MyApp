@@ -481,7 +481,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             if (TextUtils.isEmpty(info.getNumber())) {
                 continue;
             }
-            int id = info.getId();
+//            int id = info.getId();
             String number = info.getNumber();
 
 //            if (id >= 0) {
