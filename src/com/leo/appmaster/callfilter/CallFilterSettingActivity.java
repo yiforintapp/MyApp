@@ -22,6 +22,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
     private ImageView checkBoxTwo;
     private RippleView rpBtn;
     private RippleView rpBtnTwo;
+//    private boolean mNotiStatusWhenSwitch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +43,12 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
         }
 
         boolean isNotiSelected = cmp.getFilterNotiOpState();
-        if (isNotiSelected) {
+        if (isNotiSelected && isFilterSelected) {
             checkBoxTwo.setImageResource(R.drawable.switch_on);
+//            mNotiStatusWhenSwitch = true;
         } else {
             checkBoxTwo.setImageResource(R.drawable.switch_off);
+//            mNotiStatusWhenSwitch = false;
         }
     }
 
@@ -82,15 +85,23 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
                 CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 boolean isFilterSelected =cmp.getFilterOpenState();
                 if (!isFilterSelected) {
+                    //拦截从关到开
 //                    PreferenceTable.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
                     checkBox.setImageResource(R.drawable.switch_on);
                     cmp.setFilterOpenState(true);
+                    if (cmp.getFilterNotiOpState()) {
+                        checkBoxTwo.setImageResource(R.drawable.switch_on);
+                    } else {
+                        checkBoxTwo.setImageResource(R.drawable.switch_off);
+                    }
                 } else {
+                    //拦截从开到关
 //                    PreferenceTable.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, false);
                     checkBox.setImageResource(R.drawable.switch_off);
                     cmp.setFilterOpenState(false);
+                    checkBoxTwo.setImageResource(R.drawable.switch_off);
                 }
                 break;
             case R.id.content_item_noti:

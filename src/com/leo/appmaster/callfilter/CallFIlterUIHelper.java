@@ -100,7 +100,8 @@ public class CallFIlterUIHelper {
         /*判断通知提示是否打开*/
         CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean filOpSta = cmp.getFilterNotiOpState();
-        if (!filOpSta) {
+        boolean isFilterSelected = cmp.getFilterOpenState();
+        if (!filOpSta || !isFilterSelected) {
             return;
         }
         AppMasterApplication ama = AppMasterApplication.getInstance();
