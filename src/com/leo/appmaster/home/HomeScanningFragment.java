@@ -912,7 +912,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mProcessBtn.setVisibility(View.VISIBLE);
                 mScannTitleTv.setText(R.string.pri_pro_scanning_finish);
 //                mProcessTv.setTextColor(mActivity.getToolbarColor());
-                mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, "");
+                mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, mScanAppNameStep);
             }
         });
     }
