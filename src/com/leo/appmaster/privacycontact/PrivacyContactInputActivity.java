@@ -273,6 +273,11 @@ public class PrivacyContactInputActivity extends BaseActivity {
         }
         mTtileBar.setOptionImageResource(R.drawable.mode_done);
 
+        if (!Utilities.isEmpty(mFrom) &&
+                mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+            findViewById(R.id.call_log_item_top_bottom_line).setVisibility(View.GONE);
+        }
+        
         mNameEt = (EditText) findViewById(R.id.privacy_input_nameET);
         mNumberEt = (EditText) findViewById(R.id.privacy_input_numberEV);
         mClickArea = findViewById(R.id.privacy_input_rg);

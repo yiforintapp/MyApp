@@ -179,7 +179,9 @@ public class CallFilterManager {
 
         BlackListInfo info = null;
         BlackListInfo serInfo = null;
+        //判断广播带不带号码，带说明是刚刚来电
         if (!TextUtils.isEmpty(phoneNumber)) {
+            //刚刚受到来电 （还没有接听）
             setCurrentRecePhNum(phoneNumber);
             mPhoneNumber = phoneNumber;
             info = getBlackFroNum(phoneNumber);
@@ -190,6 +192,7 @@ public class CallFilterManager {
                 LeoLog.i("allnull", "all null");
             }
         } else {
+            //
 
             if (TextUtils.isEmpty(state)) {
                 return;
