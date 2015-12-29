@@ -584,10 +584,10 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     /*加载通话通话列表*/
     private void sendMsgHandler() {
         if (mAddFromCallHandler != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    mProgressBar.setVisibility(View.VISIBLE);
 //                    List<ContactCallLog> callLogList = PrivacyContactUtils.
 //                            getSysCallLog(StrangeCallActivity.this, null, null, false, false);
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
