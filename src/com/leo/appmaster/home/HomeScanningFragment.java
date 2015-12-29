@@ -19,6 +19,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -177,6 +178,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private View mBackView;
     private int mBackViewHeight = 0;
     private int mNowHeight = 100;
+    private int mScreenHeight;
 
     private Handler mHandler = new Handler() {
 
@@ -297,6 +299,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mBackView = view.findViewById(R.id.back_view);
         ViewGroup.LayoutParams params = mBackView.getLayoutParams();
         mBackViewHeight = params.height;
+
+        WindowManager wm = (WindowManager) mActivity
+                .getSystemService(Context.WINDOW_SERVICE);
+        mScreenHeight = wm.getDefaultDisplay().getHeight();
 
         mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
@@ -1113,6 +1119,18 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void makeItemMove(View layout) {
 
+//        if(layout == mNewInstructLayout){
+//            mController.setLoadingTwo();
+//        }else if(layout == mNewVidLayout){
+//            IntrudeSecurityManager manager = (IntrudeSecurityManager)
+//                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+//            if (!manager.getIsIntruderSecurityAvailable()) {
+//                mController.setLoadingThree(1);
+//            } else {
+//                mController.setLoadingThree(2);
+//            }
+//        }
+
         LeoLog.d("testLayout", "layout top : " + layout.getTop());
         LeoLog.d("testLayout", "layout bottom : " + layout.getBottom());
         LeoLog.d("testLayout", "layout Y : " + layout.getTranslationY());
@@ -1126,7 +1144,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             oldLayoutAnimation(oldLayout, layout, i, lists.size() - 1);
         }
 
-        mNowHeight = mNowHeight + layout.getHeight() + 10;
+        int addSome;
+        if (mScreenHeight < 1280) {
+            addSome = 10;
+        } else {
+            addSome = 15;
+        }
+        mNowHeight = mNowHeight + layout.getHeight() + addSome;
         LeoLog.d("isLast", "back height : " + mBackViewHeight);
         LeoLog.d("isLast", "total height : " + mNowHeight);
         if (mNowHeight > mBackViewHeight) {

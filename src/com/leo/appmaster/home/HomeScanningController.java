@@ -80,7 +80,8 @@ public class HomeScanningController {
     private static final int NEW_PER_CONTACT = 10;
     private static final int NEW_PER_INS = 30;
     private static final int NEW_PER_WIFI = 20;
-    private static final int NEW_PER_LOST = 40;
+    private static final int START_TIME = 40;
+    private static final int NEW_PER_LOST = 50;
     private static final int NEW_PER_VID = 60;
     private static final int NEW_PER_PIC = 80;
     private static final int NEW_PER_APP = 100;
@@ -88,13 +89,15 @@ public class HomeScanningController {
     private static final int NEW_PER_PRI = 100;
 
     private static final int NEW_UP_LIMIT_APP = 4000;
-    private static final int NEW_UP_LIMIT_PIC = 8000;
+    private static final int FIRST_IN_TIME = 3500;
+    private static final int NEW_UP_LIMIT_PIC = 20000;
     private static final int NEW_UP_LIMIT_PIC_PROCESSED = 6000;
     private static final int NEW_UP_LIMIT_VID = 2000;
     private static final int NEW_UP_LIMIT_LOST = 1000;
     private static final int NEW_UP_LIMIT_WIFI = 1000;
     private static final int NEW_UP_LIMIT_INS = 1000;
     private static final int NEW_UP_LIMIT_CONTACT = 1000;
+
 
 //    public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
 //                                  ScanningImageView appImg, ScanningTextView appText,
@@ -166,7 +169,7 @@ public class HomeScanningController {
         ObjectAnimator innerScaleAnim = ObjectAnimator.ofFloat(imageView, "innerDrawableScale",
                 ScanningImageView.INNER_SCALE, 1f);
         innerScaleAnim.setInterpolator(new LinearInterpolator());
-        innerScaleAnim.setDuration(300);
+        innerScaleAnim.setDuration(400);
         innerScaleAnim.addListener(new SimpleAnimatorListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -231,10 +234,10 @@ public class HomeScanningController {
         mNewContactLayoutAnim = getLayoutItemAnim(mNewContactLayout);
         mNewContactLayoutAnim.start();
 //        mNewContactAnim.start();
-        mActivity.scanningFromPercent(NEW_UP_LIMIT_CONTACT, 0, NEW_PER_CONTACT);
+        mActivity.scanningFromPercent(FIRST_IN_TIME, 0, START_TIME);
     }
 
-    public void startItemScanning(){
+    public void startItemScanning() {
         //start from app
         mNewContactAnim = getItemAnimation(mNewContactLayout);
         mNewContactAnim.start();
@@ -242,7 +245,7 @@ public class HomeScanningController {
 
     private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {
         ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(this, "scaleY", 1f, 1f);
-        layoutAnim.setDuration(500);
+        layoutAnim.setDuration(300);
         layoutAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -250,7 +253,7 @@ public class HomeScanningController {
             }
         });
 
-        return  layoutAnim;
+        return layoutAnim;
     }
 
     private void onLayoutAnimEnd(Animator animation) {
@@ -400,7 +403,13 @@ public class HomeScanningController {
 
     private ObjectAnimator getItemAnimation(final LinearLayout layout) {
         ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(this, "scaleX", 1f, 1f);
-        alphaAnim.setDuration(1000);
+
+        if (layout == mNewContactLayout || layout == mNewInstructLayout || layout == mNewWifiLayout) {
+            alphaAnim.setDuration(200);
+        } else {
+            alphaAnim.setDuration(800);
+        }
+
         alphaAnim.setRepeatCount(ValueAnimator.INFINITE);
         alphaAnim.addListener(new SimpleAnimatorListener() {
 
@@ -440,6 +449,20 @@ public class HomeScanningController {
         }
     }
 
+//    public void setLoadingTwo() {
+//        int currPct = mActivity.getScanningPercent();
+//        mActivity.scanningFromPercent(NEW_UP_LIMIT_WIFI, currPct, NEW_PER_WIFI);
+//    }
+//
+//    public void setLoadingThree(int type) {
+//        if(type == 1){
+//            int currPct = mActivity.getScanningPercent();
+//            mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
+//        }else{
+//            int currPct = mActivity.getScanningPercent();
+//            mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_INS);
+//        }
+//    }
 
     public void onItemAnimationEnd(final Animator animation) {
         if (mFragment.isRemoving() || mFragment.isDetached()) return;
@@ -456,9 +479,11 @@ public class HomeScanningController {
         if (animation == mNewContactAnim) {
             mFragment.OnItemAnimationEnd(mNewContactLayout);
             mNewWifiAnim = getItemAnimation(mNewWifiLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_WIFI, currPct, NEW_PER_WIFI);
-            LeoLog.e(TAG, "mNewContactAnim end");
+
+//            int currPct = mActivity.getScanningPercent();
+//            mActivity.scanningFromPercent(NEW_UP_LIMIT_WIFI, currPct, NEW_PER_WIFI);
+//            LeoLog.e(TAG, "mNewContactAnim end");
+
             mNewWifiAnim.start();
         } else if (animation == mNewInstructAnim) {
             mFragment.OnItemAnimationEnd(mNewInstructLayout);
@@ -470,21 +495,23 @@ public class HomeScanningController {
             mNewLostAnim.start();
         } else if (animation == mNewWifiAnim) {
             mFragment.OnItemAnimationEnd(mNewWifiLayout);
+
             IntrudeSecurityManager manager = (IntrudeSecurityManager)
                     MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
             if (!manager.getIsIntruderSecurityAvailable()) {
                 mNewLostAnim = getItemAnimation(mNewLostLayout);
-                int currPct = mActivity.getScanningPercent();
-                mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
-                LeoLog.e(TAG, "mNewInstructAnim end");
+//                int currPct = mActivity.getScanningPercent();
+//                mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
+//                LeoLog.e(TAG, "mNewInstructAnim end");
                 mNewLostAnim.start();
             } else {
                 mNewInstructAnim = getItemAnimation(mNewInstructLayout);
-                int currPct = mActivity.getScanningPercent();
-                mActivity.scanningFromPercent(NEW_UP_LIMIT_INS, currPct, NEW_PER_INS);
-                LeoLog.e(TAG, "mNewContactAnim end");
+//                int currPct = mActivity.getScanningPercent();
+//                mActivity.scanningFromPercent(NEW_UP_LIMIT_INS, currPct, NEW_PER_INS);
+//                LeoLog.e(TAG, "mNewContactAnim end");
                 mNewInstructAnim.start();
             }
+
         } else if (animation == mNewLostAnim) {
             mFragment.OnItemAnimationEnd(mNewLostLayout);
             mNewVidAnim = getItemAnimation(mNewVidLayout);
@@ -506,7 +533,7 @@ public class HomeScanningController {
             mFragment.OnItemAnimationEnd(mNewPicLayout);
             mNewAppAnim = getItemAnimation(mNewAppLayout);
             int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(1000, currPct, NEW_PER_PRI + 1);
+            mActivity.scanningFromPercent(1600, currPct, NEW_PER_PRI + 1);
             LeoLog.e(TAG, "mNewPicAnim end");
             mNewAppAnim.start();
         } else {
@@ -515,20 +542,20 @@ public class HomeScanningController {
     }
 
     public void detachTheController() {
-         endAnim(mNewAppAnim);
-         endAnim(mNewPicAnim);
-         endAnim(mNewVidAnim);
-         endAnim(mNewInstructAnim);
-         endAnim(mNewWifiAnim);
-         endAnim(mNewLostAnim);
-         endAnim(mNewContactAnim);
-         endAnim(mNewAppLayoutAnim);
-         endAnim(mNewPicLayoutAnim);
-         endAnim(mNewVidLayoutAnim);
-         endAnim(mNewInstructLayoutAnim);
-         endAnim(mNewWifiLayoutAnim);
-         endAnim(mNewLostLayoutAnim);
-         endAnim(mNewContactLayoutAnim);
+        endAnim(mNewAppAnim);
+        endAnim(mNewPicAnim);
+        endAnim(mNewVidAnim);
+        endAnim(mNewInstructAnim);
+        endAnim(mNewWifiAnim);
+        endAnim(mNewLostAnim);
+        endAnim(mNewContactAnim);
+        endAnim(mNewAppLayoutAnim);
+        endAnim(mNewPicLayoutAnim);
+        endAnim(mNewVidLayoutAnim);
+        endAnim(mNewInstructLayoutAnim);
+        endAnim(mNewWifiLayoutAnim);
+        endAnim(mNewLostLayoutAnim);
+        endAnim(mNewContactLayoutAnim);
     }
 
     private void endAnim(Animator animator) {
