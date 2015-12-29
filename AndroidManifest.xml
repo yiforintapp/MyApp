@@ -345,16 +345,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        
         <activity
             android:name=".lockertheme.LockerTheme"
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults">
+            android:theme="@style/Theme.PageIndicatorDefaults" >
+            <meta-data
+                android:name="LEO_PRIORTY"
+                android:value="0" />
             <intent-filter>
+                <action android:name="com.leo.theme" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <!-- lockerThemeGuide -->
         <activity
             android:name=".lockertheme.LockerThemeGuideActivity"
@@ -705,7 +711,6 @@
             android:name="TD_CHANNEL_ID"
             android:value="@string/channel_code" />
         <!-- for TalkingData end -->
-
 
         <!-- for LEO push sdk -->
         <service
