@@ -134,13 +134,13 @@ public class SDKWrapper {
     public static void onResume(Activity ctx){
         // 百度的SDK会引起内存泄露，但又不能使用context作为参数传进去。。。蛋疼~
         StatService.onResume(ctx);
-        LeoAgent.onResume();
+//        LeoAgent.onResume();
         TCAgent.onResume(ctx);
     }
     
     public static void onPause(Activity ctx){
         StatService.onPause(ctx);
-        LeoAgent.onPause();
+//        LeoAgent.onPause();
         TCAgent.onPause(ctx);
     }
 
