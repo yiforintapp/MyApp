@@ -15,6 +15,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -173,6 +174,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private RelativeLayout mScrollLayout;
     private LayoutTransition mTransition;
     private float mCurrentY;
+    private View mBackView;
+    private int mBackViewHeight = 0;
+    private int mNowHeight = 100;
 
     private Handler mHandler = new Handler() {
 
@@ -290,6 +294,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewContactLoading = (LoadingView) view.findViewById(R.id.scan_new_contact_loading);
         mNewContactLayout = (LinearLayout) view.findViewById(R.id.scan_new_contact_layout);
 
+        mBackView = view.findViewById(R.id.back_view);
+        ViewGroup.LayoutParams params = mBackView.getLayoutParams();
+        mBackViewHeight = params.height;
+
         mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
                 mTransition.getAnimator(LayoutTransition.CHANGE_APPEARING));
@@ -301,7 +309,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
                 mNewVidLayout, mNewLostLayout, mNewWifiLayout, mNewInstructLayout, mNewContactLayout);
 
-             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 startScanController();
@@ -312,7 +320,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 /*        ThreadManager.executeOnSubThread(new Runnable() {
             @Override
             public void run() {*/
-                loadAd();
+        loadAd();
 /*            }
         });*/
     }
@@ -554,9 +562,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         preview.setImageBitmap(previewImage);
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
-        LeoLog.e(TAG,"start registerView");
+        LeoLog.e(TAG, "start registerView");
         MobvistaEngine.getInstance(mActivity).registerView(AD_AFTER_SCAN, adView);
-        LeoLog.e(TAG,"registerView");
+        LeoLog.e(TAG, "registerView");
     }
     /* 3.2 advertise end */
 
@@ -698,9 +706,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             ThreadManager.executeOnAsyncThread(mVidRunnable);
         } else if (layout == mNewVidLayout) {
 
-        } else if (layout == mNewPicLayout){
+        } else if (layout == mNewPicLayout) {
             ThreadManager.executeOnAsyncThread(mAppRunnable);
         } else if (layout == mNewAppLayout) {
+
             /* show Ad here */
             if (mAdLoaded) {
 //                mAdLayout.setVisibility(View.VISIBLE);
@@ -713,6 +722,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                     }
                 }, 1000);
             }
+
         }
     }
 
@@ -743,6 +753,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 //            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
         }
     }
+
 
     public void updateUIOnAnimationEnd(final LinearLayout layout) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
@@ -822,27 +833,63 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             });
         } else if (layout == mNewContactLayout) {
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
+
+            layout.post(new Runnable() {
+                @Override
+                public void run() {
+                    setItemPlace(layout, 0, firLocation);
+                }
+            });
         }
     }
 
     public void setItemPlace(View nowLayout, int position, int height) {
-//        LeoLog.d("testEndMove", "list size : " + lists.size());
-//        LeoLog.d("testEndMove", "position : " + position);
-//        LeoLog.d("testEndMove", "nowLayout height : " + nowLayout.getHeight());
-//        int moveDistance = nowLayout.getHeight() - height;
-//        LeoLog.d("testEndMove", "moveDistance : " + moveDistance);
-//        if (lists.size() > position) {
-//            for (int i = 0; i < lists.size(); i++) {
-//                if (i < position) {
-//                    LeoLog.d("testEndMove", "move item : " + i);
-//                    View oldlayout = lists.get(position);
-//                    oldlayout.setY(oldlayout.getY() + moveDistance);
-//                }
-//            }
-//        }
-//        LeoLog.d("testEndMove", "-------------------");
+
+        LeoLog.d("testEndMove", "list size : " + lists.size());
+        LeoLog.d("testEndMove", "position : " + position);
+        LeoLog.d("testEndMove", "nowLayout height : " + nowLayout.getHeight());
+
+        int moveDistance = nowLayout.getHeight() - height;
+        LeoLog.d("testEndMove", "moveDistance : " + moveDistance);
+        if (lists.size() > position) {
+
+            for (int i = 0; i < lists.size(); i++) {
+                if (i < position) {
+                    LeoLog.d("testEndMove", "move item : " + i);
+                    View oldlayout = lists.get(i);
+                    startItemExpand(oldlayout, moveDistance);
+                }
+            }
+
+        }
+        LeoLog.d("testEndMove", "-------------------");
+
+        mNowHeight = mNowHeight + moveDistance;
+        LeoLog.d("isLast", "back height : " + mBackViewHeight);
+        LeoLog.d("isLast", "total height : " + mNowHeight);
+        if (mNowHeight > mBackViewHeight) {
+            ViewGroup.LayoutParams params = mBackView.getLayoutParams();
+            params.height = mNowHeight;
+            mBackView.setLayoutParams(params);
+        }
     }
 
+
+    public void startItemExpand(View oldLayout, int moveDistance) {
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
+                oldLayout, "translationY", oldLayout.getTranslationY(), oldLayout.getTranslationY() + moveDistance);
+        objectAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+//                if (nowItem == moveItem) {
+//                    oldLayout.setY(layout.getY() + layout.getHeight());
+//                }
+            }
+        });
+        objectAnimator.setDuration(300);
+        objectAnimator.start();
+    }
 
 
     private void onViewScanningFinish(final List<AppItemInfo> appList, final PhotoList photoItems,
@@ -1045,6 +1092,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
                 lists.add(layout);
                 mScrollLayout.setLayoutTransition(null);
+                if (layout == mNewAppLayout) {
+                    mController.startItemScanning();
+                }
             }
         });
         objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -1073,6 +1123,15 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             View oldLayout = lists.get(i);
 //            oldLayout.setTranslationY(layout.getHeight());
             oldLayoutAnimation(oldLayout, layout, i, lists.size() - 1);
+        }
+
+        mNowHeight = mNowHeight + layout.getHeight() + 10;
+        LeoLog.d("isLast", "back height : " + mBackViewHeight);
+        LeoLog.d("isLast", "total height : " + mNowHeight);
+        if (mNowHeight > mBackViewHeight) {
+            ViewGroup.LayoutParams params = mBackView.getLayoutParams();
+            params.height = mNowHeight;
+            mBackView.setLayoutParams(params);
         }
     }
 

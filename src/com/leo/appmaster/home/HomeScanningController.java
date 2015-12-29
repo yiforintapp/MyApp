@@ -227,11 +227,17 @@ public class HomeScanningController {
 //
 //        mAppAnim.totalAnim.start();
 //        mActivity.scanningFromPercent(UP_LIMIT_APP, 0, PER_APP);
-        mNewContactAnim = getItemAnimation(mNewContactLayout);
+//        mNewContactAnim = getItemAnimation(mNewContactLayout);
         mNewContactLayoutAnim = getLayoutItemAnim(mNewContactLayout);
         mNewContactLayoutAnim.start();
-        mNewContactAnim.start();
+//        mNewContactAnim.start();
         mActivity.scanningFromPercent(NEW_UP_LIMIT_CONTACT, 0, NEW_PER_CONTACT);
+    }
+
+    public void startItemScanning(){
+        //start from app
+        mNewContactAnim = getItemAnimation(mNewContactLayout);
+        mNewContactAnim.start();
     }
 
     private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {

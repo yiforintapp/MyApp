@@ -12,33 +12,33 @@
         android:layout_height="200dp"
         android:background="@color/transparent">
 
-    <TextView
-        android:id="@+id/scan_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:includeFontPadding="false"
-        android:text="@string/pri_pro_scanning"
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="50dp"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/white"
-        android:textSize="17sp" />
+        <TextView
+            android:id="@+id/scan_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="100dp"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:text="@string/pri_pro_scanning"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
 
-    <TextView
-        android:id="@+id/scan_progress_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scan_title_tv"
-        android:gravity="center_horizontal"
-        android:layout_alignParentRight="true"
-        android:layout_alignLeft="@+id/scan_title_tv"
-        android:layout_marginRight="50dp"
-        android:includeFontPadding="false"
-        android:layout_marginTop="8dp"
-        android:text="@string/scanning_pattern"
-        android:textColor="@color/scanning_sub_title"
-        android:textSize="14dp" />
+        <TextView
+            android:id="@+id/scan_progress_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/scan_title_tv"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/scan_title_tv"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:text="@string/scanning_pattern"
+            android:textColor="@color/scanning_sub_title"
+            android:textSize="14dp" />
 
     </RelativeLayout>
 
@@ -47,18 +47,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/toolbar_height"
-        android:paddingBottom="55dp"
         android:background="@color/transparent"
         android:divider="#00000000"
         android:overScrollMode="never"
+        android:paddingBottom="55dp"
         android:scrollbars="none">
 
         <RelativeLayout
             android:id="@+id/scrollView_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/transparent">
+            android:background="@color/transparent"
+            android:orientation="vertical">
 
             <View
                 android:id="@+id/empty_header"
@@ -66,16 +66,18 @@
                 android:layout_height="144dp" />
 
             <View
+                android:id="@+id/back_view"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:background="@color/white"
-                android:layout_below="@+id/empty_header"/>
+                android:layout_height="400dp"
+                android:layout_below="@+id/empty_header"
+                android:background="@color/white" />
 
             <!-- Advertise -->
             <RelativeLayout
                 android:id="@+id/ad_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/empty_header"
                 android:layout_marginLeft="18dp"
                 android:layout_marginRight="18dp"
                 android:layout_marginTop="8dp"
@@ -84,7 +86,6 @@
                 android:paddingLeft="9dp"
                 android:paddingRight="9dp"
                 android:paddingTop="9dp"
-                android:layout_below="@+id/empty_header"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -101,40 +102,40 @@
                     <ImageView
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/ad_after_scan_maker"
                         android:layout_alignRight="@id/item_ad_preview"
-                        android:layout_alignTop="@id/item_ad_preview"/>
+                        android:layout_alignTop="@id/item_ad_preview"
+                        android:src="@drawable/ad_after_scan_maker" />
 
                     <LinearLayout
                         android:id="@+id/item_header_ll"
                         style="@style/ItemHeader"
                         android:layout_height="36dp"
-                        android:orientation="horizontal"
                         android:layout_alignBottom="@id/item_ad_preview"
-                        android:background="#7F000000">
+                        android:background="#7F000000"
+                        android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_weight="0"
                             android:id="@+id/ad_icon"
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:layout_marginLeft="7dp"
-                            android:layout_marginTop="5dp" />
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="0" />
 
                         <TextView
-                            android:layout_weight="1"
                             android:id="@+id/item_title"
-                            android:layout_marginLeft="5dp"
+                            style="@style/ItemAdTitle"
                             android:layout_width="100dp"
-                            style="@style/ItemAdTitle" />
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1" />
 
                         <Button
-                            android:layout_weight="0"
                             android:id="@+id/ad_result_cta"
-                            android:layout_marginRight="7dp"
                             android:layout_width="72dp"
                             android:layout_height="26dp"
+                            android:layout_marginRight="7dp"
                             android:layout_marginTop="5dp"
+                            android:layout_weight="0"
                             android:background="@drawable/green_radius_btn_shape"
                             android:clickable="false"
                             android:textColor="@color/white"
@@ -150,10 +151,10 @@
                 android:id="@+id/scan_new_app_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:background="@color/transparent"
                 android:layout_below="@+id/empty_header"
-                android:orientation="horizontal">
+                android:background="@color/transparent"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -163,39 +164,39 @@
 
                     <View
                         android:id="@+id/scan_new_app_view"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
+                        android:layout_width="1px"
+                        android:layout_height="10dp"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4" />
 
 
                     <ImageView
                         android:id="@+id/scan_new_app_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
                         android:layout_below="@+id/scan_new_app_view"
                         android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/app_scan" />
 
                     <View
-                        android:layout_width="1dp"
+                        android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_app_icon"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4"
+                        android:minHeight="20dp" />
 
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="34dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -205,54 +206,54 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@string/scan_app_start"
                         android:textColor="@color/c2"
-                        android:textSize="@dimen/f3"
-                        android:text="@string/scan_app_start"/>
+                        android:textSize="@dimen/f3" />
 
                     <TextView
                         android:id="@+id/scan_new_app_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
-                        android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"/>
+                        android:textSize="@dimen/f4" />
 
                     <TextView
                         android:id="@+id/scan_new_app_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="9dp"
+                        android:drawableLeft="@drawable/tip_scan"
+                        android:drawablePadding="5dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:layout_marginTop="9dp"
                         android:textColor="@color/cb2"
-                        android:drawableLeft="@drawable/tip_scan"
-                        android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:layout_marginBottom="10dp"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/scan_new_app"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:id="@+id/scan_new_app">
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/scan_new_app_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="34dp"
-                        android:visibility="invisible"/>
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_app_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="34dp"/>
+                        android:layout_marginTop="20dp"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -261,9 +262,9 @@
                 android:id="@+id/scan_new_pic_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/transparent"
                 android:layout_below="@+id/empty_header"
+                android:background="@color/transparent"
+                android:orientation="horizontal"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -274,41 +275,39 @@
 
                     <View
                         android:id="@+id/scan_new_pic_top_line"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
+                        android:layout_width="1px"
+                        android:layout_height="10dp"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4" />
 
 
                     <ImageView
                         android:id="@+id/scan_new_pic_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
                         android:layout_below="@+id/scan_new_pic_top_line"
                         android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/pic_scan" />
 
                     <View
-                        android:layout_width="1dp"
+                        android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_pic_icon"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4"
+                        android:minHeight="20dp" />
 
                 </RelativeLayout>
 
 
-
-
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -318,54 +317,54 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@string/scan_pic_start"
                         android:textColor="@color/c2"
-                        android:textSize="@dimen/f3"
-                        android:text="@string/scan_pic_start" />
+                        android:textSize="@dimen/f3" />
 
                     <TextView
                         android:id="@+id/scan_new_pic_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
-                        android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"/>
+                        android:textSize="@dimen/f4" />
 
                     <TextView
                         android:id="@+id/scan_new_pic_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="9dp"
+                        android:drawableLeft="@drawable/tip_scan"
+                        android:drawablePadding="5dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:layout_marginTop="9dp"
                         android:textColor="@color/cb2"
-                        android:drawableLeft="@drawable/tip_scan"
-                        android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="gone"
-                        android:layout_marginBottom="10dp"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/scan_new_pic"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:id="@+id/scan_new_pic">
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/scan_new_pic_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"
-                        android:visibility="invisible"/>
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_pic_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"/>
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
 
 
@@ -375,9 +374,9 @@
                 android:id="@+id/scan_new_vid_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/transparent"
                 android:layout_below="@+id/empty_header"
+                android:background="@color/transparent"
+                android:orientation="horizontal"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -388,37 +387,37 @@
 
                     <View
                         android:id="@+id/scan_new_vid_top_line"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
+                        android:layout_width="1px"
+                        android:layout_height="10dp"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4" />
 
                     <ImageView
                         android:id="@+id/scan_new_vid_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
                         android:layout_below="@+id/scan_new_vid_top_line"
                         android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/video_scan" />
 
                     <View
-                        android:layout_width="1dp"
+                        android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_vid_icon"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4"
+                        android:minHeight="20dp" />
 
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -428,54 +427,54 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@string/scan_vid_start"
                         android:textColor="@color/c2"
-                        android:textSize="@dimen/f3"
-                        android:text="@string/scan_vid_start"/>
+                        android:textSize="@dimen/f3" />
 
                     <TextView
                         android:id="@+id/scan_new_vid_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
-                        android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"/>
+                        android:textSize="@dimen/f4" />
 
                     <TextView
                         android:id="@+id/scan_new_vid_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="9dp"
+                        android:drawableLeft="@drawable/tip_scan"
+                        android:drawablePadding="5dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:layout_marginTop="9dp"
                         android:textColor="@color/cb2"
-                        android:drawableLeft="@drawable/tip_scan"
-                        android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="gone"
-                        android:layout_marginBottom="10dp"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/scan_new_vid"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:id="@+id/scan_new_vid">
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/scan_new_vid_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"
-                        android:visibility="invisible"/>
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_vid_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"/>
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -483,9 +482,9 @@
                 android:id="@+id/scan_new_lost_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/transparent"
                 android:layout_below="@+id/empty_header"
+                android:background="@color/transparent"
+                android:orientation="horizontal"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -496,37 +495,37 @@
 
                     <View
                         android:id="@+id/scan_new_lost_top_line"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
+                        android:layout_width="1px"
+                        android:layout_height="10dp"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4" />
 
                     <ImageView
                         android:id="@+id/scan_new_lost_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
                         android:layout_below="@+id/scan_new_lost_top_line"
                         android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/phone_scan" />
 
                     <View
-                        android:layout_width="1dp"
+                        android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_lost_icon"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4"
+                        android:minHeight="20dp" />
 
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -536,54 +535,54 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@string/scan_lost_title"
                         android:textColor="@color/c2"
-                        android:textSize="@dimen/f3"
-                        android:text="@string/scan_lost_title"/>
+                        android:textSize="@dimen/f3" />
 
                     <TextView
                         android:id="@+id/scan_new_lost_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
-                        android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"/>
+                        android:textSize="@dimen/f4" />
 
                     <TextView
                         android:id="@+id/scan_new_lost_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="9dp"
+                        android:drawableLeft="@drawable/tip_scan"
+                        android:drawablePadding="5dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:layout_marginTop="9dp"
                         android:textColor="@color/cb2"
-                        android:drawableLeft="@drawable/tip_scan"
-                        android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="gone"
-                        android:layout_marginBottom="10dp"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/scan_new_lost"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:id="@+id/scan_new_lost">
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/scan_new_lost_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"
-                        android:visibility="invisible"/>
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_lost_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"/>
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -592,9 +591,9 @@
                 android:id="@+id/scan_new_instruct_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/transparent"
                 android:layout_below="@+id/empty_header"
+                android:background="@color/transparent"
+                android:orientation="horizontal"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -605,37 +604,37 @@
 
                     <View
                         android:id="@+id/scan_new_instruct_top_line"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
+                        android:layout_width="1px"
+                        android:layout_height="10dp"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4" />
 
                     <ImageView
                         android:id="@+id/scan_new_instruct_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
                         android:layout_below="@+id/scan_new_instruct_top_line"
                         android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/security_scan" />
 
                     <View
-                        android:layout_width="1dp"
+                        android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_instruct_icon"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4"
+                        android:minHeight="20dp" />
 
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -645,54 +644,54 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@string/scan_instruct_title"
                         android:textColor="@color/c2"
-                        android:textSize="@dimen/f3"
-                        android:text="@string/scan_instruct_title"/>
+                        android:textSize="@dimen/f3" />
 
                     <TextView
                         android:id="@+id/scan_new_instruct_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
-                        android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"/>
+                        android:textSize="@dimen/f4" />
 
                     <TextView
                         android:id="@+id/scan_new_instruct_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="9dp"
+                        android:drawableLeft="@drawable/tip_scan"
+                        android:drawablePadding="5dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:layout_marginTop="9dp"
                         android:textColor="@color/cb2"
-                        android:drawableLeft="@drawable/tip_scan"
-                        android:drawablePadding="5dp"
-                        android:visibility="gone"
                         android:textSize="@dimen/f4"
-                        android:layout_marginBottom="10dp"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/scan_new_instruct"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:id="@+id/scan_new_instruct">
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/scan_new_instruct_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"
-                        android:visibility="invisible"/>
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_instruct_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"/>
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -700,9 +699,9 @@
                 android:id="@+id/scan_new_wifi_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/transparent"
                 android:layout_below="@+id/empty_header"
+                android:background="@color/transparent"
+                android:orientation="horizontal"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -713,37 +712,37 @@
 
                     <View
                         android:id="@+id/scan_new_wifi_top_line"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
+                        android:layout_width="1px"
+                        android:layout_height="10dp"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4" />
 
                     <ImageView
                         android:id="@+id/scan_new_wifi_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
                         android:layout_below="@+id/scan_new_wifi_top_line"
                         android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/wifi_scan" />
 
                     <View
-                        android:layout_width="1dp"
+                        android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:minHeight="20dp"
                         android:layout_below="@+id/scan_new_wifi_icon"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4"
+                        android:minHeight="20dp" />
 
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -753,54 +752,54 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@string/scan_wifi_title"
                         android:textColor="@color/c2"
-                        android:textSize="@dimen/f3"
-                        android:text="@string/scan_wifi_title"/>
+                        android:textSize="@dimen/f3" />
 
                     <TextView
                         android:id="@+id/scan_new_wifi_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
-                        android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"/>
+                        android:textSize="@dimen/f4" />
 
                     <TextView
                         android:id="@+id/scan_new_wifi_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="9dp"
+                        android:drawableLeft="@drawable/tip_scan"
+                        android:drawablePadding="5dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:layout_marginTop="9dp"
                         android:textColor="@color/cb2"
-                        android:drawableLeft="@drawable/tip_scan"
-                        android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="gone"
-                        android:layout_marginBottom="10dp"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/scan_new_wifi"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:id="@+id/scan_new_wifi">
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/scan_new_wifi_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"
-                        android:visibility="invisible"/>
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_wifi_loading"
-                        android:layout_marginTop="30dp"
                         android:layout_width="25dp"
-                        android:layout_height="25dp"/>
+                        android:layout_height="25dp"
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -808,10 +807,10 @@
                 android:id="@+id/scan_new_contact_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_below="@+id/empty_header"
                 android:layout_marginBottom="18dp"
                 android:background="@color/transparent"
-                android:layout_below="@+id/empty_header"
+                android:orientation="horizontal"
                 android:visibility="gone">
 
                 <RelativeLayout
@@ -822,29 +821,29 @@
 
                     <View
                         android:id="@+id/scan_new_contact_top_line"
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
+                        android:layout_width="1px"
+                        android:layout_height="10dp"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/c4"/>
+                        android:background="@color/c4" />
 
                     <ImageView
                         android:id="@+id/scan_new_contact_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
                         android:layout_below="@+id/scan_new_contact_top_line"
                         android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/contact_scan" />
 
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_marginTop="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -854,54 +853,54 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="@string/scan_contact_title"
                         android:textColor="@color/c2"
-                        android:textSize="@dimen/f3"
-                        android:text="@string/scan_contact_title"/>
+                        android:textSize="@dimen/f3" />
 
                     <TextView
                         android:id="@+id/scan_new_contact_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:textColor="@color/c4"
-                        android:layout_marginTop="6dp"
-                        android:textSize="@dimen/f4"/>
+                        android:textSize="@dimen/f4" />
 
                     <TextView
                         android:id="@+id/scan_new_contact_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="9dp"
+                        android:drawableLeft="@drawable/tip_scan"
+                        android:drawablePadding="5dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:layout_marginTop="9dp"
                         android:textColor="@color/cb2"
-                        android:drawableLeft="@drawable/tip_scan"
-                        android:drawablePadding="5dp"
                         android:textSize="@dimen/f4"
-                        android:visibility="gone"
-                        android:layout_marginBottom="10dp"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/scan_new_contact"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:id="@+id/scan_new_contact">
+                    android:layout_marginRight="20dp">
 
                     <ImageView
                         android:id="@+id/scan_new_contact_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"
-                        android:visibility="invisible"/>
+                        android:layout_marginTop="20dp"
+                        android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_contact_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="30dp"/>
+                        android:layout_marginTop="20dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -917,8 +916,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#48000000"/>
+            android:layout_height="1px"
+            android:background="#48000000" />
 
         <com.leo.appmaster.ui.MaterialRippleLayout
             android:id="@+id/scan_cancel_rv"
@@ -936,8 +935,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:gravity="center"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:text="@string/pri_pro_cancel"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
@@ -949,20 +948,20 @@
             android:layout_width="210dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
-            android:visibility="gone"
-            leo:rippleOverlay="true"
             android:background="@drawable/green_radius_btn_shape"
+            android:visibility="gone"
             leo:rippleColor="@color/green_button_ripple"
             leo:rippleDuration="250"
-            leo:rippleHover="true">
+            leo:rippleHover="true"
+            leo:rippleOverlay="true">
 
             <TextView
                 android:id="@+id/scan_process_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:gravity="center"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:text="@string/pri_pro_process"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
