@@ -40,5 +40,10 @@
             android:layout_height="wrap_content"
             android:text="拦截插入后更新数据库"/>
 
+        <Button
+            android:id="@+id/B6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取服务器下发俄黑名单"/>
     </LinearLayout>
 </RelativeLayout>

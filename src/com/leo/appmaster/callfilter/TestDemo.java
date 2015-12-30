@@ -29,6 +29,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
     private Button b3;
     private Button b4;
     private Button b5;
+    private Button b6;
     private int mI = 1;
 
     @Override
@@ -45,6 +46,8 @@ public class TestDemo extends Activity implements View.OnClickListener {
         b4.setOnClickListener(this);
         b5 = (Button) findViewById(R.id.B5);
         b5.setOnClickListener(this);
+        b6 = (Button) findViewById(R.id.B6);
+        b6.setOnClickListener(this);
     }
 
     @Override
@@ -121,6 +124,16 @@ public class TestDemo extends Activity implements View.OnClickListener {
                         Context context = AppMasterApplication.getInstance();
                         CallFilterManager.getInstance(context).updateUpBlack(black);
                     }
+                }
+                break;
+            case R.id.B6:
+                List<BlackListInfo> blacksSer = CallFilterManager.getInstance(TestDemo.this).getSerBlackList();
+                if (blacksSer != null) {
+                    StringBuilder sbw = new StringBuilder();
+                    for (BlackListInfo infos : blacksSer) {
+                        sbw.append(infos.getNumber()+"\n");
+                    }
+                    Toast.makeText(TestDemo.this, sbw.toString(), Toast.LENGTH_LONG).show();
                 }
                 break;
         }

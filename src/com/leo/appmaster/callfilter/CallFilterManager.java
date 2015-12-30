@@ -410,9 +410,9 @@ public class CallFilterManager {
         }
         final BlackListInfo blackInfo = info;
         final BlackListInfo blackSerInfo = serInfo;
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
+//        ThreadManager.executeOnAsyncThread(new Runnable() {
+//            @Override
+//            public void run() {
        /*区分本地黑名单和服务器黑名单*/
                 if (blackInfo != null) {
             /*为本地黑名单：拦截*/
@@ -511,8 +511,8 @@ public class CallFilterManager {
 //                }
                 }
 //        }
-            }
-        });
+//            }
+//        });
         setCurrentCallTime(System.currentTimeMillis());
     }
 
