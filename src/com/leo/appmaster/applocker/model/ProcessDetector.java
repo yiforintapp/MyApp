@@ -520,7 +520,8 @@ public class ProcessDetector {
             "android.process.media",
             "android.process.acore",
             "com.google.android.googlequicksearchbox",
-            "com.android.systemui"
+            "com.android.systemui",
+            "com.baidu.superservice"
         };
         
         private static final String PKG_SETTINGS = "com.android.settings";

@@ -369,6 +369,7 @@ public class Constants {
     public static final String ISWIPE_PACKAGE = "com.leo.iswipe";
     public static final String SEARCH_BOX_PACKAGE = "com.google.android.googlequicksearchbox";
     public static final String GOOGLE_HOME_PACKAGE = "com.google.android.launcher";
+    public static final String PKG_BAIDU_SERVICE = "com.baidu.superservice";
     /* Iswipe到GP客户端的链接 */
     public static final String ISWIPE_TO_GP_CLIENT_RUL = "market://details?id=com.leo.iswipe&referrer=utm_source%3Dam_shengji_01;;com.android.vending";
     /* Iswipe到浏览器的链接 */

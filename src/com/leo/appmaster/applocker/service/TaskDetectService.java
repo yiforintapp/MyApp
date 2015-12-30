@@ -445,7 +445,8 @@ public class TaskDetectService extends Service {
                         if (pkgList != null && pkgList.length > 0) {
                             int index = 0;
                             pkgName = pkgList[index];
-                            if (SYSTEMUI_PKG.equals(pkgName) || Constants.ISWIPE_PACKAGE.equals(pkgName)) {
+                            if (SYSTEMUI_PKG.equals(pkgName) || Constants.ISWIPE_PACKAGE.equals(pkgName)
+                                    || Constants.PKG_BAIDU_SERVICE.equals(pkgName)) {
                                 continue;
                             }
                             if (HTC_USAGE.equals(pkgName)) {
@@ -492,7 +493,7 @@ public class TaskDetectService extends Service {
                         return;
                     }
                     pkgName = topTaskInfo.topActivity.getPackageName();
-                    if (Constants.ISWIPE_PACKAGE.equals(pkgName)) {
+                    if (Constants.ISWIPE_PACKAGE.equals(pkgName) || Constants.PKG_BAIDU_SERVICE.equals(pkgName)) {
                         return;
                     }
                     activityName = topTaskInfo.topActivity.getShortClassName();
