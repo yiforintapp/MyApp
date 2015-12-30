@@ -1,14 +1,5 @@
 package com.leo.appmaster.intruderprotection;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,6 +54,15 @@ import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
+import java.io.File;
+import java.lang.ref.WeakReference;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 public class IntruderCatchedActivity extends BaseActivity implements View.OnClickListener {
     private List<PhotoAibum> mAlbumList = null;
     private ImageLoader mImageLoader;
@@ -98,6 +97,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static final int TIMES_TO_CATCH_3 = 3;
     private static final int TIMES_TO_CATCH_4 = 5;
     private boolean mNeedIntoHomeWhenFinish = false;
+    private LinearLayout mFiveStarLayout;
 
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
@@ -285,6 +285,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mRvMore = (RippleView) findViewById(R.id.rv_more);
         mRvMore.setOnClickListener(this);
         mLvMain = (ListView) findViewById(R.id.lv_mainlist);
+        mFiveStarLayout = (LinearLayout) findViewById(R.id.ll_fivestars_layout);
+        mFiveStarLayout.setOnClickListener(this);
     }
 
     /* 3.2 advertise stuff - begin */
@@ -694,6 +696,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 showChangeTimesDialog();
                 break;
             case R.id.rv_fivestars:
+            case R.id.ll_fivestars_layout:
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_capture_rank");
                 mLockManager.filterSelfOneMinites();

@@ -1,6 +1,14 @@
 
 package com.leo.appmaster.home;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.TextView;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -10,20 +18,13 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.utils.AppUtil;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.TextView;
-
 public class GradeTipActivity extends BaseActivity implements OnClickListener {
 
     private TextView mTvMakeSure;
     private TextView mFeedbackSure;
     private View mTvMakeSureClick;
     private View mFeedbackSureClick;
+    private FiveStarsLayout mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,9 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
 
         mTvMakeSureClick = findViewById(R.id.tv_make_click);
         mFeedbackSureClick = findViewById(R.id.tv_feedback_click);
+        mLayout = (FiveStarsLayout) findViewById(R.id.fsl_fivestars);
 
+        mLayout.setOnClickListener(this);
         mTvMakeSureClick.setOnClickListener(this);
         mFeedbackSureClick.setOnClickListener(this);
     }
@@ -95,6 +98,10 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_later");
             Intent intent = new Intent(GradeTipActivity.this, FeedbackActivity.class);
             startActivity(intent);
+            finish();
+        } else if (v == mLayout) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
+            openShowGoogleGuide();
             finish();
         }
 
