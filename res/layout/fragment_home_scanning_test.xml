@@ -246,14 +246,14 @@
                         android:id="@+id/scan_new_app_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="18dp"
                         android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_app_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp"/>
+                        android:layout_marginTop="18dp"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -306,7 +306,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="27dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -357,14 +357,14 @@
                         android:id="@+id/scan_new_pic_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="25dp"
                         android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_pic_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="25dp" />
                 </RelativeLayout>
 
 
@@ -416,7 +416,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="27dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -467,14 +467,14 @@
                         android:id="@+id/scan_new_vid_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="25dp"
                         android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_vid_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="25dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -524,7 +524,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="27dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -575,14 +575,14 @@
                         android:id="@+id/scan_new_lost_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="25dp"
                         android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_lost_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="25dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -633,7 +633,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="27dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -684,14 +684,14 @@
                         android:id="@+id/scan_new_instruct_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="25dp"
                         android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_instruct_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="25dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -741,7 +741,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="27dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -792,14 +792,14 @@
                         android:id="@+id/scan_new_wifi_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="25dp"
                         android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_wifi_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="25dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -842,7 +842,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="27dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -893,14 +893,14 @@
                         android:id="@+id/scan_new_contact_img"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="25dp"
                         android:visibility="invisible" />
 
                     <com.leo.appmaster.ui.LoadingView
                         android:id="@+id/scan_new_contact_loading"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="25dp" />
                 </RelativeLayout>
             </LinearLayout>
 
