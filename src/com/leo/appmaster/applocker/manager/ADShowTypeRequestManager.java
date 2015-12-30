@@ -427,6 +427,8 @@ public class ADShowTypeRequestManager {
             int value = forceClose?0:(response.getInt(AD_AFTER_SCAN));
             if (value != mSp.getADAfterScan()) {
                 mSp.setADAfterScan(value);
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull",
+                        (value == 1) ? "adv_scan_on" : "adv_scan_off");
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -500,6 +500,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 @Override
                 public void onMobvistaClick(Campaign campaign) {
                     LeoLog.d("AfterPrivacyScan", "onMobvistaClick");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_cli", "adv_cnts_scan");
                     LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                     lm.filterSelfOneMinites();
                 }
@@ -570,6 +571,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
         LeoLog.e(TAG, "start registerView");
         MobvistaEngine.getInstance(mActivity).registerView(AD_AFTER_SCAN, adView);
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
         LeoLog.e(TAG, "registerView");
     }
     /* 3.2 advertise end */
