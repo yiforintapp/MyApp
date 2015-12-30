@@ -57,8 +57,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             "com.leo.appmaster.schedule.PhoneSecurityFetchJob",
             "com.leo.appmaster.schedule.CardFetchJob",
             "com.leo.appmaster.schedule.BlackDownLoadFetchJob",
-            "com.leo.appmaster.schedule.BlackUploadFetchJob",
-            "com.leo.appmaster.schedule.DownBlackFileFetchJob"
+            "com.leo.appmaster.schedule.BlackUploadFetchJob"
     };
 
     public static void startFetchJobs() {

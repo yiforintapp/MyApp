@@ -544,8 +544,8 @@ public class CallFilterUtils {
             e.printStackTrace();
         } finally {
             /*删除文件*/
-            String filePaht = DownBlackFileFetchJob.getBlackFilePath();
-            deleteFile(filePaht);
+//            String filePaht = DownBlackFileFetchJob.getBlackFilePath();
+//            deleteFile(filePaht);
         }
     }
 
