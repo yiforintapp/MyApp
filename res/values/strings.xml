@@ -875,7 +875,8 @@
     <string name="call_filter_confirm_add_to_blacklist">是否将%1$s加入黑名单</string>
     <string name="call_filter_confirm_add_to_blacklist_summary">已有%1$s人将该号码加入黑名单</string>
     <string name="black_list_is_empty">将不喜欢的号码加入黑名单，从此远离骚扰~</string>
-    <string name="filter_list_is_empty">还没有任何的拦截记录，快去添加黑名单吧~</string>
+<!--     <string name="filter_list_is_empty">还没有任何的拦截记录，快去添加黑名单吧~</string> -->
+    <string name="filter_list_is_empty">还没有任何的拦截记录</string>
     <string name="mark_number_from_list">号码已标记</string>
     <string name="number_toast_text_black">已被%1$s人拉入</string>
     <string name="number_toast_text_mark">已被%1$s人标记为</string>
