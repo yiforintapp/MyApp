@@ -55,8 +55,7 @@ public class CallFIlterUIHelper {
         return dialog;
     }
 
-    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title, Context context,
-                                                                         boolean isContentShow, int filterType) {
+    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title, Context context, boolean isContentShow, int filterType) {
         MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
         dialog.setTitle(title);
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
@@ -116,7 +115,6 @@ public class CallFIlterUIHelper {
         PendingIntent pendingIntent = PendingIntent.getActivity(ama, 1, intent, Notification.FLAG_AUTO_CANCEL);
         NotificationManager mNotificationManager = (NotificationManager) ama.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ama);
-//        mBuilder.setContentTitle(ama.getResources().getString(R.string.call_filter_notifacation))
         mBuilder.setContent(mRemoteViews)
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
@@ -135,18 +133,13 @@ public class CallFIlterUIHelper {
         mRemoteViews.setTextViewText(R.id.tv_title, title);
         mRemoteViews.setTextViewText(R.id.tv_content, content);
         mRemoteViews.setImageViewResource(R.id.iv_ic, R.drawable.ic_launcher);
-        
-//        AppMasterApplication ama = AppMasterApplication.getInstance();
         Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
         intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mStrangerCallNoti);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-//        String title = String.format(context.getResources().getString(R.string.str_noti_title_txt), count);
-//        String content = String.format(context.getResources().getString(R.string.str_noti_content_txt), count);
         mBuilder.setContent(mRemoteViews)
-//                .setContentText(content)
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_DEFAULT)

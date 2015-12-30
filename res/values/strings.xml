@@ -871,7 +871,7 @@
     <string name="call_filter_mark_as_tx">广告推销</string>
     <string name="call_filter_mark_as_zp">诈骗电话</string>
     <string name="call_filter_confirm_clear_record">确定清空所有记录吗？</string>
-    <string name="call_filter_ask_add_to_blacklist">监测到您的通话时间"&lt;"5秒，是否将该号码标记并加入黑名单</string>
+    <string name="call_filter_ask_add_to_blacklist">监测到您的通话时间"&lt;"%1$s秒，是否将该号码标记并加入黑名单</string>
     <string name="call_filter_confirm_add_to_blacklist">是否将%1$s加入黑名单</string>
     <string name="call_filter_confirm_add_to_blacklist_summary">已有%1$s人将该号码加入黑名单</string>
     <string name="black_list_is_empty">将不喜欢的号码加入黑名单，从此远离骚扰~</string>
