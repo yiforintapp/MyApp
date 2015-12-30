@@ -1051,11 +1051,15 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void updateNewContactList() {
-        if (mContactList == null) {
-            mNewContactImg.setImageResource(R.drawable.ic_scan_error);
-        } else if (mContactList != null && mContactList.size() == 0) {
-            mNewContactImg.setImageResource(R.drawable.ic_scan_safe);
-        } else if (mContactList != null && mContactList.size() > 0) {
+        if (mContactScanFinish) {
+            if (mContactList == null) {
+                mNewContactImg.setImageResource(R.drawable.ic_scan_safe);
+            } else if (mContactList != null && mContactList.size() == 0) {
+                mNewContactImg.setImageResource(R.drawable.ic_scan_safe);
+            } else if (mContactList != null && mContactList.size() > 0) {
+                mNewContactImg.setImageResource(R.drawable.ic_scan_error);
+            }
+        } else {
             mNewContactImg.setImageResource(R.drawable.ic_scan_error);
         }
         mNewContactLoading.setVisibility(View.GONE);
