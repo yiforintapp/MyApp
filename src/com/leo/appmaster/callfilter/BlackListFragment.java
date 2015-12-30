@@ -46,7 +46,6 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
         }
     };
 
-
     private void loadDone() {
         mProgressBar.setVisibility(View.GONE);
         if (mBlackList != null && mBlackList.size() < 1) {

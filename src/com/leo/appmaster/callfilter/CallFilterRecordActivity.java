@@ -67,10 +67,17 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
     }
 
     private void processUI() {
-        int mark = info.filterType;
+
+        int mark = info.getFilterType();
+        String name = info.getNumberName();
+        String number = info.getNumber();
         if (!isSysContact) {
             if (mark == 0) {
-                mTvTitleName.setVisibility(View.GONE);
+                if (number.equals(name)) {
+                    mTvTitleName.setVisibility(View.GONE);
+                } else {
+                    mTvTitleName.setText(name);
+                }
             } else {
                 String string;
                 if (mark == 1) {
@@ -81,10 +88,13 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                     string = this.getString(R.string.filter_number_type_zhapian);
                 }
                 mTvTitleName.setText(string);
+                mMark.setVisibility(View.GONE);
             }
         } else {
             mMark.setVisibility(View.GONE);
+            mTvTitleName.setText(name);
         }
+
     }
 
     private void handleIntent() {
@@ -168,6 +178,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 } else {
                     title = info.getNumberName();
                 }
+
                 showMarkDialog(title);
                 break;
             case R.id.clear_all_fliter:
@@ -229,7 +240,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                             getString(R.string.filter_number_type_zhapian);
                 }
                 mTvTitleName.setText(string);
-
+                mMark.setVisibility(View.GONE);
 
                 List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                 BlackListInfo newInfo = new BlackListInfo();
@@ -237,6 +248,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 newInfo.setLocHandlerType(position + 1);
                 list.add(newInfo);
                 mCallManger.addBlackList(list, true);
+
 
                 dialog.dismiss();
             }
@@ -251,31 +263,31 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                    List<BlackListInfo> list = new ArrayList<BlackListInfo>();
-                    BlackListInfo blacklistInfo = new BlackListInfo();
-                    blacklistInfo.setNumber(info.getNumber());
-                    list.add(blacklistInfo);
-                    mCallManger.removeBlackList(list);
-                    boolean restrLog = mDialog.getCheckBoxState();
+                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+                BlackListInfo blacklistInfo = new BlackListInfo();
+                blacklistInfo.setNumber(info.getNumber());
+                list.add(blacklistInfo);
+                mCallManger.removeBlackList(list);
+                boolean restrLog = mDialog.getCheckBoxState();
 
-                    List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
-                    removeFilterList.add(info);
-                    mCallManger.removeFilterGr(removeFilterList);
-                    if (restrLog) {
-                        ThreadManager.executeOnAsyncThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
+                removeFilterList.add(info);
+                mCallManger.removeFilterGr(removeFilterList);
+                if (restrLog) {
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
-                                List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
-                                if (infos != null && infos.size() > 0) {
-                                    for (CallFilterInfo info : infos) {
-                                        cmp.insertCallToSys(info);
-                                    }
+                            List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
+                            if (infos != null && infos.size() > 0) {
+                                for (CallFilterInfo info : infos) {
+                                    cmp.insertCallToSys(info);
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
+                }
                 mDialog.dismiss();
                 onBackPressed();
             }
