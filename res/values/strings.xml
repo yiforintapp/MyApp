@@ -887,7 +887,7 @@
 
     <string name="scan_score">处理+%1$s分</string>
     <string name="scan_app_title">发现%1$s个应用</string>
-    <string name="scan_app_content_less_three">发现私密应用%1$s，</string>
+    <string name="scan_app_content_less_three">发现私密应用%1$s</string>
     <string name="scan_app_content_less_three_app">发现私密应用<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data></string>
     <string name="scan_app_content">其中有%1$s等私密性应用，建议加锁</string>
     <string name="scan_app_content_app">其中有<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>等私密性应用，建议加锁</string>
