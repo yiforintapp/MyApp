@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -74,6 +75,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private final int MAX_ITEM_SIZE = 100;
     private boolean mLoadDone = false;
     private AddFromCallHandler mAddFromCallHandler = new AddFromCallHandler();
+
+    private Button mAddButton;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -136,7 +140,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mEmptyView = findViewById(R.id.add_call_log_default_tv);
         mAddBtn = (RippleView) findViewById(R.id.rv_button_backup);
         mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+        mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         mAddBtn.setOnClickListener(this);
         mListCallLog = (ListView) findViewById(R.id.add_privacy_call_logLV);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
@@ -144,6 +148,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mCallLogList = new ArrayList<ContactCallLog>();
         mSrcBackupList = new ArrayList<ContactCallLog>();
         mAddPrivacyCallLog = new ArrayList<ContactCallLog>();
+
+        mAddButton = (Button) findViewById(R.id.add_100);
+        mAddButton.setOnClickListener(this);
     }
 
     @Override
@@ -252,7 +259,26 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             case R.id.rv_button_backup:
                 addToBlackList();
                 break;
+            case R.id.add_100:
+                if (mLoadDone) {
+                    add100();
+                }
+                break;
+
         }
+    }
+
+    private void add100() {
+        List<ContactCallLog> callLogList = new ArrayList<ContactCallLog>();
+        for (int i = 0; i < 100; i++) {
+            ContactCallLog info = new ContactCallLog();
+            info.setCallLogNumber("0000000" + i);
+            info.setCallLogName("abc");
+            info.setCallLogDuraction(1);
+            callLogList.add(info);
+        }
+        mCallLogList.addAll(callLogList);
+        mCallLogAdapter.notifyDataSetChanged();
     }
 
     private void addToBlackList() {
@@ -568,16 +594,16 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     }
 
     private void fillOutBlacklistNumber(List<ContactCallLog> mCallLogList) {
-        LeoLog.i(TAG, "start fill "+mCallLogList.size());
+        LeoLog.i(TAG, "start fill " + mCallLogList.size());
         List<BlackListInfo> blackList = mCallManger.getBlackList();
         List<String> numbers = new ArrayList<String>();
         List<ContactCallLog> toRemove = new ArrayList<ContactCallLog>();
         for (int i = 0; i < blackList.size(); i++) {
             numbers.add(blackList.get(i).getNumber());
-            LeoLog.i(TAG, "numbers " + i +" : "+ numbers.get(numbers.size() -1));
+            LeoLog.i(TAG, "numbers " + i + " : " + numbers.get(numbers.size() - 1));
         }
         for (int i = 0; i < mCallLogList.size(); i++) {
-            LeoLog.i(TAG, "phoneNumber " + i +" : "+ mCallLogList.get(i).getCallLogNumber());
+            LeoLog.i(TAG, "phoneNumber " + i + " : " + mCallLogList.get(i).getCallLogNumber());
             if (numbers.contains(mCallLogList.get(i).getCallLogNumber())) {
 //                mCallLogList.remove(i);
                 toRemove.add(mCallLogList.get(i));

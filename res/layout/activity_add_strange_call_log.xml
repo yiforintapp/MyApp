@@ -37,6 +37,18 @@
             android:layout_gravity="top"
             android:background="@color/pri_pro_divider" />
 
+        <Button
+            android:id="@+id/add_100"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:background="@color/blue_button_click"
+            android:padding="5dp"
+            android:text="加100"
+            android:textColor="@color/white" />
+
         <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_button_backup"
             android:layout_width="210dp"
