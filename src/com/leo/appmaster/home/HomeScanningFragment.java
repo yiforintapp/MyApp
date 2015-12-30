@@ -719,19 +719,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             ThreadManager.executeOnAsyncThread(mAppRunnable);
         } else if (layout == mNewAppLayout) {
 
-            /* show Ad here */
-            if (mAdLoaded) {
-//                mAdLayout.setVisibility(View.VISIBLE);
-//                mAdLayout.animate().setDuration(500)
-//                        .scaleY(1.0f);
-                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startAnimator(mAdLayout);
-                    }
-                }, 1000);
-            }
-
         }
     }
 
@@ -784,6 +771,16 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 updateNewContactList();
             }
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
+            int score = mPrivacyHelper.getSecurityScore();
+            /* show Ad here */
+            if (mAdLoaded && score != 100) {
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startAnimator(mAdLayout);
+                    }
+                }, 1000);
+            }
             onViewScanningFinish(mAppList, mPhotoList, mVideoList);
 
             layout.post(new Runnable() {
@@ -910,8 +907,14 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             @Override
             public void run() {
                 mScanning = false;
-                mCancelBtn.setVisibility(View.GONE);
-                mProcessBtn.setVisibility(View.VISIBLE);
+                int score = mPrivacyHelper.getSecurityScore();
+                if (score == 100) {
+                    mCancelBtn.setVisibility(View.VISIBLE);
+                    mProcessBtn.setVisibility(View.GONE);
+                } else {
+                    mCancelBtn.setVisibility(View.GONE);
+                    mProcessBtn.setVisibility(View.VISIBLE);
+                }
                 mScannTitleTv.setText(R.string.pri_pro_scanning_finish);
 //                mProcessTv.setTextColor(mActivity.getToolbarColor());
                 mActivity.onScanningFinish(mAppList, mPhotoList, mVideoList, mScanAppNameStep);
