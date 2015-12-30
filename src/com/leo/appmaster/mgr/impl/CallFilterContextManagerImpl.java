@@ -126,7 +126,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             }
             //是否删除
             if (removeState != -1) {
-                value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE);
+                value.put(CallFilterConstants.BLACK_REMOVE_STATE, removeState);
             }
             //是否已读
             if (readState != -1) {
