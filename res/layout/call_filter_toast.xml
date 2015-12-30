@@ -5,18 +5,18 @@
     <RelativeLayout
         android:id="@+id/filter_content"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="127dp"
         android:layout_centerInParent="true"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:background="@drawable/filter_toast_back">
+        android:background="@drawable/filter_toast_bg">
 
         <TextView
             android:id="@+id/tv_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="25dp"
             android:textColor="@color/c1"
             android:textSize="20dp" />
 
@@ -25,12 +25,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_number"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="38dp">
+            android:layout_marginTop="28dp">
+            
+            <ImageView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/toast_icon"
+                android:id="@+id/iv_icon"
+                />
 
             <TextView
                 android:id="@+id/tv_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_icon"
                 android:textColor="@color/c1"
                 android:textSize="13dp" />
 

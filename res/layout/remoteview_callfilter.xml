@@ -15,7 +15,7 @@
             android:layout_height="@dimen/noti_spe_icon_height"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/noti_spe_icon_m_left"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/intercept" />
 
         <LinearLayout
             android:id="@+id/appwall_mid_content"
@@ -68,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:gravity="center"
                 android:text="@string/fil_noti_bt"
                 android:textColor="@color/white"
                 android:textSize="@dimen/noti_spe_content_small_text_size" />

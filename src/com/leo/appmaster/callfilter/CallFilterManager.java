@@ -35,6 +35,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 /**
  * Created by runlee on 15-12-18.
@@ -508,6 +509,14 @@ public class CallFilterManager {
                         }
                         if (mTipToast != null) {
                             mTipToast.show();
+                            ThreadManager.getTimer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    if (mTipToast != null) {
+                                        mTipToast.hide();
+                                    }
+                                }
+                            }, 1000 * 60);
                         }
                         LeoLog.i(TAG, "Black and marker tip show!");
                     }
