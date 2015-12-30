@@ -112,6 +112,8 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
         }
         String content = AppMasterApplication.getInstance().getString(stringId, count);
         mNewLabelTv.setText(Html.fromHtml(content));
+        mNewLabelContent.setText(AppMasterApplication.
+                getInstance().getString(R.string.scan_vid_content));
     }
 
     @Override

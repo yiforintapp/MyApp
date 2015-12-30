@@ -37,6 +37,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
     public View mStickView;
     private CheckBox mStickyCb;
     protected TextView mNewLabelTv;
+    protected TextView mNewLabelContent;
 
     private View mEmptyBg;
 
@@ -82,6 +83,7 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
         mStickView = view.findViewById(R.id.pri_pro_sticky_header);
         mStickyCb = (CheckBox) view.findViewById(R.id.pri_pro_cb);
         mNewLabelTv = (TextView) view.findViewById(R.id.pri_pro_new_label_tv);
+        mNewLabelContent = (TextView) view.findViewById(R.id.pri_pro_new_label_content);
         mAppText = (TextView) view.findViewById(R.id.app_name);
         mStickyCb.setOnClickListener(this);
         mAdaper.setOnSelectionChangeListener(this);

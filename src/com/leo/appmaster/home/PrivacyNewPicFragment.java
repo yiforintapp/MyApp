@@ -143,6 +143,8 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
         }
         String content = AppMasterApplication.getInstance().getString(stringId, count);
         mNewLabelTv.setText(Html.fromHtml(content));
+        mNewLabelContent.setText(AppMasterApplication.
+                getInstance().getString(R.string.scan_pic_content));
     }
 
     @Override

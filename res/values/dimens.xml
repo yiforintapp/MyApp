@@ -200,7 +200,7 @@
     <dimen name="pri_pro_header">237dp</dimen>
     <dimen name="pri_pro_final_header">170dp</dimen>
     <dimen name="pri_pro_top_margin">60dp</dimen>
-    <dimen name="pri_pro_new">52dp</dimen>
+    <dimen name="pri_pro_new">62dp</dimen>
     <dimen name="pri_pro_new_label">18dp</dimen>
     <dimen name="pri_folder_summary">13dp</dimen>
     <dimen name="pri_empty_header_height">287dp</dimen>
