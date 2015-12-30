@@ -48,7 +48,6 @@
             ripple:rippleHover="true"
             ripple:rippleOverlay="true">
 
-<!--                 android:background="@drawable/green_radius_btn_shape" -->
             <TextView
                 android:id="@+id/tv_button_backup"
                 android:layout_width="match_parent"
@@ -60,14 +59,28 @@
                 android:textSize="16dp" />
         </com.leo.appmaster.ui.RippleView>
 
-        <ImageView
-            android:id="@+id/iv_add_all_black"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+        <com.leo.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/click_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="22dp"
-            android:src="@drawable/unselect" />
+            android:padding="7dp"
+            app:rippleAlpha="1"
+            app:rippleColor="@color/home_tab_pressed"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="false">
+
+            <ImageView
+                android:id="@+id/iv_add_all_black"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/unselect" />
+        </com.leo.appmaster.ui.RippleView>
+
+
     </RelativeLayout>
 
     <ProgressBar

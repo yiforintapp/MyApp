@@ -68,6 +68,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private ProgressBar mProgressBar;
     private String mFrom;
     private ImageView mAddAll;
+    private View mSelectAll;
     private View mEmptyView;
     private RippleView mAddBtn;
     private final int MAX_ITEM_SIZE = 100;
@@ -128,7 +129,10 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
         mAddAll = (ImageView) findViewById(R.id.iv_add_all_black);
         mAddAll.setTag(false);
-        mAddAll.setOnClickListener(this);
+//        mAddAll.setOnClickListener(this);
+        mSelectAll = findViewById(R.id.click_check_box);
+        mSelectAll.setOnClickListener(this);
+
         mEmptyView = findViewById(R.id.add_call_log_default_tv);
         mAddBtn = (RippleView) findViewById(R.id.rv_button_backup);
         mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
@@ -231,7 +235,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_add_all_black:
+            case R.id.click_check_box:
                 if (mLoadDone) {
                     boolean isCheck = (Boolean) mAddAll.getTag();
                     if (isCheck) {
@@ -530,13 +534,15 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         }
                         try {
                             mProgressBar.setVisibility(View.GONE);
+                            mCallLogAdapter = new CallLogAdapter(mCallLogList);
+                            fillOutBlacklistNumber(mCallLogList);
+
                             if (mCallLogList != null && mCallLogList.size() > 0) {
                                 mEmptyView.setVisibility(View.GONE);
                             } else {
                                 mEmptyView.setVisibility(View.VISIBLE);
                             }
-                            mCallLogAdapter = new CallLogAdapter(mCallLogList);
-                            fillOutBlacklistNumber(mCallLogList);
+
                             mListCallLog.setAdapter(mCallLogAdapter);
                             mLoadDone = true;
                         } catch (Exception e) {
