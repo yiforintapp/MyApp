@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/common_dialog_bg"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:orientation="vertical">
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/dlg_title"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
-
+            
             <CheckBox
                 android:id="@+id/checkb"
                 android:layout_width="wrap_content"
@@ -39,18 +39,17 @@
                 android:background="@drawable/check_box_selector"
                 android:button="@null"
                 android:checked="false" />
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/tv_checkbox_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/black"
                 android:text="@string/call_filter_remove_from_blacklist_checkbox_text"
-                />
-            
+                android:textColor="@color/black" />
         </LinearLayout>
-        
-        <!-- <TextView
+
+        <!--
+             <TextView
             android:id="@+id/dlg_content"
             style="@style/dlg_content_txt"
             android:layout_width="match_parent"
@@ -59,7 +58,8 @@
             android:gravity="center"
             android:maxLines="4"
             android:scrollbars="vertical"
-            android:text="content" /> -->
+            android:text="content" />
+        -->
     </LinearLayout>
 
     <LinearLayout
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:padding="12dp" >
 
         <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_dialog_whitle_button"
@@ -79,7 +79,7 @@
             app:rippleColor="@color/button_gray_ripple"
             app:rippleDuration="250"
             app:rippleHover="true"
-            app:rippleOverlay="true">
+            app:rippleOverlay="true" >
 
             <TextView
                 android:id="@+id/dlg_left_btn"
@@ -99,7 +99,7 @@
             app:rippleColor="@color/button_blue_ripple"
             app:rippleDuration="250"
             app:rippleHover="true"
-            app:rippleOverlay="true">
+            app:rippleOverlay="true" >
 
             <TextView
                 android:id="@+id/dlg_right_btn"

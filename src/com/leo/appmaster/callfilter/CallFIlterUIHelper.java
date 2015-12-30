@@ -129,7 +129,7 @@ public class CallFIlterUIHelper {
 
     public void showStrangerNotification(int count) {
         Context context = AppMasterApplication.getInstance();
-        String title = String.format(context.getResources().getString(R.string.str_noti_title_txt), count);
+        String title = String.format(context.getResources().getString(R.string.str_noti_title_txt), "("+count+")");
         String content = String.format(context.getResources().getString(R.string.str_noti_content_txt), count);
         RemoteViews mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.remoteview_callfilter);
         mRemoteViews.setTextViewText(R.id.tv_title, title);
