@@ -327,7 +327,7 @@ public class ISwipUpdateRequestManager {
     /* 判断是否安装ISwipe，true：安装，false：未安装 */
     public static boolean isInstallIsiwpe(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setPackage(AppLoadEngine.ISWIPE_PACKAGENAME);
+        intent.setPackage(Constants.ISWIPE_PACKAGE);
         List<ResolveInfo> resolveInfo = context.getPackageManager().queryIntentActivities(
                 intent, 0);
         if (resolveInfo != null && resolveInfo.size() > 0) {

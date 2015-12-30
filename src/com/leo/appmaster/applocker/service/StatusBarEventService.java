@@ -92,7 +92,7 @@ public class StatusBarEventService extends IntentService {
                 targetIntent = new Intent();
                 targetIntent.setAction(Intent.ACTION_MAIN);
                 ComponentName cn = new
-                        ComponentName(AppLoadEngine.ISWIPE_PACKAGENAME,
+                        ComponentName(Constants.ISWIPE_PACKAGE,
                         "com.leo.iswipe.activity.SplashActivity");
                 targetIntent.setComponent(cn);
                 targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
