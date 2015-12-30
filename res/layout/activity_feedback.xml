@@ -14,7 +14,7 @@
         android:id="@+id/normal_problem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:rippleColor="@color/button_blue_ripple"
+        app:rippleColor="@color/c150"
         app:rippleDuration="250"
         app:rippleHover="true"
         app:rippleOverlay="true">

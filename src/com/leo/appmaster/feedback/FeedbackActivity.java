@@ -313,7 +313,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             LeoLog.d("testFaq", "url : " + url);
 
 
-            mLockManager.filterSelfOneMinites();
+//            mLockManager.filterSelfOneMinites();
             MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
         }
     }
