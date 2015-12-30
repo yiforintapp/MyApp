@@ -59,7 +59,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             showEmpty();
         } else {
             mClearAll.setBackgroundResource(R.drawable.green_radius_btn_shape);
-            mClearAll.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+            mClearAll.setEnabled(true);
             if (isFirstLoadDone) {
                 CallFilterMainActivity activity = (CallFilterMainActivity) mActivity;
                 activity.moveToFilterFragment();
@@ -75,7 +75,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         mCallListView.setVisibility(View.GONE);
         mNothingToShowView.setVisibility(View.VISIBLE);
         mClearAll.setBackgroundResource(R.drawable.green_radius_shape_disable);
-        mClearAll.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+        mClearAll.setEnabled(false);
     }
 
     @Override
@@ -204,7 +204,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
 
             boolean isNeedMarkItem = true;
             if (mSysContacts.size() > 0) {
-                isNeedMarkItem = !checkIsSysContact(info.getNumber());
+                isNeedMarkItem = !checkIsSysContact(info.getNumber()) && info.getFilterType() < 1;
             }
 
             final LEOChoiceDialog dialog = CallFIlterUIHelper.getInstance().
@@ -235,8 +235,10 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     }
 
     private boolean checkIsSysContact(String number) {
+        String formatNumber = PrivacyContactUtils.formatePhoneNumber(number);
         for (int i = 0; i < mSysContacts.size(); i++) {
-            if (mSysContacts.get(i).getContactNumber().equals(number)) {
+            String sysNumber = mSysContacts.get(i).getContactNumber();
+            if (sysNumber.contains(formatNumber)) {
                 return true;
             }
         }
