@@ -429,8 +429,8 @@ public class Constants {
     public final static String LAST_GP_STRING = "&referrer=utm_source=AppMaster";
 
     /** 包名 */
-    public final static String SWIFTY_PKG_NAME = "com.leo.iswipe";
     public final static String WIFIMASTER_PKG_NAME = "com.leo.wifi";
+    public final static String PL_PKG_NAME = "com.leo.privacylock";
 
     public final static String IS_CLICK_SWIFTY = "is_click_swifty";
     public final static String IS_CLICK_WIFIMASTER = "is_click_wifimaster";

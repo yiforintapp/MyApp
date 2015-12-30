@@ -1,6 +1,11 @@
 
 package com.leo.appmaster.utils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -33,18 +38,12 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class Utilities {
 
@@ -559,7 +558,7 @@ public final class Utilities {
 
     public static void startISwipIntent(Context context) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        ComponentName cn = new ComponentName(AppLoadEngine.ISWIPE_PACKAGENAME,
+        ComponentName cn = new ComponentName(Constants.ISWIPE_PACKAGE,
                 "com.leo.iswipe.activity.QuickGestureActivity");
         intent.setComponent(cn);
         boolean iswipeFirstTip = AppMasterPreference.getInstance(context)
@@ -574,7 +573,7 @@ public final class Utilities {
         LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         try {
             lockManager.filterSelfOneMinites();
-            lockManager.filterPackage(AppLoadEngine.ISWIPE_PACKAGENAME, false);
+            lockManager.filterPackage(Constants.ISWIPE_PACKAGE, false);
             context.startActivity(intent);
         } catch (Exception e) {
         }
@@ -591,7 +590,7 @@ public final class Utilities {
             if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
 
                 selectType(preferenceTable, PrefConst.KEY_SWIFTY_TYPE, PrefConst.KEY_SWIFTY_GP_URL,
-                           PrefConst.KEY_SWIFTY_URL, Constants.SWIFTY_PKG_NAME, context);
+                           PrefConst.KEY_SWIFTY_URL, Constants.ISWIPE_PACKAGE, context);
 
             } else { //点击wifimaster
 
@@ -604,7 +603,7 @@ public final class Utilities {
 
                 selectType(preferenceTable, PrefConst.KEY_WIFI_SWIFTY_TYPE,
                         PrefConst.KEY_WIFI_SWIFTY_GP_URL, PrefConst.KEY_WIFI_SWIFTY_URL,
-                        Constants.SWIFTY_PKG_NAME, context);
+                        Constants.ISWIPE_PACKAGE, context);
 
             } else { //点击wifimaster
 

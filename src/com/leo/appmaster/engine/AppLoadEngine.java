@@ -192,7 +192,6 @@ public class AppLoadEngine extends BroadcastReceiver {
             "10000000"
     };
     public static final String PG_PACKAGENAME = "com.android.vending";
-    public static final String ISWIPE_PACKAGENAME = "com.leo.iswipe";
     public static final long CLICKINTERVAl = 1000 * 60 * 60 * 2;
     private List<String> mRecommendLocklist;
     private List<String> mRecommendLockNumlist;
@@ -997,6 +996,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                 || packageName.startsWith("com.leo.theme")
                 || packageName.equals(Constants.CP_PACKAGE)
                 || packageName.equals(Constants.ISWIPE_PACKAGE)
+                || packageName.equals(Constants.PL_PKG_NAME)
                 || packageName.equals(Constants.SEARCH_BOX_PACKAGE)
                 || detector.isHomePackage(packageName)) {
             return;

@@ -566,6 +566,7 @@ public class LockManagerImpl extends LockManager {
         if (pkg.equals(ctx.getPackageName())
                 || pkg.equals(Constants.CP_PACKAGE)
                 || pkg.equals(Constants.ISWIPE_PACKAGE)
+                || pkg.equals(Constants.PL_PKG_NAME)
                 || pkg.equals(Constants.SEARCH_BOX_PACKAGE)
                 || detector.isHomePackage(pkg)) {
             return true;

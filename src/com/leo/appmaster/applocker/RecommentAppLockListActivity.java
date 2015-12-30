@@ -144,6 +144,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
             if (localApp.packageName.equals(this.getPackageName())
                     || localApp.packageName.equals(Constants.CP_PACKAGE)
                     || localApp.packageName.equals(Constants.ISWIPE_PACKAGE)
+                    || localApp.packageName.equals(Constants.PL_PKG_NAME)
                     || localApp.packageName.equals(Constants.SEARCH_BOX_PACKAGE)
                     || detector.isHomePackage(localApp.packageName)
                     || lockList.contains(localApp.packageName))
