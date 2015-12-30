@@ -30,7 +30,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" 
+            android:gravity="center_vertical">
             
             <CheckBox
                 android:id="@+id/checkb"
@@ -43,7 +44,10 @@
             <TextView
                 android:id="@+id/tv_checkbox_text"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:maxLines="2"
+                android:layout_height="wrap_content"
                 android:text="@string/call_filter_remove_from_blacklist_checkbox_text"
                 android:textColor="@color/black" />
         </LinearLayout>

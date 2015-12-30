@@ -227,19 +227,20 @@ public class CallFilterManager {
                 }
                 //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
                 long durationMax = cmp.getCallDurationMax();
+//                durationMax = 7955;
                 long currentTime = System.currentTimeMillis();
                 long deltaTime = currentTime - mLastOffHookTime;
                 LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
                 LeoLog.i(TAG, "idle : System.currentTimeMillis() =" + currentTime);
                 LeoLog.i("allnull", "deltaTime = " + deltaTime);
                 //时间过短 且 服务器和本地都没有数据 
-                if (deltaTime < 5000 && info == null && serInfo == null) {
+                if (deltaTime < durationMax && info == null && serInfo == null) {
                     if (mDialogTooShort != null && mDialogTooShort.isShowing()) {
                         return;
                     }
                     //通话时间过短的提醒加入黑名单对话框
                     mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0);
-                    String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (durationMax / 1000));
+                    String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int)(Math.ceil(durationMax/1000)));
                     mDialogTooShort.setContent(summaryF);
                     mDialogTooShort.getListView().setOnItemClickListener(new OnItemClickListener() {
                         @Override
