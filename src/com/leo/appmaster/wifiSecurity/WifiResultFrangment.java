@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -92,6 +93,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     private ImageView mGradeImg;
     private TextView mGradeContent;
     private RippleView mGradeBtnLt;
+    private RelativeLayout mGradeLayout;
 
     @Override
     public void onAttach(Activity activity) {
@@ -211,6 +213,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 Utilities.goFaceBook(mActivity, false);
                 break;
             case R.id.grade_resulte_sure:
+            case R.id.grade_content:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "GP");
                 lockManager.filterSelfOneMinites();
                 Utilities.goFiveStar(mActivity, true, false);
@@ -561,11 +564,13 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                     FiveStarsLayout fiveStarsLayout = (FiveStarsLayout)
                                     include.findViewById(R.id.fsl_fivestars);
                     fiveStarsLayout.setBackgroundNull();
+                    mGradeLayout = (RelativeLayout) include.findViewById(R.id.grade_content);
                     mGradeTitle = (TextView) include.findViewById(R.id.grade_text);
                     mGradeImg = (ImageView) include.findViewById(R.id.grade_img);
                     mGradeContent = (TextView) include.findViewById(R.id.grade_txt);
                     mGradeBtnLt = (RippleView) include.findViewById(R.id.grade_resulte_sure);
                     mGradeBtnLt.setOnClickListener(WifiResultFrangment.this);
+                    mGradeLayout.setOnClickListener(WifiResultFrangment.this);
                     mGradeContent.setText(mPt.getString(PrefConst.KEY_WIFI_GRADE_CONTENT));
                     String imgUrl = mPt.getString(PrefConst.KEY_WIFI_GRADE_IMG_URL);
                     mImageLoader.displayImage(imgUrl, mGradeImg, getOptions(R.drawable.grade_bg));

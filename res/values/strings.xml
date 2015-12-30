@@ -895,7 +895,7 @@
     <string name="scan_app_content_only_high">私密应用，建议加锁</string>
     <string name="scan_pic_title">发现%1$s张图片</string>
     <string name="scan_pic_content">建议选择私密图片进行隐藏</string>
-    <string name="scan_vid_title">扫描到%1$s个视频</string>
+    <string name="scan_vid_title">发现%1$s个视频</string>
     <string name="scan_vid_content">建议选择私密视频进行隐藏</string>
     <string name="scan_instruct_title">入侵者防护</string>
     <string name="scan_instruct_content">开启入侵者防护功能，看看有那些人在偷看你的手机</string>
