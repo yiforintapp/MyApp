@@ -25,7 +25,7 @@
             android:paddingRight="10dp"
             android:button="@drawable/check_box_selector" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="52dp"
@@ -33,17 +33,19 @@
             android:layout_marginRight="5dp"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
+            android:orientation="vertical"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/pri_pro_cb">
 
             <TextView
                 android:id="@+id/pri_pro_new_label_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:singleLine="true"
+                android:layout_gravity="clip_vertical"
                 android:layout_alignParentLeft="true"
                 android:text="@string/pri_pro_new_app"
                 android:textColor="@color/c2"
@@ -57,10 +59,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/pri_pro_new_label_tv"
                 android:textColor="@color/c4"
-                android:background="#f0ffff"
                 android:textSize="@dimen/f5a"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
 
