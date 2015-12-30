@@ -63,8 +63,10 @@ public class PrivacyNewAppAdapter extends PrivacyNewAdaper<AppItemInfo> {
             String ceilNum = ListAppLockAdapter.makePosRight(info);
             String text = mContext.getString(R.string.lock_app_item_desc_cb, ceilNum);
             holder.summary.setText(Html.fromHtml(text));
+            holder.title.setTextColor(mContext.getResources().getColor(R.color.cb2));
         } else {
             holder.summary.setVisibility(View.GONE);
+            holder.title.setTextColor(mContext.getResources().getColor(R.color.c2));
         }
         holder.imageView.setImageDrawable(info.icon);
         holder.title.setText(info.label);

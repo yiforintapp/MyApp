@@ -176,12 +176,12 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
     protected View getEmptyHeader() {
 
          View view = mActivity.getLayoutInflater().inflate(R.layout.pri_folder_top_view, null);
-//        view.setLayoutParams(new AbsListView.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT, mEmptyHeight - ));
          TextView title = (TextView) view.findViewById(R.id.pri_pro_new_label_tv);
          title.setText(Html.fromHtml(mActivity.getResources().getString(
                 R.string.scan_find_pic, mDataList.size())));
-
+         TextView content = (TextView) view.findViewById(R.id.pri_pro_new_label_content);
+         content.setText(mActivity.getResources().getString(
+                 R.string.scan_pic_content));
          return view;
     }
 }

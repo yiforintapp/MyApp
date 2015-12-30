@@ -765,6 +765,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         final int firLocation = layout.getHeight();
 
         Context context = AppMasterApplication.getInstance();
+
         if (layout == mNewAppLayout) {
             updateNewAppList();
             if (!mContactScanFinish) {
@@ -1088,7 +1089,18 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void startRealAnimator(final View layout) {
         AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -layout.getHeight(), layout.getTranslationY());
+        LeoLog.d("testLayout", "-layout.getHeight() : " + -layout.getHeight() + "-----layout.getTranslationY() : " +  layout.getTranslationY());
+        int startY = -layout.getHeight();
+        if (startY == 0) {
+            if (layout == mNewAppLayout) {
+                startY = -91;
+            } else if (layout == mAdLayout) {
+                startY = -252;
+            } else {
+                startY = -102;
+            }
+        }
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", startY, layout.getTranslationY());
         objectAnimator.setDuration(300);
         ObjectAnimator alpha = objectAnimator.ofFloat(layout, "alpha", 0f, 0.0f, 0.3f, 1f);
         alpha.setDuration(400);
@@ -1146,7 +1158,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         LeoLog.d("testLayout", "layout Y : " + layout.getTranslationY());
         LeoLog.d("testLayout", "layout height : " + layout.getHeight());
         LeoLog.d("testLayout", "layout width : " + layout.getWidth());
-        LeoLog.d("testLayout", "-------------------------------------------");
 
         for (int i = 0; i < lists.size(); i++) {
             View oldLayout = lists.get(i);
@@ -1160,9 +1171,20 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         } else {
             addSome = 15;
         }
-        mNowHeight = mNowHeight + layout.getHeight() + addSome;
-        LeoLog.d("isLast", "back height : " + mBackViewHeight);
-        LeoLog.d("isLast", "total height : " + mNowHeight);
+        int backHeight = layout.getHeight();
+        if (backHeight == 0) {
+            if (layout == mNewAppLayout) {
+                backHeight = 91;
+            } else if (layout == mAdLayout) {
+                backHeight = 252;
+            } else {
+                backHeight = 102;
+            }
+        }
+//        mNowHeight = mNowHeight + layout.getHeight() + addSome;
+        mNowHeight = mNowHeight + backHeight + addSome;
+        LeoLog.d("testLayout", "back height : " + mBackViewHeight);
+        LeoLog.d("testLayout", "total height : " + mNowHeight);
         if (mNowHeight > mBackViewHeight) {
             ViewGroup.LayoutParams params = mBackView.getLayoutParams();
             params.height = mNowHeight;
@@ -1171,8 +1193,18 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void oldLayoutAnimation(final View oldLayout, final View layout, final int nowItem, final int moveItem) {
+        int startY = layout.getHeight();
+        if (startY == 0) {
+            if (layout == mNewAppLayout) {
+                startY = 91;
+            } else if (layout == mAdLayout) {
+                startY = 252;
+            } else {
+                startY = 102;
+            }
+        }
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
-                oldLayout, "translationY", oldLayout.getTranslationY(), oldLayout.getTranslationY() + layout.getHeight());
+                oldLayout, "translationY", oldLayout.getTranslationY(), oldLayout.getTranslationY() + startY);
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -1183,7 +1215,29 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 if (nowItem == moveItem) {
-                    oldLayout.setY(layout.getY() + layout.getHeight());
+                    LeoLog.d("testLayout", "layout.getY() : " + layout.getY() + "----- layout.getHeight() :" + layout.getHeight());
+                    LeoLog.d("testLayout", "-------------------------------------------");
+
+                    float viewY = layout.getY();
+                    if (viewY == 0.0) {
+                        if (layout == mAdLayout) {
+                            viewY = 228.0f;
+                        } else {
+                            viewY = 216.0f;
+                        }
+                    }
+                    int startY = layout.getHeight();
+                    if (startY == 0) {
+                        if (layout == mNewAppLayout) {
+                            startY = 91;
+                        } else if (layout == mAdLayout) {
+                            startY = 252;
+                        } else {
+                            startY = 102;
+                        }
+                    }
+//                    oldLayout.setY(layout.getY() + layout.getHeight());
+                    oldLayout.setY(viewY + startY);
                 }
             }
         });

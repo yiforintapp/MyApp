@@ -6,13 +6,14 @@ import android.graphics.Color;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.ListAppLockAdapter;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.videohide.VideoItemBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -100,6 +101,7 @@ public class DataUtils {
     /** 获得高危应用需要展示的应用 */
     public static ArrayList<String> getThreeRandomAppName(List<AppItemInfo> list, Context context) {
         changeTopPos(list);
+        Collections.sort(list, new RecommentAppLockListActivity.DefalutAppComparator());
         int theSize =list.size();
         List<AppItemInfo> highList = new ArrayList<AppItemInfo>();
         for (AppItemInfo info: list) {
@@ -113,7 +115,7 @@ public class DataUtils {
 
         if (theHighSize == 0) {  //无推荐应用未加锁
             arrayList.add(context.getResources().getString(R.string.scan_app_content_zero));
-            arrayList.add("");
+            arrayList.add(context.getResources().getString(R.string.scan_app_content_zero));
            return arrayList;
 
         } else if (theHighSize == 1 && theSize == 1) { // 只有1个应用且是推荐应用
@@ -166,10 +168,13 @@ public class DataUtils {
 
         } else if (theHighSize > 3) { //  超过3个推荐应用
             HashSet<Integer> set = new HashSet<Integer>();
-            randomSet(theHighSize, 3, set);
-            Iterator<Integer> iterator = set.iterator(); //迭代遍历
-            while (iterator.hasNext()) {
-                appNameBuilder.append(highList.get(iterator.next()).label).append(",");
+//            randomSet(theHighSize, 3, set);
+//            Iterator<Integer> iterator = set.iterator(); //迭代遍历
+//            while (iterator.hasNext()) {
+//                appNameBuilder.append(highList.get(iterator.next()).label).append(",");
+//            }
+            for (int i = 0; i < 3; i++) {
+                appNameBuilder.append(highList.get(i).label).append(",");
             }
             String appName = appNameBuilder.toString().substring(0, appNameBuilder.length() - 1);
             arrayList.add(context.getResources().getString(

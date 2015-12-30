@@ -15,8 +15,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="9dp"
+        android:paddingBottom="9dp">
 
 
 
@@ -27,11 +29,21 @@
             android:ellipsize="end"
             android:includeFontPadding="false"
             android:singleLine="true"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="14dp"
             android:textColor="@color/c2"
             android:textSize="@dimen/f3" />
+
+        <TextView
+            android:id="@+id/pri_pro_new_label_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="14dp"
+            android:layout_below="@id/pri_pro_new_label_tv"
+            android:textColor="@color/c4"
+            android:textSize="@dimen/f5a"/>
 
 
 

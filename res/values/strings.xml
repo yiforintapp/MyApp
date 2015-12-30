@@ -887,16 +887,16 @@
 
     <string name="scan_score">处理+%1$s分</string>
     <string name="scan_app_title">发现%1$s个应用</string>
-    <string name="scan_app_content_less_three">其中私密性应用有%1$s，建议加锁</string>
-    <string name="scan_app_content_less_three_app">其中私密性应用有<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>，建议加锁</string>
+    <string name="scan_app_content_less_three">发现私密应用%1$s，</string>
+    <string name="scan_app_content_less_three_app">发现私密应用<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data></string>
     <string name="scan_app_content">其中有%1$s等私密性应用，建议加锁</string>
     <string name="scan_app_content_app">其中有<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>等私密性应用，建议加锁</string>
-    <string name="scan_app_content_zero">建议对应用进行加锁</string>
-    <string name="scan_app_content_only_high">私密性应用，建议加锁</string>
+    <string name="scan_app_content_zero">建议选择私密应用进行加锁</string>
+    <string name="scan_app_content_only_high">私密应用，建议加锁</string>
     <string name="scan_pic_title">发现%1$s张图片</string>
-    <string name="scan_pic_content">建议对图片进行隐藏</string>
+    <string name="scan_pic_content">建议选择私密图片进行隐藏</string>
     <string name="scan_vid_title">扫描到%1$s个视频</string>
-    <string name="scan_vid_content">建议对视频进行隐藏</string>
+    <string name="scan_vid_content">建议选择私密视频进行隐藏</string>
     <string name="scan_instruct_title">入侵者防护</string>
     <string name="scan_instruct_content">开启入侵者防护功能，看看有那些人在偷看你的手机</string>
     <string name="scan_lost_title">手机防盗</string>
@@ -910,9 +910,9 @@
     <string name="scan_vid_none">未发现新增视频</string>
     <string name="scan_pic_none">未发现新增图片</string>
     <string name="scan_app_none">未发现新增应用</string>
-    <string name="scan_find_app">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个应用，建议加锁</string>
-    <string name="scan_find_pic">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张图片，建议隐藏</string>
-    <string name="scan_find_vid">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个视频，建议隐藏</string>
+    <string name="scan_find_app">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个应用</string>
+    <string name="scan_find_pic">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张图片</string>
+    <string name="scan_find_vid">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个视频</string>
     <string name="call_filter_add_strange_num">加入黑名单</string>
     <string name="call_filter_clear_all_black">清空所有</string>
 
