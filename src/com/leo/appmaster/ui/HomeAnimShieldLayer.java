@@ -76,7 +76,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private BitmapDrawable mInCircleDrawable;
     private BitmapDrawable mShieldDrawable;
     // 扫描时的虚线外框
-    private Drawable mDashCircle;
+    private BitmapDrawable mDashCircle;
 
     public float mCirclePx;
     private float mCirclePy;
@@ -118,6 +118,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private float mFinalTextRatio;
     private int mWhiteColor;
     private float mMaxFinalOffsetY;
+    private int mDashAlpha;
 
     private boolean mMemoryLess =false;
 
@@ -149,7 +150,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mInCircleDrawable = (BitmapDrawable) res.getDrawable(R.drawable.ic_home_in_circle);
         mOutCircleDrawable = (BitmapDrawable) res.getDrawable(R.drawable.ic_home_out_circle);
         mShieldDrawable = (BitmapDrawable) res.getDrawable(R.drawable.ic_home_shield);
-        mDashCircle = res.getDrawable(R.drawable.ic_scan_dash_circle);
+        mDashCircle = (BitmapDrawable) res.getDrawable(R.drawable.ic_scan_dash_circle);
         mWaveDrawable = (BitmapDrawable) res.getDrawable(R.drawable.ic_privacy_wave);
 
         mShieldBgCircleMargin = res.getDimensionPixelSize(R.dimen.home_shield_bg_circle_margin);
@@ -374,6 +375,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
     }
 
     private void drawPercent(Canvas canvas) {
+        int dashAlpha = mDashAlpha;
         int shieldOffsetX = mShieldOffsetX;
         int shieldOffsetY = mShieldOffsetY;
         float scanningScale = mScanningScale;
@@ -383,6 +385,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         float centerX = (getLeft() + getRight()) / 2;
         float centerY = (getTop() + getBottom()) / 2;
 
+        mPercentPaint.setAlpha(dashAlpha);
         String percent = mScanningPercent + "";
         canvas.drawText(percent, centerX, mPercentBaseY, mPercentPaint);
         Rect rect = new Rect();
@@ -393,6 +396,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
         float rotate = mCircleRotateRatio;
         canvas.rotate(-rotate, centerX, centerY);
+        mDashCircle.getPaint().setAlpha(dashAlpha);
         mDashCircle.draw(canvas);
     }
 
@@ -666,6 +670,15 @@ public class HomeAnimShieldLayer extends AnimLayer {
      */
     public void setScanningScale(float scanningScale) {
         mScanningScale = scanningScale;
+        mParent.invalidate();
+    }
+
+    /**
+     * 设置虚线框透明度
+     * @param dashAlpha
+     */
+    public void setDashAlpha(int dashAlpha) {
+        mDashAlpha = dashAlpha;
         mParent.invalidate();
     }
 }

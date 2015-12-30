@@ -590,12 +590,12 @@ public class HomePrivacyFragment extends Fragment {
         ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
                 HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO, HomeAnimShieldLayer.SHIELD_SCANNING_RATIO);
         shieldScaleAnim.setInterpolator(new LinearInterpolator());
-        shieldScaleAnim.setDuration(200);
+        shieldScaleAnim.setDuration(100);
         animators.add(shieldScaleAnim);
         // 盾牌透明
         ObjectAnimator alphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "shieldAlpha", 255, 0);
         shieldScaleAnim.setInterpolator(new LinearInterpolator());
-        shieldScaleAnim.setDuration(200);
+        shieldScaleAnim.setDuration(100);
         animators.add(alphaAnim);
         // 内环缩小
         ObjectAnimator inScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "inCircleScaleRatio",
@@ -606,7 +606,7 @@ public class HomePrivacyFragment extends Fragment {
         // 内环透明
         ObjectAnimator inAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "inCircleAlpha", 255, 0);
         inAlphaAnim.setInterpolator(new LinearInterpolator());
-        inAlphaAnim.setDuration(200);
+        inAlphaAnim.setDuration(100);
         animators.add(inAlphaAnim);
         // 外环缩小至0.5
         ObjectAnimator outScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "outCircleScaleRatio", 1f, 0.5f);
@@ -618,6 +618,12 @@ public class HomePrivacyFragment extends Fragment {
         dashScaleAnim.setInterpolator(new LinearInterpolator());
         dashScaleAnim.setDuration(200);
         animators.add(dashScaleAnim);
+        // 虚线框透明度
+        ObjectAnimator dashAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "dashAlpha", 0, 255);
+        dashAlphaAnim.setInterpolator(new LinearInterpolator());
+        dashAlphaAnim.setStartDelay(100);
+        dashAlphaAnim.setDuration(100);
+        animators.add(dashAlphaAnim);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animators);
