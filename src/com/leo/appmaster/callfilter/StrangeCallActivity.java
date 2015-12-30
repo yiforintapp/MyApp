@@ -435,7 +435,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             Date date = sfd.parse(clallLogDate);
             long time = date.getTime();
 
-            SimpleDateFormat newFormat = new SimpleDateFormat("MM-dd HH:mm a");
+            SimpleDateFormat newFormat = new SimpleDateFormat("MM-dd HH:mma");
             newString = newFormat.format(time);
         } catch (Exception e) {
             e.printStackTrace();

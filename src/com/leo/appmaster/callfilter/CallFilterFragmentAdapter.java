@@ -142,11 +142,11 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
 
 
         if (showYear) {
-            finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+            finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mma");
         } else if (showDay) {
-            finalFormat = new SimpleDateFormat("MM-dd hh:mm a");
+            finalFormat = new SimpleDateFormat("MM-dd hh:mma");
         } else {
-            finalFormat = new SimpleDateFormat("hh:mm a");
+            finalFormat = new SimpleDateFormat("hh:mma");
         }
 
         String finalString = finalFormat.format(time);

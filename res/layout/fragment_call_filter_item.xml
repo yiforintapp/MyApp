@@ -20,7 +20,7 @@
             android:layout_width="@dimen/app_manager_lv_item_icon_width_height"
             android:layout_height="@dimen/app_manager_lv_item_icon_width_height"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="12dp"
             android:src="@drawable/default_user_avatar" />
 
         <LinearLayout
@@ -28,13 +28,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/iv_icon"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="@dimen/app_manager_lv_item_text_width"
+                android:layout_width="@dimen/app_manager_lv_item_text_width_move_short"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textColor="@color/c2"
@@ -55,14 +55,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="26dp">
+            android:layout_marginRight="12dp">
 
             <TextView
                 android:id="@+id/tv_call_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/c4"
-                android:textSize="13dp" />
+                android:textSize="12dp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"

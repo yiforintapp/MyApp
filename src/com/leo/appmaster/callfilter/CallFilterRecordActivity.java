@@ -327,7 +327,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
             }
 
             long time = mRecordTime.get(position).getTimeLong();
-            SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+            SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mma");
             holder.tv.setText(finalFormat.format(time));
 
             return convertView;

@@ -122,6 +122,7 @@
     <dimen name="app_manager_lv_item_icon_width_height">42dp</dimen>
     <dimen name="app_manager_lv_item_icon_margin_left">10dp</dimen>
     <dimen name="app_manager_lv_item_text_width">130dp</dimen>
+    <dimen name="app_manager_lv_item_text_width_move_short">120dp</dimen>
     <dimen name="app_manager_lv_item_delete_button_w_h">24dp</dimen>
     <dimen name="mode_name_max_width">165dp</dimen>
     <dimen name="time_lock_name_max_width">140dp</dimen>
