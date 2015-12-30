@@ -35,6 +35,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.AddFromContactListActivity;
 import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.privacycontact.ContactBean;
@@ -405,9 +407,11 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             if (info != null) {
                 int addToBlackNum = info.getAddBlackNumber();
                 if (addToBlackNum > 0) {
+                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                    int showPar = cmp.getBlackMarkTipParam();
                     vh.addnum.setVisibility(View.VISIBLE);
                     vh.addnum.setText(StrangeCallActivity.this.getString(
-                            R.string.call_filter_add_to_blacklist_people_tips, addToBlackNum));
+                            R.string.call_filter_add_to_blacklist_people_tips, addToBlackNum * showPar));
                 } else {
                     vh.addnum.setVisibility(View.GONE);
                 }
@@ -554,8 +558,8 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         }
                         mCallLogList = calls;
                         for (int i = 0; i <= 99; i++) {
-                            ContactCallLog call= new ContactCallLog();
-                            call.setCallLogNumber("3425814134"+i);
+                            ContactCallLog call = new ContactCallLog();
+                            call.setCallLogNumber("3425814134" + i);
                             mCallLogList.add(call);
                         }
                         //备份一份onCreate时获取的原始数据 
