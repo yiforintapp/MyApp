@@ -7,10 +7,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
@@ -163,11 +161,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         mAppList.setOnItemClickListener(this);
         mAppName = mAppString;
         if (!TextUtils.isEmpty(mAppString)) {
-            if (mAppString.indexOf("font") != -1) {
-                mAppText.setText(Html.fromHtml(mAppString));
-            } else {
-                mAppText.setText(mAppString);
-            }
+            mAppText.setText(Html.fromHtml(mAppString));
             mAppText.setVisibility(View.VISIBLE);
         } else {
             mAppText.setVisibility(View.GONE);
