@@ -43,7 +43,7 @@ public class HomeMoreAdapter extends BaseAdapter {
     };
 
     private static final int[] ARRAY_CONTACT_SINGLE = new int[]{
-            R.string.hp_contact_lable,
+            R.string.call_protect,
             R.string.call_filter_name,
             R.string.privacy_contacts
     };

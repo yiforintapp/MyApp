@@ -857,11 +857,11 @@
     <string name="call_filter_have_add_black_num">该号码已存在黑名单中</string>
     <string name="call_filter_dialog_add_black">添加黑名单</string>
     <string name="add_black_list_done">号码已加入黑名单</string>
-	<string name="call_filter_add_to_blacklist_people_tips">已被%1$s人拉入黑名单</string>
-	<string name="call_filter_marked_people_tips">已被%1$s人标记为%2$s</string>
-	<string name="call_filter_marked_and_add_tips">标记%1$s并加入黑名单</string>
-	<string name="call_filter_confirm_ask_mark_summary">已有%1$s人将该号码标记为%2$s</string>
-	
+    <string name="call_filter_add_to_blacklist_people_tips">已被%1$s人拉入黑名单</string>
+    <string name="call_filter_marked_people_tips">已被%1$s人标记为%2$s</string>
+    <string name="call_filter_marked_and_add_tips">标记%1$s并加入黑名单</string>
+    <string name="call_filter_confirm_ask_mark_summary">已有%1$s人将该号码标记为%2$s</string>
+
     <string name="call_filter_record">拦截记录</string>
     <string name="call_filter_clear_record">清空记录</string>
     <string name="call_filter_remove_from_blacklist">移出黑名单</string>
@@ -929,5 +929,9 @@
     <string name="miss_noti_tit">未接来电</string>
     <string name="miss_noti_content">%1$s被%2$s人拉黑，建议拉黑</string>
     <string name="fil_noti_bt">查看</string>
-    <string name="title_activity_test_demo">TestDemo</string>
+
+    <!--未翻译文案-->
+    <string name="call_protect">通讯保护</string>
+    <string name="call_fil_set_close">骚扰拦截已关闭</string>
+
 </resources>

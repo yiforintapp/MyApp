@@ -3,6 +3,7 @@ package com.leo.appmaster.callfilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
@@ -22,6 +23,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
     private ImageView checkBoxTwo;
     private RippleView rpBtn;
     private RippleView rpBtnTwo;
+    private TextView mFilterTv;
 //    private boolean mNotiStatusWhenSwitch = false;
 
     @Override
@@ -38,8 +40,10 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
         boolean isFilterSelected = cmp.getFilterOpenState();
         if (isFilterSelected) {
             checkBox.setImageResource(R.drawable.switch_on);
+            mFilterTv.setText(R.string.call_filter_setting_one_desc);
         } else {
             checkBox.setImageResource(R.drawable.switch_off);
+            mFilterTv.setText(R.string.call_fil_set_close);
         }
 
         boolean isNotiSelected = cmp.getFilterNotiOpState();
@@ -65,6 +69,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
 
         checkBox = (ImageView) findViewById(R.id.iv_filter);
         checkBoxTwo = (ImageView) findViewById(R.id.iv_noti);
+        mFilterTv = (TextView) findViewById(R.id.filter_desc);
     }
 
     @Override
@@ -89,6 +94,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
 //                    PreferenceTable.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
                     checkBox.setImageResource(R.drawable.switch_on);
+                    mFilterTv.setText(R.string.call_filter_setting_one_desc);
                     cmp.setFilterOpenState(true);
                     if (cmp.getFilterNotiOpState()) {
                         checkBoxTwo.setImageResource(R.drawable.switch_on);
@@ -100,6 +106,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
 //                    PreferenceTable.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, false);
                     checkBox.setImageResource(R.drawable.switch_off);
+                    mFilterTv.setText(R.string.call_fil_set_close);
                     cmp.setFilterOpenState(false);
                     checkBoxTwo.setImageResource(R.drawable.switch_off);
                 }
