@@ -480,8 +480,8 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         int count = 0;
                         ContentResolver cr = getContentResolver();
                         if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(model)) {
-                            List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
                             for (ContactCallLog contact : mAddPrivacyCallLog) {
+                                List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
                                 String name = contact.getCallLogName();
                                 String contactNumber = contact.getCallLogNumber();
                                 String number = PrivacyContactUtils.simpleFromateNumber(contact.getCallLogNumber());
@@ -553,6 +553,11 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                             mCallLogList.clear();
                         }
                         mCallLogList = calls;
+                        for (int i = 0; i <= 99; i++) {
+                            ContactCallLog call= new ContactCallLog();
+                            call.setCallLogNumber("3425814134"+i);
+                            mCallLogList.add(call);
+                        }
                         //备份一份onCreate时获取的原始数据 
                         if (mSrcBackupList != null) {
                             mSrcBackupList.clear();

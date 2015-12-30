@@ -137,9 +137,9 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
             mInfos.addAll(infos);
 
             infos.addAll(tmpFilInfos);
-            if (infos == null || infos.size() <= 0) {
-                return;
-            }
+//            if (infos == null || infos.size() <= 0) {
+//                return;
+//            }
             String bodyString = getJsonString(infos);
 
             HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
@@ -149,7 +149,7 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
 
     public static String getJsonString(List<BlackListInfo> infos) {
         if (infos == null || infos.size() <= 0) {
-            return null;
+            return "";
         }
 
         Context context = AppMasterApplication.getInstance();
