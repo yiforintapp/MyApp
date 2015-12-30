@@ -26,6 +26,7 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -275,15 +276,13 @@ public class CallFilterManager {
                     mDialogTooShort.show();
                     // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
                 } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null && CallFilterConstants.IS_TIP_DIA[1]== filterTip[0]) {
-                    if (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing()) {
-                        return;
-                    }
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                     mIsOffHook = false;
 //                  挂断后接听 询问是否家黑名单且展示标记人数
                     mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
                     String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
                     String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
+                    
                     switch (filterTip[3]) {
                         case CallFilterConstants.FILTER_CALL_TYPE:
                             mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
@@ -706,8 +705,53 @@ public class CallFilterManager {
 
         ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
                 .getSysCallLog(mContext, selection, selectionArgs, true, false);
+        List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(mContext, null, null, false);
+        List<ContactCallLog> straCalls = new ArrayList<ContactCallLog>();
         if (callLogs != null && callLogs.size() > 0) {
-            int count = callLogs.size();
+            for (ContactCallLog call : callLogs) {
+                if (TextUtils.isEmpty(call.getCallLogNumber())) {
+                    continue;
+                }
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(call.getCallLogNumber());
+                boolean isExistContact = false;
+                //是否存在通讯录
+                for (ContactBean contactBean : contactsList) {
+                    String contactNumber = contactBean.getContactNumber();
+                    if (TextUtils.isEmpty(contactNumber)) {
+                        continue;
+                    }
+                    contactNumber = PrivacyContactUtils.simpleFromateNumber(contactNumber);
+                    if (contactNumber.contains(formateNumber)) {
+                        isExistContact = true;
+                        break;
+                    }
+                }
+                if (!isExistContact) {
+                    //是否存在黑名单
+                    List<BlackListInfo> blackList = getBlackList();
+                    if (blackList != null && blackList.size() > 0) {
+                        for (BlackListInfo info : blackList) {
+                            String number = info.getNumber();
+                            if (TextUtils.isEmpty(number)) {
+                                continue;
+                            }
+                            if (!number.contains(formateNumber)) {
+                                straCalls.add(call);
+                                break;
+                            }
+
+                        }
+                    }else{
+                        straCalls.add(call);
+                    }
+                }
+
+
+            }
+            int count = straCalls.size();
+            if (count == 0) {
+                return;
+            }
             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
             int param = pm.getStraNotiTipParam();
             try {

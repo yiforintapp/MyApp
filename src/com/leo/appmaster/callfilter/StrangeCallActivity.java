@@ -320,7 +320,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
         @Override
         public int getCount() {
-            if (callLog != null) {    
+            if (callLog != null) {
                 return Math.min(callLog.size(), MAX_ITEM_SIZE);
             } else {
                 return 0;
@@ -580,7 +580,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mCallLogList.removeAll(toRemove);
         LeoLog.i(TAG, "end fill " + mCallLogList.size());
     }
-    
+
     /*加载通话通话列表*/
     private void sendMsgHandler() {
         if (mAddFromCallHandler != null) {
