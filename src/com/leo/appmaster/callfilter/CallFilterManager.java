@@ -227,7 +227,10 @@ public class CallFilterManager {
                 int[] filterTip = cmp.isCallFilterTip(mPhoneNumber);
                
 //                mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]
-//                LeoLog.i("testdata", "filterTip[0] = " + filterTip[0] + "filterTip[1] = " + filterTip[1] + "filterTip[2] = " + filterTip[2] + "filterTip[3] = " + filterTip[3]);
+                if (filterTip != null) {
+                    LeoLog.i("testdata", "filterTip[0] = " + filterTip[0] + "filterTip[1] = " + filterTip[1] + "filterTip[2] = " + filterTip[2] + "filterTip[3] = " + filterTip[3]);
+                }
+                
                 LeoLog.i("testdata", "mIsOffHook = " + mIsOffHook);
                 if (info == null) {
                     LeoLog.i("testdata", "info = null");
