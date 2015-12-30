@@ -93,9 +93,15 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                     if (mProgressDialog != null) {
                         mProgressDialog.cancel();
                     }
-                    Context context = AddFromContactListActivity.this;
-                    String str = getResources().getString(R.string.add_black_list_done);
-                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+
+                    if (!Utilities.isEmpty(mFrom) &&
+                            mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+                        Context context = AddFromContactListActivity.this;
+                        String str = getResources().getString(R.string.add_black_list_done);
+                        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                    }
+
+
                     AddFromContactListActivity.this.finish();
                 } else {
                     if (mProgressDialog != null) {
@@ -198,8 +204,24 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                 sendImpLogHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
                             }
                         } else {
-                            showProgressDialog(mAddPrivacyContact.size(), 0);
-                            sendImpLogHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                            //privacy list process
+                            if (mAddPrivacyContact.size() == 1) {
+                                boolean isHaveBlackNum = mCallManger.
+                                        isExistBlackList(mAddPrivacyContact.get(0).getContactNumber());
+                                if (isHaveBlackNum) {
+                                    Message messge = new Message();
+                                    messge.what = HAVE_BLACK_LIST;
+                                    if (messge != null && mHandler != null) {
+                                        mHandler.sendMessage(messge);
+                                    }
+                                } else {
+                                    showProgressDialog(mAddPrivacyContact.size(), 0);
+                                    sendImpLogHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                                }
+                            } else {
+                                showProgressDialog(mAddPrivacyContact.size(), 0);
+                                sendImpLogHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                            }
                         }
                     } else {
                         Toast.makeText(AddFromContactListActivity.this,

@@ -164,6 +164,15 @@ public class PrivacyContactInputActivity extends BaseActivity {
         String tempNumber =
                 PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
 
+        boolean isHaveBlackList = mCallManger.isExistBlackList(mPhoneNumber);
+        if (isHaveBlackList) {
+            Context context = PrivacyContactInputActivity.this;
+            String str = getResources().getString(R.string.call_filter_have_add_black_num);
+            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         if (!flagContact) {
             ContactBean contact = new ContactBean();
             contact.setContactName(mPhoneName);
@@ -277,7 +286,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
             findViewById(R.id.call_log_item_top_bottom_line).setVisibility(View.GONE);
         }
-        
+
         mNameEt = (EditText) findViewById(R.id.privacy_input_nameET);
         mNumberEt = (EditText) findViewById(R.id.privacy_input_numberEV);
         mClickArea = findViewById(R.id.privacy_input_rg);

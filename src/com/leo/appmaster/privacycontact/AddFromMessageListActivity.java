@@ -89,9 +89,13 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     if (mProgressDialog != null) {
                         mProgressDialog.cancel();
                     }
-                    Context context = AddFromMessageListActivity.this;
-                    String str = getResources().getString(R.string.add_black_list_done);
-                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+
+                    if (!Utilities.isEmpty(mFrom) &&
+                            mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+                        Context context = AddFromMessageListActivity.this;
+                        String str = getResources().getString(R.string.add_black_list_done);
+                        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                    }
                     AddFromMessageListActivity.this.finish();
                 } else {
                     if (mProgressDialog != null) {
@@ -158,6 +162,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     if (mAddPrivacyMessage.size() > 0 && mAddPrivacyMessage != null) {
                         if (!Utilities.isEmpty(mFrom) &&
                                 mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+                            //black list process
                             if (mAddPrivacyMessage.size() == 1) {
                                 boolean isHaveBlackNum = mCallManger.
                                         isExistBlackList(mAddPrivacyMessage.get(0).getPhoneNumber());
@@ -176,8 +181,24 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 sendImpMsmHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
                             }
                         } else {
-                            showProgressDialog(mAddPrivacyMessage.size(), 0);
-                            sendImpMsmHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                            //privacy list process
+                            if (mAddPrivacyMessage.size() == 1) {
+                                boolean isHaveBlackNum = mCallManger.
+                                        isExistBlackList(mAddPrivacyMessage.get(0).getPhoneNumber());
+                                if (isHaveBlackNum) {
+                                    Message messge = new Message();
+                                    messge.what = HAVE_BLACK_LIST;
+                                    if (messge != null && mHandler != null) {
+                                        mHandler.sendMessage(messge);
+                                    }
+                                } else {
+                                    showProgressDialog(mAddPrivacyMessage.size(), 0);
+                                    sendImpMsmHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                                }
+                            } else {
+                                showProgressDialog(mAddPrivacyMessage.size(), 0);
+                                sendImpMsmHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                            }
                         }
                     } else {
                         Toast.makeText(AddFromMessageListActivity.this,

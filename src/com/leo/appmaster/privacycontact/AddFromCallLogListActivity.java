@@ -87,11 +87,18 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                     if (mProgressDialog != null) {
                         mProgressDialog.cancel();
                     }
-                    AddFromContactListActivity
-                            .notificationUpdatePrivacyContactList();
-                    Context context = AddFromCallLogListActivity.this;
-                    String str = getResources().getString(R.string.add_black_list_done);
-                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+
+                    if (!Utilities.isEmpty(mFrom) &&
+                            mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
+                        Context context = AddFromCallLogListActivity.this;
+                        String str = getResources().getString(R.string.add_black_list_done);
+                        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                    }else{
+                        AddFromContactListActivity
+                                .notificationUpdatePrivacyContactList();
+                    }
+
+
                     AddFromCallLogListActivity.this.finish();
                 } else {
                     if (mProgressDialog != null) {
@@ -163,7 +170,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
 
                         if (!Utilities.isEmpty(mFrom) &&
                                 mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
-                            if (mCallLogList.size() == 1) {
+                            if (mAddPrivacyCallLog.size() == 1) {
                                 boolean isHaveBlackNum = mCallManger.
                                         isExistBlackList(mCallLogList.get(0).getCallLogNumber());
                                 if (isHaveBlackNum) {
@@ -181,8 +188,26 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                 sendImpLogHandler(CallFilterConstants.ADD_BLACK_LIST_MODEL);
                             }
                         } else {
-                            showProgressDialog(mAddPrivacyCallLog.size(), 0);
-                            sendImpLogHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+
+                            //privacy list process
+                            if (mAddPrivacyCallLog.size() == 1) {
+                                boolean isHaveBlackNum = mCallManger.
+                                        isExistBlackList(mCallLogList.get(0).getCallLogNumber());
+                                if (isHaveBlackNum) {
+                                    Message messge = new Message();
+                                    messge.what = HAVE_BLACK_LIST;
+                                    if (messge != null && mHandler != null) {
+                                        mHandler.sendMessage(messge);
+                                    }
+                                } else {
+                                    showProgressDialog(mAddPrivacyCallLog.size(), 0);
+                                    sendImpLogHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                                }
+                            } else {
+                                showProgressDialog(mAddPrivacyCallLog.size(), 0);
+                                sendImpLogHandler(PrivacyContactUtils.ADD_CONTACT_MODEL);
+                            }
+
                         }
                     } else {
                         Toast.makeText(AddFromCallLogListActivity.this,
