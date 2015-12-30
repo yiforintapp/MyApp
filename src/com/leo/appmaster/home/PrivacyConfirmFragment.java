@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -127,6 +128,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private TextView mHighGradeTitle;
     private ImageView mHighGradeImg;
     private TextView mHighGradeContent;
+    private RelativeLayout mHighGradeLayout;
+
 
     private ImageView mOneStar;
     private ImageView mTwoStar;
@@ -139,6 +142,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private TextView mGradeTitle;
     private ImageView mGradeImg;
     private TextView mGradeContent;
+    private RelativeLayout mGradeLayout;
 
     private AnimatorSet mAnimatorSet;
 
@@ -872,6 +876,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 }
                 View highInclude = viewStub.inflate();
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate_shw");
+                mHighGradeLayout = (RelativeLayout) highInclude;
                 mHighOneStar = (ImageView) highInclude.findViewById(R.id.one_star);
                 mHighTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
                 mHighThreeStar = (ImageView) highInclude.findViewById(R.id.three_star);
@@ -884,6 +889,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mHighGradeImg = (ImageView) highInclude.findViewById(R.id.grade_img);
                 mHighGradeContent = (TextView) highInclude.findViewById(R.id.grade_content);
                 mHighGradeBtnLt.setOnClickListener(this);
+                mHighGradeLayout.setOnClickListener(this);
 
                 mHighGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
                 String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
@@ -899,12 +905,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                         mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
 
             } else {
-                ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_security_stub);
+                ViewStub  viewStub= (ViewStub) view.findViewById(R.id.grade_security_stub);
                 if(viewStub == null) {
                     return;
                 }
                 View include = viewStub.inflate();
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate_shw");
+                mGradeLayout = (RelativeLayout) include;
                 mOneStar = (ImageView) include.findViewById(R.id.one_star);
                 mTwoStar = (ImageView) include.findViewById(R.id.two_star);
                 mThreeStar = (ImageView) include.findViewById(R.id.three_star);
@@ -917,6 +924,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mGradeImg = (ImageView) include.findViewById(R.id.grade_img);
                 mGradeContent = (TextView) include.findViewById(R.id.grade_content);
                 mGradeBtnLt.setOnClickListener(this);
+                mGradeLayout.setOnClickListener(this);
 
                 mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
                 String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
@@ -1140,6 +1148,14 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, true);
             }
 
+        } else if (mGradeLayout == v) {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
+            lockManager.filterSelfOneMinites();
+            Utilities.goFiveStar(mActivity, true, true);
+        } else if (mHighGradeLayout == v) {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
+            lockManager.filterSelfOneMinites();
+            Utilities.goFiveStar(mActivity, true, true);
         }
 
     }
