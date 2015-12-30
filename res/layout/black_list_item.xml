@@ -25,11 +25,13 @@
             android:id="@+id/tv_title"
             android:layout_width="@dimen/app_manager_lv_item_text_width"
             android:layout_height="wrap_content"
+            android:gravity="bottom"
             android:singleLine="true"
             android:textColor="@color/c2"
             android:textSize="17dp" />
 
         <TextView
+            android:gravity="top"
             android:id="@+id/tv_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

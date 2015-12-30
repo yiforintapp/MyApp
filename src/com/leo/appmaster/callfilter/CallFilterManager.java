@@ -214,6 +214,11 @@ public class CallFilterManager {
             if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
 
             } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+              //toast消失，并置为null，保证为null即消失
+                if (mTipToast != null) {
+                    mTipToast.hide();
+                    mTipToast = null;
+                }
                 //挂断后，根据不同条件弹框
                 /*恢复默认值*/
                 setCurrentCallTime(-1);
@@ -230,14 +235,7 @@ public class CallFilterManager {
                 if (serInfo == null) {
                     LeoLog.i("testdata", "serInfo = null");
                 }
-                
-                        
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
-                //toast消失，并置为null，保证为null即消失
-                if (mTipToast != null) {
-                    mTipToast.hide();
-                    mTipToast = null;
-                }
                 //挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
                 long durationMax = cmp.getCallDurationMax();
 //                durationMax = 7955;
@@ -520,16 +518,15 @@ public class CallFilterManager {
                         }
                         LeoLog.i(TAG, "Black and marker tip show!");
                     }
-//                if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
-//
-//                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
-//                    LeoLog.i(TAG, "挂断！");
+                if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
+                } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+                    LeoLog.i(TAG, "挂断！");
 //                    CallFilterManager.getInstance(mContext).setIsComingOut(false);
-//                    if (mTipToast != null) {
-//                        mTipToast.hide();
-//                        mTipToast = null;
-//                    }
-//                }
+                    if (mTipToast != null) {
+                        mTipToast.hide();
+                        mTipToast = null;
+                    }
+                }
                 }
 //        }
 //            }
@@ -761,7 +758,6 @@ public class CallFilterManager {
                                 straCalls.add(call);
                                 break;
                             }
-
                         }
                     } else {
                         straCalls.add(call);
