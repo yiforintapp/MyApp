@@ -419,7 +419,7 @@ public class CallFilterManager {
                         }
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
-                        Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext,mContext.getResources().getString(R.string.mark_number_from_list),Toast.LENGTH_SHORT).show();
                         mDialogAskAddWithSmrMark.dismiss();
                     }
                 });
@@ -468,10 +468,12 @@ public class CallFilterManager {
             } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 if ((mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) ||( mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing())) {
+                    mIsOffHook = false;
                     return;
                 }
                 // 没有接听就直接挂断的
                 if (mDialogAskAdd != null && mDialogAskAdd.isShowing()) {
+                    mIsOffHook =false;
                     return;
                 }
                 int tipType = filterTip[1];
@@ -490,6 +492,7 @@ public class CallFilterManager {
                     }
                 });
                 mDialogAskAdd.show();
+                mIsOffHook = false;
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
             mLastOffHookTime = System.currentTimeMillis();

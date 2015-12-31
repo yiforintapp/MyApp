@@ -828,7 +828,7 @@
     <string name="call_filter_mark_as_tx">Реклама </string>
     <string name="call_filter_mark_as_zp">Мошенники </string>
     <string name="call_filter_confirm_clear_record">Уверены, что хотите удалить все записи?</string>
-    <string name="call_filter_ask_add_to_blacklist">Обнаружено, что время Вашего разговора "&lt;"5 секунд, хотите пометить и добавить этот номер в черный список?</string>
+    <string name="call_filter_ask_add_to_blacklist">Обнаружено, что время Вашего разговора "&lt;" %1$s секунд, хотите пометить и добавить этот номер в черный список?</string>
     <string name="call_filter_confirm_add_to_blacklist">Добавить %1$s в черный список?</string>
     <string name="call_filter_confirm_add_to_blacklist_summary">%1$s пользователей добавили этот номер в черный список</string>
     <string name="black_list_is_empty">Добавляйте нежелательные номера в черный список, будьте вдали от беспокойств!</string>

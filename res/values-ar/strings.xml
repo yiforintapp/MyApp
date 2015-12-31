@@ -932,7 +932,7 @@
     <string name="call_filter_mark_as_tx">ترويج الإعلانات</string>
     <string name="call_filter_mark_as_zp">هاتف كذاب</string>
     <string name="call_filter_confirm_clear_record">أ تأكيد افراغ كل السجلات ؟</string>
-    <string name="call_filter_ask_add_to_blacklist">راقب وقت مكالمتكم "&lt;"5 ثانية ، أ يرمز هذا الرقم و يضاف الى القائمة السوداء</string>
+    <string name="call_filter_ask_add_to_blacklist">راقب وقت مكالمتكم "&lt;" %1$s ثانية ، أ يرمز هذا الرقم و يضاف الى القائمة السوداء</string>
     <string name="call_filter_confirm_add_to_blacklist">أ اضافة %1$s الى القائمة السوداء لم لا ؟</string>
     <string name="call_filter_confirm_add_to_blacklist_summary">قد أضاف عدد %1$s شخص هذا الرقم الى القائمة السوداء</string>
     <string name="black_list_is_empty">اضافة الأرقام غير المفضلة الى القائمة السوداء ، لذلك بعيدا عن الإزعاج ~</string>

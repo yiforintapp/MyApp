@@ -845,7 +845,7 @@
     <string name="call_filter_mark_as_tx">โฆษณา</string>
     <string name="call_filter_mark_as_zp">สายหลอกลวง</string>
     <string name="call_filter_confirm_clear_record">ยืนยันลบประวัติทั้งหมด?</string>
-    <string name="call_filter_ask_add_to_blacklist">ตรวจพบเวลาโทรของคุณคือW&lt;"5วินาที จะเพิ่มเบอร์นี้เข้าแบล็คลิสต์หรือไม่</string>
+    <string name="call_filter_ask_add_to_blacklist">ตรวจพบเวลาโทรของคุณคือW&lt;" %1$s วินาที จะเพิ่มเบอร์นี้เข้าแบล็คลิสต์หรือไม่</string>
     <string name="call_filter_confirm_add_to_blacklist">ยืนยันเพิ่ม%1$sเข้าแบล็คลิสต์?</string>
     <string name="call_filter_confirm_add_to_blacklist_summary">มี%1$sคนได้เพิ่มเบอร์นี้เข้าแบล็คลิสต์</string>
     <string name="black_list_is_empty">เพิ่มเบอร์ที่ไม่ชอบเข้าแบล็คลิสต์ จะได้ไม่ต้องถูกรบกวน</string>

@@ -30,6 +30,7 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
 
     private TextView mTitle;
     private TextView mSummary;
+    private LinearLayout mLlSummary;
     private TextView mLeftBtn;
     private TextView mRightBtn;
     private RippleView mRvRight;
@@ -75,22 +76,15 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
     }
 
     public void setContentVisible(boolean visible) {
-        if (mSummary != null) {
+        if (mLlSummary != null) {
             if (visible) {
-                mSummary.setVisibility(View.VISIBLE);
+                mLlSummary.setVisibility(View.VISIBLE);
             } else {
-                mSummary.setVisibility(View.GONE);
+                mLlSummary.setVisibility(View.GONE);
             }
         }
     }
 
-    public void setContentVisiable(boolean visiable) {
-        if (visiable) {
-            mSummary.setVisibility(View.VISIBLE);
-        } else {
-            mSummary.setVisibility(View.GONE);
-        }
-    }
 
     public void setContentLineSpacing(int lineSpace) {
         mSummary.setLineSpacing(lineSpace, 1);
@@ -231,7 +225,7 @@ public class MultiChoicesWitchSummaryDialog extends LEOBaseDialog {
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_multichoices_with_summary, null);
-
+        mLlSummary = (LinearLayout) dlgView.findViewById(R.id.ll_summary);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mSummary = (TextView) dlgView.findViewById(R.id.tv_summary);
         mLvMain = (ListView) dlgView.findViewById(R.id.lv_main);

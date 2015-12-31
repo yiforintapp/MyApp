@@ -867,7 +867,7 @@
     <string name="call_filter_mark_as_tx">Ad promotion</string>
     <string name="call_filter_mark_as_zp">Fraud call</string>
     <string name="call_filter_confirm_clear_record">Sure to clear all records?</string>
-    <string name="call_filter_ask_add_to_blacklist">Talk time is &lt;5s, mark and add the number to blacklist?</string>
+    <string name="call_filter_ask_add_to_blacklist">Talk time is &lt; %1$s s, mark and add the number to blacklist?</string>
     <string name="call_filter_confirm_add_to_blacklist">Add %1$s to blacklist?</string>
     <string name="call_filter_confirm_add_to_blacklist_summary">Added to blacklist by %1$s users</string>
     <string name="black_list_is_empty">Add unwanted numbers to blacklist to prevent crank call</string>
