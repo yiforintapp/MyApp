@@ -137,6 +137,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onDestroy() {
         LeoEventBus.getDefaultBus().unregister(this);
+        CallFilterManager.getInstance(getActivity()).setIsFilterTab(false);
         super.onDestroy();
     }
 

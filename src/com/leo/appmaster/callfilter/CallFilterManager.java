@@ -83,6 +83,19 @@ public class CallFilterManager {
      */
     private String mCurrentRecePhNum;
 
+    /**
+     * 当前是否在拦截TAB
+     */
+    private boolean mIsFilterTab = false;
+
+    public boolean isIsFilterTab() {
+        return mIsFilterTab;
+    }
+
+    public void setIsFilterTab(boolean isFilterTab) {
+        this.mIsFilterTab = isFilterTab;
+    }
+
     public String getCurrentRecePhNum() {
         return mCurrentRecePhNum;
     }
@@ -225,6 +238,9 @@ public class CallFilterManager {
                 info = getBlackFroNum(mPhoneNumber);
                 serInfo = getSerBlackForNum(mPhoneNumber);
                 int[] filterTip = cmp.isCallFilterTip(mPhoneNumber);
+               if (filterTip == null) {
+                   return;
+               }
 //                mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]
                 if (filterTip != null) {
                     LeoLog.i("testdata", "filterTip[0] = " + filterTip[0] + "filterTip[1] = " + filterTip[1] + "filterTip[2] = " + filterTip[2] + "filterTip[3] = " + filterTip[3]);

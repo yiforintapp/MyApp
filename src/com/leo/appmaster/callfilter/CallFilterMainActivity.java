@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -25,6 +26,10 @@ import java.util.List;
 
 public class CallFilterMainActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
+
+    private static final int BLACK_TAB = 0;
+    private static final int FILTER_TAB = 1;
+
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
     private CommonToolbar mTitleBar;
@@ -100,6 +105,11 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        CallFilterManager.getInstance(this).setIsFilterTab(false);
+        super.onDestroy();
+    }
 
     class ManagerFlowAdapter extends FragmentPagerAdapter {
         public ManagerFlowAdapter(FragmentManager fm) {
@@ -155,7 +165,11 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     public void onPageSelected(int arg0) {
-
+        if (arg0 == FILTER_TAB) {
+            CallFilterManager.getInstance(this).setIsFilterTab(true);
+        } else if (arg0 == BLACK_TAB) {
+            CallFilterManager.getInstance(this).setIsFilterTab(false);
+        }
     }
 
     public void blackListShowEmpty() {

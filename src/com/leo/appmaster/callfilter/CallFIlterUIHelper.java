@@ -96,14 +96,15 @@ public class CallFIlterUIHelper {
     }
 
     public void showReceiveCallNotification(String number) {
+        AppMasterApplication ama = AppMasterApplication.getInstance();
         /*判断通知提示是否打开*/
         CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean filOpSta = cmp.getFilterNotiOpState();
         boolean isFilterSelected = cmp.getFilterOpenState();
-        if (!filOpSta || !isFilterSelected) {
+        boolean isFilterTab = CallFilterManager.getInstance(ama).isIsFilterTab();
+        if (!filOpSta || !isFilterSelected || isFilterTab) {
             return;
         }
-        AppMasterApplication ama = AppMasterApplication.getInstance();
         RemoteViews mRemoteViews = new RemoteViews(ama.getPackageName(), R.layout.remoteview_callfilter);
         mRemoteViews.setTextViewText(R.id.tv_title, ama.getResources().getString(R.string.call_filter_notifacation));
         mRemoteViews.setTextViewText(R.id.tv_content, number);
