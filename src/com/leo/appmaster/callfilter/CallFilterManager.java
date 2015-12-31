@@ -196,10 +196,8 @@ public class CallFilterManager {
             setCurrentCallTime(-1);
             return;
         }
-
         LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
         setIsReceiver(true);
-
         BlackListInfo info = null;
         BlackListInfo serInfo = null;
         if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
@@ -245,7 +243,6 @@ public class CallFilterManager {
                 if (filterTip != null) {
                     LeoLog.i("testdata", "filterTip[0] = " + filterTip[0] + "filterTip[1] = " + filterTip[1] + "filterTip[2] = " + filterTip[2] + "filterTip[3] = " + filterTip[3]);
                 } 
-                
                 LeoLog.i("testdata", "mIsOffHook = " + mIsOffHook);
                 if (info == null) {
                     LeoLog.i("testdata", "info = null");
@@ -364,7 +361,7 @@ public class CallFilterManager {
                         }
                     });
                     mDialogAskAddWithSmrMark.show();
-                } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[1] == filterTip[1] && info == null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
+                } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                     if (mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) {
                         return;
