@@ -114,7 +114,7 @@ public class DetectThreadCompat extends Thread {
 
             // 加锁app列表里是否包含oom_adj为0的app
             ProcessAdj needToListenAdj = findNeedToLockAndListenApp(detector);
-            if (needToListenAdj != null && Constants.ISWIPE_PACKAGE.equals(needToListenAdj.pkg)) {
+            if (needToListenAdj != null && (Constants.ISWIPE_PACKAGE.equals(needToListenAdj.pkg) || Constants.PL_PKG_NAME.equals(needToListenAdj.pkg))) {
                 synchronized (this) {
                     try {
                         wait(WAIT_IGNORE_PKG);
