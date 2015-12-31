@@ -108,7 +108,7 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
-                        DownBlackFileFetchJob.startWork();
+                        DownBlackFileFetchJob.startImmediately();
                     }
                 });
             }
