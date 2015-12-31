@@ -288,12 +288,17 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         }
 
         @Override
-        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            PrivacyConfirmFragment fragment = mFragment.get();
+        public void onLoadingComplete(String imageUri, View view, final Bitmap loadedImage) {
+            final PrivacyConfirmFragment fragment = mFragment.get();
             LeoLog.d("MobvistaEngine", "[PrivacyConfirmFragment] onLoadingComplete -> "
                     + imageUri + ";  fragment=" + fragment);
             if (loadedImage != null && fragment != null) {
-                fragment.initAdLayout(mCampaign, fragment.mRootView, Constants.UNIT_ID_67, loadedImage);
+                ThreadManager.executeOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.initAdLayout(mCampaign, fragment.mPanelView, Constants.UNIT_ID_67, loadedImage);
+                    }
+                });
                 SDKWrapper.addEvent(fragment.mActivity, SDKWrapper.P1, "ad_act", "adv_shws_scanRST");
             }
         }
