@@ -244,16 +244,15 @@ public class CallFilterManager {
             mPhoneNumber = phoneNumber;
             info = getBlackFroNum(phoneNumber);
             serInfo = getSerBlackForNum(phoneNumber);
-            if (info == null && serInfo == null) {
-                /* 该号码不存在黑名单中 */
-                LeoLog.i("allnull", "all null");
-            }
         }
         //自己拨出，return
         if (TextUtils.isEmpty(state) || isComingOut()) {
             return;
         }
         if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
+            if (!TextUtils.isEmpty(phoneNumber)) {
+                mPhoneNumber = phoneNumber;
+            }
             final BlackListInfo blackInfo = info;
             final BlackListInfo blackSerInfo = serInfo;
             if (blackInfo != null) {
@@ -312,7 +311,7 @@ public class CallFilterManager {
                 mTipToast = null;
             }
             //如果带了号码，更新之前记录的号码
-            if (phoneNumber != null) {
+            if (!TextUtils.isEmpty(phoneNumber)) {
                 mPhoneNumber = phoneNumber;
             }
             /* 恢复默认值 */
