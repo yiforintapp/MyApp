@@ -853,6 +853,7 @@ public class AppLockListActivity extends BaseActivity implements
         goCnotR = 0;
         super.onResume();
         LeoLog.i("TsCost", "AppLockListActivity-onResume: " + (SystemClock.elapsedRealtime() - start));
+        updateHelpState();
     }
 
     public void onEventMainThread(NewThemeEvent event) {
