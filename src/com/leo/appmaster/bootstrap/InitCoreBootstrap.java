@@ -325,11 +325,11 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void installBoostShortcut() {
-        boolean isInstalllIswipe = ISwipUpdateRequestManager
-               .isInstallIsiwpe(AppMasterApplication.getInstance());
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        preferenceTable.putBoolean(PrefConst.IS_BOOST_CREAT, isInstalllIswipe);
-        if (!isInstalllIswipe) {
+//        boolean isInstalllIswipe = ISwipUpdateRequestManager
+//               .isInstallIsiwpe(AppMasterApplication.getInstance());
+//        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+//        preferenceTable.putBoolean(PrefConst.IS_BOOST_CREAT, isInstalllIswipe);
+//        if (!isInstalllIswipe) {
             Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
             ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
                     R.drawable.qh_speedup_icon);
@@ -340,7 +340,7 @@ public class InitCoreBootstrap extends Bootstrap {
             shortcut.putExtra("duplicate", false);
             shortcut.putExtra("from_shortcut", true);
             mApp.sendBroadcast(shortcut);
-        }
+//        }
     }
 
     private void judgeLockAlert() {
