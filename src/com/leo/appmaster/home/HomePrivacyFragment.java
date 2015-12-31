@@ -2,7 +2,6 @@ package com.leo.appmaster.home;
 
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,19 +10,12 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.SecurityScoreEvent;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -37,7 +29,6 @@ import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
 
 import java.lang.ref.WeakReference;
@@ -271,6 +262,19 @@ public class HomePrivacyFragment extends Fragment {
         mAnimatorSet = new AnimatorSet();
         mAnimatorSet.playSequentially(firstAnimSet, secondAnimSet);
     }
+
+    public void onScanStart() {
+        if (!mMemoryLess) {
+            return;
+        }
+        mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
+        mCircleRotateAnim.setDuration(3500);
+        mCircleRotateAnim.setInterpolator(new LinearInterpolator());
+        mCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
+        mCircleRotateAnim.start();
+    }
+
+
 
     @Override
     public void onAttach(Activity activity) {

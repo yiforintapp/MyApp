@@ -184,6 +184,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private int shortTypeHeight = 0;
     private int adTypeHeight = 0;
 
+    private boolean mIsExit;
+
     private Handler mHandler = new Handler() {
 
         @Override
@@ -372,6 +374,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 //      mController.detachController();
         destroyAd();
         mController.detachTheController();
+        mIsExit = true;
     }
 
     private void startScanController() {
@@ -1175,7 +1178,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 if (layout == mNewAppLayout) {
                     mController.startItemScanning();
                 } else {
-                    onLayoutAnimEnd(layout);
+                    if (!mIsExit) {
+                        onLayoutAnimEnd(layout);
+                    }
                 }
 
                 i++;
