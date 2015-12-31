@@ -61,7 +61,7 @@ import java.util.List;
  */
 public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTabFragment";
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
 
     private ImageView mRedDot;
     // 首页4个tab
@@ -322,21 +322,22 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     Intent callFilter = new Intent(activity, CallFilterMainActivity.class);
                     startActivity(callFilter);
                     if (DBG) {
-//                        int[] pix = AppUtil.getScreenPix(getActivity());
-//                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//                        
-//                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-//                        pm.setFilterUserNumber(50000);
-//                        pm.setFilterTipFroUser(3000);
-//                        pm.setSerBlackTipNum(3000);
-//                        pm.setSerMarkTipNum(50);
-//                        BlackListInfo info = new BlackListInfo();
+                        int[] pix = AppUtil.getScreenPix(getActivity());
+                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
+                        
+                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                        pm.setFilterUserNumber(50000);
+                        pm.setFilterTipFroUser(3000);
+                        pm.setSerBlackTipNum(3000);
+                        pm.setSerMarkTipNum(50);
+                        BlackListInfo info = new BlackListInfo();
 //                        info.setNumber("13632840685");
-//                        info.setAddBlackNumber(2258);
-//                        info.setMarkerType(0);
-//                        info.setMarkerNumber(50000);
-//                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
-//                        cm.addFilterFroParse(info);
+                        info.setNumber("13027964843");
+                        info.setAddBlackNumber(2258);
+                        info.setMarkerType(0);
+                        info.setMarkerNumber(50000);
+                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
+                        cm.addFilterFroParse(info);
 //                        Intent intent2 = new Intent(getActivity(), TestDemo.class);
 //                        startActivity(intent2);
 //

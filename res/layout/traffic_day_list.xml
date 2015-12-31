@@ -3,8 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="@dimen/dialog_list_item_height"
     android:background="@drawable/manager_backup_list_selecter"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+   >
 
     <TextView
         android:id="@+id/tv_showday"
