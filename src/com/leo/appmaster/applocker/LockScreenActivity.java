@@ -1005,9 +1005,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mLockFragment.setShowText(false);
 
         try {
-            for (String id : mBannerAdids) {
-                MobvistaEngine.getInstance(this).release(id);
-            }
+            ThreadManager.executeOnNetworkThread(new Runnable() {
+                @Override
+                public void run() {
+                    // 避免产生anr，放到子线程
+                    for (String id : mBannerAdids) {
+                        MobvistaEngine.getInstance(LockScreenActivity.this).release(id);
+                    }
+                }
+            });
             for (String key : mAdBitmapMap.keySet()) {
                 Bitmap image = mAdBitmapMap.get(key);
                 image.recycle();
