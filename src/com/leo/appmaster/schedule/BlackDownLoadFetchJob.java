@@ -152,7 +152,7 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
         super.onFetchFail(error);
     }
 
-    public static void startWork() {
+    private static void startWork() {
          /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
             BlackDownLoadFetchJob job = new BlackDownLoadFetchJob();

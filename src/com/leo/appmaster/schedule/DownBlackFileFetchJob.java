@@ -2,12 +2,15 @@ package com.leo.appmaster.schedule;
 
 import android.content.Context;
 import android.telecom.Call;
+import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -49,13 +52,18 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
         super.onFetchFail(error);
     }
 
-    public static void startWork() {
+    private static void startWork() {
          /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
             DownBlackFileFetchJob job = new DownBlackFileFetchJob();
             FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
             String filePath = getBlackFilePath();
+            CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            String uri = pm.getSerBlackFilePath();
+            if (TextUtils.isEmpty(uri)) {
+                return;
+            }
             HttpRequestAgent.getInstance(context).downloadBlackList(filePath, listener, listener);
         }
     }
@@ -65,7 +73,7 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
         return FETCH_PERIOD;
     }
 
-    public static  String getBlackFilePath() {
+    public static String getBlackFilePath() {
         StringBuilder sbName = new StringBuilder();
         String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
         sbName.append(countryId);

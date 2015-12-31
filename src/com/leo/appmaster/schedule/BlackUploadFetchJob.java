@@ -101,7 +101,7 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         }
     }
 
-    public static void startWork() {
+    private static void startWork() {
          /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
             BlackUploadFetchJob job = new BlackUploadFetchJob();
@@ -135,15 +135,9 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
                 infos = new ArrayList<BlackListInfo>();
             }
             mInfos.addAll(infos);
-
             infos.addAll(tmpFilInfos);
-//            if (infos == null || infos.size() <= 0) {
-//                return;
-//            }
             String bodyString = getJsonString(infos);
-
             HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
-//            }
         }
     }
 

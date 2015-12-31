@@ -7,9 +7,14 @@ import android.content.IntentFilter;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.schedule.BlackDownLoadFetchJob;
+import com.leo.appmaster.schedule.BlackUploadFetchJob;
+import com.leo.appmaster.schedule.DownBlackFileFetchJob;
 import com.leo.appmaster.utils.AppUtil;
 
 public class ScreenOnOffListener extends BroadcastListener {
@@ -44,6 +49,8 @@ public class ScreenOnOffListener extends BroadcastListener {
         /*检测SIM是否更换*/
         simChanagae(intent);
 //        loadWifiData(intent);
+        /*黑名单请求*/
+        blackRequestJob(intent);
 
     }
 
@@ -171,6 +178,37 @@ public class ScreenOnOffListener extends BroadcastListener {
                 public void run() {
                     LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                     mgr.getIsSimChange();
+                }
+            });
+
+        }
+    }
+
+    /**
+     * 黑名单请求
+     *
+     * @param intent
+     */
+    public void blackRequestJob(Intent intent) {
+        Context mContext = AppMasterApplication.getInstance();
+        if (!AppUtil.isScreenLocked(mContext)
+                && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    BlackDownLoadFetchJob.startImmediately();
+                    BlackUploadFetchJob.startImmediately();
+                    DownBlackFileFetchJob.startImmediately();
+                }
+            });
+
+        } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    BlackDownLoadFetchJob.startImmediately();
+                    BlackUploadFetchJob.startImmediately();
+                    DownBlackFileFetchJob.startImmediately();
                 }
             });
 
