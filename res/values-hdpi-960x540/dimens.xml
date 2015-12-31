@@ -132,7 +132,7 @@
     <dimen name="app_manager_padding">10dp</dimen> <!-- 14 -->
     <dimen name="app_manager_four_icon_total_height">70dp</dimen> <!-- 62 -->
     <dimen name="app_manager_headview_fourtext_margin_top">8dp</dimen> <!-- 6 -->
-    <dimen name="app_manager_lv_item_icon_width_height">42dp</dimen> <!-- 42 -->
+    <dimen name="app_manager_lv_item_icon_width_height">48dp</dimen> <!-- 42 -->
     <dimen name="app_manager_lv_item_icon_margin_left">12dp</dimen> <!-- 10 -->
     <dimen name="app_manager_lv_item_text_width">150dp</dimen> <!-- 130 -->
     <dimen name="app_manager_lv_item_text_width_move_short">135dp</dimen>
