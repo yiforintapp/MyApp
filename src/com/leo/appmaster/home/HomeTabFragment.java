@@ -214,7 +214,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mActivity.onTabAnimationFinish();
+//                mActivity.onTabAnimationFinish();
                 mAnimating = false;
             }
 
@@ -237,26 +237,26 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         }
 
         mRootView.setVisibility(View.VISIBLE);
-        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_down_to_up);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                mAnimating = true;
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mActivity.onTabAnimationFinish();
-                mAnimating = false;
-                listener.onShowTabListener();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        mRootView.startAnimation(animation);
+//        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_down_to_up);
+//        animation.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//                mAnimating = true;
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                mActivity.onTabAnimationFinish();
+//                mAnimating = false;
+//                listener.onShowTabListener();
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
+//        mRootView.startAnimation(animation);
     }
 
     public boolean isTabDismiss() {

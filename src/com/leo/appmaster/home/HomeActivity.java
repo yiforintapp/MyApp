@@ -334,6 +334,26 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_privacyScan");
+
+            mPrivacyFragment.startScanningAnim();
+            mScanningFragment = new HomeScanningFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, 0);
+            ft.addToBackStack(null);
+            ft.replace(R.id.pri_pro_content, mScanningFragment);
+            boolean commited = false;
+            try {
+                ft.commit();
+                commited = true;
+            } catch (Exception e) {
+            }
+            if (!commited) {
+                try {
+                    ft.commitAllowingStateLoss();
+                } catch (Exception e) {
+                }
+            }
+            mCurrentFragment = mScanningFragment;
         }
     }
 
@@ -394,14 +414,15 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (mTabFragment.isTabDismiss()) {
             LeoLog.d(TAG, "onExitScanning...");
             reportFragmentExit();
-            mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
-                @Override
-                public void onShowTabListener() {
-                    mMoreFragment.setEnable(true);
-                    /*首页引导*/
-                    showHomeGuide();
-                }
-            });
+//            mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
+//                @Override
+//                public void onShowTabListener() {
+//                    mMoreFragment.setEnable(true);
+//                    /*首页引导*/
+//                    showHomeGuide();
+//                }
+//            });
+            showTab();
             getSupportFragmentManager().popBackStack();
             mPrivacyFragment.setInterceptRaiseAnim();
             mPrivacyFragment.reset();
@@ -416,6 +437,20 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             mMoreFragment.cancelUpArrowAnim();
         }
+    }
+
+    private void showTab() {
+        mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
+            @Override
+            public void onShowTabListener() {
+            }
+        });
+        mMoreFragment.setEnable(true);
+        /*首页引导*/
+        showHomeGuide();
+
+        mTabWhiteBg.setVisibility(View.VISIBLE);
+        mPrivacyFragment.setShowColorProgress(true);
     }
 
     public void setContactList(List<ContactBean> contactList) {
