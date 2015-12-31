@@ -182,6 +182,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private int normalTypeHeight = 0;
     private int shortTypeHeight = 0;
+    private int adTypeHeight = 0;
 
     private Handler mHandler = new Handler() {
 
@@ -312,6 +313,15 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewContactScore = (TextView) view.findViewById(R.id.scan_new_contact_score);
         mNewContactLoading = (LoadingView) view.findViewById(R.id.scan_new_contact_loading);
         mNewContactLayout = (LinearLayout) view.findViewById(R.id.scan_new_contact_layout);
+
+        mAdLayout = view.findViewById(R.id.ad_content);
+        mAdLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                adTypeHeight = mAdLayout.getHeight();
+                LeoLog.d("testLayout", "ad height : " + adTypeHeight);
+            }
+        });
 
         mBackView = view.findViewById(R.id.back_view);
         ViewGroup.LayoutParams params = mBackView.getLayoutParams();
@@ -578,7 +588,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
         View adView = rootView.findViewById(R.id.ad_content);
-        mAdLayout = adView;
+//        mAdLayout = adView;
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
         Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
@@ -788,7 +798,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
             int score = mPrivacyHelper.getSecurityScore();
             /* show Ad here */
-            if (mAdLoaded && score != 100) {
+            if (mAdLoaded && score != 100 && adTypeHeight != 0) {
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -1117,14 +1127,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     public void startAnimator(final View layout) {
 
-        startRealAnimator(layout);
-
-//        layout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                startRealAnimator(layout);
-//            }
-//        });
+        layout.post(new Runnable() {
+            @Override
+            public void run() {
+                startRealAnimator(layout);
+            }
+        });
 
     }
 
@@ -1137,7 +1145,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         int layoutHeight;
         if (layout == mNewAppLayout) {
             layoutHeight = shortTypeHeight;
-        } else {
+        } else if(layout == mAdLayout){
+            layoutHeight = adTypeHeight;
+        }else{
             layoutHeight = normalTypeHeight;
         }
         AnimatorSet animatorSet = new AnimatorSet();
@@ -1164,7 +1174,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
                 if (layout == mNewAppLayout) {
                     mController.startItemScanning();
-                }else{
+                } else {
                     onLayoutAnimEnd(layout);
                 }
 
@@ -1202,7 +1212,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         int backHeight;
         if (layout == mNewAppLayout) {
             backHeight = shortTypeHeight;
-        } else {
+        } else if(layout == mAdLayout){
+            backHeight = adTypeHeight;
+        }else{
             backHeight = normalTypeHeight;
         }
 
@@ -1218,10 +1230,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         final int layoutHeight;
         if (layout == mNewAppLayout) {
             layoutHeight = shortTypeHeight;
-        } else {
+        } else if(layout == mAdLayout){
+            layoutHeight = adTypeHeight;
+        }else{
             layoutHeight = normalTypeHeight;
         }
-
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
                 oldLayout, "translationY", oldLayout.getTranslationY(), oldLayout.getTranslationY() + layoutHeight);

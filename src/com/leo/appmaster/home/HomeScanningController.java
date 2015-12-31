@@ -241,9 +241,9 @@ public class HomeScanningController {
     }
 
     public void startItemScanning() {
-        //start from app
-//        mNewContactAnim = getItemAnimation(mNewContactLayout);
-//        mNewContactAnim.start();
+//        start from app
+        mNewContactAnim = getItemAnimation(mNewContactLayout);
+        mNewContactAnim.start();
     }
 
 //    private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {
