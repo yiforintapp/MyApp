@@ -121,6 +121,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         setContentView(R.layout.activity_add_strange_call_log);
         handleIntent();
         initUI();
+        sendMsgHandler();
     }
 
     private void handleIntent() {
@@ -158,7 +159,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     @Override
     protected void onResume() {
         super.onResume();
-        sendMsgHandler();
         if (mAddPrivacyCallLog.size() != 0) {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
             mAddBtn.setEnabled(true);
