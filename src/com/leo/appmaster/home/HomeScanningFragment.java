@@ -180,6 +180,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private int mNowHeight = 100;
     private int mScreenHeight;
 
+    private int normalTypeHeight = 0;
+    private int shortTypeHeight = 0;
+
     private Handler mHandler = new Handler() {
 
         @Override
@@ -253,6 +256,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewAppScore = (TextView) view.findViewById(R.id.scan_new_app_score);
         mNewAppLoading = (LoadingView) view.findViewById(R.id.scan_new_app_loading);
         mNewAppLayout = (LinearLayout) view.findViewById(R.id.scan_new_app_layout);
+        mNewAppLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                shortTypeHeight = mNewAppLayout.getHeight();
+            }
+        });
+
 
         mNewPicImg = (ImageView) view.findViewById(R.id.scan_new_pic_img);
         mNewPicTitle = (TextView) view.findViewById(R.id.scan_new_pic_title);
@@ -260,6 +270,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewPicScore = (TextView) view.findViewById(R.id.scan_new_pic_score);
         mNewPicLoading = (LoadingView) view.findViewById(R.id.scan_new_pic_loading);
         mNewPicLayout = (LinearLayout) view.findViewById(R.id.scan_new_pic_layout);
+        mNewPicLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                normalTypeHeight = mNewPicLayout.getHeight();
+            }
+        });
 
         mNewVidImg = (ImageView) view.findViewById(R.id.scan_new_vid_img);
         mNewVidTitle = (TextView) view.findViewById(R.id.scan_new_vid_title);
@@ -282,6 +298,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewWifiLoading = (LoadingView) view.findViewById(R.id.scan_new_wifi_loading);
         mNewWifiLayout = (LinearLayout) view.findViewById(R.id.scan_new_wifi_layout);
 
+
         mNewLostImg = (ImageView) view.findViewById(R.id.scan_new_lost_img);
         mNewLostTitle = (TextView) view.findViewById(R.id.scan_new_lost_title);
         mNewLostContent = (TextView) view.findViewById(R.id.scan_new_lost_content);
@@ -300,9 +317,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         ViewGroup.LayoutParams params = mBackView.getLayoutParams();
         mBackViewHeight = params.height;
 
+
         WindowManager wm = (WindowManager) mActivity
                 .getSystemService(Context.WINDOW_SERVICE);
         mScreenHeight = wm.getDefaultDisplay().getHeight();
+        LeoLog.d("testLayout", "screen height : " + mScreenHeight);
 
         mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
@@ -722,44 +741,39 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    public void OnItemAnimationStart(LinearLayout layout) {
-        if (isDetached() || isRemoving() || getActivity() == null) return;
-
-        Context context = AppMasterApplication.getInstance();
-        if (layout == mNewAppLayout) {
-            updateAppStartList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
-        } else if (layout == mNewPicLayout) {
-            updatePicStartList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
-        } else if (layout == mNewVidLayout) {
-            updateVidStartList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
-        } else if (layout == mNewInstructLayout) {
-            updateInstructStartList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
-        } else if (layout == mNewWifiLayout) {
-            updateWifiStartList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
-        } else if (layout == mNewLostLayout) {
-            updateLostStartList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
-        } else if (layout == mNewContactLayout) {
-            updateContactStartList();
-//            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
-        }
-    }
+//    public void OnItemAnimationStart(LinearLayout layout) {
+//        if (isDetached() || isRemoving() || getActivity() == null) return;
+//
+//        Context context = AppMasterApplication.getInstance();
+//        if (layout == mNewAppLayout) {
+//            updateAppStartList();
+////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
+//        } else if (layout == mNewPicLayout) {
+//            updatePicStartList();
+////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
+//        } else if (layout == mNewVidLayout) {
+//            updateVidStartList();
+////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
+//        } else if (layout == mNewInstructLayout) {
+//            updateInstructStartList();
+////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
+//        } else if (layout == mNewWifiLayout) {
+//            updateWifiStartList();
+////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
+//        } else if (layout == mNewLostLayout) {
+//            updateLostStartList();
+////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+//        } else if (layout == mNewContactLayout) {
+//            updateContactStartList();
+////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
+//        }
+//    }
 
 
     public void updateUIOnAnimationEnd(final LinearLayout layout) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
 
-
-//        LeoLog.d("testfinishL", "layout top : " + layout.getTop());
-//        LeoLog.d("testfinishL", "layout bottom : " + layout.getBottom());
-//        LeoLog.d("testfinishL", "layout Y : " + layout.getTranslationY());
         LeoLog.d("testfinishL", "layout height : " + layout.getHeight());
-//        LeoLog.d("testfinishL", "layout width : " + layout.getWidth());
         LeoLog.d("testfinishL", "-------------------------------------------");
 
         final int firLocation = layout.getHeight();
@@ -1071,36 +1085,63 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void startAnimator(final View layout) {
+    public void onLayoutAnimEnd(View layout) {
+        if (this.isRemoving() || this.isDetached()) return;
 
-        layout.setVisibility(View.VISIBLE);
-        layout.setVisibility(View.INVISIBLE);
-        layout.post(new Runnable() {
+        if (layout == mNewContactLayout) {
+            startAnimator(mNewWifiLayout);
+        } else if (layout == mNewWifiLayout) {
+            startAnimator(mNewInstructLayout);
+        } else if (layout == mNewInstructLayout) {
+            startAnimator(mNewLostLayout);
+        } else if (layout == mNewLostLayout) {
+            startAnimator(mNewVidLayout);
+        } else if (layout == mNewVidLayout) {
+            startAnimator(mNewPicLayout);
+        } else if (layout == mNewPicLayout) {
+            startAnimator(mNewAppLayout);
+        }
+    }
+
+    public void startDownAnimator() {
+        ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(this, "scaleY", 1f, 1f);
+        layoutAnim.setDuration(300);
+        layoutAnim.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void run() {
-                startRealAnimator(layout);
+            public void onAnimationEnd(Animator animation) {
+                startAnimator(mNewContactLayout);
             }
         });
+        layoutAnim.start();
+    }
 
+    public void startAnimator(final View layout) {
+
+        startRealAnimator(layout);
+
+//        layout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                startRealAnimator(layout);
+//            }
+//        });
 
     }
 
     private List<View> lists = new ArrayList<View>();
+    int i = 0;
 
     private void startRealAnimator(final View layout) {
-        AnimatorSet animatorSet = new AnimatorSet();
-        LeoLog.d("testLayout", "-layout.getHeight() : " + -layout.getHeight() + "-----layout.getTranslationY() : " +  layout.getTranslationY());
-        int startY = -layout.getHeight();
-        if (startY == 0) {
-            if (layout == mNewAppLayout) {
-                startY = -91;
-            } else if (layout == mAdLayout) {
-                startY = -252;
-            } else {
-                startY = -102;
-            }
+        LeoLog.d("testLayout", "item come :" + i);
+        layout.setVisibility(View.VISIBLE);
+        int layoutHeight;
+        if (layout == mNewAppLayout) {
+            layoutHeight = shortTypeHeight;
+        } else {
+            layoutHeight = normalTypeHeight;
         }
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", startY, layout.getTranslationY());
+        AnimatorSet animatorSet = new AnimatorSet();
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -layoutHeight, layout.getTranslationY());
         objectAnimator.setDuration(300);
         ObjectAnimator alpha = objectAnimator.ofFloat(layout, "alpha", 0f, 0.0f, 0.3f, 1f);
         alpha.setDuration(400);
@@ -1108,7 +1149,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                layout.setVisibility(View.VISIBLE);
                 if (lists.size() > 0) {
                     makeItemMove(layout);
                 }
@@ -1121,9 +1161,14 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
                 lists.add(layout);
                 mScrollLayout.setLayoutTransition(null);
+
                 if (layout == mNewAppLayout) {
                     mController.startItemScanning();
+                }else{
+                    onLayoutAnimEnd(layout);
                 }
+
+                i++;
             }
         });
         objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -1140,51 +1185,28 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void makeItemMove(View layout) {
-
-//        if(layout == mNewInstructLayout){
-//            mController.setLoadingTwo();
-//        }else if(layout == mNewVidLayout){
-//            IntrudeSecurityManager manager = (IntrudeSecurityManager)
-//                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-//            if (!manager.getIsIntruderSecurityAvailable()) {
-//                mController.setLoadingThree(1);
-//            } else {
-//                mController.setLoadingThree(2);
-//            }
-//        }
-
-        LeoLog.d("testLayout", "layout top : " + layout.getTop());
-        LeoLog.d("testLayout", "layout bottom : " + layout.getBottom());
-        LeoLog.d("testLayout", "layout Y : " + layout.getTranslationY());
-        LeoLog.d("testLayout", "layout height : " + layout.getHeight());
-        LeoLog.d("testLayout", "layout width : " + layout.getWidth());
-
         for (int i = 0; i < lists.size(); i++) {
             View oldLayout = lists.get(i);
-//            oldLayout.setTranslationY(layout.getHeight());
             oldLayoutAnimation(oldLayout, layout, i, lists.size() - 1);
         }
 
         int addSome;
-        if (mScreenHeight < 1280) {
+        if (mScreenHeight < 800) {
+            addSome = 5;
+        } else if (mScreenHeight < 1280) {
             addSome = 10;
         } else {
             addSome = 15;
         }
-        int backHeight = layout.getHeight();
-        if (backHeight == 0) {
-            if (layout == mNewAppLayout) {
-                backHeight = 91;
-            } else if (layout == mAdLayout) {
-                backHeight = 252;
-            } else {
-                backHeight = 102;
-            }
+
+        int backHeight;
+        if (layout == mNewAppLayout) {
+            backHeight = shortTypeHeight;
+        } else {
+            backHeight = normalTypeHeight;
         }
-//        mNowHeight = mNowHeight + layout.getHeight() + addSome;
+
         mNowHeight = mNowHeight + backHeight + addSome;
-        LeoLog.d("testLayout", "back height : " + mBackViewHeight);
-        LeoLog.d("testLayout", "total height : " + mNowHeight);
         if (mNowHeight > mBackViewHeight) {
             ViewGroup.LayoutParams params = mBackView.getLayoutParams();
             params.height = mNowHeight;
@@ -1193,18 +1215,16 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private void oldLayoutAnimation(final View oldLayout, final View layout, final int nowItem, final int moveItem) {
-        int startY = layout.getHeight();
-        if (startY == 0) {
-            if (layout == mNewAppLayout) {
-                startY = 91;
-            } else if (layout == mAdLayout) {
-                startY = 252;
-            } else {
-                startY = 102;
-            }
+        final int layoutHeight;
+        if (layout == mNewAppLayout) {
+            layoutHeight = shortTypeHeight;
+        } else {
+            layoutHeight = normalTypeHeight;
         }
+
+
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
-                oldLayout, "translationY", oldLayout.getTranslationY(), oldLayout.getTranslationY() + startY);
+                oldLayout, "translationY", oldLayout.getTranslationY(), oldLayout.getTranslationY() + layoutHeight);
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -1215,70 +1235,41 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 if (nowItem == moveItem) {
-                    LeoLog.d("testLayout", "layout.getY() : " + layout.getY() + "----- layout.getHeight() :" + layout.getHeight());
-                    LeoLog.d("testLayout", "-------------------------------------------");
-
-                    float viewY = layout.getY();
-                    if (viewY == 0.0) {
-                        if (layout == mAdLayout) {
-                            viewY = 228.0f;
-                        } else {
-                            viewY = 216.0f;
-                        }
-                    }
-                    int startY = layout.getHeight();
-                    if (startY == 0) {
-                        if (layout == mNewAppLayout) {
-                            startY = 91;
-                        } else if (layout == mAdLayout) {
-                            startY = 252;
-                        } else {
-                            startY = 102;
-                        }
-                    }
-//                    oldLayout.setY(layout.getY() + layout.getHeight());
-                    oldLayout.setY(viewY + startY);
+                    oldLayout.setY(layout.getY() + layoutHeight);
                 }
             }
         });
 
-        objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-
-            }
-        });
 
         objectAnimator.setDuration(300);
         objectAnimator.start();
     }
 
-    private void updateContactStartList() {
-        startAnimator(mNewContactLayout);
-    }
-
-    private void updateInstructStartList() {
-        startAnimator(mNewInstructLayout);
-    }
-
-    private void updateWifiStartList() {
-        startAnimator(mNewWifiLayout);
-    }
-
-    private void updateLostStartList() {
-        startAnimator(mNewLostLayout);
-    }
-
-    private void updateVidStartList() {
-        startAnimator(mNewVidLayout);
-    }
-
-    private void updatePicStartList() {
-        startAnimator(mNewPicLayout);
-    }
-
-    private void updateAppStartList() {
-        startAnimator(mNewAppLayout);
-    }
+//    private void updateContactStartList() {
+//        startAnimator(mNewContactLayout);
+//    }
+//
+//    private void updateInstructStartList() {
+//        startAnimator(mNewInstructLayout);
+//    }
+//
+//    private void updateWifiStartList() {
+//        startAnimator(mNewWifiLayout);
+//    }
+//
+//    private void updateLostStartList() {
+//        startAnimator(mNewLostLayout);
+//    }
+//
+//    private void updateVidStartList() {
+//        startAnimator(mNewVidLayout);
+//    }
+//
+//    private void updatePicStartList() {
+//        startAnimator(mNewPicLayout);
+//    }
+//
+//    private void updateAppStartList() {
+//        startAnimator(mNewAppLayout);
+//    }
 }

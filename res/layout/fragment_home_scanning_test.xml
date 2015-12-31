@@ -86,7 +86,7 @@
                 android:paddingLeft="9dp"
                 android:paddingRight="9dp"
                 android:paddingTop="9dp"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RelativeLayout
                     android:id="@+id/preview_title_layout"
@@ -154,7 +154,7 @@
                 android:layout_below="@+id/empty_header"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -265,7 +265,7 @@
                 android:layout_below="@+id/empty_header"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -377,7 +377,7 @@
                 android:layout_below="@+id/empty_header"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -485,7 +485,7 @@
                 android:layout_below="@+id/empty_header"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -594,7 +594,7 @@
                 android:layout_below="@+id/empty_header"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -702,7 +702,7 @@
                 android:layout_below="@+id/empty_header"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -811,7 +811,7 @@
                 android:layout_marginBottom="18dp"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

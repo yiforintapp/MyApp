@@ -226,81 +226,89 @@ public class HomeScanningController {
 
     public void startScanning() {
         LeoLog.d(TAG, "startScanning...");
+
 //        mAppAnim = createScanningAnim(mAppImg, mAppText);
 //
 //        mAppAnim.totalAnim.start();
 //        mActivity.scanningFromPercent(UP_LIMIT_APP, 0, PER_APP);
+
+//        mNewContactLayoutAnim = getLayoutItemAnim(mNewContactLayout);
+//        mNewContactLayoutAnim.start();
+        mFragment.startDownAnimator();
 //        mNewContactAnim = getItemAnimation(mNewContactLayout);
-        mNewContactLayoutAnim = getLayoutItemAnim(mNewContactLayout);
-        mNewContactLayoutAnim.start();
 //        mNewContactAnim.start();
         mActivity.scanningFromPercent(FIRST_IN_TIME, 0, START_TIME);
     }
 
     public void startItemScanning() {
         //start from app
-        mNewContactAnim = getItemAnimation(mNewContactLayout);
-        mNewContactAnim.start();
+//        mNewContactAnim = getItemAnimation(mNewContactLayout);
+//        mNewContactAnim.start();
     }
 
-    private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {
-        ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(this, "scaleY", 1f, 1f);
-        layoutAnim.setDuration(300);
-        layoutAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                onLayoutAnimEnd(animation);
-            }
-        });
+//    private ObjectAnimator getLayoutItemAnim(LinearLayout layout) {
+//        ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(this, "scaleY", 1f, 1f);
+//        layoutAnim.setDuration(300);
+//        layoutAnim.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                onLayoutAnimEnd(animation);
+//            }
+//        });
+//
+//        return layoutAnim;
+//    }
 
-        return layoutAnim;
-    }
-
-    private void onLayoutAnimEnd(Animator animation) {
-        if (mFragment.isRemoving() || mFragment.isDetached()) return;
-
-        LeoLog.d(TAG, "onAnimationStart...");
-        if (animation == mNewContactLayoutAnim) {
-            mFragment.OnItemAnimationStart(mNewContactLayout);
-            mNewWifiLayoutAnim = getLayoutItemAnim(mNewWifiLayout);
-            mNewWifiLayoutAnim.start();
-            LeoLog.e(TAG, "mNewContactAnim start");
-        } else if (animation == mNewWifiLayoutAnim) {
-            mFragment.OnItemAnimationStart(mNewWifiLayout);
-            IntrudeSecurityManager manager = (IntrudeSecurityManager)
-                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-            if (!manager.getIsIntruderSecurityAvailable()) {
-                mNewLostLayoutAnim = getLayoutItemAnim(mNewLostLayout);
-                mNewLostLayoutAnim.start();
-            } else {
-                mNewInstructLayoutAnim = getLayoutItemAnim(mNewInstructLayout);
-                mNewInstructLayoutAnim.start();
-            }
-            LeoLog.e(TAG, "mNewInstructAnim start");
-        } else if (animation == mNewInstructLayoutAnim) {
-            mFragment.OnItemAnimationStart(mNewInstructLayout);
-            mNewLostLayoutAnim = getLayoutItemAnim(mNewLostLayout);
-            mNewLostLayoutAnim.start();
-            LeoLog.e(TAG, "mNewWifiAnim start");
-        } else if (animation == mNewLostLayoutAnim) {
-            mFragment.OnItemAnimationStart(mNewLostLayout);
-            mNewVidLayoutAnim = getLayoutItemAnim(mNewVidLayout);
-            mNewVidLayoutAnim.start();
-            LeoLog.e(TAG, "mNewLostAnim start");
-        } else if (animation == mNewVidLayoutAnim) {
-            mFragment.OnItemAnimationStart(mNewVidLayout);
-            mNewPicLayoutAnim = getLayoutItemAnim(mNewPicLayout);
-            mNewPicLayoutAnim.start();
-            LeoLog.e(TAG, "mNewVidAnim start");
-        } else if (animation == mNewPicLayoutAnim) {
-            mFragment.OnItemAnimationStart(mNewPicLayout);
-            mNewAppLayoutAnim = getLayoutItemAnim(mNewAppLayout);
-            mNewAppLayoutAnim.start();
-            LeoLog.e(TAG, "mNewPicAnim start");
-        } else {
-            mFragment.OnItemAnimationStart(mNewAppLayout);
-        }
-    }
+//    public void onLayoutAnimEnd(Animator animation) {
+//        if (mFragment.isRemoving() || mFragment.isDetached()) return;
+//
+//        LeoLog.d(TAG, "onAnimationStart...");
+//        if (animation == mNewContactLayoutAnim) {
+//            mFragment.OnItemAnimationStart(mNewContactLayout);
+////            mNewWifiLayoutAnim = getLayoutItemAnim(mNewWifiLayout);
+////            mNewWifiLayoutAnim.start();
+//            LeoLog.e(TAG, "mNewContactAnim start");
+//        } else if (animation == mNewWifiLayoutAnim) {
+//            mFragment.OnItemAnimationStart(mNewWifiLayout);
+//
+////            IntrudeSecurityManager manager = (IntrudeSecurityManager)
+////                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+////            if (!manager.getIsIntruderSecurityAvailable()) {
+////                mNewLostLayoutAnim = getLayoutItemAnim(mNewLostLayout);
+////                mNewLostLayoutAnim.start();
+////            } else {
+////                mNewInstructLayoutAnim = getLayoutItemAnim(mNewInstructLayout);
+////                mNewInstructLayoutAnim.start();
+////            }
+//
+//            LeoLog.e(TAG, "mNewInstructAnim start");
+//        } else if (animation == mNewInstructLayoutAnim) {
+//
+//            mFragment.OnItemAnimationStart(mNewInstructLayout);
+////            mNewLostLayoutAnim = getLayoutItemAnim(mNewLostLayout);
+////            mNewLostLayoutAnim.start();
+//
+//            LeoLog.e(TAG, "mNewWifiAnim start");
+//        } else if (animation == mNewLostLayoutAnim) {
+//            mFragment.OnItemAnimationStart(mNewLostLayout);
+////            mNewVidLayoutAnim = getLayoutItemAnim(mNewVidLayout);
+////            mNewVidLayoutAnim.start();
+//            LeoLog.e(TAG, "mNewLostAnim start");
+//        } else if (animation == mNewVidLayoutAnim) {
+//            mFragment.OnItemAnimationStart(mNewVidLayout);
+////            mNewPicLayoutAnim = getLayoutItemAnim(mNewPicLayout);
+////            mNewPicLayoutAnim.start();
+//            LeoLog.e(TAG, "mNewVidAnim start");
+//        } else if (animation == mNewPicLayoutAnim) {
+//            mFragment.OnItemAnimationStart(mNewPicLayout);
+////            mNewAppLayoutAnim = getLayoutItemAnim(mNewAppLayout);
+////            mNewAppLayoutAnim.start();
+//            LeoLog.e(TAG, "mNewPicAnim start");
+//        } else {
+//            mFragment.OnItemAnimationStart(mNewAppLayout);
+//            LeoLog.e(TAG, "mNewAppLayout start");
+//        }
+//    }
 
 
     private void onAnimatorEnd(Animator animation) {

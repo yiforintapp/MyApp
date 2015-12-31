@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.fragment;
 
-import java.util.List;
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
@@ -44,6 +42,8 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
+
+import java.util.List;
 
 public class GestureSettingFragment extends BaseFragment implements
         OnClickListener, OnPatternListener, OnDismissListener,
