@@ -59,6 +59,7 @@ public class CallFilterManager {
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmr;
     private LEOAlarmDialog mDialogAskAdd;
     private MultiChoicesWitchSummaryDialog mDialogTooShort;
+    private boolean mIsDialogShowWhenOffhookAndIdle = false;
     /**
      * 拨出电话
      */
@@ -322,15 +323,18 @@ public class CallFilterManager {
             CallFilterManager.getInstance(mContext).setIsComingOut(false);
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
-//                durationMax = 7955;
+                durationMax = 7955;
             long currentTime = System.currentTimeMillis();
             long deltaTime = currentTime - mLastOffHookTime;
             LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
             LeoLog.i(TAG, "idle : System.currentTimeMillis() =" + currentTime);
             LeoLog.i("allnull", "deltaTime = " + deltaTime);
             // 时间过短 且 服务器和本地都没有数据
+//            mIsOffHook = false
             if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0])) {
+//                mIsOffHook = false;
                 if (mDialogTooShort != null && mDialogTooShort.isShowing()) {
+                    mIsOffHook = false;
                     return;
                 }
                 // 通话时间过短的提醒加入黑名单对话框
@@ -360,6 +364,7 @@ public class CallFilterManager {
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
                         Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
+                        mIsOffHook = false;
                         mDialogTooShort.dismiss();
                     }
                 });
@@ -367,11 +372,12 @@ public class CallFilterManager {
                 // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
             } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
+//                mIsOffHook = false;
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                 if (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing()) {
+                    mIsOffHook = false;
                     return;
                 }
-                mIsOffHook = false;
                 // 接听后挂断 询问是否家黑名单且展示标记人数
                 mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance() .getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
                 String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
@@ -419,13 +425,14 @@ public class CallFilterManager {
                     }
                 });
                 mDialogAskAddWithSmrMark.show();
-            } else if (mIsOffHook && filterTip != null&& CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null
-                    && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
+                mIsOffHook = false;
+            } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null
+                    && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0] ) {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                 if (mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) {
+                    mIsOffHook = false;
                     return;
                 }
-                mIsOffHook = false;
                 // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
                 mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
                 String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
@@ -459,8 +466,12 @@ public class CallFilterManager {
                     }
                 });
                 mDialogAskAddWithSmr.show();
+                mIsOffHook = false;
             } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
+                if ((mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) ||( mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing())) {
+                    return;
+                }
                 // 没有接听就直接挂断的
                 if (mDialogAskAdd != null && mDialogAskAdd.isShowing()) {
                     return;
@@ -482,7 +493,6 @@ public class CallFilterManager {
                 });
                 mDialogAskAdd.show();
             }
-            mIsOffHook = false;
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
             mLastOffHookTime = System.currentTimeMillis();
             mIsOffHook = true;
