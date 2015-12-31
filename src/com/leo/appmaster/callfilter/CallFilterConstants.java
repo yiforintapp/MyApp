@@ -307,6 +307,10 @@ public class CallFilterConstants {
      * 统通话记录数据库1表示未看
      */
     public static final int SYS_CALL_NO = 1;
+    /**
+     * 加载黑名单列表MSG
+     */
+    public static final String EVENT_MSG_LOAD_BLACK = "EVENT_MSG_LOAD_BLACK";
 
 
 }

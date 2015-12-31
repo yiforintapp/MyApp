@@ -364,7 +364,6 @@ public class CallFilterManager {
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
                         Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
-                        mIsOffHook = false;
                         mDialogTooShort.dismiss();
                     }
                 });
@@ -425,9 +424,8 @@ public class CallFilterManager {
                     }
                 });
                 mDialogAskAddWithSmrMark.show();
-                mIsOffHook = false;
-            } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null
-                    && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0] ) {
+            } else if (mIsOffHook && filterTip != null&& CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null
+                    && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                 if (mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) {
                     mIsOffHook = false;
@@ -907,6 +905,16 @@ public class CallFilterManager {
         values.put(CallFilterConstants.BLACK_PHONE_NUMBER, info.getNumber());
         values.put(CallFilterConstants.BLACK_FIL_UP, info.getFiltUpState());
         cr.update(uri, values, where, selectionArgs);
+    }
+
+    /**
+     * 在黑名单列表时，通知黑名单列表刷新
+     */
+    public void notiUpdateBlackList() {
+        int id = EventId.EVENT_LOAD_BLCAK_ID;
+        String msg = CallFilterConstants.EVENT_MSG_LOAD_BLACK;
+        CommonEvent event = new CommonEvent(id, msg);
+        LeoEventBus.getDefaultBus().post(event);
     }
 
 }

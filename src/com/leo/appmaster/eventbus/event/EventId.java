@@ -47,4 +47,5 @@ public interface EventId {
     public static final int EVENT_HOME_GUIDE_GONE_ID = 1095;
 
     public static final int EVENT_LOAD_FIL_GR_ID = 1096;
+    public static final int EVENT_LOAD_BLCAK_ID = 1097;
 }

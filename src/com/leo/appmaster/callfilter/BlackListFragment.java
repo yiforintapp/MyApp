@@ -2,14 +2,18 @@
 package com.leo.appmaster.callfilter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.privacycontact.AddFromCallLogListActivity;
 import com.leo.appmaster.privacycontact.AddFromContactListActivity;
@@ -66,6 +70,12 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LeoEventBus.getDefaultBus().register(this);
+    }
+
+    @Override
     protected int layoutResourceId() {
         return R.layout.black_list_fragment;
     }
@@ -102,7 +112,9 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LeoEventBus.getDefaultBus().unregister(this);
     }
+
 
     @Override
     public void onResume() {
@@ -213,5 +225,13 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
             }
         });
         mAddPrivacyContact.show();
+    }
+
+    public void onEventMainThread(CommonEvent event) {
+        String msg = event.eventMsg;
+        if (CallFilterConstants.EVENT_MSG_LOAD_BLACK.equals(msg)) {
+            loadData();
+        }
+
     }
 }
