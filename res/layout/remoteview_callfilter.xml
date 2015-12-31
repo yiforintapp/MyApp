@@ -70,6 +70,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:text="@string/fil_noti_bt"
+                android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/noti_spe_content_small_text_size" />
         </RelativeLayout>

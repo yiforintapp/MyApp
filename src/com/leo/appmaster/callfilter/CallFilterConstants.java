@@ -299,6 +299,14 @@ public class CallFilterConstants {
 
     public static final int FIL_UP = 1;
     public static final int FIL_UP_NO = 0;
+    /**
+     * 系统通话记录数据库0表示已看
+     */
+    public static final int SYS_CALL = 0;
+    /**
+     * 统通话记录数据库1表示未看
+     */
+    public static final int SYS_CALL_NO = 1;
 
 
 }

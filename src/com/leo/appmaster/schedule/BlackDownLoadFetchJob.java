@@ -104,9 +104,6 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
                 sb.append(countryId);
                 sb.append(CallFilterConstants.GZIP);
                 String file = sb.toString();
-                if (DBG) {
-                    file = "http://192.168.1.205/telintercept/cn.gz";
-                }
                 lsm.setSerBlackFilePath(file);
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
