@@ -882,7 +882,9 @@
     <string name="scan_score">for + %1$s min.</string>
     <string name="scan_app_title"> %1$s apps found</string>
     <string name="scan_app_content_less_three"> %1$s high risk privacy apps</string>
+    <string name="scan_app_content_less_three_app"><Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> high risk privacy apps</string>
     <string name="scan_app_content">There are private apps like %1$s, lock</string>
+    <string name="scan_app_content_app">There are private apps like <Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>, lock</string>
     <string name="scan_app_content_zero">Lock the private Apps is recommend</string>
     <string name="scan_app_content_only_high">Private app, recommend locking </string>
     <string name="scan_pic_title"> %1$s pictures found</string>

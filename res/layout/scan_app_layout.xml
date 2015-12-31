@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scan_new_app_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/empty_header"
+    android:background="@color/transparent"
+    android:orientation="horizontal"
+    android:visibility="invisible">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="14dp">
+
+        <View
+            android:id="@+id/scan_new_app_view"
+            android:layout_width="1px"
+            android:layout_height="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/c4" />
+
+
+        <ImageView
+            android:id="@+id/scan_new_app_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scan_new_app_view"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/app_scan" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/scan_new_app_icon"
+            android:layout_centerHorizontal="true"
+            android:background="@color/c4"
+            android:minHeight="15dp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/scan_new_app_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:text="@string/scan_app_start"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/f3" />
+
+        <TextView
+            android:id="@+id/scan_new_app_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:textColor="@color/c4"
+            android:textSize="@dimen/f4" />
+
+        <TextView
+            android:id="@+id/scan_new_app_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="9dp"
+            android:drawableLeft="@drawable/tip_scan"
+            android:drawablePadding="5dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:textColor="@color/cb2"
+            android:textSize="@dimen/f4"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/scan_new_app"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="20dp">
+
+        <ImageView
+            android:id="@+id/scan_new_app_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="18dp"
+            android:visibility="invisible" />
+
+        <com.leo.appmaster.ui.LoadingView
+            android:id="@+id/scan_new_app_loading"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="18dp" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -860,7 +860,9 @@
     <string name="scan_score">จัดการ:%1$sนาที</string>
     <string name="scan_app_title">พบ%1$sแอพ</string>
     <string name="scan_app_content_less_three">แอพที่มีความเสี่ยง%1$sแอพ</string>
+    <string name="scan_app_content_less_three_app">แอพที่มีความเสี่ยง<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>แอพ</string>
     <string name="scan_app_content">มีแอพลับเช่น%1$s แนะนำให้บล็อค</string>
+    <string name="scan_app_content_app">มีแอพลับเช่น<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> แนะนำให้บล็อค</string>
     <string name="scan_app_content_zero">อาจเป็นความเสี่ยงต่อผู้ใช้ แนะนำให้บล็อคทันที</string>
     <string name="scan_app_content_only_high">ส่วนตัวสูง แนะนำให้บล็อค</string>
     <string name="scan_pic_title">พบ%1$sภาพ</string>
