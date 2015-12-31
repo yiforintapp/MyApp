@@ -225,16 +225,10 @@ public class CallFilterManager {
                 info = getBlackFroNum(mPhoneNumber);
                 serInfo = getSerBlackForNum(mPhoneNumber);
                 int[] filterTip = cmp.isCallFilterTip(mPhoneNumber);
-               if (filterTip == null) {
-                   return;
-               }
 //                mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]
-//                if (filterTip != null) {
-//                    Toast.makeText(mContext, "filterTip[0] = " + filterTip[0] + "filterTip[1] = " + filterTip[1] + "filterTip[2] = " + filterTip[2] + "filterTip[3] = " + filterTip[3], 1).show();//TODO
-//                    LeoLog.i("testdata", "filterTip[0] = " + filterTip[0] + "filterTip[1] = " + filterTip[1] + "filterTip[2] = " + filterTip[2] + "filterTip[3] = " + filterTip[3]);
-//                } else {
-//                    Toast.makeText(mContext, "null", 1).show();//TODO
-//                }
+                if (filterTip != null) {
+                    LeoLog.i("testdata", "filterTip[0] = " + filterTip[0] + "filterTip[1] = " + filterTip[1] + "filterTip[2] = " + filterTip[2] + "filterTip[3] = " + filterTip[3]);
+                } 
                 
                 LeoLog.i("testdata", "mIsOffHook = " + mIsOffHook);
                 if (info == null) {
@@ -254,7 +248,7 @@ public class CallFilterManager {
                 LeoLog.i("allnull", "deltaTime = " + deltaTime);
 //                Toast.makeText(mContext, "max time = "+durationMax, Toast.LENGTH_LONG).show();
                 //时间过短 且 服务器和本地都没有数据 
-                if (deltaTime < durationMax && info == null && serInfo == null && CallFilterConstants.IS_TIP_DIA[0] == filterTip[0]) {
+                if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0])) {
                     if (mDialogTooShort != null && mDialogTooShort.isShowing()) {
                         return;
                     }
@@ -300,11 +294,11 @@ public class CallFilterManager {
                 } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                     LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                     mIsOffHook = false;
-//                  挂断后接听 询问是否家黑名单且展示标记人数
+//                  接听后挂断 询问是否家黑名单且展示标记人数
                     mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
                     String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
                     String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
-                    mDialogTooShort.setTitle(String.format(mContext.getString(R.string.call_filter_marked_and_add_tips), mPhoneNumber));
+                    mDialogAskAddWithSmrMark.setTitle(String.format(mContext.getString(R.string.call_filter_marked_and_add_tips), mPhoneNumber));
                     switch (filterTip[3]) {
                         case CallFilterConstants.FILTER_CALL_TYPE:
                             mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
@@ -360,9 +354,9 @@ public class CallFilterManager {
                         return;
                     }
                     mIsOffHook = false;
-                    //挂断后接听 询问是否加入黑名单且展示加入黑名单人数
+                    //接听后挂断 询问是否加入黑名单且展示加入黑名单人数
                     mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
-                    mDialogTooShort.setTitle(String.format(mContext.getString(R.string.call_filter_marked_and_add_tips), mPhoneNumber));
+                    mDialogAskAddWithSmr.setTitle(String.format(mContext.getString(R.string.call_filter_marked_and_add_tips), mPhoneNumber));
                     String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
                     String summaryF = String.format(summaryS, filterTip[2]);
                     mDialogAskAddWithSmr.setContent(summaryF);
