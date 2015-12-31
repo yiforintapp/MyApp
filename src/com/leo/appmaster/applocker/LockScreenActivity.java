@@ -1111,7 +1111,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                mTtileBar.setTitle(R.string.app_name);
             }
         } else {
-            mTtileBar.setBackViewListener(this);
+            mTtileBar.setSelfBackPressListener(this);
             if (TextUtils.isEmpty(mLockTitle)) {
                 mTtileBar.setTitle(R.string.app_lock);
                 //解锁界面绘制介绍
@@ -1732,7 +1732,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         true);
                 mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
                 break;
-            case R.id.layout_title_back:
+            case R.id.layout_title_back_arraow:
                 onBackPressed();
                 finish();
                 break;
