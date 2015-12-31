@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,11 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
@@ -367,11 +373,32 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
                     startISwipHandlerForInstallIS(installISwipe);
                     break;
-                case R.string.call_filter_name:
-                    //骚扰拦截
-                    intent = new Intent(activity, CallFilterMainActivity.class);
-                    startActivity(intent);
+                case R.string.scan_lost_title:
+                    // 手机防盗
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
+                    startPhoneSecurity();
                     break;
+            }
+        }
+    }
+
+    /*进入手机防盗*/
+    private void startPhoneSecurity() {
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            boolean flag = manager.isUsePhoneSecurity();
+            Intent intent = null;
+            if (!flag) {
+                intent = new Intent(activity, PhoneSecurityGuideActivity.class);
+                intent.putExtra(PhoneSecurityConstants.KEY_FORM_HOME_SECUR, true);
+            } else {
+                intent = new Intent(activity, PhoneSecurityActivity.class);
+            }
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

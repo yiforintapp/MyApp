@@ -130,7 +130,7 @@
                 <TextView
                     style="@style/HomeTabText"
                     android:layout_below="@id/home_ic_lost_img"
-                    android:text="@string/home_tab_lost" />
+                    android:text="@string/call_filter_name" />
             </RelativeLayout>
         </RelativeLayout>
 

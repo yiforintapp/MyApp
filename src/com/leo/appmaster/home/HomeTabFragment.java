@@ -27,6 +27,7 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
+import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.TestDemo;
@@ -262,28 +263,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         return mRootView.getVisibility() == View.GONE;
     }
 
-
-    /*进入手机防盗*/
-    private void startPhoneSecurity() {
-        FragmentActivity activity = getActivity();
-        if (activity != null) {
-            LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            boolean flag = manager.isUsePhoneSecurity();
-            Intent intent = null;
-            if (!flag) {
-                intent = new Intent(activity, PhoneSecurityGuideActivity.class);
-                intent.putExtra(PhoneSecurityConstants.KEY_FORM_HOME_SECUR, true);
-            } else {
-                intent = new Intent(activity, PhoneSecurityActivity.class);
-            }
-            try {
-                startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private void startRcommendLock(int target) {
         Intent intent = new Intent(getActivity(), RecommentAppLockListActivity.class);
         intent.putExtra("target", target);
@@ -339,9 +318,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     startActivity(mIntent);
                     break;
                 case R.id.home_lost_tab:
-                    // 手机防盗
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
-                    startPhoneSecurity();
+                    // 骚扰拦截
+                    Intent callFilter = new Intent(activity, CallFilterMainActivity.class);
+                    startActivity(callFilter);
                     if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());
 //                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
