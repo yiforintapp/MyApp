@@ -34,7 +34,6 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -45,8 +44,6 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LoadingView;
-import com.leo.appmaster.ui.ScanningImageView;
-import com.leo.appmaster.ui.ScanningTextView;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -84,25 +81,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private TextView mScannTitleTv;
     private TextView mProgressTv;
-
-    private ScanningImageView mNewAppIv;
-    private ScanningImageView mNewPhotoIv;
-    private ScanningImageView mNewVideoIv;
-    private ScanningImageView mNewPrivacyIv;
-
-    private ScanningTextView mNewAppText;
-    private ScanningTextView mNewPhotoText;
-    private ScanningTextView mNewVideoText;
-    private ScanningTextView mNewPrivacyText;
-
-    // 扫描icon右下角图标
-    private TextView mAppCountTv;
-    private TextView mPicCountTv;
-    private TextView mVidCountTv;
-    private ImageView mPrivacyCountIv;
-    private ImageView mAppCountIv;
-    private ImageView mPicCountIv;
-    private ImageView mVidCountIv;
 
     private HomeActivity mActivity;
 
@@ -146,39 +124,29 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private LinearLayout mNewVidLayout;
 
     private ImageView mNewLostImg;
-    private TextView mNewLostTitle;
     private TextView mNewLostContent;
     private TextView mNewLostScore;
     private LoadingView mNewLostLoading;
     private LinearLayout mNewLostLayout;
 
     private ImageView mNewWifiImg;
-    private TextView mNewWifiTitle;
-    private TextView mNewWifiContent;
-    private TextView mNewWifiScore;
     private LoadingView mNewWifiLoading;
     private LinearLayout mNewWifiLayout;
 
     private ImageView mNewInstructImg;
-    private TextView mNewInstructTitle;
     private TextView mNewInstructContent;
     private TextView mNewInstructScore;
     private LoadingView mNewInstructLoading;
     private LinearLayout mNewInstructLayout;
 
     private ImageView mNewContactImg;
-    private TextView mNewContactTitle;
-    private TextView mNewContactContent;
-    private TextView mNewContactScore;
     private LoadingView mNewContactLoading;
     private LinearLayout mNewContactLayout;
 
     private String mScanAppName;
     private String mScanAppNameStep;
-    private String mAppNotifyText;
     private RelativeLayout mScrollLayout;
     private LayoutTransition mTransition;
-    private float mCurrentY;
     private View mBackView;
     private int mBackViewHeight = 0;
     private int mNowHeight = 100;
@@ -209,40 +177,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
-//        mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
-//
-//        mCancelBtn = view.findViewById(R.id.scan_cancel_rv);
-//        mCancelTv = (TextView) view.findViewById(R.id.scan_cancel_tv);
-//
-//        mProcessBtn = view.findViewById(R.id.scan_process_rv);
-//        mProcessTv = (TextView) view.findViewById(R.id.scan_process_tv);
-//
-//        mCancelTv.setOnClickListener(this);
-//        mProcessTv.setOnClickListener(this);
-//
-//        mNewAppIv = (ScanningImageView) view.findViewById(R.id.scan_new_app_iv);
-//        mNewPhotoIv = (ScanningImageView) view.findViewById(R.id.scan_media_iv);
-//        mNewVideoIv = (ScanningImageView) view.findViewById(R.id.scan_mobile_iv);
-//        mNewPrivacyIv = (ScanningImageView) view.findViewById(R.id.scan_privacy_iv);
-//
-//        mNewAppText = (ScanningTextView) view.findViewById(R.id.scan_new_app_tv);
-//        mNewPhotoText = (ScanningTextView) view.findViewById(R.id.scan_media_tv);
-//        mNewVideoText = (ScanningTextView) view.findViewById(R.id.scan_mobile_tv);
-//        mNewPrivacyText = (ScanningTextView) view.findViewById(R.id.scan_privacy_tv);
-//
-//        mAppCountTv = (TextView) view.findViewById(R.id.scan_app_count_tv);
-//        mPicCountTv = (TextView) view.findViewById(R.id.scan_media_count_tv);
-//        mVidCountTv = (TextView) view.findViewById(R.id.scan_mobile_count_iv);
-//        mPrivacyCountIv = (ImageView) view.findViewById(R.id.scan_privacy_count_iv);
-//
-//        mAppCountIv = (ImageView) view.findViewById(R.id.scan_app_count_iv);
-//        mPicCountIv = (ImageView) view.findViewById(R.id.scan_pic_count_iv);
-//        mVidCountIv = (ImageView) view.findViewById(R.id.scan_vid_count_iv);
-//
-//        mController = new HomeScanningController(mActivity, this, mNewAppIv, mNewAppText,
-//                mNewPhotoIv, mNewPhotoText, mNewVideoIv, mNewVideoText, mNewPrivacyIv, mNewPrivacyText);
-//        startScanController();
 
         mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
         mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
@@ -292,31 +226,23 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewVidLayout = (LinearLayout) view.findViewById(R.id.scan_new_vid_layout);
 
         mNewInstructImg = (ImageView) view.findViewById(R.id.scan_new_instruct_img);
-        mNewInstructTitle = (TextView) view.findViewById(R.id.scan_new_instruct_title);
         mNewInstructContent = (TextView) view.findViewById(R.id.scan_new_instruct_content);
         mNewInstructScore = (TextView) view.findViewById(R.id.scan_new_instruct_score);
         mNewInstructLoading = (LoadingView) view.findViewById(R.id.scan_new_instruct_loading);
         mNewInstructLayout = (LinearLayout) view.findViewById(R.id.scan_new_instruct_layout);
 
         mNewWifiImg = (ImageView) view.findViewById(R.id.scan_new_wifi_img);
-        mNewWifiTitle = (TextView) view.findViewById(R.id.scan_new_wifi_title);
-        mNewWifiContent = (TextView) view.findViewById(R.id.scan_new_wifi_content);
-        mNewWifiScore = (TextView) view.findViewById(R.id.scan_new_wifi_score);
         mNewWifiLoading = (LoadingView) view.findViewById(R.id.scan_new_wifi_loading);
         mNewWifiLayout = (LinearLayout) view.findViewById(R.id.scan_new_wifi_layout);
 
 
         mNewLostImg = (ImageView) view.findViewById(R.id.scan_new_lost_img);
-        mNewLostTitle = (TextView) view.findViewById(R.id.scan_new_lost_title);
         mNewLostContent = (TextView) view.findViewById(R.id.scan_new_lost_content);
         mNewLostScore = (TextView) view.findViewById(R.id.scan_new_lost_score);
         mNewLostLoading = (LoadingView) view.findViewById(R.id.scan_new_lost_loading);
         mNewLostLayout = (LinearLayout) view.findViewById(R.id.scan_new_lost_layout);
 
         mNewContactImg = (ImageView) view.findViewById(R.id.scan_new_contact_img);
-        mNewContactTitle = (TextView) view.findViewById(R.id.scan_new_contact_title);
-        mNewContactContent = (TextView) view.findViewById(R.id.scan_new_contact_content);
-        mNewContactScore = (TextView) view.findViewById(R.id.scan_new_contact_score);
         mNewContactLoading = (LoadingView) view.findViewById(R.id.scan_new_contact_loading);
         mNewContactLayout = (LinearLayout) view.findViewById(R.id.scan_new_contact_layout);
 
@@ -342,9 +268,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
                 mTransition.getAnimator(LayoutTransition.CHANGE_APPEARING));
-//        mTransition.setAnimator(LayoutTransition.APPEARING,
-//                mTransition.getAnimator(LayoutTransition.APPEARING));
-//        mScrollLayout.setLayoutTransition(mTransition);
 
 
         mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
@@ -375,7 +298,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     @Override
     public void onDetach() {
         super.onDetach();
-//      mController.detachController();
         destroyAd();
         mController.detachTheController();
         mIsExit = true;
@@ -394,102 +316,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         ThreadManager.executeOnAsyncThread(mPhotoRunnable);
     }
 
-    private void onScannigFinish(final List<AppItemInfo> appList, final PhotoList photoItems,
-                                 final List<VideoItemBean> videoItemBeans) {
-        if (getActivity() == null || isDetached() || isRemoving()) return;
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mScanning = false;
-                mCancelBtn.setVisibility(View.GONE);
-                mProcessBtn.setVisibility(View.VISIBLE);
-                mScannTitleTv.setText(R.string.pri_pro_scanning_finish);
-                mProcessTv.setTextColor(mActivity.getToolbarColor());
-                mActivity.onScanningFinish(appList, photoItems, videoItemBeans, mAppNotifyText);
-            }
-        });
-    }
-
-    public void onAnimatorEnd(ScanningImageView imageView) {
-        updateUIOnAnimEnd(imageView);
-        if (imageView == mNewAppIv) {
-            ThreadManager.executeOnAsyncThread(mPhotoRunnable);
-        } else if (imageView == mNewPhotoIv) {
-            ThreadManager.executeOnAsyncThread(mVidRunnable);
-        }
-    }
-
-    private void updateUIOnAnimEnd(ScanningImageView imageView) {
-        if (isDetached() || isRemoving() || getActivity() == null) return;
-
-        Context context = AppMasterApplication.getInstance();
-        if (imageView == mNewAppIv) {
-            updateAppList();
-            int count = mAppList == null ? 0 : mAppList.size();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "app_cnts_" + count);
-        } else if (imageView == mNewPhotoIv) {
-            updatePhotoList();
-            int count = mPhotoList == null ? 0 : mPhotoList.photoItems.size();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "pic_cnts_" + count);
-        } else if (imageView == mNewVideoIv) {
-            updateVideoList();
-            int count = mVideoList == null ? 0 : mVideoList.size();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
-            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "vid_cnts_" + count);
-        } else if (imageView == mNewPrivacyIv) {
-            LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            boolean lostOpen = lsm.isUsePhoneSecurity();
-            IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-            boolean intruderOpen = ism.getIntruderMode();
-            boolean result = lostOpen && intruderOpen;
-            mPrivacyCountIv.setImageResource(result ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
-            mPrivacyCountIv.setVisibility(View.VISIBLE);
-
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
-            onScannigFinish(mAppList, mPhotoList, mVideoList);
-        }
-    }
-
-    private void updateAppList() {
-        int count = mAppList == null ? 0 : mAppList.size();
-        if (count == 0) {
-            mAppCountIv.setVisibility(View.VISIBLE);
-            mAppCountTv.setVisibility(View.GONE);
-        } else {
-            mAppCountTv.setVisibility(View.VISIBLE);
-            mAppCountTv.setText("+" + count);
-            mAppCountIv.setVisibility(View.GONE);
-        }
-    }
-
-    private void updatePhotoList() {
-        int count = mPhotoList == null ? 0 : mPhotoList.photoItems.size();
-        if (count == 0) {
-            mPicCountIv.setVisibility(View.VISIBLE);
-            mPicCountTv.setVisibility(View.GONE);
-            mPicCountIv.setImageResource(mPhotoScanFinish ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
-        } else {
-            mPicCountIv.setVisibility(View.GONE);
-            mPicCountTv.setVisibility(View.VISIBLE);
-            mPicCountTv.setText("+" + count);
-        }
-    }
-
-    private void updateVideoList() {
-        int count = mVideoList == null ? 0 : mVideoList.size();
-        if (count == 0) {
-            mVidCountIv.setVisibility(View.VISIBLE);
-            mVidCountTv.setVisibility(View.GONE);
-            mVidCountIv.setImageResource(mVideoScanFinish ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
-        } else {
-            mVidCountIv.setVisibility(View.GONE);
-            mVidCountTv.setVisibility(View.VISIBLE);
-            mVidCountTv.setText("+" + count);
-        }
-    }
 
     @Override
     public void onClick(View view) {
@@ -504,18 +331,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "scan", "instant");
                 break;
         }
-    }
-
-    public boolean isScanFinish(ScanningImageView imageView) {
-        if (imageView == mNewAppIv) {
-            return mAppScanFinish;
-        } else if (imageView == mNewPhotoIv) {
-            return mPhotoScanFinish;
-        } else if (imageView == mNewVideoIv) {
-            return mVideoScanFinish;
-        }
-
-        return false;
     }
 
     /* 3.2 advertise begin */
@@ -758,35 +573,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         }
     }
-
-//    public void OnItemAnimationStart(LinearLayout layout) {
-//        if (isDetached() || isRemoving() || getActivity() == null) return;
-//
-//        Context context = AppMasterApplication.getInstance();
-//        if (layout == mNewAppLayout) {
-//            updateAppStartList();
-////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
-//        } else if (layout == mNewPicLayout) {
-//            updatePicStartList();
-////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
-//        } else if (layout == mNewVidLayout) {
-//            updateVidStartList();
-////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
-//        } else if (layout == mNewInstructLayout) {
-//            updateInstructStartList();
-////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
-//        } else if (layout == mNewWifiLayout) {
-//            updateWifiStartList();
-////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
-//        } else if (layout == mNewLostLayout) {
-//            updateLostStartList();
-////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
-//        } else if (layout == mNewContactLayout) {
-//            updateContactStartList();
-////            mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
-//        }
-//    }
-
 
     private int changItem = 0;
 
@@ -1329,31 +1115,4 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         objectAnimator.start();
     }
 
-//    private void updateContactStartList() {
-//        startAnimator(mNewContactLayout);
-//    }
-//
-//    private void updateInstructStartList() {
-//        startAnimator(mNewInstructLayout);
-//    }
-//
-//    private void updateWifiStartList() {
-//        startAnimator(mNewWifiLayout);
-//    }
-//
-//    private void updateLostStartList() {
-//        startAnimator(mNewLostLayout);
-//    }
-//
-//    private void updateVidStartList() {
-//        startAnimator(mNewVidLayout);
-//    }
-//
-//    private void updatePicStartList() {
-//        startAnimator(mNewPicLayout);
-//    }
-//
-//    private void updateAppStartList() {
-//        startAnimator(mNewAppLayout);
-//    }
 }
