@@ -623,9 +623,10 @@ public class HomePrivacyFragment extends Fragment {
         dashScaleAnim.setDuration(200);
         animators.add(dashScaleAnim);
         // 虚线框透明度
+        mHomeAnimView.getShieldLayer().setDashAlpha(0);
         ObjectAnimator dashAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "dashAlpha", 0, 255);
         dashAlphaAnim.setInterpolator(new LinearInterpolator());
-        dashAlphaAnim.setStartDelay(100);
+        dashAlphaAnim.setStartDelay(350);
         dashAlphaAnim.setDuration(100);
         animators.add(dashAlphaAnim);
 
