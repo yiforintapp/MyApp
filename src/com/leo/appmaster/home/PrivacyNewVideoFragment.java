@@ -225,10 +225,10 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        int pos = i - 1;
+        int pos = i - mVideoList.getHeaderViewsCount();
         if (view != null && pos > -1 && mDataList.size() > pos) {
             VideoItemBean info = mDataList.get(pos);
-            mAdaper.toggle(i);
+            mAdaper.toggle(pos);
         }
     }
 }
