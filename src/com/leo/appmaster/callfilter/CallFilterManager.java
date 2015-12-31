@@ -323,7 +323,7 @@ public class CallFilterManager {
             CallFilterManager.getInstance(mContext).setIsComingOut(false);
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
-                durationMax = 7955;
+//                durationMax = 7955;
             long currentTime = System.currentTimeMillis();
             long deltaTime = currentTime - mLastOffHookTime;
             LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
