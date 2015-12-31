@@ -50,7 +50,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/pri_pro_header"
         android:background="@color/transparent"
-        android:paddingBottom="63dp"
+        android:layout_marginBottom="63dp"
         android:paddingLeft="@dimen/pri_new_list_padding"
         android:paddingRight="@dimen/pri_new_list_padding"
         android:paddingTop="@dimen/pri_new_list_padding">
