@@ -65,6 +65,7 @@ import java.util.List;
  */
 public class HomeScanningFragment extends Fragment implements View.OnClickListener {
     private static final int MAX_HEIGHT_DP = 52;
+    private static final int MAX_HEIGHT_DP_NOT_APP = 35;
     private static final int MIN_HEIGHT_DP = 35;
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
@@ -885,7 +886,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     public void setItemPlace(View nowLayout, int position, int height, int isNeedLongHeight) {
-        int moveDistance;
+        int moveDistance = 0;
         LeoLog.d("testEndMove", "position : " + position);
         LeoLog.d("testEndMove", "nowLayout height : " + nowLayout.getHeight());
         LeoLog.d("testEndMove", "isNeedLongHeight type: " + isNeedLongHeight);
@@ -895,8 +896,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             if (nowLayout.getHeight() == height && isNeedLongHeight != 1) {
                 if (isNeedLongHeight == 2) {
                     moveDistance = DipPixelUtil.dip2px(mActivity, MIN_HEIGHT_DP);
-                } else {
+                } else if (isNeedLongHeight == 3) {
                     moveDistance = DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_DP);
+                } else if (isNeedLongHeight == 4) {
+                    moveDistance = DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_DP_NOT_APP);
                 }
             } else {
                 moveDistance = nowLayout.getHeight() - height;
@@ -907,8 +910,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 moveDistance = 0;
             } else if (isNeedLongHeight == 2) {
                 moveDistance = DipPixelUtil.dip2px(mActivity, MIN_HEIGHT_DP);
-            } else {
+            }  else if (isNeedLongHeight == 3) {
                 moveDistance = DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_DP);
+            } else if (isNeedLongHeight == 4) {
+                moveDistance = DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_DP_NOT_APP);
             }
         }
 
@@ -1001,6 +1006,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewAppImg.setImageResource(R.drawable.ic_scan_safe);
             mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_none));
         }
+        LeoLog.d("testEndMove", "mNewAppContent.getHeight():" + mNewAppContent.getHeight());
         mNewAppLoading.setVisibility(View.GONE);
         mNewAppImg.setVisibility(View.VISIBLE);
         return isNeedLongHeight;
@@ -1023,13 +1029,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mNewPicScore.setText(mActivity.getResources().
                         getString(R.string.scan_score, score));
                 mNewPicScore.setVisibility(View.VISIBLE);
-                isNeedLongHeight = 3;
+                isNeedLongHeight = 4;
             }
         } else {
             mNewPicImg.setImageResource(R.drawable.ic_scan_safe);
             mNewPicTitle.setText(mActivity.getResources().getString(R.string.scan_pic_none));
         }
-
+        LeoLog.d("testEndMove", "mNewPicContent.getHeight():" + mNewPicContent.getHeight());
         mNewPicLoading.setVisibility(View.GONE);
         mNewPicImg.setVisibility(View.VISIBLE);
         return isNeedLongHeight;
@@ -1052,7 +1058,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mNewVidScore.setText(mActivity.getResources().
                         getString(R.string.scan_score, score));
                 mNewVidScore.setVisibility(View.VISIBLE);
-                isNeedLongHeight = 3;
+                isNeedLongHeight = 4;
             }
         } else {
             mNewVidImg.setImageResource(R.drawable.ic_scan_safe);
@@ -1125,7 +1131,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mNewLostScore.setText(mActivity.getResources().
                         getString(R.string.scan_score, manager.getMaxScore()));
                 mNewLostScore.setVisibility(View.VISIBLE);
-                isNeedLongHeight = 3;
+                isNeedLongHeight = 4;
             }
         }
         mNewLostLoading.setVisibility(View.GONE);
