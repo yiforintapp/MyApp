@@ -363,6 +363,7 @@ public class CallFilterManager {
                         }
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
+                        notiUpdateBlackList();
                         Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
                         mDialogTooShort.dismiss();
                     }
@@ -419,6 +420,7 @@ public class CallFilterManager {
                         }
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
+                        notiUpdateBlackList();
                         Toast.makeText(mContext,mContext.getResources().getString(R.string.mark_number_from_list),Toast.LENGTH_SHORT).show();
                         mDialogAskAddWithSmrMark.dismiss();
                     }
@@ -459,6 +461,7 @@ public class CallFilterManager {
                         }
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
+                        notiUpdateBlackList();
                         Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
                         mDialogAskAddWithSmr.dismiss();
                     }
@@ -487,6 +490,7 @@ public class CallFilterManager {
                         infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
+                        notiUpdateBlackList();
                         Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
                         mDialogAskAdd.dismiss();
                     }
