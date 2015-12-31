@@ -588,12 +588,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                             mCallLogList.clear();
                         }
                         mCallLogList = calls;
-                        for (int i = 0; i <= 99; i++) {
-                            ContactCallLog call = new ContactCallLog();
-                            call.setCallLogNumber("3425814134" + i);
-                            mCallLogList.add(call);
-                        }
-                        //备份一份onCreate时获取的原始数据 
+                        //备份一份onCreate时获取的原始数据
                         if (mSrcBackupList != null) {
                             mSrcBackupList.clear();
                             mSrcBackupList.addAll(mCallLogList);
