@@ -172,7 +172,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                 mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
                             if (mAddPrivacyCallLog.size() == 1) {
                                 boolean isHaveBlackNum = mCallManger.
-                                        isExistBlackList(mCallLogList.get(0).getCallLogNumber());
+                                        isExistBlackList(mAddPrivacyCallLog.get(0).getCallLogNumber());
                                 if (isHaveBlackNum) {
                                     Message messge = new Message();
                                     messge.what = HAVE_BLACK_LIST;
