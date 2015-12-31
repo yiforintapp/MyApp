@@ -125,7 +125,7 @@
                     android:layout_width="@dimen/home_tab_ic_size"
                     android:layout_height="@dimen/home_tab_ic_size"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_home_tab_lost" />
+                    android:src="@drawable/ic_home_callfilter" />
 
                 <TextView
                     style="@style/HomeTabText"
