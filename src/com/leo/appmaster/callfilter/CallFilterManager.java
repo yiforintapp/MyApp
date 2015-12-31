@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.CallLog;
@@ -27,6 +28,7 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -88,6 +90,31 @@ public class CallFilterManager {
      */
     private boolean mIsFilterTab = false;
 
+    /**
+     * 当前拦截时间
+     */
+    private long mFilterTime = 0;
+    /**
+     * 当前来电号码
+     */
+    private String mFilterNum;
+
+    public String getFilterNum() {
+        return mFilterNum;
+    }
+
+    public void setFilterNum(String filterNum) {
+        this.mFilterNum = filterNum;
+    }
+
+    public long getFilterTime() {
+        return mFilterTime;
+    }
+
+    public void setFilterTime(long filterTime) {
+        this.mFilterTime = filterTime;
+    }
+
     public boolean isIsFilterTab() {
         return mIsFilterTab;
     }
@@ -142,7 +169,7 @@ public class CallFilterManager {
 
     /**
      * 获取黑名单列表
-     * 
+     *
      * @return
      */
     public List<BlackListInfo> getBlackList() {
@@ -152,7 +179,7 @@ public class CallFilterManager {
 
     /**
      * 获取服务器下发黑名单列表
-     * 
+     *
      * @return
      */
     public List<BlackListInfo> getSerBlackList() {
@@ -177,14 +204,14 @@ public class CallFilterManager {
 
     /**
      * 骚扰拦截处理
-     * 
+     *
      * @param action
      * @param phoneNumber
      * @param state
      * @param iTelephony
      */
     public void filterCallHandler(String action, final String phoneNumber, String state,
-            final ITelephony iTelephony) {
+                                  final ITelephony iTelephony) {
         /* 判断骚扰拦截是否打开 */
         final CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean filOpSta = cmp.getFilterOpenState();
@@ -199,6 +226,7 @@ public class CallFilterManager {
         }
         LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
         setIsReceiver(true);
+
         BlackListInfo info = null;
         BlackListInfo serInfo = null;
         if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
@@ -469,18 +497,21 @@ public class CallFilterManager {
     }
 
     private void endCallAndRecord(final String phoneNumber, final ITelephony iTelephony,
-            final CallFilterContextManager cmp) {
+                                  final CallFilterContextManager cmp) {
         /* 为本地黑名单：拦截 */
         try {
             try {
                 if (iTelephony != null) {
-                    setIsReceiver(false);
                     iTelephony.endCall();
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
             LeoLog.i(TAG, "iTelephony endCall()");
+
+            //记录当前拦截号码
+            setFilterNum(phoneNumber);
+
             List<CallFilterInfo> infos = new ArrayList<CallFilterInfo>();
             CallFilterInfo callInfo = new CallFilterInfo();
             callInfo.setTimeLong(System.currentTimeMillis());
@@ -604,7 +635,7 @@ public class CallFilterManager {
 
     /**
      * 获取本地黑名单列表数量
-     * 
+     *
      * @return
      */
     public int getBlackListCount() {
@@ -617,7 +648,7 @@ public class CallFilterManager {
 
     /**
      * 指定号码查询本地黑名单是否存在该号码
-     * 
+     *
      * @param number
      * @return
      */
@@ -639,7 +670,7 @@ public class CallFilterManager {
 
     /**
      * 服务器下发所有黑名单
-     * 
+     *
      * @return
      */
     public synchronized void loadSerBlackList() {
@@ -654,7 +685,7 @@ public class CallFilterManager {
 
     /**
      * 获取服务器下发黑名单数量
-     * 
+     *
      * @return
      */
     public int getSerBlackCount() {
@@ -667,7 +698,7 @@ public class CallFilterManager {
 
     /**
      * 指定号码查询服务器黑名单列表是否存在该号码
-     * 
+     *
      * @param number
      * @return
      */
@@ -689,7 +720,7 @@ public class CallFilterManager {
 
     /**
      * 解析黑名单列表后加入到黑名单数据库
-     * 
+     *
      * @param info
      */
     public void addFilterFroParse(BlackListInfo info) {
@@ -709,11 +740,25 @@ public class CallFilterManager {
     }
 
     /**
+     * 拦截数Observer处理
+     */
+    public synchronized void filterObserHandler() {
+        removeSysFilterCall();
+        filterNotiTipHandler();
+        //恢复是否为来电后触发数据库
+        setIsReceiver(false);
+        setFilterNum(null);
+    }
+
+    /**
      * 陌生人多个来电通知处理
      */
-    public void filterNotiTipHandler() {
+    private void filterNotiTipHandler() {
+        if (!isReceiver()) {
+            return;
+        }
         String selection = CallLog.Calls.TYPE + " = ? and " + CallLog.Calls.NEW + " = ? ";
-        String[] selectionArgs = new String[] {
+        String[] selectionArgs = new String[]{
                 String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1)
         };
 
@@ -775,37 +820,66 @@ public class CallFilterManager {
                     /* 多个未接来电为指定倍数通知提示 */
                     CallFIlterUIHelper.getInstance().showStrangerNotification(count);
                 }
-                // else {
-                // /*未接陌生人来电通知提示*/
-                // if (isReceiver()) {
-                // String phoneNumber = getCurrentRecePhNum();
-                // if (TextUtils.isEmpty(phoneNumber)) {
-                // return;
-                // }
-                // BlackListInfo serInfo = getSerBlackForNum(phoneNumber);
-                // if (serInfo == null) {
-                // /*该号码不存在黑名单中*/
-                // return;
-                // }
-                // CallFIlterUIHelper.getInstance().showMissCallNotification(serInfo.getAddBlackNumber(),
-                // phoneNumber);
-                // }
-                // }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                setIsReceiver(false);
-                // setCurrentRecePhNum(null);
             }
         } else {
-            setIsReceiver(false);
             return;
         }
     }
 
+    private void removeSysFilterCall() {
+
+        if (!isReceiver()) {
+            return;
+        }
+        final String filterNum = getFilterNum();
+        if (filterNum == null) {
+            return;
+        }
+        final ContentResolver cr = mContext.getContentResolver();
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ContentResolver cr = mContext.getContentResolver();
+
+                    //查询未读
+                    String selectionQu = CallLog.Calls.TYPE + " = ? and " + CallLog.Calls.NEW + " = ? and "
+                            + CallLog.Calls.NUMBER + " LIKE ? ";
+                    String fromateNum = PrivacyContactUtils.formatePhoneNumber(filterNum);
+                    String[] selectionArgsQu = new String[]{
+                            String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1), ("%" + fromateNum)
+                    };
+                    Cursor cur = cr.query(PrivacyContactUtils.CALL_LOG_URI, null, selectionQu, selectionArgsQu,
+                            CallLog.Calls._ID + " " + CallFilterConstants.DESC);
+                    int id = -1;
+                    if (cur != null) {
+                        while (cur.moveToFirst()) {
+                            id = cur.getInt(cur.getColumnIndex(CallLog.Calls._ID));
+                            break;
+                        }
+                    }
+                    if (id < 0) {
+                        return;
+                    }
+                    //删除未读
+                    String selectionDe = CallLog.Calls._ID + " = ? ";
+                    String[] selectionArgsDe = new String[]{String.valueOf(id)};
+                    int count = PrivacyContactUtils.deleteDbLog(cr, PrivacyContactUtils.CALL_LOG_URI, selectionDe, selectionArgsDe);
+
+                    LeoLog.i(TAG, count + ":id = " + id);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     /**
      * 更新上传后的黑名单
-     * 
+     *
      * @param info
      */
     public void updateUpBlack(BlackListInfo info) {
@@ -815,8 +889,8 @@ public class CallFilterManager {
         }
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
-        String[] selectionArgs = new String[] {
-            "%" + PrivacyContactUtils.formatePhoneNumber(info.getNumber())
+        String[] selectionArgs = new String[]{
+                "%" + PrivacyContactUtils.formatePhoneNumber(info.getNumber())
         };
         ContentResolver cr = mContext.getContentResolver();
         ContentValues values = new ContentValues();

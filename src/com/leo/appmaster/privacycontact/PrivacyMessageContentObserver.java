@@ -84,7 +84,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             /**
              * 骚扰拦截
              */
-            CallFilterManager.getInstance(mContext).filterNotiTipHandler();
+            CallFilterManager.getInstance(mContext).filterObserHandler();
             /**
              * 通话拦截功能
              */
