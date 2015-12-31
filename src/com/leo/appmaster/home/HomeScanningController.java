@@ -12,7 +12,6 @@ import com.leo.appmaster.ui.ScanningTextView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.Animator;
-import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
@@ -541,7 +540,7 @@ public class HomeScanningController {
             mFragment.OnItemAnimationEnd(mNewPicLayout);
             mNewAppAnim = getItemAnimation(mNewAppLayout);
             int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(1600, currPct, NEW_PER_PRI + 1);
+            mActivity.scanningFromPercent(1200, currPct, NEW_PER_PRI + 1);
             LeoLog.e(TAG, "mNewPicAnim end");
             mNewAppAnim.start();
         } else {

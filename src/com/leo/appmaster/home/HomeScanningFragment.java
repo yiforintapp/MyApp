@@ -375,6 +375,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         destroyAd();
         mController.detachTheController();
         mIsExit = true;
+        mActivity.onMemoryLessScanCancel();
     }
 
     private void startScanController() {

@@ -353,6 +353,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 } catch (Exception e) {
                 }
             }
+            mPrivacyFragment.onScanStart();
             mCurrentFragment = mScanningFragment;
         }
     }
@@ -1535,5 +1536,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             preferenceTable.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
             GuideFragment.setHomeGuideShowStatus(true);
         }
+    }
+
+    public void onMemoryLessScanCancel() {
+        mPrivacyFragment.onScanCancel();
     }
 }

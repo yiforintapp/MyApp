@@ -274,7 +274,12 @@ public class HomePrivacyFragment extends Fragment {
         mCircleRotateAnim.start();
     }
 
-
+    public void onScanCancel() {
+        if (mCircleRotateAnim != null && mMemoryLess) {
+            mCircleRotateAnim.cancel();
+            mCircleRotateAnim = null;
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -327,9 +332,7 @@ public class HomePrivacyFragment extends Fragment {
         super.onStop();
 //        endWaveAnim();
 //        mStopped = true;
-        if (mCircleRotateAnim != null && mMemoryLess) {
-            mCircleRotateAnim.cancel();
-        }
+          onScanCancel();
     }
 
     public void onEventMainThread(SecurityScoreEvent event) {
