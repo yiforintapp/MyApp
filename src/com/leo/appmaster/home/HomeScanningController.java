@@ -432,7 +432,6 @@ public class HomeScanningController {
     private void onItemAnimRepeat(final Animator animation) {
         if (mFragment.isRemoving() || mFragment.isDetached()) return;
 
-        LeoLog.d(TAG, "onAnimatorRepeat...");
         if (animation == mNewAppAnim) {
             if (mFragment.isItemScanFinish(mNewAppLayout)) {
                 onItemAnimationEnd(mNewAppAnim);
@@ -479,6 +478,7 @@ public class HomeScanningController {
             public void run() {
                 animation.end();
                 animation.cancel();
+                LeoLog.d(TAG, "onRepeat End...");
             }
         });
 

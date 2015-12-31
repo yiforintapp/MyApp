@@ -267,6 +267,10 @@ public class HomePrivacyFragment extends Fragment {
         if (!mMemoryLess) {
             return;
         }
+        if (mCircleRotateAnim != null) {
+            mCircleRotateAnim.cancel();
+            mCircleRotateAnim = null;
+        }
         mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
         mCircleRotateAnim.setDuration(3500);
         mCircleRotateAnim.setInterpolator(new LinearInterpolator());
