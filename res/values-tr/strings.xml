@@ -817,4 +817,85 @@
     <string name="wifi_result_wifimaster_content">WiFi hızılarını test ederek en hızlı WiFi noktasına bağlan</string>
     <string name="pri_result_wifimaster_btn">Aç</string>
     <string name="video_guide_txt">Düzenlemeye tıklayarak Video gizle işlemini kaldırabilirsiniz.</string>
+
+    <!--3.2-->
+    <string name="call_filter_remove_from_blacklist_checkbox_title">Bu telefon numarasını kara listeye eklemek istiyor musunuz?</string>
+    <string name="call_filter_remove_from_blacklist_checkbox_text">Engellenenler listesini düzenlemek ister misiniz</string>
+    <string name="call_filter_name">Rahatsız Etme</string>
+    <string name="call_filter_black_list_tab">Kara Liste</string>
+    <string name="call_filter_list_tab">Arama Engelle</string>
+    <string name="call_filter_black_list_add">Ekle</string>
+    <string name="call_filter_black_list_unknow_num">Bilinmeyen</string>
+    <string name="call_filter_setting_title">Ayarlar</string>
+    <string name="call_filter_setting_one_desc">Engellenenler açıldı</string>
+    <string name="call_fil_set_close">Engellenenler kapalı</string>
+    <string name="call_filter_setting_two_title">Engel Bildirisi</string>
+    <string name="call_filter_notifacation">Numaraları Engelle</string>
+    <string name="call_filter_setting_two_desc">Engelleme Bildirilerini Göster</string>
+    <string name="call_filter_add_black_num">Bu numara gizlidir. Önce gizli kişileri silin.</string>
+    <string name="call_filter_have_add_black_num">Bu numara kara listede</string>
+    <string name="call_filter_dialog_add_black">Kara Listeye ekle</string>
+    <string name="add_black_list_done">Kara Listeye eklendi</string>
+    <string name="call_filter_record">Engellenenler</string>
+    <string name="call_filter_clear_record">Temizlenenler</string>
+    <string name="call_filter_remove_from_blacklist">Çıkar</string>
+    <string name="call_filter_mark">Seç</string>
+    <string name="call_filter_delete_record">Engelleme geçmişini sil</string>
+    <string name="call_filter_mark_as_sr">İstenmeyen</string>
+    <string name="call_filter_mark_as_tx">Reklam</string>
+    <string name="call_filter_mark_as_zp">Dolandırıcı</string>
+    <string name="call_filter_confirm_clear_record">Geçmişi silmek istediğinizden emin misiniz?</string>
+    <string name="call_filter_ask_add_to_blacklist"></string>
+    <string name="call_filter_confirm_add_to_blacklist">%1$s numara kara listeye eklensin mi?</string>
+    <string name="call_filter_confirm_add_to_blacklist_summary">%1$s numara zaten kara listede</string>
+    <string name="black_list_is_empty">İstenmeyen numaraları kara listeye ekleyin</string>
+    <string name="filter_list_is_empty">Kara listeye eklemeye başlayın</string>
+    <string name="mark_number_from_list">Numara işaretli</string>
+    <string name="number_toast_text_black">%1$s tarafından engelli</string>
+    <string name="number_toast_text_mark">%1$s tarafından işaretli</string>
+    <string name="number_add_to_black_list">%1$s tarafından kara listede</string>
+    <string name="number_call_duration_s">S: %1$s sn</string>
+    <string name="number_call_duration_m">S: %1$s dk</string>
+    <string name="number_call_duration_h">S: %1$s sa</string>
+    <string name="scan_score">İşlem +%1$s</string>
+    <string name="scan_app_title">%1$s adet uygulama</string>
+    <string name="scan_app_content_less_three">%1$s özel uygulamalar var</string>
+    <string name="scan_app_content">%1$s özel uygulama kilitlenebilir</string>
+    <string name="scan_app_content_zero">Özel güvenliğiniz için kilitlemeniz önerilir</string>
+    <string name="scan_app_content_only_high">Yüksek özel, Kilitleyin</string>
+    <string name="scan_pic_title">%1$s adet fotoğraf </string>
+    <string name="scan_pic_content">Gizlilik için gizleyin</string>
+    <string name="scan_vid_title">%1$s video tarandı</string>
+    <string name="scan_vid_content">Gizlilik için gizleyin</string>
+    <string name="scan_instruct_title">Davetsiz Koruması</string>
+    <string name="scan_instruct_content">Davetsiz koruma açıldı</string>
+    <string name="scan_lost_title">Çalıntı</string>
+    <string name="scan_lost_content">Çalınan telefonu bul</string>
+    <string name="scan_contact_title">Gizli kişileri çoğalt</string>
+    <string name="scan_wifi_title">WiFi Güvenlik</string>
+    <string name="scan_wifi_content">WiFi Güvenlik Modu</string>
+    <string name="scan_app_start">Uygulama Taranıyor</string>
+    <string name="scan_pic_start">Fotoğraf Taranıyor</string>
+    <string name="scan_vid_start">Video Taranıyor</string>
+    <string name="scan_vid_none">Yeni video bulunamadı</string>
+    <string name="scan_pic_none">Yeni fotoğraf bulunamadı</string>
+    <string name="scan_app_none">Yeni uygulama bulunamadı</string>
+    <string name="scan_find_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> adet kilitlenebilir uygulama bulundu</string>
+    <string name="scan_find_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> adet gizlenebilir fotoğraf bulundu</string>
+    <string name="scan_find_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> adet gizlenebilir video bulundu</string>
+    <string name="call_filter_add_strange_num">Kara Listeye Ekle</string>
+    <string name="call_filter_clear_all_black">Temizle</string>
+    <string name="lock_app_item_desc_cb"><Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> kilitli</string>
+    <string name="menu_left_item_problem">SSS</string>
+    <string name="feedback_problem_text">SSS Git</string>
+    <string name="filter_number_type_saorao">İstenmeyen</string>
+    <string name="filter_number_type_ad">Reklam</string>
+    <string name="filter_number_type_zhapian">Dolandırıcı</string>
+    <string name="str_noti_title_txt">Bilinmeyen %1$s</string>
+    <string name="str_noti_content_txt">%1$s adet Bilinmeyen</string>
+    <string name="pri_pro_ignore2">Reddet</string>
+    <string name="miss_noti_tit">Cevapsız</string>
+    <string name="miss_noti_content">%2$s tarafından %1$s kara listede</string>
+    <string name="fil_noti_bt">Bak</string>
+
 </resources>

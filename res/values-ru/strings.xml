@@ -800,4 +800,85 @@
     <string name="wifi_result_wifimaster_content">Начать тестирование скорости WiFi прямо сейчас и выбрать самое быстрое WiFi подключение!</string>
     <string name="pri_result_wifimaster_btn">Начать </string>
     <string name="video_guide_txt">Для отмены скрытия нажмитекнопку редактирования и отметьте галочкой видео</string>
+
+    <!--3.2-->
+    <string name="call_filter_remove_from_blacklist_checkbox_title">Вам могут поступать звонки от этого номера, уверены, что хотите переместить из черного списка?</string>
+    <string name="call_filter_remove_from_blacklist_checkbox_text">Вернуть журнал блокировки в журнал звонков?</string>
+    <string name="call_filter_name">Блокировка нежелательных звонков </string>
+    <string name="call_filter_black_list_tab">Черный список</string>
+    <string name="call_filter_list_tab">Блокировка входящих звонков</string>
+    <string name="call_filter_black_list_add">Добавить </string>
+    <string name="call_filter_black_list_unknow_num">Последние незнакомые звонки</string>
+    <string name="call_filter_setting_title">Настройка </string>
+    <string name="call_filter_setting_one_desc">Блокировка нежелательных звонков включена</string>
+    <string name="call_fil_set_close">Блокировка нежелательных звонков закрыто</string>
+    <string name="call_filter_setting_two_title">Уведомление о блокировке</string>
+    <string name="call_filter_notifacation">Заблокированы следующие входящие звонки</string>
+    <string name="call_filter_setting_two_desc">Заблокированные звонки отображаются на панели уведомлений </string>
+    <string name="call_filter_add_black_num">Это номер конфиденциального контактного лица, сначала переместите его из списка конфиденциальных контактных лиц</string>
+    <string name="call_filter_have_add_black_num">Этот номер уже есть в черном списке</string>
+    <string name="call_filter_dialog_add_black">Добавить черный список</string>
+    <string name="add_black_list_done">Номер добавлен в черный список</string>
+    <string name="call_filter_record">Журнал блокировки</string>
+    <string name="call_filter_clear_record">Очистить журнал</string>
+    <string name="call_filter_remove_from_blacklist">Переместить из черного списка</string>
+    <string name="call_filter_mark">Метки </string>
+    <string name="call_filter_delete_record">Удалить журнал блокировки</string>
+    <string name="call_filter_mark_as_sr">Спам-звонки </string>
+    <string name="call_filter_mark_as_tx">Реклама </string>
+    <string name="call_filter_mark_as_zp">Мошенники </string>
+    <string name="call_filter_confirm_clear_record">Уверены, что хотите удалить все записи?</string>
+    <string name="call_filter_ask_add_to_blacklist">Обнаружено, что время Вашего разговора "&lt;"5 секунд, хотите пометить и добавить этот номер в черный список?</string>
+    <string name="call_filter_confirm_add_to_blacklist">Добавить %1$s в черный список?</string>
+    <string name="call_filter_confirm_add_to_blacklist_summary">%1$s пользователей добавили этот номер в черный список</string>
+    <string name="black_list_is_empty">Добавляйте нежелательные номера в черный список, будьте вдали от беспокойств!</string>
+    <string name="filter_list_is_empty">У Вас еще нет данных о заблокированных звонках, добавьте черный список!</string>
+    <string name="mark_number_from_list">Номер отмечен</string>
+    <string name="number_toast_text_black">%1$s пользователей уже внесли</string>
+    <string name="number_toast_text_mark">%1$s пользователей уже отметили</string>
+    <string name="number_add_to_black_list">%1$s пользователей уже заблокировали</string>
+    <string name="number_call_duration_s">Продолжительность разговора: %1$s секунд</string>
+    <string name="number_call_duration_m">Продолжительность разговора: %1$s минут</string>
+    <string name="number_call_duration_h">Продолжительность разговора: %1$s часов</string>
+    <string name="scan_score">Обработано +%1$s баллов </string>
+    <string name="scan_app_title">Обнаружено %1$s приложений</string>
+    <string name="scan_app_content_less_three">Заметить секретное приложение %1$s</string>
+    <string name="scan_app_content">%1$s из них  секретное приложение, рекомендуем блокировать</string>
+    <string name="scan_app_content_zero">Рекомендуем выбрать секретное приложение и блокировать</string>
+    <string name="scan_app_content_only_high">Это секретное приложение,рекомендуем блокировать</string>
+    <string name="scan_pic_title">Заметить %1$s фото</string>
+    <string name="scan_pic_content">Рекомендуем выбрать секретные фото и скрыть их</string>
+    <string name="scan_vid_title">Заметить %1$s ведио</string>
+    <string name="scan_vid_content">Рекомендуем выбрать секретные ведио и скрыть их</string>
+    <string name="scan_instruct_title">Защита от захватчиков</string>
+    <string name="scan_instruct_content">Включить защиту от захватчиков, посмотреть, кто подсматривает за Вашим телефоном</string>
+    <string name="scan_lost_title">Защита от кражи</string>
+    <string name="scan_lost_content">Включить защиту от кражи для поиска украденного телефона</string>
+    <string name="scan_contact_title">Постоянные конфиденциальные контактные лица</string>
+    <string name="scan_wifi_title">Безопасность Wifi</string>
+    <string name="scan_wifi_content">Безопасный режим Wifi</string>
+    <string name="scan_app_start">Идет сканирование приложений</string>
+    <string name="scan_pic_start">Идет сканирование изображений</string>
+    <string name="scan_vid_start">Идет сканирование видео</string>
+    <string name="scan_vid_none">Не обнаружено новых видео </string>
+    <string name="scan_pic_none">Не обнаружено новых изображений</string>
+    <string name="scan_app_none">Не обнаружено новых приложений</string>
+    <string name="scan_find_app">Обнаружено <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> приложений, рекомендуем установить замок</string>
+    <string name="scan_find_pic">Обнаружено <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> изображений, рекомендуем скрыть</string>
+    <string name="scan_find_vid">Обнаружено <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> видео, рекомендуем скрыть</string>
+    <string name="call_filter_add_strange_num">Добавить в черный список</string>
+    <string name="call_filter_clear_all_black">Очистить все</string>
+    <string name="lock_app_item_desc_cb"><Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> пользователей установили замок</string>
+    <string name="menu_left_item_problem">Часто задаваемые вопросы</string>
+    <string name="feedback_problem_text">Посмотреть в часто задаваемых вопросах</string>
+    <string name="filter_number_type_saorao">Спам-звонки</string>
+    <string name="filter_number_type_ad">Реклама </string>
+    <string name="filter_number_type_zhapian">Мошенники</string>
+    <string name="str_noti_title_txt">Последние незнакомые входящие звонки %1$s </string>
+    <string name="str_noti_content_txt">%1$s незнакомых входящих звонков</string>
+    <string name="pri_pro_ignore2">Пропустить</string>
+    <string name="miss_noti_tit">Пропущенные вызовы</string>
+    <string name="miss_noti_content">%2$s пользователей добавили %1$s в черный список, рекомендуем добавить в черный список</string>
+    <string name="fil_noti_bt">Просмотр </string>
+
 </resources>

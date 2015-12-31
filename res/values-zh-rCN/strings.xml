@@ -829,4 +829,96 @@
     <string name="wifi_result_wifimaster_content">马上进行WiFi测速，选择最快的WiFi链接！</string>
     <string name="pri_result_wifimaster_btn">开启</string>
     <string name="video_guide_txt">点击编辑按钮，就可以勾选视频取消隐藏哦～</string>
+
+    <!-- 3.2 -->
+    <string name="call_filter_remove_from_blacklist_checkbox_title">您将会收到这个号码的来电，确认要移出黑名单吗？</string>
+    <string name="call_filter_remove_from_blacklist_checkbox_text">是否同步将拦截记录恢复到通话记录</string>
+    <string name="call_filter_name">骚扰拦截</string>
+    <string name="call_filter_black_list_tab">黑名单</string>
+    <string name="call_filter_list_tab">来电拦截</string>
+    <string name="call_filter_black_list_add">添加</string>
+    <string name="call_filter_black_list_unknow_num">最近陌生来电</string>
+    <string name="call_filter_setting_title">设置</string>
+    <string name="call_filter_setting_one_desc">骚扰拦截已开启</string>
+    <string name="call_filter_setting_two_title">拦截通知</string>
+    <string name="call_filter_notifacation">拦截到以下来电</string>
+    <string name="call_filter_setting_two_desc">拦截到的来电在通知栏显示</string>
+    <string name="call_filter_add_black_num">该号码是隐私联系人号码，请先从隐私联系人中移除</string>
+    <string name="call_filter_have_add_black_num">该号码已存在黑名单中</string>
+    <string name="call_filter_dialog_add_black">添加黑名单</string>
+    <string name="add_black_list_done">号码已加入黑名单</string>
+    <string name="call_filter_add_to_blacklist_people_tips">已被%1$s人拉入黑名单</string>
+    <string name="call_filter_marked_people_tips">已被%1$s人标记为%2$s</string>
+    <string name="call_filter_marked_and_add_tips">标记%1$s并加入黑名单</string>
+    <string name="call_filter_confirm_ask_mark_summary">已有%1$s人将该号码标记为%2$s</string>
+
+    <string name="call_filter_record">拦截记录</string>
+    <string name="call_filter_clear_record">清空记录</string>
+    <string name="call_filter_remove_from_blacklist">移出黑名单</string>
+    <string name="call_filter_mark">标记</string>
+    <string name="call_filter_delete_record">删除拦截记录</string>
+    <string name="call_filter_mark_as_sr">骚扰电话</string>
+    <string name="call_filter_mark_as_tx">广告推销</string>
+    <string name="call_filter_mark_as_zp">诈骗电话</string>
+    <string name="call_filter_confirm_clear_record">确定清空所有记录吗？</string>
+    <string name="call_filter_ask_add_to_blacklist">监测到您的通话时间"&lt;"%1$s秒，是否将该号码标记并加入黑名单</string>
+    <string name="call_filter_confirm_add_to_blacklist">是否将%1$s加入黑名单</string>
+    <string name="call_filter_confirm_add_to_blacklist_summary">已有%1$s人将该号码加入黑名单</string>
+    <string name="black_list_is_empty">将不喜欢的号码加入黑名单，从此远离骚扰~</string>
+    <!--     <string name="filter_list_is_empty">还没有任何的拦截记录，快去添加黑名单吧~</string> -->
+    <string name="filter_list_is_empty">还没有任何的拦截记录</string>
+    <string name="mark_number_from_list">号码已标记</string>
+    <string name="number_toast_text_black">已被%1$s人拉入</string>
+    <string name="number_toast_text_mark">已被%1$s人标记为</string>
+    <string name="number_toast_color"><Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data></string>
+    <string name="number_add_to_black_list">被%1$s人拉黑</string>
+    <string name="number_call_duration_s">通话时长：%1$s秒</string>
+    <string name="number_call_duration_m">通话时长：%1$s分</string>
+    <string name="number_call_duration_h">通话时长：%1$s时</string>
+
+    <string name="scan_score">处理+%1$s分</string>
+    <string name="scan_app_title">发现%1$s个应用</string>
+    <string name="scan_app_content_less_three">发现私密应用%1$s</string>
+    <string name="scan_app_content_less_three_app">发现私密应用<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data></string>
+    <string name="scan_app_content">其中有%1$s等私密性应用，建议加锁</string>
+    <string name="scan_app_content_app">其中有<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>等私密性应用，建议加锁</string>
+    <string name="scan_app_content_zero">建议选择私密应用进行加锁</string>
+    <string name="scan_app_content_only_high">私密应用，建议加锁</string>
+    <string name="scan_pic_title">发现%1$s张图片</string>
+    <string name="scan_pic_content">建议选择私密图片进行隐藏</string>
+    <string name="scan_vid_title">发现%1$s个视频</string>
+    <string name="scan_vid_content">建议选择私密视频进行隐藏</string>
+    <string name="scan_instruct_title">入侵者防护</string>
+    <string name="scan_instruct_content">开启入侵者防护功能，看看有哪些人在偷看你的手机</string>
+    <string name="scan_lost_title">手机防盗</string>
+    <string name="scan_lost_content">开启手机防盗,找回被盗手机</string>
+    <string name="scan_contact_title">频繁隐私联系人</string>
+    <string name="scan_wifi_title">Wifi安全</string>
+    <string name="scan_wifi_content">Wifi安全模式</string>
+    <string name="scan_app_start">正在扫描应用</string>
+    <string name="scan_pic_start">正在扫描图片</string>
+    <string name="scan_vid_start">正在扫描视频</string>
+    <string name="scan_vid_none">未发现新增视频</string>
+    <string name="scan_pic_none">未发现新增图片</string>
+    <string name="scan_app_none">未发现新增应用</string>
+    <string name="scan_find_app">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个应用</string>
+    <string name="scan_find_pic">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张图片</string>
+    <string name="scan_find_vid">发现<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个视频</string>
+    <string name="call_filter_add_strange_num">加入黑名单</string>
+    <string name="call_filter_clear_all_black">清空所有</string>
+
+    <string name="lock_app_item_desc_cb">已有<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>人加锁</string>
+    <string name="menu_left_item_problem">常见问题</string>
+    <string name="feedback_problem_text">去常见问题看看</string>
+
+    <string name="filter_number_type_saorao">骚扰电话</string>
+    <string name="filter_number_type_ad">广告推销</string>
+    <string name="filter_number_type_zhapian">诈骗电话</string>
+    <string name="str_noti_title_txt">最近陌生来电%1$s</string>
+    <string name="str_noti_content_txt">%1$s个陌生来电</string>
+    <string name="pri_pro_ignore2">忽略</string>
+    <string name="miss_noti_tit">未接来电</string>
+    <string name="miss_noti_content">%1$s被%2$s人拉黑，建议拉黑</string>
+    <string name="fil_noti_bt">查看</string>
+    <string name="call_fil_set_close">骚扰拦截已关闭</string>
 </resources>
