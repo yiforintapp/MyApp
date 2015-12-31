@@ -465,12 +465,43 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             Date date = sfd.parse(clallLogDate);
             long time = date.getTime();
 
-            SimpleDateFormat newFormat = new SimpleDateFormat("MM-dd HH:mma");
-            newString = newFormat.format(time);
+            newString = getTime(time);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return newString;
+    }
+
+    private String getTime(long time) {
+        boolean showDay = false;
+        boolean showYear = false;
+        SimpleDateFormat finalFormat;
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        String thatYear = yearFormat.format(time);
+        String toYear = yearFormat.format(System.currentTimeMillis());
+        if (!thatYear.equals(toYear)) {
+            showYear = true;
+        }
+
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+        String thatDay = dayFormat.format(time);
+        String toDay = dayFormat.format(System.currentTimeMillis());
+        if (!thatDay.equals(toDay)) {
+            showDay = true;
+        }
+
+
+        if (showYear) {
+            finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mma");
+        } else if (showDay) {
+            finalFormat = new SimpleDateFormat("MM-dd hh:mma");
+        } else {
+            finalFormat = new SimpleDateFormat("hh:mma");
+        }
+
+        String finalString = finalFormat.format(time);
+
+        return finalString;
     }
 
     /*加载通话通话列表*/
