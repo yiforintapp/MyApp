@@ -16,6 +16,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.CallLog;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -657,8 +659,12 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 public void run() {
 //                    List<ContactCallLog> callLogList = PrivacyContactUtils.
 //                            getSysCallLog(StrangeCallActivity.this, null, null, false, false);
+//                    String selects = CallLog.Calls.TYPE + " = ? ";
+//                    String[] selectArgs = new String[]{String.valueOf(CallLog.Calls.INCOMING_TYPE)};
+                    String selects = null;
+                    String[] selectArgs = null;
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
-                            getSysCallLogNoContact(StrangeCallActivity.this, null, null, false, false);
+                            getSysCallLogNoContact(StrangeCallActivity.this, selects, selectArgs, false, false);
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                     }

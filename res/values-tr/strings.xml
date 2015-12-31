@@ -845,7 +845,7 @@
     <string name="call_filter_mark_as_tx">Reklam</string>
     <string name="call_filter_mark_as_zp">Dolandırıcı</string>
     <string name="call_filter_confirm_clear_record">Geçmişi silmek istediğinizden emin misiniz?</string>
-    <string name="call_filter_ask_add_to_blacklist"></string>
+    <string name="call_filter_ask_add_to_blacklist">Bu numarayı engellemek isteyip istemediğinizi, %1$s saniyeden daha az çağrı zaman bulmak</string>
     <string name="call_filter_confirm_add_to_blacklist">%1$s numara kara listeye eklensin mi?</string>
     <string name="call_filter_confirm_add_to_blacklist_summary">%1$s numara zaten kara listede</string>
     <string name="black_list_is_empty">İstenmeyen numaraları kara listeye ekleyin</string>
