@@ -33,7 +33,7 @@
 
             <TextView
                 android:id="@+id/add_from_call_log_item_nameTV"
-                android:layout_width="@dimen/app_manager_backup_item_text_width"
+                android:layout_width="@dimen/app_manager_lv_item_text_width_move_short"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="理奥网络"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="12dp">
+            android:layout_marginRight="10dp">
 
             <RelativeLayout
                 android:id="@+id/two_tv_content"
