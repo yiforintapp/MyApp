@@ -35,7 +35,7 @@
             android:id="@+id/tv_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:singleLine="true"
             android:textColor="@color/c4"
             android:textSize="13dp" />

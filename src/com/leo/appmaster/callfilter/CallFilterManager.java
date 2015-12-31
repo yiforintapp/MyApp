@@ -294,30 +294,18 @@ public class CallFilterManager {
                 info = getBlackFroNum(mPhoneNumber);
                 serInfo = getSerBlackForNum(mPhoneNumber);
                 int[] filterTip = cmp.isCallFilterTip(mPhoneNumber);
-                if (filterTip != null) {
-                    LeoLog.i("testdata", "filterTip[0] = " + filterTip[0] + "filterTip[1] = "+ filterTip[1] + "filterTip[2] = " + filterTip[2] + "filterTip[3] = "+ filterTip[3]);
-                }
-                LeoLog.i("testdata", "mIsOffHook = " + mIsOffHook);
-                if (info == null) {
-                    LeoLog.i("testdata", "info = null");
-                }
-                if (serInfo == null) {
-                    LeoLog.i("testdata", "serInfo = null");
-                }
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
                 // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
                 long durationMax = cmp.getCallDurationMax();
-                durationMax = 7955;
+//                durationMax = 7955;
                 long currentTime = System.currentTimeMillis();
                 long deltaTime = currentTime - mLastOffHookTime;
                 LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
                 LeoLog.i(TAG, "idle : System.currentTimeMillis() =" + currentTime);
                 LeoLog.i("allnull", "deltaTime = " + deltaTime);
-                // Toast.makeText(mContext, "max time = "+durationMax,
-                // Toast.LENGTH_LONG).show();
                 // 时间过短 且 服务器和本地都没有数据
-                if (deltaTime < durationMax
-                        && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0])) {
+                if (deltaTime < durationMax && 
+                        (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0])) {
                     if (mDialogTooShort != null && mDialogTooShort.isShowing()) {
                         return;
                     }
