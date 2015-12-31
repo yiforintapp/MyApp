@@ -22,7 +22,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RemoteViews;
 
 public class CallFIlterUIHelper {
@@ -55,9 +58,15 @@ public class CallFIlterUIHelper {
         return dialog;
     }
 
-    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String title, Context context, boolean isContentShow, int filterType) {
-        MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
-        dialog.setTitle(title);
+    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String number, Context context, boolean isContentShow, int filterType) {
+        final MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
+        dialog.getListView().setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dialog.setNowItemPosition(position);
+            }
+        });
+        dialog.setTitle(String.format(context.getString(R.string.call_filter_marked_and_add_tips),number));
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.setContentVisible(isContentShow);
         dialog.setContent(context.getResources().getString(R.string.call_filter_ask_add_to_blacklist));
@@ -66,13 +75,11 @@ public class CallFIlterUIHelper {
                 context.getResources().getString(R.string.call_filter_mark_as_zp)};
         dialog.setCanceledOnTouchOutside(true);
         dialog.fillData(itemContent);
-
         if (filterType > 0 && filterType < 4) {
             dialog.setNowItemPosition(filterType - 1);
         } else {
             dialog.setNowItemPosition(0);
         }
-
         return dialog;
     }
 
@@ -108,7 +115,7 @@ public class CallFIlterUIHelper {
         RemoteViews mRemoteViews = new RemoteViews(ama.getPackageName(), R.layout.remoteview_callfilter);
         mRemoteViews.setTextViewText(R.id.tv_title, ama.getResources().getString(R.string.call_filter_notifacation));
         mRemoteViews.setTextViewText(R.id.tv_content, number);
-        mRemoteViews.setImageViewResource(R.id.iv_ic, R.drawable.ic_launcher);
+        mRemoteViews.setImageViewResource(R.id.iv_ic, R.drawable.intercept);
 
         Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
         intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mFilterNoti);
@@ -133,7 +140,7 @@ public class CallFIlterUIHelper {
         RemoteViews mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.remoteview_callfilter);
         mRemoteViews.setTextViewText(R.id.tv_title, title);
         mRemoteViews.setTextViewText(R.id.tv_content, content);
-        mRemoteViews.setImageViewResource(R.id.iv_ic, R.drawable.ic_launcher);
+        mRemoteViews.setImageViewResource(R.id.iv_ic, R.drawable.intercept);
         Intent intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
         intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mStrangerCallNoti);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
