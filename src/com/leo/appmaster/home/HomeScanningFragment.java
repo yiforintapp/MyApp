@@ -783,6 +783,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 //    }
 
 
+    private int changItem = 0;
+
     public void updateUIOnAnimationEnd(final LinearLayout layout) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
 
@@ -814,7 +816,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             layout.post(new Runnable() {
                 @Override
                 public void run() {
-                    setItemPlace(layout, 6, firLocation);
+                    setItemPlace(layout, changItem, firLocation);
                 }
             });
 
@@ -824,7 +826,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             layout.post(new Runnable() {
                 @Override
                 public void run() {
-                    setItemPlace(layout, 5, firLocation);
+                    setItemPlace(layout, changItem, firLocation);
                 }
             });
         } else if (layout == mNewVidLayout) {
@@ -833,7 +835,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             layout.post(new Runnable() {
                 @Override
                 public void run() {
-                    setItemPlace(layout, 4, firLocation);
+                    setItemPlace(layout, changItem, firLocation);
                 }
             });
         } else if (layout == mNewInstructLayout) {
@@ -842,7 +844,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             layout.post(new Runnable() {
                 @Override
                 public void run() {
-                    setItemPlace(layout, 2, firLocation);
+                    setItemPlace(layout, changItem, firLocation);
                 }
             });
         } else if (layout == mNewWifiLayout) {
@@ -852,7 +854,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             layout.post(new Runnable() {
                 @Override
                 public void run() {
-                    setItemPlace(layout, 1, firLocation);
+                    setItemPlace(layout, changItem, firLocation);
                 }
             });
 
@@ -862,7 +864,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             layout.post(new Runnable() {
                 @Override
                 public void run() {
-                    setItemPlace(layout, 3, firLocation);
+                    setItemPlace(layout, changItem, firLocation);
                 }
             });
         } else if (layout == mNewContactLayout) {
@@ -872,7 +874,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             layout.post(new Runnable() {
                 @Override
                 public void run() {
-                    setItemPlace(layout, 0, firLocation);
+                    setItemPlace(layout, changItem, firLocation);
                 }
             });
         }
@@ -907,6 +909,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             params.height = mNowHeight;
             mBackView.setLayoutParams(params);
         }
+        changItem++;
     }
 
 
@@ -1104,7 +1107,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (layout == mNewContactLayout) {
             startAnimator(mNewWifiLayout);
         } else if (layout == mNewWifiLayout) {
-            startAnimator(mNewInstructLayout);
+            IntrudeSecurityManager manager = (IntrudeSecurityManager)
+                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+            if (!manager.getIsIntruderSecurityAvailable()) {
+                startAnimator(mNewLostLayout);
+            } else {
+                startAnimator(mNewInstructLayout);
+            }
         } else if (layout == mNewInstructLayout) {
             startAnimator(mNewLostLayout);
         } else if (layout == mNewLostLayout) {
@@ -1148,9 +1157,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         int layoutHeight;
         if (layout == mNewAppLayout) {
             layoutHeight = shortTypeHeight;
-        } else if(layout == mAdLayout){
+        } else if (layout == mAdLayout) {
             layoutHeight = adTypeHeight;
-        }else{
+        } else {
             layoutHeight = normalTypeHeight;
         }
         AnimatorSet animatorSet = new AnimatorSet();
@@ -1217,9 +1226,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         int backHeight;
         if (layout == mNewAppLayout) {
             backHeight = shortTypeHeight;
-        } else if(layout == mAdLayout){
+        } else if (layout == mAdLayout) {
             backHeight = adTypeHeight;
-        }else{
+        } else {
             backHeight = normalTypeHeight;
         }
 
@@ -1235,9 +1244,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         final int layoutHeight;
         if (layout == mNewAppLayout) {
             layoutHeight = shortTypeHeight;
-        } else if(layout == mAdLayout){
+        } else if (layout == mAdLayout) {
             layoutHeight = adTypeHeight;
-        }else{
+        } else {
             layoutHeight = normalTypeHeight;
         }
 
