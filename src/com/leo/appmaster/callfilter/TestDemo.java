@@ -131,7 +131,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 if (blacksSer != null) {
                     StringBuilder sbw = new StringBuilder();
                     for (BlackListInfo infos : blacksSer) {
-                        sbw.append(infos.getNumber()+"\n");
+                        sbw.append(infos.getNumber()+":黑人="+infos.getAddBlackNumber()+"：标记人="+infos.getMarkerNumber()+":类型="+infos.getMarkerType()+"\n");
                     }
                     Toast.makeText(TestDemo.this, sbw.toString(), Toast.LENGTH_LONG).show();
                 }

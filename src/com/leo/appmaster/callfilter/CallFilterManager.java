@@ -311,8 +311,7 @@ public class CallFilterManager {
                 }
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
-            LeoLog.i("testdata", "idle mPhoneNumber = "+mPhoneNumber);
-            LeoLog.i("testdata", "idle phoneNumber = "+phoneNumber);
+            LeoLog.i("testdata", "mPhoneNumber = "+mPhoneNumber);
             LeoLog.i(TAG, "挂断！");
             // toast消失，并置为null，保证为null即消失
             if (mTipToast != null) {
@@ -856,6 +855,7 @@ public class CallFilterManager {
             if (count == 0) {
                 return;
             }
+            LeoLog.i(TAG, "陌生人未接来电个数：" + count);
             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext
                     .getManager(MgrContext.MGR_CALL_FILTER);
             int param = pm.getStraNotiTipParam();

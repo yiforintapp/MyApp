@@ -316,6 +316,10 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
                     Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
                     startActivity(mIntent);
+                    if (DBG) {
+                        Intent intent1 = new Intent(getActivity(), TestDemo.class);
+                        startActivity(intent1);
+                    }
                     break;
                 case R.id.home_lost_tab:
                     // 骚扰拦截
