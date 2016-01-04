@@ -223,6 +223,7 @@ public class LEOAlarmDialog extends LEOBaseDialog {
     public void setLeftBtnVisibility(boolean flag) {
         if (!flag) {
             mLeftBtn.setVisibility(View.GONE);
+            mRvLeft.setVisibility(View.GONE);
         }
     }
 

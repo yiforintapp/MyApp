@@ -421,6 +421,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @SuppressWarnings("deprecation")
     private void setMobvistaIcon() {
+        if (mQuickLockMode) {
+            return;
+        }
         if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
             if (SHOW_AD_TYPE == AD_TYPE_SHAKE) {
                 mAdIconRedTip.setVisibility(View.VISIBLE);
