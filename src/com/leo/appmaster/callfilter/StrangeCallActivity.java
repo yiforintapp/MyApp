@@ -80,7 +80,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private boolean mLoadDone = false;
     private AddFromCallHandler mAddFromCallHandler = new AddFromCallHandler();
 
-    private Button mAddButton;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -154,8 +153,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mSrcBackupList = new ArrayList<ContactCallLog>();
         mAddPrivacyCallLog = new ArrayList<ContactCallLog>();
 
-        mAddButton = (Button) findViewById(R.id.add_100);
-        mAddButton.setOnClickListener(this);
     }
 
     @Override
@@ -263,27 +260,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             case R.id.rv_button_backup:
                 addToBlackList();
                 break;
-            case R.id.add_100:
-                if (mLoadDone) {
-                    add100();
-                }
-                break;
-
         }
     }
 
-    private void add100() {
-        List<ContactCallLog> callLogList = new ArrayList<ContactCallLog>();
-        for (int i = 0; i < 100; i++) {
-            ContactCallLog info = new ContactCallLog();
-            info.setCallLogNumber("0000000" + i);
-            info.setCallLogName("abc");
-            info.setCallLogDuraction(1);
-            callLogList.add(info);
-        }
-        mCallLogList.addAll(callLogList);
-        mCallLogAdapter.notifyDataSetChanged();
-    }
 
     private void addToBlackList() {
         if (mLoadDone) {

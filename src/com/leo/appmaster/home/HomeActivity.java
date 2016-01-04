@@ -1225,8 +1225,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 + country + "/" + language + "/" + version + ".html";
         LeoLog.d("testFaq", "url : " + url);
 
-
-//        mLockManager.filterSelfOneMinites();
         MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
     }
 
