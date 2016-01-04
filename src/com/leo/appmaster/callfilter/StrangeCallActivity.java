@@ -141,6 +141,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 //        mAddAll.setOnClickListener(this);
         mSelectAll = findViewById(R.id.click_check_box);
         mSelectAll.setOnClickListener(this);
+        mSelectAll.setEnabled(false);
 
         mEmptyView = findViewById(R.id.add_call_log_default_tv);
         mAddBtn = (RippleView) findViewById(R.id.rv_button_backup);
