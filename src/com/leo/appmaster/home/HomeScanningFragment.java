@@ -71,7 +71,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private static final int TEXT_NO_CONTENT_SCORE  = 0;
     private static final int TEXT_HAVE_CONTENT_ONLY  = 1;
     private static final int TEXT_HAVE_CONTENT_SCORE = 2;
-    private static final int ONE_LINE = 18;
+    private static final int ONE_LINE = 20;
     private static final int TWO_LINE = 37;
     private static final int THREE_LINE = 55;
     private static final int FOUR_LINE = 71;
