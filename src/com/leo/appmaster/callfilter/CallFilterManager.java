@@ -54,7 +54,7 @@ public class CallFilterManager {
     private List<BlackListInfo> mSerBlackList;
     private CallFilterToast mTipToast;
     private long mCurrentCallTime = -1;
-    private String mPhoneNumber = null;
+    private static String mPhoneNumber = null;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmrMark;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmr;
     private LEOAlarmDialog mDialogAskAdd;
@@ -304,6 +304,7 @@ public class CallFilterManager {
                 }
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+            LeoLog.i("testdata", "mPhoneNumber = "+mPhoneNumber);
             LeoLog.i(TAG, "挂断！");
             // toast消失，并置为null，保证为null即消失
             if (mTipToast != null) {
