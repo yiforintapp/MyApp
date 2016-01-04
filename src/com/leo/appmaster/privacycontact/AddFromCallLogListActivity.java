@@ -93,7 +93,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                         Context context = AddFromCallLogListActivity.this;
                         String str = getResources().getString(R.string.add_black_list_done);
                         Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else {
                         AddFromContactListActivity
                                 .notificationUpdatePrivacyContactList();
                     }
@@ -383,7 +383,10 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                 boolean isPryCont = false;
                                 isPryCont = PrivacyContactUtils.pryContRemovSame(contactNumber);
 
-                                if (!isPryCont) {
+                                String number = PrivacyContactUtils.simpleFromateNumber(contactNumber);
+                                boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
+
+                                if (!isPryCont && !isHaveBlackNum) {
                                     addContToSelfDb(call);
                                     added = true;
                                     Context context = AddFromCallLogListActivity.this;
@@ -422,7 +425,6 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                     }
 
                                 }
-//                                mLogFlag = true;
                                 isPryCont = false;
                                 if (mHandler != null) {
                                     Message messge = Message.obtain();

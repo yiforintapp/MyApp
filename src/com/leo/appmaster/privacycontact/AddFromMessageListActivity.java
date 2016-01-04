@@ -431,7 +431,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 String numberFromMessage = PrivacyContactUtils.simpleFromateNumber(contactNumber);
                                 /*隐私联系人去重*/
                                 boolean flagContact = PrivacyContactUtils.pryContRemovSame(contactNumber);
-                                if (!flagContact) {
+
+                                boolean isHaveBlackNum = mCallManger.isExistBlackList(numberFromMessage);
+
+                                if (!flagContact && !isHaveBlackNum) {
                                     ContentValues values = new ContentValues();
                                     values.put(Constants.COLUMN_PHONE_NUMBER, numberFromMessage);
                                     values.put(Constants.COLUMN_CONTACT_NAME, name);

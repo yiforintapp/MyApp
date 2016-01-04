@@ -411,7 +411,11 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                 /*隐私联系人去重*/
                                 boolean flagContact = false;
                                 flagContact = PrivacyContactUtils.pryContRemovSame(number);
-                                if (!flagContact) {
+
+                                boolean isHaveBlackNum = mCallManger.
+                                        isExistBlackList(number);
+
+                                if (!flagContact && !isHaveBlackNum) {
                                     ContentValues contactValues = new ContentValues();
                                     contactValues.put(Constants.COLUMN_PHONE_NUMBER, number);
                                     contactValues.put(Constants.COLUMN_CONTACT_NAME, name);
