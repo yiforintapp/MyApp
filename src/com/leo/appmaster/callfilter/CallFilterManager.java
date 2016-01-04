@@ -388,7 +388,7 @@ public class CallFilterManager {
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
                         notiUpdateBlackList();
-                        Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                         mDialogTooShort.dismiss();
                     }
                 });
@@ -924,7 +924,6 @@ public class CallFilterManager {
                     String selectionDe = CallLog.Calls._ID + " = ? ";
                     String[] selectionArgsDe = new String[]{String.valueOf(id)};
                     int count = PrivacyContactUtils.deleteDbLog(cr, PrivacyContactUtils.CALL_LOG_URI, selectionDe, selectionArgsDe);
-
                     LeoLog.i(TAG, count + ":id = " + id);
                 } catch (Exception e) {
                     e.printStackTrace();
