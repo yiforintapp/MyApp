@@ -244,6 +244,8 @@ public class CallFilterManager {
             mPhoneNumber = phoneNumber;
             info = getBlackFroNum(phoneNumber);
             serInfo = getSerBlackForNum(phoneNumber);
+            LeoLog.i("testdata", "firstly, phoneNumber is not null, info = " + info == null ? "null" : "not null");
+            LeoLog.i("testdata", "firstly, phoneNumber is not null, serInfo = " + serInfo == null ? "null" : "not null");
         }
         //自己拨出，return
         if (TextUtils.isEmpty(state) || isComingOut()) {
@@ -252,6 +254,9 @@ public class CallFilterManager {
         if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
             if (!TextUtils.isEmpty(phoneNumber)) {
                 mPhoneNumber = phoneNumber;
+                LeoLog.i("testdata", "ringing... and number is not null , get! mPhoneNumber = " + mPhoneNumber);
+            } else {
+                LeoLog.i("testdata", "ringing... and number is null , ignore!  mPhoneNumber = " + mPhoneNumber);
             }
             final BlackListInfo blackInfo = info;
             final BlackListInfo blackSerInfo = serInfo;
@@ -270,6 +275,8 @@ public class CallFilterManager {
                 int tipType = filterTip[1];
                 int showValue = filterTip[2];
                 int filterType = filterTip[3];
+                LeoLog.i("testdata", "ringing... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0] 
+                        +"    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
                 if (CallFilterConstants.IS_TIP_DIA[0] == isTip) {
                     return;
                 }
@@ -304,7 +311,8 @@ public class CallFilterManager {
                 }
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
-            LeoLog.i("testdata", "mPhoneNumber = "+mPhoneNumber);
+            LeoLog.i("testdata", "idle mPhoneNumber = "+mPhoneNumber);
+            LeoLog.i("testdata", "idle phoneNumber = "+phoneNumber);
             LeoLog.i(TAG, "挂断！");
             // toast消失，并置为null，保证为null即消失
             if (mTipToast != null) {
@@ -314,6 +322,7 @@ public class CallFilterManager {
             //如果带了号码，更新之前记录的号码
             if (!TextUtils.isEmpty(phoneNumber)) {
                 mPhoneNumber = phoneNumber;
+                LeoLog.i("testdata", "idle number != null get! " + mPhoneNumber);
             }
             /* 恢复默认值 */
             setCurrentCallTime(-1);
@@ -329,6 +338,15 @@ public class CallFilterManager {
             LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
             LeoLog.i(TAG, "idle : System.currentTimeMillis() =" + currentTime);
             LeoLog.i("allnull", "deltaTime = " + deltaTime);
+            
+            
+            LeoLog.i("testdata", "idle... " + "info = " + info == null ? "null" : "not null");
+            LeoLog.i("testdata", "idle... " + "serinfo = " + serInfo == null ? "null" : "not null");
+            LeoLog.i("testdata", "idle... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0] 
+                    +"    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
+            LeoLog.i("testdata", "deltaTime = " + deltaTime);
+
+            
             // 时间过短 且 服务器和本地都没有数据
 //            mIsOffHook = false
             if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0])) {
