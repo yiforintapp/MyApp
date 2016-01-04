@@ -899,5 +899,6 @@
     <string name="miss_noti_tit">Cevapsız</string>
     <string name="miss_noti_content">%2$s tarafından %1$s kara listede</string>
     <string name="fil_noti_bt">Bak</string>
+    <string name="strange_call_empty">Hiçbir yabancı aramalar</string>
 
 </resources>

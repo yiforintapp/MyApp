@@ -921,5 +921,5 @@
     <string name="miss_noti_tit">Missed calls</string>
     <string name="miss_noti_content">%1$s added to blacklist by %2$s users, add</string>
     <string name="fil_noti_bt">View</string>
-
+    <string name="strange_call_empty">No Stranger Calls</string>
 </resources>

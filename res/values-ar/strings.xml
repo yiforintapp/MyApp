@@ -986,5 +986,5 @@
     <string name="miss_noti_tit">لم يرد المكالمة</string>
     <string name="miss_noti_content">%1$s يسحب بـ %2$s الى أسود ، اقتراحا بتسويد</string>
     <string name="fil_noti_bt">ارجع</string>
-
+    <string name="strange_call_empty">لا يمكن إجراء مكالمات غريب</string>
 </resources>

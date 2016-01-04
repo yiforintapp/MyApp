@@ -101,14 +101,14 @@
         android:visibility="gone">
 
         <ImageView
-            android:layout_width="@dimen/privacy_default_image_width"
-            android:layout_height="@dimen/privacy_default_image_height"
-            android:src="@drawable/call_log_default" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/strangercall_empty" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/privacy_default_text_margin_top"
+            android:layout_marginTop="15dp"
             android:text="@string/privacy_add_call_log_default_text"
             android:textColor="#d3d3d4"
             android:textSize="18dp" />
