@@ -64,7 +64,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             mClearAll.setEnabled(true);
             if (isFirstLoadDone) {
                 CallFilterMainActivity activity = (CallFilterMainActivity) mActivity;
-                activity.moveToFilterFragment();
+//                activity.moveToFilterFragment();
             }
             mRlBottomView.setVisibility(View.VISIBLE);
             mNothingToShowView.setVisibility(View.GONE);

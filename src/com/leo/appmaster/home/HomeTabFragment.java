@@ -32,6 +32,7 @@ import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
+import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
@@ -73,7 +74,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private ImageView mIvTabIcon2;
     private ImageView mIvTabIcon3;
     private ImageView mIvTabIcon4;
-
+    private boolean mIsHasCallFilterRecords = false;
+    
     private View mRootView;
     private HomeActivity mActivity;
 
@@ -97,7 +99,24 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        checkCallFilterRecordCount();
         checkNewTheme();
+    }
+
+    private void checkCallFilterRecordCount() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                CallFilterContextManager mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                List<CallFilterInfo> callFilterGrList = mCallManger.getCallFilterGrList();
+                LeoLog.i("tess", "callFilterGrList.size = " + callFilterGrList.size());
+                if (callFilterGrList != null && callFilterGrList.size() != 0) {
+                    mIsHasCallFilterRecords = true;
+                } else {
+                    mIsHasCallFilterRecords = false;
+                }
+            }
+        });
     }
 
     @Override
@@ -324,6 +343,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 case R.id.home_lost_tab:
                     // 骚扰拦截
                     Intent callFilter = new Intent(activity, CallFilterMainActivity.class);
+                    if (mIsHasCallFilterRecords) {
+                        callFilter.putExtra("needMoveToTab2", true);
+                    }
                     startActivity(callFilter);
                     if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());

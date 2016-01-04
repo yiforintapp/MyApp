@@ -24,6 +24,7 @@ import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
+import com.leo.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,11 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         mViewPager.setAdapter(new ManagerFlowAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2);
         mPagerTab.setViewPager(mViewPager);
+        LeoLog.i("tess", "needMoveToTab2 = " + getIntent().getBooleanExtra("needMoveToTab2", false));
+        if (getIntent().getBooleanExtra("needMoveToTab2", false)) {
+            
+            mViewPager.setCurrentItem(1);
+        }
     }
 
 
