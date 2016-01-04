@@ -244,8 +244,8 @@ public class CallFilterManager {
             mPhoneNumber = phoneNumber;
             info = getBlackFroNum(phoneNumber);
             serInfo = getSerBlackForNum(phoneNumber);
-            LeoLog.i("testdata", "firstly, phoneNumber is not null, info = " + info == null ? "null" : "not null");
-            LeoLog.i("testdata", "firstly, phoneNumber is not null, serInfo = " + serInfo == null ? "null" : "not null");
+            LeoLog.i("testdata", "firstly, phoneNumber is not null, info = " + (info == null ? "null" : "not null"));
+            LeoLog.i("testdata", "firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
         }
         //自己拨出，return
         if (TextUtils.isEmpty(state) || isComingOut()) {
@@ -256,7 +256,7 @@ public class CallFilterManager {
                 mPhoneNumber = phoneNumber;
                 LeoLog.i("testdata", "ringing... and number is not null , get! mPhoneNumber = " + mPhoneNumber);
             } else {
-                LeoLog.i("testdata", "ringing... and number is null , ignore!  mPhoneNumber = " + mPhoneNumber);
+                LeoLog.i("testdata", "ringing... and number is null , ignore!  mPhoneNumber = " + (mPhoneNumber == null ? "null" : mPhoneNumber));
             }
             final BlackListInfo blackInfo = info;
             final BlackListInfo blackSerInfo = serInfo;
@@ -311,7 +311,8 @@ public class CallFilterManager {
                 }
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
-            LeoLog.i("testdata", "mPhoneNumber = "+mPhoneNumber);
+//            LeoLog.i("testdata", "idle mPhoneNumber = "+(mPhoneNumber == null ? "null" : mPhoneNumber));
+//            LeoLog.i("testdata", "idle phoneNumber = "+phoneNumber);
             LeoLog.i(TAG, "挂断！");
             // toast消失，并置为null，保证为null即消失
             if (mTipToast != null) {
@@ -339,10 +340,14 @@ public class CallFilterManager {
             LeoLog.i("allnull", "deltaTime = " + deltaTime);
             
             
-            LeoLog.i("testdata", "idle... " + "info = " + info == null ? "null" : "not null");
-            LeoLog.i("testdata", "idle... " + "serinfo = " + serInfo == null ? "null" : "not null");
-            LeoLog.i("testdata", "idle... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0] 
-                    +"    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
+            LeoLog.i("testdata", "idle... " + "info = " + (info == null ? "null" : "not null"));
+            LeoLog.i("testdata", "idle... " + "serinfo = " + (serInfo == null ? "null" : "not null"));
+            if (filterTip != null) {
+                LeoLog.i("testdata", "idle... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0] 
+                        +"    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
+            } else {
+                LeoLog.i("testdata", "idle... " + "filterTip = null");
+            }
             LeoLog.i("testdata", "deltaTime = " + deltaTime);
 
             
