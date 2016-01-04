@@ -459,6 +459,10 @@ public class IntruderprotectionActivity extends BaseActivity {
         mctb.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!mImanager.getIsIntruderSecurityAvailable()) {
+                    return;
+                }
+                
                 SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_clear");
                 
@@ -596,6 +600,9 @@ public class IntruderprotectionActivity extends BaseActivity {
         btChangeTimes.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!mImanager.getIsIntruderSecurityAvailable()) {
+                    return;
+                }
                 SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_modify");
                 showChangeTimesDialog();
