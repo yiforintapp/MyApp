@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,7 +80,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private final int MAX_ITEM_SIZE = 100;
     private boolean mLoadDone = false;
     private AddFromCallHandler mAddFromCallHandler = new AddFromCallHandler();
-
+    private RelativeLayout mRlBottomView;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -134,7 +135,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mTitleBar = (CommonToolbar) findViewById(R.id.add_privacy_call_log_title_bar);
         mTitleBar.setToolbarTitle(R.string.call_filter_black_list_unknow_num);
         mTitleBar.setToolbarColorResource(R.color.cb);
-
+        mRlBottomView = (RelativeLayout) findViewById(R.id.rl_bottomview);
         mAddAll = (ImageView) findViewById(R.id.iv_add_all_black);
         mAddAll.setTag(false);
 //        mAddAll.setOnClickListener(this);
@@ -160,12 +161,15 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     protected void onResume() {
         super.onResume();
         if (mAddPrivacyCallLog.size() != 0) {
-            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-            mAddBtn.setEnabled(true);
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+//            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+//            mAddBtn.setEnabled(true);
+//            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+            mRlBottomView.setVisibility(View.VISIBLE);
         } else {
-            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-            mAddBtn.setEnabled(false);
+//            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+//            mAddBtn.setEnabled(false);
+//            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+            mRlBottomView.setVisibility(View.GONE);
         }
     }
 
@@ -221,13 +225,15 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
         }
         if (mAddPrivacyCallLog.size() != 0) {
-            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-            mAddBtn.setEnabled(true);
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+//            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+//            mAddBtn.setEnabled(true);
+//            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+            mRlBottomView.setVisibility(View.VISIBLE);
         } else {
-            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-            mAddBtn.setEnabled(false);
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+            mRlBottomView.setVisibility(View.GONE);
+//            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+//            mAddBtn.setEnabled(false);
+//            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         }
     }
 
@@ -305,13 +311,15 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 callLog.setCheck(true);
                 mAddPrivacyCallLog.add(callLog);
                 if (mAddPrivacyCallLog.size() != 0) {
-                    mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-                    mAddBtn.setEnabled(true);
-                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+//                    mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+//                    mAddBtn.setEnabled(true);
+//                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+                    mRlBottomView.setVisibility(View.VISIBLE);
                 } else {
-                    mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-                    mAddBtn.setEnabled(false);
-                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+                    mRlBottomView.setVisibility(View.GONE);
+//                    mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+//                    mAddBtn.setEnabled(false);
+//                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
                 }
             } else {
                 callLog.setCheck(false);
@@ -582,9 +590,11 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                             if (mCallLogList != null && mCallLogList.size() > 0) {
                                 mEmptyView.setVisibility(View.GONE);
                                 mSelectAll.setEnabled(true);
+                                mRlBottomView.setVisibility(View.VISIBLE);
                             } else {
                                 mEmptyView.setVisibility(View.VISIBLE);
                                 mSelectAll.setEnabled(false);
+                                mRlBottomView.setVisibility(View.GONE);
                             }
 
                             mListCallLog.setAdapter(mCallLogAdapter);

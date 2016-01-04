@@ -25,6 +25,7 @@
         android:scrollbars="none" />
 
     <RelativeLayout
+        android:id="@+id/rl_bottomview"
         android:layout_width="match_parent"
         android:layout_height="63dp"
         android:layout_alignParentBottom="true"
@@ -92,10 +93,13 @@
         android:visibility="gone" />
 
     <LinearLayout
+        android:layout_below="@id/add_privacy_call_log_title_bar"
         android:id="@+id/add_call_log_default_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">

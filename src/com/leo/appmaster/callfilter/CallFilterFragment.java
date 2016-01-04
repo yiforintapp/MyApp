@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
@@ -41,7 +42,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     private List<CallFilterInfo> mFilterList;
     private boolean isFristIn = true;
     private List<ContactBean> mSysContacts;
-
+    private RelativeLayout mRlBottomView;
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -64,6 +65,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 CallFilterMainActivity activity = (CallFilterMainActivity) mActivity;
                 activity.moveToFilterFragment();
             }
+            mRlBottomView.setVisibility(View.VISIBLE);
             mNothingToShowView.setVisibility(View.GONE);
             mCallListView.setVisibility(View.VISIBLE);
             mAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_CALL_FILTER);
@@ -74,6 +76,8 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     public void showEmpty() {
         mCallListView.setVisibility(View.GONE);
         mNothingToShowView.setVisibility(View.VISIBLE);
+        //TODO
+        mRlBottomView.setVisibility(View.GONE);
         mClearAll.setBackgroundResource(R.drawable.green_radius_shape_disable);
         mClearAll.setEnabled(false);
     }
@@ -94,7 +98,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         mClearAll = (RippleView) findViewById(R.id.clear_all);
         mClearAll.setOnClickListener(this);
         mProgressBar = (ProgressBar) findViewById(R.id.pb_loading);
-
+        mRlBottomView = (RelativeLayout) findViewById(R.id.bottom_view);
         mCallListView = (ListView) findViewById(R.id.list_call_filter);
         mAdapter = new CallFilterFragmentAdapter(mActivity);
         mCallListView.setAdapter(mAdapter);
@@ -103,7 +107,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         mCallListView.setOnItemClickListener(this);
         mCallListView.setOnItemLongClickListener(this);
         mNothingToShowView = findViewById(R.id.content_show_nothing);
-
+        
         loadData(true);
     }
 
