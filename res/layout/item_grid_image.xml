@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="@dimen/cancel_hide_pic_item_padding">
+    android:padding="4dp">
 
     <FrameLayout
         android:id="@+id/fralay_top"
@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:paddingBottom="@dimen/cancel_hide_pic_item_icon_padding"
-        android:paddingRight="@dimen/cancel_hide_pic_item_icon_padding"
+        android:paddingBottom="4dp"
+        android:paddingRight="4dp"
         android:src="@drawable/ic_check_normal_n" />
 
 </RelativeLayout>

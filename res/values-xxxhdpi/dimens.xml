@@ -15,5 +15,4 @@
     <dimen name="fragment_lock_large_banner_msg_size">10dp</dimen>
     <dimen name="fragment_lock_large_banner_spacing">52.5dp</dimen>
     <dimen name="fragment_lock_large_banner_pading">63.5dp</dimen>
-    <dimen name="cancel_hide_pic_item_icon_padding">17dp</dimen>
 </resources>
