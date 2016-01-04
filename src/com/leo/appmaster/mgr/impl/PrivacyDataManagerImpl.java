@@ -43,6 +43,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     private static final int API_LEVEL_19 = 19;
     public final static String CHECK_APART = "check_apart";
     public final static int MAX_NUM = 802;
+    public final static int FASTER_NUM = 200;
     public static final String[] STORE_IMAGES = {
             MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID, //
@@ -557,8 +558,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                         }
                     }
 
-                    //in case of too slow
-                    if (theMaxNum < MAX_NUM) {
+                    //首页扫描，超过200张不判断是否存在
+                    if (theMaxNum < FASTER_NUM) {
                         LeoLog.d("testAddPicExists", "check exists num : " + theMaxNum);
                         File f = new File(path);
                         if (!f.exists()) {
@@ -612,6 +613,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         List<String> filterVideoTypes = getFilterVideoType();
         Cursor cursor = null;
 
+        int theMaxNum = 1;
+
         int currSDK_INT = Build.VERSION.SDK_INT;
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
         String store = externalStorageDirectory.getPath();
@@ -652,9 +655,14 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                         }
                     }
 
-                    File f = new File(path);
-                    if (!f.exists()) {
-                        continue;
+                    //首页扫描，超过200张不判断是否存在
+                    if (theMaxNum < FASTER_NUM) {
+                        LeoLog.d("testAddPicExists", "check exists num : " + theMaxNum);
+                        File f = new File(path);
+                        if (!f.exists()) {
+                            continue;
+                        }
+                        theMaxNum++;
                     }
 
                     boolean isFilterVideoType = false;

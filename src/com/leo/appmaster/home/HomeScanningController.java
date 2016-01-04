@@ -87,8 +87,10 @@ public class HomeScanningController {
 
         if (layout == mNewContactLayout || layout == mNewInstructLayout || layout == mNewWifiLayout) {
             alphaAnim.setDuration(200);
+        } else if (layout == mNewPicLayout) {
+            alphaAnim.setDuration(500);
         } else {
-            alphaAnim.setDuration(800);
+            alphaAnim.setDuration(650);
         }
 
         alphaAnim.setRepeatCount(ValueAnimator.INFINITE);
