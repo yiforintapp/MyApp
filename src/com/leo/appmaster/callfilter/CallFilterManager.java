@@ -284,7 +284,7 @@ public class CallFilterManager {
                 if (!isComOut) {
                     if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
                         /* 标记弹框 */
-                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue,CallFilterToast.FILTER_TYPE, filterType);
+                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.FILTER_TYPE, filterType);
                     } else {
                         /* 黑名单弹框 */
                         mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.BLACK_LIST_TYPE, 0);
@@ -338,8 +338,8 @@ public class CallFilterManager {
                     return;
                 }
                 // 通话时间过短的提醒加入黑名单对话框
-                mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber,AppMasterApplication.getInstance(), true, 0);
-                String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist),(int) (Math.ceil(durationMax / 1000)));
+                mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0);
+                String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (Math.ceil(durationMax / 1000)));
                 mDialogTooShort.setContent(summaryF);
                 mDialogTooShort.setRightBtnListener(new OnClickListener() {
                     @Override
@@ -364,7 +364,7 @@ public class CallFilterManager {
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
                         notiUpdateBlackList();
-                        Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                         mDialogTooShort.dismiss();
                     }
                 });
@@ -379,7 +379,7 @@ public class CallFilterManager {
                     return;
                 }
                 // 接听后挂断 询问是否家黑名单且展示标记人数
-                mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance() .getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
+                mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
                 String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
                 String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
                 switch (filterTip[3]) {
@@ -421,12 +421,12 @@ public class CallFilterManager {
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
                         notiUpdateBlackList();
-                        Toast.makeText(mContext,mContext.getResources().getString(R.string.mark_number_from_list),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                         mDialogAskAddWithSmrMark.dismiss();
                     }
                 });
                 mDialogAskAddWithSmrMark.show();
-            } else if (mIsOffHook && filterTip != null&& CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null
+            } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null
                     && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                 if (mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) {
@@ -462,7 +462,7 @@ public class CallFilterManager {
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
                         notiUpdateBlackList();
-                        Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                         mDialogAskAddWithSmr.dismiss();
                     }
                 });
@@ -470,17 +470,17 @@ public class CallFilterManager {
                 mIsOffHook = false;
             } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
-                if ((mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) ||( mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing())) {
+                if ((mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) || (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing())) {
                     mIsOffHook = false;
                     return;
                 }
                 // 没有接听就直接挂断的
                 if (mDialogAskAdd != null && mDialogAskAdd.isShowing()) {
-                    mIsOffHook =false;
+                    mIsOffHook = false;
                     return;
                 }
                 int tipType = filterTip[1];
-                mDialogAskAdd = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber,String.valueOf(filterTip[2]));
+                mDialogAskAdd = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
                 mDialogAskAdd.setRightBtnListener(new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -491,7 +491,7 @@ public class CallFilterManager {
                         infost.add(infot);
                         cmp.addBlackList(infost, false);
                         notiUpdateBlackList();
-                        Toast.makeText(mContext,mContext.getResources().getString(R.string.add_black_list_done),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                         mDialogAskAdd.dismiss();
                     }
                 });
@@ -503,7 +503,7 @@ public class CallFilterManager {
             mIsOffHook = true;
             LeoLog.i(TAG, "offhook : mLastOffHookTime =" + mLastOffHookTime);
         }
-        
+
         setCurrentCallTime(System.currentTimeMillis());
     }
 
@@ -590,7 +590,7 @@ public class CallFilterManager {
         callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
-                    long id) {
+                                    long id) {
                 callHandleDialogWithSummary.setNowItemPosition(position);
             }
         });
@@ -627,10 +627,10 @@ public class CallFilterManager {
     }
 
     private void addAnSimpleBlacklistRecords(int type) {
-        
+
     }
-    
-    
+
+
     /**
      * 加载本地黑名单列表
      */
@@ -829,6 +829,9 @@ public class CallFilterManager {
             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext
                     .getManager(MgrContext.MGR_CALL_FILTER);
             int param = pm.getStraNotiTipParam();
+            if (param <= 0) {
+                return;
+            }
             try {
                 int remainder = count % param;
                 if (remainder == 0) {
