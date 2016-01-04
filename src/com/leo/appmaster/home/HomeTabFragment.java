@@ -108,9 +108,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
             @Override
             public void run() {
                 CallFilterContextManager mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                List<CallFilterInfo> callFilterGrList = mCallManger.getCallFilterGrList();
-                LeoLog.i("tess", "callFilterGrList.size = " + callFilterGrList.size());
-                if (callFilterGrList != null && callFilterGrList.size() != 0) {
+                LeoLog.i("tess", "getCallFilterGrCount = " + mCallManger.getCallFilterGrCount());
+                if (mCallManger.getCallFilterGrCount() != 0) {
                     mIsHasCallFilterRecords = true;
                 } else {
                     mIsHasCallFilterRecords = false;
