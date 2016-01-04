@@ -970,15 +970,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     public void startDownAnimator() {
-        ObjectAnimator layoutAnim = ObjectAnimator.ofFloat(this, "scaleY", 1f, 1f);
-        layoutAnim.setDuration(300);
-        layoutAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                startAnimator(mNewContactLayout);
-            }
-        });
-        layoutAnim.start();
+        startAnimator(mNewContactLayout);
     }
 
     public void startAnimator(final View layout) {
