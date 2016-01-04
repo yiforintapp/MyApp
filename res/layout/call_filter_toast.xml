@@ -1,62 +1,73 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <RelativeLayout
         android:id="@+id/filter_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingBottom="15dp"
-        android:layout_marginLeft="25dp"
-        android:paddingTop="26dp"
-        android:layout_marginRight="25dp"
-        android:background="@drawable/filter_toast_bg">
+        android:layout_height="120dp"
+        android:paddingBottom="28dp">
 
         <TextView
             android:id="@+id/tv_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
             android:text="1313213"
             android:textColor="@color/c1"
-            android:textSize="20dp" />
+            android:textSize="24dp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_number"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="28dp">
-            
-            <ImageView 
-                android:layout_centerVertical="true"
+            android:layout_marginTop="18dp">
+
+            <ImageView
+                android:id="@+id/iv_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/toast_icon"
-                android:id="@+id/iv_icon"
-                />
+                android:layout_centerVertical="true"
+                android:src="@drawable/toast_icon" />
 
             <TextView
-                android:layout_centerVertical="true"
                 android:id="@+id/tv_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/iv_icon"
                 android:text="dfasdf"
                 android:textColor="@color/c1"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
 
             <TextView
-                android:layout_centerVertical="true"
-                android:text="dsfasdfa"
                 android:id="@+id/tv_desc2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/tv_desc"
+                android:text="dsfasdfa"
                 android:textColor="@color/c1"
-                android:textSize="13dp" />
+                android:textSize="14dp" />
         </RelativeLayout>
 
+
+        <RelativeLayout
+            android:id="@+id/filter_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="6dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/close_filter_toast" />
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

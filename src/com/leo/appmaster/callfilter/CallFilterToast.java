@@ -40,6 +40,8 @@ public class CallFilterToast {
     public static final int TYPE_CHEAT = 3;
 
     public static TextView mTextOne, mTextTwo, mTextThree;
+    public static View mClose;
+    public static View mContent;
     private static Context mContext;
 
     private static Handler handler = new Handler() {
@@ -51,7 +53,7 @@ public class CallFilterToast {
     };
 
     public static CallFilterToast makeText(final Context context, String title, int peopleNum, int toastType, int filterType) {
-        CallFilterToast result = new CallFilterToast(context);
+        final CallFilterToast result = new CallFilterToast(context);
         mContext = context;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.call_filter_toast, null);
@@ -60,6 +62,17 @@ public class CallFilterToast {
         mTextTwo = (TextView) view.findViewById(R.id.tv_desc);
         mTextThree = (TextView) view.findViewById(R.id.tv_desc2);
 
+        mClose = view.findViewById(R.id.filter_close);
+        mClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                result.hide();
+
+            }
+        });
+        mContent = view.findViewById(R.id.filter_content);
+
         mTextOne.setText(title);
         if (toastType == BLACK_LIST_TYPE) {
             String partOne = context.getString(R.string.number_toast_text_black, peopleNum);
@@ -67,6 +80,7 @@ public class CallFilterToast {
                     context.getString(R.string.call_filter_black_list_tab));
             mTextTwo.setText(partOne);
             mTextThree.setText(Html.fromHtml(times1));
+            mContent.setBackgroundResource(R.drawable.filter_toast_bg);
         } else {
             String partOne = context.getString(R.string.number_toast_text_mark, peopleNum);
             String times2;
@@ -82,6 +96,7 @@ public class CallFilterToast {
             }
             mTextTwo.setText(partOne);
             mTextThree.setText(Html.fromHtml(times2));
+            mContent.setBackgroundResource(R.drawable.filter_toast_bg_m);
         }
 
         result.mNextView = view;
@@ -214,7 +229,9 @@ public class CallFilterToast {
      * schedule handleShow into the right thread
      */
     public void show() {
-        setGravity(Gravity.CENTER, 0, 0);
+
+        int marginTop = 120;
+        setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, DipPixelUtil.dip2px(mContext, marginTop));
         mHandler.post(mShow);
 //        if (mDuration > 0) {
 //            mHandler.postDelayed(mHide, mDuration);
