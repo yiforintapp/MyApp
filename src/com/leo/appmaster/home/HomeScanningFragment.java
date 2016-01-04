@@ -1027,10 +1027,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 lists.add(layout);
                 mScrollLayout.setLayoutTransition(null);
 
-                if (layout == mNewAppLayout) {
-                    mController.startItemScanning();
-                } else {
-                    if (!mIsExit) {
+                if (!mIsExit) {
+                    if (layout == mNewAppLayout) {
+                        mController.startItemScanning();
+                    } else {
                         onLayoutAnimEnd(layout);
                     }
                 }
