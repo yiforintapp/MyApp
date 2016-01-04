@@ -667,6 +667,14 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                             getSysCallLogNoContact(StrangeCallActivity.this, selects, selectArgs, false, false);
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
+                        List<ContactCallLog> calls = new ArrayList<ContactCallLog>();
+                        for (ContactCallLog call:callLogList) {
+                            if(CallLog.Calls.OUTGOING_TYPE != call.getClallLogType()){
+                                calls.add(call);
+                            }
+                        }
+                        callLogList.clear();
+                        callLogList.addAll(calls);
                     }
                     Message msg = new Message();
                     msg.what = PrivacyContactUtils.MSG_ADD_CALL;
