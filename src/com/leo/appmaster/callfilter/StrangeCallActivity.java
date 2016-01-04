@@ -229,9 +229,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
             mAddBtn.setEnabled(true);
             mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
-            mRlBottomView.setVisibility(View.VISIBLE);
+//            mRlBottomView.setVisibility(View.VISIBLE);
         } else {
-            mRlBottomView.setVisibility(View.GONE);
+//            mRlBottomView.setVisibility(View.GONE);
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
             mAddBtn.setEnabled(false);
             mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
@@ -315,14 +315,17 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
                     mAddBtn.setEnabled(true);
                     mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
-                    mRlBottomView.setVisibility(View.VISIBLE);
+//                    mRlBottomView.setVisibility(View.VISIBLE);
                 } else {
-                    mRlBottomView.setVisibility(View.GONE);
+//                    mRlBottomView.setVisibility(View.GONE);
                     mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
                     mAddBtn.setEnabled(false);
                     mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
                 }
             } else {
+                mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+                mAddBtn.setEnabled(false);
+                mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
                 callLog.setCheck(false);
             }
         }
