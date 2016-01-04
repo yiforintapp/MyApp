@@ -65,6 +65,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private static final int MAX_HEIGHT_ONE_LINE = 35;
     private static final int MAX_HEIGHT_TWO_LINE = 52;
     private static final int MAX_HEIGHT_THREE_LINE = 70;
+    private static final int MAX_HEIGHT_FOUR_LINE = 85;
+    private static final int MAX_HEIGHT_OTHERS_LINE = 100;
     private static final int MIN_HEIGHT_DP = 35;
     private static final int TEXT_NO_CONTENT_SCORE  = 0;
     private static final int TEXT_HAVE_CONTENT_ONLY  = 1;
@@ -72,8 +74,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private static final int ONE_LINE = 18;
     private static final int TWO_LINE = 37;
     private static final int THREE_LINE = 55;
-    private static final int FOUR_LINE = 55;
-    private static final int OTHERS_LINE  = 55;
+    private static final int FOUR_LINE = 71;
+    private static final int OTHERS_LINE  = 88;
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
 
@@ -1121,8 +1123,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
              return DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_ONE_LINE);
         } else if (theDipHeight <= TWO_LINE) {
              return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_TWO_LINE);
-        } else {
+        } else if (theDipHeight <= THREE_LINE) {
              return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_THREE_LINE);
+        } else if (theDipHeight <= FOUR_LINE) {
+            return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_FOUR_LINE);
+        } else {
+            return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_OTHERS_LINE);
         }
     }
 
