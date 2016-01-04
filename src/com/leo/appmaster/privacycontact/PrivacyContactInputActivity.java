@@ -207,7 +207,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                     }
                 }
                             /*查询是否存在通话*/
-                Cursor callCur = pm.getSystemCalls("number LIKE ?", new String[]{"%" + tempNumber});
+                Cursor callCur = pm.getSystemCalls("number LIKE ?", new String[]{"%" + tempNumber}, null);
                 if (callCur != null) {
                     mCallCount = callCur.getCount();
                 }

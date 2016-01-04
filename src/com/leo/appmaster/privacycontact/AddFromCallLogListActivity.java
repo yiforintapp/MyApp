@@ -883,7 +883,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                 @Override
                 public void run() {
                     mProgressBar.setVisibility(View.VISIBLE);
-                    List<ContactCallLog> callLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this, null, null, false, false);
+                    List<ContactCallLog> callLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this, null, null, null, false, false);
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                     }
@@ -923,7 +923,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
         protected Boolean doInBackground(String... arg0) {
 //             mCallLogList =PrivacyContactManager.getInstance(AddFromCallLogListActivity.this).getSysCalls();
             try {
-                mCallLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this, null, null, false, false);
+                mCallLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this, null, null, null, false, false);
                 if (mCallLogList != null && mCallLogList.size() > 0) {
                     Collections.sort(mCallLogList, PrivacyContactUtils.mCallLogCamparator);
                 }

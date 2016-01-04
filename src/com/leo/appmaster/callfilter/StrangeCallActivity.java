@@ -63,6 +63,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private static final int HOUR = 60 * 60;
 
     private static final int HAVE_BLACK_LIST = -2;
+    private static final int PAGE_SIZE = 100;
     private List<ContactCallLog> mCallLogList;
     private List<ContactCallLog> mSrcBackupList;
     private CommonToolbar mTitleBar;
@@ -656,10 +657,18 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 //                            getSysCallLog(StrangeCallActivity.this, null, null, false, false);
 //                    String selects = CallLog.Calls.TYPE + " = ? ";
 //                    String[] selectArgs = new String[]{String.valueOf(CallLog.Calls.INCOMING_TYPE)};
-                    String selects = null;
-                    String[] selectArgs = null;
+                    String selection = null;
+                    String[] selectionArgs = null;
+                    String sortOrder = null;
+//                    int pageSize = PAGE_SIZE;
+//                    int currentOffset = 0;
+//                    StringBuilder sbOr = new StringBuilder();
+//                    sbOr.append(CallLog.Calls._ID);
+//                    sbOr.append(" " + CallFilterConstants.DESC);
+//                    sbOr.append(" limit  " + pageSize + " offset " + currentOffset);
+//                    String sortOrder = sbOr.toString();
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
-                            getSysCallLogNoContact(StrangeCallActivity.this, selects, selectArgs, false, false);
+                            getSysCallLogNoContact(StrangeCallActivity.this, selection, selectionArgs, sortOrder, false, false);
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                         List<ContactCallLog> calls = new ArrayList<ContactCallLog>();

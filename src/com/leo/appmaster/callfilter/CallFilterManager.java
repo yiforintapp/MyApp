@@ -815,7 +815,7 @@ public class CallFilterManager {
         };
 
         ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
-                .getSysCallLog(mContext, selection, selectionArgs, true, false);
+                .getSysCallLog(mContext, selection, selectionArgs, null,true, false);
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(mContext, null, null,
                 false);
         List<ContactCallLog> straCalls = new ArrayList<ContactCallLog>();

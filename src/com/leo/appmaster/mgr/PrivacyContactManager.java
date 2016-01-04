@@ -153,7 +153,7 @@ public abstract class PrivacyContactManager extends Manager {
      * @param selectionArgs
      * @return
      */
-    public abstract Cursor getSystemCalls(String selection,String[] selectionArgs);
+    public abstract Cursor getSystemCalls(String selection,String[] selectionArgs,String sortOrder);
 
     /**
      * 获取系统短信列表

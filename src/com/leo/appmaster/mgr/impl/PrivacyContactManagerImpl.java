@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.telephony.SmsManager;
+import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
@@ -143,12 +144,14 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
     }
 
     @Override
-    public Cursor getSystemCalls(String selection, String[] selectionArgs) {
+    public Cursor getSystemCalls(String selection, String[] selectionArgs, String sortOrder) {
         Cursor cursor = null;
         try {
             ContentResolver cr = mContext.getContentResolver();
-            cursor = cr.query(CALL_LOG_URI, null, selection, selectionArgs,
-                    CallLog.Calls.DEFAULT_SORT_ORDER);
+            if (TextUtils.isEmpty(sortOrder)) {
+                sortOrder = CallLog.Calls.DEFAULT_SORT_ORDER;
+            }
+            cursor = cr.query(CALL_LOG_URI, null, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -197,12 +200,12 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         String[] selectionArgsCall = new String[]{String.valueOf(currentDate), String.valueOf(beforeCurrentTime)};
         /*系统当前所有的通话记录列表*/
         //查询本次查询的前一天
-        List<ContactCallLog> calls = PrivacyContactUtils.getSysCallLog(mContext, selectionCall, selectionArgsCall, false, true);
+        List<ContactCallLog> calls = PrivacyContactUtils.getSysCallLog(mContext, selectionCall, selectionArgsCall, null, false, true);
         if (calls == null || (calls != null && calls.size() <= 0)) {
             //前一天为空则，查询当天
             selectionCall = "date >= ? ";
             selectionArgsCall = new String[]{String.valueOf(currentDate)};
-            calls = PrivacyContactUtils.getSysCallLog(mContext, selectionCall, selectionArgsCall, false, true);
+            calls = PrivacyContactUtils.getSysCallLog(mContext, selectionCall, selectionArgsCall, null, false, true);
         }
 
         String selectionMessage = "date <= ? and date >= ? ";
@@ -221,7 +224,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
             //前一天和当天都为空则，查询整个记录
             selectionCall = null;
             selectionArgsCall = null;
-            calls = PrivacyContactUtils.getSysCallLog(mContext, selectionCall, selectionArgsCall, false, false);
+            calls = PrivacyContactUtils.getSysCallLog(mContext, selectionCall, selectionArgsCall, null, false, false);
             /*短信查询*/
             selectionMessage = null;
             selectionArgsMessage = null;

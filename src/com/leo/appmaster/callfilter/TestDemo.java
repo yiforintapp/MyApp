@@ -2,6 +2,7 @@ package com.leo.appmaster.callfilter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.leo.analytics.update.a;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -30,6 +32,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
     private Button b4;
     private Button b5;
     private Button b6;
+    private Button b7;
     private int mI = 1;
 
     @Override
@@ -48,6 +51,8 @@ public class TestDemo extends Activity implements View.OnClickListener {
         b5.setOnClickListener(this);
         b6 = (Button) findViewById(R.id.B6);
         b6.setOnClickListener(this);
+        b7 = (Button) findViewById(R.id.B7);
+        b7.setOnClickListener(this);
     }
 
     @Override
@@ -131,10 +136,27 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 if (blacksSer != null) {
                     StringBuilder sbw = new StringBuilder();
                     for (BlackListInfo infos : blacksSer) {
-                        sbw.append(infos.getNumber()+":黑人="+infos.getAddBlackNumber()+"：标记人="+infos.getMarkerNumber()+":类型="+infos.getMarkerType()+"\n");
+                        sbw.append(infos.getNumber() + ":黑人=" + infos.getAddBlackNumber() + "：标记人=" + infos.getMarkerNumber() + ":类型=" + infos.getMarkerType() + "\n");
                     }
                     Toast.makeText(TestDemo.this, sbw.toString(), Toast.LENGTH_LONG).show();
                 }
+                break;
+            case R.id.B7:
+                Uri uri = CallFilterConstants.BLACK_LIST_URI;
+                String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+                StringBuilder sb1 = new StringBuilder();
+                sb1.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+                sb1.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
+                String selects = sb1.toString();
+                String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
+                        String.valueOf(CallFilterConstants.REMOVE)};
+                List<BlackListInfo> blackss = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
+                StringBuilder b = new StringBuilder();
+                for (BlackListInfo black : blackss) {
+                    b.append("num=" + black.getNumber() + ":loc=" + black.getLocHandler() + ":locTyp=" + black.getLocHandlerType() + ":remove=" + black.getRemoveState()+"\n");
+                }
+                Toast.makeText(TestDemo.this, "" + b.toString(), Toast.LENGTH_LONG).show();
+
                 break;
         }
     }

@@ -241,7 +241,7 @@ public class PrivacyContactManager {
                         message.getPhoneNumber());
                 values.put(Constants.COLUMN_MESSAGE_THREAD_ID, threadId);
                 ContentResolver cr = mContext.getContentResolver();
-                PrivacyContactUtils.insertDbLog(cr,Constants.PRIVACY_MESSAGE_URI, values);
+                PrivacyContactUtils.insertDbLog(cr, Constants.PRIVACY_MESSAGE_URI, values);
 
                 if (count > 0) {
                     pre.setMessageNoReadCount(count + 1);
@@ -346,7 +346,7 @@ public class PrivacyContactManager {
     /* 通话记录预加载 */
     private synchronized void loadCallLogs() {
         if (!mCallsLoaded) {
-            mSysCalls = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext, null, null, false, false);
+            mSysCalls = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext, null, null, null, false, false);
             if (mSysCalls != null && mSysCalls.size() > 0) {
                 Collections.sort(mSysCalls, PrivacyContactUtils.mCallLogCamparator);
             }
@@ -534,7 +534,7 @@ public class PrivacyContactManager {
                     };
                     ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
                             .getSysCallLog(mContext, selection,
-                                    selectionArgs, false, false);
+                                    selectionArgs, null, false, false);
                     ArrayList<ContactCallLog> cloneCallLog = (ArrayList<ContactCallLog>) callLogs
                             .clone();
                     if (cloneCallLog != null && cloneCallLog.size() > 0) {
@@ -625,7 +625,7 @@ public class PrivacyContactManager {
                     String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1)
             };
             ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
-                    .getSysCallLog(mContext, selection, selectionArgs, true, true);
+                    .getSysCallLog(mContext, selection, selectionArgs, null, true, true);
             if (callLogs != null) {
                 int currentCount = callLogs.size();
                 PrivacyContactManager.getInstance(mContext).mUnCalls = currentCount;
@@ -655,7 +655,7 @@ public class PrivacyContactManager {
         String tempNumber = PrivacyContactUtils.formatePhoneNumber(number);
         String selection = "number LIKE ?";
         String[] selectionArgs = new String[]{"%" + tempNumber};
-        return PrivacyContactUtils.getSysCallLog(mContext, selection, selectionArgs, true, false);
+        return PrivacyContactUtils.getSysCallLog(mContext, selection, selectionArgs, null, true, false);
     }
 
     public ContactBean getPrivateContact(String number) {
@@ -674,7 +674,7 @@ public class PrivacyContactManager {
         return flagContact;
     }
 
-    public  ContactBean getPrivateMessage(String number, Context context) {
+    public ContactBean getPrivateMessage(String number, Context context) {
         ContactBean flagContact = null;
         String formateNumber = null;
         if (!Utilities.isEmpty(number)) {

@@ -490,12 +490,12 @@ public class PrivacyContactUtils {
         return contacts;
     }
 
-    public static List<ContactCallLog> getSysCallLogNoContact(Context context, String selection, String[] selectionArgs, boolean isDetailList, boolean isFreContacts) {
+    public static List<ContactCallLog> getSysCallLogNoContact(Context context, String selection, String[] selectionArgs, String sortOrder, boolean isDetailList, boolean isFreContacts) {
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(context, null, null, false);
 
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         try {
-            List<ContactCallLog> calls = getSysCallLog(context, selection, selectionArgs, isDetailList, isFreContacts);
+            List<ContactCallLog> calls = getSysCallLog(context, selection, selectionArgs, sortOrder, isDetailList, isFreContacts);
             if (calls == null || calls.size() <= 0) {
                 return calllogs;
             }
@@ -535,7 +535,7 @@ public class PrivacyContactUtils {
      * @param isFreContacts
      * @return
      */
-    public static List<ContactCallLog> getSysCallLog(Context context, String selection, String[] selectionArgs, boolean isDetailList, boolean isFreContacts) {
+    public static List<ContactCallLog> getSysCallLog(Context context, String selection, String[] selectionArgs, String sortOrder, boolean isDetailList, boolean isFreContacts) {
         SimpleDateFormat sfd = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> calllog = new HashMap<String, ContactCallLog>();
@@ -544,7 +544,7 @@ public class PrivacyContactUtils {
         Cursor cursor = null;
         try {
             PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-            cursor = mgr.getSystemCalls(selection, selectionArgs);
+            cursor = mgr.getSystemCalls(selection, selectionArgs, sortOrder);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
 

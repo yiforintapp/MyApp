@@ -44,6 +44,12 @@
             android:id="@+id/B6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="获取服务器下发俄黑名单"/>
+            android:text="获取服务器下发的黑名单"/>
+
+        <Button
+            android:id="@+id/B7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看已删除的黑名单"/>
     </LinearLayout>
 </RelativeLayout>
