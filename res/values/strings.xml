@@ -185,8 +185,8 @@
     <string name="success_finish">Finish</string>
     <!-- AM-667 -->
     <string name="help_setting_tip_title">Prompts</string>
-    <string name="lock_help_password_setting_content_gesture"> Click Settings to enter password or reset password. (Or click pattern).</string>
-    <string name="lock_help_password_setting_content_password">Click Settings to enter password or reset password. (Or click digit password).</string>
+    <string name="lock_help_password_setting_content_gesture"> Click Settings to enter password or reset password.</string>
+    <string name="lock_help_password_setting_content_password">Click Settings to enter password or reset password.</string>
     <string name="lock_help_lock_setting_content">Enter Auto-lock settings to set locking time</string>
     <string name="lock_help_lock_theme_content">Stunning themes for your choice. Try our new ones.</string>
 

@@ -182,8 +182,8 @@
     <string name="lcok_success_tip">您選擇的應用已加鎖</string>
     <string name="success_finish">完成</string>
     <string name="help_setting_tip_title">幫助小貼士</string>
-    <string name="lock_help_password_setting_content_gesture">點擊設定，輸入密碼驗證身份後，再重新設置密碼即可。（在設置密碼介面您也可以點擊右上角使用手勢密碼）</string>
-    <string name="lock_help_password_setting_content_password">點擊設定，輸入密碼驗證身份後，再重新設置密碼即可。（在設置密碼介面您也可以點擊右上角使用數位密碼）</string>
+    <string name="lock_help_password_setting_content_gesture">點擊設定，輸入密碼驗證身份後，再重新設置密碼即可。</string>
+    <string name="lock_help_password_setting_content_password">點擊設定，輸入密碼驗證身份後，再重新設置密碼即可。</string>
     <string name="lock_help_lock_setting_content">進入鎖定設定，您可以選擇鎖定的時間。</string>
     <string name="lock_help_lock_theme_content">我們現在有很多應用鎖主題，趕快去試試一些更好看的主題吧！</string>
 

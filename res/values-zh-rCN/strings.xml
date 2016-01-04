@@ -180,8 +180,8 @@
     <string name="lcok_success_tip">您选择的应用已加锁</string>
     <string name="success_finish">完成</string>
     <string name="help_setting_tip_title">帮助小贴士</string>
-    <string name="lock_help_password_setting_content_gesture">点击设置，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用手势密码）</string>
-    <string name="lock_help_password_setting_content_password">点击设置，输入密码验证身份后，再重新设置密码即可。（在设置密码界面您也可以点击右上角使用数字密码）</string>
+    <string name="lock_help_password_setting_content_gesture">点击设置，输入密码验证身份后，再重新设置密码即可。</string>
+    <string name="lock_help_password_setting_content_password">点击设置，输入密码验证身份后，再重新设置密码即可。</string>
     <string name="lock_help_lock_setting_content">进入锁定设置，您可以选择锁定的时间。</string>
     <string name="lock_help_lock_theme_content">我们现在有很多应用锁主题，赶快去试试一些更好看的主题吧！</string>
 
