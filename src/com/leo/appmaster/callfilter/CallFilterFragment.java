@@ -292,7 +292,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 mCallManger.addBlackList(list, true);
 
                 mAdapter.notifyDataSetChanged();
+                Toast.makeText(mActivity, R.string.mark_number_from_list, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
+                
             }
         });
 

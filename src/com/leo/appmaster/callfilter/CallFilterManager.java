@@ -585,6 +585,7 @@ public class CallFilterManager {
             e.printStackTrace();
         }
         CallFIlterUIHelper.getInstance().showReceiveCallNotification(phoneNumber);
+        LeoLog.i("testdata", "show notification");
     }
 
     // 为dialog设置业务逻辑
