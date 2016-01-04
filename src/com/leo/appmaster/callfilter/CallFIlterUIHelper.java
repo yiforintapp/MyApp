@@ -15,6 +15,7 @@ import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.Utilities;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -58,7 +59,7 @@ public class CallFIlterUIHelper {
         return dialog;
     }
 
-    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String number, Context context, boolean isContentShow, int filterType) {
+    public MultiChoicesWitchSummaryDialog getCallHandleDialogWithSummary(String number, Context context, boolean isContentShow, int filterType, boolean needSystemAlert) {
         final MultiChoicesWitchSummaryDialog dialog = new MultiChoicesWitchSummaryDialog(context);
         dialog.getListView().setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -67,7 +68,9 @@ public class CallFIlterUIHelper {
             }
         });
         dialog.setTitle(String.format(context.getString(R.string.call_filter_marked_and_add_tips),number));
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        if (needSystemAlert) {
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        }
         dialog.setContentVisible(isContentShow);
         dialog.setContent(context.getResources().getString(R.string.call_filter_ask_add_to_blacklist));
         String[] itemContent = {context.getResources().getString(R.string.call_filter_mark_as_sr),

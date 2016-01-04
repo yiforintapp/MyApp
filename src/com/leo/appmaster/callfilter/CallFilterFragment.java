@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -259,8 +260,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         }
 
         final MultiChoicesWitchSummaryDialog dialog = CallFIlterUIHelper.getInstance().
-                getCallHandleDialogWithSummary(title, mActivity, false, mFilterList.get(i).getFilterType());
-
+                getCallHandleDialogWithSummary(title, mActivity, false, mFilterList.get(i).getFilterType(), false);
         dialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

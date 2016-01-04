@@ -362,7 +362,7 @@ public class CallFilterManager {
                     return;
                 }
                 // 通话时间过短的提醒加入黑名单对话框
-                mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0);
+                mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0, true);
                 String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (Math.ceil(durationMax / 1000)));
                 mDialogTooShort.setContent(summaryF);
                 mDialogTooShort.setRightBtnListener(new OnClickListener() {
@@ -403,7 +403,7 @@ public class CallFilterManager {
                     return;
                 }
                 // 接听后挂断 询问是否家黑名单且展示标记人数
-                mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
+                mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
                 String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
                 String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
                 switch (filterTip[3]) {
@@ -458,7 +458,7 @@ public class CallFilterManager {
                     return;
                 }
                 // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
-                mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0);
+                mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0, true);
                 String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
                 String summaryF = String.format(summaryS, filterTip[2]);
                 mDialogAskAddWithSmr.setContent(summaryF);
