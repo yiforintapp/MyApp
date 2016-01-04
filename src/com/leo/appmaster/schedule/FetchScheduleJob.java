@@ -33,20 +33,20 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     /**
      * 默认拉取间隔，12小时
      */
-    private static final int FETCH_PERIOD = 12 * 60 * 60 * 1000;
+    protected static final int FETCH_PERIOD = 12 * 60 * 60 * 1000;
 //    private static final int FETCH_PERIOD = 12 * 1000;
     /**
      * 失败拉取间隔，2小时
      */
-    private static final int FETCH_FAIL_ERIOD = 2 * 60 * 60 * 1000;
+    protected static final int FETCH_FAIL_ERIOD = 2 * 60 * 60 * 1000;
 //    private static final int FETCH_FAIL_ERIOD = 10 * 1000;
     /**
      * 默认失败重试次数
      */
     private static final int FETCH_FAIL_COUNT = 3;
 
-    private static final int STATE_SUCC = 1;
-    private static final int STATE_FAIL = 0;
+    protected static final int STATE_SUCC = 1;
+    protected static final int STATE_FAIL = 0;
 
     private static final String[] FETCH_JOBS = {
             "com.leo.appmaster.schedule.MsgCenterFetchJob",
@@ -280,5 +280,39 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             preferenceTable.putString(prefKey, "");
         }
     }
+
+    /**
+     * 获取上次请求完成保存的时间
+     *
+     * @return
+     */
+    protected long getScheduleTime() {
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        return pref.getScheduleTime(getJobTimeKey());
+    }
+
+    /**
+     * 获取上次请求后状态
+     *
+     * @return
+     */
+    protected int getScheduleValue() {
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        return pref.getScheduleValue(getJobStateKey(), STATE_SUCC);
+    }
+
+    /**
+     * 获取重试次数
+     *
+     * @return
+     */
+    protected int getRetryValue() {
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        return pref.getScheduleValue(getJobFailCountKey(), 0);
+    }
+
 
 }

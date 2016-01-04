@@ -48,9 +48,31 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     private static List<BlackListInfo> mFilUpInfos;
 
 
-    public static void startImmediately() {
+    /**
+     * 直接请求
+     *
+     * @param flag 是否需要直接请求，还是遵守策略请求
+     */
+    public void startImmediately(boolean flag) {
+        if (flag) {
+            //直接请求
+            startWork();
+        } else {
+            //遵循策略请求
+            long time = getScheduleTime();
+            int requestState = getScheduleValue();
+            long currTime = System.currentTimeMillis();
 
-        startWork();
+            if (FetchScheduleJob.STATE_SUCC == requestState) {
+                if ((currTime - time) >= FetchScheduleJob.FETCH_PERIOD) {
+                    startWork();
+                }
+            } else if (FetchScheduleJob.STATE_FAIL == requestState) {
+                if ((currTime - time) >= FetchScheduleJob.FETCH_FAIL_ERIOD) {
+                    startWork();
+                }
+            }
+        }
     }
 
     @Override
@@ -209,4 +231,18 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         }
     }
 
+    @Override
+    protected long getScheduleTime() {
+        return super.getScheduleTime();
+    }
+
+    @Override
+    protected int getScheduleValue() {
+        return super.getScheduleValue();
+    }
+
+    @Override
+    protected int getRetryValue() {
+        return super.getRetryValue();
+    }
 }

@@ -196,9 +196,9 @@ public class ScreenOnOffListener extends BroadcastListener {
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    BlackDownLoadFetchJob.startImmediately();
-                    BlackUploadFetchJob.startImmediately();
-                    DownBlackFileFetchJob.startImmediately();
+                    new BlackDownLoadFetchJob().startImmediately(false);
+                    new BlackUploadFetchJob().startImmediately(false);
+                    new DownBlackFileFetchJob().startImmediately(false);
                 }
             });
 
@@ -206,9 +206,9 @@ public class ScreenOnOffListener extends BroadcastListener {
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    BlackDownLoadFetchJob.startImmediately();
-                    BlackUploadFetchJob.startImmediately();
-                    DownBlackFileFetchJob.startImmediately();
+                    new BlackDownLoadFetchJob().startImmediately(false);
+                    new BlackUploadFetchJob().startImmediately(false);
+                    new DownBlackFileFetchJob().startImmediately(false);
                 }
             });
 

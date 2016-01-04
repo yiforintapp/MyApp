@@ -61,8 +61,31 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
      */
     private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
 
-    public static void startImmediately() {
-        startWork();
+    /**
+     * 直接请求
+     *
+     * @param flag 是否需要直接请求，还是遵守策略请求
+     */
+    public void startImmediately(boolean flag) {
+        if (flag) {
+            //直接请求
+            startWork();
+        } else {
+            //遵循策略请求
+            long time = getScheduleTime();
+            int requestState = getScheduleValue();
+            long currTime = System.currentTimeMillis();
+
+            if (FetchScheduleJob.STATE_SUCC == requestState) {
+                if ((currTime - time) >= FetchScheduleJob.FETCH_PERIOD) {
+                    startWork();
+                }
+            } else if (FetchScheduleJob.STATE_FAIL == requestState) {
+                if ((currTime - time) >= FetchScheduleJob.FETCH_FAIL_ERIOD) {
+                    startWork();
+                }
+            }
+        }
     }
 
     @Override
@@ -108,7 +131,7 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
-                        DownBlackFileFetchJob.startImmediately();
+                        new DownBlackFileFetchJob().startImmediately(true);
                     }
                 });
             }
@@ -165,5 +188,20 @@ public class BlackDownLoadFetchJob extends FetchScheduleJob {
     @Override
     protected int getPeriod() {
         return FETCH_PERIOD;
+    }
+
+    @Override
+    protected int getRetryValue() {
+        return super.getRetryValue();
+    }
+
+    @Override
+    protected int getScheduleValue() {
+        return super.getScheduleValue();
+    }
+
+    @Override
+    protected long getScheduleTime() {
+        return super.getScheduleTime();
     }
 }

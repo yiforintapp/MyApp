@@ -72,7 +72,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 cm.addFilterFroParse(info);
                 break;
             case R.id.B2:
-                BlackUploadFetchJob.startImmediately();
+                new BlackUploadFetchJob().startImmediately(true);
                 break;
             case R.id.B3:
                 CallFilterContextManagerImpl lsm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);

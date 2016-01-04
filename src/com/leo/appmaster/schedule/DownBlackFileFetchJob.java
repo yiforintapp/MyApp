@@ -23,8 +23,31 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
      */
     private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
 
-    public static void startImmediately() {
-        startWork();
+    /**
+     * 直接请求
+     *
+     * @param flag 是否需要直接请求，还是遵守策略请求
+     */
+    public void startImmediately(boolean flag) {
+        if (flag) {
+            //直接请求
+            startWork();
+        } else {
+            //遵守策略请求
+            long time = getScheduleTime();
+            int requestState = getScheduleValue();
+            long currTime = System.currentTimeMillis();
+
+            if (FetchScheduleJob.STATE_SUCC == requestState) {
+                if ((currTime - time) >= FetchScheduleJob.FETCH_PERIOD) {
+                    startWork();
+                }
+            } else if (FetchScheduleJob.STATE_FAIL == requestState) {
+                if ((currTime - time) >= FetchScheduleJob.FETCH_FAIL_ERIOD) {
+                    startWork();
+                }
+            }
+        }
     }
 
     @Override
@@ -83,5 +106,20 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
         sb.append(CallFilterUtils.getBlackPath());
         sb.append(sbName.toString());
         return sb.toString();
+    }
+
+    @Override
+    protected int getRetryValue() {
+        return super.getRetryValue();
+    }
+
+    @Override
+    protected long getScheduleTime() {
+        return super.getScheduleTime();
+    }
+
+    @Override
+    protected int getScheduleValue() {
+        return super.getScheduleValue();
     }
 }
