@@ -202,6 +202,9 @@ public class LockManagerImpl extends LockManager {
                     InstalledAppTable.getInstance().removePackageList(changes);
                     List<String> pkgList = new ArrayList<String>();
                     for (AppItemInfo itemInfo : changes) {
+                        if (itemInfo == null || TextUtils.isEmpty(itemInfo.packageName)) {
+                            continue;
+                        }
                         pkgList.add(itemInfo.packageName);
                     }
                     removePkgFromMode(pkgList, getCurLockMode(), false);

@@ -80,6 +80,9 @@ public class InstalledAppTable extends BaseTable {
         db.beginTransaction();
         try {
             for (AppItemInfo info : itemInfos) {
+                if (info == null || TextUtils.isEmpty(info.packageName)) {
+                    continue;
+                }
                 mPkgList.remove(info.packageName);
                 try {
                     db.delete(TABLE_NAME, COL_PKG + " = ?", new String[]{ info.packageName });
