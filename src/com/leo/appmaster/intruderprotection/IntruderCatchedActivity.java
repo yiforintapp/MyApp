@@ -344,7 +344,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             if (loadedImage != null && activity != null) {
                 LeoLog.d("IntruderAd", "[IntruderCatchedActivity] onLoadingComplete -> " + imageUri);
                 activity.initAdLayout(activity.findViewById(R.id.ad_content),
-                        mCampaign, Constants.UNIT_ID_60, loadedImage);
+                        mCampaign, INTRUDER_AD_ID, loadedImage);
             }
         }
 
