@@ -649,15 +649,18 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                         List<ContactCallLog> calls = new ArrayList<ContactCallLog>();
-                        for (ContactCallLog call:callLogList) {
-                            if(CallLog.Calls.OUTGOING_TYPE != call.getClallLogType()){
+                        for (ContactCallLog call : callLogList) {
+                            if (CallLog.Calls.OUTGOING_TYPE != call.getClallLogType()
+                                    && !mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
                                 calls.add(call);
                             }
                         }
                         callLogList.clear();
                         callLogList.addAll(calls);
                     }
+                    List<ContactCallLog> calls = new ArrayList<ContactCallLog>();
                     Message msg = new Message();
+                    msg.obj = calls;
                     msg.what = PrivacyContactUtils.MSG_ADD_CALL;
                     msg.obj = callLogList;
                     mAddFromCallHandler.sendMessage(msg);
