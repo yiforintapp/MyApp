@@ -162,14 +162,14 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     protected void onResume() {
         super.onResume();
         if (mAddPrivacyCallLog.size() != 0) {
-//            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-//            mAddBtn.setEnabled(true);
-//            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+            mAddBtn.setEnabled(true);
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
             mRlBottomView.setVisibility(View.VISIBLE);
         } else {
-//            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-//            mAddBtn.setEnabled(false);
-//            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+            mAddBtn.setEnabled(false);
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
             mRlBottomView.setVisibility(View.GONE);
         }
     }
@@ -226,15 +226,15 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
         }
         if (mAddPrivacyCallLog.size() != 0) {
-//            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-//            mAddBtn.setEnabled(true);
-//            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+            mAddBtn.setEnabled(true);
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
             mRlBottomView.setVisibility(View.VISIBLE);
         } else {
             mRlBottomView.setVisibility(View.GONE);
-//            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-//            mAddBtn.setEnabled(false);
-//            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+            mAddBtn.setEnabled(false);
+            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         }
     }
 
@@ -312,15 +312,15 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 callLog.setCheck(true);
                 mAddPrivacyCallLog.add(callLog);
                 if (mAddPrivacyCallLog.size() != 0) {
-//                    mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-//                    mAddBtn.setEnabled(true);
-//                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
+                    mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+                    mAddBtn.setEnabled(true);
+                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
                     mRlBottomView.setVisibility(View.VISIBLE);
                 } else {
                     mRlBottomView.setVisibility(View.GONE);
-//                    mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-//                    mAddBtn.setEnabled(false);
-//                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+                    mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+                    mAddBtn.setEnabled(false);
+                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
                 }
             } else {
                 callLog.setCheck(false);
