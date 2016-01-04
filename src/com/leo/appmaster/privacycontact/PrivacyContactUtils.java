@@ -745,6 +745,28 @@ public class PrivacyContactUtils {
     }
 
     /**
+     * 保持原有格式只是截取后7位
+     *
+     * @param number
+     * @return
+     */
+    public static String truncationNumber(String number) {
+        String temp = number;
+        String reverseStr = null;
+        if (temp != null) {
+            int strLength = temp.length();
+            if (strLength >= 7) {
+                String tempStr = stringReverse(temp);
+                String subNumber = tempStr.substring(0, 7);
+                reverseStr = stringReverse(subNumber);
+            } else {
+                reverseStr = temp;
+            }
+        }
+        return reverseStr;
+    }
+
+    /**
      * 格式化电话号码(4位)
      *
      * @param number
@@ -1271,40 +1293,90 @@ public class PrivacyContactUtils {
      */
     public static Bitmap getContactIconFromSystem(Context context, String number) {
         Bitmap contactIcon = null;
+//        String formateNumber = PrivacyContactUtils.simpleFromateNumber(number);
+//        Cursor cur = null;
+//        try {
+//            cur = context.getContentResolver().query(CONTACT_PHONE_URL, null,
+//                    Phone.NUMBER + " LIKE ? ",
+//                    new String[]{
+//                            "%" + formateNumber
+//                    }, null);
+//            if (cur != null) {
+//                while (cur.moveToNext()) {
+//                    Long contactid =
+//                            cur.getLong(cur.getColumnIndex(Phone.CONTACT_ID));
+//                    Long photoid =
+//                            cur.getLong(cur.getColumnIndex("photo_id"));
+//                    if (photoid > 0) {
+//                        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+//                                contactid);
+//                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
+//                                context.getContentResolver(),
+//                                uri);
+//                        contactIcon = BitmapFactory.decodeStream(input);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//
+//        } finally {
+//            if (!BuildProperties.isApiLevel14()) {
+//                IoUtils.closeSilently(cur);
+//            }
+//        }
+        long contactId = getIdFroNum(number);
+        Bitmap contactPhoto = null;
+        ContentResolver conRe = context.getContentResolver();
+        if (contactId > 0) {
+            try {
+                Uri uriBuilder = ContactsContract.Contacts.CONTENT_URI;
+                Uri uri = ContentUris.withAppendedId(uriBuilder, contactId);
+                InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(conRe, uri);
+                contactPhoto = BitmapFactory.decodeStream(input);
+                int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
+                contactIcon = PrivacyContactUtils.getScaledContactIcon(contactPhoto, size);
+            } catch (Error e) {
+            }
+        }
+        return contactIcon;
+    }
+
+    /**
+     * 通过电话号码获取系统联系人ID
+     *
+     * @param number
+     * @return
+     */
+    private static long getIdFroNum(String number) {
+        if (TextUtils.isEmpty(number)) {
+            return -1;
+        }
         String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+        String selects = Phone.NUMBER + " LIKE ? ";
+        String[] selectArgs = new String[]{"%" + formateNumber};
+        Uri uri = CONTACT_PHONE_URL;
+        String[] projection = new String[]{Phone.CONTACT_ID};
+        String sortOrder = null;
+        Context context = AppMasterApplication.getInstance();
         Cursor cur = null;
+
         try {
-            cur = context.getContentResolver().query(CONTACT_PHONE_URL, null,
-                    Phone.NUMBER + " LIKE ? ",
-                    new String[]{
-                            "%" + formateNumber
-                    }, null);
-            if (cur != null) {
-                while (cur.moveToNext()) {
-                    Long contactid =
-                            cur.getLong(cur.getColumnIndex(Phone.CONTACT_ID));
-                    Long photoid =
-                            cur.getLong(cur.getColumnIndex("photo_id"));
-                    if (photoid > 0) {
-                        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
-                                contactid);
-                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
-                                context.getContentResolver(),
-                                uri);
-                        contactIcon = BitmapFactory.decodeStream(input);
-                    }
+            cur = context.getContentResolver().query(uri, projection, selects, selectArgs, sortOrder);
+            if (cur != null && cur.getCount() > 0) {
+                while (cur.moveToFirst()) {
+                    return cur.getLong(cur.getColumnIndex(Phone.CONTACT_ID));
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         } finally {
-            if (!BuildProperties.isApiLevel14()) {
-                IoUtils.closeSilently(cur);
+            if (cur != null) {
+                cur.close();
             }
         }
-
-        return contactIcon;
+        return -1;
     }
+
 
     /**
      * 查询短信会话列表
