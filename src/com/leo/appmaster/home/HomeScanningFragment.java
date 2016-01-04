@@ -1,11 +1,6 @@
 package com.leo.appmaster.home;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -52,6 +47,11 @@ import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.ValueAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
@@ -169,6 +169,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private int adTypeHeight = 0;
 
     private boolean mIsExit;
+    private boolean mIsInsAvaliable = true;
 
     private Handler mHandler = new Handler() {
 
@@ -275,6 +276,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         WindowManager wm = (WindowManager) mActivity
                 .getSystemService(Context.WINDOW_SERVICE);
         mScreenHeight = wm.getDefaultDisplay().getHeight();
+        LeoLog.e("theDipHeight", "" + mScreenHeight + wm.getDefaultDisplay().getWidth());
+
+        IntrudeSecurityManager manager = (IntrudeSecurityManager)
+                MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        mIsInsAvaliable = manager.getIsIntruderSecurityAvailable();
 
         mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
@@ -592,7 +598,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             if (!mContactScanFinish) {
                 updateNewContactList();
             }
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
+            if (mIsInsAvaliable) {
+                mProgressTv.setText(context.getString(R.string.scanning_pattern, 7));
+            } else {
+                mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
+            }
             int score = mPrivacyHelper.getSecurityScore();
             /* show Ad here */
             if (mAdLoaded && score != 100 && adTypeHeight != 0) {
@@ -614,7 +624,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         } else if (layout == mNewPicLayout) {
             final int needLongHeight = updateNewPicList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
+            if (mIsInsAvaliable) {
+                mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
+            } else {
+                mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
+            }
             layout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -623,7 +637,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             });
         } else if (layout == mNewVidLayout) {
             final int needLongHeight = updateNewVidList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
+            if (mIsInsAvaliable) {
+                mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
+            } else {
+                mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+            }
             layout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -652,7 +670,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         } else if (layout == mNewLostLayout) {
             final int needLongHeight = updateNewLostList();
-            mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+            if (mIsInsAvaliable) {
+                mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
+            } else {
+                mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
+            }
             layout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -951,9 +973,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (layout == mNewContactLayout) {
             startAnimator(mNewWifiLayout);
         } else if (layout == mNewWifiLayout) {
-            IntrudeSecurityManager manager = (IntrudeSecurityManager)
-                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-            if (!manager.getIsIntruderSecurityAvailable()) {
+
+            if (!mIsInsAvaliable) {
                 startAnimator(mNewLostLayout);
             } else {
                 startAnimator(mNewInstructLayout);
@@ -969,9 +990,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    public void startDownAnimator() {
-        startAnimator(mNewContactLayout);
-    }
 
     public void startAnimator(final View layout) {
 
@@ -1001,7 +1019,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         AnimatorSet animatorSet = new AnimatorSet();
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -layoutHeight, layout.getTranslationY());
         objectAnimator.setDuration(300);
-        ObjectAnimator alpha = objectAnimator.ofFloat(layout, "alpha", 0f, 0.0f, 0.3f, 1f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(layout, "alpha", 0f, 0.0f, 0.3f, 1f);
         alpha.setDuration(400);
         animatorSet.playTogether(objectAnimator, alpha);
         objectAnimator.addListener(new AnimatorListenerAdapter() {

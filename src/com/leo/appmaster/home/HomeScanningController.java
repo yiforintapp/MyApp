@@ -49,6 +49,8 @@ public class HomeScanningController {
     private static final int NEW_UP_LIMIT_VID = 2000;
     private static final int NEW_UP_LIMIT_LOST = 1000;
 
+    private boolean mIsInsValiable = true;
+
 
     public HomeScanningController(HomeActivity activity, HomeScanningFragment fragment,
                                   LinearLayout newAppLayout, LinearLayout newPicLayout,
@@ -66,12 +68,19 @@ public class HomeScanningController {
         mNewWifiLayout = newWifiLayout;
         mNewInstructLayout = newInstructLayout;
         mNewContactLayout = newContactLayout;
+        IntrudeSecurityManager manager = (IntrudeSecurityManager)
+                MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        if (!manager.getIsIntruderSecurityAvailable()) {
+            mIsInsValiable = false;
+        } else {
+            mIsInsValiable = true;
+        }
     }
 
     public void startScanning() {
         LeoLog.d(TAG, "startScanning...");
 
-        mFragment.startDownAnimator();
+        mFragment.startAnimator(mNewContactLayout);
         mActivity.scanningFromPercent(FIRST_IN_TIME, 0, START_TIME);
     }
 
@@ -89,8 +98,6 @@ public class HomeScanningController {
             alphaAnim.setDuration(200);
         } else if (layout == mNewPicLayout) {
             alphaAnim.setDuration(500);
-        } else {
-            alphaAnim.setDuration(650);
         }
 
         alphaAnim.setRepeatCount(ValueAnimator.INFINITE);
@@ -161,7 +168,7 @@ public class HomeScanningController {
 
             IntrudeSecurityManager manager = (IntrudeSecurityManager)
                     MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-            if (!manager.getIsIntruderSecurityAvailable()) {
+            if (!mIsInsValiable) {
                 mNewLostAnim = getItemAnimation(mNewLostLayout);
                 mNewLostAnim.start();
             } else {
@@ -190,7 +197,7 @@ public class HomeScanningController {
             mFragment.OnItemAnimationEnd(mNewPicLayout);
             mNewAppAnim = getItemAnimation(mNewAppLayout);
             int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(1000, currPct, NEW_PER_PRI + 1);
+            mActivity.scanningFromPercent(450, currPct, NEW_PER_PRI + 1);
             LeoLog.e(TAG, "mNewPicAnim end");
             mNewAppAnim.start();
         } else {
