@@ -41,11 +41,12 @@ public class DebugActivity extends Activity implements View.OnClickListener {
                 if (TextUtils.isEmpty(text)) {
                     break;
                 }
-//                LEOMessageDialog dlg = new LEOMessageDialog(this);
-                text = CryptoUtils.decrypt(text);
+                try {
+                    text = CryptoUtils.decrypt(text);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 mDecryptMsgTv.setText(text);
-//                dlg.setContent(text);
-//                dlg.show();
                 break;
         }
     }
