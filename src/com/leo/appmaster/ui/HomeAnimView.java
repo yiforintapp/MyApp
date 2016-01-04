@@ -153,7 +153,7 @@ public class HomeAnimView extends View {
             case MotionEvent.ACTION_UP:
                 if (mClickDownOnShield && mShieldLayer.containsPointer(x, y)) {
                     int securityScore = mPrivacyHelper.getSecurityScore();
-                    if (securityScore >= mSecurityScore) {
+                    if (securityScore >= mSecurityScore && !HomePrivacyFragment.mAnimatorPlaying) {
                         // 动画跑完了，才能进入深度扫描
                         HomeActivity activity = (HomeActivity) getContext();
                         activity.onShieldClick();

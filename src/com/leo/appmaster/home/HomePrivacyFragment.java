@@ -27,6 +27,7 @@ import com.leo.appmaster.ui.ShieldFlipDecor;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
@@ -75,6 +76,8 @@ public class HomePrivacyFragment extends Fragment {
     private boolean mInterceptRaise;
 
     private static boolean mMemoryLess = false;
+
+    public static boolean mAnimatorPlaying;
 
 
     public HomePrivacyFragment() {
@@ -214,6 +217,18 @@ public class HomePrivacyFragment extends Fragment {
         inCircleScaleAnim.setInterpolator(new LinearInterpolator());
         inCircleScaleAnim.setDuration(600);
         animators.add(inCircleScaleAnim);
+
+        inCircleScaleAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mAnimatorPlaying = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mAnimatorPlaying = false;
+            }
+        });
 
 
         // 内环、外环旋转
