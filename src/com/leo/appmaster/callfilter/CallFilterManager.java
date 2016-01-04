@@ -249,6 +249,8 @@ public class CallFilterManager {
         }
         //自己拨出，return
         if (TextUtils.isEmpty(state) || isComingOut()) {
+            LeoLog.i("testdata", "isComingOut = " + isComingOut());
+            LeoLog.i("testdata", "state = " + state.toString());
             return;
         }
         if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
