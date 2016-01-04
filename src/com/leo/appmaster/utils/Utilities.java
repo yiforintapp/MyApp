@@ -1,11 +1,6 @@
 
 package com.leo.appmaster.utils;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -32,6 +27,7 @@ import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -44,6 +40,12 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.FolderItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Utilities {
 
@@ -740,5 +742,20 @@ public final class Utilities {
         return sb.toString();
     }
 
+    public static int getScanContentHeight(View v, Context context) {
+        try {
+            Method m = v.getClass().getDeclaredMethod("onMeasure", int.class,
+                    int.class);
+            m.setAccessible(true);
+            m.invoke(v, View.MeasureSpec.makeMeasureSpec(
+                    ((View) v.getParent()).getMeasuredWidth(),
+                    View.MeasureSpec.AT_MOST), View.MeasureSpec.makeMeasureSpec(0,
+                    View.MeasureSpec.UNSPECIFIED));
+        } catch (Exception e) {
+
+        }
+
+        return DipPixelUtil.px2dip(context, v.getMeasuredHeight());
+    }
 
 }

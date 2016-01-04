@@ -47,6 +47,7 @@ import com.leo.appmaster.ui.LoadingView;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
@@ -61,9 +62,18 @@ import java.util.List;
  * Created by Jasper on 2015/10/18.
  */
 public class HomeScanningFragment extends Fragment implements View.OnClickListener {
-    private static final int MAX_HEIGHT_DP = 52;
-    private static final int MAX_HEIGHT_DP_NOT_APP = 35;
+    private static final int MAX_HEIGHT_ONE_LINE = 35;
+    private static final int MAX_HEIGHT_TWO_LINE = 52;
+    private static final int MAX_HEIGHT_THREE_LINE = 70;
     private static final int MIN_HEIGHT_DP = 35;
+    private static final int TEXT_NO_CONTENT_SCORE  = 0;
+    private static final int TEXT_HAVE_CONTENT_ONLY  = 1;
+    private static final int TEXT_HAVE_CONTENT_SCORE = 2;
+    private static final int ONE_LINE = 18;
+    private static final int TWO_LINE = 37;
+    private static final int THREE_LINE = 55;
+    private static final int FOUR_LINE = 55;
+    private static final int OTHERS_LINE  = 55;
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
 
@@ -149,7 +159,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private LayoutTransition mTransition;
     private View mBackView;
     private int mBackViewHeight = 0;
-//    private int mNowHeight = 100;
     private int mNowHeight;
     private int mScreenHeight;
 
@@ -253,7 +262,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             @Override
             public void run() {
                 adTypeHeight = mAdLayout.getHeight();
-                LeoLog.d("testLayout", "ad height : " + adTypeHeight);
             }
         });
 
@@ -265,7 +273,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         WindowManager wm = (WindowManager) mActivity
                 .getSystemService(Context.WINDOW_SERVICE);
         mScreenHeight = wm.getDefaultDisplay().getHeight();
-        LeoLog.d("testLayout", "screen height : " + mScreenHeight);
 
         mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
@@ -367,9 +374,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mAdLayout.setVisibility(View.GONE);
             mAdLayout.setScaleY(0.0f);
         }
-        LeoLog.e(TAG, "start release");
         MobvistaEngine.getInstance(mActivity).release(AD_AFTER_SCAN);
-        LeoLog.e(TAG, "release");
     }
 
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
@@ -423,10 +428,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         preview.setImageBitmap(previewImage);
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
-        LeoLog.e(TAG, "start registerView");
         MobvistaEngine.getInstance(mActivity).registerView(AD_AFTER_SCAN, adView);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
-        LeoLog.e(TAG, "registerView");
     }
     /* 3.2 advertise end */
 
@@ -542,12 +545,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         public void run() {
             HomeScanningFragment fragment = weakReference.get();
             if (fragment == null) {
-                LeoLog.d(TAG, "before run, fragment is null.");
                 return;
             }
 
             if (fragment.isRemoving() || fragment.isDetached()) {
-                LeoLog.d(TAG, "before run, fragment is removing...");
                 fragment.mAppList = null;
                 fragment.mPhotoList = null;
                 fragment.mVideoList = null;
@@ -581,11 +582,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     public void updateUIOnAnimationEnd(final LinearLayout layout) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
 
-        LeoLog.d("testfinishL", "layout height : " + layout.getHeight());
-        LeoLog.d("testfinishL", "-------------------------------------------");
-
         final int firLocation = layout.getHeight();
-
         Context context = AppMasterApplication.getInstance();
 
         if (layout == mNewAppLayout) {
@@ -675,55 +672,58 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     public void setItemPlace(View nowLayout, int position, int height, int isNeedLongHeight) {
         int moveDistance = 0;
-        LeoLog.d("testEndMove", "position : " + position);
-        LeoLog.d("testEndMove", "nowLayout height : " + nowLayout.getHeight());
-        LeoLog.d("testEndMove", "isNeedLongHeight type: " + isNeedLongHeight);
 
         if (nowLayout.getHeight() != 0 && height != 0) {
-            LeoLog.d("testEndMove", "in a");
-            if (nowLayout.getHeight() == height && isNeedLongHeight != 1) {
-                if (isNeedLongHeight == 2) {
+            if (nowLayout.getHeight() == height && isNeedLongHeight != TEXT_NO_CONTENT_SCORE) {
+                if (isNeedLongHeight == TEXT_HAVE_CONTENT_ONLY) {
                     moveDistance = DipPixelUtil.dip2px(mActivity, MIN_HEIGHT_DP);
-                } else if (isNeedLongHeight == 3) {
-                    moveDistance = DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_DP);
-                } else if (isNeedLongHeight == 4) {
-                    moveDistance = DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_DP_NOT_APP);
+                } else if (isNeedLongHeight == TEXT_HAVE_CONTENT_SCORE) {
+                   if (nowLayout == mNewAppLayout) {
+                       moveDistance = getContentHeight(mNewAppContent);
+                   } else if (nowLayout == mNewPicLayout) {
+                       moveDistance = getContentHeight(mNewPicContent);
+                   } else if (nowLayout == mNewVidLayout) {
+                       moveDistance = getContentHeight(mNewVidContent);
+                   } else if (nowLayout == mNewLostLayout) {
+                       moveDistance = getContentHeight(mNewLostContent);
+                   } else if (nowLayout == mNewInstructLayout) {
+                       moveDistance = getContentHeight(mNewInstructContent);
+                   }
                 }
             } else {
                 moveDistance = nowLayout.getHeight() - height;
             }
         } else {
-            LeoLog.d("testEndMove", "in b");
-            if (isNeedLongHeight == 1) {
+            if (isNeedLongHeight == TEXT_NO_CONTENT_SCORE) {
                 moveDistance = 0;
-            } else if (isNeedLongHeight == 2) {
+            } else if (isNeedLongHeight == TEXT_HAVE_CONTENT_ONLY) {
                 moveDistance = DipPixelUtil.dip2px(mActivity, MIN_HEIGHT_DP);
-            }  else if (isNeedLongHeight == 3) {
-                moveDistance = DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_DP);
-            } else if (isNeedLongHeight == 4) {
-                moveDistance = DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_DP_NOT_APP);
+            }  else if (isNeedLongHeight == TEXT_HAVE_CONTENT_SCORE) {
+                if (nowLayout == mNewAppLayout) {
+                    moveDistance = getContentHeight(mNewAppContent);
+                } else if (nowLayout == mNewPicLayout) {
+                    moveDistance = getContentHeight(mNewPicContent);
+                } else if (nowLayout == mNewVidLayout) {
+                    moveDistance = getContentHeight(mNewVidContent);
+                } else if (nowLayout == mNewLostLayout) {
+                    moveDistance = getContentHeight(mNewLostContent);
+                } else if (nowLayout == mNewInstructLayout) {
+                    moveDistance = getContentHeight(mNewInstructContent);
+                }
             }
         }
-
-        LeoLog.d("testEndMove", "moveDistance : " + moveDistance);
-        LeoLog.d("testEndMove", "dp is :" + DipPixelUtil.px2dip(mActivity, moveDistance));
-
         if (lists.size() > position) {
 
             for (int i = 0; i < lists.size(); i++) {
                 if (i < position) {
-                    LeoLog.d("testEndMove", "move item : " + i);
                     View oldlayout = lists.get(i);
                     startItemExpand(oldlayout, moveDistance);
                 }
             }
 
         }
-        LeoLog.d("testEndMove", "-------------------");
 
         mNowHeight = mNowHeight + moveDistance;
-        LeoLog.d("isLast", "back height : " + mBackViewHeight);
-        LeoLog.d("isLast", "total height : " + mNowHeight);
         if (mNowHeight > mBackViewHeight) {
             ViewGroup.LayoutParams params = mBackView.getLayoutParams();
             params.height = mNowHeight;
@@ -731,7 +731,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
         changItem++;
     }
-
 
     public void startItemExpand(View oldLayout, int moveDistance) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(
@@ -774,34 +773,33 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private int updateNewAppList() {
-        int isNeedLongHeight = 1;
+        int isNeedLongHeight = TEXT_NO_CONTENT_SCORE;
         int count = mAppList == null ? 0 : mAppList.size();
         if (count > 0) {
             mNewAppImg.setImageResource(R.drawable.ic_scan_error);
             mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_title, count));
             mNewAppContent.setText(mScanAppName);
             mNewAppContent.setVisibility(View.VISIBLE);
-            isNeedLongHeight = 2;
+            isNeedLongHeight = TEXT_HAVE_CONTENT_ONLY;
             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             int score = lm.getIncreaseScore(count);
             if (score > 0) {
                 mNewAppScore.setText(mActivity.getResources().
                         getString(R.string.scan_score, score));
                 mNewAppScore.setVisibility(View.VISIBLE);
-                isNeedLongHeight = 3;
+                isNeedLongHeight = TEXT_HAVE_CONTENT_SCORE;
             }
         } else {
             mNewAppImg.setImageResource(R.drawable.ic_scan_safe);
             mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_none));
         }
-        LeoLog.d("testEndMove", "mNewAppContent.getHeight():" + mNewAppContent.getHeight());
         mNewAppLoading.setVisibility(View.GONE);
         mNewAppImg.setVisibility(View.VISIBLE);
         return isNeedLongHeight;
     }
 
     private int updateNewPicList() {
-        int isNeedLongHeight = 1;
+        int isNeedLongHeight = TEXT_NO_CONTENT_SCORE;
         int count = mPhotoList == null ? 0 : mPhotoList.photoItems.size();
         if (count > 0) {
             mNewPicImg.setImageResource(R.drawable.ic_scan_error);
@@ -809,7 +807,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewPicContent.setText(mActivity.getResources().
                     getString(R.string.scan_pic_content));
             mNewPicContent.setVisibility(View.VISIBLE);
-            isNeedLongHeight = 2;
+            isNeedLongHeight = TEXT_HAVE_CONTENT_ONLY;
             PrivacyDataManager pdm = (PrivacyDataManager)
                     MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
             int score = pdm.getPicShouldScore(count);
@@ -817,20 +815,19 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mNewPicScore.setText(mActivity.getResources().
                         getString(R.string.scan_score, score));
                 mNewPicScore.setVisibility(View.VISIBLE);
-                isNeedLongHeight = 4;
+                isNeedLongHeight = TEXT_HAVE_CONTENT_SCORE;
             }
         } else {
             mNewPicImg.setImageResource(R.drawable.ic_scan_safe);
             mNewPicTitle.setText(mActivity.getResources().getString(R.string.scan_pic_none));
         }
-        LeoLog.d("testEndMove", "mNewPicContent.getHeight():" + mNewPicContent.getHeight());
         mNewPicLoading.setVisibility(View.GONE);
         mNewPicImg.setVisibility(View.VISIBLE);
         return isNeedLongHeight;
     }
 
     private int updateNewVidList() {
-        int isNeedLongHeight = 1;
+        int isNeedLongHeight = TEXT_NO_CONTENT_SCORE;
         int count = mVideoList == null ? 0 : mVideoList.size();
         if (count > 0) {
             mNewVidImg.setImageResource(R.drawable.ic_scan_error);
@@ -838,7 +835,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewVidContent.setText(mActivity.getResources().
                     getString(R.string.scan_vid_content));
             mNewVidContent.setVisibility(View.VISIBLE);
-            isNeedLongHeight = 2;
+            isNeedLongHeight = TEXT_HAVE_CONTENT_ONLY;
             PrivacyDataManager pdm = (PrivacyDataManager)
                     MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
             int score = pdm.getVidShouldScore(count);
@@ -846,7 +843,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mNewVidScore.setText(mActivity.getResources().
                         getString(R.string.scan_score, score));
                 mNewVidScore.setVisibility(View.VISIBLE);
-                isNeedLongHeight = 4;
+                isNeedLongHeight = TEXT_HAVE_CONTENT_SCORE;
             }
         } else {
             mNewVidImg.setImageResource(R.drawable.ic_scan_safe);
@@ -858,7 +855,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private int updateNewInstructList() {
-        int isNeedLongHeight = 1;
+        int isNeedLongHeight = TEXT_NO_CONTENT_SCORE;
         IntrudeSecurityManager manager = (IntrudeSecurityManager)
                 MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         boolean flag = manager.getIntruderMode();
@@ -869,12 +866,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewInstructContent.setText(mActivity.getResources().
                     getString(R.string.scan_instruct_content));
             mNewInstructContent.setVisibility(View.VISIBLE);
-            isNeedLongHeight = 2;
+            isNeedLongHeight = TEXT_HAVE_CONTENT_ONLY;
             if (manager.getMaxScore() > 0) {
                 mNewInstructScore.setText(mActivity.getResources().
                         getString(R.string.scan_score, manager.getMaxScore()));
                 mNewInstructScore.setVisibility(View.VISIBLE);
-                isNeedLongHeight = 3;
+                isNeedLongHeight = TEXT_HAVE_CONTENT_SCORE;
             }
         }
         mNewInstructLoading.setVisibility(View.GONE);
@@ -883,7 +880,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private int updateNewWifiList() {
-        int isNeedLongHeight = 1;
+        int isNeedLongHeight = TEXT_NO_CONTENT_SCORE;
         WifiSecurityManager wsm = (WifiSecurityManager)
                 MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         boolean isScnnedEver = wsm.getLastScanState();
@@ -904,7 +901,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private int updateNewLostList() {
-        int isNeedLongHeight = 1;
+        int isNeedLongHeight = TEXT_NO_CONTENT_SCORE;
         LostSecurityManagerImpl manager = (LostSecurityManagerImpl)
                 MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         boolean flag = manager.isUsePhoneSecurity();
@@ -914,12 +911,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mNewLostImg.setImageResource(R.drawable.ic_scan_error);
             mNewLostContent.setText(R.string.scan_lost_content);
             mNewLostContent.setVisibility(View.VISIBLE);
-            isNeedLongHeight = 2;
+            isNeedLongHeight = TEXT_HAVE_CONTENT_ONLY;
             if (manager.getMaxScore() > 0) {
                 mNewLostScore.setText(mActivity.getResources().
                         getString(R.string.scan_score, manager.getMaxScore()));
                 mNewLostScore.setVisibility(View.VISIBLE);
-                isNeedLongHeight = 4;
+                isNeedLongHeight = TEXT_HAVE_CONTENT_SCORE;
             }
         }
         mNewLostLoading.setVisibility(View.GONE);
@@ -928,7 +925,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private int updateNewContactList() {
-        int isNeedLongHeight = 1;
+        int isNeedLongHeight = TEXT_NO_CONTENT_SCORE;
         if (mContactScanFinish) {
             if (mContactList == null) {
                 mNewContactImg.setImageResource(R.drawable.ic_scan_safe);
@@ -1115,6 +1112,18 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         objectAnimator.setDuration(300);
         objectAnimator.start();
+    }
+
+    private int getContentHeight(View v) {
+        int theDipHeight = Utilities.getScanContentHeight(v, mActivity);
+        LeoLog.e("theDipHeight", theDipHeight + "");
+        if (theDipHeight <= ONE_LINE) {
+             return DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_ONE_LINE);
+        } else if (theDipHeight <= TWO_LINE) {
+             return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_TWO_LINE);
+        } else {
+             return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_THREE_LINE);
+        }
     }
 
 }
