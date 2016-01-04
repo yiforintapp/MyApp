@@ -131,20 +131,20 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
                 boolean restrLog = mDialog.getCheckBoxState();
                 //恢复拦截记录到系统
                 if (restrLog) {
-                    ThreadManager.executeOnAsyncThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                    ThreadManager.executeOnAsyncThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
-                            List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
-                            if (infos != null && infos.size() > 0) {
-                                for (CallFilterInfo info : infos) {
-                                    cmp.insertCallToSys(info);
-                                }
-                            }
+                    List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
+                    if (infos != null && infos.size() > 0) {
+                        for (CallFilterInfo CallInfo : infos) {
+                            cmp.insertCallToSys(CallInfo);
                         }
-                    });
+                    }
                 }
+//                    });
+//                }
                 //删除拦截,通知更新拦截列表
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
