@@ -149,7 +149,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private LayoutTransition mTransition;
     private View mBackView;
     private int mBackViewHeight = 0;
-    private int mNowHeight = 100;
+//    private int mNowHeight = 100;
+    private int mNowHeight;
     private int mScreenHeight;
 
     private int normalTypeHeight = 0;
@@ -191,6 +192,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mCancelTv.setOnClickListener(this);
         mProcessTv.setOnClickListener(this);
 
+        mNowHeight = DipPixelUtil.dip2px(mActivity, 40);
         mNewAppImg = (ImageView) view.findViewById(R.id.scan_new_app_img);
         mNewAppTitle = (TextView) view.findViewById(R.id.scan_new_app_title);
         mNewAppContent = (TextView) view.findViewById(R.id.scan_new_app_content);
