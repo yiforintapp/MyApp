@@ -96,7 +96,6 @@ public class AppLockListActivity extends BaseActivity implements
     private boolean mIsLenovo;
     private ProgressBar mProgressBar;
     private ArrayList<AppInfo> mResaultList;
-    private int goCnotR = 0;
     private ImageView mAutoImage;
 
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -142,7 +141,6 @@ public class AppLockListActivity extends BaseActivity implements
         LeoEventBus.getDefaultBus().register(this);
         handleIntent();
         initUI();
-        goCnotR = 1;
         mHandler.sendEmptyMessage(INIT_UI_DONE);
         LeoLog.i("TsCost", "AppLockListActivity-onCreate: " + (SystemClock.elapsedRealtime() - start));
     }
@@ -272,7 +270,7 @@ public class AppLockListActivity extends BaseActivity implements
         }
     }
 
-    private void loadData() {
+    private synchronized void loadData() {
         long start = SystemClock.elapsedRealtime();
 
         mUnlockRecommendList.clear();
@@ -846,11 +844,8 @@ public class AppLockListActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         long start = SystemClock.elapsedRealtime();
-        if (goCnotR == 0) {
-            loadData();
-        }
+
         checkNewTheme();
-        goCnotR = 0;
         super.onResume();
         LeoLog.i("TsCost", "AppLockListActivity-onResume: " + (SystemClock.elapsedRealtime() - start));
         updateHelpState();
