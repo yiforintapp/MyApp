@@ -146,6 +146,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
         mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         mAddBtn.setOnClickListener(this);
+
         mListCallLog = (ListView) findViewById(R.id.add_privacy_call_logLV);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
         mListCallLog.setOnItemClickListener(this);
@@ -165,7 +166,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         } else {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
             mAddBtn.setEnabled(false);
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         }
     }
 
@@ -581,8 +581,10 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
                             if (mCallLogList != null && mCallLogList.size() > 0) {
                                 mEmptyView.setVisibility(View.GONE);
+                                mSelectAll.setEnabled(true);
                             } else {
                                 mEmptyView.setVisibility(View.VISIBLE);
+                                mSelectAll.setEnabled(false);
                             }
 
                             mListCallLog.setAdapter(mCallLogAdapter);
