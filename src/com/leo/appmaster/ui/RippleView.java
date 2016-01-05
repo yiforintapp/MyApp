@@ -185,6 +185,7 @@ public class RippleView extends RelativeLayout {
 
     private boolean isClickAlready = false;
     private boolean isCanClick = false;
+    private long clickTime = 0;
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
@@ -250,11 +251,15 @@ public class RippleView extends RelativeLayout {
                         }
                     }
 
+                    clickTime = System.currentTimeMillis();
 
                     break;
                 case MotionEvent.ACTION_DOWN:
 
-                    if (!isClickAlready) {
+                    long otherClick = System.currentTimeMillis();
+                    boolean timeOut = otherClick - clickTime > 300 ? true : false;
+
+                    if (!isClickAlready && timeOut) {
                         isClickAlready = true;
                         isCanClick = true;
 
@@ -298,6 +303,9 @@ public class RippleView extends RelativeLayout {
                     isClickAlready = false;
                     isCanClick = false;
                     longClickDone = false;
+
+                    clickTime = System.currentTimeMillis();
+
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if (rippleHover) {
@@ -610,6 +618,7 @@ public class RippleView extends RelativeLayout {
     }
 
     private boolean needLongClick = false;
+
     public void setNeedLongClick(boolean isNeedLongClick) {
         needLongClick = isNeedLongClick;
     }
