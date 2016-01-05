@@ -687,7 +687,7 @@ public class HomePrivacyFragment extends Fragment {
                     }
                 });
 
-                ObjectAnimator animator = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "firstWaveRatio", 0f, 1f);
+                ObjectAnimator animator = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "firstWaveRatio", 0f, 3f);
                 animator.setDuration(500);
                 animator.setInterpolator(new LinearInterpolator());
                 animator.start();

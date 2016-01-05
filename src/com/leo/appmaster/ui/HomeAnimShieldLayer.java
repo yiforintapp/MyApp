@@ -338,7 +338,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private void drawShieldWave(Canvas canvas) {
         boolean dbg = false;
         // 绘制盾牌
-        if (mFirstWaveRatio > 0 && mFirstWaveRatio < 1) {
+        if (mFirstWaveRatio > 0 && mFirstWaveRatio < 3) {
             if (dbg) {
                 LeoLog.i(TAG, "drawShieldWave, mFirstWaveRatio: " + mFirstWaveRatio);
             }
