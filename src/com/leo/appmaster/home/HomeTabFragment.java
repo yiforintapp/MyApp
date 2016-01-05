@@ -1,6 +1,8 @@
 package com.leo.appmaster.home;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -21,17 +24,34 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.callfilter.BlackListInfo;
+import com.leo.appmaster.callfilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterInfo;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
+import com.leo.appmaster.callfilter.CallFilterManager;
+import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 首页下方4个tab

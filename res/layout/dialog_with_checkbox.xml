@@ -27,21 +27,24 @@
             android:text="@string/tips"
             android:visibility="visible" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" 
-            android:gravity="center_vertical">
+            android:gravity="top">
             
             <CheckBox
+                android:layout_marginTop="2dp"
                 android:id="@+id/checkb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/check_box_selector"
-                android:button="@null"
+                android:gravity="center"
+                android:padding="5dp"
+                android:button="@drawable/check_box_selector"
                 android:checked="false" />
 
-            <TextView
+             <TextView
+                 android:layout_toRightOf="@id/checkb"
+                android:layout_marginLeft="2dp"
                 android:id="@+id/tv_checkbox_text"
                 android:layout_width="match_parent"
                 android:paddingTop="2dp"
@@ -49,8 +52,8 @@
                 android:maxLines="2"
                 android:layout_height="wrap_content"
                 android:text="@string/call_filter_remove_from_blacklist_checkbox_text"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                android:textColor="#666666" /> 
+        </RelativeLayout>
 
         <!--
              <TextView
