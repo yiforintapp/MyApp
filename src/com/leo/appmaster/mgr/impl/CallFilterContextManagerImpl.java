@@ -144,6 +144,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 String locHdTypeColum = CallFilterConstants.BLACK_LOC_HD_TYPE;
                 String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
                 String locH = CallFilterConstants.BLACK_LOC_HD;
+                String addBlColum = CallFilterConstants.BLACK_ADD_NUMBER;
+                String addMarkColum = CallFilterConstants.MARKER_NUMBER;
                 SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
                 SQLiteDatabase sd = dbHelper.getReadableDatabase();
 //                StringBuilder sb = new StringBuilder();
@@ -151,7 +153,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 //                sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
 //                String sel = sb.toString();
                 number = PrivacyContactUtils.formatePhoneNumber(number);
-                Cursor cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum}, numbColum + " LIKE ? "/* + sel*/,
+                Cursor cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum, addBlColum, addMarkColum}, numbColum + " LIKE ? "/* + sel*/,
                         new String[]{"%" + number/*, String.valueOf(CallFilterConstants.LOC_HD),
                                 String.valueOf(CallFilterConstants.REMOVE_NO)*/}, null, null, null);
 
@@ -168,6 +170,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         int locHColu = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD);
                         int loc = cur.getInt(locHColu);
                         int remove = cur.getInt(cur.getColumnIndex(removeColum));
+                        int addBlk = cur.getInt(cur.getColumnIndex(addBlColum));
+                        int addMrk = cur.getInt(cur.getColumnIndex(addMarkColum));
                         //本地标记类型
                         if (locHdType != -1 && (locHdTypeFlag != locHdType)) {
                             value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
@@ -186,6 +190,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                                 value.put(CallFilterConstants.BLACK_NAME, "");
                                 value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, CallFilterConstants.BLACK_LIST_TYP);
                                 value.put(CallFilterConstants.BLACK_READ_STATE, readState);
+                            }
+                        } else {
+                            if (addBlk > 0 || addMrk > 0) {
+                                value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
                             }
                         }
 
