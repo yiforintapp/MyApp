@@ -321,6 +321,7 @@ public class CallFilterManager {
                 mTipToast.hide();
                 mTipToast = null;
             }
+            
             //如果带了号码，更新之前记录的号码
             if (!TextUtils.isEmpty(phoneNumber)) {
                 mPhoneNumber = phoneNumber;
@@ -330,8 +331,12 @@ public class CallFilterManager {
             setCurrentCallTime(-1);
             info = getBlackFroNum(mPhoneNumber);
             serInfo = getSerBlackForNum(mPhoneNumber);
+            if (info != null || isComingOut()) {
+                CallFilterManager.getInstance(mContext).setIsComingOut(false);
+                return;
+            }
+            
             int[] filterTip = cmp.isCallFilterTip(mPhoneNumber);
-            CallFilterManager.getInstance(mContext).setIsComingOut(false);
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
 //                durationMax = 7955;
