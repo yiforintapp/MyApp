@@ -53,23 +53,24 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
      *
      * @param flag 是否需要直接请求，还是遵守策略请求
      */
-    public void startImmediately(boolean flag) {
+    public static void startImmediately(boolean flag) {
+        FetchScheduleJob job = new BlackUploadFetchJob();
         if (flag) {
             //直接请求
-            startWork();
+            startWork(job);
         } else {
             //遵循策略请求
-            long time = getScheduleTime();
-            int requestState = getScheduleValue();
+            long time = job.getScheduleTime();
+            int requestState = job.getScheduleValue();
             long currTime = System.currentTimeMillis();
 
             if (FetchScheduleJob.STATE_SUCC == requestState) {
                 if ((currTime - time) >= FetchScheduleJob.FETCH_PERIOD) {
-                    startWork();
+                    startWork(job);
                 }
             } else if (FetchScheduleJob.STATE_FAIL == requestState) {
                 if ((currTime - time) >= FetchScheduleJob.FETCH_FAIL_ERIOD) {
-                    startWork();
+                    startWork(job);
                 }
             }
         }
@@ -77,7 +78,7 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
 
     @Override
     protected void work() {
-        startWork();
+        startWork(this);
     }
 
     @Override
@@ -123,10 +124,9 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
         }
     }
 
-    private static void startWork() {
+    private static void startWork(FetchScheduleJob job) {
          /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
-            BlackUploadFetchJob job = new BlackUploadFetchJob();
             FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
 

@@ -13,18 +13,13 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.AppMasterDBHelper;
-import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.schedule.BlackUploadFetchJob;
-import com.leo.appmaster.schedule.DownBlackFileFetchJob;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -32,7 +27,6 @@ import com.leo.appmaster.utils.Utilities;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -526,10 +520,10 @@ public class CallFilterUtils {
                 final int markType = Float.valueOf(markTypeStr).intValue();
                 final int markCount = Float.valueOf(markCountStr).intValue();
 
-                LeoLog.i("DownBlackFileFetchJob", "number-" + number);
-                LeoLog.i("DownBlackFileFetchJob", "blackCount-" + blackCount);
-                LeoLog.i("DownBlackFileFetchJob", "markType-" + markType);
-                LeoLog.i("DownBlackFileFetchJob", "markCount-" + markCount);
+                LeoLog.i("BlackListFileFetchJob", "number-" + number);
+                LeoLog.i("BlackListFileFetchJob", "blackCount-" + blackCount);
+                LeoLog.i("BlackListFileFetchJob", "markType-" + markType);
+                LeoLog.i("BlackListFileFetchJob", "markCount-" + markCount);
 
                 BlackListInfo info = new BlackListInfo();
                 info.setNumber(number);
@@ -544,7 +538,7 @@ public class CallFilterUtils {
             e.printStackTrace();
         } finally {
             /*删除文件*/
-//            String filePaht = DownBlackFileFetchJob.getBlackFilePath();
+//            String filePaht = BlackListFileFetchJob.getBlackFilePath();
 //            deleteFile(filePaht);
         }
     }

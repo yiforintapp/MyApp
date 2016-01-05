@@ -580,7 +580,7 @@ public class HttpRequestAgent {
         String object = "";
         String url = LeoUrls.URI_BLACK_LIST;
 //        String url = "http://192.168.1.205/app/config";
-        LeoLog.i("BlackDownLoadFetchJob",url);
+        LeoLog.i("BlackConfigFetchJob",url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);

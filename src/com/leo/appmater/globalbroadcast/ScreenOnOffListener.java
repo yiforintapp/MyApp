@@ -7,14 +7,11 @@ import android.content.IntentFilter;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.schedule.BlackDownLoadFetchJob;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
-import com.leo.appmaster.schedule.DownBlackFileFetchJob;
+import com.leo.appmaster.schedule.BlackListFileFetchJob;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -202,9 +199,8 @@ public class ScreenOnOffListener extends BroadcastListener {
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    new BlackUploadFetchJob().startImmediately(false);
-//                    new DownBlackFileFetchJob().startImmediately(false);
-                    DownBlackFileFetchJob.startImmediately(false);
+                    BlackUploadFetchJob.startImmediately(false);
+                    BlackListFileFetchJob.startImmediately(false);
                 }
             });
 
@@ -212,9 +208,8 @@ public class ScreenOnOffListener extends BroadcastListener {
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    new BlackUploadFetchJob().startImmediately(false);
-//                    new DownBlackFileFetchJob().startImmediately(false);
-                    DownBlackFileFetchJob.startImmediately(false);
+                    BlackUploadFetchJob.startImmediately(false);
+                    BlackListFileFetchJob.startImmediately(false);
                 }
             });
 

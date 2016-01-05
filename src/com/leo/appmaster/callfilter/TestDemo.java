@@ -4,24 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CallLog;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.leo.analytics.update.a;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
-import com.leo.appmaster.schedule.DownBlackFileFetchJob;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;

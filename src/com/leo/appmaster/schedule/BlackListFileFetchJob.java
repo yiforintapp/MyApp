@@ -1,7 +1,6 @@
 package com.leo.appmaster.schedule;
 
 import android.content.Context;
-import android.telecom.Call;
 import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
@@ -17,7 +16,7 @@ import com.leo.appmaster.utils.Utilities;
 /**
  * Created by runlee on 15-12-24.
  */
-public class DownBlackFileFetchJob extends FetchScheduleJob {
+public class BlackListFileFetchJob extends FetchScheduleJob {
     /**
      * 拉取间隔，24小时
      */
@@ -29,7 +28,7 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
      * @param flag 是否需要直接请求，还是遵守策略请求
      */
     public static void startImmediately(boolean flag) {
-        FetchScheduleJob job = new DownBlackFileFetchJob();
+        FetchScheduleJob job = new BlackListFileFetchJob();
         if (flag) {
             //直接请求
             startWorkImmediately(job);
