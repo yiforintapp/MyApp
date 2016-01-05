@@ -156,22 +156,35 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                                 String.valueOf(CallFilterConstants.REMOVE_NO)*/}, null, null, null);
 
                 if (cur != null && cur.getCount() > 0) {
+                    /**
+                     * 本地黑名单引起的更新操作
+                     * 1.伪删除引发的更新
+                     * 2.更改标记类型引起的更新
+                     * 3.恢复删除的黑名单引发的更新
+                     */
                     while (cur.moveToNext()) {
                         int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                         int locHdTypeFlag = cur.getInt(locHdTypeCom);
                         int locHColu = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD);
                         int loc = cur.getInt(locHColu);
+                        int remove = cur.getInt(cur.getColumnIndex(removeColum));
                         //本地标记类型
                         if (locHdType != -1 && (locHdTypeFlag != locHdType)) {
                             value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
                         }
-                        int remove = cur.getInt(cur.getColumnIndex(removeColum));
+
+                        //不是伪删除引发的更新
                         if (removeState != CallFilterConstants.REMOVE) {
                             if (CallFilterConstants.REMOVE_NO != remove) {
                                 value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
                             }
                             if (CallFilterConstants.LOC_HD != loc) {
                                 value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
+                            }
+                            //恢复删除的黑名单引发的更新
+                            if (locHdType == -1) {
+                                value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, CallFilterConstants.BLACK_LIST_TYP);
+                                value.put(CallFilterConstants.BLACK_READ_STATE, readState);
                             }
                         }
 
@@ -187,6 +200,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                     }
                 } else {
+                    /*新增操作*/
                     value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
                     value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
                     value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
