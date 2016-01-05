@@ -251,6 +251,9 @@ public class CallFilterManager {
         if (TextUtils.isEmpty(state) || isComingOut()) {
             LeoLog.i("testdata", "isComingOut = " + isComingOut());
             LeoLog.i("testdata", "state = " + state);
+            if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
+                setIsComingOut(false);
+            }
             return;
         }
         if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
@@ -321,7 +324,7 @@ public class CallFilterManager {
                 mTipToast.hide();
                 mTipToast = null;
             }
-            
+
             //如果带了号码，更新之前记录的号码
             if (!TextUtils.isEmpty(phoneNumber)) {
                 mPhoneNumber = phoneNumber;
@@ -335,7 +338,7 @@ public class CallFilterManager {
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
                 return;
             }
-            
+
             int[] filterTip = cmp.isCallFilterTip(mPhoneNumber);
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
@@ -846,11 +849,11 @@ public class CallFilterManager {
                     }
                 }
                 if (!isExistContact) {
+                    // 是否存在黑名单(过滤掉本地黑名单)
                     List<BlackListInfo> blackList = getBlackList();
+                    //是否存在后台下发的黑名单(过滤掉服务器下发的黑名单)
                     List<BlackListInfo> serBlackList = getSerBlackList();
-                    if ((blackList != null && blackList.size() > 0)
-                            || (serBlackList != null && serBlackList.size() > 0)) {
-                        // 是否存在黑名单(过滤掉本地黑名单)
+                    if (blackList != null && blackList.size() > 0) {
                         for (BlackListInfo info : blackList) {
                             String number = info.getNumber();
                             if (TextUtils.isEmpty(number)) {
@@ -861,7 +864,7 @@ public class CallFilterManager {
                                 break;
                             }
                         }
-                        //是否存在后台下发的黑名单(过滤掉服务器下发的黑名单)
+
                         if (serBlackList != null && serBlackList.size() > 0) {
                             for (BlackListInfo info : serBlackList) {
                                 String number = info.getNumber();
