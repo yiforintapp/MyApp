@@ -269,72 +269,69 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 list.add(blacklistInfo);
                 mCallManger.removeBlackList(list);
                 boolean restrLog = mDialog.getCheckBoxState();
+                if (restrLog) {
+                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
+                    List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
+                    if (infos != null && infos.size() > 0) {
+                        for (CallFilterInfo CallInfo : infos) {
+                            cmp.insertCallToSys(CallInfo);
+                        }
+                }
+            }
                 List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
                 removeFilterList.add(info);
                 mCallManger.removeFilterGr(removeFilterList);
-                if (restrLog) {
-                    ThreadManager.executeOnAsyncThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            mDialog.dismiss();
 
-                            List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
-                            if (infos != null && infos.size() > 0) {
-                                for (CallFilterInfo info : infos) {
-                                    cmp.insertCallToSys(info);
-                                }
-                            }
-                        }
-                    });
-                }
-                mDialog.dismiss();
-                onBackPressed();
-            }
-        });
-        mDialog.show();
-    }
-
-
-    class MyAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mRecordTime.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ItemHolder holder;
-            if (convertView == null) {
-                holder = new ItemHolder();
-                View view = LayoutInflater.from(CallFilterRecordActivity.this).inflate(R.layout.item_callfilter_record, null);
-                holder.tv = (TextView) view.findViewById(R.id.tv_record_time);
-                view.setTag(holder);
-                convertView = view;
-            } else {
-                holder = (ItemHolder) convertView.getTag();
-            }
-
-            long time = mRecordTime.get(position).getTimeLong();
-            SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mma");
-            holder.tv.setText(finalFormat.format(time));
-
-            return convertView;
+            onBackPressed();
         }
     }
 
-    class ItemHolder {
-        public TextView tv;
+    );
+    mDialog.show();
+}
+
+
+class MyAdapter extends BaseAdapter {
+
+    @Override
+    public int getCount() {
+        return mRecordTime.size();
     }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ItemHolder holder;
+        if (convertView == null) {
+            holder = new ItemHolder();
+            View view = LayoutInflater.from(CallFilterRecordActivity.this).inflate(R.layout.item_callfilter_record, null);
+            holder.tv = (TextView) view.findViewById(R.id.tv_record_time);
+            view.setTag(holder);
+            convertView = view;
+        } else {
+            holder = (ItemHolder) convertView.getTag();
+        }
+
+        long time = mRecordTime.get(position).getTimeLong();
+        SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mma");
+        holder.tv.setText(finalFormat.format(time));
+
+        return convertView;
+    }
+}
+
+class ItemHolder {
+    public TextView tv;
+}
 }

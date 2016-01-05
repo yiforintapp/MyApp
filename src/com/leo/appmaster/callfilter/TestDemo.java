@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
     private Button b5;
     private Button b6;
     private Button b7;
+    private Button b8;
     private int mI = 1;
 
     @Override
@@ -53,6 +55,8 @@ public class TestDemo extends Activity implements View.OnClickListener {
         b6.setOnClickListener(this);
         b7 = (Button) findViewById(R.id.B7);
         b7.setOnClickListener(this);
+        b8 = (Button) findViewById(R.id.B8);
+        b8.setOnClickListener(this);
     }
 
     @Override
@@ -61,7 +65,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
         switch (id) {
             case R.id.B1:
                 CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                pm.setFilterUserNumber(50000);
+                pm.setFilterUserNumber(10000);
                 pm.setFilterTipFroUser(3000);
                 BlackListInfo info = new BlackListInfo();
                 info.setNumber("18790729990");
@@ -70,6 +74,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 info.setMarkerNumber(30);
                 CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
                 cm.addFilterFroParse(info);
+                pm.setCallDurationMax(7000);
                 break;
             case R.id.B2:
                 new BlackUploadFetchJob().startImmediately(true);
@@ -153,10 +158,19 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 List<BlackListInfo> blackss = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
                 StringBuilder b = new StringBuilder();
                 for (BlackListInfo black : blackss) {
-                    b.append("num=" + black.getNumber() + ":loc=" + black.getLocHandler() + ":locTyp=" + black.getLocHandlerType() + ":remove=" + black.getRemoveState()+"\n");
+                    b.append("num=" + black.getNumber() + ":loc=" + black.getLocHandler() + ":locTyp=" + black.getLocHandlerType() + ":remove=" + black.getRemoveState() + "\n");
                 }
                 Toast.makeText(TestDemo.this, "" + b.toString(), Toast.LENGTH_LONG).show();
 
+                break;
+            case R.id.B8:
+                CallFilterContextManagerImpl LM = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                CallFilterInfo info8 = new CallFilterInfo();
+                info8.setNumber("18790729990");
+                info8.setTimeLong(System.currentTimeMillis() + 2000);
+                info8.setCallType(1);
+                info8.setDuration(1200);
+                LM.insertCallToSys(info8);
                 break;
         }
     }
