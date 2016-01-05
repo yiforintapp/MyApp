@@ -150,6 +150,8 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
     @Override
     protected void onProcessClick() {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
+                + mAdaper.getSelectedList().size());
         mActivity.onProcessClick(this);
         PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
         ThreadManager.executeOnAsyncThread(new Runnable() {

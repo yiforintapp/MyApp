@@ -85,6 +85,8 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
     @Override
     protected void onProcessClick() {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
+                + mAdapter.getSelectData().size());
         mActivity.onProcessClick(this);
         PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_VID, true);
         mFinishNotified = false;

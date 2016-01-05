@@ -822,7 +822,6 @@ public class HomePrivacyFragment extends Fragment {
         shieldLayer.setShieldScale(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
         shieldLayer.setInCircleAlpha(255);
         shieldLayer.setOutCircleAlpha(255);
-        shieldLayer.setShieldAlpha(255);
 
         if (mShieldOffsetYAnim != null) {
             mShieldOffsetYAnim.end();
