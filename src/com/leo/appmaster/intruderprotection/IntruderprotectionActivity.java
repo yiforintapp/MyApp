@@ -456,12 +456,13 @@ public class IntruderprotectionActivity extends BaseActivity {
      * 为清理按钮添加功能
      */
     private void initCleanButton() {
+        if (!mImanager.getIsIntruderSecurityAvailable()) {
+            mctb.setOptionMenuVisible(false);
+            return;
+        }
         mctb.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mImanager.getIsIntruderSecurityAvailable()) {
-                    return;
-                }
                 
                 SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_clear");
@@ -597,17 +598,19 @@ public class IntruderprotectionActivity extends BaseActivity {
         updateTimesToCatch();
         // 更改拍照所需的解锁失败次数
         RippleView btChangeTimes = (RippleView) mHeader.findViewById(R.id.rv_change_times);
-        btChangeTimes.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!mImanager.getIsIntruderSecurityAvailable()) {
-                    return;
+        if (!mImanager.getIsIntruderSecurityAvailable()) {
+            btChangeTimes.setEnabled(false);
+            return;
+        } else {
+            btChangeTimes.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+                            "intruder", "intruder_modify");
+                    showChangeTimesDialog();
                 }
-                SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
-                        "intruder", "intruder_modify");
-                showChangeTimesDialog();
-            }
-        });
+            });
+        }
         // btChangeTimes.setOnRippleCompleteListener(new
         // OnRippleCompleteListener() {
         // @Override
