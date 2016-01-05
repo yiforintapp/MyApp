@@ -358,7 +358,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             if (mPanelView == null) {
                 mPanelView = mRootView.findViewById(R.id.list_parent_layout);
                 // AM-3143: add animation for advertise cell
-                ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
+                    LeoLog.i("tempp", android.os.Build.MODEL);
+                 if (!("ZTE U817".equals(android.os.Build.MODEL))) {
+                     ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
+                 }
 
                 initLostLayout(mPanelView);
                 initIntruderLayout(mPanelView);
