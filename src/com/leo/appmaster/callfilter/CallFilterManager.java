@@ -277,8 +277,8 @@ public class CallFilterManager {
                 int tipType = filterTip[1];
                 int showValue = filterTip[2];
                 int filterType = filterTip[3];
-                LeoLog.i("testdata", "ringing... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0] 
-                        +"    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
+                LeoLog.i("testdata", "ringing... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0]
+                        + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
                 if (CallFilterConstants.IS_TIP_DIA[0] == isTip) {
                     return;
                 }
@@ -340,19 +340,19 @@ public class CallFilterManager {
             LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
             LeoLog.i(TAG, "idle : System.currentTimeMillis() =" + currentTime);
             LeoLog.i("allnull", "deltaTime = " + deltaTime);
-            
-            
+
+
             LeoLog.i("testdata", "idle... " + "info = " + (info == null ? "null" : "not null"));
             LeoLog.i("testdata", "idle... " + "serinfo = " + (serInfo == null ? "null" : "not null"));
             if (filterTip != null) {
-                LeoLog.i("testdata", "idle... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0] 
-                        +"    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
+                LeoLog.i("testdata", "idle... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0]
+                        + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
             } else {
                 LeoLog.i("testdata", "idle... " + "filterTip = null");
             }
             LeoLog.i("testdata", "deltaTime = " + deltaTime);
 
-            
+
             // 时间过短 且 服务器和本地都没有数据
 //            mIsOffHook = false
             if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0])) {
@@ -653,6 +653,7 @@ public class CallFilterManager {
 
     /**
      * 添加一条黑名单记录，仅包含号码和类型，并通知界面更新
+     *
      * @param type
      * @param number
      */
@@ -815,7 +816,7 @@ public class CallFilterManager {
         };
 
         ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
-                .getSysCallLog(mContext, selection, selectionArgs, null,true, false);
+                .getSysCallLog(mContext, selection, selectionArgs, null, true, false);
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(mContext, null, null,
                 false);
         List<ContactCallLog> straCalls = new ArrayList<ContactCallLog>();
@@ -840,9 +841,11 @@ public class CallFilterManager {
                     }
                 }
                 if (!isExistContact) {
-                    // 是否存在黑名单
                     List<BlackListInfo> blackList = getBlackList();
-                    if (blackList != null && blackList.size() > 0) {
+                    List<BlackListInfo> serBlackList = getSerBlackList();
+                    if ((blackList != null && blackList.size() > 0)
+                            || (serBlackList != null && serBlackList.size() > 0)) {
+                        // 是否存在黑名单(过滤掉本地黑名单)
                         for (BlackListInfo info : blackList) {
                             String number = info.getNumber();
                             if (TextUtils.isEmpty(number)) {
@@ -851,6 +854,19 @@ public class CallFilterManager {
                             if (!number.contains(formateNumber)) {
                                 straCalls.add(call);
                                 break;
+                            }
+                        }
+                        //是否存在后台下发的黑名单(过滤掉服务器下发的黑名单)
+                        if (serBlackList != null && serBlackList.size() > 0) {
+                            for (BlackListInfo info : serBlackList) {
+                                String number = info.getNumber();
+                                if (TextUtils.isEmpty(number)) {
+                                    continue;
+                                }
+                                if (!number.contains(formateNumber)) {
+                                    straCalls.add(call);
+                                    break;
+                                }
                             }
                         }
                     } else {
