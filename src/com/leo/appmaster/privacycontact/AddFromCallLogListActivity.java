@@ -834,8 +834,10 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                         try {
                             if (mCallLogList != null && mCallLogList.size() > 0) {
                                 mDefaultText.setVisibility(View.GONE);
+                                mComBar.setOptionImageVisibilit(true);
                             } else {
                                 mDefaultText.setVisibility(View.VISIBLE);
+                                mComBar.setOptionImageVisibilit(false);
                             }
                             mProgressBar.setVisibility(View.GONE);
                             mCallLogAdapter = new CallLogAdapter(mCallLogList);
@@ -909,45 +911,6 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                     mAddFromCallHandler.sendMessage(msg);
                 }
             });
-        }
-    }
-
-    private class PrivacyContactCallLogTask extends AsyncTask<String, Boolean, Boolean> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mProgressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Boolean doInBackground(String... arg0) {
-//             mCallLogList =PrivacyContactManager.getInstance(AddFromCallLogListActivity.this).getSysCalls();
-            try {
-                mCallLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this, null, null, null, false, false);
-                if (mCallLogList != null && mCallLogList.size() > 0) {
-                    Collections.sort(mCallLogList, PrivacyContactUtils.mCallLogCamparator);
-                }
-            } catch (Exception e) {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            try {
-                super.onPostExecute(result);
-                if (mCallLogList != null && mCallLogList.size() > 0) {
-                    mDefaultText.setVisibility(View.GONE);
-                } else {
-                    mDefaultText.setVisibility(View.VISIBLE);
-                }
-                mProgressBar.setVisibility(View.GONE);
-                mCallLogAdapter = new CallLogAdapter(mCallLogList);
-                mListCallLog.setAdapter(mCallLogAdapter);
-            } catch (Exception e) {
-
-            }
         }
     }
 }

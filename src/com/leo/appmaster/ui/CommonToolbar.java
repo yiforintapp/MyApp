@@ -128,6 +128,10 @@ public class CommonToolbar extends RelativeLayout implements View.OnClickListene
         return mOptionImg;
     }
 
+    public void setOptionImageVisibilit(boolean visible) {
+        mOptionImg.setVisibility(visible ? VISIBLE : GONE);
+    }
+
     /**
      * 设置第二个菜单监听
      *

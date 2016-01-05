@@ -700,9 +700,10 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             if (mPhoneContact != null && mPhoneContact.size() > 0) {
                                 mDefaultText.setVisibility(View.GONE);
                                 mContactSideBar.setVisibility(View.VISIBLE);
+                                mTtileBar.setOptionImageVisibilit(true);
                             } else {
                                 mDefaultText.setVisibility(View.VISIBLE);
-
+                                mTtileBar.setOptionImageVisibilit(false);
                             }
                             mProgressBar.setVisibility(View.GONE);
                             mContactAdapter.notifyDataSetChanged();

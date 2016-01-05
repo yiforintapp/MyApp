@@ -864,8 +864,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                         mMessageList = msms;
                         if (mMessageList != null && mMessageList.size() > 0) {
                             mDefaultText.setVisibility(View.GONE);
+                            mTtileBar.setOptionImageVisibilit(true);
                         } else {
                             mDefaultText.setVisibility(View.VISIBLE);
+                            mTtileBar.setOptionImageVisibilit(false);
                         }
                         mProgressBar.setVisibility(View.GONE);
                         mAdapter = new MyMessageAdapter(mMessageList);
