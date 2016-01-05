@@ -30,12 +30,9 @@ public class BurstDecor extends BaseDecor {
     private float[] mDistanceThirdWave = new float[10];
     private float mCurrentProcess = 0;
     private Paint mPaint;
-    public float getCurrentProcess() {
-        return mCurrentProcess;
-    }
 
     public void setCurrentProcess(float currentProcess) {
-        this.mCurrentProcess = mCurrentProcess;
+        mCurrentProcess = currentProcess;
     }
 
     @Override

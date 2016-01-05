@@ -30,10 +30,6 @@ public class ShieldFlipDecor extends BaseDecor {
         mMatrix = new Matrix();
     }
 
-    public float getFlipDegreeY() {
-        return mFlipDegreeY;
-    }
-    
     public void setFlipDegreeY(float degree) {
         mFlipDegreeY = degree;
     }
