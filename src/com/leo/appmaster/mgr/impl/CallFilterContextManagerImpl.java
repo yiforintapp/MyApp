@@ -166,11 +166,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
                         }
                         int remove = cur.getInt(cur.getColumnIndex(removeColum));
-                        if (CallFilterConstants.REMOVE == remove) {
-                            value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
-                        }
-                        if (CallFilterConstants.NO_LOC_HD == loc) {
-                            value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
+                        if (removeState != CallFilterConstants.REMOVE) {
+                            if (CallFilterConstants.REMOVE_NO != remove) {
+                                value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
+                            }
+                            if (CallFilterConstants.LOC_HD != loc) {
+                                value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
+                            }
                         }
 
                         String where = null;

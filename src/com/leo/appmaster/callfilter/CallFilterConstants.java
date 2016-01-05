@@ -240,7 +240,7 @@ public class CallFilterConstants {
 
 
     /*记录未删除*/
-    public static final int REMOVE_NO = 0;
+    public static final int REMOVE_NO = 2;
     /*记录已删除*/
     public static final int REMOVE = 1;
 
