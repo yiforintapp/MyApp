@@ -22,10 +22,12 @@ public class ContactCallLog extends BaseInfo implements Serializable {
     private Bitmap contactIcon;
     public String phoneNumber;
     public boolean isShowReadTip;
+    private int addBlackNumber = -1;
+
 
     public ContactCallLog(String callLogName, String callLogNumber, int clallLogType,
-            String clallLogDate, int classLogId, int callLogCount, long callLogDuraction,
-            boolean isCheck, int isRead, String showDate, Bitmap contactIcon) {
+                          String clallLogDate, int classLogId, int callLogCount, long callLogDuraction,
+                          boolean isCheck, int isRead, String showDate, Bitmap contactIcon) {
         super();
         this.callLogName = callLogName;
         this.callLogNumber = callLogNumber;
@@ -37,6 +39,14 @@ public class ContactCallLog extends BaseInfo implements Serializable {
         this.isCheck = isCheck;
         this.isRead = isRead;
         this.contactIcon = contactIcon;
+    }
+
+    public int getAddBlackNumber() {
+        return addBlackNumber;
+    }
+
+    public void setAddBlackNumber(int addBlackNumber) {
+        this.addBlackNumber = addBlackNumber;
     }
 
     public Bitmap getContactIcon() {

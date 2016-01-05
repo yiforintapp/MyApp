@@ -397,18 +397,13 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             ContactCallLog mb = callLog.get(position);
             vh.name.setText(mb.getCallLogNumber());
 
-            BlackListInfo info = mCallManger.getSerBlackFroNum(mb.getCallLogNumber());
-            if (info != null) {
-                int addToBlackNum = info.getAddBlackNumber();
-                if (addToBlackNum > 0) {
-                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                    int showPar = cmp.getBlackMarkTipParam();
-                    vh.addnum.setVisibility(View.VISIBLE);
-                    vh.addnum.setText(StrangeCallActivity.this.getString(
-                            R.string.call_filter_add_to_blacklist_people_tips, addToBlackNum * showPar));
-                } else {
-                    vh.addnum.setVisibility(View.GONE);
-                }
+            int addToBlackNum = mb.getAddBlackNumber();
+            if (addToBlackNum > 0) {
+                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                int showPar = cmp.getBlackMarkTipParam();
+                vh.addnum.setVisibility(View.VISIBLE);
+                vh.addnum.setText(StrangeCallActivity.this.getString(
+                        R.string.call_filter_add_to_blacklist_people_tips, addToBlackNum * showPar));
             } else {
                 vh.addnum.setVisibility(View.GONE);
             }
@@ -675,15 +670,23 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         for (ContactCallLog call : callLogList) {
                             if (CallLog.Calls.OUTGOING_TYPE != call.getClallLogType()
                                     && !mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
+
+                                //add to black list num
+                                BlackListInfo info = mCallManger.getSerBlackFroNum(call.getCallLogNumber());
+                                int addToBlackNum = info.getAddBlackNumber();
+                                if (addToBlackNum > 0) {
+                                    call.setAddBlackNumber(addToBlackNum);
+                                }
+
                                 calls.add(call);
                             }
                         }
                         callLogList.clear();
                         callLogList.addAll(calls);
                     }
-                    List<ContactCallLog> calls = new ArrayList<ContactCallLog>();
+
+
                     Message msg = new Message();
-                    msg.obj = calls;
                     msg.what = PrivacyContactUtils.MSG_ADD_CALL;
                     msg.obj = callLogList;
                     mAddFromCallHandler.sendMessage(msg);
