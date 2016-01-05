@@ -356,7 +356,7 @@ public class CallFilterManager {
             LeoLog.i("testdata", "idle... " + "info = " + (info == null ? "null" : "not null"));
             LeoLog.i("testdata", "idle... " + "serinfo = " + (serInfo == null ? "null" : "not null"));
             if (filterTip != null) {
-                LeoLog.i("testdata", "idle... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0]
+                LeoLog.i("testdata", "idle... and info null serinfo not null .. " + "filterTip[0]=" + filterTip[0]
                         + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
             } else {
                 LeoLog.i("testdata", "idle... " + "filterTip = null");
