@@ -944,7 +944,7 @@
     <string name="number_call_duration_s">وقت المكالمة %1$s ثانية</string>
     <string name="number_call_duration_m">وقت المكالمة : %1$s دقيقة</string>
     <string name="number_call_duration_h">وقت المكالمة : %1$s ساعة</string>
-    <string name="scan_score">معالجة + %1$s دقيقة</string>
+    <string name="scan_score">معالجة + %1$s نقاط</string>
     <string name="scan_app_title">يوجد %1$s تطبيقا</string>
     <string name="scan_app_content_less_three">منها يوجد تطبيق كتم الأسرار الخطيرة العالية %1$s</string>
     <string name="scan_app_content_less_three_app">منها يوجد تطبيق كتم الأسرار الخطيرة العالية <Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data></string>

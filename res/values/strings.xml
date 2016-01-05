@@ -879,7 +879,7 @@
     <string name="number_call_duration_s">Talk time: %1$s S</string>
     <string name="number_call_duration_m">Talk time: %1$s M</string>
     <string name="number_call_duration_h">Talk time: %1$s H</string>
-    <string name="scan_score">for + %1$s min.</string>
+    <string name="scan_score">complete +%1$s points</string>
     <string name="scan_app_title"> %1$s apps found</string>
     <string name="scan_app_content_less_three"> %1$s high risk privacy apps</string>
     <string name="scan_app_content_less_three_app"><Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> high risk privacy apps</string>

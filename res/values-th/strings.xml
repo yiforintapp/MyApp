@@ -857,7 +857,7 @@
     <string name="number_call_duration_s">เวลาโทร:%1$sวินาที</string>
     <string name="number_call_duration_m">เวลาโทร:%1$sนาที</string>
     <string name="number_call_duration_h">เวลาโทร:%1$sชม.</string>
-    <string name="scan_score">จัดการ:%1$sนาที</string>
+    <string name="scan_score">จัดการ:+%1$sจุดี</string>
     <string name="scan_app_title">พบ%1$sแอพ</string>
     <string name="scan_app_content_less_three">แอพที่มีความเสี่ยง%1$sแอพ</string>
     <string name="scan_app_content_less_three_app">แอพที่มีความเสี่ยง<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>แอพ</string>
