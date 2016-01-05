@@ -324,12 +324,12 @@ public class PrivacyContactUtils {
         ContentResolver cr = context.getContentResolver();
         Cursor phoneCursor = null;
 
-        if (Utilities.isEmpty(selection)) {
-            /*默认selection*/
-            selection = Contacts.IN_VISIBLE_GROUP + "=1 and "
-                    + Phone.HAS_PHONE_NUMBER + "=1 and "
-                    + Phone.DISPLAY_NAME + " IS NOT NULL";
-        }
+//        if (Utilities.isEmpty(selection)) {
+//            /*默认selection*/
+//            selection = Contacts.IN_VISIBLE_GROUP + "=1 and "
+//                    + Phone.HAS_PHONE_NUMBER + "=1 and "
+//                    + Phone.DISPLAY_NAME + " IS NOT NULL";
+//        }
 
         try {
             PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
@@ -416,11 +416,11 @@ public class PrivacyContactUtils {
 
     private static List<ContactBean> aginGetSysContact(ContentResolver cr, String selection, String[] selectionArgs) {
 
-        if (Utilities.isEmpty(selection)) {
-            selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + "=1 and "
-                    + ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1 and "
-                    + ContactsContract.Contacts.DISPLAY_NAME + " IS NOT NULL";
-        }
+//        if (Utilities.isEmpty(selection)) {
+//            selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + "=1 and "
+//                    + ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1 and "
+//                    + ContactsContract.Contacts.DISPLAY_NAME + " IS NOT NULL";
+//        }
         if (selectionArgs == null && selectionArgs.length <= 0) {
             selectionArgs = null;
         }
