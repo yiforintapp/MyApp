@@ -98,7 +98,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
         loadData();
     }
 
-    private void loadData() {
+    public void loadData() {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {

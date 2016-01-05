@@ -188,6 +188,12 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         }
     }
 
+    public void blackListReload() {
+        if (mBlackListFragment != null) {
+            mBlackListFragment.loadData();
+        }
+    }
+
     public void callFilterShowEmpty() {
         if (mCallFilterFragment != null) {
             mCallFilterFragment.showEmpty();

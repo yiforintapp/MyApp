@@ -19,13 +19,17 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
+import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
+import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -34,6 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CallFilterFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+
+    public static final int TYPE_ANNOY = 1;
+    public static final int TYPE_AD = 2;
+    public static final int TYPE_CHEAT = 3;
 
     private ListView mCallListView;
     private View mNothingToShowView;
@@ -44,6 +52,8 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     private boolean isFristIn = true;
     private List<ContactBean> mSysContacts;
     private RelativeLayout mRlBottomView;
+    private LEOWithSingleCheckboxDialog mDeleteDialog;
+
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -108,7 +118,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         mCallListView.setOnItemClickListener(this);
         mCallListView.setOnItemLongClickListener(this);
         mNothingToShowView = findViewById(R.id.content_show_nothing);
-        
+
         loadData(true);
     }
 
@@ -277,11 +287,11 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 CallFilterInfo info = mFilterList.get(i);
 
                 if (position == 0) {
-                    info.setFilterType(1);
+                    info.setFilterType(TYPE_ANNOY);
                 } else if (position == 1) {
-                    info.setFilterType(2);
+                    info.setFilterType(TYPE_AD);
                 } else if (position == 2) {
-                    info.setFilterType(3);
+                    info.setFilterType(TYPE_CHEAT);
                 }
 
                 List<BlackListInfo> list = new ArrayList<BlackListInfo>();
@@ -294,32 +304,78 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 mAdapter.notifyDataSetChanged();
                 Toast.makeText(mActivity, R.string.mark_number_from_list, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-                
+
             }
         });
-
 
         dialog.show();
     }
 
 
-    private void removeBlackList(int position) {
-        //remove Filter
-        List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
-        CallFilterInfo infoFilter = mFilterList.get(position);
-        removeFilterList.add(infoFilter);
-        mCallManger.removeFilterGr(removeFilterList);
+    private void removeBlackList(final int position) {
 
-        //remove BlackList
-        List<BlackListInfo> removeBlacklist = new ArrayList<BlackListInfo>();
-        BlackListInfo infoBlack = new BlackListInfo();
-        infoBlack.setNumber(infoFilter.getNumber());
-        removeBlacklist.add(infoBlack);
-        mCallManger.removeBlackList(removeBlacklist);
+        if (mDeleteDialog == null) {
+            mDeleteDialog = CallFIlterUIHelper.getInstance().
+                    getConfirmRemoveFromBlacklistDialog(mActivity);
+        }
+        mDeleteDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //remove Filter
+                List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
+                final CallFilterInfo infoFilter = mFilterList.get(position);
+                removeFilterList.add(infoFilter);
+                mCallManger.removeFilterGr(removeFilterList);
+
+                //remove BlackList
+                List<BlackListInfo> removeBlacklist = new ArrayList<BlackListInfo>();
+                BlackListInfo infoBlack = new BlackListInfo();
+                infoBlack.setNumber(infoFilter.getNumber());
+                removeBlacklist.add(infoBlack);
+                mCallManger.removeBlackList(removeBlacklist);
+
+                mFilterList.remove(position);
+                CallFilterMainActivity callFilterMainActivity =
+                        (CallFilterMainActivity) mActivity;
+                //black list notify
+                callFilterMainActivity.blackListReload();
 
 
-        mFilterList.remove(position);
-        mAdapter.notifyDataSetChanged();
+                boolean restrLog = mDeleteDialog.getCheckBoxState();
+                //恢复拦截记录到系统
+                if (restrLog) {
+                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl)
+                            MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+
+                    List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(infoFilter.getNumber());
+                    if (infos != null && infos.size() > 0) {
+                        for (CallFilterInfo CallInfo : infos) {
+                            cmp.insertCallToSys(CallInfo);
+                        }
+                    }
+                }
+
+                //删除拦截,通知更新拦截列表
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
+                        CallFilterInfo callFil = new CallFilterInfo();
+                        callFil.setNumber(infoFilter.getNumber());
+                        removeFilterList.add(callFil);
+                        mCallManger.removeFilterGr(removeFilterList);
+                        int id = EventId.EVENT_LOAD_FIL_GR_ID;
+                        String msg = CallFilterConstants.EVENT_MSG_LOAD_FIL_GR;
+                        CommonEvent event = new CommonEvent(id, msg);
+                        LeoEventBus.getDefaultBus().post(event);
+                    }
+                });
+
+                mAdapter.setData(mFilterList);
+                mDeleteDialog.dismiss();
+            }
+        });
+        mDeleteDialog.show();
     }
 
     private void deleteFilter(int position) {
@@ -329,9 +385,6 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         mCallManger.removeFilterGr(removeList);
 
         mFilterList.remove(position);
-        mAdapter.notifyDataSetChanged();
-        if (mFilterList != null && mFilterList.size() <= 0) {
-            showEmpty();
-        }
+        mAdapter.setData(mFilterList);
     }
 }
