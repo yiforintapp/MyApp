@@ -56,9 +56,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             "com.leo.appmaster.schedule.LockRecommentFetchJob",
             "com.leo.appmaster.schedule.PhoneSecurityFetchJob",
             "com.leo.appmaster.schedule.CardFetchJob",
-            "com.leo.appmaster.schedule.BlackConfigFetchJob",
-            "com.leo.appmaster.schedule.BlackUploadFetchJob",
-            "com.leo.appmaster.schedule.BlackListFileFetchJob"
+            "com.leo.appmaster.schedule.BlackConfigFetchJob"
     };
 
     public static void startFetchJobs() {
@@ -221,7 +219,9 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         pref.setScheduleValue(getJobStateKey(), STATE_SUCC);
         // 保存重试次数
         pref.setScheduleValue(getJobFailCountKey(), 0);
-        startInner(true);
+        if (!onInterceptSchedule()) {
+            startInner(true);
+        }
     }
 
     /**
@@ -238,7 +238,9 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         // 保存重试次数
         int count = pref.getScheduleValue(getJobFailCountKey(), 0);
         pref.setScheduleValue(getJobFailCountKey(), ++count);
-        startInner(false);
+        if (!onInterceptSchedule()) {
+            startInner(false);
+        }
     }
 
     protected FetchScheduleListener newJsonObjListener() {
@@ -314,5 +316,11 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         return pref.getScheduleValue(getJobFailCountKey(), 0);
     }
 
-
+    /**
+     * 是否阻断定时
+     * @return
+     */
+    protected boolean onInterceptSchedule() {
+        return false;
+    }
 }

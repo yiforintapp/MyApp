@@ -128,12 +128,12 @@ public class BlackConfigFetchJob extends FetchScheduleJob {
                 sb.append(CallFilterConstants.GZIP);
                 String file = sb.toString();
                 lsm.setSerBlackFilePath(file);
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        BlackListFileFetchJob.startImmediately(true);
-                    }
-                });
+//                ThreadManager.executeOnAsyncThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        BlackListFileFetchJob.startImmediately(true);
+//                    }
+//                });
             }
             if (starNotiTip > 0) {
                 lsm.setStraNotiTipParam(starNotiTip);

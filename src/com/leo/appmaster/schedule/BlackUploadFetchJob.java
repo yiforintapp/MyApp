@@ -248,4 +248,9 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     protected int getRetryValue() {
         return super.getRetryValue();
     }
+
+    @Override
+    protected boolean onInterceptSchedule() {
+        return true;
+    }
 }

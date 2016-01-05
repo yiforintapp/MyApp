@@ -196,6 +196,7 @@ public class ScreenOnOffListener extends BroadcastListener {
         Context mContext = AppMasterApplication.getInstance();
         if (!AppUtil.isScreenLocked(mContext)
                 && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+            LeoLog.d(TAG, "blackRequestJob, exe screen on.");
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
@@ -205,6 +206,7 @@ public class ScreenOnOffListener extends BroadcastListener {
             });
 
         } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+            LeoLog.d(TAG, "blackRequestJob, exe user present.");
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {

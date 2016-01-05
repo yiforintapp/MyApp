@@ -10,6 +10,7 @@ import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -17,6 +18,8 @@ import com.leo.appmaster.utils.Utilities;
  * Created by runlee on 15-12-24.
  */
 public class BlackListFileFetchJob extends FetchScheduleJob {
+
+    public static final String KEY_JOB = "BlackListFileFetchJob";
     /**
      * 拉取间隔，24小时
      */
@@ -78,6 +81,7 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
     private static void startWorkImmediately(FetchScheduleJob job) {
          /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
+            LeoLog.d(KEY_JOB, "start work immediately.");
             FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
             String filePath = getBlackFilePath();
@@ -120,5 +124,10 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
     @Override
     protected int getScheduleValue() {
         return super.getScheduleValue();
+    }
+
+    @Override
+    protected boolean onInterceptSchedule() {
+        return true;
     }
 }
