@@ -213,6 +213,7 @@ public class CallFilterManager {
      */
     public void filterCallHandler(String action, final String phoneNumber, String state,
                                   final ITelephony iTelephony) {
+        LeoLog.i("testdata", "in manager");
         if (!TextUtils.isEmpty(phoneNumber)) {
             mPhoneNumber = phoneNumber;
         }
@@ -220,12 +221,14 @@ public class CallFilterManager {
         final CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean filOpSta = cmp.getFilterOpenState();
         if (!filOpSta) {
+            LeoLog.i("testdata", "closed！ return");
             return;
         }
         /* 去除重复广播 */
         long time = System.currentTimeMillis();
         if ((time - getCurrentCallTime()) < CallFilterConstants.CALL_RECEIV_DURAT) {
             setCurrentCallTime(-1);
+            LeoLog.i("testdata", "duplicate! return");
             return;
         }
         LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
