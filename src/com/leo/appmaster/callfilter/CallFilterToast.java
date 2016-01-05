@@ -9,6 +9,7 @@ import android.os.Message;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -19,11 +20,13 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
@@ -38,11 +41,14 @@ public class CallFilterToast {
     public static final int TYPE_ANNOY = 1;
     public static final int TYPE_AD = 2;
     public static final int TYPE_CHEAT = 3;
+    public static final String TOAST_Y = "record_toast_y";
 
     public static TextView mTextOne, mTextTwo, mTextThree;
     public static View mClose;
     public static View mContent;
     private static Context mContext;
+    private int mToastY = 0;
+
 
     private static Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -57,6 +63,7 @@ public class CallFilterToast {
         mContext = context;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.call_filter_toast, null);
+
 
         mTextOne = (TextView) view.findViewById(R.id.tv_number);
         mTextTwo = (TextView) view.findViewById(R.id.tv_desc);
@@ -99,8 +106,72 @@ public class CallFilterToast {
             mContent.setBackgroundResource(R.drawable.filter_toast_bg_m);
         }
 
+        view.setOnTouchListener(new View.OnTouchListener() {
+            // 定义手指的初始化位置
+            int startY;
+            int startViewY;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+
+                    case MotionEvent.ACTION_DOWN:// 手指按下屏幕
+                        startY = (int) event.getRawY();
+                        startViewY = mParams.y;
+                        LeoLog.d("testToastMove", "手指摸到控件 y : " + startY);
+                        LeoLog.d("testToastMove", "view place y : " + startViewY);
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
+
+                        int newY = (int) event.getRawY();
+                        int dy = newY - startY;
+
+                        LeoLog.d("testToastMove", "startY : " + startY);
+                        LeoLog.d("testToastMove", "newY : " + newY);
+                        LeoLog.d("testToastMove", "move Y : " + dy);
+                        LeoLog.d("testToastMove", "----------------------");
+
+                        startViewY += dy;
+
+                        if (mParams.y < 0) {
+                            startViewY = 0;
+                        }
+                        if (mParams.y > (mWM.getDefaultDisplay().getHeight() - view
+                                .getHeight())) {
+                            startViewY = (mWM.getDefaultDisplay().getHeight() - view
+                                    .getHeight());
+                        }
+
+                        mParams.y = startViewY;
+                        mWM.updateViewLayout(view, mParams);
+
+                        // 重新初始化手指的开始结束位置。
+                        startY += dy;
+
+                        break;
+                    case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
+                        // 记录控件距离屏幕左上角的坐标
+                        LeoLog.d("testToastMove", "finger up");
+                        LeoLog.d("testToastMove", "view place y : " + mParams.y);
+                        PreferenceTable.getInstance().putInt(TOAST_Y, mParams.y);
+                        break;
+                }
+
+                return false;
+            }
+        });
+
         result.mNextView = view;
+
+        setViewTouchble();
         return result;
+    }
+
+    private static void setViewTouchble() {
+
     }
 
     public static final int LENGTH_SHORT = 2000;
@@ -113,10 +184,10 @@ public class CallFilterToast {
     private float mHorizontalMargin;
     private float mVerticalMargin;
     private static View mView;
-    private View mNextView;
+    private static View mNextView;
 
     private static WindowManager mWM;
-    private final WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
+    private static WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
 
 
     public CallFilterToast(Context context) {
@@ -276,12 +347,15 @@ public class CallFilterToast {
 
         mWM = (WindowManager) context.getApplicationContext()
                 .getSystemService(Context.WINDOW_SERVICE);
+
+        mToastY = PreferenceTable.getInstance().getInt(TOAST_Y, 0);
     }
 
 
     private void handleShow() {
 
         if (mView != mNextView) {
+
             // remove the old view if necessary
             handleHide();
             mView = mNextView;
@@ -295,7 +369,11 @@ public class CallFilterToast {
                 mParams.verticalWeight = 1.0f;
             }
             mParams.x = mX;
-            mParams.y = mY;
+            if (mToastY != 0) {
+                mParams.y = mToastY;
+            } else {
+                mParams.y = mY;
+            }
             mParams.verticalMargin = mVerticalMargin;
             mParams.horizontalMargin = mHorizontalMargin;
             if (mView.getParent() != null) {
