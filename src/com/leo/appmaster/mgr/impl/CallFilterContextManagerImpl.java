@@ -143,25 +143,36 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 String upColum = CallFilterConstants.BLACK_UPLOAD_STATE;
                 String locHdTypeColum = CallFilterConstants.BLACK_LOC_HD_TYPE;
                 String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
+                String locH = CallFilterConstants.BLACK_LOC_HD;
                 SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
                 SQLiteDatabase sd = dbHelper.getReadableDatabase();
-                StringBuilder sb = new StringBuilder();
-                sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-                sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
-                String sel = sb.toString();
+//                StringBuilder sb = new StringBuilder();
+//                sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+//                sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
+//                String sel = sb.toString();
                 number = PrivacyContactUtils.formatePhoneNumber(number);
-                Cursor cur = sd.query(table, new String[]{numbColum, upColum, locHdTypeColum, removeColum}, numbColum + " LIKE ? and " + sel,
-                        new String[]{"%" + number, String.valueOf(CallFilterConstants.LOC_HD),
-                                String.valueOf(CallFilterConstants.REMOVE_NO)}, null, null, null);
+                Cursor cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum}, numbColum + " LIKE ? "/* + sel*/,
+                        new String[]{"%" + number/*, String.valueOf(CallFilterConstants.LOC_HD),
+                                String.valueOf(CallFilterConstants.REMOVE_NO)*/}, null, null, null);
 
                 if (cur != null && cur.getCount() > 0) {
                     while (cur.moveToNext()) {
                         int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
                         int locHdTypeFlag = cur.getInt(locHdTypeCom);
+                        int locHColu = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD);
+                        int loc = cur.getInt(locHColu);
                         //本地标记类型
                         if (locHdType != -1 && (locHdTypeFlag != locHdType)) {
                             value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
                         }
+                        int remove = cur.getInt(cur.getColumnIndex(removeColum));
+                        if (CallFilterConstants.REMOVE == remove) {
+                            value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
+                        }
+                        if (CallFilterConstants.NO_LOC_HD == loc) {
+                            value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
+                        }
+
                         String where = null;
                         String[] selectArgs = null;
                         if (id > 0) {
