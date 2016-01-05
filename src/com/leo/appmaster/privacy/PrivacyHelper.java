@@ -202,7 +202,6 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         ScreenOnOffListener listener = new ScreenOnOffListener() {
             @Override
             public void onScreenChanged(Intent intent) {
-                super.onScreenChanged(intent);
                 handleScreenIntent(intent);
             }
         };

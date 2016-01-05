@@ -28,23 +28,24 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
      *
      * @param flag 是否需要直接请求，还是遵守策略请求
      */
-    public void startImmediately(boolean flag) {
+    public static void startImmediately(boolean flag) {
+        FetchScheduleJob job = new DownBlackFileFetchJob();
         if (flag) {
             //直接请求
-            startWork();
+            startWorkImmediately(job);
         } else {
             //遵守策略请求
-            long time = getScheduleTime();
-            int requestState = getScheduleValue();
+            long time = job.getScheduleTime();
+            int requestState = job.getScheduleValue();
             long currTime = System.currentTimeMillis();
 
             if (FetchScheduleJob.STATE_SUCC == requestState) {
                 if ((currTime - time) >= FetchScheduleJob.FETCH_PERIOD) {
-                    startWork();
+                    startWorkImmediately(job);
                 }
             } else if (FetchScheduleJob.STATE_FAIL == requestState) {
                 if ((currTime - time) >= FetchScheduleJob.FETCH_FAIL_ERIOD) {
-                    startWork();
+                    startWorkImmediately(job);
                 }
             }
         }
@@ -52,7 +53,7 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
 
     @Override
     protected void work() {
-        startWork();
+        startWorkImmediately(this);
     }
 
     @Override
@@ -75,10 +76,9 @@ public class DownBlackFileFetchJob extends FetchScheduleJob {
         super.onFetchFail(error);
     }
 
-    private static void startWork() {
+    private static void startWorkImmediately(FetchScheduleJob job) {
          /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
-            DownBlackFileFetchJob job = new DownBlackFileFetchJob();
             FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
             String filePath = getBlackFilePath();

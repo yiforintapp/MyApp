@@ -16,6 +16,7 @@ import com.leo.appmaster.schedule.BlackDownLoadFetchJob;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.schedule.DownBlackFileFetchJob;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 
 public class ScreenOnOffListener extends BroadcastListener {
 
@@ -190,15 +191,20 @@ public class ScreenOnOffListener extends BroadcastListener {
      * @param intent
      */
     public void blackRequestJob(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        String action = intent.getAction();
+        LeoLog.d(TAG, "blackRequestJob, action: " + action);
         Context mContext = AppMasterApplication.getInstance();
         if (!AppUtil.isScreenLocked(mContext)
                 && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    new BlackDownLoadFetchJob().startImmediately(false);
                     new BlackUploadFetchJob().startImmediately(false);
-                    new DownBlackFileFetchJob().startImmediately(false);
+//                    new DownBlackFileFetchJob().startImmediately(false);
+                    DownBlackFileFetchJob.startImmediately(false);
                 }
             });
 
@@ -206,9 +212,9 @@ public class ScreenOnOffListener extends BroadcastListener {
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    new BlackDownLoadFetchJob().startImmediately(false);
                     new BlackUploadFetchJob().startImmediately(false);
-                    new DownBlackFileFetchJob().startImmediately(false);
+//                    new DownBlackFileFetchJob().startImmediately(false);
+                    DownBlackFileFetchJob.startImmediately(false);
                 }
             });
 
