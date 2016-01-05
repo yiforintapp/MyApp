@@ -221,6 +221,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
             android:name=".callfilter.StrangeCallActivity"
