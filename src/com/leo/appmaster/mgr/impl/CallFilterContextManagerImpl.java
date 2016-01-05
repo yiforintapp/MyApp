@@ -183,6 +183,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             }
                             //恢复删除的黑名单引发的更新
                             if (locHdType == -1) {
+                                value.put(CallFilterConstants.BLACK_NAME, "");
                                 value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, CallFilterConstants.BLACK_LIST_TYP);
                                 value.put(CallFilterConstants.BLACK_READ_STATE, readState);
                             }

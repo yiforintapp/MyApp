@@ -469,7 +469,7 @@ public class CallFilterManager {
                     return;
                 }
                 // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
-                mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(phoneNumber, mContext, true, 0, true);
+                mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
                 String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
                 String summaryF = String.format(summaryS, filterTip[2]);
                 mDialogAskAddWithSmr.setContent(summaryF);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -254,6 +255,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         String formatNumber = PrivacyContactUtils.formatePhoneNumber(number);
         for (int i = 0; i < mSysContacts.size(); i++) {
             String sysNumber = mSysContacts.get(i).getContactNumber();
+            if (TextUtils.isEmpty(sysNumber)) {
+                continue;
+            }
             if (sysNumber.contains(formatNumber)) {
                 return true;
             }
