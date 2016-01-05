@@ -79,6 +79,7 @@ public class HomePrivacyFragment extends Fragment {
 
     public static boolean mAnimatorPlaying;
 
+    private AnimatorSet mMoveLeftTopAnim;
 
     public HomePrivacyFragment() {
 
@@ -519,6 +520,9 @@ public class HomePrivacyFragment extends Fragment {
             if (mScanningAnimator != null) {
                 mScanningAnimator.end();
             }
+            if (mMoveLeftTopAnim == null) {
+                return;
+            }
             mScanningAnimator = ObjectAnimator.ofInt(mHomeAnimView, "scanningPercent", from, to);
             mScanningAnimator.setDuration(duration);
             mScanningAnimator.setInterpolator(new LinearInterpolator());
@@ -652,10 +656,10 @@ public class HomePrivacyFragment extends Fragment {
         dashAlphaAnim.setDuration(100);
         animators.add(dashAlphaAnim);
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(animators);
-        animatorSet.start();
-        animatorSet.addListener(new SimpleAnimatorListener() {
+        mMoveLeftTopAnim = new AnimatorSet();
+        mMoveLeftTopAnim.playTogether(animators);
+        mMoveLeftTopAnim.start();
+        mMoveLeftTopAnim.addListener(new SimpleAnimatorListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
@@ -800,6 +804,11 @@ public class HomePrivacyFragment extends Fragment {
     }
 
     public void reset() {
+
+        if (mMoveLeftTopAnim != null) {
+            mMoveLeftTopAnim.cancel();
+            mMoveLeftTopAnim = null;
+        }
         showScanningPercent(-1);
         stopFinalAnim();
         mHomeAnimView.setShowStep(false);
@@ -813,6 +822,7 @@ public class HomePrivacyFragment extends Fragment {
         shieldLayer.setShieldScale(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
         shieldLayer.setInCircleAlpha(255);
         shieldLayer.setOutCircleAlpha(255);
+        shieldLayer.setShieldAlpha(255);
 
         if (mShieldOffsetYAnim != null) {
             mShieldOffsetYAnim.end();

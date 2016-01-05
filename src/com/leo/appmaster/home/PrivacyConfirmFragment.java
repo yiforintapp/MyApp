@@ -315,24 +315,32 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         LeoLog.d(TAG, "loadAD with thread " + Thread.currentThread().getName());
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         if (amp.getIsADAfterPrivacyProtectionOpen() == 1) {
-            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_67, new MobvistaListener() {
-
+            ThreadManager.executeOnUiThread(new Runnable() {
                 @Override
-                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
-                    if (code == MobvistaEngine.ERR_OK) {
-                        sAdImageListener = new AdPreviewLoaderListener(PrivacyConfirmFragment.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
-                    }
-                }
+                public void run() {
+                    MobvistaEngine.getInstance(mActivity).loadMobvista(
+                            Constants.UNIT_ID_67, new MobvistaListener() {
 
-                @Override
-                public void onMobvistaClick(Campaign campaign) {
-                    LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                    lm.filterSelfOneMinites();
+                        @Override
+                        public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
+                            if (code == MobvistaEngine.ERR_OK) {
+                                sAdImageListener = new AdPreviewLoaderListener(
+                                        PrivacyConfirmFragment.this, campaign);
+                                ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                            }
+                        }
 
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_scanRST");
+                        @Override
+                        public void onMobvistaClick(Campaign campaign) {
+                            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                            lm.filterSelfOneMinites();
+
+                            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_scanRST");
+                        }
+                    });
                 }
             });
+
         }
     }
 
@@ -351,7 +359,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 initIntruderLayout(mPanelView);
                 updateIntruderAndLost();
 
-                ThreadManager.executeOnSubThread(new Runnable() {
+                ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
                         loadAd(mPanelView);
@@ -397,7 +405,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private void updateIntruderAndLost() {
         View panelView = mPanelView;
-        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        IntrudeSecurityManager ism = (IntrudeSecurityManager)
+                MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         if (!ism.getIsIntruderSecurityAvailable()) {
             View include = panelView.findViewById(R.id.intruder_security);
             include.setVisibility(View.GONE);
@@ -410,7 +419,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mIntruderFixedTv.setText(mActivity.getString(R.string.pri_intruder_fixed_pattern, ism.getCatchTimes()));
         }
 
-        LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+        LostSecurityManager lsm = (LostSecurityManager)
+                MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         if (lsm.isUsePhoneSecurity()) {
             int[] times = lsm.getPhoneProtectTime();
 
