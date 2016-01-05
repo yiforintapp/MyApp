@@ -677,7 +677,7 @@
         android:layout_marginBottom="@dimen/op_ad_cb_btm"
         android:layout_marginLeft="32dp"
         android:button="@drawable/send_msm_selector"
-        android:checked="true"
+        android:checked="false"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/ph_sec_nu_bkup_cb_pd_left"
         android:text="@string/open_secur_checkbox_text"
