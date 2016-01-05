@@ -660,7 +660,7 @@
     <string name="phone_security_open">开启防盗</string>
     <string name="phone_security_add_number_title">亲友手机号码：</string>
     <string name="phone_security_add_number_button">更改</string>
-    <string name="phone_security_number_sim_tip">提示：SIM卡更换时将自动向您的亲友号码发送短信通知，由此产生的费用由运营商收取。</string>
+    <string name="phone_security_number_sim_tip">提示：向亲友号码备份控制指令将会发送短信，SIM卡更换时也将自动向您的亲友号码发送短信通知。隐私卫士不收取任何的费用，发送短信产生的费用由运营商收取。</string>
     <string name="phone_security_number_backup_text">把防盗指令通过短信备份给亲友号码</string>
     <string name="phone_security_instruct_onkey">开启锁定&amp;追踪&amp;警报&amp;擦除：#onekey</string>
     <string name="phone_security_instruct_onkey_description">开启锁定&amp;追踪&amp;警报&amp;擦除功能</string>
@@ -749,7 +749,7 @@
     <string name="secur_advan_title">高级功能</string>
     <string name="secur_guide_tip">已受到保护</string>
     <string name="secur_guide_pep">台手机</string>
-    <string name="security_guide_tip_content">您可以通过亲友手机远程遥控丢失手机进行响起警报，清空资料，定位手机位置，锁定所有应用等操作。</string>
+    <string name="security_guide_tip_content">您可以通过亲友手机短信遥控丢失手机。隐私卫士不会收取任何费用，产生的短信费由运营商收取。</string>
     <string name="secur_protect_time_tip">开启高级保护功能更好的保护您的手机</string>
     <string name="onkey_name">一键防盗</string>
     <string name="locat_name">手机定位</string>
@@ -758,7 +758,7 @@
     <string name="formate_name">擦除数据</string>
     <string name="secur_open_bt">备份远程控制指令</string>
     <string name="secur_instr_open_bt">开启</string>
-    <string name="backup_instr_dialog_content">备份远程控制指令，将会把指令以短信的形式发送到亲友手机，确认发送吗？</string>
+    <string name="backup_instr_dialog_content">备份远程控制指令，将会把指令以短信的形式发送到亲友手机，产生的短信费用将由运营商收取，确认发送吗？</string>
     <string name="secur_finish_no_complate_tip">手机防盗基本功能已经可以使用,高级功能需要在设备管理器授权</string>
     <string name="secur_help_tip_txt">手机防盗是确保手机丢失后隐私不外泄，帮助您找回手机的功能。要使用手机防盗功能，您必须预留一个手机号码，通过该号码向丢失的手机发送短信，丢失的手机便会执行相应命令。</string>
     <string name="secur_help_bt">知道了</string>

@@ -340,7 +340,7 @@
     <dimen name="security_guide_rv_height">40dp</dimen>
     <dimen name="security_guide_rv_top">7dp</dimen>
     <dimen name="security_guide_title_size">18dp</dimen>
-    <dimen name="security_guide_content_size">13dp</dimen>
+    <dimen name="security_guide_content_size">11dp</dimen>
     <dimen name="ph_sec_nu_bkup_cb">14dp</dimen>
     <dimen name="ph_sec_nu_bkup_cb_top">19dp</dimen>
     <dimen name="ph_sec_nu_bkup_cb_pd_left">20dp</dimen>

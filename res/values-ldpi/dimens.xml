@@ -199,7 +199,7 @@
     <dimen name="security_guide_rv_height">30dp</dimen>
     <dimen name="security_guide_rv_top">0dp</dimen>
     <dimen name="security_guide_title_size">14dp</dimen>
-    <dimen name="security_guide_content_size">12dp</dimen>
+    <dimen name="security_guide_content_size">10dp</dimen>
     <dimen name="security_guide_title_margin_top">8dp</dimen>
     <dimen name="security_guide_content_margin_top">4dp</dimen>
     <dimen name="phone_security_add_number_TV_size">12dp</dimen>

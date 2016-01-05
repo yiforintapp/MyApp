@@ -656,13 +656,13 @@
     <string name="phone_security_no_add_number_text">添加親友號碼，可發送短信控制被盜手機</string>
     <string name="phone_security_no_add_number_bt_text">添加親友號碼</string>
     <string name="security_guide_tip_text">開啟防盜保護，精確定位被盜手機</string>
-    <string name="security_guide_tip_content">您可以通過親友手機遠程遙控丟失手機進行響起警報，清空資料，定位手機位置，鎖定所有應用等操作。</string>
+    <string name="security_guide_tip_content">您可以通過親友手機短信遙控丟失手機。隱私衛士不會收取任何費用，產生的短信費由運營商收取。</string>
     <string name="phone_security_tips">遠程定位，精確追踪手機位置</string>
     <string name="security_guide_button_text">立即開啟</string>
     <string name="phone_security_open">開啟防盜</string>
     <string name="phone_security_add_number_title">親友手機號碼：</string>
     <string name="phone_security_add_number_button">更改</string>
-    <string name="phone_security_number_sim_tip">提示：SIM卡更換時將自動向您的親友號碼發送短信通知，由此產生的費用由運營商收取。</string>
+    <string name="phone_security_number_sim_tip">提示：向親友號碼備份控制指令將會發送短信，SIM卡更換時也將自動向您的親友號碼發送短信通知。隱私衛士不收取任何的費用，發送短信產生的費用由運營商收取。</string>
     <string name="phone_security_number_backup_text">把防盜指令通過短信備份給親友號碼</string>
     <string name="phone_security_instruct_onkey">開啟鎖定&amp;追踪&amp;警報&amp;擦除：#onekey</string>
     <string name="phone_security_instruct_onkey_description">開啟鎖定&amp;追踪&amp;警報&amp;擦除功能</string>
@@ -757,7 +757,7 @@
     <string name="formate_name">擦除數據</string>
     <string name="secur_open_bt">備份遠程控制指令</string>
     <string name="secur_instr_open_bt">開啟</string>
-    <string name="backup_instr_dialog_content">備份遠程控制指令，將會把指令以短信的形式發送到親友手機，確認發送嗎？</string>
+    <string name="backup_instr_dialog_content">備份遠程控制指令，將會把指令以短信的形式發送到親友手機，產生的短信費用將由運營商收取，確認發送嗎？</string>
     <string name="secur_finish_no_complate_tip">手機防盜基本功能已經可以使用,高級功能需要在設備管理器授權</string>
     <string name="secur_help_tip_txt">手機防盜是確保手機丟失後依然可以保護您手機隱私，幫助您找回手機的功能。要使用手機防盜功能，您必須預留一個手機號碼。手機丟失時，通過預留的號碼向丟失的手機發送短信，丟失的手機便會執行相應命令。</string>
     <string name="secur_help_bt">知道了</string>

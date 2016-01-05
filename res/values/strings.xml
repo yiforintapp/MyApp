@@ -668,7 +668,7 @@
     <string name="phone_security_open">Enable Anti-theft</string>
     <string name="phone_security_add_number_title">Family No.:</string>
     <string name="phone_security_add_number_button">Change</string>
-    <string name="phone_security_number_sim_tip">Note: SMS will be sent to the Family No. if SIM card is changed</string>
+    <string name="phone_security_number_sim_tip">Prompt: \“Anti-theft\” function is based on SMS recognition to work. Message will be sent to the backed-up family No. when you activate \“Anti-theft\” or SIM is changed.We promise that Privacy Guard would never make any additional charge during this process.</string>
     <string name="phone_security_number_backup_text">Send Anti-theft order to Family No. </string>
     <string name="phone_security_instruct_onkey">Enable lock; tracking; alarm; erase: #onekey</string>
     <string name="phone_security_instruct_onkey_description">Enable lock; tracking; alarm; erase</string>
@@ -755,7 +755,7 @@
     <string name="secur_advan_title">Advance function</string>
     <string name="secur_guide_tip">Protected</string>
     <string name="secur_guide_pep">mobile phones</string>
-    <string name="security_guide_tip_content">You can remotely control phone by another phone to give an alarm, clear data, locate position and lock all apps</string>
+    <string name="security_guide_tip_content">Privacy Guard would never make any additional charge during this process.Only carriers will charge for text fee.</string>
     <string name="secur_protect_time_tip">Enable advance protection</string>
     <string name="onkey_name">A click to Anti-theft</string>
     <string name="locat_name">Locate Phone</string>
@@ -764,7 +764,7 @@
     <string name="formate_name">Clear data</string>
     <string name="secur_open_bt">Backup remote control orders</string>
     <string name="secur_instr_open_bt">Enable</string>
-    <string name="backup_instr_dialog_content">Orders will be sent to Family number via SMS, send now? </string>
+    <string name="backup_instr_dialog_content">Message will be sent to your family No. when you start back up remote control orders.Carriers will charge for text fee. Sure? </string>
     <string name="secur_finish_no_complate_tip">You can use basic function now, for advance function, go to device manager</string>
     <string name="secur_help_tip_txt">This function will protect your privacy and help you find your lost mobile. To use it, you must preset a mobile number, and when the mobile is lost, send SMS via the preset number.</string>
     <string name="secur_help_bt">OK</string>
