@@ -54,7 +54,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private boolean mIsJudgeAsLowMemory = false;
 
     //开始首页动画
-//    private int animationShowNow = 0;
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -65,13 +64,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
                         showIconLight();
                     }
                     break;
-//                case SHOWANIMATION:
-//                    if (!isScanIng) {
-//                        animationShowNow++;
-//                        startIconAnimation();
-//                    }
-//                    break;
-
             }
         }
     };
@@ -79,17 +71,12 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        long t1 = System.currentTimeMillis();
         setContentView(R.layout.activity_wifi_main);
-        long t2 = System.currentTimeMillis();
         LeoEventBus.getDefaultBus().register(this);
         mIsJudgeAsLowMemory = PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this) <= Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY;
         SDKWrapper.addEvent(this, SDKWrapper.P1, "wifi_scan", "wifi_scan_cnts");
         handlerIntent();
-        long t3 = System.currentTimeMillis();
         initUi();
-        long t4 = System.currentTimeMillis();
-        LeoLog.i("testwifi", "setContentView = "+(t2 - t1)+"   initUI = " + (t4 - t3));
         isCheckWifiAlready(false);
     }
 
@@ -97,7 +84,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     protected void onSaveInstanceState(Bundle outState) {
 //        super.onSaveInstanceState(outState);
     }
-    
+
     private void handlerIntent() {
         Intent intent = getIntent();
         String from = intent.getStringExtra("from");
@@ -144,9 +131,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         resultIconView = (ImageView) resultContentView.findViewById(R.id.wifi_result_icon);
 
         mSmallViewFlash = (ImageView) findViewById(R.id.wifi_flash2);
-//        mSmallView.setImageResource(R.drawable.wifiscan_animation);
-//        animationDrawable = (AnimationDrawable) mSmallView.getDrawable();
-//        animationDrawable.start();
         wifiFragment = (WifiTabFragment) getSupportFragmentManager().
                 findFragmentById(R.id.wifi_scan_tab);
         wifiResultFrangment = (WifiResultFrangment) getSupportFragmentManager().
@@ -501,8 +485,8 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                
-                    showLineAnimation();//TODO
+
+                showLineAnimation();//TODO
             }
         });
         anim1.setDuration(400);
@@ -554,9 +538,9 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mLineView2.setVisibility(View.GONE);
-                mScanAnimCount ++;
-                
-                if ((mScanAnimCount < 1 && mIsJudgeAsLowMemory) ||!mIsJudgeAsLowMemory) {
+                mScanAnimCount++;
+
+                if ((mScanAnimCount < 1 && mIsJudgeAsLowMemory) || !mIsJudgeAsLowMemory) {
                     showLineAnimation();
                 }
             }
@@ -649,12 +633,14 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             resultBigTv.setText(getString(R.string.wifi_scan_result_no_safe));
             resultSmallTv.setText(getString(R.string.wifi_scan_result_no_safe_advice));
             resultSmallTv.setVisibility(View.VISIBLE);
-            resultIconView.setImageResource(R.drawable.wifiunsafety);
+            resultIconView.setBackgroundResource(R.drawable.wifiunsafety);
+//            resultIconView.setImageResource(R.drawable.wifiunsafety);
         } else {
             SDKWrapper.addEvent(this,
                     SDKWrapper.P1, "wifi_rst", "wifi_rst_safe");
             resultBigTv.setText(getString(R.string.wifi_scan_result_safe));
-            resultIconView.setImageResource(R.drawable.wifisafety);
+            resultIconView.setBackgroundResource(R.drawable.wifisafety);
+//            resultIconView.setImageResource(R.drawable.wifisafety);
         }
 
         ObjectAnimator anim20 = ObjectAnimator.ofFloat(resultContentView,

@@ -400,7 +400,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:visibility="gone">
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/wifi_view_line"

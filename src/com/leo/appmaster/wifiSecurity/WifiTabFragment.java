@@ -178,21 +178,18 @@ public class WifiTabFragment extends Fragment {
 //        view.setVisibility(View.VISIBLE);
 //    }
 
-    private void loadData(final int type) {
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                if (type == CONNECT_STATUS) {
-                    checkIsConnect();
-                } else if (type == SECOND_CONNECT) {
-                    pingAll();
-                } else if (type == PASSWORD_TYPE) {
-                    checkPassWordType();
-                } else {
-                    checkIsSafe();
-                }
-            }
-        });
+    private void loadData(int type) {
+
+        if (type == CONNECT_STATUS) {
+            checkIsConnect();
+        } else if (type == SECOND_CONNECT) {
+            pingAll();
+        } else if (type == PASSWORD_TYPE) {
+            checkPassWordType();
+        } else {
+            checkIsSafe();
+        }
+
     }
 
     private void pingAll() {
@@ -528,12 +525,6 @@ public class WifiTabFragment extends Fragment {
                 super.onAnimationStart(animation);
                 mTwoLoad.setVisibility(View.INVISIBLE);
             }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-
-            }
         });
         anim2.setDuration(900);
         //3
@@ -554,12 +545,6 @@ public class WifiTabFragment extends Fragment {
                 super.onAnimationStart(animation);
                 mThreeLoad.setVisibility(View.INVISIBLE);
             }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-
-            }
         });
         anim3.setDuration(1200);
         //4
@@ -579,12 +564,6 @@ public class WifiTabFragment extends Fragment {
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 mFourLoad.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-
             }
         });
         anim4.setDuration(1500);
