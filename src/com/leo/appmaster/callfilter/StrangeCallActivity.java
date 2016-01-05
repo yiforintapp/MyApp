@@ -147,7 +147,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         mEmptyView = findViewById(R.id.add_call_log_default_tv);
         mAddBtn = (RippleView) findViewById(R.id.rv_button_backup);
         mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-        mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
+        mAddBtn.setEnabled(false);
         mAddBtn.setOnClickListener(this);
 
         mListCallLog = (ListView) findViewById(R.id.add_privacy_call_logLV);
@@ -162,17 +162,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAddPrivacyCallLog.size() != 0) {
-            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-            mAddBtn.setEnabled(true);
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
-            mRlBottomView.setVisibility(View.VISIBLE);
-        } else {
-            mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-            mAddBtn.setEnabled(false);
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
-            mRlBottomView.setVisibility(View.GONE);
-        }
+
     }
 
     @Override
@@ -229,13 +219,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         if (mAddPrivacyCallLog.size() != 0) {
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
             mAddBtn.setEnabled(true);
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
-//            mRlBottomView.setVisibility(View.VISIBLE);
         } else {
-//            mRlBottomView.setVisibility(View.GONE);
             mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
             mAddBtn.setEnabled(false);
-            mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
         }
     }
 
@@ -315,18 +301,13 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 if (mAddPrivacyCallLog.size() != 0) {
                     mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
                     mAddBtn.setEnabled(true);
-                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_green_ripple));
-//                    mRlBottomView.setVisibility(View.VISIBLE);
                 } else {
-//                    mRlBottomView.setVisibility(View.GONE);
                     mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
                     mAddBtn.setEnabled(false);
-                    mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
                 }
             } else {
                 mAddBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
                 mAddBtn.setEnabled(false);
-                mAddBtn.setRippleColor(getResources().getColor(R.color.button_gray_ripple));
                 callLog.setCheck(false);
             }
         }
