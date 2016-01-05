@@ -308,7 +308,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     public void takePicture(final CameraSurfacePreview view, final String packagename) {
-        if(BuildProperties.isApiLevel14()){
+        if (BuildProperties.isApiLevel14() || mLockMode != LockManager.LOCK_MODE_FULL) {
             return;
         }
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
