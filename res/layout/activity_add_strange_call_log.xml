@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/privacy_add_call_log_default_text"
+            android:text="@string/strange_call_empty"
             android:textColor="#d3d3d4"
             android:textSize="18dp" />
     </LinearLayout>
