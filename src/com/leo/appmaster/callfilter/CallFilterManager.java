@@ -538,8 +538,6 @@ public class CallFilterManager {
             mIsOffHook = true;
             LeoLog.i(TAG, "offhook : mLastOffHookTime =" + mLastOffHookTime);
         }
-
-        setCurrentCallTime(System.currentTimeMillis());
     }
 
     private void endCallAndRecord(final String phoneNumber, final ITelephony iTelephony,
@@ -557,6 +555,8 @@ public class CallFilterManager {
 
             //记录当前拦截号码
             setFilterNum(phoneNumber);
+            //设置本次拦截时间
+            setCurrentCallTime(System.currentTimeMillis());
 
             List<CallFilterInfo> infos = new ArrayList<CallFilterInfo>();
             CallFilterInfo callInfo = new CallFilterInfo();
