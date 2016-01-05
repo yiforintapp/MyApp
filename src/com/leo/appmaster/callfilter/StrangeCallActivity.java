@@ -61,6 +61,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private static final String TAG = "AddFromCallLogListActivity";
     private static final int MINUTE = 60;
     private static final int HOUR = 60 * 60;
+    private static final int STRA_MAX_COUNT = 100;
 
     private static final int HAVE_BLACK_LIST = -2;
     private static final int PAGE_SIZE = 100;
@@ -673,10 +674,15 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         callLogList.addAll(calls);
                     }
 
-
+                    //取该集合前100条数据
+                    List<ContactCallLog> calls = new ArrayList<ContactCallLog>();
+                    if (callLogList != null && callLogList.size() > 0) {
+                        int end = callLogList.size() > STRA_MAX_COUNT ? STRA_MAX_COUNT : callLogList.size();
+                        calls = callLogList.subList(0, end);
+                    }
                     Message msg = new Message();
                     msg.what = PrivacyContactUtils.MSG_ADD_CALL;
-                    msg.obj = callLogList;
+                    msg.obj = calls;
                     mAddFromCallHandler.sendMessage(msg);
                 }
             });

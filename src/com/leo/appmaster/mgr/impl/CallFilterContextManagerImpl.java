@@ -187,7 +187,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             }
                             //恢复删除的黑名单引发的更新
                             if (locHdType == -1) {
-                                value.put(CallFilterConstants.BLACK_NAME, "");
+                                value.put(CallFilterConstants.BLACK_NAME, name);
                                 value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, CallFilterConstants.BLACK_LIST_TYP);
                                 value.put(CallFilterConstants.BLACK_READ_STATE, readState);
                             }
@@ -199,13 +199,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                         String where = null;
                         String[] selectArgs = null;
-                        if (id > 0) {
-                            where = CallFilterConstants.BLACK_ID + " = ? ";
-                            selectArgs = new String[]{String.valueOf(id)};
-                        } else {
-                            where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
-                            selectArgs = new String[]{"%" + number};
-                        }
+//                        if (id > 0) {
+//                            where = CallFilterConstants.BLACK_ID + " = ? ";
+//                            selectArgs = new String[]{String.valueOf(id)};
+//                        } else {
+                        where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
+                        selectArgs = new String[]{"%" + number};
+//                        }
                         cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                     }
                 } else {
