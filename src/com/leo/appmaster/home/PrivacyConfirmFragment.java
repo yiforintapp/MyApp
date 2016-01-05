@@ -250,6 +250,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 //        mDisplayProxyView = view.findViewById(R.id.list_parent_layout_proxy);
         mActivity.resetToolbarColor();
 
+        if (PrivacyHelper.getInstance(mActivity).getSecurityScore() == 100) {
+            mHeadView.setText(R.string.pri_pro_summary_confirm);
+        } else {
+            mHeadView.setText(R.string.pri_pro_summary_not_confirm);
+        }
 
         updateBottomPanel();
     }
@@ -377,7 +382,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
                         updateStubPanelVisibility();
                     }
-                }, 900);
+                }, 700);
             } else {
                 updateIntruderAndLost();
                 updateStubPanelVisibility();
@@ -433,11 +438,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void updateStubPanelVisibility() {
-        if (PrivacyHelper.getInstance(mActivity).getSecurityScore() == 100) {
-            mHeadView.setText(R.string.pri_pro_summary_confirm);
-        } else {
-            mHeadView.setText(R.string.pri_pro_summary_not_confirm);
-        }
+
 
         View include = mWIfiInclude;
         WifiSecurityManager wsm = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
