@@ -974,7 +974,7 @@
     <string name="scan_find_vid">يوجد <Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> فيديو ، اقتراحا لإخفاء</string>
     <string name="call_filter_add_strange_num">اضافة الى  القائمة السوداء</string>
     <string name="call_filter_clear_all_black">افرغ كلا</string>
-    <string name="lock_app_item_desc_cb">قد أوجد <Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> فردا لتقفيل</string>
+    <string name="lock_app_item_desc_cb">قد أوجد %1$s فردا لتقفيل</string>
     <string name="menu_left_item_problem">المشاكل الشائعة</string>
     <string name="feedback_problem_text">ارجع المشاكل الشائعة</string>
     <string name="filter_number_type_saorao">هاتف الإزعاج</string>

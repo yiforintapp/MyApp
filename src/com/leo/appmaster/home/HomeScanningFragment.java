@@ -63,10 +63,10 @@ import java.util.List;
  */
 public class HomeScanningFragment extends Fragment implements View.OnClickListener {
     private static final int MAX_HEIGHT_ONE_LINE = 35;
-    private static final int MAX_HEIGHT_TWO_LINE = 52;
-    private static final int MAX_HEIGHT_THREE_LINE = 70;
-    private static final int MAX_HEIGHT_FOUR_LINE = 85;
-    private static final int MAX_HEIGHT_OTHERS_LINE = 100;
+    private static final int MAX_HEIGHT_TWO_LINE = 51;
+    private static final int MAX_HEIGHT_THREE_LINE = 72;
+    private static final int MAX_HEIGHT_FOUR_LINE = 87;
+    private static final int MAX_HEIGHT_OTHERS_LINE = 102;
     private static final int MIN_HEIGHT_DP = 35;
     private static final int TEXT_NO_CONTENT_SCORE  = 0;
     private static final int TEXT_HAVE_CONTENT_ONLY  = 1;
