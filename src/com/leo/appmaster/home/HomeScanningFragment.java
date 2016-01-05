@@ -461,7 +461,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mScanAppNameStep = DataUtils.getThreeRandomAppName(mAppList, mActivity).get(1);
             } catch (Exception e) {
                 e.printStackTrace();
-                mScanAppName = "Exception.";
+                mScanAppName = "";
             }
             mAppScanFinish = true;
             mAppScore = lm.getSecurityScore(mAppList);

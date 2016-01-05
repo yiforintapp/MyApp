@@ -6,22 +6,29 @@
     android:background="@color/transparent"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/left_empty"
+        android:layout_width="144dp"
+        android:layout_height="200dp"
+        android:background="@color/transparent"/>
+
     <RelativeLayout
         android:id="@+id/top_view"
+        android:layout_toRightOf="@id/left_empty"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:gravity="center_horizontal"
         android:background="@color/transparent">
 
         <TextView
             android:id="@+id/scan_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/scan_title_margin_right"
             android:layout_marginTop="100dp"
-            android:gravity="center_horizontal"
             android:includeFontPadding="false"
             android:text="@string/pri_pro_scanning"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textColor="@color/white"
             android:textSize="17sp" />
 
@@ -30,13 +37,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/scan_title_tv"
-            android:layout_alignParentRight="true"
             android:layout_below="@id/scan_title_tv"
-            android:layout_marginRight="@dimen/scan_title_margin_right"
             android:layout_marginTop="8dp"
-            android:gravity="center_horizontal"
             android:includeFontPadding="false"
             android:text="@string/scanning_pattern"
+            android:layout_marginRight="10dp"
             android:textColor="@color/scanning_sub_title"
             android:textSize="14dp" />
 
