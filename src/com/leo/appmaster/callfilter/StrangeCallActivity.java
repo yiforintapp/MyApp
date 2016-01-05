@@ -668,15 +668,22 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                         List<ContactCallLog> calls = new ArrayList<ContactCallLog>();
                         for (ContactCallLog call : callLogList) {
+
+                            LeoLog.d("testAddBlack", "go item");
+
                             if (CallLog.Calls.OUTGOING_TYPE != call.getClallLogType()
                                     && !mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
 
                                 //add to black list num
                                 BlackListInfo info = mCallManger.getSerBlackFroNum(call.getCallLogNumber());
-                                int addToBlackNum = info.getAddBlackNumber();
-                                if (addToBlackNum > 0) {
-                                    call.setAddBlackNumber(addToBlackNum);
+                                if (info != null) {
+                                    int addToBlackNum = info.getAddBlackNumber();
+                                    LeoLog.d("testAddBlack", "addToBlackNum:" + addToBlackNum);
+                                    if (addToBlackNum > 0) {
+                                        call.setAddBlackNumber(addToBlackNum);
+                                    }
                                 }
+
 
                                 calls.add(call);
                             }
