@@ -4,8 +4,6 @@ import android.widget.LinearLayout;
 
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.mgr.IntrudeSecurityManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.Animator;
@@ -56,7 +54,7 @@ public class HomeScanningController {
                                   LinearLayout newAppLayout, LinearLayout newPicLayout,
                                   LinearLayout newVidLayout, LinearLayout newLostLayout,
                                   LinearLayout newWifiLayout, LinearLayout newInstructLayout,
-                                  LinearLayout newContactLayout) {
+                                  LinearLayout newContactLayout, boolean isInsValiable) {
 
         mActivity = activity;
         mFragment = fragment;
@@ -68,13 +66,7 @@ public class HomeScanningController {
         mNewWifiLayout = newWifiLayout;
         mNewInstructLayout = newInstructLayout;
         mNewContactLayout = newContactLayout;
-        IntrudeSecurityManager manager = (IntrudeSecurityManager)
-                MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-        if (!manager.getIsIntruderSecurityAvailable()) {
-            mIsInsValiable = false;
-        } else {
-            mIsInsValiable = true;
-        }
+        mIsInsValiable = isInsValiable;
     }
 
     public void startScanning() {

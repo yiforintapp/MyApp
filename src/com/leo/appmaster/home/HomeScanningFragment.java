@@ -288,7 +288,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
 
         mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
-                mNewVidLayout, mNewLostLayout, mNewWifiLayout, mNewInstructLayout, mNewContactLayout);
+                mNewVidLayout, mNewLostLayout, mNewWifiLayout, mNewInstructLayout,
+                mNewContactLayout, mIsInsAvaliable);
 
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
@@ -595,6 +596,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private int changItem = 0;
+    private int currentPosit = 0;
 
     public void updateUIOnAnimationEnd(final LinearLayout layout) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
@@ -603,6 +605,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         Context context = AppMasterApplication.getInstance();
 
         if (layout == mNewAppLayout) {
+            if ((mIsInsAvaliable && currentPosit != 6) ||
+                    (!mIsInsAvaliable && currentPosit != 5)) {
+                return;
+            }
+            currentPosit ++;
             final int needLongHeight = updateNewAppList();
             if (!mContactScanFinish) {
                 updateNewContactList();
@@ -632,6 +639,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             });
 
         } else if (layout == mNewPicLayout) {
+            if ((mIsInsAvaliable && currentPosit != 5) ||
+                    (!mIsInsAvaliable && currentPosit != 4)) {
+                return;
+            }
+            currentPosit ++;
             final int needLongHeight = updateNewPicList();
             if (mIsInsAvaliable) {
                 mProgressTv.setText(context.getString(R.string.scanning_pattern, 6));
@@ -645,6 +657,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewVidLayout) {
+            if ((mIsInsAvaliable && currentPosit != 4) ||
+                    (!mIsInsAvaliable && currentPosit != 3)) {
+                return;
+            }
+            currentPosit ++;
             final int needLongHeight = updateNewVidList();
             if (mIsInsAvaliable) {
                 mProgressTv.setText(context.getString(R.string.scanning_pattern, 5));
@@ -658,6 +675,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewInstructLayout) {
+            if (currentPosit != 2) {
+                return;
+            }
+            currentPosit ++;
             final int needLongHeight = updateNewInstructList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
             layout.post(new Runnable() {
@@ -667,6 +688,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewWifiLayout) {
+            if (currentPosit != 1) {
+                return;
+            }
+            currentPosit ++;
             final int needLongHeight = updateNewWifiList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
 
@@ -678,12 +703,19 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             });
 
         } else if (layout == mNewLostLayout) {
+            if ((mIsInsAvaliable && currentPosit != 3) ||
+                    (!mIsInsAvaliable && currentPosit != 2)) {
+                 return;
+            }
+            currentPosit ++;
             final int needLongHeight = updateNewLostList();
             if (mIsInsAvaliable) {
                 mProgressTv.setText(context.getString(R.string.scanning_pattern, 4));
             } else {
                 mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
             }
+//            changItem ++;
+
             layout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -691,6 +723,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewContactLayout) {
+            if (currentPosit != 0) {
+                return;
+            }
+            currentPosit ++;
             final int needLongHeight = updateNewContactList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
 
@@ -891,6 +927,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     private int updateNewInstructList() {
+
         int isNeedLongHeight = TEXT_NO_CONTENT_SCORE;
         IntrudeSecurityManager manager = (IntrudeSecurityManager)
                 MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
