@@ -53,7 +53,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private ImageView mIvTabIcon3;
     private ImageView mIvTabIcon4;
     private boolean mIsHasCallFilterRecords = false;
-    
+
     private View mRootView;
     private HomeActivity mActivity;
 
@@ -327,7 +327,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());
 //                                           LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//                                                
+//
 //                                             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                                          pm.setFilterUserNumber(50000);
 //                                             pm.setFilterTipFroUser(3000);

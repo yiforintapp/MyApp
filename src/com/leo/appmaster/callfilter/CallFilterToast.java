@@ -115,8 +115,11 @@ public class CallFilterToast {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
 
-                switch (event.getAction()) {
+                if (view == null || !view.isAttachedToWindow()) {
+                    return false;
+                }
 
+                switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:// 手指按下屏幕
                         startY = (int) event.getRawY();
