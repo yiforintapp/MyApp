@@ -707,27 +707,27 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         int moveDistance = 0;
 
         if (nowLayout.getHeight() != 0 && height != 0) {
-//            if (nowLayout.getHeight() == height && isNeedLongHeight != TEXT_NO_CONTENT_SCORE) {
-//                if (isNeedLongHeight == TEXT_HAVE_CONTENT_ONLY) {
-//                    moveDistance = DipPixelUtil.dip2px(mActivity, MIN_HEIGHT_DP);
-//                } else if (isNeedLongHeight == TEXT_HAVE_CONTENT_SCORE) {
-//                   if (nowLayout == mNewAppLayout) {
-//                       moveDistance = getContentHeight(mNewAppContent);
-//                   } else if (nowLayout == mNewPicLayout) {
-//                       moveDistance = getContentHeight(mNewPicContent);
-//                   } else if (nowLayout == mNewVidLayout) {
-//                       moveDistance = getContentHeight(mNewVidContent);
-//                   } else if (nowLayout == mNewLostLayout) {
-//                       moveDistance = getContentHeight(mNewLostContent);
-//                   } else if (nowLayout == mNewInstructLayout) {
-//                       moveDistance = getContentHeight(mNewInstructContent);
-//                   }
-//                }
-//                LeoLog.e("theDipHeight", "== height;mNewAppLayout:" + nowLayout + moveDistance);
-//            } else {
+            if (nowLayout.getHeight() == height && isNeedLongHeight != TEXT_NO_CONTENT_SCORE) {
+                if (isNeedLongHeight == TEXT_HAVE_CONTENT_ONLY) {
+                    moveDistance = DipPixelUtil.dip2px(mActivity, MIN_HEIGHT_DP);
+                } else if (isNeedLongHeight == TEXT_HAVE_CONTENT_SCORE) {
+                   if (nowLayout == mNewAppLayout) {
+                       moveDistance = getContentHeight(mNewAppContent);
+                   } else if (nowLayout == mNewPicLayout) {
+                       moveDistance = getContentHeight(mNewPicContent);
+                   } else if (nowLayout == mNewVidLayout) {
+                       moveDistance = getContentHeight(mNewVidContent);
+                   } else if (nowLayout == mNewLostLayout) {
+                       moveDistance = getContentHeight(mNewLostContent);
+                   } else if (nowLayout == mNewInstructLayout) {
+                       moveDistance = getContentHeight(mNewInstructContent);
+                   }
+                }
+                LeoLog.e("theDipHeight", "== height;mNewAppLayout:" + nowLayout + moveDistance);
+            } else {
                 moveDistance = nowLayout.getHeight() - height;
                 LeoLog.e("theDipHeight", "!!= height;mNewAppLayout:"  + nowLayout + moveDistance);
-//            }
+            }
         } else {
             if (isNeedLongHeight == TEXT_NO_CONTENT_SCORE) {
                 moveDistance = 0;
