@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.CallLog;
@@ -202,7 +203,7 @@ public class CallFilterManager {
      * @param iTelephony
      */
     public void filterCallHandler(String action, final String phoneNumber, String state,
-                                  final ITelephony iTelephony) {
+                                  final ITelephony iTelephony, AudioManager audioManager) {
         LeoLog.i("testdata", "in manager");
         if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
             tryHideToast();
@@ -294,7 +295,16 @@ public class CallFilterManager {
         if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
             if (info != null) {
                 //本地黑名单，直接拦截
+                // 先静音处理
+                if (audioManager != null) {
+                    audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                }
                 endCallAndRecord(phoneNumber, iTelephony, cmp);
+                  /*恢复正常铃声*/
+                if (audioManager != null) {
+                    audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                }
+            } else if (blackSerInfo != null) {
             } else if (serInfo != null) {
                 /* 为服务器黑名单：弹窗提醒 */
                 if (filterTip == null) {

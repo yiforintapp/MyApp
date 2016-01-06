@@ -970,9 +970,16 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (TextUtils.isEmpty(number)) {
             return null;
         }
-        List<BlackListInfo> infos = getServerBlackList();
+        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ");
+        String selects = sb.toString();
+        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD), "%" + formateNum};
+        List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
         if (infos != null && infos.size() > 0) {
-            String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
             for (BlackListInfo info : infos) {
                 if (info.getNumber().contains(formateNum)) {
                     return info;
@@ -1278,9 +1285,20 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (TextUtils.isEmpty(number)) {
             return null;
         }
-        List<BlackListInfo> infos = getBlackList();
+        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
+
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ");
+        String selects = sb.toString();
+        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
+                String.valueOf(CallFilterConstants.REMOVE_NO),
+                "%"+formateNum};
+        List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
         if (infos != null && infos.size() > 0) {
-            String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
             for (BlackListInfo info : infos) {
                 if (info.getNumber().contains(formateNum)) {
                     return info;
