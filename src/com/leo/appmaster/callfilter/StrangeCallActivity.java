@@ -655,10 +655,13 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                 BlackListInfo info = cmp.getSerBlackForNum(call.getCallLogNumber());
 
                                 if (info != null) {
-                                    int addToBlackNum = info.getAddBlackNumber();
-                                    LeoLog.d("testAddBlack", "addToBlackNum:" + addToBlackNum);
-                                    if (addToBlackNum > 0) {
-                                        call.setAddBlackNumber(addToBlackNum);
+                                    int[] type = cmp.isCallFilterTip(call.getCallLogNumber());
+                                    if (type[0] != CallFilterConstants.IS_TIP_DIA[0]) {
+                                        int addToBlackNum = info.getAddBlackNumber();
+                                        LeoLog.d("testAddBlack", "addToBlackNum:" + addToBlackNum);
+                                        if (addToBlackNum > 0) {
+                                            call.setAddBlackNumber(addToBlackNum);
+                                        }
                                     }
                                 }
                                 calls.add(call);
