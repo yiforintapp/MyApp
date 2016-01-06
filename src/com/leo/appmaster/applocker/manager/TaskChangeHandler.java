@@ -45,7 +45,7 @@ public class TaskChangeHandler {
     private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
     private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
 
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
 
     private Context mContext;
     private ActivityManager mAm;
@@ -108,8 +108,9 @@ public class TaskChangeHandler {
         }
         String myPackage = mContext.getPackageName();
 
+        boolean containsLauncher = activity.contains("Launcher");
         AppMasterApplication app = AppMasterApplication.getInstance();
-        if (!pkg.equals(myPackage) && app.isForeground()) {
+        if (containsLauncher && !pkg.equals(myPackage) && app.isForeground()) {
             // 自身页面校准，避免出现栈之间切换时，偶尔出现桌面在栈顶的情况
             Activity top = app.getTopActivity();
             if (top != null) {
@@ -123,7 +124,7 @@ public class TaskChangeHandler {
         }
 
         // fix bug AM-2134
-        if (TextUtils.equals(myPackage, pkg) && activity != null && activity.contains("Launcher")) {
+        if (TextUtils.equals(myPackage, pkg) && activity != null && containsLauncher) {
             return;
         }
 
