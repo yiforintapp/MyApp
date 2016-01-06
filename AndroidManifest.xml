@@ -220,6 +220,7 @@
             android:name=".callfilter.CallFilterMainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:taskAffinity="com.leo.appmaster.home"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:theme="@style/Theme.PageIndicatorDefaults"></activity>
