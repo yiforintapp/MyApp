@@ -19,6 +19,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class AppMasterProvider extends ContentProvider {
 	private static final String TAG = "AppMasterProvider";
+	public static final String SQL_INSERT_OR_REPLACE = "__sql_insert_or_replace__";
 
 	private AppMasterDBHelper dbHelper;
 
@@ -79,15 +80,15 @@ public class AppMasterProvider extends ContentProvider {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		long rowId = 0;
-		db.beginTransaction();
-
 		try {
-			rowId = db.insert(args.table, Constants.ID, values);
-			db.setTransactionSuccessful();
+			boolean replace = values.getAsBoolean(SQL_INSERT_OR_REPLACE);
+			if (replace) {
+				rowId = db.replace(args.table, Constants.ID, values);
+			} else {
+				rowId = db.insert(args.table, Constants.ID, values);
+			}
 		} catch (Exception e) {
 			LeoLog.e(TAG, e.getMessage());
-		} finally {
-			db.endTransaction();
 		}
 
 		getContext().getContentResolver().notifyChange(uri, null);

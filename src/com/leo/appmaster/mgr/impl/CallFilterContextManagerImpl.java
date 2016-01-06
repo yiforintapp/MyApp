@@ -154,7 +154,6 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 Cursor cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum, addBlColum, addMarkColum}, numbColum + " LIKE ? "/* + sel*/,
                         new String[]{"%" + number/*, String.valueOf(CallFilterConstants.LOC_HD),
                                 String.valueOf(CallFilterConstants.REMOVE_NO)*/}, null, null, null);
-
                 if (cur != null && cur.getCount() > 0) {
                     /**
                      * 本地黑名单引起的更新操作
