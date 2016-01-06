@@ -46,6 +46,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class Utilities {
 
@@ -271,10 +272,12 @@ public final class Utilities {
                     .getSystemService(Context.TELEPHONY_SERVICE);
             String id = tm.getSimCountryIso();
             if (isEmpty(id)) {
-                id = "d";
-            } else {
-                id = id.toLowerCase();
+                id = Locale.getDefault().getCountry();
             }
+            if (id == null) {
+                id = "d";
+            }
+            id = id.toLowerCase();
             return id;
         } catch (Exception e) {
             return "d";

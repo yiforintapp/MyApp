@@ -81,10 +81,10 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
     private static void startWorkImmediately(FetchScheduleJob job) {
          /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
-            LeoLog.d(KEY_JOB, "start work immediately.");
             FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
             String filePath = getBlackFilePath();
+            LeoLog.d(KEY_JOB, "start work immediately. path: " + filePath);
             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
             String uri = pm.getSerBlackFilePath();
             if (TextUtils.isEmpty(uri)) {
