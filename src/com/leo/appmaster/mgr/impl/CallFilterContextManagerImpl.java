@@ -83,7 +83,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (blackCount > 1) {
             values = new ContentValues[blackCount];
         }
-
+        Cursor cur = null;
         ContentResolver cr = mContext.getContentResolver();
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         int i = 0;
@@ -157,7 +157,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 //                sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
 //                String sel = sb.toString();
                 number = PrivacyContactUtils.formatePhoneNumber(number);
-                Cursor cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum, addBlColum, addMarkColum}, numbColum + " LIKE ? "/* + sel*/,
+                cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum, addBlColum, addMarkColum}, numbColum + " LIKE ? "/* + sel*/,
                         new String[]{"%" + number/*, String.valueOf(CallFilterConstants.LOC_HD),
                                 String.valueOf(CallFilterConstants.REMOVE_NO)*/}, null, null, null);
                 if (cur != null && cur.getCount() > 0) {
@@ -231,8 +231,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             }
         }
         if (values != null && values.length > 0) {
-            LeoLog.i("caocao", "bulkInsert");
             cr.bulkInsert(uri, values);
+        }
+        if (cur != null) {
+            cur.close();
         }
         return true;
     }
@@ -1141,6 +1143,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (infos.size() > 1) {
             values = new ContentValues[infos.size()];
         }
+        Cursor cur = null;
         ContentResolver cr = mContext.getContentResolver();
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         int i = 0;
@@ -1173,7 +1176,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 String table = CallFilterConstants.BLACK_LIST_TAB;
                 String colum = CallFilterConstants.BLACK_PHONE_NUMBER;
                 String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
-                Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum, removeColum}, number);
+                cur = CallFilterUtils.getCursor(table, new String[]{colum, removeColum}, number);
                 if (cur != null && cur.getCount() > 0) {
                     while (cur.moveToNext()) {
                         int remove = cur.getInt(cur.getColumnIndex(removeColum));
@@ -1195,9 +1198,6 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         cr.insert(uri, value);
                     }
                 }
-                if (cur != null) {
-                    cur.close();
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1206,6 +1206,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             cr.bulkInsert(uri, values);
         }
 
+        if (cur != null) {
+            cur.close();
+        }
         return false;
     }
 
