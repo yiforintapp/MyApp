@@ -287,7 +287,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());
 //                                           LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//
 //                                             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                                          pm.setFilterUserNumber(50000);
 //                                             pm.setFilterTipFroUser(3000);
@@ -297,12 +296,12 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                                       info.setNumber("13632840685");
 ////                                             info.setNumber("13027964843");
 //                                              info.setAddBlackNumber(2258);
-//                                              info.setMarkerType(0);
+//                                              info.setMarkerType(2);
 //                                             info.setMarkerNumber(50000);
 //                                             CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
 //                                             cm.addFilterFroParse(info);
 //                                            LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//
+
                     }
                     break;
             }
