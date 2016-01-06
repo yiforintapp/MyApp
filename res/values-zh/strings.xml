@@ -908,4 +908,7 @@
     <string name="call_filter_marked_people_tips">已被%1$s的人標記為%2$s</string>
     <string name="call_filter_marked_and_add_tips">標記%1$s並加入黑名單</string>
     <string name="call_filter_confirm_ask_mark_summary">已有%1$s的人將該號碼標記為%2$s</string>
+
+    <string name="number_call_duration_h_m">通話時長：%1$s時 %2$s分</string>
+    <string name="number_call_duration_m_s">通話時長：%1$s分 %2$s秒</string>
 </resources>

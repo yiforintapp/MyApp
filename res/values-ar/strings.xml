@@ -992,4 +992,7 @@
     <string name="call_filter_marked_people_tips">وضع علامة المستخدمين %1$s كما %2$s</string>
     <string name="call_filter_marked_and_add_tips">علامة %1$s, اضافة الى  القائمة السوداء</string>
     <string name="call_filter_confirm_ask_mark_summary">وضع علامة المستخدمين %1$s كما %2$s</string>
+
+    <string name="number_call_duration_h_m">وقت المكالمة : %1$s ساعة%2$s دقيقة</string>
+    <string name="number_call_duration_m_s">وقت المكالمة : %1$sدقيقة%2$sثانية</string>
 </resources>

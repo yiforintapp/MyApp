@@ -888,4 +888,7 @@
     <string name="call_filter_marked_people_tips">%1$s пользователи отмечен как %2$s</string>
     <string name="call_filter_marked_and_add_tips">отметка %1$s, Добавить в черный список</string>
     <string name="call_filter_confirm_ask_mark_summary">%1$s пользователи отмечен как %2$s</string>
+
+    <string name="number_call_duration_h_m">Продолжительность разговора: %1$sчасов %2$sминут</string>
+    <string name="number_call_duration_m_s">Продолжительность разговора: %1$sминут %2$sсекунд</string>
 </resources>

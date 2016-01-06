@@ -905,4 +905,7 @@
     <string name="call_filter_marked_people_tips">ผู้ใช้%1$sทำเครื่องหมายเป็น%2$s</string>
     <string name="call_filter_marked_and_add_tips">เครื่องหมาย %1$s， เพิ่มเข้าแบล็คลิสต์</string>
     <string name="call_filter_confirm_ask_mark_summary">ผู้ใช้%1$sทำเครื่องหมายเป็น%2$s</string>
+
+    <string name="number_call_duration_h_m">เวลาโทร:%1$sชม. %2$sนาที</string>
+    <string name="number_call_duration_m_s">เวลาโทร:%1$sนาท %2$sวินาท</string>
 </resources>

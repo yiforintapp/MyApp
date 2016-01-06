@@ -905,4 +905,7 @@
     <string name="call_filter_marked_people_tips">%1$s kullanıcıların %2$s olarak işaretlenmiş</string>
     <string name="call_filter_marked_and_add_tips">Markos %1$s, Kara Listeye Ekle</string>
     <string name="call_filter_confirm_ask_mark_summary">%1$s kullanıcıların %2$s olarak işaretlenmiş</string>
+
+    <string name="number_call_duration_h_m">S:%1$ssa %2$sdk</string>
+    <string name="number_call_duration_m_s">S:%1$sdk %2$ssn</string>
 </resources>
