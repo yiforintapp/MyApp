@@ -264,13 +264,6 @@ public class CallFilterManager {
                 if (CallFilterConstants.IS_TIP_DIA[0] == isTip) {
                     return;
                 }
-                // if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action))
-                // {
-                // /*通话类型：拨出*/
-                // CallFilterManager.getInstance(mContext).setIsComingOut(true);
-                // LeoLog.i("PrivacyContactReceiver", "拨打电话");
-                // } else {
-                /* 通话类型：来电，无状态 */
                 boolean isComOut = CallFilterManager.getInstance(mContext).isComingOut();
                 if (!isComOut) {
                     if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
@@ -282,21 +275,11 @@ public class CallFilterManager {
                     }
                     if (mTipToast != null) {
                         mTipToast.show();
-                        ThreadManager.getTimer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (mTipToast != null) {
-                                    mTipToast.hide();
-                                }
-                            }
-                        }, 1000 * 60);
                     }
                     LeoLog.i(TAG, "Black and marker tip show!");
                 }
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
-//            LeoLog.i("testdata", "idle mPhoneNumber = "+(mPhoneNumber == null ? "null" : mPhoneNumber));
-//            LeoLog.i("testdata", "idle phoneNumber = "+phoneNumber);
             LeoLog.i(TAG, "挂断！");
             // toast消失，并置为null，保证为null即消失
             if (mTipToast != null) {
