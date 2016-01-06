@@ -723,10 +723,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                        moveDistance = getContentHeight(mNewInstructContent);
                    }
                 }
-                LeoLog.e("theDipHeight", "== height;mNewAppLayout:" + nowLayout + moveDistance);
+                LeoLog.e("theDipHeight", "== height;mNewAppLayout:" + position + ";" + moveDistance);
             } else {
                 moveDistance = nowLayout.getHeight() - height;
-                LeoLog.e("theDipHeight", "!!= height;mNewAppLayout:"  + nowLayout + moveDistance);
+                LeoLog.e("theDipHeight", "!!= height;mNewAppLayout:"  + position + ";" + moveDistance);
             }
         } else {
             if (isNeedLongHeight == TEXT_NO_CONTENT_SCORE) {

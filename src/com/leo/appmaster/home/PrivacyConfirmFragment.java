@@ -363,6 +363,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                      ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
                  }
 
+                initWifiLayout(mPanelView);
                 initLostLayout(mPanelView);
                 initIntruderLayout(mPanelView);
                 updateIntruderAndLost();
@@ -376,7 +377,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        initWifiLayout(mPanelView);
                         initContactLayout(mPanelView);
                         initGradeLayout(mPanelView);
                         initFbLayout(mPanelView);
