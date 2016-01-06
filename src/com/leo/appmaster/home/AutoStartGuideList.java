@@ -1,7 +1,8 @@
 
 package com.leo.appmaster.home;
 
-import android.app.ResultInfo;
+import java.util.List;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,21 +10,17 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-
-import java.util.List;
 
 /**
  * 自启动引导
@@ -53,6 +50,8 @@ public class AutoStartGuideList extends WhiteList {
 
     private static final int SAMSUNG_TIP_COUNT = 3;
     private static LockManager sLockManager;
+    
+    private static Boolean sIsSamSumg; 
 
     public AutoStartGuideList() {
         super();
@@ -466,13 +465,17 @@ public class AutoStartGuideList extends WhiteList {
 
     /*判断是否该手机存在三星Note的应用程序优化*/
     public static boolean isSamSungNActivity(Context context) {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setPackage("com.samsung.android.sm");
-        intent.setClassName("com.samsung.android.sm", "com.samsung.android.sm.common.appmanager.AppLockingViewActivity");
-        List<ResolveInfo> info = context.getPackageManager().queryIntentActivities(intent, 0);
-        if (info != null && info.size() > 0) {
-            return true;
+        // PGL-21
+        if(PhoneInfo.getAndroidVersion() > 21) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setPackage("com.samsung.android.sm");
+            intent.setClassName("com.samsung.android.sm", "com.samsung.android.sm.common.appmanager.AppLockingViewActivity");
+            List<ResolveInfo> info = context.getPackageManager().queryIntentActivities(intent, 0);
+            if (info != null && info.size() > 0) {
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -510,8 +513,10 @@ public class AutoStartGuideList extends WhiteList {
 
 
     public static boolean isSamSungGuideModel(Context context) {
-        boolean samSung = BuildProperties.isSamSungModel()
-                && (isSamSungSActivity(context) || isSamSungNActivity(context));
-        return samSung;
+        if(sIsSamSumg == null) {
+            sIsSamSumg = BuildProperties.isSamSungModel()
+                    && (isSamSungSActivity(context) || isSamSungNActivity(context));
+        }
+        return sIsSamSumg;
     }
 }
