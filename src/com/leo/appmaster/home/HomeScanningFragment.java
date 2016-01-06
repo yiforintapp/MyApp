@@ -780,7 +780,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 //                }
             }
         });
-        objectAnimator.setDuration(300);
+        objectAnimator.setDuration(200);
         objectAnimator.start();
     }
 
