@@ -67,21 +67,23 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     };
 
     private void loadDone(boolean isFirstLoadDone) {
-        mProgressBar.setVisibility(View.GONE);
-        if (mFilterList.size() < 1) {
-            showEmpty();
-        } else {
-            mClearAll.setBackgroundResource(R.drawable.green_radius_btn_shape);
-            mClearAll.setEnabled(true);
-            if (isFirstLoadDone) {
-                CallFilterMainActivity activity = (CallFilterMainActivity) mActivity;
+        if (this.isAdded()) {
+            mProgressBar.setVisibility(View.GONE);
+            if (mFilterList.size() < 1) {
+                showEmpty();
+            } else {
+                mClearAll.setBackgroundResource(R.drawable.green_radius_btn_shape);
+                mClearAll.setEnabled(true);
+                if (isFirstLoadDone) {
+                    CallFilterMainActivity activity = (CallFilterMainActivity) mActivity;
 //                activity.moveToFilterFragment();
+                }
+                mRlBottomView.setVisibility(View.VISIBLE);
+                mNothingToShowView.setVisibility(View.GONE);
+                mCallListView.setVisibility(View.VISIBLE);
+                mAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_CALL_FILTER);
+                mAdapter.setData(mFilterList);
             }
-            mRlBottomView.setVisibility(View.VISIBLE);
-            mNothingToShowView.setVisibility(View.GONE);
-            mCallListView.setVisibility(View.VISIBLE);
-            mAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_CALL_FILTER);
-            mAdapter.setData(mFilterList);
         }
     }
 

@@ -417,8 +417,13 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private String getRightTime(long mSecond) {
         String string;
         if (mSecond < MINUTE) {
-            string = StrangeCallActivity.this.getString(
-                    R.string.number_call_duration_s, mSecond);
+            if (mSecond == -1) {
+                string = StrangeCallActivity.this.getString(
+                        R.string.number_call_duration_s, 0);
+            } else {
+                string = StrangeCallActivity.this.getString(
+                        R.string.number_call_duration_s, mSecond);
+            }
         } else if (mSecond < HOUR) {
             string = StrangeCallActivity.this.getString(
                     R.string.number_call_duration_m, mSecond / MINUTE);
