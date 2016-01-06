@@ -35,6 +35,7 @@ import com.leo.tools.animator.ObjectAnimator;
 
 
 public class CallFilterToast {
+    private static final String TAG = "CallFilterToast";
     private static final int API_LEVEL_19 = 19;
     public static final int BLACK_LIST_TYPE = 0;
     public static final int FILTER_TYPE = 1;
@@ -146,7 +147,11 @@ public class CallFilterToast {
                         }
 
                         mParams.y = startViewY;
-                        mWM.updateViewLayout(view, mParams);
+                        try {
+                            mWM.updateViewLayout(view, mParams);
+                        } catch (Exception e) {
+                            LeoLog.e(TAG, "updateViewLayout e: " + e.getMessage());
+                        }
 
                         // 重新初始化手指的开始结束位置。
                         startY += dy;
