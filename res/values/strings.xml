@@ -875,6 +875,7 @@
     <string name="mark_number_from_list">Number marked</string>
     <string name="number_toast_text_black">Drawn in by %1$s users</string>
     <string name="number_toast_text_mark">Marked by %1$s users</string>
+    <string name="number_toast_color"><Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data></string>
     <string name="number_add_to_black_list">In blacklist of %1$s users</string>
     <string name="number_call_duration_s">Talk time: %1$s S</string>
     <string name="number_call_duration_m">Talk time: %1$s M</string>
