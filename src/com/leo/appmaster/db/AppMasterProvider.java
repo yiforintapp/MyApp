@@ -81,11 +81,15 @@ public class AppMasterProvider extends ContentProvider {
 
 		long rowId = 0;
 		try {
-			boolean replace = values.getAsBoolean(SQL_INSERT_OR_REPLACE);
+			boolean replace = false;
+            if (values.containsKey(SQL_INSERT_OR_REPLACE)) {
+                replace = values.getAsBoolean(SQL_INSERT_OR_REPLACE);
+            }
+            values.remove(SQL_INSERT_OR_REPLACE);
 			if (replace) {
-				rowId = db.replace(args.table, Constants.ID, values);
+				rowId = db.replace(args.table, null, values);
 			} else {
-				rowId = db.insert(args.table, Constants.ID, values);
+				rowId = db.insert(args.table, null, values);
 			}
 		} catch (Exception e) {
 			LeoLog.e(TAG, e.getMessage());
