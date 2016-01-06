@@ -161,10 +161,10 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         mAppList.setOnItemClickListener(this);
         mAppName = mAppString;
         if (!TextUtils.isEmpty(mAppString)) {
-            mAppText.setText(Html.fromHtml(mAppString));
-            mAppText.setVisibility(View.VISIBLE);
+            mNewLabelContent.setText(Html.fromHtml(mAppString));
+            mNewLabelContent.setVisibility(View.VISIBLE);
         } else {
-            mAppText.setVisibility(View.GONE);
+            mNewLabelContent.setVisibility(View.GONE);
         }
 
         boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);

@@ -17,6 +17,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.HeaderGridView;
+import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -120,15 +121,22 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
 
         mPicList = (HeaderGridView) view.findViewById(R.id.pic_gv);
         mPicList.setOnScrollListener(this);
-
         mAppName = "";
-        mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
-        mPicList.addHeaderView(getEmptyHeader());
-        mPicList.setAdapter(mAdaper);
         mPicList.setOnItemClickListener(this);
 
         setLabelCount(mDataList.size());
         setProcessContent(R.string.pri_pro_hide_pic);
+        XHeaderView headerView = (XHeaderView) mStickView;
+        headerView.setOnHeaderLayoutListener(new XHeaderView.OnHeaderLayoutListener() {
+            @Override
+            public void onHeaderLayout(int height) {
+                if (mPicList.getAdapter() == null) {
+                    mStickyHeight = height;
+                    mPicList.addHeaderView(getEmptyHeader());
+                    mPicList.setAdapter(mAdaper);
+                }
+            }
+        });
 
 
     }

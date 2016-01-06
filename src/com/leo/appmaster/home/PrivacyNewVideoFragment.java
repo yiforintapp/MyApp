@@ -17,6 +17,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.videohide.VideoItemBean;
@@ -205,12 +206,20 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
         mVideoList.setOnScrollListener(this);
         mVideoList.setOnItemClickListener(this);
         mAppName = "";
-        mStickyHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.pri_pro_new);
-        mVideoList.addHeaderView(getEmptyHeader());
-        mVideoList.setAdapter(mAdaper);
 
         setLabelCount(mDataList == null ? 0 : mDataList.size());
         setProcessContent(R.string.pri_pro_hide_vid);
+        XHeaderView headerView = (XHeaderView) mStickView;
+        headerView.setOnHeaderLayoutListener(new XHeaderView.OnHeaderLayoutListener() {
+            @Override
+            public void onHeaderLayout(int height) {
+                if (mVideoList.getAdapter() == null) {
+                    mStickyHeight = height;
+                    mVideoList.addHeaderView(getEmptyHeader());
+                    mVideoList.setAdapter(mAdaper);
+                }
+            }
+        });
     }
 
     @Override

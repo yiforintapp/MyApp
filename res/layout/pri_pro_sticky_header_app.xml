@@ -44,7 +44,6 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:includeFontPadding="false"
-                android:singleLine="true"
                 android:gravity="center_vertical"
                 android:layout_alignParentLeft="true"
                 android:text="@string/pri_pro_new_app"
