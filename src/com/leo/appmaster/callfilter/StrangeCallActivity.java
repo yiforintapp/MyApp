@@ -385,22 +385,32 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             }
 
             ContactCallLog mb = callLog.get(position);
-            vh.name.setText(mb.getCallLogNumber());
+            String number = mb.getCallLogNumber();
 
-            int addToBlackNum = mb.getAddBlackNumber();
-            if (addToBlackNum > 0) {
-                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                int showPar = cmp.getBlackMarkTipParam();
-                vh.addnum.setVisibility(View.VISIBLE);
-                vh.addnum.setText(StrangeCallActivity.this.getString(
-                        R.string.call_filter_add_to_blacklist_people_tips, addToBlackNum * showPar));
-            } else {
+            //android.content.res.Resources$NotFoundException: String resource ID #0x7f0c0315
+            vh.name.setText(number);
+
+            try {
+                int addToBlackNum = mb.getAddBlackNumber();
+                if (addToBlackNum > 0) {
+                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl)
+                            MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                    int showPar = cmp.getBlackMarkTipParam();
+                    vh.addnum.setVisibility(View.VISIBLE);
+                    String text = getString(R.string.call_filter_add_to_blacklist_people_tips, addToBlackNum * showPar + "");
+                    vh.addnum.setText(text);
+                } else {
+                    vh.addnum.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
                 vh.addnum.setVisibility(View.GONE);
             }
 
+
             String newDate = changeToNewDate(mb.getClallLogDate());
             vh.date.setText(newDate);
-            vh.callduration.setText(getRightTime((int) mb.getCallLogDuraction()));
+            String duration = getRightTime((int) mb.getCallLogDuraction());
+            vh.callduration.setText(duration);
 
             if (mb.getCallLogDuraction() > 0) {
                 vh.contactIcon.setImageResource(R.drawable.pick_up_call);
@@ -413,9 +423,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             } else {
                 vh.checkImage.setImageResource(R.drawable.unselect);
             }
-
-//            Bitmap icon = mb.getContactIcon();
-//            vh.contactIcon.setImageBitmap(icon);
 
             return convertView;
         }
