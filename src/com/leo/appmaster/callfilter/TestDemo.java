@@ -2,8 +2,10 @@ package com.leo.appmaster.callfilter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestDemo extends Activity implements View.OnClickListener {
+    private static final int CALLS_COUNT = 10;
     private Button b1;
     private Button b2;
     private Button b3;
@@ -26,6 +29,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
     private Button b6;
     private Button b7;
     private Button b8;
+    private Button b9;
     private int mI = 1;
 
     @Override
@@ -48,6 +52,8 @@ public class TestDemo extends Activity implements View.OnClickListener {
         b7.setOnClickListener(this);
         b8 = (Button) findViewById(R.id.B8);
         b8.setOnClickListener(this);
+        b9 = (Button) findViewById(R.id.B9);
+        b9.setOnClickListener(this);
     }
 
     @Override
@@ -163,6 +169,26 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 info8.setDuration(1200);
                 LM.insertCallToSys(info8);
                 break;
+            case R.id.B9:
+
+            String[] CALL_LOG_PROJECTION = new String[] {
+                    CallLog.Calls._ID,
+                    CallLog.Calls.NUMBER,
+                    CallLog.Calls.DATE,
+                    CallLog.Calls.DURATION,
+                    CallLog.Calls.TYPE,
+                    CallLog.Calls.CACHED_NAME,
+                    CallLog.Calls.CACHED_NUMBER_TYPE,
+                    CallLog.Calls.CACHED_NUMBER_LABEL};
+            String selection = "0==0) GROUP BY (" + CallLog.Calls.NUMBER;
+
+         Cursor c = TestDemo.this.getContentResolver().query(CallLog.Calls.CONTENT_URI, CALL_LOG_PROJECTION,selection, null,CallLog.Calls.DEFAULT_SORT_ORDER);
+           if(c!=null){
+               Toast.makeText(TestDemo.this,"shu="+c.getCount(),Toast.LENGTH_LONG).show();
+           }else{
+               Toast.makeText(TestDemo.this,"0",Toast.LENGTH_LONG).show();
+           }
+            break;
         }
     }
 }

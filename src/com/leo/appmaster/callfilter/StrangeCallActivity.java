@@ -634,7 +634,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     String[] selectionArgs = null;
                     String sortOrder = null;
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
-                            getSysCallLogNoContact(StrangeCallActivity.this, selection, selectionArgs, sortOrder, false, false);
+                            getSysCallLogNoContact(StrangeCallActivity.this, selection, selectionArgs, sortOrder, false, true);
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                         List<ContactCallLog> calls = new ArrayList<ContactCallLog>();

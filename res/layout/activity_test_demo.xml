@@ -57,5 +57,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="插入通话记录"/>
+        <Button
+            android:id="@+id/B9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取通话记录分组"/>
     </LinearLayout>
 </RelativeLayout>
