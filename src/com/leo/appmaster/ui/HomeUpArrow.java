@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.home.HomePrivacyFragment;
 import com.leo.appmaster.home.SimpleAnimatorListener;
 import com.leo.appmaster.utils.LeoLog;
@@ -57,10 +56,6 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
 
         mDividerColor = context.getResources().getColor(R.color.c5);
         mUpIcon = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_up_arrow);
-        Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.ICON_HOME_UP_ARROW, mContext);
-        if (drawable != null) {
-            mUpIcon = (BitmapDrawable)drawable;
-        }
         mRedTip = context.getResources().getDrawable(R.drawable.red_dot);
 
         mTapWidth = context.getResources().getDimensionPixelSize(R.dimen.home_more_arrow_width);

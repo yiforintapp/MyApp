@@ -1,10 +1,10 @@
 package com.leo.appmaster.home;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.AttributeSet;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,17 +16,9 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LanguageUtils;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 首页上拉列表Adaper
@@ -178,15 +170,6 @@ public class HomeMoreAdapter extends BaseAdapter {
                 convertView = mInflater.inflate(R.layout.home_more_label_item, null);
 
                 holder.textView = (TextView) convertView.findViewById(R.id.more_label_tv);
-                Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_MORE_FRAGMENT_LABEL, mContext);
-                if (drawable != null) {
-                    if (LanguageUtils.isRightToLeftLanguage(null)) {
-                        holder.textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.home_more_fragment_label_chrismas_rotate));
-                    } else {
-                        holder.textView.setBackgroundDrawable(drawable);
-                    }
-                    holder.textView.setPadding(DipPixelUtil.dip2px(mContext, 20), 0, DipPixelUtil.dip2px(mContext, 15), 0);
-                }
                 convertView.setTag(R.layout.home_more_label_item, holder);
             } else {
                 holder = new MoreHolder();

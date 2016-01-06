@@ -2,14 +2,12 @@ package com.leo.appmaster.home;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -19,7 +17,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
-import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
@@ -29,7 +26,6 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
@@ -156,42 +152,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         mIvTabIcon3 = (ImageView) view.findViewById(R.id.home_ic_lost_img);
         mIvTabIcon4 = (ImageView) view.findViewById(R.id.home_ic_intruder_img);
 
-        tryChangeToChrismasTheme();
-    }
-
-    private void tryChangeToChrismasTheme() {
-        Drawable drawable1 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB1, getActivity());
-        if (drawable1 != null) {
-            mIvTabIcon1.setImageDrawable(drawable1);
-            LayoutParams layoutParams = mIvTabIcon1.getLayoutParams();
-            layoutParams.height = DipPixelUtil.dip2px(mActivity, 38);
-            layoutParams.width = DipPixelUtil.dip2px(mActivity, 38);
-            mIvTabIcon1.setLayoutParams(layoutParams);
-        }
-        Drawable drawable2 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB2, getActivity());
-        if (drawable2 != null) {
-            mIvTabIcon2.setImageDrawable(drawable2);
-            LayoutParams layoutParams = mIvTabIcon2.getLayoutParams();
-            layoutParams.height = DipPixelUtil.dip2px(mActivity, 38);
-            layoutParams.width = DipPixelUtil.dip2px(mActivity, 38);
-            mIvTabIcon2.setLayoutParams(layoutParams);
-        }
-        Drawable drawable3 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB3, getActivity());
-        if (drawable3 != null) {
-            mIvTabIcon3.setImageDrawable(drawable3);
-            LayoutParams layoutParams = mIvTabIcon3.getLayoutParams();
-            layoutParams.height = DipPixelUtil.dip2px(mActivity, 38);
-            layoutParams.width = DipPixelUtil.dip2px(mActivity, 38);
-            mIvTabIcon3.setLayoutParams(layoutParams);
-        }
-        Drawable drawable4 = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB4, getActivity());
-        if (drawable4 != null) {
-            mIvTabIcon4.setImageDrawable(drawable4);
-            LayoutParams layoutParams = mIvTabIcon4.getLayoutParams();
-            layoutParams.height = DipPixelUtil.dip2px(mActivity, 38);
-            layoutParams.width = DipPixelUtil.dip2px(mActivity, 38);
-            mIvTabIcon4.setLayoutParams(layoutParams);
-        }
     }
 
     public void dismissTab() {

@@ -1,5 +1,8 @@
 package com.leo.appmaster.home;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
@@ -12,7 +15,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.net.Uri;
@@ -45,7 +47,6 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
-import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -85,9 +86,6 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.utils.IoUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
@@ -605,15 +603,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void tryChangeToChrismasTheme() {
-        Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_ASIDE_FRAGMENT, this);
-        if (drawable != null) {
-            mMenuList.setBackgroundDrawable(drawable);
-            mMenuList.setDivider(getResources().getDrawable(R.drawable.home_menu_list_divider_chrismas));
-            mMenuList.setDividerHeight(1);
-            mMenuTextColorId = getResources().getColor(R.color.c1);
-        } else {
-            mMenuTextColorId = getResources().getColor(R.color.home_menu_text);
-        }
+        mMenuTextColorId = getResources().getColor(R.color.home_menu_text);
     }
 
     @Override
@@ -766,8 +756,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        //这里只是为了更新标记
-        Drawable chrismasThemeDrawbleBySlotId = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_HOME_TAB1, this);
         LeoLog.d(TAG, "onResume...");
         judgeShowGradeTip();
         /* 获取是否从iswipe通知进入 */

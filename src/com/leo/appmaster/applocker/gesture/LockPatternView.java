@@ -32,12 +32,10 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
 
 /**
@@ -1154,9 +1152,6 @@ public class LockPatternView extends ViewGroup {
                     mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
 //                } else if (mPatternInProgress) {
                 } else {
-                    if (themDrawable == null) {
-                        themDrawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_GESTURE_DOT, mContext);
-                    }
 //                    Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_GESTURE_DOT, mContext);
                     if (themDrawable != null && isFromLockScreenActivity) {
                         mButtonViews[i].setBackgroundDrawable(themDrawable);

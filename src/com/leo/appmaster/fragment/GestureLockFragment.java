@@ -17,18 +17,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
-import com.leo.appmaster.applocker.manager.ChangeThemeManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -49,7 +46,6 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
-import com.leo.tools.animator.Animator;
 
 public class GestureLockFragment extends LockFragment implements
         OnPatternListener, OnClickListener {
@@ -133,16 +129,6 @@ public class GestureLockFragment extends LockFragment implements
                 checkApplyTheme();
             } 
         } 
-        if (!needChangeTheme()) {
-            Drawable drawable = ChangeThemeManager.getChrismasThemeDrawbleBySlotId(ChangeThemeManager.BG_LOCKSCREEN_WHOLE, getActivity());
-            if (drawable != null) {
-                try {
-                    RelativeLayout layout = (RelativeLayout) getActivity().findViewById(R.id.activity_lock_layout);
-                    layout.setBackgroundDrawable(drawable);
-                } catch (Exception e) {
-                }
-            }
-        }
         LeoEventBus.getDefaultBus().register(this);
     }
 
