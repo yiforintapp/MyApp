@@ -987,4 +987,9 @@
     <string name="miss_noti_content">%1$s يسحب بـ %2$s الى أسود ، اقتراحا بتسويد</string>
     <string name="fil_noti_bt">ارجع</string>
     <string name="strange_call_empty">لا يمكن إجراء مكالمات غريب</string>
+
+    <string name="call_filter_add_to_blacklist_people_tips">يسحب %1$s فردا تسويد</string>
+    <string name="call_filter_marked_people_tips">وضع علامة المستخدمين %1$s كما %2$s</string>
+    <string name="call_filter_marked_and_add_tips">علامة %1$s, اضافة الى  القائمة السوداء</string>
+    <string name="call_filter_confirm_ask_mark_summary">وضع علامة المستخدمين %1$s كما %2$s</string>
 </resources>

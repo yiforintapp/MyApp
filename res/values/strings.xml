@@ -926,4 +926,9 @@
     <!--3.2未翻译只有中英文-->
     <string name="gud_page_call_fil">Checking incoming calls to protect you from any harassment.</string>
 
+    <string name="call_filter_add_to_blacklist_people_tips">In blacklist of %1$s users</string>
+    <string name="call_filter_marked_people_tips">%1$s users marked as %2$s</string>
+    <string name="call_filter_marked_and_add_tips">Mark %1$s，Add to blacklist</string>
+    <string name="call_filter_confirm_ask_mark_summary">%1$s users marked as %2$s</string>
+
 </resources>

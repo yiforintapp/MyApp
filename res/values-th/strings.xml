@@ -900,4 +900,9 @@
     <string name="miss_noti_content">%1$sถูก%2$sคนบล็อคแล้ว แนะนำให้บล็อค</string>
     <string name="fil_noti_bt">ดู</string>
     <string name="strange_call_empty">ไม่มีคนแปลกหน้าโทร</string>
+
+    <string name="call_filter_add_to_blacklist_people_tips">ถูก%1$sคนดึงเข้าแบล็คลิสต์</string>
+    <string name="call_filter_marked_people_tips">ผู้ใช้%1$sทำเครื่องหมายเป็น%2$s</string>
+    <string name="call_filter_marked_and_add_tips">เครื่องหมาย %1$s， เพิ่มเข้าแบล็คลิสต์</string>
+    <string name="call_filter_confirm_ask_mark_summary">ผู้ใช้%1$sทำเครื่องหมายเป็น%2$s</string>
 </resources>

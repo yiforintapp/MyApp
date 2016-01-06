@@ -903,4 +903,9 @@
     <string name="miss_noti_content">%1$s被%2$s人拉黑，建議拉黑</string>
     <string name="fil_noti_bt">查看</string>
     <string name="strange_call_empty">沒有陌生來電</string>
+
+    <string name="call_filter_add_to_blacklist_people_tips">已被%1$s的人拉入黑名單</string>
+    <string name="call_filter_marked_people_tips">已被%1$s的人標記為%2$s</string>
+    <string name="call_filter_marked_and_add_tips">標記%1$s並加入黑名單</string>
+    <string name="call_filter_confirm_ask_mark_summary">已有%1$s的人將該號碼標記為%2$s</string>
 </resources>

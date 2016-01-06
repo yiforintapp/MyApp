@@ -901,4 +901,8 @@
     <string name="fil_noti_bt">Bak</string>
     <string name="strange_call_empty">Hiçbir yabancı aramalar</string>
 
+    <string name="call_filter_add_to_blacklist_people_tips">%1$s tarafından kara listede</string>
+    <string name="call_filter_marked_people_tips">%1$s kullanıcıların %2$s olarak işaretlenmiş</string>
+    <string name="call_filter_marked_and_add_tips">Markos %1$s, Kara Listeye Ekle</string>
+    <string name="call_filter_confirm_ask_mark_summary">%1$s kullanıcıların %2$s olarak işaretlenmiş</string>
 </resources>
