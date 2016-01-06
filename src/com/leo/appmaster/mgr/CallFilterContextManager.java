@@ -220,6 +220,13 @@ public abstract class CallFilterContextManager extends Manager {
      */
     public abstract void setFilterNotiOpState(boolean flag);
 
+    /**
+     * 指定号码查询服务器黑名单列表是否存在该号码
+     *
+     * @param number
+     * @return
+     */
+    public abstract BlackListInfo getSerBlackForNum(String number);
 
     /**
      * int[0]指定号码是否满足？：0,不满足;1,满足
@@ -240,6 +247,7 @@ public abstract class CallFilterContextManager extends Manager {
      *
      * @return
      */
+
     public abstract long getCallDurationMax();
 
     /**
@@ -413,27 +421,28 @@ public abstract class CallFilterContextManager extends Manager {
      * @return
      */
     public abstract boolean insertCallToSys(CallFilterInfo info);
-
     /**
-     * 指定号码查询服务器下发黑名单
+     * 指定号码查询本地黑名单是否存在该号码
      *
      * @param number
      * @return
      */
-    public abstract BlackListInfo getSerBlackFroNum(String number);
-
+    public abstract BlackListInfo getBlackFroNum(String number) ;
     /**
      * 指定号码查询头像
+     *
      * @param number
      * @return
      */
     public abstract Bitmap getBlackIcon(String number);
+
     /**
      * 分页查询为拦截上传到服务器的黑名单列表
      *
      * @return
      */
     public abstract List<BlackListInfo> getUpBlackListLimit(int page);
+
     /**
      * 查询为上传到服务器的黑名单列表
      *

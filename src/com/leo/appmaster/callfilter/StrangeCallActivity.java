@@ -630,20 +630,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-//                    List<ContactCallLog> callLogList = PrivacyContactUtils.
-//                            getSysCallLog(StrangeCallActivity.this, null, null, false, false);
-//                    String selects = CallLog.Calls.TYPE + " = ? ";
-//                    String[] selectArgs = new String[]{String.valueOf(CallLog.Calls.INCOMING_TYPE)};
                     String selection = null;
                     String[] selectionArgs = null;
                     String sortOrder = null;
-//                    int pageSize = PAGE_SIZE;
-//                    int currentOffset = 0;
-//                    StringBuilder sbOr = new StringBuilder();
-//                    sbOr.append(CallLog.Calls._ID);
-//                    sbOr.append(" " + CallFilterConstants.DESC);
-//                    sbOr.append(" limit  " + pageSize + " offset " + currentOffset);
-//                    String sortOrder = sbOr.toString();
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
                             getSysCallLogNoContact(StrangeCallActivity.this, selection, selectionArgs, sortOrder, false, false);
                     if (callLogList != null && callLogList.size() > 0) {
@@ -657,7 +646,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                     && !mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
 
                                 //add to black list num
-                                BlackListInfo info = mCallManger.getSerBlackFroNum(call.getCallLogNumber());
+                                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                                BlackListInfo info = cmp.getSerBlackForNum(call.getCallLogNumber());
+
                                 if (info != null) {
                                     int addToBlackNum = info.getAddBlackNumber();
                                     LeoLog.d("testAddBlack", "addToBlackNum:" + addToBlackNum);
@@ -665,8 +656,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                         call.setAddBlackNumber(addToBlackNum);
                                     }
                                 }
-
-
                                 calls.add(call);
                             }
                         }

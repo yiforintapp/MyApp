@@ -108,14 +108,6 @@ public class CallFilterManager {
         this.mFilterNum = filterNum;
     }
 
-    public long getFilterTime() {
-        return mFilterTime;
-    }
-
-    public void setFilterTime(long filterTime) {
-        this.mFilterTime = filterTime;
-    }
-
     public boolean isIsFilterTab() {
         return mIsFilterTab;
     }
@@ -140,28 +132,12 @@ public class CallFilterManager {
         this.mCurrentCallTime = currentCallTime;
     }
 
-    public boolean isReceiverHanl() {
-        return mReceiverHanl;
-    }
-
-    public void setReceiverHanl(boolean receiverHanl) {
-        this.mReceiverHanl = receiverHanl;
-    }
-
     public boolean isReceiver() {
         return mIsReceiver;
     }
 
     public void setIsReceiver(boolean isReceiver) {
         this.mIsReceiver = isReceiver;
-    }
-
-    public boolean isIsCallFilterTip() {
-        return mIsCallFilterTip;
-    }
-
-    public void setIsCallFilterTip(boolean isCallFilterTip) {
-        this.mIsCallFilterTip = isCallFilterTip;
     }
 
     public boolean isComingOut() {
@@ -245,8 +221,8 @@ public class CallFilterManager {
             // 刚刚受到来电 （还没有接听）
             setCurrentRecePhNum(phoneNumber);
             mPhoneNumber = phoneNumber;
-            info = getBlackFroNum(phoneNumber);
-            serInfo = getSerBlackForNum(phoneNumber);
+            info = cmp.getBlackFroNum(phoneNumber);
+            serInfo = cmp.getSerBlackForNum(phoneNumber);
             LeoLog.i("testdata", "firstly, phoneNumber is not null, info = " + (info == null ? "null" : "not null"));
             LeoLog.i("testdata", "firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
         }
@@ -335,8 +311,8 @@ public class CallFilterManager {
             }
             /* 恢复默认值 */
             setCurrentCallTime(-1);
-            info = getBlackFroNum(mPhoneNumber);
-            serInfo = getSerBlackForNum(mPhoneNumber);
+            info = cmp.getBlackFroNum(mPhoneNumber);
+            serInfo = cmp.getSerBlackForNum(mPhoneNumber);
             if (info != null || isComingOut()) {
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
                 return;
@@ -601,85 +577,6 @@ public class CallFilterManager {
         LeoLog.i("testdata", "show notification");
     }
 
-    // 为dialog设置业务逻辑
-//    private void fillDataForDialogAndShow(int[] filterTip, String summary) {
-//        final MultiChoicesWitchSummaryDialog callHandleDialogWithSummary = CallFIlterUIHelper
-//                .getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0);
-//        String summaryS = mContext.getResources().getString(
-//                R.string.call_filter_confirm_ask_mark_summary);
-//        String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
-//        switch (filterTip[3]) {
-//            case CallFilterConstants.FILTER_CALL_TYPE:
-//                mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
-//                break;
-//            case CallFilterConstants.AD_SALE_TYPE:
-//                mark = mContext.getResources().getString(R.string.call_filter_mark_as_tx);
-//                break;
-//            case CallFilterConstants.CHEAT_NUM_TYPE:
-//                mark = mContext.getResources().getString(R.string.call_filter_mark_as_zp);
-//                break;
-//            default:
-//                break;
-//        }
-//        String summaryF = String.format(summaryS, filterTip[2], mark);
-//        callHandleDialogWithSummary.setContent(summaryF);
-//        callHandleDialogWithSummary.getListView().setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position,
-//                                    long id) {
-//                callHandleDialogWithSummary.setNowItemPosition(position);
-//            }
-//        });
-//        callHandleDialogWithSummary.setRightBtnListener(new OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-//                BlackListInfo infot = new BlackListInfo();
-//                int nowItemPosition = callHandleDialogWithSummary.getNowItemPosition();
-//                infot.setNumber(mPhoneNumber);
-//                switch (nowItemPosition) {
-//                    case 0:
-//                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-//                        break;
-//                    case 1:
-//                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-//                        break;
-//                    case 2:
-//                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                infost.add(infot);
-//                CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-//                cmp.addBlackList(infost, false);
-//                Toast.makeText(mContext,
-//                        mContext.getResources().getString(R.string.add_black_list_done),
-//                        Toast.LENGTH_SHORT).show();
-//                callHandleDialogWithSummary.dismiss();
-//            }
-//        });
-//        callHandleDialogWithSummary.show();
-//    }
-
-    /**
-     * 添加一条黑名单记录，仅包含号码和类型，并通知界面更新
-     *
-     * @param type
-     * @param number
-     */
-    private void addAnSimpleRecordsAndNotifyUpdate(int type, String number) {
-        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-        BlackListInfo infot = new BlackListInfo();
-        infot.setNumber(number);
-        infot.setLocHandlerType(type);
-        infost.add(infot);
-        CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        cmp.addBlackList(infost, false);
-        notiUpdateBlackList();
-    }
-
-
     /**
      * 加载本地黑名单列表
      */
@@ -698,41 +595,6 @@ public class CallFilterManager {
     }
 
     /**
-     * 获取本地黑名单列表数量
-     *
-     * @return
-     */
-    public int getBlackListCount() {
-        List<BlackListInfo> infos = getBlackList();
-        if (infos != null && infos.size() > 0) {
-            return infos.size();
-        }
-        return 0;
-    }
-
-    /**
-     * 指定号码查询本地黑名单是否存在该号码
-     *
-     * @param number
-     * @return
-     */
-    public BlackListInfo getBlackFroNum(String number) {
-        if (TextUtils.isEmpty(number)) {
-            return null;
-        }
-        List<BlackListInfo> infos = getBlackList();
-        if (infos != null && infos.size() > 0) {
-            String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
-            for (BlackListInfo info : infos) {
-                if (info.getNumber().contains(formateNum)) {
-                    return info;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
      * 服务器下发所有黑名单
      *
      * @return
@@ -747,40 +609,6 @@ public class CallFilterManager {
 
     }
 
-    /**
-     * 获取服务器下发黑名单数量
-     *
-     * @return
-     */
-    public int getSerBlackCount() {
-        List<BlackListInfo> infos = getSerBlackList();
-        if (infos != null && infos.size() > 0) {
-            return infos.size();
-        }
-        return 0;
-    }
-
-    /**
-     * 指定号码查询服务器黑名单列表是否存在该号码
-     *
-     * @param number
-     * @return
-     */
-    public BlackListInfo getSerBlackForNum(String number) {
-        if (TextUtils.isEmpty(number)) {
-            return null;
-        }
-        List<BlackListInfo> infos = getSerBlackList();
-        if (infos != null && infos.size() > 0) {
-            String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
-            for (BlackListInfo info : infos) {
-                if (info.getNumber().contains(formateNum)) {
-                    return info;
-                }
-            }
-        }
-        return null;
-    }
 
     /**
      * 解析黑名单列表后加入到黑名单数据库

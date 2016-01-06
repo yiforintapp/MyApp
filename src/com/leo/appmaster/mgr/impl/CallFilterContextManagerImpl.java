@@ -8,14 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.CallLog;
-import android.telecom.Call;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
-import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.StrangerInfo;
 import com.leo.appmaster.db.AppMasterDBHelper;
@@ -250,27 +248,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public boolean isExistBlackList(String number) {
-//        SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
-//        SQLiteDatabase sd = dbHelper.getReadableDatabase();
-//        String table = CallFilterConstants.BLACK_LIST_TAB;
-//        String colum = CallFilterConstants.BLACK_PHONE_NUMBER;
-//        CallFilterUtils.isDbKeyExist(table, new String[]{colum}, number);
-//        number = PrivacyContactUtils.formatePhoneNumber(number);
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(colum + " LIKE ? and ");
-//        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-//        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
-//        String selects = sb.toString();
-//        String[] selectArgs = new String[]{"%" + number,
-//                String.valueOf(CallFilterConstants.LOC_HD),
-//                String.valueOf(CallFilterConstants.REMOVE_NO)};
-//        Cursor cursor = sd.query(table, new String[]{colum}, selects, selectArgs, null, null, null);
-//        if (cursor != null) {
-//            if (cursor.getCount() > 0) {
-//                return true;
-//            }
-//        }
-        List<BlackListInfo> blacks = CallFilterManager.getInstance(mContext).getBlackList();
+        List<BlackListInfo> blacks = getBlackList();
         if (blacks != null && blacks.size() > 0 && !TextUtils.isEmpty(number)) {
             String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
             for (BlackListInfo info : blacks) {
@@ -989,25 +967,37 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
+    public BlackListInfo getSerBlackForNum(String number) {
+        if (TextUtils.isEmpty(number)) {
+            return null;
+        }
+        List<BlackListInfo> infos = getServerBlackList();
+        if (infos != null && infos.size() > 0) {
+            String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
+            for (BlackListInfo info : infos) {
+                if (info.getNumber().contains(formateNum)) {
+                    return info;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public int[] isCallFilterTip(String number) {
         if (TextUtils.isEmpty(number)) {
             return null;
         }
         boolean isUse = CallFilterUtils.isNumberUsePrivacy(number);
-//        boolean isLocBlack =
         if (isUse) {
             return null;
         }
-        CallFilterManager cm = CallFilterManager.getInstance(mContext);
-        boolean isTip = cm.isIsCallFilterTip();
-        cm.setIsCallFilterTip(true);
         int[] type = new int[4];
-//        if (!isTip) {
         type[0] = -1;
         int addBlackCount = 0;
         int markCount = 0;
         int markType = -1;
-        BlackListInfo blacks = cm.getSerBlackForNum(number);
+        BlackListInfo blacks = getSerBlackForNum(number);
         if (blacks != null) {
             addBlackCount = blacks.getAddBlackNumber();
             markCount = blacks.getMarkerNumber();
@@ -1043,8 +1033,6 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         } else {
             type[0] = CallFilterConstants.IS_TIP_DIA[0];
         }
-        cm.setIsCallFilterTip(false);
-//        }
         return type;
     }
 
@@ -1287,9 +1275,20 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
-    public BlackListInfo getSerBlackFroNum(String number) {
-        CallFilterManager cm = CallFilterManager.getInstance(mContext);
-        return cm.getSerBlackForNum(number);
+    public BlackListInfo getBlackFroNum(String number) {
+        if (TextUtils.isEmpty(number)) {
+            return null;
+        }
+        List<BlackListInfo> infos = getBlackList();
+        if (infos != null && infos.size() > 0) {
+            String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
+            for (BlackListInfo info : infos) {
+                if (info.getNumber().contains(formateNum)) {
+                    return info;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -1297,8 +1296,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (TextUtils.isEmpty(number)) {
             return null;
         }
-        CallFilterManager cm = CallFilterManager.getInstance(mContext);
-        BlackListInfo info = cm.getBlackFroNum(number);
+        BlackListInfo info = getBlackFroNum(number);
         if (info != null) {
             Bitmap icon = info.getIcon();
             if (icon != null) {
