@@ -667,20 +667,11 @@ public class CallFilterManager {
                     List<BlackListInfo> blackList = getBlackList();
                     //是否存在后台下发的黑名单(过滤掉服务器下发的黑名单)
                     List<BlackListInfo> serBlackList = getSerBlackList();
-                    if (blackList != null && blackList.size() > 0) {
-                        for (BlackListInfo info : blackList) {
-                            String number = info.getNumber();
-                            if (TextUtils.isEmpty(number)) {
-                                continue;
-                            }
-                            if (!number.contains(formateNumber)) {
-                                straCalls.add(call);
-                                break;
-                            }
-                        }
-
-                        if (serBlackList != null && serBlackList.size() > 0) {
-                            for (BlackListInfo info : serBlackList) {
+                    boolean blkNoEmpty = blackList != null && blackList.size() > 0;
+                    boolean serBlckNoEmpty = serBlackList != null && serBlackList.size() > 0;
+                    if (blkNoEmpty || serBlckNoEmpty) {
+                        if (blkNoEmpty) {
+                            for (BlackListInfo info : blackList) {
                                 String number = info.getNumber();
                                 if (TextUtils.isEmpty(number)) {
                                     continue;
@@ -688,6 +679,20 @@ public class CallFilterManager {
                                 if (!number.contains(formateNumber)) {
                                     straCalls.add(call);
                                     break;
+                                }
+                            }
+                        }
+                        if (serBlckNoEmpty) {
+                            if (serBlackList != null && serBlackList.size() > 0) {
+                                for (BlackListInfo info : serBlackList) {
+                                    String number = info.getNumber();
+                                    if (TextUtils.isEmpty(number)) {
+                                        continue;
+                                    }
+                                    if (!number.contains(formateNumber)) {
+                                        straCalls.add(call);
+                                        break;
+                                    }
                                 }
                             }
                         }

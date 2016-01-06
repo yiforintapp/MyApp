@@ -62,7 +62,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
         switch (id) {
             case R.id.B1:
                 CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                pm.setFilterUserNumber(10000);
+                pm.setFilterUserNumber(1000);
                 pm.setFilterTipFroUser(3000);
                 BlackListInfo info = new BlackListInfo();
                 info.setNumber("18790729990");
@@ -72,6 +72,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
                 cm.addFilterFroParse(info);
                 pm.setCallDurationMax(7000);
+                pm.setStraNotiTipParam(2);
                 break;
             case R.id.B2:
                 new BlackUploadFetchJob().startImmediately(true);
