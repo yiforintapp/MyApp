@@ -192,8 +192,8 @@ public class CallFilterManager {
             mTipToast = null;
         }
     }
-    
-    
+
+
     /**
      * 骚扰拦截处理
      *
@@ -249,7 +249,7 @@ public class CallFilterManager {
             mPhoneNumber = phoneNumber;
             mLastNumBeUsedToGetInfo = phoneNumber;
             LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is not null, info = " + (info == null ? "null" : "not null"));
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") +state + "  firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
         } else {
             LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + state + "mPhoneNumber = " + mPhoneNumber);
             if (mPhoneNumber.equals(mLastNumBeUsedToGetInfo)) {
@@ -268,8 +268,8 @@ public class CallFilterManager {
                 mLastFilterTips = filterTip;
             }
             //此时为idle phoneNumber可能为空，使用mPhoneNumber
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") +state + "  firstly, phoneNumber is  null, use mPhoneNumber. info = " + (info == null ? "null" : "not null"));
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") +state + "  firstly, phoneNumber is  null, use mPhoneNumber. serInfo = " + (serInfo == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is  null, use mPhoneNumber. info = " + (info == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is  null, use mPhoneNumber. serInfo = " + (serInfo == null ? "null" : "not null"));
         }
         if (filterTip != null) {
             LeoLog.i("testdata", "filterTip[0]=" + filterTip[0] + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
@@ -304,7 +304,6 @@ public class CallFilterManager {
                 if (audioManager != null) {
                     audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                 }
-            } else if (blackSerInfo != null) {
             } else if (serInfo != null) {
                 /* 为服务器黑名单：弹窗提醒 */
                 if (filterTip == null) {
@@ -498,7 +497,7 @@ public class CallFilterManager {
                 notiUpdateBlackList();
                 Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmrMark.dismiss();
-                
+
             }
         });
         mDialogAskAddWithSmrMark.show();
