@@ -166,8 +166,6 @@ public class HomeScanningController {
         } else if (animation == mNewWifiAnim) {
             mFragment.OnItemAnimationEnd(mNewWifiLayout);
 
-            IntrudeSecurityManager manager = (IntrudeSecurityManager)
-                    MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
             if (!mIsInsValiable) {
                 mNewLostAnim = getItemAnimation(mNewLostLayout);
                 mNewLostAnim.start();
