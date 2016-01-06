@@ -17,7 +17,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:padding="4dp"
-        android:button="@drawable/media_check_box_selector"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:button="@null"
+        android:background="@drawable/media_check_box_selector"
         android:clickable="true" />
 </RelativeLayout>
