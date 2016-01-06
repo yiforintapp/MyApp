@@ -505,6 +505,7 @@ public class CallFilterUtils {
         if (!file.exists() || file.isDirectory()) {
             return;
         }
+        List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String temp = null;
@@ -530,10 +531,11 @@ public class CallFilterUtils {
                 info.setAddBlackNumber(blackCount);
                 info.setMarkerType(markType);
                 info.setMarkerNumber(markCount);
-                CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
-                cm.addFilterFroParse(info);
+                infos.add(info);
                 temp = br.readLine();
             }
+            CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
+            cm.addFilterFroParse(infos);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -20,6 +20,7 @@ import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -77,7 +78,15 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (blackList == null || blackList.size() <= 0) {
             return false;
         }
+        ContentValues[] values = null;
+        int blackCount = blackList.size();
+        if (blackCount > 1) {
+            values = new ContentValues[blackCount];
+        }
 
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        int i = 0;
         for (BlackListInfo info : blackList) {
             if (TextUtils.isEmpty(info.getNumber())) {
                 continue;
@@ -93,9 +102,6 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             int readState = info.getReadState();
             int removeState = info.getRemoveState();
             int filUpState = info.getFiltUpState();
-
-            ContentResolver cr = mContext.getContentResolver();
-            Uri uri = CallFilterConstants.BLACK_LIST_URI;
             ContentValues value = new ContentValues();
 
             if (!TextUtils.isEmpty(name)) {
@@ -212,11 +218,21 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
                     value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
                     value.put(CallFilterConstants.BLACK_FIL_UP, CallFilterConstants.FIL_UP_NO);
-                    cr.insert(uri, value);
+
+                    if (values != null) {
+                        values[i] = value;
+                        i = i + 1;
+                    } else {
+                        cr.insert(uri, value);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (values != null && values.length > 0) {
+            LeoLog.i("caocao", "bulkInsert");
+            cr.bulkInsert(uri, values);
         }
         return true;
     }
@@ -247,9 +263,22 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public boolean isExistBlackList(String number) {
-        List<BlackListInfo> blacks = getBlackList();
+//        List<BlackListInfo> blacks = getBlackList();
+        if (TextUtils.isEmpty(number)) {
+            return false;
+        }
+        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        StringBuilder sb = new StringBuilder();
+        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ");
+        String selects = sb.toString();
+        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
+                String.valueOf(CallFilterConstants.REMOVE_NO), "%" + formateNum};
+        List<BlackListInfo> blacks = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
         if (blacks != null && blacks.size() > 0 && !TextUtils.isEmpty(number)) {
-            String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
             for (BlackListInfo info : blacks) {
                 if (info.getNumber().contains(formateNum)) {
                     return true;
@@ -1108,6 +1137,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             return false;
         }
 
+        ContentValues[] values = null;
+        if (infos.size() > 1) {
+            values = new ContentValues[infos.size()];
+        }
+        ContentResolver cr = mContext.getContentResolver();
+        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+        int i = 0;
         for (BlackListInfo info : infos) {
             if (TextUtils.isEmpty(info.getNumber())) {
                 continue;
@@ -1122,8 +1158,6 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             int markerType = info.getMarkerType();
             int markerNum = info.getMarkerNumber();
 
-            ContentResolver cr = mContext.getContentResolver();
-            Uri uri = CallFilterConstants.BLACK_LIST_URI;
             ContentValues value = new ContentValues();
             if (!TextUtils.isEmpty(name)) {
                 value.put(CallFilterConstants.BLACK_NAME, name);
@@ -1153,7 +1187,13 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     }
                 } else {
                     value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
-                    cr.insert(uri, value);
+
+                    if (values != null) {
+                        values[i] = value;
+                        i = i + 1;
+                    } else {
+                        cr.insert(uri, value);
+                    }
                 }
                 if (cur != null) {
                     cur.close();
@@ -1162,7 +1202,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 e.printStackTrace();
             }
         }
-
+        if (values != null && values.length > 0) {
+            cr.bulkInsert(uri, values);
+        }
 
         return false;
     }
@@ -1296,7 +1338,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         String selects = sb.toString();
         String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
                 String.valueOf(CallFilterConstants.REMOVE_NO),
-                "%"+formateNum};
+                "%" + formateNum};
         List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
         if (infos != null && infos.size() > 0) {
             for (BlackListInfo info : infos) {

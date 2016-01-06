@@ -636,21 +636,14 @@ public class CallFilterManager {
     /**
      * 解析黑名单列表后加入到黑名单数据库
      *
-     * @param info
+     * @param infos
      */
-    public void addFilterFroParse(BlackListInfo info) {
+    public void addFilterFroParse(List<BlackListInfo> infos) {
+        if (infos == null || infos.size() <= 0) {
+            return;
+        }
         CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext
                 .getManager(MgrContext.MGR_CALL_FILTER);
-        List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
-        String number = info.getNumber();
-        int blackCount = info.getAddBlackNumber();
-        int markType = info.getMarkerType();
-        int markCount = info.getMarkerNumber();
-        info.setNumber(number);
-        info.setAddBlackNumber(blackCount);
-        info.setMarkerType(markType);
-        info.setMarkerNumber(markCount);
-        infos.add(info);
         pm.addSerBlackList(infos);
     }
 

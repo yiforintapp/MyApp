@@ -66,13 +66,15 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 pm.setFilterUserNumber(1000);
                 pm.setFilterTipFroUser(3000);
+                List<BlackListInfo> infos1 = new ArrayList<BlackListInfo>();
                 BlackListInfo info = new BlackListInfo();
                 info.setNumber("18790729990");
                 info.setAddBlackNumber(2258);
                 info.setMarkerType(0);
                 info.setMarkerNumber(30);
+                infos1.add(info);
                 CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
-                cm.addFilterFroParse(info);
+                cm.addFilterFroParse(infos1);
                 pm.setCallDurationMax(7000);
                 pm.setStraNotiTipParam(2);
                 break;
@@ -222,7 +224,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
                     }
                 });
                 mDialogAskAddWithSmrMark.show();
-            break;
+                break;
         }
     }
 }
