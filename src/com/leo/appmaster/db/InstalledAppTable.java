@@ -123,17 +123,24 @@ public class InstalledAppTable extends BaseTable {
     }
 
     public synchronized List<String> getIgnoredList() {
+        List<String> result = new ArrayList<String>();
         if (BuildProperties.isApiLevel14()) {
             synchronized (LOCK) {
                 initPkgListIfNeed();
 
-                return new ArrayList<String>(mPkgList);
+                if (mPkgList != null) {
+                    result.addAll(mPkgList);
+                }
             }
         } else {
             initPkgListIfNeed();
 
-            return new ArrayList<String>(mPkgList);
+            if (mPkgList != null) {
+                result.addAll(mPkgList);
+            }
         }
+
+        return result;
     }
 
     public void insertListInner(List<String> list) {
