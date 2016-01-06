@@ -249,6 +249,8 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
         db.execSQL(CallFilterConstants.CREATE_FILTER_GR_TAB);
         db.execSQL(CallFilterConstants.CREATE_FILTER_DET_TAB);
         db.execSQL(CallFilterConstants.CREATE_STRANGER_TP_TAB);
+
+        db.execSQL("CREATE INDEX IF NOT EXISTS phone_idx on black_list(phone_number);");
     }
 
     @Override
