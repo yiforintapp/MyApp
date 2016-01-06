@@ -7,11 +7,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.CallLog;
+import android.sax.StartElementListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
@@ -356,7 +359,17 @@ public class CallFilterManager {
                     return;
                 }
                 // 通话时间过短的提醒加入黑名单对话框
-                showTooShortDialog(durationMax, cmp);
+//                showTooShortDialog(durationMax, cmp);TODO
+                Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+                intent.putExtra("which", 4);
+                intent.putExtra("number", mPhoneNumber);
+                intent.putExtra("filterTip", filterTip);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(mContext.getPackageName(), 2000);
+                mContext.startActivity(intent);
+                mIsOffHook = false;
+                LeoLog.i("testdata", "showed");
                 // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
             } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
@@ -366,7 +379,17 @@ public class CallFilterManager {
                     return;
                 }
                 // 接听后挂断 询问是否家黑名单且展示标记人数
-                showAskAddBlackWithMark(cmp, filterTip);
+//                showAskAddBlackWithMark(cmp, filterTip); TODO
+                Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+                intent.putExtra("which", 3);
+                intent.putExtra("number", mPhoneNumber);
+                intent.putExtra("filterTip", filterTip);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(mContext.getPackageName(), 2000);
+                mContext.startActivity(intent);
+                mIsOffHook = false;
+                LeoLog.i("testdata", "showed");
             } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                 if (mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) {
@@ -374,7 +397,19 @@ public class CallFilterManager {
                     return;
                 }
                 // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
-                showAskAddBlackWithoutMark(cmp, filterTip);
+//                showAskAddBlackWithoutMark(cmp, filterTip);//TODO
+                
+                Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+                intent.putExtra("which", 2);
+                intent.putExtra("number", mPhoneNumber);
+                intent.putExtra("filterTip", filterTip);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(mContext.getPackageName(), 2000);
+                mContext.startActivity(intent);
+                mIsOffHook = false;
+                
+                LeoLog.i("testdata", "showed");
             } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 if ((mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) || (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing())) {
@@ -386,7 +421,19 @@ public class CallFilterManager {
                     mIsOffHook = false;
                     return;
                 }
-                showAskAddWhenNoOffHook(cmp, filterTip);
+//                showAskAddWhenNoOffHook(cmp, filterTip);TODO
+                
+                Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+                intent.putExtra("which", 1);
+                intent.putExtra("number", mPhoneNumber);
+                intent.putExtra("filterTip", filterTip);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(mContext.getPackageName(), 2000);
+                mContext.startActivity(intent);
+                mIsOffHook = false;
+                
+                LeoLog.i("testdata", "showed");
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
             mLastOffHookTime = System.currentTimeMillis();

@@ -166,7 +166,6 @@ public class CallFIlterUIHelper {
         String summaryS = context.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
         String summaryF = String.format(summaryS, markedPeople);
         dialog.setTitle(titleF);
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.setContent(summaryF);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setDialogIconVisibility(false);
