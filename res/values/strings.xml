@@ -931,4 +931,6 @@
     <string name="call_filter_marked_and_add_tips">Mark %1$s，Add to blacklist</string>
     <string name="call_filter_confirm_ask_mark_summary">%1$s users marked as %2$s</string>
 
+    <string name="number_call_duration_h_m">通话时长：%1$sH %2$sM</string>
+    <string name="number_call_duration_m_s">通话时长：%1$sM %2$sS</string>
 </resources>

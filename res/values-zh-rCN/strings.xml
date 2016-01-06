@@ -924,4 +924,8 @@
     <!--3.2未翻译只有中英文-->
     <string name="gud_page_call_fil">智能号码识别，从此远离骚扰电话</string>
     <string name="strange_call_empty">没有陌生来电</string>
+
+    <string name="number_call_duration_h_m">通话时长：%1$s时 %2$s分</string>
+    <string name="number_call_duration_m_s">通话时长：%1$s分 %2$s秒</string>
+
 </resources>

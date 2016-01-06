@@ -123,6 +123,14 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_strange_call_log);
+
+        cal(55);
+        cal(88);
+        cal(131);
+        cal(2400);
+        cal(3665);
+        cal(665846);
+
         handleIntent();
         initUI();
         sendMsgHandler();
@@ -392,7 +400,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
             String newDate = changeToNewDate(mb.getClallLogDate());
             vh.date.setText(newDate);
-            vh.callduration.setText(getRightTime(mb.getCallLogDuraction()));
+            vh.callduration.setText(getRightTime((int) mb.getCallLogDuraction()));
 
             if (mb.getCallLogDuraction() > 0) {
                 vh.contactIcon.setImageResource(R.drawable.pick_up_call);
@@ -414,8 +422,46 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
     }
 
-    private String getRightTime(long mSecond) {
+    public String cal(int second) {
+        String strings;
+        int h = 0;
+        int d = 0;
+        int s = 0;
+        int temp = second % 3600;
+        if (second > 3600) {
+            h = second / 3600;
+            if (temp != 0) {
+                if (temp > 60) {
+                    d = temp / 60;
+                    if (temp % 60 != 0) {
+                        s = temp % 60;
+                    }
+                } else {
+                    s = temp;
+                }
+            }
+        } else {
+            d = second / 60;
+            if (second % 60 != 0) {
+                s = second % 60;
+            }
+        }
+
+        if (h == 0) {
+            strings = StrangeCallActivity.this.getString(
+                    R.string.number_call_duration_m_s, d, s);
+        } else {
+            strings = StrangeCallActivity.this.getString(
+                    R.string.number_call_duration_h_m, h, d);
+        }
+
+        LeoLog.d("testTime", h + "时" + d + "分" + s + "秒");
+        return strings;
+    }
+
+    private String getRightTime(int mSecond) {
         String string;
+
         if (mSecond < MINUTE) {
             if (mSecond == -1) {
                 string = StrangeCallActivity.this.getString(
@@ -424,13 +470,27 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 string = StrangeCallActivity.this.getString(
                         R.string.number_call_duration_s, mSecond);
             }
-        } else if (mSecond < HOUR) {
-            string = StrangeCallActivity.this.getString(
-                    R.string.number_call_duration_m, mSecond / MINUTE);
         } else {
-            string = StrangeCallActivity.this.getString(
-                    R.string.number_call_duration_h, mSecond / HOUR);
+            string = cal(mSecond);
         }
+
+
+//        if (mSecond < MINUTE) {
+//            if (mSecond == -1) {
+//                string = StrangeCallActivity.this.getString(
+//                        R.string.number_call_duration_s, 0);
+//            } else {
+//                string = StrangeCallActivity.this.getString(
+//                        R.string.number_call_duration_s, mSecond);
+//            }
+//        } else if (mSecond < HOUR) {
+//            string = StrangeCallActivity.this.getString(
+//                    R.string.number_call_duration_m, mSecond / MINUTE);
+//        } else {
+//            string = StrangeCallActivity.this.getString(
+//                    R.string.number_call_duration_h, mSecond / HOUR);
+//        }
+
         return string;
     }
 
