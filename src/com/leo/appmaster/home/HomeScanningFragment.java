@@ -605,11 +605,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         Context context = AppMasterApplication.getInstance();
 
         if (layout == mNewAppLayout) {
-//            if ((mIsInsAvaliable && currentPosit != 6) ||
-//                    (!mIsInsAvaliable && currentPosit != 5)) {
-//                return;
-//            }
-//            currentPosit ++;
+            if ((mIsInsAvaliable && currentPosit != 6) ||
+                    (!mIsInsAvaliable && currentPosit != 5)) {
+                return;
+            }
+            currentPosit ++;
             LeoLog.e("theDipHeight", "enterlayout: mNewAppLayout");
             final int needLongHeight = updateNewAppList();
             if (!mContactScanFinish) {
@@ -640,11 +640,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             });
 
         } else if (layout == mNewPicLayout) {
-//            if ((mIsInsAvaliable && currentPosit != 5) ||
-//                    (!mIsInsAvaliable && currentPosit != 4)) {
-//                return;
-//            }
-//            currentPosit ++;
+            if ((mIsInsAvaliable && currentPosit != 5) ||
+                    (!mIsInsAvaliable && currentPosit != 4)) {
+                return;
+            }
+            currentPosit ++;
             LeoLog.e("theDipHeight", "enterlayout: mNewPicLayout");
             final int needLongHeight = updateNewPicList();
             if (mIsInsAvaliable) {
@@ -659,11 +659,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewVidLayout) {
-//            if ((mIsInsAvaliable && currentPosit != 4) ||
-//                    (!mIsInsAvaliable && currentPosit != 3)) {
-//                return;
-//            }
-//            currentPosit ++;
+            if ((mIsInsAvaliable && currentPosit != 4) ||
+                    (!mIsInsAvaliable && currentPosit != 3)) {
+                return;
+            }
+            currentPosit ++;
             LeoLog.e("theDipHeight", "enterlayout: mNewVidLayout");
             final int needLongHeight = updateNewVidList();
             if (mIsInsAvaliable) {
@@ -678,10 +678,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewInstructLayout) {
-//            if (currentPosit != 2) {
-//                return;
-//            }
-//            currentPosit ++;
+            if (currentPosit != 2) {
+                return;
+            }
+            currentPosit ++;
             LeoLog.e("theDipHeight", "enterlayout: mNewInstructLayout");
             final int needLongHeight = updateNewInstructList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
@@ -692,10 +692,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewWifiLayout) {
-//            if (currentPosit != 1) {
-//                return;
-//            }
-//            currentPosit ++;
+            if (currentPosit != 1) {
+                return;
+            }
+            currentPosit ++;
             LeoLog.e("theDipHeight", "enterlayout: mNewWifiLayout");
             final int needLongHeight = updateNewWifiList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
@@ -708,11 +708,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             });
 
         } else if (layout == mNewLostLayout) {
-//            if ((mIsInsAvaliable && currentPosit != 3) ||
-//                    (!mIsInsAvaliable && currentPosit != 2)) {
-//                 return;
-//            }
-//            currentPosit ++;
+            if ((mIsInsAvaliable && currentPosit != 3) ||
+                    (!mIsInsAvaliable && currentPosit != 2)) {
+                 return;
+            }
+            currentPosit ++;
             LeoLog.e("theDipHeight", "enterlayout: mNewLostLayout");
             final int needLongHeight = updateNewLostList();
             if (mIsInsAvaliable) {
@@ -729,10 +729,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }
             });
         } else if (layout == mNewContactLayout) {
-//            if (currentPosit != 0) {
-//                return;
-//            }
-//            currentPosit ++;
+            if (currentPosit != 0) {
+                return;
+            }
+            currentPosit ++;
             LeoLog.e("theDipHeight", "enterlayout: mNewContactLayout");
             final int needLongHeight = updateNewContactList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
