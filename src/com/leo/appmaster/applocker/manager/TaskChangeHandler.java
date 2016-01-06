@@ -3,11 +3,13 @@ package com.leo.appmaster.applocker.manager;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -43,7 +45,7 @@ public class TaskChangeHandler {
     private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
     private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
 
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
 
     private Context mContext;
     private ActivityManager mAm;
@@ -105,6 +107,16 @@ public class TaskChangeHandler {
             return;
         }
         String myPackage = mContext.getPackageName();
+
+        AppMasterApplication app = AppMasterApplication.getInstance();
+        if (!pkg.equals(myPackage) && app.isForeground()) {
+            // 自身页面校准，避免出现栈之间切换时，偶尔出现桌面在栈顶的情况
+            Activity top = app.getTopActivity();
+            if (top != null) {
+                pkg = myPackage;
+                activity = getShortClassName(top.getClass(), myPackage);
+            }
+        }
 
         if (DBG) {
             LeoLog.d("handleAppLaunch", pkg + "/" + activity);
@@ -214,5 +226,17 @@ public class TaskChangeHandler {
         } else {
             mLastRuningActivity = activity;
         }
+    }
+
+    private String getShortClassName(Class clazz, String pkgName) {
+        String className = clazz.getName();
+        if (clazz.getName().startsWith(pkgName)) {
+            int PN = pkgName.length();
+            int CN = className.length();
+            if (CN > PN && className.charAt(PN) == '.') {
+                return className.substring(PN, CN);
+            }
+        }
+        return className;
     }
 }

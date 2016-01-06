@@ -307,6 +307,20 @@ public class AppMasterApplication extends Application {
         return false;
     }
 
+    public Activity getTopActivity() {
+        for (int i = mResumedList.size() - 1; i >= 0; i--) {
+            WeakReference<Activity> top = mResumedList.get(i);
+            if (top != null) {
+                Activity activity = top.get();
+                if (activity != null) {
+                    return activity;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public static void setSharedPreferencesValue(String lockerTheme) {
         Editor editor = sharedPreferences.edit();
         editor.putString("packageName", lockerTheme);
