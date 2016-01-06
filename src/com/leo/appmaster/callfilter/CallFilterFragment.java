@@ -223,6 +223,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
 
             boolean isNeedMarkItem = true;
             if (mSysContacts.size() > 0) {
+                LeoLog.i("tempp", "checkIsSysContact(info.getNumber() =" + checkIsSysContact(info.getNumber()) + "info.getFilterType() =" + info.getFilterType());//TODO
                 isNeedMarkItem = !checkIsSysContact(info.getNumber()) && info.getFilterType() < 1;
             }
 

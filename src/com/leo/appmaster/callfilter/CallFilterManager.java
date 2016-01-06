@@ -36,6 +36,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
@@ -54,12 +55,17 @@ public class CallFilterManager {
     private List<BlackListInfo> mSerBlackList;
     private CallFilterToast mTipToast;
     private long mCurrentCallTime = -1;
-    private static String mPhoneNumber = null;
+    private static String mPhoneNumber = "";
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmrMark;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmr;
     private LEOAlarmDialog mDialogAskAdd;
     private MultiChoicesWitchSummaryDialog mDialogTooShort;
     private boolean mIsDialogShowWhenOffhookAndIdle = false;
+    private BlackListInfo mLastLocInfo = null;
+    private BlackListInfo mLastSerInfo = null;
+    private String mLastNumBeUsedToGetInfo = "";
+    private int[] mLastFilterTips = null;
+    private boolean mNeedReGet = false;
     /**
      * 拨出电话
      */
@@ -179,6 +185,14 @@ public class CallFilterManager {
         mContext = context;
     }
 
+    private void tryHideToast() {
+        if (mTipToast != null) {
+            mTipToast.hide();
+            mTipToast = null;
+        }
+    }
+    
+    
     /**
      * 骚扰拦截处理
      *
@@ -190,8 +204,9 @@ public class CallFilterManager {
     public void filterCallHandler(String action, final String phoneNumber, String state,
                                   final ITelephony iTelephony) {
         LeoLog.i("testdata", "in manager");
-        if (!TextUtils.isEmpty(phoneNumber)) {
-            mPhoneNumber = phoneNumber;
+        if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+            tryHideToast();
+            LeoLog.i("testdata", "hide toast");
         }
         /* 判断骚扰拦截是否打开 */
         final CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
@@ -207,24 +222,65 @@ public class CallFilterManager {
             LeoLog.i("testdata", "duplicate! return");
             return;
         }
-        LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
-        setIsReceiver(true);
-
+        //为mPhoneNumber重新赋值 phoneNumber在idle时是null
         BlackListInfo info = null;
         BlackListInfo serInfo = null;
+        int[] filterTip = null;
+        boolean useCache = false;
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + state + "phoneNumber = " + phoneNumber);
+            if (phoneNumber.equals(mLastNumBeUsedToGetInfo)) {
+                useCache = true;
+                info = mLastLocInfo;
+                serInfo = mLastSerInfo;
+                filterTip = mLastFilterTips;
+            } else {
+                useCache = false;
+                mLastNumBeUsedToGetInfo = phoneNumber;
+                info = cmp.getBlackFroNum(mLastNumBeUsedToGetInfo);
+                serInfo = cmp.getSerBlackForNum(mLastNumBeUsedToGetInfo);
+                filterTip = cmp.isCallFilterTip(mLastNumBeUsedToGetInfo);
+                mLastLocInfo = info;
+                mLastSerInfo = serInfo;
+                mLastFilterTips = filterTip;
+            }
+            setCurrentRecePhNum(phoneNumber);
+            mPhoneNumber = phoneNumber;
+            mLastNumBeUsedToGetInfo = phoneNumber;
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is not null, info = " + (info == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") +state + "  firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
+        } else {
+            LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + state + "mPhoneNumber = " + mPhoneNumber);
+            if (mPhoneNumber.equals(mLastNumBeUsedToGetInfo)) {
+                useCache = true;
+                info = mLastLocInfo;
+                serInfo = mLastSerInfo;
+                filterTip = mLastFilterTips;
+            } else {
+                useCache = false;
+                mLastNumBeUsedToGetInfo = mPhoneNumber;
+                info = cmp.getBlackFroNum(mLastNumBeUsedToGetInfo);
+                serInfo = cmp.getSerBlackForNum(mLastNumBeUsedToGetInfo);
+                filterTip = cmp.isCallFilterTip(mLastNumBeUsedToGetInfo);
+                mLastLocInfo = info;
+                mLastSerInfo = serInfo;
+                mLastFilterTips = filterTip;
+            }
+            //此时为idle phoneNumber可能为空，使用mPhoneNumber
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") +state + "  firstly, phoneNumber is  null, use mPhoneNumber. info = " + (info == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") +state + "  firstly, phoneNumber is  null, use mPhoneNumber. serInfo = " + (serInfo == null ? "null" : "not null"));
+        }
+        if (filterTip != null) {
+            LeoLog.i("testdata", "filterTip[0]=" + filterTip[0] + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
+        } else {
+            LeoLog.i("testdata", "filterTip = null");
+        }
+        LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
+        setIsReceiver(true);
         if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
             /* 通话类型：拨出 */
             CallFilterManager.getInstance(mContext).setIsComingOut(true);
             LeoLog.i("PrivacyContactReceiver", "拨打电话");
-        }
-        if (!TextUtils.isEmpty(phoneNumber)) {
-            // 刚刚受到来电 （还没有接听）
-            setCurrentRecePhNum(phoneNumber);
-            mPhoneNumber = phoneNumber;
-            info = cmp.getBlackFroNum(phoneNumber);
-            serInfo = cmp.getSerBlackForNum(phoneNumber);
-            LeoLog.i("testdata", "firstly, phoneNumber is not null, info = " + (info == null ? "null" : "not null"));
-            LeoLog.i("testdata", "firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
         }
         //自己拨出，return
         if (TextUtils.isEmpty(state) || isComingOut()) {
@@ -236,22 +292,12 @@ public class CallFilterManager {
             return;
         }
         if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
-            if (!TextUtils.isEmpty(phoneNumber)) {
-                mPhoneNumber = phoneNumber;
-                LeoLog.i("testdata", "ringing... and number is not null , get! mPhoneNumber = " + mPhoneNumber);
-            } else {
-                LeoLog.i("testdata", "ringing... and number is null , ignore!  mPhoneNumber = " + (mPhoneNumber == null ? "null" : mPhoneNumber));
-            }
-            final BlackListInfo blackInfo = info;
-            final BlackListInfo blackSerInfo = serInfo;
-            if (blackInfo != null) {
+            if (info != null) {
                 //本地黑名单，直接拦截
                 endCallAndRecord(phoneNumber, iTelephony, cmp);
-            } else if (blackSerInfo != null) {
+            } else if (serInfo != null) {
                 /* 为服务器黑名单：弹窗提醒 */
-                int[] filterTip = cmp.isCallFilterTip(phoneNumber);
                 if (filterTip == null) {
-                    /* 存在于隐私联系人中 */
                     return;
                 }
                 /* 判断是否满足弹框条件 */
@@ -259,8 +305,7 @@ public class CallFilterManager {
                 int tipType = filterTip[1];
                 int showValue = filterTip[2];
                 int filterType = filterTip[3];
-                LeoLog.i("testdata", "ringing... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0]
-                        + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
+                LeoLog.i("testdata", "ringing... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0] + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
                 if (CallFilterConstants.IS_TIP_DIA[0] == isTip) {
                     return;
                 }
@@ -275,193 +320,52 @@ public class CallFilterManager {
                     }
                     if (mTipToast != null) {
                         mTipToast.show();
+                        LeoLog.i("testdata", "mTipToast show!");
                     }
                     LeoLog.i(TAG, "Black and marker tip show!");
                 }
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+            mLastNumBeUsedToGetInfo = "xx";
             LeoLog.i(TAG, "挂断！");
-            // toast消失，并置为null，保证为null即消失
-            if (mTipToast != null) {
-                mTipToast.hide();
-                mTipToast = null;
-            }
-
-            //如果带了号码，更新之前记录的号码
-            if (!TextUtils.isEmpty(phoneNumber)) {
-                mPhoneNumber = phoneNumber;
-                LeoLog.i("testdata", "idle number != null get! " + mPhoneNumber);
-            }
             /* 恢复默认值 */
             setCurrentCallTime(-1);
-            info = cmp.getBlackFroNum(mPhoneNumber);
-            serInfo = cmp.getSerBlackForNum(mPhoneNumber);
             if (info != null || isComingOut()) {
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
                 return;
             }
-
-            int[] filterTip = cmp.isCallFilterTip(mPhoneNumber);
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
-//                durationMax = 7955;
             long currentTime = System.currentTimeMillis();
             long deltaTime = currentTime - mLastOffHookTime;
-            LeoLog.i(TAG, "idle : mLastOffHookTime =" + mLastOffHookTime);
-            LeoLog.i(TAG, "idle : System.currentTimeMillis() =" + currentTime);
-            LeoLog.i("allnull", "deltaTime = " + deltaTime);
-
-
-            LeoLog.i("testdata", "idle... " + "info = " + (info == null ? "null" : "not null"));
-            LeoLog.i("testdata", "idle... " + "serinfo = " + (serInfo == null ? "null" : "not null"));
-            if (filterTip != null) {
-                LeoLog.i("testdata", "idle... and info null serinfo not null .. " + "filterTip[0]=" + filterTip[0]
-                        + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
-            } else {
-                LeoLog.i("testdata", "idle... " + "filterTip = null");
-            }
             LeoLog.i("testdata", "deltaTime = " + deltaTime);
-
-
             // 时间过短 且 服务器和本地都没有数据
 //            mIsOffHook = false
             if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0])) {
-//                mIsOffHook = false;
                 if (mDialogTooShort != null && mDialogTooShort.isShowing()) {
                     mIsOffHook = false;
                     return;
                 }
                 // 通话时间过短的提醒加入黑名单对话框
-                mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0, true);
-                String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (Math.ceil(durationMax / 1000)));
-                mDialogTooShort.setContent(summaryF);
-                mDialogTooShort.setRightBtnListener(new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                        BlackListInfo infot = new BlackListInfo();
-                        int nowItemPosition = mDialogTooShort.getNowItemPosition();
-                        infot.setNumber(mPhoneNumber);
-                        switch (nowItemPosition) {
-                            case 0:
-                                infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-                                break;
-                            case 1:
-                                infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-                                break;
-                            case 2:
-                                infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                                break;
-                            default:
-                                break;
-                        }
-                        infost.add(infot);
-                        cmp.addBlackList(infost, false);
-                        notiUpdateBlackList();
-                        Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
-                        mDialogTooShort.dismiss();
-                    }
-                });
-                mDialogTooShort.show();
+                showTooShortDialog(durationMax, cmp);
                 // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
             } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
-//                mIsOffHook = false;
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                 if (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing()) {
                     mIsOffHook = false;
                     return;
                 }
                 // 接听后挂断 询问是否家黑名单且展示标记人数
-                mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
-                String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
-                String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
-                switch (filterTip[3]) {
-                    case CallFilterConstants.FILTER_CALL_TYPE:
-                        mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
-                        break;
-                    case CallFilterConstants.AD_SALE_TYPE:
-                        mark = mContext.getResources().getString(R.string.call_filter_mark_as_tx);
-                        break;
-                    case CallFilterConstants.CHEAT_NUM_TYPE:
-                        mark = mContext.getResources().getString(R.string.call_filter_mark_as_zp);
-                        break;
-                    default:
-                        break;
-                }
-                String summaryF = String.format(summaryS, filterTip[2], mark);
-                mDialogAskAddWithSmrMark.setContent(summaryF);
-                mDialogAskAddWithSmrMark.setRightBtnListener(new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                        BlackListInfo infot = new BlackListInfo();
-                        infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
-                        int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
-                        infot.setNumber(mPhoneNumber);
-                        switch (nowItemPosition) {
-                            case 0:
-                                infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-                                break;
-                            case 1:
-                                infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-                                break;
-                            case 2:
-                                infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                                break;
-                            default:
-                                break;
-                        }
-                        infost.add(infot);
-                        cmp.addBlackList(infost, false);
-                        notiUpdateBlackList();
-                        Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
-                        mDialogAskAddWithSmrMark.dismiss();
-                    }
-                });
-                mDialogAskAddWithSmrMark.show();
-            } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null
-                    && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
+                showAskAddBlackWithMark(cmp, filterTip);
+            } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                 if (mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) {
                     mIsOffHook = false;
                     return;
                 }
                 // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
-                mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
-                String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
-                String summaryF = String.format(summaryS, filterTip[2]);
-                mDialogAskAddWithSmr.setContent(summaryF);
-                mDialogAskAddWithSmr.setRightBtnListener(new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                        BlackListInfo infot = new BlackListInfo();
-                        int nowItemPosition = mDialogAskAddWithSmr.getNowItemPosition();
-                        infot.setNumber(mPhoneNumber);
-                        infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
-                        switch (nowItemPosition) {
-                            case 0:
-                                infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-                                break;
-                            case 1:
-                                infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-                                break;
-                            case 2:
-                                infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                                break;
-                            default:
-                                break;
-                        }
-                        infost.add(infot);
-                        cmp.addBlackList(infost, false);
-                        notiUpdateBlackList();
-                        Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
-                        mDialogAskAddWithSmr.dismiss();
-                    }
-                });
-                mDialogAskAddWithSmr.show();
-                mIsOffHook = false;
+                showAskAddBlackWithoutMark(cmp, filterTip);
             } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 if ((mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) || (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing())) {
@@ -473,30 +377,157 @@ public class CallFilterManager {
                     mIsOffHook = false;
                     return;
                 }
-                int tipType = filterTip[1];
-                mDialogAskAdd = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
-                mDialogAskAdd.setRightBtnListener(new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                        BlackListInfo infot = new BlackListInfo();
-                        infot.setNumber(mPhoneNumber);
-                        infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
-                        infost.add(infot);
-                        cmp.addBlackList(infost, false);
-                        notiUpdateBlackList();
-                        Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
-                        mDialogAskAdd.dismiss();
-                    }
-                });
-                mDialogAskAdd.show();
-                mIsOffHook = false;
+                showAskAddWhenNoOffHook(cmp, filterTip);
             }
         } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
             mLastOffHookTime = System.currentTimeMillis();
             mIsOffHook = true;
             LeoLog.i(TAG, "offhook : mLastOffHookTime =" + mLastOffHookTime);
         }
+    }
+
+    private void showAskAddWhenNoOffHook(final CallFilterContextManager cmp, int[] filterTip) {
+        mDialogAskAdd = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
+        mDialogAskAdd.setRightBtnListener(new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                BlackListInfo infot = new BlackListInfo();
+                infot.setNumber(mPhoneNumber);
+                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+                infost.add(infot);
+                cmp.addBlackList(infost, false);
+                notiUpdateBlackList();
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
+                mDialogAskAdd.dismiss();
+            }
+        });
+        mDialogAskAdd.show();
+        mIsOffHook = false;
+    }
+
+    private void showAskAddBlackWithoutMark(final CallFilterContextManager cmp, int[] filterTip) {
+        mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
+        String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
+        String summaryF = String.format(summaryS, filterTip[2]);
+        mDialogAskAddWithSmr.setContent(summaryF);
+        mDialogAskAddWithSmr.setRightBtnListener(new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                BlackListInfo infot = new BlackListInfo();
+                int nowItemPosition = mDialogAskAddWithSmr.getNowItemPosition();
+                infot.setNumber(mPhoneNumber);
+                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+                switch (nowItemPosition) {
+                    case 0:
+                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+                        break;
+                    case 1:
+                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        break;
+                    case 2:
+                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        break;
+                    default:
+                        break;
+                }
+                infost.add(infot);
+                cmp.addBlackList(infost, false);
+                notiUpdateBlackList();
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
+                mDialogAskAddWithSmr.dismiss();
+            }
+        });
+        mDialogAskAddWithSmr.show();
+        mIsOffHook = false;
+    }
+
+    private void showAskAddBlackWithMark(final CallFilterContextManager cmp, int[] filterTip) {
+        mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
+        String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
+        String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
+        switch (filterTip[3]) {
+            case CallFilterConstants.FILTER_CALL_TYPE:
+                mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
+                break;
+            case CallFilterConstants.AD_SALE_TYPE:
+                mark = mContext.getResources().getString(R.string.call_filter_mark_as_tx);
+                break;
+            case CallFilterConstants.CHEAT_NUM_TYPE:
+                mark = mContext.getResources().getString(R.string.call_filter_mark_as_zp);
+                break;
+            default:
+                break;
+        }
+        String summaryF = String.format(summaryS, filterTip[2], mark);
+        mDialogAskAddWithSmrMark.setContent(summaryF);
+        mDialogAskAddWithSmrMark.setRightBtnListener(new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                BlackListInfo infot = new BlackListInfo();
+                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+                int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
+                infot.setNumber(mPhoneNumber);
+                switch (nowItemPosition) {
+                    case 0:
+                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+                        break;
+                    case 1:
+                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        break;
+                    case 2:
+                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        break;
+                    default:
+                        break;
+                }
+                infost.add(infot);
+                cmp.addBlackList(infost, false);
+                notiUpdateBlackList();
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
+                mDialogAskAddWithSmrMark.dismiss();
+                
+            }
+        });
+        mDialogAskAddWithSmrMark.show();
+        mIsOffHook = false;
+    }
+
+    private void showTooShortDialog(long durationMax, final CallFilterContextManager cmp) {
+        mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0, true);
+        String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (Math.ceil(durationMax / 1000)));
+        mDialogTooShort.setContent(summaryF);
+        mDialogTooShort.setRightBtnListener(new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                BlackListInfo infot = new BlackListInfo();
+                int nowItemPosition = mDialogTooShort.getNowItemPosition();
+                infot.setNumber(mPhoneNumber);
+                switch (nowItemPosition) {
+                    case 0:
+                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+                        break;
+                    case 1:
+                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        break;
+                    case 2:
+                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        break;
+                    default:
+                        break;
+                }
+                infost.add(infot);
+                cmp.addBlackList(infost, false);
+                notiUpdateBlackList();
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
+                mDialogTooShort.dismiss();
+            }
+        });
+        mIsOffHook = false;
+        mDialogTooShort.show();
     }
 
     private void endCallAndRecord(final String phoneNumber, final ITelephony iTelephony,
