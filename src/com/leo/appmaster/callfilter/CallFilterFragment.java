@@ -167,6 +167,13 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             loadData(false);
         }
         isFristIn = false;
+        CallFilterManager.getInstance(getActivity()).setIsFilterTab(true);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        CallFilterManager.getInstance(getActivity()).setIsFilterTab(false);
     }
 
     @Override
