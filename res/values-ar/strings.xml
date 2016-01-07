@@ -912,7 +912,7 @@
     <string name="call_filter_black_list_tab">القائمة السوداء</string>
     <string name="call_filter_list_tab">اعتراض المكالمة الواردة</string>
     <string name="call_filter_black_list_add">اضافة</string>
-    <string name="call_filter_black_list_unknow_num">مكالمة واردة غريبة أخيرة</string>
+    <string name="call_filter_black_list_unknow_num">مكالمة واردة غريبة</string>
     <string name="call_filter_setting_title">اعداد</string>
     <string name="call_filter_setting_one_desc">قد بدء تشغيل اعتراض الإزعاج</string>
     <string name="call_fil_set_close">قد مغلقة اعتراض الإزعاج</string>
@@ -925,7 +925,7 @@
     <string name="add_black_list_done">قد ادخل الرقم القائمة السوداء</string>
     <string name="call_filter_record">سجل الإعتراض</string>
     <string name="call_filter_clear_record">افراغ السجلات</string>
-    <string name="call_filter_remove_from_blacklist">انتقال القائمة السوداء خارجا</string>
+    <string name="call_filter_remove_from_blacklist">القائمة السوداء خارجا</string>
     <string name="call_filter_mark">ترميز</string>
     <string name="call_filter_delete_record">احذف سجلات الإعتراض</string>
     <string name="call_filter_mark_as_sr">هاتف  كذاب</string>
@@ -941,9 +941,9 @@
     <string name="number_toast_text_black">قد تم سحب %1$s فردا الى </string>
     <string name="number_toast_text_mark">قد تم رمز %1$s فردا الى</string>
     <string name="number_add_to_black_list">يسحب %1$s فردا تسويد</string>
-    <string name="number_call_duration_s">وقت المكالمة %1$s ثانية</string>
-    <string name="number_call_duration_m">وقت المكالمة : %1$s دقيقة</string>
-    <string name="number_call_duration_h">وقت المكالمة : %1$s ساعة</string>
+    <string name="number_call_duration_s">%1$s ثانية</string>
+    <string name="number_call_duration_m">%1$s دقيقة</string>
+    <string name="number_call_duration_h">%1$s ساعة</string>
     <string name="scan_score">معالجة + %1$s نقاط</string>
     <string name="scan_app_title">يوجد %1$s تطبيقا</string>
     <string name="scan_app_content_less_three">منها يوجد تطبيق كتم الأسرار الخطيرة العالية %1$s</string>
@@ -993,6 +993,6 @@
     <string name="call_filter_marked_and_add_tips">علامة %1$s, اضافة الى  القائمة السوداء</string>
     <string name="call_filter_confirm_ask_mark_summary">وضع علامة المستخدمين %1$s كما %2$s</string>
 
-    <string name="number_call_duration_h_m">وقت المكالمة : %1$s ساعة%2$s دقيقة</string>
-    <string name="number_call_duration_m_s">وقت المكالمة : %1$sدقيقة%2$sثانية</string>
+    <string name="number_call_duration_h_m">%1$s ساعة%2$s دقيقة</string>
+    <string name="number_call_duration_m_s">%1$sدقيقة%2$sثانية</string>
 </resources>

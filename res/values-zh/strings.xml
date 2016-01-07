@@ -857,9 +857,9 @@
     <string name="number_toast_text_black">已被%1$s人拉入</string>
     <string name="number_toast_text_mark">已被%1$s人標記為</string>
     <string name="number_add_to_black_list">被%1$s人拉黑</string>
-    <string name="number_call_duration_s">通話時長：%1$s秒</string>
-    <string name="number_call_duration_m">通話時長：%1$s分</string>
-    <string name="number_call_duration_h">通話時長：%1$s時</string>
+    <string name="number_call_duration_s">%1$s秒</string>
+    <string name="number_call_duration_m">%1$s分</string>
+    <string name="number_call_duration_h">%1$s時</string>
     <string name="scan_score">處理+%1$s分</string>
     <string name="scan_app_title">發現%1$s個應用</string>
     <string name="scan_app_content_less_three">發現私密應用%1$s</string>
@@ -909,6 +909,6 @@
     <string name="call_filter_marked_and_add_tips">標記%1$s並加入黑名單</string>
     <string name="call_filter_confirm_ask_mark_summary">已有%1$s的人將該號碼標記為%2$s</string>
 
-    <string name="number_call_duration_h_m">通話時長：%1$s時 %2$s分</string>
-    <string name="number_call_duration_m_s">通話時長：%1$s分 %2$s秒</string>
+    <string name="number_call_duration_h_m">%1$s時 %2$s分</string>
+    <string name="number_call_duration_m_s">%1$s分 %2$s秒</string>
 </resources>

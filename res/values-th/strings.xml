@@ -854,9 +854,9 @@
     <string name="number_toast_text_black">ถูก%1$sคนเพิ่มเข้า</string>
     <string name="number_toast_text_mark">ถูก%1$sคนปักหมุดเป็น</string>
     <string name="number_add_to_black_list">ถูก%1$sคนดึงเข้าแบล็คลิสต์</string>
-    <string name="number_call_duration_s">เวลาโทร:%1$sวินาที</string>
-    <string name="number_call_duration_m">เวลาโทร:%1$sนาที</string>
-    <string name="number_call_duration_h">เวลาโทร:%1$sชม.</string>
+    <string name="number_call_duration_s">%1$sวินาที</string>
+    <string name="number_call_duration_m">%1$sนาที</string>
+    <string name="number_call_duration_h">%1$sชม.</string>
     <string name="scan_score">จัดการ:+%1$sจุดี</string>
     <string name="scan_app_title">พบ%1$sแอพ</string>
     <string name="scan_app_content_less_three">แอพที่มีความเสี่ยง%1$sแอพ</string>
@@ -906,6 +906,6 @@
     <string name="call_filter_marked_and_add_tips">เครื่องหมาย %1$s， เพิ่มเข้าแบล็คลิสต์</string>
     <string name="call_filter_confirm_ask_mark_summary">ผู้ใช้%1$sทำเครื่องหมายเป็น%2$s</string>
 
-    <string name="number_call_duration_h_m">เวลาโทร:%1$sชม. %2$sนาที</string>
-    <string name="number_call_duration_m_s">เวลาโทร:%1$sนาท %2$sวินาท</string>
+    <string name="number_call_duration_h_m">%1$sชม. %2$sนาที</string>
+    <string name="number_call_duration_m_s">%1$sนาท %2$sวินาท</string>
 </resources>

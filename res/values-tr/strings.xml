@@ -854,9 +854,9 @@
     <string name="number_toast_text_black">%1$s tarafından engelli</string>
     <string name="number_toast_text_mark">%1$s tarafından işaretli</string>
     <string name="number_add_to_black_list">%1$s tarafından kara listede</string>
-    <string name="number_call_duration_s">S: %1$s sn</string>
-    <string name="number_call_duration_m">S: %1$s dk</string>
-    <string name="number_call_duration_h">S: %1$s sa</string>
+    <string name="number_call_duration_s">%1$s sn</string>
+    <string name="number_call_duration_m">%1$s dk</string>
+    <string name="number_call_duration_h">%1$s sa</string>
     <string name="scan_score">İşlem +%1$s</string>
     <string name="scan_app_title">%1$s adet uygulama</string>
     <string name="scan_app_content_less_three">%1$s özel uygulamalar var</string>
@@ -906,6 +906,6 @@
     <string name="call_filter_marked_and_add_tips">Markos %1$s, Kara Listeye Ekle</string>
     <string name="call_filter_confirm_ask_mark_summary">%1$s kullanıcıların %2$s olarak işaretlenmiş</string>
 
-    <string name="number_call_duration_h_m">S:%1$ssa %2$sdk</string>
-    <string name="number_call_duration_m_s">S:%1$sdk %2$ssn</string>
+    <string name="number_call_duration_h_m">%1$ssa %2$sdk</string>
+    <string name="number_call_duration_m_s">%1$sdk %2$ssn</string>
 </resources>
