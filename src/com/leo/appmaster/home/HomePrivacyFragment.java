@@ -279,6 +279,41 @@ public class HomePrivacyFragment extends Fragment {
         mAnimatorSet.playSequentially(firstAnimSet, secondAnimSet);
     }
 
+    public void onFromNotifi() {
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+            mAnimatorSet.end();
+            LeoLog.e(TAG, "onFromNotifi");
+            mAnimatorSet = null;
+        }
+
+        showScanningPercent(-1);
+        stopFinalAnim();
+        mHomeAnimView.setShowStep(false);
+        mHomeAnimView.setShowProcessLoading(false, 0);
+
+        HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+        shieldLayer.setFinalShieldRatio(0);
+        shieldLayer.setFinalTextRatio(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
+        shieldLayer.setInCircleScaleRatio(HomeAnimShieldLayer.MAX_IN_CIRCLE_SCALE_RATIO);
+        shieldLayer.setOutCircleScaleRatio(HomeAnimShieldLayer.MAX_OUT_CIRCLE_SCALE_RATIO);
+        shieldLayer.setShieldScale(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
+        shieldLayer.setInCircleAlpha(255);
+        shieldLayer.setOutCircleAlpha(255);
+
+        if (mShieldOffsetYAnim != null) {
+            mShieldOffsetYAnim.end();
+        }
+        mHomeAnimView.setShieldOffsetY(0);
+        mHomeAnimView.setShieldOffsetX(0);
+
+        mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
+        mCircleRotateAnim.setDuration(3500);
+        mCircleRotateAnim.setInterpolator(new LinearInterpolator());
+        mCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
+        mCircleRotateAnim.start();
+    }
+
     public void onScanStart() {
         if (!mMemoryLess) {
             return;
@@ -554,6 +589,7 @@ public class HomePrivacyFragment extends Fragment {
         }
 
         mHomeAnimView.getShieldLayer().setOutCircleAlpha(0);
+        mHomeAnimView.getShieldLayer().setInCircleAlpha(0);
         showScanningPercent(-1);
 
         mHomeAnimView.setShowStep(true);

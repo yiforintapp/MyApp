@@ -1,8 +1,5 @@
 package com.leo.appmaster.home;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
@@ -86,6 +83,9 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.utils.IoUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
@@ -188,6 +188,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         registerLocaleChange();
 
         openAdvanceProtectDialogHandler();
+
     }
 
     private void requestCamera() {
@@ -242,7 +243,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh", "push_scan_cnts");
                 LeoLog.d("testFromWhere", "HomeActivity from push");
             }
-            onShieldClick();
+            mPrivacyFragment.onFromNotifi();
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onShieldClick();
+                }
+            }, 2500);
+
         }
     }
 
