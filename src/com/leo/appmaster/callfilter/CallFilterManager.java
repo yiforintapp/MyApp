@@ -218,7 +218,7 @@ public class CallFilterManager {
     public void filterCallHandler(String action, final String phoneNumber, String state,
                                   final ITelephony iTelephony, AudioManager audioManager) {
         LeoLog.i("testdata", "in manager");
-        if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+        if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
             tryHideToast();
             LeoLog.i("testdata", "hide toast");
         }
@@ -242,7 +242,7 @@ public class CallFilterManager {
         int[] filterTip = null;
         boolean useCache = false;
         if (!TextUtils.isEmpty(phoneNumber)) {
-            LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + state + "phoneNumber = " + phoneNumber);
+            LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + "state = " + (state == null ? "null" : state) + "phoneNumber = " + phoneNumber);
             if (phoneNumber.equals(mLastNumBeUsedToGetInfo)) {
                 useCache = true;
                 info = mLastLocInfo;
@@ -261,10 +261,10 @@ public class CallFilterManager {
             setCurrentRecePhNum(phoneNumber);
             mPhoneNumber = phoneNumber;
             mLastNumBeUsedToGetInfo = phoneNumber;
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is not null, info = " + (info == null ? "null" : "not null"));
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly, phoneNumber is not null, info = " + (info == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
         } else {
-            LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + state + "mPhoneNumber = " + mPhoneNumber);
+            LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + "state = " + (state == null ? "null" : state) + "mPhoneNumber = " + mPhoneNumber);
             if (mPhoneNumber.equals(mLastNumBeUsedToGetInfo)) {
                 useCache = true;
                 info = mLastLocInfo;
@@ -281,15 +281,15 @@ public class CallFilterManager {
                 mLastFilterTips = filterTip;
             }
             //此时为idle phoneNumber可能为空，使用mPhoneNumber
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is  null, use mPhoneNumber. info = " + (info == null ? "null" : "not null"));
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + state + "  firstly, phoneNumber is  null, use mPhoneNumber. serInfo = " + (serInfo == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly, phoneNumber is  null, use mPhoneNumber. info = " + (info == null ? "null" : "not null"));
+            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly, phoneNumber is  null, use mPhoneNumber. serInfo = " + (serInfo == null ? "null" : "not null"));
         }
         if (filterTip != null) {
             LeoLog.i("testdata", "filterTip[0]=" + filterTip[0] + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
         } else {
             LeoLog.i("testdata", "filterTip = null");
         }
-        LeoLog.i(TAG, "state:" + state + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
+        LeoLog.i(TAG, "state = " + (state == null ? "null" : state) + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
         setIsReceiver(true);
         if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
             /* 通话类型：拨出 */
@@ -299,13 +299,12 @@ public class CallFilterManager {
         //自己拨出，return
         if (TextUtils.isEmpty(state) || isComingOut()) {
             LeoLog.i("testdata", "isComingOut = " + isComingOut());
-            LeoLog.i("testdata", "state = " + state);
             if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
                 setIsComingOut(false);
             }
             return;
         }
-        if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
+        if (TelephonyManager.EXTRA_STATE_RINGING.equalsIgnoreCase(state)) {
             if (info != null) {
                 //本地黑名单，直接拦截
                 // 先静音处理
@@ -347,7 +346,7 @@ public class CallFilterManager {
                     LeoLog.i(TAG, "Black and marker tip show!");
                 }
             }
-        } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_IDLE)) {
+        } else if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
             mLastNumBeUsedToGetInfo = "xx";
             LeoLog.i(TAG, "挂断！");
             /* 恢复默认值 */
@@ -365,7 +364,7 @@ public class CallFilterManager {
             LeoLog.i("testdata", "deltaTime = " + deltaTime);
             // 时间过短 且 服务器和本地都没有数据
 //            mIsOffHook = false
-            if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0])) {
+            if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0]) && mIsOffHook) {
                 if (mDialogTooShort != null && mDialogTooShort.isShowing()) {
                     mIsOffHook = false;
                     return;
@@ -381,7 +380,6 @@ public class CallFilterManager {
                 mLockManager.filterPackage(mContext.getPackageName(), 2000);
                 mContext.startActivity(intent);
                 mIsOffHook = false;
-                LeoLog.i("testdata", "showed");
                 // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
             } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
@@ -401,7 +399,6 @@ public class CallFilterManager {
                 mLockManager.filterPackage(mContext.getPackageName(), 2000);
                 mContext.startActivity(intent);
                 mIsOffHook = false;
-                LeoLog.i("testdata", "showed");
             } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                 if (mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) {
@@ -420,8 +417,6 @@ public class CallFilterManager {
                 mLockManager.filterPackage(mContext.getPackageName(), 2000);
                 mContext.startActivity(intent);
                 mIsOffHook = false;
-                
-                LeoLog.i("testdata", "showed");
             } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 if ((mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) || (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing())) {
@@ -444,10 +439,8 @@ public class CallFilterManager {
                 mLockManager.filterPackage(mContext.getPackageName(), 2000);
                 mContext.startActivity(intent);
                 mIsOffHook = false;
-                
-                LeoLog.i("testdata", "showed");
             }
-        } else if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+        } else if (TelephonyManager.EXTRA_STATE_OFFHOOK.equalsIgnoreCase(state)) {
             mLastOffHookTime = System.currentTimeMillis();
             mIsOffHook = true;
             LeoLog.i(TAG, "offhook : mLastOffHookTime =" + mLastOffHookTime);
