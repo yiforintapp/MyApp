@@ -17,6 +17,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
+import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,7 +176,15 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 LM.insertCallToSys(info8);
                 break;
             case R.id.B9:
-
+                StringBuilder sbName = new StringBuilder();
+                String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
+                sbName.append(countryId);
+                sbName.append(CallFilterConstants.GZIP);
+                StringBuilder sb12 = new StringBuilder();
+                sb12.append(CallFilterUtils.getBlackPath());
+                sb12.append(sbName.toString());
+                String filePath = sb12.toString();
+                CallFilterUtils.parseBlactList(filePath);
 //            String[] CALL_LOG_PROJECTION = new String[] {
 //                    CallLog.Calls._ID,
 //                    CallLog.Calls.NUMBER,
@@ -193,37 +202,37 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //           }else{
 //               Toast.makeText(TestDemo.this,"0",Toast.LENGTH_LONG).show();
 //           }
-                Context mContext = TestDemo.this;
-                final MultiChoicesWitchSummaryDialog mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary("789", mContext, true, 0, true);
-                String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
-                String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
-                String summaryF = String.format(summaryS, 1000, mark);
-                mDialogAskAddWithSmrMark.setContent(summaryF);
-                mDialogAskAddWithSmrMark.setRightBtnListener(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                        BlackListInfo infot = new BlackListInfo();
-                        infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
-                        int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
-                        switch (nowItemPosition) {
-                            case 0:
-                                infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-                                break;
-                            case 1:
-                                infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-                                break;
-                            case 2:
-                                infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                                break;
-                            default:
-                                break;
-                        }
-                        infost.add(infot);
-                        mDialogAskAddWithSmrMark.dismiss();
-                    }
-                });
-                mDialogAskAddWithSmrMark.show();
+//                Context mContext = TestDemo.this;
+//                final MultiChoicesWitchSummaryDialog mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary("789", mContext, true, 0, true);
+//                String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
+//                String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
+//                String summaryF = String.format(summaryS, 1000, mark);
+//                mDialogAskAddWithSmrMark.setContent(summaryF);
+//                mDialogAskAddWithSmrMark.setRightBtnListener(new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+//                        BlackListInfo infot = new BlackListInfo();
+//                        infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+//                        int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
+//                        switch (nowItemPosition) {
+//                            case 0:
+//                                infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+//                                break;
+//                            case 1:
+//                                infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+//                                break;
+//                            case 2:
+//                                infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                        infost.add(infot);
+//                        mDialogAskAddWithSmrMark.dismiss();
+//                    }
+//                });
+//                mDialogAskAddWithSmrMark.show();
                 break;
         }
     }

@@ -36,7 +36,7 @@ public class HomeMoreAdapter extends BaseAdapter {
 
     private static final int[] ARRAY_CONTACT_SINGLE = new int[]{
             R.string.class_privacy_protection,
-            R.string.scan_lost_title,
+            R.string.home_tab_lost,
             R.string.privacy_contacts
     };
 
