@@ -906,8 +906,8 @@
     <string name="scan_pic_none">No new pictures</string>
     <string name="scan_app_none">No new apps</string>
     <string name="scan_find_app">Find <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> apps</string>
-    <string name="scan_find_pic">Find<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> pictures</string>
-    <string name="scan_find_vid">Find<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> videos</string>
+    <string name="scan_find_pic">Find <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> pictures</string>
+    <string name="scan_find_vid">Find <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> videos</string>
     <string name="call_filter_add_strange_num">Add to blacklist</string>
     <string name="call_filter_clear_all_black">Clear all</string>
     <string name="lock_app_item_desc_cb">%1$s locked by others</string>
