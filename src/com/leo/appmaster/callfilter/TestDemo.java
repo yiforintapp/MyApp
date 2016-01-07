@@ -75,7 +75,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 info.setMarkerNumber(30);
                 infos1.add(info);
                 CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
-                cm.addFilterFroParse(infos1);
+//                cm.addFilterFroParse(infos1);
                 pm.setCallDurationMax(7000);
                 pm.setStraNotiTipParam(2);
                 break;

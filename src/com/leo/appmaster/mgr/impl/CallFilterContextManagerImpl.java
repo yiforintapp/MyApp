@@ -153,14 +153,20 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 String addMarkColum = CallFilterConstants.MARKER_NUMBER;
                 SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
                 SQLiteDatabase sd = dbHelper.getReadableDatabase();
-//                StringBuilder sb = new StringBuilder();
-//                sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-//                sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
-//                String sel = sb.toString();
-                number = PrivacyContactUtils.formatePhoneNumber(number);
-                cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum, addBlColum, addMarkColum}, numbColum + " LIKE ? "/* + sel*/,
-                            new String[]{"%" + number/*, String.valueOf(CallFilterConstants.LOC_HD),
-                                    String.valueOf(CallFilterConstants.REMOVE_NO)*/}, null, null, null);
+
+                String numSelcts = null;
+                String selArgs = null;
+                if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                    number = PrivacyContactUtils.formatePhoneNumber(number);
+                    numSelcts = " LIKE ? ";
+                    selArgs = "%" + number;
+                } else {
+                    numSelcts = " = ? ";
+                    selArgs = number;
+                }
+
+                cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum, addBlColum, addMarkColum}, numbColum + numSelcts/* + sel*/,
+                        new String[]{selArgs}, null, null, null);
                 if (cur != null && cur.getCount() > 0) {
                     /**
                      * 本地黑名单引起的更新操作
@@ -203,13 +209,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                         String where = null;
                         String[] selectArgs = null;
-//                        if (id > 0) {
-//                            where = CallFilterConstants.BLACK_ID + " = ? ";
-//                            selectArgs = new String[]{String.valueOf(id)};
-//                        } else {
-                        where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
-                        selectArgs = new String[]{"%" + number};
-//                        }
+                        where = CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts;
+                        selectArgs = new String[]{selArgs};
                         cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                     }
                 } else {
@@ -273,13 +274,23 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        String numSelcts = null;
+        String selArgs = null;
+        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+            number = PrivacyContactUtils.formatePhoneNumber(number);
+            numSelcts = " LIKE ? ";
+            selArgs = "%" + number;
+        } else {
+            numSelcts = " = ? ";
+            selArgs = number;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
         sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts);
         String selects = sb.toString();
         String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
-                String.valueOf(CallFilterConstants.REMOVE_NO), "%" + formateNum};
+                String.valueOf(CallFilterConstants.REMOVE_NO), selArgs};
         List<BlackListInfo> blacks = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
         if (blacks != null && blacks.size() > 0 && !TextUtils.isEmpty(number)) {
             for (BlackListInfo info : blacks) {
@@ -314,13 +325,23 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         BlackListInfo info = new BlackListInfo();
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        String numSelcts = null;
+        String selArgs = null;
+        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+            number = PrivacyContactUtils.formatePhoneNumber(number);
+            numSelcts = " LIKE ? ";
+            selArgs = "%" + number;
+        } else {
+            numSelcts = " = ? ";
+            selArgs = number;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
         sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts);
         String selects = sb.toString();
         String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
-                String.valueOf(CallFilterConstants.REMOVE_NO), ("%" + formateNum)};
+                String.valueOf(CallFilterConstants.REMOVE_NO), selArgs};
         List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
         if (infos != null && infos.size() > 0) {
             for (BlackListInfo black : infos) {
@@ -488,6 +509,16 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     String colum4 = CallFilterConstants.FIL_NUMBER;
                     Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3, colum4}, number);
                     boolean isKeyExist = (cur != null) ? cur.getCount() > 0 : false;
+                    String numSelcts = null;
+                    String selArgs = null;
+                    if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                        number = PrivacyContactUtils.formatePhoneNumber(number);
+                        numSelcts = " LIKE ? ";
+                        selArgs = "%" + number;
+                    } else {
+                        numSelcts = " = ? ";
+                        selArgs = number;
+                    }
                     if (isKeyExist) {
                         while (cur.moveToNext()) {
                             int dateColum = cur.getColumnIndex(CallFilterConstants.FIL_GR_DATE);
@@ -497,8 +528,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             int grCallType = cur.getInt(callTypeColum);
                             int filterCountT = cur.getInt(filterNumberColum);
                             filterCountT = filterCountT + 1;
-                            where = CallFilterConstants.FIL_GR_PH_NUMB + " LIKE ? ";
-                            selectionArgs = new String[]{"%" + PrivacyContactUtils.formatePhoneNumber(number)};
+                            where = CallFilterConstants.FIL_GR_PH_NUMB + numSelcts;
+                            selectionArgs = new String[]{selArgs};
                             ContentValues upValues = new ContentValues();
                             upValues.put(CallFilterConstants.FIL_GR_PH_NUMB, number);
                             upValues.put(CallFilterConstants.FIL_NUMBER, filterCountT);
@@ -556,9 +587,18 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 //                removeFilterDet(calls);
 //            } else
             if (!TextUtils.isEmpty(number)) {
-                selection = CallFilterConstants.FIL_GR_PH_NUMB + " LIKE ? ";
-                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                selectionArgs = new String[]{"%" + formateNumber};
+                String numSelcts = null;
+                String selArgs = null;
+                if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                    number = PrivacyContactUtils.formatePhoneNumber(number);
+                    numSelcts = " LIKE ? ";
+                    selArgs = "%" + number;
+                } else {
+                    numSelcts = " = ? ";
+                    selArgs = number;
+                }
+                selection = CallFilterConstants.FIL_GR_PH_NUMB + numSelcts;
+                selectionArgs = new String[]{selArgs};
                 List<CallFilterInfo> calls = new ArrayList<CallFilterInfo>();
                 CallFilterInfo call = new CallFilterInfo();
                 call.setNumber(number);
@@ -637,8 +677,18 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         Uri uri = CallFilterConstants.FILTER_DETAIL_URI;
         String numberFromate = PrivacyContactUtils.formatePhoneNumber(number);
         Cursor cursor = null;
-        String where = CallFilterConstants.FIL_DET_PHONE_NUMBER + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + numberFromate};
+        String numSelcts = null;
+        String selArgs = null;
+        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+            number = PrivacyContactUtils.formatePhoneNumber(number);
+            numSelcts = " LIKE ? ";
+            selArgs = "%" + number;
+        } else {
+            numSelcts = " = ? ";
+            selArgs = number;
+        }
+        String where = CallFilterConstants.FIL_DET_PHONE_NUMBER + numSelcts;
+        String[] selectionArgs = new String[]{selArgs};
 //        String where = null;
 //        String[] selectionArgs = null;
         String sortOrder = CallFilterConstants.FIL_DET_DATE + " " + CallFilterConstants.DESC;
@@ -776,8 +826,18 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                 boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum1, colum2}, number);
                 if (update && isKeyExist) {
-                    where = CallFilterConstants.FIL_DET_PHONE_NUMBER + " LIKE ? ";
-                    String[] selectArgs = new String[]{String.valueOf("%" + number)};
+                    String numSelcts = null;
+                    String selArgs = null;
+                    if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                        number = PrivacyContactUtils.formatePhoneNumber(number);
+                        numSelcts = " LIKE ? ";
+                        selArgs = "%" + number;
+                    } else {
+                        numSelcts = " = ? ";
+                        selArgs = number;
+                    }
+                    where = CallFilterConstants.FIL_DET_PHONE_NUMBER + numSelcts;
+                    String[] selectArgs = new String[]{String.valueOf(selArgs)};
                     cr.update(uri, values, where, selectionArgs);
                 } else {
                     cr.insert(uri, values);
@@ -816,9 +876,18 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 //                selectionArgs = new String[]{String.valueOf(id)};
 //            } else
             if (!TextUtils.isEmpty(number)) {
-                selection = CallFilterConstants.FIL_DET_PHONE_NUMBER + " LIKE ? ";
-                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                selectionArgs = new String[]{"%" + formateNumber};
+                String numSelcts = null;
+                String selArgs = null;
+                if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                    number = PrivacyContactUtils.formatePhoneNumber(number);
+                    numSelcts = " LIKE ? ";
+                    selArgs = "%" + number;
+                } else {
+                    numSelcts = " = ? ";
+                    selArgs = number;
+                }
+                selection = CallFilterConstants.FIL_DET_PHONE_NUMBER + numSelcts;
+                selectionArgs = new String[]{selArgs};
             }
             cr.delete(uri, selection, selectionArgs);
         }
@@ -929,9 +998,19 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
                 boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum}, number);
                 if (isKeyExist) {
-                    String numFormate = PrivacyContactUtils.formatePhoneNumber(number);
-                    where = CallFilterConstants.STR_TP_NUM + " LIKE ? ";
-                    selectionArgs = new String[]{"%" + numFormate};
+                    String numSelcts = null;
+                    String selArgs = null;
+                    if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                        number = PrivacyContactUtils.formatePhoneNumber(number);
+                        numSelcts = " LIKE ? ";
+                        selArgs = "%" + number;
+                    } else {
+                        numSelcts = " = ? ";
+                        selArgs = number;
+                    }
+//                    String numFormate = PrivacyContactUtils.formatePhoneNumber(number);
+                    where = CallFilterConstants.STR_TP_NUM + numSelcts;
+                    selectionArgs = new String[]{selArgs};
                     cr.update(uri, values, where, selectionArgs);
                 } else {
                     cr.insert(uri, values);
@@ -965,9 +1044,19 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 selection = CallFilterConstants.STR_GR_ID + " = ? ";
                 selectionArgs = new String[]{String.valueOf(id)};
             } else if (!TextUtils.isEmpty(number)) {
-                selection = CallFilterConstants.STR_TP_NUM + " LIKE ? ";
-                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                selectionArgs = new String[]{"%" + formateNumber};
+                String numSelcts = null;
+                String selArgs = null;
+                if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                    number = PrivacyContactUtils.formatePhoneNumber(number);
+                    numSelcts = " LIKE ? ";
+                    selArgs = "%" + number;
+                } else {
+                    numSelcts = " = ? ";
+                    selArgs = number;
+                }
+                selection = CallFilterConstants.STR_TP_NUM + numSelcts;
+//                String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                selectionArgs = new String[]{selArgs};
             }
             cr.delete(uri, selection, selectionArgs);
         }
@@ -1008,11 +1097,21 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        String numSelcts = null;
+        String selArgs = null;
+        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+            number = PrivacyContactUtils.formatePhoneNumber(number);
+            numSelcts = " LIKE ? ";
+            selArgs = "%" + number;
+        } else {
+            numSelcts = " = ? ";
+            selArgs = number;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts);
         String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD), "%" + formateNum};
+        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD), selArgs};
         List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
         if (infos != null && infos.size() > 0) {
             for (BlackListInfo info : infos) {
@@ -1187,9 +1286,19 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         if (CallFilterConstants.REMOVE == remove) {
                             value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
                         }
+                        String numSelcts = null;
+                        String selArgs = null;
+                        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                            number = PrivacyContactUtils.formatePhoneNumber(number);
+                            numSelcts = " LIKE ? ";
+                            selArgs = "%" + number;
+                        } else {
+                            numSelcts = " = ? ";
+                            selArgs = number;
+                        }
                         String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                        String where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
-                        String[] selectArgs = new String[]{String.valueOf("%" + formateNumber)};
+                        String where = CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts;
+                        String[] selectArgs = new String[]{String.valueOf(selArgs)};
                         cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
                     }
                 } else {
@@ -1199,7 +1308,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 //                        values[i] = value;
 //                        i = i + 1;
 //                    } else {
-                        cr.insert(uri, value);
+                    cr.insert(uri, value);
 //                    }
                 }
             } catch (Exception e) {
@@ -1226,12 +1335,22 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     public List<BlackListInfo> getSerBlackListFroNum(String number) {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
+        String numSelcts = null;
+        String selArgs = null;
+        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+            number = PrivacyContactUtils.formatePhoneNumber(number);
+            numSelcts = " LIKE ? ";
+            selArgs = "%" + number;
+        } else {
+            numSelcts = " = ? ";
+            selArgs = number;
+        }
+//        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
         StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? and ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts+"and ");
         sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? ");
         String selects = sb.toString();
-        String[] selectArgs = new String[]{"%" + String.valueOf(formateNum), String.valueOf(CallFilterConstants.NO_LOC_HD)};
+        String[] selectArgs = new String[]{selArgs, String.valueOf(CallFilterConstants.NO_LOC_HD)};
         return CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
     }
 
@@ -1338,14 +1457,23 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        String numSelcts = null;
+        String selArgs = null;
+        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+            number = PrivacyContactUtils.formatePhoneNumber(number);
+            numSelcts = " LIKE ? ";
+            selArgs = "%" + number;
+        } else {
+            numSelcts = " = ? ";
+            selArgs = number;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
         sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ");
+        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts);
         String selects = sb.toString();
         String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
-                String.valueOf(CallFilterConstants.REMOVE_NO),
-                "%" + formateNum};
+                String.valueOf(CallFilterConstants.REMOVE_NO), selArgs};
         List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
         if (infos != null && infos.size() > 0) {
             for (BlackListInfo info : infos) {

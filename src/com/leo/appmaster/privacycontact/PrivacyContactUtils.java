@@ -72,6 +72,10 @@ public class PrivacyContactUtils {
 
     public static final int EXIST_LOG = 1;
     public static final int NO_EXIST_LOG = 0;
+    /**
+     * 格式化号码长度
+     */
+    public static final int NUM_LEGH = 7;
 
 
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
@@ -735,7 +739,7 @@ public class PrivacyContactUtils {
         String reverseStr = null;
         if (temp != null) {
             int strLength = temp.length();
-            if (strLength >= 7) {
+            if (strLength >= NUM_LEGH) {
                 String tempStr = stringReverse(temp);
                 String subNumber = tempStr.substring(0, 7);
                 reverseStr = stringReverse(subNumber);

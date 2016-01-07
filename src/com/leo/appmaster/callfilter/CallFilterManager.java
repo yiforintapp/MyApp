@@ -748,6 +748,7 @@ public class CallFilterManager {
 
         ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
                 .getSysCallLog(mContext, selection, selectionArgs, null, true, false);
+        LeoLog.i(TAG, "incoming count：" + (callLogs!=null ? callLogs.size():0));
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(mContext, null, null,
                 false);
         // 是否存在黑名单(过滤掉本地黑名单)
@@ -870,12 +871,21 @@ public class CallFilterManager {
                 Cursor cur = null;
                 try {
                     ContentResolver cr = mContext.getContentResolver();
+                    String numSelcts = null;
+                    String selArgs = null;
+                    if (filterNum.length() >= PrivacyContactUtils.NUM_LEGH) {
+                        numSelcts = " LIKE ? ";
+                        selArgs = "%" + PrivacyContactUtils.formatePhoneNumber(filterNum);
+                    } else {
+                        numSelcts = " = ? ";
+                        selArgs = filterNum;
+                    }
                     //查询未读
                     String selectionQu = CallLog.Calls.TYPE + " = ? or " + CallLog.Calls.TYPE + " = ? and " + CallLog.Calls.NEW + " = ? and "
-                            + CallLog.Calls.NUMBER + " LIKE ? ";
-                    String fromateNum = PrivacyContactUtils.formatePhoneNumber(filterNum);
+                            + CallLog.Calls.NUMBER + numSelcts;
+//                    String fromateNum = PrivacyContactUtils.formatePhoneNumber(filterNum);
                     String[] selectionArgsQu = new String[]{
-                            String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(CallLog.Calls.INCOMING_TYPE), String.valueOf(1), ("%" + fromateNum)
+                            String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(CallLog.Calls.INCOMING_TYPE), String.valueOf(1), selArgs
                     };
                     cur = cr.query(PrivacyContactUtils.CALL_LOG_URI, null, selectionQu, selectionArgsQu,
                             CallLog.Calls._ID + " " + CallFilterConstants.DESC);
@@ -916,11 +926,18 @@ public class CallFilterManager {
         if (info == null) {
             return;
         }
+        String numSelcts = null;
+        String selArgs = null;
+        if (info.getNumber().length() >= PrivacyContactUtils.NUM_LEGH) {
+            numSelcts = " LIKE ? ";
+            selArgs = "%" + PrivacyContactUtils.formatePhoneNumber(info.getNumber());
+        } else {
+            numSelcts = " = ? ";
+            selArgs = info.getNumber();
+        }
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String where = CallFilterConstants.BLACK_PHONE_NUMBER + " LIKE ? ";
-        String[] selectionArgs = new String[]{
-                "%" + PrivacyContactUtils.formatePhoneNumber(info.getNumber())
-        };
+        String where = CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts;
+        String[] selectionArgs = new String[]{selArgs};
         ContentResolver cr = mContext.getContentResolver();
         ContentValues values = new ContentValues();
         values.put(CallFilterConstants.BLACK_PHONE_NUMBER, info.getNumber());
