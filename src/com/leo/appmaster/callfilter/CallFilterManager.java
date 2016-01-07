@@ -60,7 +60,7 @@ public class CallFilterManager {
     private MultiChoicesWitchSummaryDialog mDialogTooShort;
     private BlackListInfo mLastLocInfo = null;
     private BlackListInfo mLastSerInfo = null;
-    private String mLastNumBeUsedToGetInfo = "";
+    private String mLastNumBeUsedToGetInfo = "%^&%^&&";
     private int[] mLastFilterTips = null;
     /**
      * 拨出电话
@@ -234,54 +234,28 @@ public class CallFilterManager {
         int[] filterTip = null;
         boolean useCache = false;
         if (!TextUtils.isEmpty(phoneNumber)) {
-            LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + "state = " + (state == null ? "null" : state) + "phoneNumber = " + phoneNumber);
-            if (phoneNumber.equals(mLastNumBeUsedToGetInfo)) {
-                useCache = true;
-                info = mLastLocInfo;
-                serInfo = mLastSerInfo;
-                filterTip = mLastFilterTips;
-            } else {
-                useCache = false;
-                mLastNumBeUsedToGetInfo = phoneNumber;
-                info = cmp.getBlackFroNum(mLastNumBeUsedToGetInfo);
-                serInfo = cmp.getSerBlackForNum(mLastNumBeUsedToGetInfo);
-                filterTip = cmp.isCallFilterTip(mLastNumBeUsedToGetInfo);
-                mLastLocInfo = info;
-                mLastSerInfo = serInfo;
-                mLastFilterTips = filterTip;
-            }
-            setCurrentRecePhNum(phoneNumber);
             mPhoneNumber = phoneNumber;
-            mLastNumBeUsedToGetInfo = phoneNumber;
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly, phoneNumber is not null, info = " + (info == null ? "null" : "not null"));
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly, phoneNumber is not null, serInfo = " + (serInfo == null ? "null" : "not null"));
-        } else {
-            LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + "state = " + (state == null ? "null" : state) + "mPhoneNumber = " + mPhoneNumber);
-            if (mPhoneNumber.equals(mLastNumBeUsedToGetInfo)) {
-                useCache = true;
-                info = mLastLocInfo;
-                serInfo = mLastSerInfo;
-                filterTip = mLastFilterTips;
-            } else {
-                useCache = false;
-                mLastNumBeUsedToGetInfo = mPhoneNumber;
-                info = cmp.getBlackFroNum(mLastNumBeUsedToGetInfo);
-                serInfo = cmp.getSerBlackForNum(mLastNumBeUsedToGetInfo);
-                filterTip = cmp.isCallFilterTip(mLastNumBeUsedToGetInfo);
-                mLastLocInfo = info;
-                mLastSerInfo = serInfo;
-                mLastFilterTips = filterTip;
-            }
-            //此时为idle phoneNumber可能为空，使用mPhoneNumber
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly, phoneNumber is  null, use mPhoneNumber. info = " + (info == null ? "null" : "not null"));
-            LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly, phoneNumber is  null, use mPhoneNumber. serInfo = " + (serInfo == null ? "null" : "not null"));
         }
-        if (filterTip != null) {
-            LeoLog.i("testdata", "filterTip[0]=" + filterTip[0] + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
+        setCurrentRecePhNum(mPhoneNumber);
+        if (mPhoneNumber.equals(mLastNumBeUsedToGetInfo)) {
+            useCache = true;
+            info = mLastLocInfo;
+            serInfo = mLastSerInfo;
+            filterTip = mLastFilterTips;
         } else {
-            LeoLog.i("testdata", "filterTip = null");
+            useCache = false;
+            mLastNumBeUsedToGetInfo = mPhoneNumber;
+            info = cmp.getBlackFroNum(mLastNumBeUsedToGetInfo);
+            serInfo = cmp.getSerBlackForNum(mLastNumBeUsedToGetInfo);
+            filterTip = cmp.isCallFilterTip(mLastNumBeUsedToGetInfo);
+            mLastLocInfo = info;
+            mLastSerInfo = serInfo;
+            mLastFilterTips = filterTip;
         }
-        LeoLog.i(TAG, "state = " + (state == null ? "null" : state) + ":" + System.currentTimeMillis() + "-call-" + phoneNumber);
+        LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + "state = " + (state == null ? "null" : state) + "phoneNumber = " + (phoneNumber == null ? "null" : phoneNumber) + "mPhoneNumber =" + mPhoneNumber);
+        LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly,  info = " + (info == null ? "null" : "not null"));
+        LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly,  serInfo = " + (serInfo == null ? "null" : "not null"));
+        
         setIsReceiver(true);
         if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
             /* 通话类型：拨出 */
@@ -325,10 +299,8 @@ public class CallFilterManager {
                 boolean isComOut = CallFilterManager.getInstance(mContext).isComingOut();
                 if (!isComOut) {
                     if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
-                        /* 标记弹框 */
                         mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.FILTER_TYPE, filterType);
                     } else {
-                        /* 黑名单弹框 */
                         mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.BLACK_LIST_TYPE, 0);
                     }
                     if (mTipToast != null) {
@@ -339,7 +311,7 @@ public class CallFilterManager {
                 }
             }
         } else if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
-            mLastNumBeUsedToGetInfo = "xx";
+            mLastNumBeUsedToGetInfo = "xx*()*())**&*(";//让记录的号码变乱，下次就会重新赋值
             LeoLog.i(TAG, "挂断！");
             /* 恢复默认值 */
             setCurrentCallTime(-1);
