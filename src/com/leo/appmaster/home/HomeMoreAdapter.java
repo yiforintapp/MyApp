@@ -112,7 +112,7 @@ public class HomeMoreAdapter extends BaseAdapter {
 
         mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);
         mDrawableArray.put(R.string.hp_hide_video, ID_RES_HIDE_VIDEO);
-        mDrawableArray.put(R.string.scan_lost_title, ID_RES_PHONE_LOST);
+        mDrawableArray.put(R.string.home_tab_lost, ID_RES_PHONE_LOST);
         mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT);
         mDrawableArray.put(R.string.hp_app_manage_del, ID_RES_APP_DEL);
         mDrawableArray.put(R.string.hp_app_manage_back, ID_RES_APP_BACK);
