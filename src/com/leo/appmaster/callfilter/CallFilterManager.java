@@ -110,6 +110,16 @@ public class CallFilterManager {
      */
     private String mFilterNum;
 
+    private boolean mIisAddFilter;
+
+    public boolean getIsAddFilter() {
+        return mIisAddFilter;
+    }
+
+    public void setIsAddFilter(boolean isAddFilter) {
+        this.mIisAddFilter = isAddFilter;
+    }
+
     public String getFilterNum() {
         return mFilterNum;
     }
@@ -342,6 +352,8 @@ public class CallFilterManager {
             LeoLog.i(TAG, "挂断！");
             /* 恢复默认值 */
             setCurrentCallTime(-1);
+            setIsAddFilter(false);
+
             if (info != null || isComingOut()) {
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
                 return;
@@ -586,65 +598,68 @@ public class CallFilterManager {
         mDialogTooShort.show();
     }
 
-    private void endCallAndRecord(final String phoneNumber, final ITelephony iTelephony,
-                                  final CallFilterContextManager cmp) {
+    private synchronized void endCallAndRecord(final String phoneNumber, final ITelephony iTelephony,
+                                               final CallFilterContextManager cmp) {
         /* 为本地黑名单：拦截 */
-        try {
+        if (!getIsAddFilter()) {
+            setIsAddFilter(true);
             try {
-                if (iTelephony != null) {
-                    iTelephony.endCall();
+                try {
+                    if (iTelephony != null) {
+                        iTelephony.endCall();
+                    }
+                } catch (RemoteException e) {
+                    e.printStackTrace();
                 }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            LeoLog.i(TAG, "iTelephony endCall()");
+                LeoLog.i(TAG, "iTelephony endCall()");
 
-            //记录当前拦截号码
-            setFilterNum(phoneNumber);
-            //设置本次拦截时间
-            setCurrentCallTime(System.currentTimeMillis());
+                //记录当前拦截号码
+                setFilterNum(phoneNumber);
+                //设置本次拦截时间
+                setCurrentCallTime(System.currentTimeMillis());
 
-            List<CallFilterInfo> infos = new ArrayList<CallFilterInfo>();
-            CallFilterInfo callInfo = new CallFilterInfo();
-            callInfo.setTimeLong(System.currentTimeMillis());
-            callInfo.setNumber(PrivacyContactUtils.simpleFromateNumber(phoneNumber));
-            callInfo.setCallType(CallLog.Calls.INCOMING_TYPE);
-            callInfo.setReadState(CallFilterConstants.READ_NO);
-            infos.add(callInfo);
-            LeoLog.i(TAG, "add fiter detail ");
-            boolean addState = cmp.addFilterDet(infos, false);
-            if (addState) {
-                int id = EventId.EVENT_LOAD_FIL_GR_ID;
-                String msg = CallFilterConstants.EVENT_MSG_LOAD_FIL_GR;
-                CommonEvent event = new CommonEvent(id, msg);
-                LeoEventBus.getDefaultBus().post(event);
+                List<CallFilterInfo> infos = new ArrayList<CallFilterInfo>();
+                CallFilterInfo callInfo = new CallFilterInfo();
+                callInfo.setTimeLong(System.currentTimeMillis());
+                callInfo.setNumber(PrivacyContactUtils.simpleFromateNumber(phoneNumber));
+                callInfo.setCallType(CallLog.Calls.INCOMING_TYPE);
+                callInfo.setReadState(CallFilterConstants.READ_NO);
+                infos.add(callInfo);
+                LeoLog.i(TAG, "add fiter detail ");
+                boolean addState = cmp.addFilterDet(infos, false);
+                if (addState) {
+                    int id = EventId.EVENT_LOAD_FIL_GR_ID;
+                    String msg = CallFilterConstants.EVENT_MSG_LOAD_FIL_GR;
+                    CommonEvent event = new CommonEvent(id, msg);
+                    LeoEventBus.getDefaultBus().post(event);
 
-                // 已经上传的列表
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        List<BlackListInfo> upBlack = cmp.getUploadBlackList();
-                        if (upBlack != null && upBlack.size() > 0) {
-                            String formateNum = PrivacyContactUtils
-                                    .formatePhoneNumber(phoneNumber);
-                            for (BlackListInfo black : upBlack) {
-                                if (black.getNumber().contains(formateNum)) {
-                                    black.setNumber(PrivacyContactUtils
-                                            .simpleFromateNumber(phoneNumber));
-                                    black.setFiltUpState(CallFilterConstants.FIL_UP);
-                                    updateUpBlack(black);
-                                    break;
+                    // 已经上传的列表
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<BlackListInfo> upBlack = cmp.getUploadBlackList();
+                            if (upBlack != null && upBlack.size() > 0) {
+                                String formateNum = PrivacyContactUtils
+                                        .formatePhoneNumber(phoneNumber);
+                                for (BlackListInfo black : upBlack) {
+                                    if (black.getNumber().contains(formateNum)) {
+                                        black.setNumber(PrivacyContactUtils
+                                                .simpleFromateNumber(phoneNumber));
+                                        black.setFiltUpState(CallFilterConstants.FIL_UP);
+                                        updateUpBlack(black);
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    }
-                });
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            CallFIlterUIHelper.getInstance().showReceiveCallNotification(phoneNumber);
+            LeoLog.i("testdata", "show notification");
         }
-        CallFIlterUIHelper.getInstance().showReceiveCallNotification(phoneNumber);
-        LeoLog.i("testdata", "show notification");
     }
 
     /**
