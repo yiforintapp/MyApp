@@ -21,7 +21,12 @@ public class NetWorkUtil {
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = cm == null ? null : cm.getActiveNetworkInfo();
+        NetworkInfo info = null;
+        try {
+            info = cm == null ? null : cm.getActiveNetworkInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return info != null && info.isConnected();
     }
 
