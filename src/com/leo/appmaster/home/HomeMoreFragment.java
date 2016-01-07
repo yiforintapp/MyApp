@@ -373,7 +373,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
                     startISwipHandlerForInstallIS(installISwipe);
                     break;
-                case R.string.scan_lost_title:
+                case R.string.home_tab_lost:
                     // 手机防盗
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
                     startPhoneSecurity();
