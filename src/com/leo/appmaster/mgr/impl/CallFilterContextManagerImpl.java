@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class CallFilterContextManagerImpl extends CallFilterContextManager {
     public static final int PAGE_SIZE = 100;
+    private static final String TAG = "CallFilterManager";
 
     @Override
     public List<BlackListInfo> getBlackList() {
@@ -528,9 +529,11 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public boolean removeFilterGr(List<CallFilterInfo> infos) {
+        LeoLog.d(TAG, "removeFilterGr, 1111 ");
         if (infos == null || infos.size() <= 0) {
             return false;
         }
+        LeoLog.d(TAG, "removeFilterGr, 22222 size: " + infos.size());
         ContentResolver cr = mContext.getContentResolver();
         Uri uri = CallFilterConstants.FILTER_GROUP_URI;
         String selection = null;
@@ -562,7 +565,8 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 calls.add(call);
                 removeFilterDet(calls);
             }
-            cr.delete(uri, selection, selectionArgs);
+            int rows = cr.delete(uri, selection, selectionArgs);
+            LeoLog.d(TAG, "removeFilterGr, del rows: " + rows);
 
         }
         return true;

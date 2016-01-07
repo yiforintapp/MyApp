@@ -23,12 +23,14 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.home.PrivacyConfirmFragment;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
+import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
@@ -748,6 +750,10 @@ public class CallFilterManager {
                 .getSysCallLog(mContext, selection, selectionArgs, null, true, false);
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(mContext, null, null,
                 false);
+        // 是否存在黑名单(过滤掉本地黑名单)
+        List<BlackListInfo> blackList = getBlackList();
+        //是否存在后台下发的黑名单(过滤掉服务器下发的黑名单)
+        List<BlackListInfo> serBlackList = getSerBlackList();
         final List<ContactCallLog> straCalls = new ArrayList<ContactCallLog>();
         if (callLogs != null && callLogs.size() > 0) {
             for (ContactCallLog call : callLogs) {
@@ -769,10 +775,6 @@ public class CallFilterManager {
                     }
                 }
                 if (!isExistContact) {
-                    // 是否存在黑名单(过滤掉本地黑名单)
-                    List<BlackListInfo> blackList = getBlackList();
-                    //是否存在后台下发的黑名单(过滤掉服务器下发的黑名单)
-                    List<BlackListInfo> serBlackList = getSerBlackList();
                     boolean blkNoEmpty = blackList != null && blackList.size() > 0;
                     boolean serBlckNoEmpty = serBlackList != null && serBlackList.size() > 0;
                     if (blkNoEmpty || serBlckNoEmpty) {

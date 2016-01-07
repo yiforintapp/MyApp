@@ -1,53 +1,36 @@
-
 package com.leo.appmaster.privacycontact;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
-
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.provider.CallLog;
-import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.callfilter.BlackListInfo;
-import com.leo.appmaster.callfilter.CallFIlterUIHelper;
 import com.leo.appmaster.callfilter.CallFilterManager;
-import com.leo.appmaster.callfilter.CallFilterToast;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.mgr.CallFilterContextManager;
-import com.leo.appmaster.mgr.IntrudeSecurityManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmater.globalbroadcast.BroadcastListener;
 
-public class PrivacyContactReceiver extends BroadcastReceiver {
+import java.text.SimpleDateFormat;
+
+/**
+ * Created by Jasper on 2016/1/7.
+ */
+public class SingleContactReceiver extends BroadcastReceiver {
     private static final String TAG = "PrivacyContactReceiver";
     private static final boolean DBG = false;
     private ITelephony mITelephony;
@@ -58,10 +41,10 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
 
-    public PrivacyContactReceiver() {
+    public SingleContactReceiver() {
     }
 
-    public PrivacyContactReceiver(ITelephony itelephony, AudioManager audioManager) {
+    public SingleContactReceiver(ITelephony itelephony, AudioManager audioManager) {
         this.mITelephony = itelephony;
         this.mAudioManager = audioManager;
     }
@@ -150,21 +133,10 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)
                 || PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
             //数据初始化和准备
-            TelephonyManager tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
             final String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
             final String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             PrivacyContactManager.getInstance(mContext).testValue = true;
 
-            ThreadManager.executeOnAsyncThread(new Runnable() {
-                @Override
-                public void run() {
-                    /**
-                     * 骚扰拦截处理
-                     */
-                    CallFilterManager cfm = CallFilterManager.getInstance(mContext);
-                    cfm.filterCallHandler(action, phoneNumber, state, mITelephony, mAudioManager);
-                }
-            });
             /**
              * 隐私联系人处理
              */
@@ -243,5 +215,4 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             LeoLog.i(TAG, "接收到来电广播");
         }
     }
-
 }

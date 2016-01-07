@@ -81,6 +81,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
              */
             PrivacyContactManager.getInstance(mContext).noReadMsmTipForQuickGesture();
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
+            LeoLog.d(TAG, "CALL_LOG_MODEL.equals(mFlag)");
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
