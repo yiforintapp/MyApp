@@ -12,22 +12,30 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
+import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 首页下方4个tab
@@ -284,25 +292,26 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         callFilter.putExtra("needMoveToTab2", true);
                     }
                     startActivity(callFilter);
-                    if (DBG) {
+//                    if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());
-//                                           LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//                                             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-//                                          pm.setFilterUserNumber(50000);
-//                                             pm.setFilterTipFroUser(3000);
-//                                             pm.setSerBlackTipNum(3000);
-//                                             pm.setSerMarkTipNum(50);
-//                                           BlackListInfo info = new BlackListInfo();
-//                                       info.setNumber("13632840685");
+//                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
+//                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                        pm.setFilterUserNumber(50000);
+//                        pm.setFilterTipFroUser(3000);
+//                        pm.setSerBlackTipNum(3000);
+//                        pm.setSerMarkTipNum(50);
+//                        BlackListInfo info = new BlackListInfo();
+//                        List<BlackListInfo> lits = new ArrayList<BlackListInfo>();
+//                        info.setNumber("13632840685");
 ////                                             info.setNumber("13027964843");
-//                                              info.setAddBlackNumber(2258);
-//                                              info.setMarkerType(2);
-//                                             info.setMarkerNumber(50000);
-//                                             CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
-//                                             cm.addFilterFroParse(info);
-//                                            LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-
-                    }
+//                        info.setAddBlackNumber(2258);
+//                        info.setMarkerType(2);
+//                        info.setMarkerNumber(50000);
+//                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
+//                        lits.add(info);
+//                        cm.addFilterFroParse(lits);
+//                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
+//                    }
                     break;
             }
         }

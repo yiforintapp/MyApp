@@ -49,7 +49,7 @@ public class CallFilterToast {
     public static View mContent;
     private static Context mContext;
     private int mToastY = 0;
-
+    private static int currSDK_INT = Build.VERSION.SDK_INT;
 
     private static Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -115,9 +115,14 @@ public class CallFilterToast {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
 
-                if (view == null || !view.isAttachedToWindow()) {
+                if (view == null) {
                     return false;
+                } else {
+                    if (currSDK_INT >= API_LEVEL_19 && !view.isAttachedToWindow()) {
+                        return false;
+                    }
                 }
+
 
                 switch (event.getAction()) {
 
@@ -150,6 +155,7 @@ public class CallFilterToast {
                         }
 
                         mParams.y = startViewY;
+
                         try {
                             mWM.updateViewLayout(view, mParams);
                         } catch (Exception e) {
@@ -346,7 +352,6 @@ public class CallFilterToast {
 
         params.format = PixelFormat.TRANSLUCENT;
         params.windowAnimations = android.R.style.Animation_Toast;
-        int currSDK_INT = Build.VERSION.SDK_INT;
         if (currSDK_INT < API_LEVEL_19) {
             params.type = WindowManager.LayoutParams.TYPE_PRIORITY_PHONE;
         } else {
