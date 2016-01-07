@@ -35,26 +35,23 @@ import com.leo.appmaster.utils.LeoLog;
 
 
 public class AskAddToBlacklistActivity extends BaseActivity {
-    private TextView mTitle;
-    private TextView mSummary;
-    private LinearLayout mLlSummary;
-    private TextView mLeftBtn;
-    private TextView mRightBtn;
-    private RippleView mRvRight;
-    private RippleView mRvLeft;
-    private ListView mLvMain;
     private CallFilterContextManager mCmp;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmrMark;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmr;
     private LEOAlarmDialog mDialogAskAdd;
     private MultiChoicesWitchSummaryDialog mDialogTooShort;
-    //private OnDiaogClickListener mListener;
     private String mPhoneNumber = "";
-    private int nowItemPosition = 0;
-//    public static final int TYPE_SHOW_NO_OFFHOOK = 1;
-//    public static final int TYPE_SHOW_ASK_WITH_MARK = 2;
-//    public static final int TYPE_SHOW_NO_OFFHOOK = 3;
-//    public static final int TYPE_SHOW_NO_OFFHOOK = 4;
+    public static final int TYPE_SHOW_NO_OFFHOOK = 1;
+    public static final int TYPE_SHOW_ASK_WITHOUT_MARK = 2;
+    public static final int TYPE_SHOW_ASK_WITH_MARK = 3;
+    public static final int TYPE_SHOW_TOO_SHORT = 4;
+    public static final String EXTRA_NUMBER = "number";
+    public static final String EXTRA_FILTERTYPE_ARRAY = "filterTip";
+    public static final String EXTRA_WHAT_TO_SHOW = "which";
+    public static final int CASE_ASK_WHEN_NO_OFFHOOK = 1;
+    public static final int CASE_ASK_WITHOUT_MARK = 2;
+    public static final int CASE_ASK_WITH_MARK = 3;
+    public static final int CASE_ASK_WHEN_TOO_SHORT = 4;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,23 +63,24 @@ public class AskAddToBlacklistActivity extends BaseActivity {
 
     private void handleIntent() {
         Intent intent = getIntent();
-        mPhoneNumber = intent.getStringExtra("number");
-        int intExtra = intent.getIntExtra("which", -1);
-        int[] filterTip = intent.getIntArrayExtra("filterTip");
+        mPhoneNumber = intent.getStringExtra(EXTRA_NUMBER);
+        int intExtra = intent.getIntExtra(EXTRA_WHAT_TO_SHOW, -1);
+        int[] filterTip = intent.getIntArrayExtra(EXTRA_FILTERTYPE_ARRAY);
         switch (intExtra) {
-            case 1:
+            case CASE_ASK_WHEN_NO_OFFHOOK:
                 showAskAddWhenNoOffHook(filterTip);
                 break;
-            case 2:
+            case CASE_ASK_WITHOUT_MARK:
                 showAskAddBlackWithoutMark(filterTip);
                 break;
-            case 3:
+            case CASE_ASK_WITH_MARK:
                 showAskAddBlackWithMark(filterTip);
                 break;
-            case 4:
+            case CASE_ASK_WHEN_TOO_SHORT:
                 showTooShortDialog();
                 break;
             default:
+                this.finish();
                 break;
         }
     }

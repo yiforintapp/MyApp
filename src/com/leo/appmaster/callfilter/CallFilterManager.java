@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.callfilter;
 
-import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,12 +12,8 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.CallLog;
-import android.sax.StartElementListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
@@ -32,7 +27,6 @@ import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
-import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -40,10 +34,8 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
 
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 
 /**
  * Created by runlee on 15-12-18.
@@ -64,12 +56,10 @@ public class CallFilterManager {
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmr;
     private LEOAlarmDialog mDialogAskAdd;
     private MultiChoicesWitchSummaryDialog mDialogTooShort;
-    private boolean mIsDialogShowWhenOffhookAndIdle = false;
     private BlackListInfo mLastLocInfo = null;
     private BlackListInfo mLastSerInfo = null;
     private String mLastNumBeUsedToGetInfo = "";
     private int[] mLastFilterTips = null;
-    private boolean mNeedReGet = false;
     /**
      * 拨出电话
      */
@@ -359,26 +349,18 @@ public class CallFilterManager {
             }
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
+            durationMax = 4800;
             long currentTime = System.currentTimeMillis();
             long deltaTime = currentTime - mLastOffHookTime;
             LeoLog.i("testdata", "deltaTime = " + deltaTime);
             // 时间过短 且 服务器和本地都没有数据
-//            mIsOffHook = false
             if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0]) && mIsOffHook) {
                 if (mDialogTooShort != null && mDialogTooShort.isShowing()) {
                     mIsOffHook = false;
                     return;
                 }
                 // 通话时间过短的提醒加入黑名单对话框
-//                showTooShortDialog(durationMax, cmp);TODO
-                Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
-                intent.putExtra("which", 4);
-                intent.putExtra("number", mPhoneNumber);
-                intent.putExtra("filterTip", filterTip);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
-                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                mLockManager.filterPackage(mContext.getPackageName(), 2000);
-                mContext.startActivity(intent);
+                showTooShortDialogInActivity(filterTip);
                 mIsOffHook = false;
                 // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
             } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null
@@ -389,15 +371,7 @@ public class CallFilterManager {
                     return;
                 }
                 // 接听后挂断 询问是否家黑名单且展示标记人数
-//                showAskAddBlackWithMark(cmp, filterTip); TODO
-                Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
-                intent.putExtra("which", 3);
-                intent.putExtra("number", mPhoneNumber);
-                intent.putExtra("filterTip", filterTip);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
-                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                mLockManager.filterPackage(mContext.getPackageName(), 2000);
-                mContext.startActivity(intent);
+                showAskDialogWithMarkInActivity(filterTip);
                 mIsOffHook = false;
             } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
@@ -406,16 +380,7 @@ public class CallFilterManager {
                     return;
                 }
                 // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
-//                showAskAddBlackWithoutMark(cmp, filterTip);//TODO
-                
-                Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
-                intent.putExtra("which", 2);
-                intent.putExtra("number", mPhoneNumber);
-                intent.putExtra("filterTip", filterTip);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
-                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                mLockManager.filterPackage(mContext.getPackageName(), 2000);
-                mContext.startActivity(intent);
+                showAskDialogWithoutMarkInActivity(filterTip);
                 mIsOffHook = false;
             } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
@@ -428,16 +393,7 @@ public class CallFilterManager {
                     mIsOffHook = false;
                     return;
                 }
-//                showAskAddWhenNoOffHook(cmp, filterTip);TODO
-                
-                Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
-                intent.putExtra("which", 1);
-                intent.putExtra("number", mPhoneNumber);
-                intent.putExtra("filterTip", filterTip);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
-                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                mLockManager.filterPackage(mContext.getPackageName(), 2000);
-                mContext.startActivity(intent);
+                showAskDialogWhenNoOffhookInActivity(filterTip);
                 mIsOffHook = false;
             }
         } else if (TelephonyManager.EXTRA_STATE_OFFHOOK.equalsIgnoreCase(state)) {
@@ -445,6 +401,50 @@ public class CallFilterManager {
             mIsOffHook = true;
             LeoLog.i(TAG, "offhook : mLastOffHookTime =" + mLastOffHookTime);
         }
+    }
+
+    private void showAskDialogWhenNoOffhookInActivity(int[] filterTip) {
+        Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WHEN_NO_OFFHOOK);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+        mContext.startActivity(intent);
+    }
+
+    private void showAskDialogWithoutMarkInActivity(int[] filterTip) {
+        Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WITHOUT_MARK);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+        mContext.startActivity(intent);
+    }
+
+    private void showAskDialogWithMarkInActivity(int[] filterTip) {
+        Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WITH_MARK);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+        mContext.startActivity(intent);
+    }
+
+    private void showTooShortDialogInActivity(int[] filterTip) {
+        Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.TYPE_SHOW_TOO_SHORT);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+        mContext.startActivity(intent);
     }
 
     private void showAskAddWhenNoOffHook(final CallFilterContextManager cmp, int[] filterTip) {
