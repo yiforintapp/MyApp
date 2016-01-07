@@ -32,7 +32,9 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.utils.IoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -705,6 +707,7 @@ public class CallFilterManager {
      * 拦截数Observer处理
      */
     public synchronized void filterObserHandler() {
+        LeoLog.i(TAG, "filterObserHandler");
         removeSysFilterCall();
         filterNotiTipHandler();
         //恢复是否为来电后触发数据库
@@ -828,17 +831,17 @@ public class CallFilterManager {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
+                Cursor cur = null;
                 try {
                     ContentResolver cr = mContext.getContentResolver();
-
                     //查询未读
-                    String selectionQu = CallLog.Calls.TYPE + " = ? and " + CallLog.Calls.NEW + " = ? and "
+                    String selectionQu = CallLog.Calls.TYPE + " = ? or " + CallLog.Calls.TYPE + " = ? and " + CallLog.Calls.NEW + " = ? and "
                             + CallLog.Calls.NUMBER + " LIKE ? ";
                     String fromateNum = PrivacyContactUtils.formatePhoneNumber(filterNum);
                     String[] selectionArgsQu = new String[]{
-                            String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1), ("%" + fromateNum)
+                            String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(CallLog.Calls.INCOMING_TYPE), String.valueOf(1), ("%" + fromateNum)
                     };
-                    Cursor cur = cr.query(PrivacyContactUtils.CALL_LOG_URI, null, selectionQu, selectionArgsQu,
+                    cur = cr.query(PrivacyContactUtils.CALL_LOG_URI, null, selectionQu, selectionArgsQu,
                             CallLog.Calls._ID + " " + CallFilterConstants.DESC);
                     int id = -1;
                     if (cur != null) {
@@ -853,10 +856,15 @@ public class CallFilterManager {
                     //删除未读
                     String selectionDe = CallLog.Calls._ID + " = ? ";
                     String[] selectionArgsDe = new String[]{String.valueOf(id)};
+                    LeoLog.i(TAG, "before id = " + id);
                     int count = PrivacyContactUtils.deleteDbLog(cr, PrivacyContactUtils.CALL_LOG_URI, selectionDe, selectionArgsDe);
                     LeoLog.i(TAG, count + ":id = " + id);
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    if (!BuildProperties.isApiLevel14() && cur != null) {
+                        IoUtils.closeSilently(cur);
+                    }
                 }
             }
         });
