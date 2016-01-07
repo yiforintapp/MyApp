@@ -1139,10 +1139,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             return false;
         }
 
-        ContentValues[] values = null;
-        if (infos.size() > 1) {
-            values = new ContentValues[infos.size()];
-        }
+//        ContentValues[] values = null;
+//        if (infos.size() > 1) {
+//            values = new ContentValues[infos.size()];
+//        }
         Cursor cur = null;
         ContentResolver cr = mContext.getContentResolver();
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
@@ -1191,20 +1191,20 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 } else {
                     value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
 
-                    if (values != null) {
-                        values[i] = value;
-                        i = i + 1;
-                    } else {
+//                    if (values != null) {
+//                        values[i] = value;
+//                        i = i + 1;
+//                    } else {
                         cr.insert(uri, value);
-                    }
+//                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        if (values != null && values.length > 0) {
-            cr.bulkInsert(uri, values);
-        }
+//        if (values != null && values.length > 0) {
+//            cr.bulkInsert(uri, values);
+//        }
 
         if (cur != null) {
             cur.close();
