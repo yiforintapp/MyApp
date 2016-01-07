@@ -45,7 +45,7 @@ import java.util.List;
 public class CallFilterManager {
     public static final String TAG = "CallFilterManager";
     private static final boolean DBG = false;
-
+    
     private static CallFilterManager mInstance;
     private Context mContext;
     private long mLastOffHookTime = 0;
@@ -62,6 +62,17 @@ public class CallFilterManager {
     private BlackListInfo mLastSerInfo = null;
     private String mLastNumBeUsedToGetInfo = "%^&%^&&";
     private int[] mLastFilterTips = null;
+    private int mLastShowedCallLogsBigestId = -1;
+    private int mLastClickedCallLogsId = -1;
+    
+    public int getLastClickedCallLogsId() {
+        return mLastClickedCallLogsId;
+    }
+
+    public void setLastClickedCallLogsId(int lastClickedCallLogsId) {
+        this.mLastClickedCallLogsId = lastClickedCallLogsId;
+    }
+
     /**
      * 拨出电话
      */
@@ -104,6 +115,14 @@ public class CallFilterManager {
 
     private boolean mIisAddFilter;
 
+    public int getLastShowedCallLogsBigestId() {
+        return mLastShowedCallLogsBigestId;
+    }
+
+    public void setLastShowedCallLogsBigestId(int lastShowedCallLogsBigestId) {
+        this.mLastShowedCallLogsBigestId = lastShowedCallLogsBigestId;
+    }
+    
     public boolean getIsAddFilter() {
         return mIisAddFilter;
     }
@@ -144,6 +163,8 @@ public class CallFilterManager {
         this.mCurrentCallTime = currentCallTime;
     }
 
+    
+    
     public boolean isReceiver() {
         return mIsReceiver;
     }
@@ -722,14 +743,13 @@ public class CallFilterManager {
                 .getSysCallLog(mContext, selection, selectionArgs, null, true, false);
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(mContext, null, null,
                 false);
-        List<ContactCallLog> straCalls = new ArrayList<ContactCallLog>();
+        final List<ContactCallLog> straCalls = new ArrayList<ContactCallLog>();
         if (callLogs != null && callLogs.size() > 0) {
             for (ContactCallLog call : callLogs) {
                 if (TextUtils.isEmpty(call.getCallLogNumber())) {
                     continue;
                 }
-                String formateNumber = PrivacyContactUtils.formatePhoneNumber(call
-                        .getCallLogNumber());
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(call.getCallLogNumber());
                 boolean isExistContact = false;
                 // 是否存在通讯录
                 for (ContactBean contactBean : contactsList) {
@@ -788,6 +808,7 @@ public class CallFilterManager {
                 return;
             }
             LeoLog.i(TAG, "陌生人未接来电个数：" + count);
+            
             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext
                     .getManager(MgrContext.MGR_CALL_FILTER);
             int param = pm.getStraNotiTipParam();
@@ -797,8 +818,25 @@ public class CallFilterManager {
             try {
                 int remainder = count % param;
                 if (remainder == 0) {
+                    int finalCount = 0;
                     /* 多个未接来电为指定倍数通知提示 */
-                    CallFIlterUIHelper.getInstance().showStrangerNotification(count);
+                    for (int i = 0; i < straCalls.size(); i++) {
+                        if(straCalls.get(i).getCallLogId() > mLastShowedCallLogsBigestId) {
+                            LeoLog.i("tempp", i + "  : " + straCalls.get(i).getCallLogId() + "       mLastShowedCallLogsBigestId = " + mLastShowedCallLogsBigestId);
+                            finalCount ++;
+                            LeoLog.i("tempp"," finalCount : " + finalCount);
+                        }
+                    }
+                    LeoLog.i("tempp"," for finished finalCount : " + finalCount);
+                    CallFIlterUIHelper.getInstance().showStrangerNotification(finalCount);
+                    ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                        @Override
+                        public void run() {
+                            mLastShowedCallLogsBigestId = straCalls.get(0).getCallLogId();
+                        }
+                    }, 1000);
+//                    mLastShowedCallLogsBigestId = straCalls.get(0).getCallLogId();//TODO
+                    LeoLog.i("tempp",  "showed!      mLastShowedCallLogsBigestId = " + mLastShowedCallLogsBigestId);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -21,6 +21,7 @@ import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
+import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.StrangeCallActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
@@ -54,7 +55,7 @@ public class DeskProxyActivity extends Activity {
     
     public static final int mFilterNoti =15;
     public static final int mStrangerCallNoti =16;
-//    public static final int mMissCallNoti =17;
+    public static final int mMissCallNoti =17;
     
 
     private MobvistaAdWall wallAd;
@@ -267,8 +268,10 @@ public class DeskProxyActivity extends Activity {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, CallFilterMainActivity.class);
         intent.putExtra("needMoveToTab2", true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        CallFilterManager manager = CallFilterManager.getInstance(this);
+        manager.setLastClickedCallLogsId(manager.getLastShowedCallLogsBigestId());
     }
     
     private void gotoBackUp(int type) {

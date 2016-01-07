@@ -547,7 +547,7 @@ public class PrivacyContactUtils {
             cursor = mgr.getSystemCalls(selection, selectionArgs, sortOrder);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-
+                    int idColum = cursor.getColumnIndex(CallLog.Calls._ID);
                     int numberColum = cursor.getColumnIndex(CallLog.Calls.NUMBER);
                     int nameColum = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
                     int dateColum = cursor.getColumnIndex(CallLog.Calls.DATE);
@@ -574,11 +574,13 @@ public class PrivacyContactUtils {
                         callLog.setContactIcon(bitmapIcon);
                     }
                     String name = cursor.getString(nameColum);
+                    int id = cursor.getInt(idColum);
                     Date date = new Date(Long.parseLong(cursor.getString(dateColum)));
                     String time = sfd.format(date);
                     long durationTime = cursor.getLong(callDurationColum);
                     int type = (cursor.getInt(callTypeColum));
-
+                    //TODO
+                    callLog.setCallLogId(id);
                     callLog.setCallLogCount(count);
                     callLog.setCallLogDuraction(durationTime);
                     callLog.setCallLogName(name);
