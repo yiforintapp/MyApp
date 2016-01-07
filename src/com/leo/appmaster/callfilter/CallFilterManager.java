@@ -310,25 +310,30 @@ public class CallFilterManager {
                 }
                 /* 判断是否满足弹框条件 */
                 int isTip = filterTip[0];
-                int tipType = filterTip[1];
-                int showValue = filterTip[2];
-                int filterType = filterTip[3];
+                final int tipType = filterTip[1];
+                final int showValue = filterTip[2];
+                final int filterType = filterTip[3];
                 LeoLog.i("testdata", "ringing... and info null serinfo not null ,try toast.. " + "filterTip[0]=" + filterTip[0] + "    filterTip[1]=" + filterTip[1] + "    filterTip[2]=" + filterTip[2] + "    filterTip[3]=" + filterTip[3]);
                 if (CallFilterConstants.IS_TIP_DIA[0] == isTip) {
                     return;
                 }
                 boolean isComOut = CallFilterManager.getInstance(mContext).isComingOut();
                 if (!isComOut) {
-                    if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
-                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.FILTER_TYPE, filterType);
-                    } else {
-                        mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.BLACK_LIST_TYPE, 0);
-                    }
-                    if (mTipToast != null) {
-                        mTipToast.show();
-                        LeoLog.i("testdata", "mTipToast show!");
-                    }
-                    LeoLog.i(TAG, "Black and marker tip show!");
+                    ThreadManager.getUiThreadHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
+                                mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.FILTER_TYPE, filterType);
+                            } else {
+                                mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.BLACK_LIST_TYPE, 0);
+                            }
+                            if (mTipToast != null) {
+                                mTipToast.show();
+                                LeoLog.i("testdata", "mTipToast show!");
+                            }
+                            LeoLog.i(TAG, "Black and marker tip show!");
+                        }
+                    });
                 }
             }
         } else if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
