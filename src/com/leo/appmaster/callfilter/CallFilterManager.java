@@ -255,7 +255,7 @@ public class CallFilterManager {
         LeoLog.i("testdata", "mLastNumBeUsedToGetInfo = " + mLastNumBeUsedToGetInfo + " -- " + "state = " + (state == null ? "null" : state) + "phoneNumber = " + (phoneNumber == null ? "null" : phoneNumber) + "mPhoneNumber =" + mPhoneNumber);
         LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly,  info = " + (info == null ? "null" : "not null"));
         LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly,  serInfo = " + (serInfo == null ? "null" : "not null"));
-        
+
         setIsReceiver(true);
         if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
             /* 通话类型：拨出 */
@@ -332,8 +332,14 @@ public class CallFilterManager {
                     mIsOffHook = false;
                     return;
                 }
-                // 通话时间过短的提醒加入黑名单对话框
-                showTooShortDialogInActivity(filterTip);
+                final int[] finalFilterTip = filterTip;
+                ThreadManager.getUiThreadHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 通话时间过短的提醒加入黑名单对话框
+                        showTooShortDialogInActivity(finalFilterTip);
+                    }
+                });
                 mIsOffHook = false;
                 // 接听过 且 本地没有添加这个号码 而服务器有这个号码的数据
             } else if (mIsOffHook && info == null && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] == filterTip[1] && serInfo != null
@@ -343,8 +349,14 @@ public class CallFilterManager {
                     mIsOffHook = false;
                     return;
                 }
-                // 接听后挂断 询问是否家黑名单且展示标记人数
-                showAskDialogWithMarkInActivity(filterTip);
+                final int[] finalFilterTip1 = filterTip;
+                ThreadManager.getUiThreadHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 接听后挂断 询问是否家黑名单且展示标记人数
+                        showAskDialogWithMarkInActivity(finalFilterTip1);
+                    }
+                });
                 mIsOffHook = false;
             } else if (mIsOffHook && filterTip != null && CallFilterConstants.DIALOG_TYPE[0] != filterTip[1] && info == null && serInfo != null && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
@@ -352,8 +364,14 @@ public class CallFilterManager {
                     mIsOffHook = false;
                     return;
                 }
-                // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
-                showAskDialogWithoutMarkInActivity(filterTip);
+                final int[] finalFilterTip2 = filterTip;
+                ThreadManager.getUiThreadHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
+                        showAskDialogWithoutMarkInActivity(finalFilterTip2);
+                    }
+                });
                 mIsOffHook = false;
             } else if (!mIsOffHook && info == null && filterTip != null && serInfo != null
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
@@ -366,7 +384,13 @@ public class CallFilterManager {
                     mIsOffHook = false;
                     return;
                 }
-                showAskDialogWhenNoOffhookInActivity(filterTip);
+                final int[] finalFilterTip3 = filterTip;
+                ThreadManager.getUiThreadHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAskDialogWhenNoOffhookInActivity(finalFilterTip3);
+                    }
+                });
                 mIsOffHook = false;
             }
         } else if (TelephonyManager.EXTRA_STATE_OFFHOOK.equalsIgnoreCase(state)) {
@@ -381,7 +405,7 @@ public class CallFilterManager {
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WHEN_NO_OFFHOOK);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mLockManager.filterPackage(mContext.getPackageName(), 2000);
         mContext.startActivity(intent);
@@ -392,7 +416,7 @@ public class CallFilterManager {
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WITHOUT_MARK);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mLockManager.filterPackage(mContext.getPackageName(), 2000);
         mContext.startActivity(intent);
@@ -403,7 +427,7 @@ public class CallFilterManager {
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WITH_MARK);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mLockManager.filterPackage(mContext.getPackageName(), 2000);
         mContext.startActivity(intent);
@@ -414,7 +438,7 @@ public class CallFilterManager {
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.TYPE_SHOW_TOO_SHORT);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mLockManager.filterPackage(mContext.getPackageName(), 2000);
         mContext.startActivity(intent);
@@ -600,25 +624,20 @@ public class CallFilterManager {
                     LeoEventBus.getDefaultBus().post(event);
 
                     // 已经上传的列表
-                    ThreadManager.executeOnAsyncThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            List<BlackListInfo> upBlack = cmp.getUploadBlackList();
-                            if (upBlack != null && upBlack.size() > 0) {
-                                String formateNum = PrivacyContactUtils
-                                        .formatePhoneNumber(phoneNumber);
-                                for (BlackListInfo black : upBlack) {
-                                    if (black.getNumber().contains(formateNum)) {
-                                        black.setNumber(PrivacyContactUtils
-                                                .simpleFromateNumber(phoneNumber));
-                                        black.setFiltUpState(CallFilterConstants.FIL_UP);
-                                        updateUpBlack(black);
-                                        break;
-                                    }
-                                }
+                    List<BlackListInfo> upBlack = cmp.getUploadBlackList();
+                    if (upBlack != null && upBlack.size() > 0) {
+                        String formateNum = PrivacyContactUtils
+                                .formatePhoneNumber(phoneNumber);
+                        for (BlackListInfo black : upBlack) {
+                            if (black.getNumber().contains(formateNum)) {
+                                black.setNumber(PrivacyContactUtils
+                                        .simpleFromateNumber(phoneNumber));
+                                black.setFiltUpState(CallFilterConstants.FIL_UP);
+                                updateUpBlack(black);
+                                break;
                             }
                         }
-                    });
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

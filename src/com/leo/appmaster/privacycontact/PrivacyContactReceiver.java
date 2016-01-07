@@ -72,7 +72,7 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
         if (DBG) {
             printTestReceiverLog(intent);
         }
-        String action = intent.getAction();
+        final String action = intent.getAction();
         mContext = context;
         if (mSimpleDateFormate == null) {
             mSimpleDateFormate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -152,14 +152,20 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             //数据初始化和准备
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
             final String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-            String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+            final String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             PrivacyContactManager.getInstance(mContext).testValue = true;
             CallFilterManager cm = CallFilterManager.getInstance(mContext);
-            /**
-             * 骚扰拦截处理
-             */
-            CallFilterManager cfm = CallFilterManager.getInstance(mContext);
-            cfm.filterCallHandler(action, phoneNumber, state, mITelephony,mAudioManager);
+
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    /**
+                     * 骚扰拦截处理
+                     */
+                    CallFilterManager cfm = CallFilterManager.getInstance(mContext);
+                    cfm.filterCallHandler(action, phoneNumber, state, mITelephony, mAudioManager);
+                }
+            });
             /**
              * 隐私联系人处理
              */
