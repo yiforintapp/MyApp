@@ -509,7 +509,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         } catch (Exception e) {
         }
         FragmentTransaction ft = fm.beginTransaction();
-        ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);
+        ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, /*R.anim.anim_up_to_down*/0);
         if (mAppList != null && mAppList.size() > 0) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "app_arv");
             PrivacyNewFragment fragment = PrivacyNewAppFragment.newInstance();
