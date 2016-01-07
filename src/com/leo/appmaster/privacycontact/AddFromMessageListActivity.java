@@ -247,6 +247,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
             ImageView image = (ImageView) view.findViewById(R.id.message_item_check_typeIV);
             if (!mb.isCheck()) {
                 mAddPrivacyMessage.add(mb);
+                mb.getContactIcon();
                 image.setImageDrawable(getResources().getDrawable(R.drawable.select));
                 mb.setCheck(true);
             } else {
@@ -506,6 +507,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                         BlackListInfo info = new BlackListInfo();
                                         info.setNumberName(name);
                                         info.setNumber(number);
+                                        info.setIcon(message.getContactIcon());
                                         blackList.add(info);
                                     }
                                 }

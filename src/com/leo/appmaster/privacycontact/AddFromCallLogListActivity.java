@@ -454,6 +454,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                         BlackListInfo info = new BlackListInfo();
                                         info.setNumberName(name);
                                         info.setNumber(number);
+                                        info.setIcon(contact.getContactIcon());
                                         blackList.add(info);
                                     }
                                 }

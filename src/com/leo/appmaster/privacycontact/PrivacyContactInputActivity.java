@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -137,6 +138,9 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 BlackListInfo info = new BlackListInfo();
                 info.setNumberName(mPhoneName);
                 info.setNumber(mPhoneNumber);
+                Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
+                        this, mPhoneNumber);
+                info.setIcon(icon);
                 list.add(info);
 
                 mCallManger.addBlackList(list, false);
