@@ -81,10 +81,15 @@ public class PrivacyMessageContentObserver extends ContentObserver {
              */
             PrivacyContactManager.getInstance(mContext).noReadMsmTipForQuickGesture();
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
-            /**
-             * 骚扰拦截
-             */
-            CallFilterManager.getInstance(mContext).filterObserHandler();
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    /**
+                     * 骚扰拦截
+                     */
+                    CallFilterManager.getInstance(mContext).filterObserHandler();
+                }
+            });
             /**
              * 通话拦截功能
              */
