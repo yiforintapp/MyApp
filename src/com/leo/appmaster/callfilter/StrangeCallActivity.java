@@ -62,8 +62,8 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private static final int MINUTE = 60;
     private static final int HOUR = 60 * 60;
     private static final int STRA_MAX_COUNT = 100;
-
     private static final int HAVE_BLACK_LIST = -2;
+    private static final int CUT_PROCESS = -3;
     private static final int PAGE_SIZE = 100;
     private List<ContactCallLog> mCallLogList;
     private List<ContactCallLog> mSrcBackupList;
@@ -83,6 +83,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private boolean mLoadDone = false;
     private AddFromCallHandler mAddFromCallHandler = new AddFromCallHandler();
     private RelativeLayout mRlBottomView;
+    private boolean isCutProgress = false;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -96,6 +97,12 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                 return;
             }
 
+            if (currentValue == CUT_PROCESS) {
+                Context context = StrangeCallActivity.this;
+                String str = getResources().getString(R.string.add_black_list_done);
+                Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                StrangeCallActivity.this.finish();
+            }
 
             if (currentValue >= mAddPrivacyCallLog.size()) {
                 if (!mLogFlag) {
@@ -113,7 +120,12 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     mLogFlag = false;
                 }
             } else {
-                mProgressDialog.setProgress(currentValue);
+                if (mProgressDialog.isShowing()) {
+                    mProgressDialog.setProgress(currentValue);
+                } else {
+                    isCutProgress = true;
+                }
+
             }
             super.handleMessage(msg);
         }
@@ -123,14 +135,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_strange_call_log);
-
-        cal(55);
-        cal(88);
-        cal(131);
-        cal(2400);
-        cal(3665);
-        cal(665846);
-
         handleIntent();
         initUI();
         sendMsgHandler();
@@ -480,24 +484,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         } else {
             string = cal(mSecond);
         }
-
-
-//        if (mSecond < MINUTE) {
-//            if (mSecond == -1) {
-//                string = StrangeCallActivity.this.getString(
-//                        R.string.number_call_duration_s, 0);
-//            } else {
-//                string = StrangeCallActivity.this.getString(
-//                        R.string.number_call_duration_s, mSecond);
-//            }
-//        } else if (mSecond < HOUR) {
-//            string = StrangeCallActivity.this.getString(
-//                    R.string.number_call_duration_m, mSecond / MINUTE);
-//        } else {
-//            string = StrangeCallActivity.this.getString(
-//                    R.string.number_call_duration_h, mSecond / HOUR);
-//        }
-
         return string;
     }
 
@@ -559,30 +545,39 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                         ContentResolver cr = getContentResolver();
                         if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(model)) {
                             for (ContactCallLog contact : mAddPrivacyCallLog) {
-                                List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
-                                String name = contact.getCallLogName();
-                                String contactNumber = contact.getCallLogNumber();
-                                String number = PrivacyContactUtils.simpleFromateNumber(contact.getCallLogNumber());
+                                if (!isCutProgress) {
+                                    List<BlackListInfo> blackList = new ArrayList<BlackListInfo>();
+                                    String name = contact.getCallLogName();
+                                    String contactNumber = contact.getCallLogNumber();
+                                    String number = PrivacyContactUtils.simpleFromateNumber(contact.getCallLogNumber());
                                 /*隐私联系人去重,判断是否为隐私联系人*/
-                                boolean isPryCont = PrivacyContactUtils.pryContRemovSame(contactNumber);
-                                if (!isPryCont) {
-                                    boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
-                                    if (!isHaveBlackNum) {
+                                    boolean isPryCont = PrivacyContactUtils.pryContRemovSame(contactNumber);
+                                    if (!isPryCont) {
+                                        boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
+                                        if (!isHaveBlackNum) {
 
-                                        BlackListInfo info = new BlackListInfo();
-                                        info.setNumberName(name);
-                                        info.setNumber(number);
-                                        blackList.add(info);
+                                            BlackListInfo info = new BlackListInfo();
+                                            info.setNumberName(name);
+                                            info.setNumber(number);
+                                            blackList.add(info);
 
+                                        }
                                     }
+                                    Message messge = new Message();
+                                    count = count + 1;
+                                    messge.what = count;
+                                    if (messge != null && mHandler != null) {
+                                        mHandler.sendMessage(messge);
+                                    }
+                                    mCallManger.addBlackList(blackList, false);
+                                } else {
+                                    Message curMsg = new Message();
+                                    curMsg.what = CUT_PROCESS;
+                                    if (curMsg != null && mHandler != null) {
+                                        mHandler.sendMessage(curMsg);
+                                    }
+                                    break;
                                 }
-                                Message messge = new Message();
-                                count = count + 1;
-                                messge.what = count;
-                                if (messge != null && mHandler != null) {
-                                    mHandler.sendMessage(messge);
-                                }
-                                mCallManger.addBlackList(blackList, false);
                             }
                         }
                     } catch (Exception e) {
