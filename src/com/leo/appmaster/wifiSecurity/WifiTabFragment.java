@@ -470,11 +470,13 @@ public class WifiTabFragment extends Fragment {
     }
 
     public void showTab() {
-        if (mRootView.getVisibility() == View.VISIBLE) return;
+        if (mRootView == null || mRootView.getVisibility() == View.VISIBLE) return;
+        if (!isAdded()) return;
+
         mRootView.setVisibility(View.VISIBLE);
         setStartScan();
 
-        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_down_to_up);
+        Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.anim_down_to_up);
         mRootView.startAnimation(animation);
         showItemAnimation();
     }
