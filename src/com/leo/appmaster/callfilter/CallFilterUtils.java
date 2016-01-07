@@ -399,7 +399,7 @@ public class CallFilterUtils {
                     blackListInfoList.add(info);
                 }
             }
-        } catch (Resources.NotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (cursor != null) {
