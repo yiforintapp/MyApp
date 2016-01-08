@@ -412,6 +412,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mVideoList = videoItemBeans;
         mAppScanText = appScanText;
 
+        mPrivacyFragment.getShiledLayer().setShieldAlpha(255);
         int score = mPrivacyHelper.getSecurityScore();
         if (score == 100) {
             mPrivacyFragment.startDirectBurstAnim();

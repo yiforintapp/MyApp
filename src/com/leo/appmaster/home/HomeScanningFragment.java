@@ -257,7 +257,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             public void run() {
                 startScanController();
             }
-        }, 200);
+        }, 300);
 
         mRootView = view;
         ThreadManager.executeOnAsyncThread(new Runnable() {

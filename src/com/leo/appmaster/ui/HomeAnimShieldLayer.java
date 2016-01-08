@@ -57,7 +57,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private static final int SHADOW_RADIUS = 4;
 
     private int mCircleAlpha = 0;
-    private int mShieldAlpha = 0;
+    private int mShieldAlpha = 255;
     private int mInCircleAlpha = 0;
     private int mOutCircleAlpha = 0;
     private int mSecurityScore = 100;
@@ -418,10 +418,10 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
             shieldAlpha = (int) (255f * (1f - finalShieldRatio));
             shieldOffsetY += finalShieldRatio * mMaxFinalOffsetY;
-        } else if (mShieldAlpha != 0) {
+        } else /*if (mShieldAlpha != 0)*/ {
             shieldAlpha = mShieldAlpha;
         }
-        mShieldDrawable.getPaint().setAlpha(shieldAlpha);
+        LeoLog.d(TAG, "drawShieldScore, shieldAlpha: " + shieldAlpha);
         mShieldMatrix.set(Matrix.IDENTITY_MATRIX);
         mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
         mShieldMatrix.postScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
@@ -433,6 +433,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             if (shieldOffsetY <= 0) {
                 canvas.drawCircle(mCirclePx, mCirclePy, mShieldBgRadius, mTextPaint);
             }
+            mShieldDrawable.getPaint().setAlpha(shieldAlpha);
             mShieldDrawable.draw(canvas);
         }
 

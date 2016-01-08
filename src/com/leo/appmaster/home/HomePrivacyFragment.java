@@ -606,6 +606,7 @@ public class HomePrivacyFragment extends Fragment {
 
         mHomeAnimView.getShieldLayer().setOutCircleAlpha(0);
         mHomeAnimView.getShieldLayer().setInCircleAlpha(0);
+        mHomeAnimView.getShieldLayer().setShieldAlpha(255);
         showScanningPercent(-1);
 
         mHomeAnimView.setShowStep(true);
@@ -676,12 +677,12 @@ public class HomePrivacyFragment extends Fragment {
         ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
                 HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO, HomeAnimShieldLayer.SHIELD_SCANNING_RATIO);
         shieldScaleAnim.setInterpolator(new LinearInterpolator());
-        shieldScaleAnim.setDuration(100);
+        shieldScaleAnim.setDuration(150);
         animators.add(shieldScaleAnim);
         // 盾牌透明
         ObjectAnimator alphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "shieldAlpha", 255, 0);
         alphaAnim.setInterpolator(new LinearInterpolator());
-        alphaAnim.setDuration(100);
+        alphaAnim.setDuration(150);
         animators.add(alphaAnim);
         // 内环缩小
         ObjectAnimator inScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "inCircleScaleRatio",
@@ -837,6 +838,10 @@ public class HomePrivacyFragment extends Fragment {
             mFinalAnim.cancel();
             mFinalAnim = null;
         }
+    }
+
+    public HomeAnimShieldLayer getShiledLayer() {
+        return mHomeAnimView.getShieldLayer();
     }
 
     private void startWaveAnim() {
