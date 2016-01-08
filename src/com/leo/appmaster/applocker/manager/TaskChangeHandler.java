@@ -156,7 +156,7 @@ public class TaskChangeHandler {
                                         || activity.contains(WAITNAME)
                                         || activity.contains(UPDATE)
                                         || activity.contains(WEBVIEW)
-
+                                        || activity.contains(BLACK_LIST)
                                         // 如果锁屏前的pkg是联想的屏保，则不过滤掉webviewActivity
                                         && !pkg.equals(mDetectedPkgBeforeScreeOff))
                                 || (!unlocked && currentLockScreen))
@@ -176,6 +176,7 @@ public class TaskChangeHandler {
                                         || activity.contains(PROXYNAME)
                                         || activity.contains(UPDATE)
                                         || activity.contains(WAITNAME)
+                                        || activity.contains(BLACK_LIST)
                                         || (activity.contains(WEBVIEW)
                                 // 如果锁屏前的pkg是联想的屏保，则不过滤掉webviewActivity
                                 && !pkg.equals(mDetectedPkgBeforeScreeOff)))
