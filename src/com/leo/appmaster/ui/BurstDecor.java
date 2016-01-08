@@ -120,7 +120,7 @@ public class BurstDecor extends BaseDecor {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mCurrentProcess = 0;
-                if (listener != null && mAnimator != null) {
+                if (listener != null) {
                     listener.OnBurstEnd();
                 }
             }

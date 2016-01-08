@@ -84,6 +84,7 @@ public class HomePrivacyFragment extends Fragment {
     private AnimatorSet mFullScoreMove;
     private ObjectAnimator mFullScoreStart;
 
+    private boolean mIsReset; //是否在扫描时点击取消按钮或回退 控制满分动画中断
 
     public HomePrivacyFragment() {
 
@@ -649,6 +650,7 @@ public class HomePrivacyFragment extends Fragment {
             return;
         }
 
+        mIsReset = false;
 
         List<Animator> animators = new ArrayList<Animator>();
 
@@ -730,17 +732,21 @@ public class HomePrivacyFragment extends Fragment {
         shieldLayer.getFlipDecor().startFlipAnim(1000, new ShieldFlipDecor.OnFlipEndListener() {
             @Override
             public void OnFlipEnd() {
-                LeoLog.i("tesi", "flip end , to start Burst ");
-
+                LeoLog.i("TheTest", "getFlipDecor mIsReset:" + mIsReset);
+                if (mIsReset) {
+                    return;
+                }
                 LeoLog.i("TheTest", "Burst");
                 shieldLayer.getBurstDecor().startBurstAnim(500, new BurstDecor.OnBurstEndListener() {
 
                     @Override
                     public void OnBurstEnd() {
-
-                        LeoLog.i("TheTest", "jumpToNextFragment ");
-                        mActivity.jumpToNextFragment(true);
-                        startDirectTranslation();
+                        LeoLog.i("TheTest", "getBurstDecor mIsReset:" + mIsReset);
+                        if (!mIsReset) {
+                            LeoLog.i("TheTest", "jumpToNextFragment ");
+                            mActivity.jumpToNextFragment(true);
+                            startDirectTranslation();
+                        }
                     }
                 });
 
@@ -851,6 +857,11 @@ public class HomePrivacyFragment extends Fragment {
         endAnim(mCircleRotateAnim);
 
         endAnim(mMoveLeftTopAnim);
+
+        endAnim(mFullScoreStart);
+
+        endAnim(mFullScoreMove);
+
     }
 
     private void postFastArrowAnim() {
@@ -866,7 +877,9 @@ public class HomePrivacyFragment extends Fragment {
     public void reset() {
 
 
+        mIsReset = true;
 
+        LeoLog.i("TheTest", "reset mIsReset:" + mIsReset);
 
         endAnim(mMoveLeftTopAnim);
         final HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
