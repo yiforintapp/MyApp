@@ -14,6 +14,7 @@ import android.os.RemoteException;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
@@ -237,6 +238,14 @@ public class CallFilterManager {
         if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
             tryHideToast();
             LeoLog.i("testdata", "hide toast");
+        }
+
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            //是否为隐私联系人
+            boolean isUsePr = CallFilterUtils.isNumberUsePrivacy(phoneNumber);
+            if (isUsePr) {
+                return;
+            }
         }
         /* 判断骚扰拦截是否打开 */
         final CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
