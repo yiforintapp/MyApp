@@ -12,11 +12,11 @@
         <clip>
             <shape>
                 <gradient
-                    android:centerColor="@color/webview_pro"
+                    android:centerColor="@color/cb2"
                     android:centerX="0"
                     android:centerY="0"
-                    android:endColor="@color/webview_pro"
-                    android:startColor="@color/webview_pro" />
+                    android:endColor="@color/cb2"
+                    android:startColor="@color/cb2" />
 
                <corners android:radius="0dip" />  
             </shape>
