@@ -904,10 +904,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
 
     private void sendMsgHandler() {
         if (mAddFromMsmHandler != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    mProgressBar.setVisibility(View.VISIBLE);
                     List<MessageBean> messageList =
                             PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this, null, null, false, false);
                     if (messageList != null && messageList.size() > 0) {

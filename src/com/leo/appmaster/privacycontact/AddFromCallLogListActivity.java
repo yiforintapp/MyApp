@@ -882,10 +882,10 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
     /*加载通话通话列表*/
     private void sendMsgHandler() {
         if (mAddFromCallHandler != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    mProgressBar.setVisibility(View.VISIBLE);
                     List<ContactCallLog> callLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this, null, null, null, false, false);
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);

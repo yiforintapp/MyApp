@@ -739,10 +739,10 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
 
     private void sendMsgHandler() {
         if (mAddFromContactHandler != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    mProgressBar.setVisibility(View.VISIBLE);
                     mContactSideBar.setVisibility(View.GONE);
                     List<ContactBean> contactsList = PrivacyContactUtils.
                             getSysContact(AddFromContactListActivity.this, null, null, false);

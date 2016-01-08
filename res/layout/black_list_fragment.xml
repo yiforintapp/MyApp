@@ -14,40 +14,39 @@
         android:overScrollMode="never"
         android:scrollbars="none" />
 
-    <RelativeLayout 
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-            android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
         android:layout_marginBottom="64dp"
-        >
-    
-    <RelativeLayout
-        android:id="@+id/content_show_nothing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:visibility="gone">
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp">
 
-        <ImageView
-            android:id="@+id/just_nothing_show_iv"
-            android:layout_width="@dimen/privacy_default_image_width"
-            android:layout_height="@dimen/privacy_default_image_height"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/def_black" />
-
-        <TextView
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/content_show_nothing"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/just_nothing_show_iv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/empty_page_text_m_top"
+            android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/black_list_is_empty"
-            android:textColor="@color/nothing_show_text"
-            android:textSize="@dimen/kongbaiye_text_size" />
-    </RelativeLayout>
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/just_nothing_show_iv"
+                android:layout_width="@dimen/privacy_default_image_width"
+                android:layout_height="@dimen/privacy_default_image_height"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/def_black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/just_nothing_show_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/empty_page_text_m_top"
+                android:gravity="center"
+                android:text="@string/black_list_is_empty"
+                android:textColor="@color/nothing_show_text"
+                android:textSize="@dimen/kongbaiye_text_size" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <ProgressBar
@@ -75,16 +74,16 @@
             android:layout_width="match_parent"
             android:layout_height="63dp"
             android:layout_below="@id/line_view"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/black_list_add"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="40dp"
                 android:layout_marginLeft="28dp"
                 android:layout_marginRight="16dp"
+                android:layout_weight="1"
                 android:background="@drawable/green_radius_btn_shape"
                 android:clickable="true"
                 ripple:rippleColor="@color/green_button_ripple"
@@ -105,11 +104,11 @@
             <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/black_list_unknow_num"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="40dp"
-                android:layout_marginRight="28dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginRight="28dp"
                 android:layout_toRightOf="@id/black_list_add"
+                android:layout_weight="1"
                 android:background="@drawable/green_radius_btn_shape"
                 android:clickable="true"
                 ripple:rippleColor="@color/green_button_ripple"
