@@ -796,8 +796,9 @@ public class CallFilterManager {
                     int finalCount = 0;
                     /* 多个未接来电为指定倍数通知提示 */
                     for (int i = 0; i < straCalls.size(); i++) {
-                        if (straCalls.get(i).getCallLogId() > mLastShowedCallLogsBigestId) {
-                            LeoLog.i("tempp", i + "  : " + straCalls.get(i).getCallLogId() + "       mLastShowedCallLogsBigestId = " + mLastShowedCallLogsBigestId);
+                        if (straCalls.get(i).getCallLogId() > mLastClickedCallLogsId) {
+                            LeoLog.i("tempp", i + "  : " + straCalls.get(i).getCallLogId() + "       mLastShowedCallLogsBigestId = " + mLastShowedCallLogsBigestId + "     mLastClickedCallLogsId = " + mLastClickedCallLogsId);
+                            
                             finalCount++;
                             LeoLog.i("tempp", " finalCount : " + finalCount);
                         }

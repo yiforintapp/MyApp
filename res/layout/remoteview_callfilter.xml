@@ -11,15 +11,17 @@
 
         <ImageView
             android:id="@+id/iv_ic"
-            android:layout_width="@dimen/noti_spe_icon_height"
-            android:layout_height="@dimen/noti_spe_icon_height"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/noti_spe_icon_m_left"
             android:src="@drawable/intercept" />
 
         <LinearLayout
+            android:layout_marginRight="2dp"
             android:id="@+id/appwall_mid_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@id/appwall_left"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/noti_spe_content_m_left"
@@ -32,7 +34,7 @@
 
                 <TextView
                     android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/clean_mem_notify_big"
                     android:textColor="@color/c3"
@@ -42,7 +44,7 @@
 
             <TextView
                 android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/noti_spe_content_des_m_top"
                 android:text="@string/clean_mem_notify_small"
