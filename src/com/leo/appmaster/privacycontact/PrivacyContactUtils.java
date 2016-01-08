@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
@@ -36,6 +37,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.phoneSecurity.AddSecurityNumberActivity;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.utils.IoUtils;
@@ -494,12 +496,18 @@ public class PrivacyContactUtils {
         return contacts;
     }
 
+    private static final String TAG = "PrivacyContactUtils";
+
     public static List<ContactCallLog> getSysCallLogNoContact(Context context, String selection, String[] selectionArgs, String sortOrder, boolean isDetailList, boolean isFreContacts) {
+        long start = SystemClock.elapsedRealtime();
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(context, null, null, false);
+        LeoLog.d(TAG, "zany, getSysContact: " + (SystemClock.elapsedRealtime() - start));
 
         List<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
         try {
+            start = SystemClock.elapsedRealtime();
             List<ContactCallLog> calls = getSysCallLog(context, selection, selectionArgs, sortOrder, isDetailList, isFreContacts);
+            LeoLog.d(TAG, "zany, getSysCallLog: " + (SystemClock.elapsedRealtime() - start));
             if (calls == null || calls.size() <= 0) {
                 return calllogs;
             }
@@ -548,16 +556,21 @@ public class PrivacyContactUtils {
         Cursor cursor = null;
         try {
             PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+            long start = SystemClock.elapsedRealtime();
             cursor = mgr.getSystemCalls(selection, selectionArgs, sortOrder);
+            // LeoLog.d(TAG, "zany, getSystemCalls: " + (SystemClock.elapsedRealtime() - start));
             if (cursor != null) {
                 while (cursor.moveToNext()) {
+                    start = SystemClock.elapsedRealtime();
                     int idColum = cursor.getColumnIndex(CallLog.Calls._ID);
                     int numberColum = cursor.getColumnIndex(CallLog.Calls.NUMBER);
                     int nameColum = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
                     int dateColum = cursor.getColumnIndex(CallLog.Calls.DATE);
                     int callTypeColum = cursor.getColumnIndex(CallLog.Calls.TYPE);
                     int callDurationColum = cursor.getColumnIndex(CallLog.Calls.DURATION);
+                    // LeoLog.d(TAG, "zany, --getColumn: " + (SystemClock.elapsedRealtime() - start));
 
+                    start = SystemClock.elapsedRealtime();
                     ContactCallLog callLog = new ContactCallLog();
                     int count = cursor.getCount();
                     String number = null;
@@ -566,16 +579,24 @@ public class PrivacyContactUtils {
                     } else {
                         number = cursor.getString(numberColum);
                     }
-                    Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
-                            context, number);
-                    if (icon != null) {
-                        int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
-                        icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
-                        callLog.setContactIcon(icon);
+                    if (!calllog.containsKey(number)) {
+                        calllog.put(number, callLog);
+                        start = SystemClock.elapsedRealtime();
+                        Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
+                                context, number);
+                        // LeoLog.d(TAG, "zany, --getIcon, icon: " + icon + " , " + (SystemClock.elapsedRealtime() - start));
+                        if (icon != null) {
+                            int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
+                            icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
+                            callLog.setContactIcon(icon);
+                        } else {
+                            BitmapDrawable bitDra = (BitmapDrawable) context.getResources().getDrawable(R.drawable.default_user_avatar);
+                            Bitmap bitmapIcon = bitDra.getBitmap();
+                            callLog.setContactIcon(bitmapIcon);
+                        }
                     } else {
-                        BitmapDrawable bitDra = (BitmapDrawable) context.getResources().getDrawable(R.drawable.default_user_avatar);
-                        Bitmap bitmapIcon = bitDra.getBitmap();
-                        callLog.setContactIcon(bitmapIcon);
+                        ContactCallLog log = calllog.get(number);
+                        callLog.setContactIcon(log.getContactIcon());
                     }
                     String name = cursor.getString(nameColum);
                     int id = cursor.getInt(idColum);
@@ -605,11 +626,11 @@ public class PrivacyContactUtils {
                         }
                     }
                 }
+                start = SystemClock.elapsedRealtime();
                 Iterable<ContactCallLog> it = calllog.values();
                 for (ContactCallLog contactCallLog : it) {
                     /*查询内每个号码在通话记录中的条数*/
                     String number = contactCallLog.getCallLogNumber();
-                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
                     int countCall;
                     Cursor cur = null;
                     try {
@@ -626,6 +647,7 @@ public class PrivacyContactUtils {
                         }
                     }
                 }
+                // LeoLog.d(TAG, "zany, --for..: " + (SystemClock.elapsedRealtime() - start));
             }
         } catch (Exception e) {
 

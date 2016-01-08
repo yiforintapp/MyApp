@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.CallLog;
 import android.telecom.Call;
 import android.view.LayoutInflater;
@@ -701,26 +702,25 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     String[] selectionArgs = new String[]{String.valueOf(CallLog.Calls.INCOMING_TYPE),
                             String.valueOf(CallLog.Calls.MISSED_TYPE)};
                     String sortOrder = null;
+                    long start = SystemClock.elapsedRealtime();
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
                             getSysCallLogNoContact(StrangeCallActivity.this, selection, selectionArgs, sortOrder, false, true);
+                    // LeoLog.d(TAG, "zany, getSysCallLogNoContact: " + (SystemClock.elapsedRealtime() - start));
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                         List<ContactCallLog> calls = new ArrayList<ContactCallLog>();
+                        long tStart = SystemClock.elapsedRealtime();
                         for (ContactCallLog call : callLogList) {
-
-                            LeoLog.d("testAddBlack", "go item");
-
                             if (!mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
 
                                 //add to black list num
                                 CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                                 BlackListInfo info = cmp.getSerBlackForNum(call.getCallLogNumber());
-
                                 if (info != null) {
                                     int[] type = cmp.isCallFilterTip(call.getCallLogNumber());
                                     if (type[0] != CallFilterConstants.IS_TIP_DIA[0]) {
                                         int addToBlackNum = info.getAddBlackNumber();
-                                        LeoLog.d("testAddBlack", "addToBlackNum:" + addToBlackNum);
+                                        // LeoLog.d("testAddBlack", "addToBlackNum:" + addToBlackNum);
                                         if (addToBlackNum > 0) {
                                             call.setAddBlackNumber(addToBlackNum);
                                         }
@@ -729,6 +729,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                 calls.add(call);
                             }
                         }
+                        // LeoLog.d(TAG, "zany, getSerBlackForNum total: " + (SystemClock.elapsedRealtime() - tStart));
                         callLogList.clear();
                         callLogList.addAll(calls);
                     }
