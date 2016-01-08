@@ -134,6 +134,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mShownIgnoreDlg;
     private boolean mShowContact;
 
+    private boolean mFromNotification; // 是否从通知栏进入了应用
+
     private LEOAnimationDialog mMessageDialog;
 
     private String mAppScanText;
@@ -244,15 +246,20 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh", "push_scan_cnts");
                 LeoLog.d("testFromWhere", "HomeActivity from push");
             }
-            mPrivacyFragment.onFromNotifi();
-            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onShieldClick();
-                }
-            }, 3500);
+//            mPrivacyFragment.onFromNotifi();
+//            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    onShieldClick();
+//                }
+//            }, 4000);
+              mFromNotification = true;
 
         }
+    }
+
+    public boolean isFromNotification() {
+        return mFromNotification;
     }
 
     public void registerLocaleChange() {
@@ -315,6 +322,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onShieldClick() {
+        mFromNotification = false;
         int securityScore = mPrivacyHelper.getSecurityScore();
         if (securityScore == 100) {
             mShowContact = false;
