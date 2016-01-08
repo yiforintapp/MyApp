@@ -52,13 +52,15 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
 
     private void loadDone() {
         mProgressBar.setVisibility(View.GONE);
-        if (mBlackList != null && mBlackList.size() < 1) {
+        if (mBlackList == null || mBlackList.isEmpty()) {
             showEmpty();
         } else {
             mNothingToShowView.setVisibility(View.GONE);
             mBlackListView.setVisibility(View.VISIBLE);
             mBlackListAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_BLACK_LIST);
-            LeoLog.d("testBlackList", "list size : " + mBlackList.size());
+            if (mBlackList != null) {
+                LeoLog.d("testBlackList", "list size : " + mBlackList.size());
+            }
             mBlackListAdapter.setData(mBlackList);
         }
 

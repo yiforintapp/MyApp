@@ -183,7 +183,10 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     }
 
     public void setData(List<BlackListInfo> infoList) {
-        mList = infoList;
+        if (infoList != null) {
+            mList.clear();
+            mList.addAll(infoList);
+        }
         notifyDataSetChanged();
     }
 
