@@ -262,6 +262,8 @@ public class DeskProxyActivity extends Activity {
         Intent intent = new Intent(this, StrangeCallActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        CallFilterManager manager = CallFilterManager.getInstance(this);
+        manager.setLastClickedCallLogsId(manager.getLastShowedCallLogsBigestId());
     }
 
     private void goToBlackList(int type) {
@@ -271,8 +273,6 @@ public class DeskProxyActivity extends Activity {
         intent.putExtra("needToHomeWhenFinish", true);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity(intent);
-        CallFilterManager manager = CallFilterManager.getInstance(this);
-        manager.setLastClickedCallLogsId(manager.getLastShowedCallLogsBigestId());
     }
     
     private void gotoBackUp(int type) {
