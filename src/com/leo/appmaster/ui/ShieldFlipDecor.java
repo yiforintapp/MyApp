@@ -79,7 +79,7 @@ public class ShieldFlipDecor extends BaseDecor {
             
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (listener != null) {
+                if (listener != null && mAnimator != null) {
                     listener.OnFlipEnd();
                 }
                 mNeedCheat = false;

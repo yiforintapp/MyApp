@@ -97,6 +97,7 @@
                     android:layout_centerInParent="true"
                     android:background="@drawable/green_radius_btn_shape"
                     android:text="@string/call_filter_black_list_add"
+                    android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
             </com.leo.appmaster.ui.RippleView>
