@@ -268,7 +268,8 @@ public class DeskProxyActivity extends Activity {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, CallFilterMainActivity.class);
         intent.putExtra("needMoveToTab2", true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("needToHomeWhenFinish", true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity(intent);
         CallFilterManager manager = CallFilterManager.getInstance(this);
         manager.setLastClickedCallLogsId(manager.getLastShowedCallLogsBigestId());

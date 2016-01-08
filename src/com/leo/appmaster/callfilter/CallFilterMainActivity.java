@@ -41,7 +41,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
 
     private BlackListFragment mBlackListFragment;
     private CallFilterFragment mCallFilterFragment;
-
+    private boolean mNeedToHomeWhenFinish = false;
     private CallFilterFragmentHoler[] mFragmentHolders = new CallFilterFragmentHoler[2];
 
     @Override
@@ -49,6 +49,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_filter_main);
         initUI();
+        mNeedToHomeWhenFinish = getIntent().getBooleanExtra("needToHomeWhenFinish", false);
     }
 
     private void initUI() {
@@ -72,12 +73,29 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         mPagerTab.setViewPager(mViewPager);
         LeoLog.i("tess", "needMoveToTab2 = " + getIntent().getBooleanExtra("needMoveToTab2", false));
         if (getIntent().getBooleanExtra("needMoveToTab2", false)) {
-            
             mViewPager.setCurrentItem(1);
         }
     }
 
-
+    @Override
+    public void finish() {
+        if (mNeedToHomeWhenFinish) {
+            mNeedToHomeWhenFinish = false;
+            Intent intent=new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+            super.finish();
+        } else {
+            super.finish();
+        }
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+        mNeedToHomeWhenFinish = intent.getBooleanExtra("needToHomeWhenFinish", false);
+        LeoLog.i("CallFilterMainActivity", "new intent ! mNeedToHomeWhenFinish = " + mNeedToHomeWhenFinish);
+    }
+    
     private void initFragment() {
         CallFilterFragmentHoler holder = new CallFilterFragmentHoler();
         holder.title = this.getString(R.string.call_filter_black_list_tab);
@@ -107,6 +125,8 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         }
     }
 
+    
+    
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
