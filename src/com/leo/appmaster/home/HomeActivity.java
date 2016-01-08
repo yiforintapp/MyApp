@@ -250,7 +250,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 public void run() {
                     onShieldClick();
                 }
-            }, 2500);
+            }, 3500);
 
         }
     }

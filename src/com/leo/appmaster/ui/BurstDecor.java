@@ -1,6 +1,11 @@
 package com.leo.appmaster.ui;
 
-import com.leo.appmaster.R;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.Animator.AnimatorListener;
@@ -8,13 +13,6 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
-
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.drawable.BitmapDrawable;
 
 /**
  * 满分动画爆裂装饰
@@ -30,6 +28,8 @@ public class BurstDecor extends BaseDecor {
     private float[] mDistanceThirdWave = new float[10];
     private float mCurrentProcess = 0;
     private Paint mPaint;
+
+    private ObjectAnimator mAnimator;
 
     public void setCurrentProcess(float currentProcess) {
         mCurrentProcess = currentProcess;
@@ -97,8 +97,8 @@ public class BurstDecor extends BaseDecor {
     public void startBurstAnim(long duration, final OnBurstEndListener listener) {
         LeoLog.i("tesi", "start Burst " );
         PropertyValuesHolder v1 = PropertyValuesHolder.ofFloat("currentProcess", 0f, 1f);
-        final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(this, v1);
-        animatorI.addUpdateListener(new AnimatorUpdateListener() {
+        mAnimator = ObjectAnimator.ofPropertyValuesHolder(this, v1);
+        mAnimator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float animatedValue = (Float) animation.getAnimatedValue("currentProcess");
@@ -108,7 +108,7 @@ public class BurstDecor extends BaseDecor {
                 calulateDistance();
             }
         });
-        animatorI.addListener(new AnimatorListener() {
+        mAnimator.addListener(new AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
                 mCurrentProcess = 0;
@@ -130,11 +130,20 @@ public class BurstDecor extends BaseDecor {
                 mCurrentProcess = 0;
             }
         });
-        animatorI.setDuration(duration);
-        animatorI.start();
+        mAnimator.setDuration(duration);
+        mAnimator.start();
     }
     
     public interface OnBurstEndListener {
         public void OnBurstEnd();
+    }
+
+
+    public void end() {
+        if (mAnimator != null) {
+            mAnimator.cancel();
+            mAnimator.end();
+            mAnimator = null;
+        }
     }
 }

@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -205,60 +206,20 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mProcessTv.setOnClickListener(this);
 
         mNowHeight = DipPixelUtil.dip2px(mActivity, 74);
-        mNewAppImg = (ImageView) view.findViewById(R.id.scan_new_app_img);
-        mNewAppTitle = (TextView) view.findViewById(R.id.scan_new_app_title);
-        mNewAppContent = (TextView) view.findViewById(R.id.scan_new_app_content);
-        mNewAppScore = (TextView) view.findViewById(R.id.scan_new_app_score);
-        mNewAppLoading = (LoadingView) view.findViewById(R.id.scan_new_app_loading);
-        mNewAppLayout = (LinearLayout) view.findViewById(R.id.scan_new_app_layout);
-        mNewAppLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                shortTypeHeight = mNewAppLayout.getHeight();
-            }
-        });
 
+        initAppLayout(view);
 
-        mNewPicImg = (ImageView) view.findViewById(R.id.scan_new_pic_img);
-        mNewPicTitle = (TextView) view.findViewById(R.id.scan_new_pic_title);
-        mNewPicContent = (TextView) view.findViewById(R.id.scan_new_pic_content);
-        mNewPicScore = (TextView) view.findViewById(R.id.scan_new_pic_score);
-        mNewPicLoading = (LoadingView) view.findViewById(R.id.scan_new_pic_loading);
-        mNewPicLayout = (LinearLayout) view.findViewById(R.id.scan_new_pic_layout);
-        mNewPicLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                normalTypeHeight = mNewPicLayout.getHeight();
-            }
-        });
+        initPicLayout(view);
 
-        mNewVidImg = (ImageView) view.findViewById(R.id.scan_new_vid_img);
-        mNewVidTitle = (TextView) view.findViewById(R.id.scan_new_vid_title);
-        mNewVidContent = (TextView) view.findViewById(R.id.scan_new_vid_content);
-        mNewVidScore = (TextView) view.findViewById(R.id.scan_new_vid_score);
-        mNewVidLoading = (LoadingView) view.findViewById(R.id.scan_new_vid_loading);
-        mNewVidLayout = (LinearLayout) view.findViewById(R.id.scan_new_vid_layout);
+        initVidLayout(view);
 
-        mNewInstructImg = (ImageView) view.findViewById(R.id.scan_new_instruct_img);
-        mNewInstructContent = (TextView) view.findViewById(R.id.scan_new_instruct_content);
-        mNewInstructScore = (TextView) view.findViewById(R.id.scan_new_instruct_score);
-        mNewInstructLoading = (LoadingView) view.findViewById(R.id.scan_new_instruct_loading);
-        mNewInstructLayout = (LinearLayout) view.findViewById(R.id.scan_new_instruct_layout);
+        initLostLayout(view);
 
-        mNewWifiImg = (ImageView) view.findViewById(R.id.scan_new_wifi_img);
-        mNewWifiLoading = (LoadingView) view.findViewById(R.id.scan_new_wifi_loading);
-        mNewWifiLayout = (LinearLayout) view.findViewById(R.id.scan_new_wifi_layout);
+        initInstructLayout(view);
 
+        initWifiLayout(view);
 
-        mNewLostImg = (ImageView) view.findViewById(R.id.scan_new_lost_img);
-        mNewLostContent = (TextView) view.findViewById(R.id.scan_new_lost_content);
-        mNewLostScore = (TextView) view.findViewById(R.id.scan_new_lost_score);
-        mNewLostLoading = (LoadingView) view.findViewById(R.id.scan_new_lost_loading);
-        mNewLostLayout = (LinearLayout) view.findViewById(R.id.scan_new_lost_layout);
-
-        mNewContactImg = (ImageView) view.findViewById(R.id.scan_new_contact_img);
-        mNewContactLoading = (LoadingView) view.findViewById(R.id.scan_new_contact_loading);
-        mNewContactLayout = (LinearLayout) view.findViewById(R.id.scan_new_contact_layout);
+        initContactLayout(view);
 
         mAdLayout = view.findViewById(R.id.ad_content);
         mAdLayout.post(new Runnable() {
@@ -312,6 +273,108 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home_scanning_test, container, false);
+    }
+
+    private void initAppLayout(View parent) {
+        ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_app_layout);
+        if(viewStub == null) {
+            return;
+        }
+        View view = viewStub.inflate();
+        mNewAppImg = (ImageView) view.findViewById(R.id.scan_new_app_img);
+        mNewAppTitle = (TextView) view.findViewById(R.id.scan_new_app_title);
+        mNewAppContent = (TextView) view.findViewById(R.id.scan_new_app_content);
+        mNewAppScore = (TextView) view.findViewById(R.id.scan_new_app_score);
+        mNewAppLoading = (LoadingView) view.findViewById(R.id.scan_new_app_loading);
+        mNewAppLayout = (LinearLayout) view.findViewById(R.id.scan_new_app_layout);
+        mNewAppLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                shortTypeHeight = mNewAppLayout.getHeight();
+            }
+        });
+    }
+
+    private void initPicLayout(View parent) {
+        ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_pic_layout);
+        if(viewStub == null) {
+            return;
+        }
+        View view = viewStub.inflate();
+        mNewPicImg = (ImageView) view.findViewById(R.id.scan_new_pic_img);
+        mNewPicTitle = (TextView) view.findViewById(R.id.scan_new_pic_title);
+        mNewPicContent = (TextView) view.findViewById(R.id.scan_new_pic_content);
+        mNewPicScore = (TextView) view.findViewById(R.id.scan_new_pic_score);
+        mNewPicLoading = (LoadingView) view.findViewById(R.id.scan_new_pic_loading);
+        mNewPicLayout = (LinearLayout) view.findViewById(R.id.scan_new_pic_layout);
+        mNewPicLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                normalTypeHeight = mNewPicLayout.getHeight();
+            }
+        });
+    }
+
+    private void initVidLayout(View parent) {
+        ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_vid_layout);
+        if(viewStub == null) {
+            return;
+        }
+        View view = viewStub.inflate();
+        mNewVidImg = (ImageView) view.findViewById(R.id.scan_new_vid_img);
+        mNewVidTitle = (TextView) view.findViewById(R.id.scan_new_vid_title);
+        mNewVidContent = (TextView) view.findViewById(R.id.scan_new_vid_content);
+        mNewVidScore = (TextView) view.findViewById(R.id.scan_new_vid_score);
+        mNewVidLoading = (LoadingView) view.findViewById(R.id.scan_new_vid_loading);
+        mNewVidLayout = (LinearLayout) view.findViewById(R.id.scan_new_vid_layout);
+    }
+
+    private void initLostLayout(View parent) {
+        ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_lost_layout);
+        if(viewStub == null) {
+            return;
+        }
+        View view = viewStub.inflate();
+        mNewLostImg = (ImageView) view.findViewById(R.id.scan_new_lost_img);
+        mNewLostContent = (TextView) view.findViewById(R.id.scan_new_lost_content);
+        mNewLostScore = (TextView) view.findViewById(R.id.scan_new_lost_score);
+        mNewLostLoading = (LoadingView) view.findViewById(R.id.scan_new_lost_loading);
+        mNewLostLayout = (LinearLayout) view.findViewById(R.id.scan_new_lost_layout);
+    }
+
+    private void initInstructLayout(View parent) {
+        ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_instruct_layout);
+        if(viewStub == null) {
+            return;
+        }
+        View view = viewStub.inflate();
+        mNewInstructImg = (ImageView) view.findViewById(R.id.scan_new_instruct_img);
+        mNewInstructContent = (TextView) view.findViewById(R.id.scan_new_instruct_content);
+        mNewInstructScore = (TextView) view.findViewById(R.id.scan_new_instruct_score);
+        mNewInstructLoading = (LoadingView) view.findViewById(R.id.scan_new_instruct_loading);
+        mNewInstructLayout = (LinearLayout) view.findViewById(R.id.scan_new_instruct_layout);
+    }
+
+    private void initWifiLayout(View parent) {
+        ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_wifi_layout);
+        if(viewStub == null) {
+            return;
+        }
+        View view = viewStub.inflate();
+        mNewWifiImg = (ImageView) view.findViewById(R.id.scan_new_wifi_img);
+        mNewWifiLoading = (LoadingView) view.findViewById(R.id.scan_new_wifi_loading);
+        mNewWifiLayout = (LinearLayout) view.findViewById(R.id.scan_new_wifi_layout);
+    }
+
+    private void initContactLayout(View parent) {
+        ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_contact_layout);
+        if(viewStub == null) {
+            return;
+        }
+        View view = viewStub.inflate();
+        mNewContactImg = (ImageView) view.findViewById(R.id.scan_new_contact_img);
+        mNewContactLoading = (LoadingView) view.findViewById(R.id.scan_new_contact_loading);
+        mNewContactLayout = (LinearLayout) view.findViewById(R.id.scan_new_contact_layout);
     }
 
     @Override

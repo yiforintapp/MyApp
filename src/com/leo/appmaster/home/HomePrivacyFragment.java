@@ -81,6 +81,10 @@ public class HomePrivacyFragment extends Fragment {
 
     private AnimatorSet mMoveLeftTopAnim;
 
+    private AnimatorSet mFullScoreMove;
+    private ObjectAnimator mFullScoreStart;
+
+
     public HomePrivacyFragment() {
 
     }
@@ -645,10 +649,12 @@ public class HomePrivacyFragment extends Fragment {
             return;
         }
 
+
         List<Animator> animators = new ArrayList<Animator>();
 
         // 盾牌区域向左、上移动
         int offsetY = mHomeAnimView.getShieldLayer().getMaxOffsetY();
+        LeoLog.e("Home", "offsetY:" + offsetY);
         mShieldOffsetYAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetY", 0, offsetY);
         int duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);
         mShieldOffsetYAnim.setDuration(duration);
@@ -656,6 +662,7 @@ public class HomePrivacyFragment extends Fragment {
         animators.add(mShieldOffsetYAnim);
 
         int offsetX = mHomeAnimView.getShieldLayer().getMaxOffsetX();
+        LeoLog.e("Home", "offsetX:" + offsetX);
         mShieldOffsetXAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetX", 0, offsetX);
         duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);
         mShieldOffsetXAnim.setDuration(duration);
@@ -670,8 +677,8 @@ public class HomePrivacyFragment extends Fragment {
         animators.add(shieldScaleAnim);
         // 盾牌透明
         ObjectAnimator alphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "shieldAlpha", 255, 0);
-        shieldScaleAnim.setInterpolator(new LinearInterpolator());
-        shieldScaleAnim.setDuration(100);
+        alphaAnim.setInterpolator(new LinearInterpolator());
+        alphaAnim.setDuration(100);
         animators.add(alphaAnim);
         // 内环缩小
         ObjectAnimator inScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "inCircleScaleRatio",
@@ -724,19 +731,23 @@ public class HomePrivacyFragment extends Fragment {
             @Override
             public void OnFlipEnd() {
                 LeoLog.i("tesi", "flip end , to start Burst ");
+
+                LeoLog.i("TheTest", "Burst");
                 shieldLayer.getBurstDecor().startBurstAnim(500, new BurstDecor.OnBurstEndListener() {
 
                     @Override
                     public void OnBurstEnd() {
+
+                        LeoLog.i("TheTest", "jumpToNextFragment ");
                         mActivity.jumpToNextFragment(true);
                         startDirectTranslation();
                     }
                 });
 
-                ObjectAnimator animator = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "firstWaveRatio", 0f, 3f);
-                animator.setDuration(500);
-                animator.setInterpolator(new LinearInterpolator());
-                animator.start();
+                mFullScoreStart = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "firstWaveRatio", 0f, 3f);
+                mFullScoreStart.setDuration(500);
+                mFullScoreStart.setInterpolator(new LinearInterpolator());
+                mFullScoreStart.start();
             }
         });
     }
@@ -772,9 +783,9 @@ public class HomePrivacyFragment extends Fragment {
         textFinalAnim.setInterpolator(new LinearInterpolator());
         animators.add(textFinalAnim);
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(animators);
-        animatorSet.start();
+        mFullScoreMove = new AnimatorSet();
+        mFullScoreMove.playTogether(animators);
+        mFullScoreMove.start();
     }
 
     /**
@@ -837,6 +848,9 @@ public class HomePrivacyFragment extends Fragment {
             mAnimatorSet.end();
             mAnimatorSet = null;
         }
+        endAnim(mCircleRotateAnim);
+
+        endAnim(mMoveLeftTopAnim);
     }
 
     private void postFastArrowAnim() {
@@ -851,16 +865,30 @@ public class HomePrivacyFragment extends Fragment {
 
     public void reset() {
 
-        if (mMoveLeftTopAnim != null) {
-            mMoveLeftTopAnim.cancel();
-            mMoveLeftTopAnim = null;
+
+
+
+        endAnim(mMoveLeftTopAnim);
+        final HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
+        if (mFullScoreStart != null) {
+            mFullScoreStart.cancel();
+            mFullScoreStart.end();
+            mFullScoreStart = null;
         }
+        if (mFullScoreMove != null) {
+            mFullScoreMove.cancel();
+            mFullScoreMove.end();
+            mFullScoreMove = null;
+        }
+        shieldLayer.getFlipDecor().end();
+        shieldLayer.getBurstDecor().end();
+
+
         showScanningPercent(-1);
         stopFinalAnim();
         mHomeAnimView.setShowStep(false);
         mHomeAnimView.setShowProcessLoading(false, 0);
 
-        HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
         shieldLayer.setFinalShieldRatio(0);
         shieldLayer.setFinalTextRatio(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
         shieldLayer.setInCircleScaleRatio(HomeAnimShieldLayer.MAX_IN_CIRCLE_SCALE_RATIO);
@@ -868,12 +896,21 @@ public class HomePrivacyFragment extends Fragment {
         shieldLayer.setShieldScale(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
         shieldLayer.setInCircleAlpha(255);
         shieldLayer.setOutCircleAlpha(255);
+        shieldLayer.setShieldAlpha(255);
 
         if (mShieldOffsetYAnim != null) {
             mShieldOffsetYAnim.end();
         }
         mHomeAnimView.setShieldOffsetY(0);
         mHomeAnimView.setShieldOffsetX(0);
+    }
+
+    private void endAnim(Animator animator) {
+        if (animator != null) {
+            animator.cancel();
+            animator.end();
+            animator = null;
+        }
     }
 
     public int getToolbarColor() {

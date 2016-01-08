@@ -89,57 +89,56 @@
                 layout="@layout/scan_ad_layout" />
             <!-- Advertise -->
 
-
-            <include
+            <ViewStub
                 android:id="@+id/scan_new_app_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/empty_header"
-                layout="@layout/scan_app_layout" />
+                android:layout="@layout/scan_app_layout" />
 
-            <include
+            <ViewStub
                 android:id="@+id/scan_new_pic_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/empty_header"
-                layout="@layout/scan_pic_layout" />
+                android:layout="@layout/scan_pic_layout" />
 
-            <include
+            <ViewStub
                 android:id="@+id/scan_new_vid_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/empty_header"
-                layout="@layout/scan_vid_layout" />
+                android:layout="@layout/scan_vid_layout" />
 
 
-            <include
+            <ViewStub
                 android:id="@+id/scan_new_lost_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/empty_header"
-                layout="@layout/scan_lost_layout" />
+                android:layout="@layout/scan_lost_layout" />
 
-            <include
+            <ViewStub
                 android:id="@+id/scan_new_instruct_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/empty_header"
-                layout="@layout/scan_instruct_layout" />
+                android:layout="@layout/scan_instruct_layout" />
 
 
-            <include
+            <ViewStub
                 android:id="@+id/scan_new_wifi_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/empty_header"
-                layout="@layout/scan_wifi_layout" />
+                android:layout="@layout/scan_wifi_layout" />
 
-            <include
+            <ViewStub
                 android:id="@+id/scan_new_contact_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/empty_header"
-                layout="@layout/scan_contact_layout" />
+                android:layout="@layout/scan_contact_layout" />
 
         </RelativeLayout>
     </ScrollView>

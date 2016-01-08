@@ -1,6 +1,9 @@
 package com.leo.appmaster.ui;
 
-import com.leo.appmaster.home.SimpleAnimatorListener;
+import android.graphics.Camera;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.Animator.AnimatorListener;
@@ -8,10 +11,6 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
-
-import android.graphics.Camera;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
 
 /**
  * 满分动画盾牌翻转装饰
@@ -24,6 +23,8 @@ public class ShieldFlipDecor extends BaseDecor {
     //这个用于标记是否需要在camera旋转时增加180度，以解决盾牌上的文字的翻转问题
     private boolean mNeedCheat =false;
     private float mCurrDegree;
+
+    private ObjectAnimator mAnimator;
 
     public ShieldFlipDecor() {
         super();
@@ -54,8 +55,8 @@ public class ShieldFlipDecor extends BaseDecor {
     
     public void startFlipAnim(long duration, final OnFlipEndListener listener) {
         PropertyValuesHolder v1 = PropertyValuesHolder.ofFloat("flipDegreeY", 0f, 180f);
-        final ObjectAnimator animatorI = ObjectAnimator.ofPropertyValuesHolder(this, v1);
-        animatorI.addUpdateListener(new AnimatorUpdateListener() {
+        mAnimator = ObjectAnimator.ofPropertyValuesHolder(this, v1);
+        mAnimator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 LeoLog.i("tesi", "mParent.left = " +mParent.getLeft());
@@ -66,7 +67,7 @@ public class ShieldFlipDecor extends BaseDecor {
                 }
             }
         });
-        animatorI.addListener(new AnimatorListener() {
+        mAnimator.addListener(new AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
                 mNeedCheat = false;
@@ -89,11 +90,21 @@ public class ShieldFlipDecor extends BaseDecor {
                 mNeedCheat = false;
             }
         });
-        animatorI.setDuration(duration);
-        animatorI.start();
+        mAnimator.setDuration(duration);
+        mAnimator.start();
     }
     
     public interface OnFlipEndListener {
         public void OnFlipEnd();
     }
+
+    public void end() {
+        if (mAnimator != null) {
+            mAnimator.cancel();
+            mAnimator.end();
+            mAnimator = null;
+        }
+    }
+
+
 }
