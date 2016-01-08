@@ -697,8 +697,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    String selection = null;
-                    String[] selectionArgs = null;
+                    String selection = CallLog.Calls.TYPE + " = ? or " + CallLog.Calls.TYPE + " = ? ";
+                    String[] selectionArgs = new String[]{String.valueOf(CallLog.Calls.INCOMING_TYPE),
+                            String.valueOf(CallLog.Calls.MISSED_TYPE)};
                     String sortOrder = null;
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
                             getSysCallLogNoContact(StrangeCallActivity.this, selection, selectionArgs, sortOrder, false, true);
@@ -709,8 +710,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
                             LeoLog.d("testAddBlack", "go item");
 
-                            if (CallLog.Calls.OUTGOING_TYPE != call.getClallLogType()
-                                    && !mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
+                            if (!mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
 
                                 //add to black list num
                                 CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);

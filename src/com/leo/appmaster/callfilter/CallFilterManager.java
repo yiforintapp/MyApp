@@ -778,7 +778,7 @@ public class CallFilterManager {
 
             }
             int count = straCalls.size();
-            if (count == 0) {
+            if (count < 1) {
                 return;
             }
 
