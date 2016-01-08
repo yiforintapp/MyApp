@@ -127,10 +127,6 @@ public class PrivacyContactFragment extends BaseFragment {
                 return true;
             }
         });
-//
-//        PrivacyContactMyDateTask task = new PrivacyContactMyDateTask();
-//        task.execute("");
-//        task.setDefaultExecutor(ThreadManager.getAsyncExecutor());
         sendMsgHandler();
     }
 
@@ -662,6 +658,19 @@ public class PrivacyContactFragment extends BaseFragment {
                 } else if (PrivacyContactUtils.CONTACT_DETAIL_DELETE_LOG.equals(flag)) {
                     // 执行删除操作
                     if (model == 1) {
+
+                        mContacts.remove(contact);
+                        PrivacyContactManager.getInstance(mActivity).removeContact(contact);
+                        if (mAdapter != null) {
+                            mAdapter.notifyDataSetChanged();
+                        }
+
+                        if (mContacts == null || mContacts.size() == 0) {
+                            mDefaultText.setVisibility(View.VISIBLE);
+                        } else {
+                            mDefaultText.setVisibility(View.GONE);
+                        }
+
                         PrivacyContactEditDetailTask task = new PrivacyContactEditDetailTask();
                         task.execute(contact);
                     }
@@ -799,11 +808,9 @@ public class PrivacyContactFragment extends BaseFragment {
                             pre.setCallLogNoReadCount(temp);
                         }
                         if (temp <= 0) {
-                            LeoEventBus
-                                    .getDefaultBus()
-                                    .post(
-                                            new PrivacyEditFloatEvent(
-                                                    PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
+                            String msg = PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT;
+                            PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(msg);
+                            LeoEventBus.getDefaultBus().post(event);
                         }
                     }
                 }
@@ -820,11 +827,9 @@ public class PrivacyContactFragment extends BaseFragment {
                             pre.setMessageNoReadCount(messageTemp);
                         }
                         if (temp <= 0) {
-                            LeoEventBus
-                                    .getDefaultBus()
-                                    .post(
-                                            new PrivacyEditFloatEvent(
-                                                    PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT));
+                            String msg = PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT;
+                            PrivacyEditFloatEvent event = new PrivacyEditFloatEvent(msg);
+                            LeoEventBus.getDefaultBus().post(event);
                         }
                     }
                 }
