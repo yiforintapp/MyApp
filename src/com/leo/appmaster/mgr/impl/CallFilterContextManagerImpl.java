@@ -194,6 +194,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                                 value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
                             }
                             if (CallFilterConstants.LOC_HD != loc) {
+                                value.put(CallFilterConstants.ADD_BLK_TIME, System.currentTimeMillis());
                                 value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
                             }
                             //恢复删除的黑名单引发的更新
