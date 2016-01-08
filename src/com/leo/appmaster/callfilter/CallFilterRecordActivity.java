@@ -297,6 +297,9 @@ class MyAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (mRecordTime == null) {
+            return 0;
+        }
         return mRecordTime.size();
     }
 
