@@ -31,6 +31,7 @@ public class TaskChangeHandler {
     public static final String WAITNAME = "WaitActivity";
     public static final String WEBVIEW = "WebViewActivity";
     public static final String UPDATE = "UpdateActivity";
+    public static final String BLACK_LIST = "AskAddToBlacklistActivity";
     // public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
     public static final String LAUNCHERBOOST = "HomeBoostActivity";

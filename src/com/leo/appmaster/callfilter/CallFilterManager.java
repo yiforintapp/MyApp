@@ -428,7 +428,7 @@ public class CallFilterManager {
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+//        mLockManager.filterPackage(mContext.getPackageName(), 2000);
         mContext.startActivity(intent);
     }
 
@@ -439,7 +439,7 @@ public class CallFilterManager {
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+//        mLockManager.filterPackage(mContext.getPackageName(), 2000);
         mContext.startActivity(intent);
     }
 
@@ -450,7 +450,7 @@ public class CallFilterManager {
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+//        mLockManager.filterPackage(mContext.getPackageName(), 2000);
         mContext.startActivity(intent);
     }
 
@@ -461,7 +461,7 @@ public class CallFilterManager {
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY, filterTip);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+//        mLockManager.filterPackage(mContext.getPackageName(), 2000);
         mContext.startActivity(intent);
     }
 
