@@ -299,6 +299,7 @@ public class CallFilterConstants {
     public static final long CALL_RECEIV_DURAT = 1700;
 
     public static final String EVENT_MSG_LOAD_FIL_GR = "MSG_LOAD_FIL_GR";
+    public static final String EVENT_MSG_REM_BLK_FIL_GR = "MSG_REM_BLK_FIL_GR";
 
     public static final int FIL_UP = 1;
     public static final int FIL_UP_NO = 0;

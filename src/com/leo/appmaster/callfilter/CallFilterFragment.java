@@ -35,6 +35,7 @@ import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,13 +44,14 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     public static final int TYPE_ANNOY = 1;
     public static final int TYPE_AD = 2;
     public static final int TYPE_CHEAT = 3;
+    private static final String TAG = "CallFilterFragment";
 
     private ListView mCallListView;
     private View mNothingToShowView;
     private RippleView mClearAll;
     private ProgressBar mProgressBar;
     private CallFilterFragmentAdapter mAdapter;
-    private List<CallFilterInfo> mFilterList;
+    private ArrayList<CallFilterInfo> mFilterList;
     private boolean isFristIn = true;
     private List<ContactBean> mSysContacts;
     private RelativeLayout mRlBottomView;
@@ -129,7 +131,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                mFilterList = mCallManger.getCallFilterGrList();
+                mFilterList = (ArrayList<CallFilterInfo>) mCallManger.getCallFilterGrList();
 
                 mSysContacts = PrivacyContactUtils.getSysContact(mActivity, null, null, true);
 
@@ -148,6 +150,22 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         String msg = event.eventMsg;
         if (CallFilterConstants.EVENT_MSG_LOAD_FIL_GR.equals(msg)) {
             loadData(false);
+        } else if (CallFilterConstants.EVENT_MSG_REM_BLK_FIL_GR.equals(msg)) {
+            String numb = (String) event.getDate();
+            if (mFilterList != null && mFilterList.size() > 0) {
+                ArrayList<CallFilterInfo> infos = (ArrayList<CallFilterInfo>) mFilterList.clone();
+                String froNum = PrivacyContactUtils.formatePhoneNumber(numb);
+                for (int i = 0; i < infos.size(); i++) {
+                    if (infos.get(i).getNumber().contains(froNum)) {
+                        mFilterList.remove(infos.get(i));
+                        LeoLog.d(TAG, "remove filter group sucess :" + infos.get(i).getNumber());
+                    }
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+            if (mFilterList.size() < 1) {
+                showEmpty();
+            }
         }
 
     }

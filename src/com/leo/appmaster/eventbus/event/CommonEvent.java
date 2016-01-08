@@ -3,6 +3,15 @@ package com.leo.appmaster.eventbus.event;
 
 public class CommonEvent extends BaseEvent {
     public String eventMsg;
+    private Object date;
+
+    public Object getDate() {
+        return date;
+    }
+
+    public void setDate(Object date) {
+        this.date = date;
+    }
 
     public CommonEvent() {
         mEventId = EventId.EVENT_BACKUP;

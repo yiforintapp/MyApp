@@ -155,8 +155,9 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
                         removeFilterList.add(callFil);
                         mCallManger.removeFilterGr(removeFilterList);
                         int id = EventId.EVENT_LOAD_FIL_GR_ID;
-                        String msg = CallFilterConstants.EVENT_MSG_LOAD_FIL_GR;
+                        String msg = CallFilterConstants.EVENT_MSG_REM_BLK_FIL_GR;
                         CommonEvent event = new CommonEvent(id, msg);
+                        event.setDate(info.getNumber());
                         LeoEventBus.getDefaultBus().post(event);
                     }
                 });
