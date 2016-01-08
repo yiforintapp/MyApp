@@ -1358,8 +1358,19 @@ public class PrivacyContactUtils {
             return -1;
         }
         String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        String selects = Phone.NUMBER + " LIKE ? ";
-        String[] selectArgs = new String[]{"%" + formateNumber};
+
+        String numSelcts = null;
+        String selArgs = null;
+        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+            number = PrivacyContactUtils.formatePhoneNumber(number);
+            numSelcts = " LIKE ? ";
+            selArgs = "%" + number;
+        } else {
+            numSelcts = " = ? ";
+            selArgs = number;
+        }
+        String selects = Phone.NUMBER + numSelcts;
+        String[] selectArgs = new String[]{selArgs};
         Uri uri = CONTACT_PHONE_URL;
         String[] projection = new String[]{Phone.CONTACT_ID};
         String sortOrder = null;
