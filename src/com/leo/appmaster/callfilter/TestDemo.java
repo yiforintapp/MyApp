@@ -151,7 +151,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
                 break;
             case R.id.B7:
                 Uri uri = CallFilterConstants.BLACK_LIST_URI;
-                String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+                String sortOrder = CallFilterConstants.ADD_BLK_TIME + " " + CallFilterConstants.DESC;
                 StringBuilder sb1 = new StringBuilder();
                 sb1.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
                 sb1.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");

@@ -36,6 +36,18 @@ public class BlackListInfo implements Serializable {
      */
     private boolean existState;
     private int filtUpState = -1;
+    /**
+     * 添加黑名单的时间
+     */
+    private long addBlkTime = -1;
+
+    public long getAddBlkTime() {
+        return addBlkTime;
+    }
+
+    public void setAddBlkTime(long addBlkTime) {
+        this.addBlkTime = addBlkTime;
+    }
 
     public int getAddBlackNumber() {
         return addBlackNumber;

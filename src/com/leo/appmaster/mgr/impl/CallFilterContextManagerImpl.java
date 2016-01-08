@@ -36,7 +36,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public List<BlackListInfo> getBlackList() {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
+        String sortOrder = CallFilterConstants.ADD_BLK_TIME + " " + CallFilterConstants.DESC;
         StringBuilder sb = new StringBuilder();
         sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
         sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
@@ -197,6 +197,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                             }
                             //恢复删除的黑名单引发的更新
                             if (locHdType == -1) {
+                                value.put(CallFilterConstants.ADD_BLK_TIME,System.currentTimeMillis());
                                 value.put(CallFilterConstants.BLACK_NAME, name);
                                 value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, CallFilterConstants.BLACK_LIST_TYP);
                                 value.put(CallFilterConstants.BLACK_READ_STATE, readState);
@@ -220,7 +221,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
                     value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
                     value.put(CallFilterConstants.BLACK_FIL_UP, CallFilterConstants.FIL_UP_NO);
-
+                    value.put(CallFilterConstants.ADD_BLK_TIME,System.currentTimeMillis());
                     if (values != null) {
                         values[i] = value;
                         i = i + 1;

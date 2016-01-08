@@ -72,6 +72,7 @@ public class CallFilterConstants {
      * 3：诈骗电话
      */
     public static final String BLACK_LOC_HD_TYPE = "loc_hd_type";
+    public static final String ADD_BLK_TIME = "add_blk_time";
     public static final String BLACK_OTHER_FLAG = "other_flag";
 
     public static final String CREATE_BLACK_LIST_TAB = "CREATE TABLE IF NOT EXISTS "
@@ -104,6 +105,8 @@ public class CallFilterConstants {
             + BLACK_REMOVE_STATE
             + " INTEGER,"
             + BLACK_FIL_UP
+            + " INTEGER,"
+            +ADD_BLK_TIME
             + " INTEGER,"
             + BLACK_OTHER_FLAG
             + " TEXT"
