@@ -198,6 +198,7 @@
     <dimen name="home_anim_progress">4dp</dimen>
     <dimen name="home_arrow_gap">3dp</dimen>
     <dimen name="pri_pro_header">237dp</dimen>
+    <dimen name="pri_pro_header_padding">181dp</dimen>
     <dimen name="pri_pro_final_header">170dp</dimen>
     <dimen name="pri_pro_top_margin">60dp</dimen>
     <dimen name="pri_pro_new">62dp</dimen>

@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -15,6 +16,7 @@ import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -177,13 +179,22 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
     @Override
     protected View getEmptyHeader() {
 
-         View view = mActivity.getLayoutInflater().inflate(R.layout.pri_folder_top_view, null);
+         final View view = mActivity.getLayoutInflater().inflate(R.layout.pri_folder_top_view, null);
          TextView title = (TextView) view.findViewById(R.id.pri_pro_new_label_tv);
          title.setText(Html.fromHtml(mActivity.getResources().getString(
                 R.string.scan_find_pic, mDataList.size())));
          TextView content = (TextView) view.findViewById(R.id.pri_pro_new_label_content);
          content.setText(mActivity.getResources().getString(
                  R.string.scan_pic_content));
+
+         view.getViewTreeObserver().addOnGlobalLayoutListener(
+                 new ViewTreeObserver.OnGlobalLayoutListener() {
+             @Override
+             public void onGlobalLayout() {
+                 mTopViewHeight = DipPixelUtil.px2dip(mActivity, view.getHeight());
+                 view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+             }
+         });
          return view;
     }
 }

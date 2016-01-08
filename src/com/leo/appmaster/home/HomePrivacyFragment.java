@@ -171,7 +171,7 @@ public class HomePrivacyFragment extends Fragment {
         int currentScore = helper.getSecurityScore();
         int time = (100 - currentScore) * TPS;
         time = time < MIN_TIME ? MIN_TIME : time;
-
+        LeoLog.e(TAG, "currentScore:" + currentScore);
         mHomeAnimView.getBgLayer().setTargetScore(currentScore);
         mHomeAnimView.getBgLayer().setIncrease(false);
         mCurrentScore = currentScore;
@@ -307,11 +307,21 @@ public class HomePrivacyFragment extends Fragment {
         mHomeAnimView.setShieldOffsetY(0);
         mHomeAnimView.setShieldOffsetX(0);
 
+        PrivacyHelper helper = PrivacyHelper.getInstance(getActivity());
+        int currentScore = helper.getSecurityScore();
+        LeoLog.e(TAG, "onFromNotifi currentScore:" + currentScore);
+        mHomeAnimView.getBgLayer().setTargetScore(currentScore);
+        mHomeAnimView.getBgLayer().setIncrease(false);
+        mCurrentScore = currentScore;
+
+        mHomeAnimView.setSecurityScore(currentScore);
+
         mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
         mCircleRotateAnim.setDuration(3500);
         mCircleRotateAnim.setInterpolator(new LinearInterpolator());
         mCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
         mCircleRotateAnim.start();
+
     }
 
     public void onScanStart() {

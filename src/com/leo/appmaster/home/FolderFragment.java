@@ -15,6 +15,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -40,6 +41,10 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
     protected int mEmptyHeight;
 
     protected int mToolbarHeight;
+
+    protected int mTopViewHeightPadding;
+
+    protected int mTopViewHeight;
 
     private View mFloatingView;
     private TextView mFloatingTv;
@@ -70,6 +75,8 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         super.onCreate(savedInstanceState);
         mToolbarHeight = getActivity().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
         mEmptyHeight = getActivity().getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
+        mTopViewHeightPadding = getActivity().getResources().getDimensionPixelSize(
+                R.dimen.pri_pro_header_padding);
     }
 
     @Override
@@ -133,7 +140,8 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         }
 
         mActivity.onListScroll(scrollY);
-        int maxScrollHeight = mEmptyHeight - mToolbarHeight;
+        int maxScrollHeight = mEmptyHeight - mTopViewHeight + mTopViewHeightPadding;
+        LeoLog.e("HomePrivacyFragment", "onScroll:" + mTopViewHeight);
         if (scrollY > maxScrollHeight) {
             mOffsetBg.setTranslationY(-maxScrollHeight);
         } else {

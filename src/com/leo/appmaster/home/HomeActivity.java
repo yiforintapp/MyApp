@@ -189,6 +189,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         openAdvanceProtectDialogHandler();
 
+
     }
 
     private void requestCamera() {
