@@ -570,7 +570,11 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                     if (messge != null && mHandler != null) {
                                         mHandler.sendMessage(messge);
                                     }
-                                    mCallManger.addBlackList(blackList, false);
+                                    boolean inerFlag = mCallManger.addBlackList(blackList, false);
+                                    if (!inerFlag) {
+                                        CallFilterManager cm = CallFilterManager.getInstance(StrangeCallActivity.this);
+                                        cm.addBlackFailTip();
+                                    }
                                 } else {
                                     Message curMsg = new Message();
                                     curMsg.what = CUT_PROCESS;

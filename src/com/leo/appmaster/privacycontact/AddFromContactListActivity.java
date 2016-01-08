@@ -35,6 +35,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -497,7 +498,11 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     }
                                 }
 
-                                mCallManger.addBlackList(blackList, false);
+                                boolean inerFlag = mCallManger.addBlackList(blackList, false);
+                                if (!inerFlag) {
+                                    CallFilterManager cm = CallFilterManager.getInstance(AddFromContactListActivity.this);
+                                    cm.addBlackFailTip();
+                                }
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;

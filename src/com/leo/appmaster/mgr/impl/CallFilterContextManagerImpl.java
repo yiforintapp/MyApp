@@ -79,6 +79,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (blackList == null || blackList.size() <= 0) {
             return false;
         }
+        boolean flag = true;
         ContentValues[] values = null;
         int blackCount = blackList.size();
         if (blackCount > 1) {
@@ -212,7 +213,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         String[] selectArgs = null;
                         where = CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts;
                         selectArgs = new String[]{selArgs};
-                        cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
+                        int count = cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
+                        if (count < 0) {
+                            flag = false;
+                        }
                     }
                 } else {
                     /*新增操作*/
@@ -226,7 +230,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                         values[i] = value;
                         i = i + 1;
                     } else {
-                        cr.insert(uri, value);
+                        long insert = sd.insert(table, null, value);
+                        if (insert < 0) {
+                            flag = false;
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -234,12 +241,15 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             }
         }
         if (values != null && values.length > 0) {
-            cr.bulkInsert(uri, values);
+            int count = cr.bulkInsert(uri, values);
+            if (count < 0) {
+                flag = false;
+            }
         }
         if (cur != null) {
             cur.close();
         }
-        return true;
+        return flag;
     }
 
     @Override
@@ -295,7 +305,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     selectArgs = new String[]{selArgs};
                     try {
                         mContext.getContentResolver().update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
-                        LeoLog.d(TAG,"remove black sucess !");
+                        LeoLog.d(TAG, "remove black sucess !");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

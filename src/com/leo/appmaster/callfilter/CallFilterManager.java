@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -38,6 +39,7 @@ import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -923,6 +925,24 @@ public class CallFilterManager {
         String msg = CallFilterConstants.EVENT_MSG_LOAD_BLACK;
         CommonEvent event = new CommonEvent(id, msg);
         LeoEventBus.getDefaultBus().post(event);
+    }
+
+    /**
+     * 弹出加入黑名单失败操作
+     */
+    public void addBlackFailTip() {
+        File file = new File(Constants.PG_DB_PATH);
+        boolean exist = file.exists();
+        if (!exist) {
+            final String content = mContext.getResources().getString(R.string.ad_blk_fail);
+            ThreadManager.getUiThreadHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, content, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
     }
 
 }

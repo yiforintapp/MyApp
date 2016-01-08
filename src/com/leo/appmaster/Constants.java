@@ -53,7 +53,7 @@ public class Constants {
 
     public static final String INTRUDER_PHOTO_TIMESTAMP_FORMAT = "yyyy/MM/dd-HH:mm:ss";
     public static final long TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY = 512 * 1024;
-    
+
     public static final String TABLE_DOWNLOAD = "download";
     public static final String TABLE_FEEDBACK = "feedback";
     public static final String TABLE_APPLIST_BUSINESS = "applist_business";
@@ -399,8 +399,10 @@ public class Constants {
     public static final String NEW_APP_NUM = "new_app_num";
 //    public static final String IS_CLICK_LOCK_TAB = "is_click_lock_tab";
 
-    /** FaceBook相关 */
-    public static final String FACEBOOK_PKG_NAME="com.facebook.katana";
+    /**
+     * FaceBook相关
+     */
+    public static final String FACEBOOK_PKG_NAME = "com.facebook.katana";
     /*pg分享闪屏，二维码图路径*/
     public static final String SPL_SHARE_QR_NAME = "spl_share_qr.png";
 
@@ -409,37 +411,50 @@ public class Constants {
     public static final String FACEBOOK_CLASS = "com.facebook.katana.IntentUriHandler";
     public static final String FACEBOOK_PG_URL = "https://www.facebook.com/pages/App-Master/1709302419294051";
 
-    /** 旧Swifty卡片数据请求地址 */
+    /**
+     * 旧Swifty卡片数据请求地址
+     */
     public static final String SWIFTY_SECURITY_URL = "/appmaster/privacysuggest";
-    
+
     public static final String EXTRA_IS_FROM_SCAN = "isFromScan";
 
-    /** Swifty使用浏览器 */
+    /**
+     * Swifty使用浏览器
+     */
     public static final String BROWSER_URL_TYPE = "1";
-    /** 判断手机是否为红米Note2 */
+    /**
+     * 判断手机是否为红米Note2
+     */
     public static final String RED_MI_TWO_NAME = "Redmi Note 2";
 
     public static final String PG_TO_ISWIPE = "pg_to_iswipe";
     public static final String ISWIPE_FIRST_TIP = "iswipe_first_tip";
     public static final String ISWIPE_NO_FIRST_TIP = "iswipe_no_firt_tip";
 
-    /** 用于拼接Gp地址 */
+    /**
+     * 用于拼接Gp地址
+     */
     public final static String GP_PKG_NAME = "com.android.vending";
     public final static String FIRST_GP_STRING = "market://details?id=";
     public final static String LAST_GP_STRING = "&referrer=utm_source=AppMaster";
 
-    /** 包名 */
+    /**
+     * 包名
+     */
     public final static String WIFIMASTER_PKG_NAME = "com.leo.wifi";
     public final static String PL_PKG_NAME = "com.leo.privacylock";
 
     public final static String IS_CLICK_SWIFTY = "is_click_swifty";
     public final static String IS_CLICK_WIFIMASTER = "is_click_wifimaster";
 
-    /** 新的卡片数据接口 */
+    /**
+     * 新的卡片数据接口
+     */
     public static final String PRIVACY_WIFI_URL = "/appmaster/promotion";
 
     public static final String PATTERN_DATE = "yyyy/MM/dd HH:mm:ss";
 
+    public static final String PG_DB_PATH = "data/data/com.leo.appmaster/databases/" + DATABASE_NAME;
 
 
 }

@@ -129,7 +129,11 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                         break;
                 }
                 infost.add(infot);
-                mCmp.addBlackList(infost, false);
+                boolean inerFlag = mCmp.addBlackList(infost, false);
+                if (!inerFlag) {
+                    CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
+                    cm.addBlackFailTip();
+                }
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogTooShort.dismiss();
@@ -190,7 +194,11 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                         break;
                 }
                 infost.add(infot);
-                mCmp.addBlackList(infost, false);
+                boolean inerFlag = mCmp.addBlackList(infost, false);
+                if (!inerFlag) {
+                    CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
+                    cm.addBlackFailTip();
+                }
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmrMark.dismiss();
@@ -238,7 +246,11 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                         break;
                 }
                 infost.add(infot);
-                mCmp.addBlackList(infost, false);
+                boolean inerFlag = mCmp.addBlackList(infost, false);
+                if (!inerFlag) {
+                    CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
+                    cm.addBlackFailTip();
+                }
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmr.dismiss();
@@ -268,7 +280,11 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 infot.setNumber(mPhoneNumber);
                 infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
                 infost.add(infot);
-                mCmp.addBlackList(infost, false);
+                boolean inerFlag =  mCmp.addBlackList(infost, false);
+                if (!inerFlag) {
+                    CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
+                    cm.addBlackFailTip();
+                }
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                 mDialogAskAdd.dismiss();

@@ -34,6 +34,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
+import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
@@ -143,7 +144,11 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 info.setIcon(icon);
                 list.add(info);
 
-                mCallManger.addBlackList(list, false);
+                boolean inerFlag = mCallManger.addBlackList(list, false);
+                if (!inerFlag) {
+                    CallFilterManager cm = CallFilterManager.getInstance(PrivacyContactInputActivity.this);
+                    cm.addBlackFailTip();
+                }
                 Context context = this;
                 String str = getResources().getString(R.string.add_black_list_done);
                 Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
