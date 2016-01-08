@@ -98,6 +98,8 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                         Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                     }
                     AddFromMessageListActivity.this.finish();
+
+
                 } else {
                     if (mProgressDialog != null) {
                         mProgressDialog.cancel();
@@ -512,17 +514,21 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                         blackList.add(info);
                                     }
                                 }
+                                
+                                boolean inerFlag = mCallManger.addBlackList(blackList, false);
+                                if (!inerFlag) {
+                                    CallFilterManager cm = CallFilterManager.getInstance(AddFromMessageListActivity.this);
+                                    cm.addBlackFailTip();
+                                }
+
+                                mCallManger.addBlackList(blackList, false);
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;
                                 if (messge != null && mHandler != null) {
                                     mHandler.sendMessage(messge);
                                 }
-                                boolean inerFlag = mCallManger.addBlackList(blackList, false);
-                                if (!inerFlag) {
-                                    CallFilterManager cm = CallFilterManager.getInstance(AddFromMessageListActivity.this);
-                                    cm.addBlackFailTip();
-                                }
+
                             }
 
                         } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {

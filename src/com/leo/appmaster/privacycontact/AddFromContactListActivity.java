@@ -503,6 +503,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     CallFilterManager cm = CallFilterManager.getInstance(AddFromContactListActivity.this);
                                     cm.addBlackFailTip();
                                 }
+                                mCallManger.addBlackList(blackList, false);
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;
