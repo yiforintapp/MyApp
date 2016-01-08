@@ -446,11 +446,11 @@ public class PrivacyContactFragment extends BaseFragment {
                     for (ContactBean contact : mDeleteContact) {
                         List<MessageBean> mRestorMessages = null;
                         List<ContactCallLog> mRestorCallLogs = null;
+                        mContacts.remove(contact);
+                        PrivacyContactManager.getInstance(mActivity).removeContact(contact);
                         PrivacyContactUtils.deleteContactFromMySelf(
                                 Constants.COLUMN_PHONE_NUMBER + " = ? ", contact.getContactNumber(),
                                 mContext);
-                        mContacts.remove(contact);
-                        PrivacyContactManager.getInstance(mActivity).removeContact(contact);
                         // 查询删除的联系人有无记录
                         if (mIsChecked) {
                             String tempNumber =
