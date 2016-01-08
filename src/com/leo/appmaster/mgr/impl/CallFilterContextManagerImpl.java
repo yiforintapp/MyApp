@@ -554,17 +554,18 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     String colum4 = CallFilterConstants.FIL_NUMBER;
                     Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3, colum4}, number);
                     boolean isKeyExist = (cur != null) ? cur.getCount() > 0 : false;
-                    String numSelcts = null;
-                    String selArgs = null;
-                    if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-                        number = PrivacyContactUtils.formatePhoneNumber(number);
-                        numSelcts = " LIKE ? ";
-                        selArgs = "%" + number;
-                    } else {
-                        numSelcts = " = ? ";
-                        selArgs = number;
-                    }
                     if (isKeyExist) {
+                        String numSelcts = null;
+                        String selArgs = null;
+                        String froNum = null;
+                        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                            froNum = PrivacyContactUtils.formatePhoneNumber(number);
+                            numSelcts = " LIKE ? ";
+                            selArgs = "%" + froNum;
+                        } else {
+                            numSelcts = " = ? ";
+                            selArgs = number;
+                        }
                         while (cur.moveToNext()) {
                             int dateColum = cur.getColumnIndex(CallFilterConstants.FIL_GR_DATE);
                             int callTypeColum = cur.getColumnIndex(CallFilterConstants.FIL_CALL_TYPE);
