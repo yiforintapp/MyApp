@@ -26,12 +26,14 @@ import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 
 public class AskAddToBlacklistActivity extends BaseActivity {
@@ -52,7 +54,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
     public static final int CASE_ASK_WITHOUT_MARK = 2;
     public static final int CASE_ASK_WITH_MARK = 3;
     public static final int CASE_ASK_WHEN_TOO_SHORT = 4;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,13 +86,13 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 break;
         }
     }
-    
+
     @Override
     public void finish() {
         LeoLog.i("testdata", "finished");
         super.finish();
     }
-    
+
     private void showTooShortDialog() {
         long durationMax = mCmp.getCallDurationMax();
         mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, this, true, 0, false);
@@ -107,6 +109,10 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
                 BlackListInfo infot = new BlackListInfo();
+                String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
+                if (!Utilities.isEmpty(name)) {
+                    infot.setNumberName(name);
+                }
                 int nowItemPosition = mDialogTooShort.getNowItemPosition();
                 infot.setNumber(mPhoneNumber);
                 switch (nowItemPosition) {
@@ -132,7 +138,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         });
         mDialogTooShort.show();
     }
-    
+
     private void showAskAddBlackWithMark(int[] filterTip) {
         mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, this, true, 0, false);
         mDialogAskAddWithSmrMark.setOnDismissListener(new OnDismissListener() {
@@ -163,6 +169,10 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
                 BlackListInfo infot = new BlackListInfo();
+                String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
+                if (!Utilities.isEmpty(name)) {
+                    infot.setNumberName(name);
+                }
                 infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
                 int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
                 infot.setNumber(mPhoneNumber);
@@ -189,8 +199,8 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         });
         mDialogAskAddWithSmrMark.show();
     }
-    
-    
+
+
     private void showAskAddBlackWithoutMark(int[] filterTip) {
         mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, this, true, 0, false);
         mDialogAskAddWithSmr.setOnDismissListener(new OnDismissListener() {
@@ -207,6 +217,10 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
                 BlackListInfo infot = new BlackListInfo();
+                String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
+                if (!Utilities.isEmpty(name)) {
+                    infot.setNumberName(name);
+                }
                 int nowItemPosition = mDialogAskAddWithSmr.getNowItemPosition();
                 infot.setNumber(mPhoneNumber);
                 infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
@@ -233,7 +247,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         });
         mDialogAskAddWithSmr.show();
     }
-    
+
     private void showAskAddWhenNoOffHook(int[] filterTip) {
         mDialogAskAdd = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(this, mPhoneNumber, String.valueOf(filterTip[2]));
         mDialogAskAdd.setOnDismissListener(new OnDismissListener() {
@@ -247,6 +261,10 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
                 List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
                 BlackListInfo infot = new BlackListInfo();
+                String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
+                if (!Utilities.isEmpty(name)) {
+                    infot.setNumberName(name);
+                }
                 infot.setNumber(mPhoneNumber);
                 infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
                 infost.add(infot);
@@ -259,29 +277,15 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         });
         mDialogAskAdd.show();
     }
-    
+
     public void notiUpdateBlackList() {
         int id = EventId.EVENT_LOAD_BLCAK_ID;
         String msg = CallFilterConstants.EVENT_MSG_LOAD_BLACK;
         CommonEvent event = new CommonEvent(id, msg);
         LeoEventBus.getDefaultBus().post(event);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
 //    private class MyAdapter extends BaseAdapter {
 //        private Context mContext;
 //
@@ -322,8 +326,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
 //        }
 //
 //    }
-    
-    
+
 
 //    private void showCheckFailed() {
 //        mLlSummary = (LinearLayout) findViewById(R.id.ll_summary);
@@ -340,6 +343,6 @@ public class AskAddToBlacklistActivity extends BaseActivity {
 //        
 //        
 //    }
-    
-    
+
+
 }

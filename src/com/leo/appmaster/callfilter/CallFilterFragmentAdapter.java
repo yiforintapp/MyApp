@@ -2,6 +2,7 @@ package com.leo.appmaster.callfilter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.privacycontact.CircleImageView;
+import com.leo.appmaster.privacycontact.ContactBean;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
@@ -30,6 +33,7 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
     private String mFlag;
     private Context mContext;
     private LayoutInflater layoutInflater;
+    private List<ContactBean> mSysContacts;
 
     public CallFilterFragmentAdapter(Context mContext) {
         this.mContext = mContext;
@@ -91,14 +95,14 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         }
         if (info.getIcon() != null) {
             holder.imageView.setImageBitmap(info.getIcon());
-        }else{
+        } else {
             holder.imageView.setImageResource(R.drawable.default_user_avatar);
         }
 
         holder.time.setText(getTime(time));
         holder.filternum.setText(filternum + "");
 
-        if (Utilities.isEmpty(numberName) || numberName.equals(number)) {
+        if (Utilities.isEmpty(numberName) || !checkIsSysContact(number, mSysContacts)) {
             if (filterType == 0) {
                 holder.title.setText(number);
                 holder.desc.setText(number);
@@ -163,8 +167,9 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         TextView time;
     }
 
-    public void setData(List<CallFilterInfo> infoList) {
+    public void setData(List<CallFilterInfo> infoList, List<ContactBean> mSysList) {
         mList = infoList;
+        mSysContacts = mSysList;
         if (mList.size() < 1) {
             CallFilterMainActivity callFilterMainActivity =
                     (CallFilterMainActivity) mContext;
@@ -175,6 +180,22 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
 
     public void setFlag(String fromWhere) {
         mFlag = fromWhere;
+    }
+
+    private boolean checkIsSysContact(String number, List<ContactBean> mSysList) {
+        if (mSysList != null && mSysList.size() > 0) {
+            String formatNumber = PrivacyContactUtils.formatePhoneNumber(number);
+            for (int i = 0; i < mSysContacts.size(); i++) {
+                String sysNumber = mSysContacts.get(i).getContactNumber();
+                if (TextUtils.isEmpty(sysNumber)) {
+                    continue;
+                }
+                if (sysNumber.contains(formatNumber)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

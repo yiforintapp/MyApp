@@ -84,7 +84,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 mNothingToShowView.setVisibility(View.GONE);
                 mCallListView.setVisibility(View.VISIBLE);
                 mAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_CALL_FILTER);
-                mAdapter.setData(mFilterList);
+                mAdapter.setData(mFilterList,mSysContacts);
             }
         }
     }
@@ -215,7 +215,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 mCallManger.removeFilterGr(mFilterList);
 
                 mFilterList.clear();
-                mAdapter.setData(mFilterList);
+                mAdapter.setData(mFilterList,mSysContacts);
                 dialog.dismiss();
             }
         });
@@ -403,7 +403,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                     }
                 });
 
-                mAdapter.setData(mFilterList);
+                mAdapter.setData(mFilterList,mSysContacts);
                 mDeleteDialog.dismiss();
             }
         });
@@ -417,6 +417,6 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         mCallManger.removeFilterGr(removeList);
 
         mFilterList.remove(position);
-        mAdapter.setData(mFilterList);
+        mAdapter.setData(mFilterList,mSysContacts);
     }
 }
