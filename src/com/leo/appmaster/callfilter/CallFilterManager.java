@@ -68,7 +68,17 @@ public class CallFilterManager {
     private String mLastNumBeUsedToGetInfo = "%^&%^&&";
     private int[] mLastFilterTips = null;
     private int mLastShowedCallLogsBigestId = -1;
-    private int mLastClickedCallLogsId = -1;
+    private int mLastClickedCallLogsId = 0;
+
+    private boolean mFilObHad = true;
+
+    public boolean isFilObHad() {
+        return mFilObHad;
+    }
+
+    public void setFilObHad(boolean filObHad) {
+        this.mFilObHad = filObHad;
+    }
 
     public int getLastClickedCallLogsId() {
         return mLastClickedCallLogsId;
@@ -737,13 +747,14 @@ public class CallFilterManager {
     /**
      * 陌生人多个来电通知处理
      */
-    private void filterNotiTipHandler() {
+    private synchronized void filterNotiTipHandler() {
+
         if (!isReceiver()) {
             return;
         }
-        String selection = CallLog.Calls.TYPE + " = ? and " + CallLog.Calls.NEW + " = ? ";
+        String selection = CallLog.Calls.TYPE + " = ? and " + CallLog.Calls.NEW + " = ? and " + CallLog.Calls._ID + " > ? ";
         String[] selectionArgs = new String[]{
-                String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1)
+                String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1), String.valueOf(mLastClickedCallLogsId)
         };
 
         ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
@@ -804,28 +815,26 @@ public class CallFilterManager {
             try {
                 int remainder = count % param;
                 if (remainder == 0) {
-                    int finalCount = 0;
+//                    int finalCount = 0;
                     /* 多个未接来电为指定倍数通知提示 */
-                    for (int i = 0; i < straCalls.size(); i++) {
-                        if (straCalls.get(i).getCallLogId() > mLastClickedCallLogsId) {
-                            LeoLog.i("tempp", i + "  : " + straCalls.get(i).getCallLogId() + "       mLastShowedCallLogsBigestId = " + mLastShowedCallLogsBigestId + "     mLastClickedCallLogsId = " + mLastClickedCallLogsId);
-                            finalCount++;
-                            LeoLog.i("tempp", " finalCount : " + finalCount);
-                        }
-                    }
-                    LeoLog.i("tempp", " for finished finalCount : " + finalCount);
-                    if (finalCount == 0) {
+//                    for (int i = 0; i < straCalls.size(); i++) {
+//                        if (straCalls.get(i).getCallLogId() > mLastClickedCallLogsId) {
+//                            LeoLog.i("tempp", i + "  : " + straCalls.get(i).getCallLogId() + "       mLastShowedCallLogsBigestId = " + mLastShowedCallLogsBigestId + "     mLastClickedCallLogsId = " + mLastClickedCallLogsId);
+//                            finalCount++;
+//                            LeoLog.i("tempp", " finalCount : " + finalCount);
+//                        }
+//                    }
+//                    LeoLog.i("tempp", " for finished finalCount : " + finalCount);
+//                    if (finalCount == 0) {
+//                        return;
+//                    }
+                    if (count < 1) {
                         return;
                     }
-                    CallFIlterUIHelper.getInstance().showStrangerNotification(finalCount);
-                    ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
-                        @Override
-                        public void run() {
-                            mLastShowedCallLogsBigestId = straCalls.get(0).getCallLogId();
-                        }
-                    }, 1000);
+                    CallFIlterUIHelper.getInstance().showStrangerNotification(count);
+                    mLastShowedCallLogsBigestId = straCalls.get(0).getCallLogId();
 //                    mLastShowedCallLogsBigestId = straCalls.get(0).getCallLogId();//TODO
-                    LeoLog.i("tempp", "showed!      mLastShowedCallLogsBigestId = " + mLastShowedCallLogsBigestId);
+                    LeoLog.i(TAG, "showed!      mLastShowedCallLogsBigestId = " + mLastShowedCallLogsBigestId);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
