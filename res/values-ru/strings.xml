@@ -876,8 +876,8 @@
     <string name="filter_number_type_saorao">Спам-звонки</string>
     <string name="filter_number_type_ad">Реклама </string>
     <string name="filter_number_type_zhapian">Мошенники</string>
-    <string name="str_noti_title_txt">Последние незнакомые входящие звонки %1$s </string>
-    <string name="str_noti_content_txt">%1$s незнакомых входящих звонков</string>
+    <string name="str_noti_title_txt">незнакомые звонки %1$s</string>
+    <string name="str_noti_content_txt">%1$s незнакомые звонки</string>
     <string name="pri_pro_ignore2">пропуск</string>
     <string name="miss_noti_tit">Пропущенные вызовы</string>
     <string name="miss_noti_content">%2$s пользователей добавили %1$s в черный список, рекомендуем добавить в черный список</string>
@@ -891,4 +891,6 @@
 
     <string name="number_call_duration_h_m">%1$sчасов %2$sминут</string>
     <string name="number_call_duration_m_s">%1$sминут %2$sсекунд</string>
+    <string name="gud_page_call_fil">Добавляйте нежелательные номера в черный список, будьте вдали от беспокойств!</string>
+    <string name="ad_blk_fail">Не смогли</string>
 </resources>

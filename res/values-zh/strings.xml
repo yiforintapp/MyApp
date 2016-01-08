@@ -911,4 +911,6 @@
 
     <string name="number_call_duration_h_m">%1$s時 %2$s分</string>
     <string name="number_call_duration_m_s">%1$s分 %2$s秒</string>
+    <string name="gud_page_call_fil">將不喜歡的號碼加入黑名單，從此遠離騷擾~</string>
+    <string name="ad_blk_fail">添加失敗</string>
 </resources>

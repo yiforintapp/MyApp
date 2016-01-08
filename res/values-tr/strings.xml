@@ -893,8 +893,8 @@
     <string name="filter_number_type_saorao">İstenmeyen</string>
     <string name="filter_number_type_ad">Reklam</string>
     <string name="filter_number_type_zhapian">Dolandırıcı</string>
-    <string name="str_noti_title_txt">Bilinmeyen %1$s</string>
-    <string name="str_noti_content_txt">%1$s adet Bilinmeyen</string>
+    <string name="str_noti_title_txt">Bilinmeyen %1s</string>
+    <string name="str_noti_content_txt">%1s adet Bilinmeyen</string>
     <string name="pri_pro_ignore2">Reddet</string>
     <string name="miss_noti_tit">Cevapsız</string>
     <string name="miss_noti_content">%2$s tarafından %1$s kara listede</string>
@@ -908,4 +908,6 @@
 
     <string name="number_call_duration_h_m">%1$ssa %2$sdk</string>
     <string name="number_call_duration_m_s">%1$sdk %2$ssn</string>
+    <string name="gud_page_call_fil">İstenmeyen numaraları kara listeye ekleyin</string>
+    <string name="ad_blk_fail">Başarısız</string>
 </resources>

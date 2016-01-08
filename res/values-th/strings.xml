@@ -893,8 +893,8 @@
     <string name="filter_number_type_saorao">สายรบกวน</string>
     <string name="filter_number_type_ad">โฆษณา</string>
     <string name="filter_number_type_zhapian">สายหลอกลวง</string>
-    <string name="str_noti_title_txt">เบอร์แปลกหน้าล่าสุด%1$s</string>
-    <string name="str_noti_content_txt">เบอร์แปลกหน้า%1$sสาย</string>
+    <string name="str_noti_title_txt">แปลกหน้าล่าสุด%1$s</string>
+    <string name="str_noti_content_txt">แปลกหน้า%1$sสาย</string>
     <string name="pri_pro_ignore2">เพิกเฉย</string>
     <string name="miss_noti_tit">สายที่ไม่ได้รับ</string>
     <string name="miss_noti_content">%1$sถูก%2$sคนบล็อคแล้ว แนะนำให้บล็อค</string>
@@ -908,4 +908,6 @@
 
     <string name="number_call_duration_h_m">%1$sชม. %2$sนาที</string>
     <string name="number_call_duration_m_s">%1$sนาท %2$sวินาท</string>
+    <string name="gud_page_call_fil">เพิ่มเบอร์ที่ไม่ชอบเข้าแบล็คลิสต์ จะได้ไม่ต้องถูกรบกวน</string>
+    <string name="ad_blk_fail">ล้มเหลว</string>
 </resources>

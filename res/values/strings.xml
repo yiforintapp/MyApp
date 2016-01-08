@@ -916,7 +916,7 @@
     <string name="filter_number_type_saorao">Crank call</string>
     <string name="filter_number_type_ad">Ad selling</string>
     <string name="filter_number_type_zhapian">Fraud call</string>
-    <string name="str_noti_title_txt">Recent unknown call %1$s</string>
+    <string name="str_noti_title_txt">Unknown calls %1$s</string>
     <string name="str_noti_content_txt">%1$s unknown numbers</string>
     <string name="pri_pro_ignore2">Ignore</string>
     <string name="miss_noti_tit">Missed calls</string>
@@ -924,7 +924,7 @@
     <string name="fil_noti_bt">View</string>
     <string name="strange_call_empty">No Stranger Calls</string>
     <!--3.2未翻译只有中英文-->
-    <string name="gud_page_call_fil">Checking incoming calls to protect you from any harassment.</string>
+    <string name="gud_page_call_fil">Smart recognise phone number，keep harassment away</string>
 
     <string name="call_filter_add_to_blacklist_people_tips">In blacklist of %1$s users</string>
     <string name="call_filter_marked_people_tips">%1$s users marked as %2$s</string>
@@ -934,4 +934,5 @@
 
     <string name="number_call_duration_h_m">%1$sH %2$sM</string>
     <string name="number_call_duration_m_s">%1$sM %2$sS</string>
+    <string name="ad_blk_fail">failed</string>
 </resources>

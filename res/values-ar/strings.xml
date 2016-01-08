@@ -980,8 +980,8 @@
     <string name="filter_number_type_saorao">هاتف الإزعاج</string>
     <string name="filter_number_type_ad">ترويج الإعلانات</string>
     <string name="filter_number_type_zhapian">هاتف كذاب</string>
-    <string name="str_noti_title_txt">المكالمة الواردة الغريبة القريبة %1$s</string>
-    <string name="str_noti_content_txt">%1$s المكالمة الواردة الغريبة</string>
+    <string name="str_noti_title_txt">المكالمة الواردة الغريبة%1$s</string>
+    <string name="str_noti_content_txt">%1$s المكالمة الغريبة</string>
     <string name="pri_pro_ignore2">اهمل</string>
     <string name="miss_noti_tit">لم يرد المكالمة</string>
     <string name="miss_noti_content">%1$s يسحب بـ %2$s الى أسود ، اقتراحا بتسويد</string>
@@ -995,4 +995,6 @@
 
     <string name="number_call_duration_h_m">%1$s ساعة%2$s دقيقة</string>
     <string name="number_call_duration_m_s">%1$sدقيقة%2$sثانية</string>
+    <string name="gud_page_call_fil">اضافة الأرقام غير المفضلة الى القائمة السوداء ، لذلك بعيدا عن الإزعاج ~</string>
+    <string name="ad_blk_fail">باءت بالفشل</string>
 </resources>
