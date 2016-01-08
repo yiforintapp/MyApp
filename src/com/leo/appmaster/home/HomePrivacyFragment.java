@@ -471,6 +471,7 @@ public class HomePrivacyFragment extends Fragment {
         int newScore = oldScore + score;
         mCurrentScore = newScore;
 
+        mHomeAnimView.getBgLayer().setTargetScore(mCurrentScore);
         mHomeAnimView.getBgLayer().setIncrease(true);
         ObjectAnimator timeAnim = ObjectAnimator.ofInt(mHomeAnimView, "securityScore", oldScore, newScore);
         timeAnim.setDuration(360);
