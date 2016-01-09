@@ -31,8 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/button_guide"
-        android:gravity="center_vertical"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/guide_tv_title"
@@ -46,16 +46,18 @@
 
         <TextView
             android:id="@+id/guide_tv_content"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/guide_tv_title"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/guide_title_margin_buttom"
             android:layout_marginBottom="@dimen/guide_title_margin_buttom"
+            android:layout_marginTop="@dimen/guide_title_margin_buttom"
             android:ellipsize="end"
             android:gravity="center"
-            android:text="asdfa"
             android:maxLines="2"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="asdfa"
             android:textColor="#acacac"
             android:textSize="@dimen/guide_page_content_font_size" />
 

@@ -42,6 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/filter_name"
                 android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@string/call_filter_setting_one_desc"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/wifi_set_title_text_des_size" />
@@ -91,6 +93,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/noti_name"
                 android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@string/call_filter_setting_two_desc"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/wifi_set_title_text_des_size" />
