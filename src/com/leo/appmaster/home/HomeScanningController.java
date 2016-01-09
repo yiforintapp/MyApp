@@ -38,14 +38,17 @@ public class HomeScanningController {
     private static final int NEW_PER_LOST = 55;
     private static final int NEW_PER_VID = 65;
     private static final int NEW_PER_PIC = 85;
-
+    private static final int NEW_PER_APP = 95;
     private static final int NEW_PER_PRI = 100;
 
     private static final int FIRST_IN_TIME = 3500;
+    private static final int NEW_UP_LIMIT_APP = 6000;
     private static final int NEW_UP_LIMIT_PIC = 20000;
     private static final int NEW_UP_LIMIT_PIC_PROCESSED = 15000;
     private static final int NEW_UP_LIMIT_VID = 2000;
     private static final int NEW_UP_LIMIT_LOST = 1000;
+
+    private int mDurationPrivacy;
 
     private boolean mIsInsValiable = true;
 
@@ -187,11 +190,13 @@ public class HomeScanningController {
             mFragment.OnItemAnimationEnd(mNewPicLayout);
             mNewAppAnim = getItemAnimation(mNewAppLayout);
             int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(450, currPct, NEW_PER_PRI + 1);
+            mActivity.scanningFromPercent(NEW_UP_LIMIT_APP, currPct, NEW_PER_APP);
             LeoLog.e(TAG, "mNewPicAnim end");
             mNewAppAnim.start();
         } else {
             mFragment.OnItemAnimationEnd(mNewAppLayout);
+            int currPct = mActivity.getScanningPercent();
+            mActivity.scanningFromPercent(300, currPct, NEW_PER_PRI + 1);
         }
     }
 

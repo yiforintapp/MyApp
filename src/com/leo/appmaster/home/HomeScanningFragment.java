@@ -704,7 +704,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                     }
                 }, 1000);
             }
-            onViewScanningFinish(mAppList, mPhotoList, mVideoList);
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onViewScanningFinish(mAppList, mPhotoList, mVideoList);
+                }
+            }, 300);
 
             layout.post(new Runnable() {
                 @Override
