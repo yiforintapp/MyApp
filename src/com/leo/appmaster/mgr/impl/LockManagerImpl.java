@@ -1418,6 +1418,11 @@ public class LockManagerImpl extends LockManager {
         return addedScore;
     }
 
+    @Override
+    public int getMaxScore() {
+        return MAX_SCORE;
+    }
+
     private void addPkg2Mode(List<String> pkgs, LockMode mode, boolean notifyScoreChange) {
         List<String> ignoreList = InstalledAppTable.getInstance().getIgnoredList();
         List<String> coreChgList = new ArrayList<String>();

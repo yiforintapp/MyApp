@@ -57,6 +57,7 @@ import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -1373,6 +1374,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onIgnoreClick(int increaseScore, String mgr) {
+        int score = mPrivacyHelper.getSecurityScore(mgr);
+        int totalScore = mPrivacyHelper.getSecurityScore();
+        Manager manager = MgrContext.getManager(mgr);
+        if (score > manager.getMaxScore() || (totalScore + increaseScore) > 100) {
+            increaseScore = 0;
+        }
         if (increaseScore > 0) {
             mPrivacyHelper.increaseScore(mgr, increaseScore);
         }

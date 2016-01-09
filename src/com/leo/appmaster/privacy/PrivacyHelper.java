@@ -539,6 +539,15 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         return mSecurityScore;
     }
 
+    public int getSecurityScore(String mgr) {
+        Integer score = mScoreMap.get(mgr);
+        if (score == null) {
+            return 0;
+        }
+
+        return score.intValue();
+    }
+
     public void increaseScore(String mgr, int securityScore) {
         LeoLog.i(TAG, "increaseScore, mgr: " + mgr + " | securityScore: " + securityScore);
         synchronized (mScoreMap) {
