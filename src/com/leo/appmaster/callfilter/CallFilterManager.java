@@ -65,11 +65,11 @@ public class CallFilterManager {
     private MultiChoicesWitchSummaryDialog mDialogTooShort;
     private BlackListInfo mLastLocInfo = null;
     private BlackListInfo mLastSerInfo = null;
-    private String mLastNumBeUsedToGetInfo = "%^&%^&&";
+    private String mLastNumBeUsedToGetInfo = "%^&%&(*&(*&(*^&&";
     private int[] mLastFilterTips = null;
     private int mLastShowedCallLogsBigestId = -1;
     private int mLastClickedCallLogsId = 0;
-
+    private boolean mHasIdle = false;
     private boolean mFilObHad = true;
 
     public boolean isFilObHad() {
@@ -244,12 +244,31 @@ public class CallFilterManager {
      */
     public void filterCallHandler(String action, final String phoneNumber, String state,
                                   final ITelephony iTelephony, AudioManager audioManager) {
-        LeoLog.i("testdata", "in manager");
+        LeoLog.i("testdata", "in manager   action = " + action + "     state = " + state);
         if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
             tryHideToast();
             LeoLog.i("testdata", "hide toast");
+        } else {
+            mHasIdle = false;
         }
-
+        
+        if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
+            /* 通话类型：拨出 */
+            CallFilterManager.getInstance(mContext).setIsComingOut(true);
+            LeoLog.i("testdata", "set out going true");
+            LeoLog.i("PrivacyContactReceiver", "拨打电话");
+        }
+        if (TextUtils.isEmpty(state) || isComingOut()) {
+            if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
+                LeoLog.i("testdata", "set out going false  because isComingOut() = " + isComingOut() + "    TextUtils.isEmpty(state) = " + TextUtils.isEmpty(state));
+                setIsComingOut(false);
+                mHasIdle = true;
+                mLastLocInfo = null;
+                mLastSerInfo = null;
+                mLastFilterTips = null;
+            }
+            return;
+        }
         /* 判断骚扰拦截是否打开 */
         final CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean filOpSta = cmp.getFilterOpenState();
@@ -268,7 +287,7 @@ public class CallFilterManager {
 
         if (!TextUtils.isEmpty(mPhoneNumber)) {
             //是否为隐私联系人
-            boolean isUsePr = CallFilterUtils.isNumberUsePrivacy(phoneNumber);
+            boolean isUsePr = CallFilterUtils.isNumberUsePrivacy(mPhoneNumber);
             if (isUsePr) {
                 return;
             }
@@ -295,19 +314,8 @@ public class CallFilterManager {
         LeoLog.i("testdata", (useCache ? "cache" : "no cache") + "state = " + (state == null ? "null" : state) + "  firstly,  serInfo = " + (serInfo == null ? "null" : "not null"));
 
         setIsReceiver(true);
-        if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
-            /* 通话类型：拨出 */
-            CallFilterManager.getInstance(mContext).setIsComingOut(true);
-            LeoLog.i("PrivacyContactReceiver", "拨打电话");
-        }
         //自己拨出，return
-        if (TextUtils.isEmpty(state) || isComingOut()) {
-            LeoLog.i("testdata", "isComingOut = " + isComingOut());
-            if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
-                setIsComingOut(false);
-            }
-            return;
-        }
+        LeoLog.i("testdata", "isComingOut = " + isComingOut());
         if (TelephonyManager.EXTRA_STATE_RINGING.equalsIgnoreCase(state)) {
             if (info != null) {
                 LeoLog.i("testdata", "rinning info != null");
@@ -355,17 +363,20 @@ public class CallFilterManager {
                 }
             }
         } else if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
-            mLastNumBeUsedToGetInfo = "xx*()*())**&*(";//让记录的号码变乱，下次就会重新赋值
+            mLastNumBeUsedToGetInfo = "xx*()*())**&*^&^(*&^*&(";//让记录的号码变乱，下次就会重新赋值
             LeoLog.i(TAG, "挂断！");
             /* 恢复默认值 */
             setCurrentCallTime(-1);
             setIsAddFilter(false);
-
-            if (info != null || isComingOut()) {
+            mLastLocInfo = null;
+            mLastSerInfo = null;
+            mLastFilterTips = null;
+            if (info != null || isComingOut() || mHasIdle) {
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
+                mHasIdle = false;
                 return;
             }
-
+            mHasIdle = false;
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
             long currentTime = System.currentTimeMillis();
