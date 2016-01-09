@@ -263,6 +263,7 @@ public class CallFilterManager {
                 LeoLog.i("testdata", "set out going false  because isComingOut() = " + isComingOut() + "    TextUtils.isEmpty(state) = " + TextUtils.isEmpty(state));
                 setIsComingOut(false);
                 mHasIdle = true;
+                mLastNumBeUsedToGetInfo = "xx*()*())**&*^&^(*&^*&(";//让记录的号码变乱，下次就会重新赋值
                 mLastLocInfo = null;
                 mLastSerInfo = null;
                 mLastFilterTips = null;
@@ -363,11 +364,11 @@ public class CallFilterManager {
                 }
             }
         } else if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
-            mLastNumBeUsedToGetInfo = "xx*()*())**&*^&^(*&^*&(";//让记录的号码变乱，下次就会重新赋值
             LeoLog.i(TAG, "挂断！");
             /* 恢复默认值 */
             setCurrentCallTime(-1);
             setIsAddFilter(false);
+            mLastNumBeUsedToGetInfo = "xx*()*())**&*^&^(*&^*&(";//让记录的号码变乱，下次就会重新赋值
             mLastLocInfo = null;
             mLastSerInfo = null;
             mLastFilterTips = null;
