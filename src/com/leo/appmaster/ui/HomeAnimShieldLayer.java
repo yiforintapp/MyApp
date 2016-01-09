@@ -303,7 +303,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         if (outCircleAlpha > 0 && scanningPct < 101) {
             mOutCircleMatrix.setRotate(rotate, mCirclePx, mCirclePy);
             mOutCircleMatrix.postScale(outCircleScale, outCircleScale, mCirclePx, mCirclePy);
-            if (shieldOffsetY > 0) {
+            if (shieldOffsetY != 0) {
                 mOutCircleMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
             }
             canvas.setMatrix(mOutCircleMatrix);
@@ -316,7 +316,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             // 绘制内环
             mInCircleMatrix.setRotate(-rotate, mCirclePx, mCirclePy);
             mInCircleMatrix.postScale(inCircleScale, inCircleScale, mCirclePx, mCirclePy);
-            if (shieldOffsetY > 0) {
+            if (shieldOffsetY != 0) {
                 mInCircleMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
             }
             canvas.setMatrix(mInCircleMatrix);
