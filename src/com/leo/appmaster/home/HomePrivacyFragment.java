@@ -114,17 +114,38 @@ public class HomePrivacyFragment extends Fragment {
         sScreenWidth = mWidth;
         sScreenHeight = metrics.heightPixels;
 
-        initAnim();
-        if (mHomeAnimView.isLayouted()) {
-            startWaveDelay();
+        if (!mActivity.isEnterScan()) {
+            initAnim();
+            if (mHomeAnimView.isLayouted()) {
+                startWaveDelay();
+            } else {
+                mHomeAnimView.startAfterLayout(new Runnable() {
+                    @Override
+                    public void run() {
+                        startWaveDelay();
+                    }
+                });
+            }
         } else {
-            mHomeAnimView.startAfterLayout(new Runnable() {
-                @Override
-                public void run() {
-                    startWaveDelay();
-                }
-            });
+            startRotateOnly();
         }
+    }
+
+    private void startRotateOnly() {
+        // 内环、外环旋转
+        long memorySize = PropertyInfoUtil.getTotalMemory(mActivity);
+        mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
+        mCircleRotateAnim.setDuration(3500);
+        mCircleRotateAnim.setInterpolator(new LinearInterpolator());
+        if (memorySize >= Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY) {
+            mCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
+        } else {
+            mCircleRotateAnim.setRepeatCount(3);
+            mHomeAnimView.setLessMemory();
+            mMemoryLess = true;
+        }
+
+        mCircleRotateAnim.start();
     }
 
     public void showProcessProgress(int type) {
