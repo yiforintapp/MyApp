@@ -196,6 +196,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     }
 
     public void showTab(final OnShowTabListener listener) {
+        mAnimating = false;
         if (isRemoving() || isDetached() || getActivity() == null
                 || mRootView.getVisibility() == View.VISIBLE) {
             return;
