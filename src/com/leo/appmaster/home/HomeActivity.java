@@ -50,6 +50,7 @@ import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
@@ -247,12 +248,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 LeoLog.d("testFromWhere", "HomeActivity from push");
             }
             mPrivacyFragment.onFromNotifi();
-            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onShieldClick();
-                }
-            }, 2500);
+//            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    onShieldClick();
+//                }
+//            }, 2500);
 
         }
     }
@@ -286,7 +287,13 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         unregisterReceiver(mLocaleReceiver);
     }
 
-    public void onEventMainThread(BackupEvent event) {
+    public void onEventMainThread(AppUnlockEvent event) {
+        if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
+            if (mEnterScan) {
+                onShieldClick();
+                mEnterScan = false;
+            }
+        }
         // TODO: 2015/9/30 检查是否必要
 //        String msg = event.eventMsg;
 //        if (HomeAppManagerFragment.FINISH_HOME_ACTIVITY_FALG.equals(msg)) {
