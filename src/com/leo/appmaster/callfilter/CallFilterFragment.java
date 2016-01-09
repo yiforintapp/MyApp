@@ -133,16 +133,14 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             @Override
             public void run() {
                 mFilterList = (ArrayList<CallFilterInfo>) mCallManger.getCallFilterGrList();
-
-                mSysContacts = PrivacyContactUtils.getSysContact(mActivity, null, null, true);
-
+                if (mFilterList != null && mFilterList.size() > 0) {
+                    mSysContacts = PrivacyContactUtils.getSysContact(mActivity, null, null, true);
+                }
                 //load done
                 Message msg = Message.obtain();
                 msg.obj = isFristLoad;
                 msg.what = CallFilterConstants.CALL_FILTER_LIST_LOAD_DONE;
                 handler.sendMessage(msg);
-
-
             }
         });
     }
