@@ -597,39 +597,69 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             @Override
             public void run() {
 
-                ChangeContactColor();
+//                ChangeContactColor();
                 Toast.makeText(mActivity, mActivity.getString(R.string.pri_contact_succ), Toast.LENGTH_SHORT).show();
-                for (View contactView : mContactViews) {
-                    CheckBox checkBox = (CheckBox) contactView.findViewById(R.id.contact_single_cb);
-                    ContactBean cb = mDataMap.get(checkBox);
-                    if (mAddedData.contains(cb)) {
-                        checkBox.setVisibility(View.GONE);
-
-                        TextView textView = (TextView) contactView.findViewById(R.id.contact_added);
-                        textView.setVisibility(View.VISIBLE);
-                    }else {
-                        checkBox.setChecked(false);
-                    }
-                }
-                if (mAddedData.size() == mContactViews.size()) {
-                    mContactBtnTv.setText(R.string.pri_contact_over);
-                    mContactBtnLt.setClickable(false);
-                    mSelectAllCb.setVisibility(View.GONE);
-                    mContactBtnLt.setVisibility(View.GONE);
-                    mContactBtnDiv.setVisibility(View.GONE);
-                    mImpTv.setVisibility(View.GONE);
-                } else {
-                    setAddPrivacyText(false);
-                    mSelectAllCb.setChecked(false);
-                }
-                resetContact();
-
+//                for (View contactView : mContactViews) {
+//                    CheckBox checkBox = (CheckBox) contactView.findViewById(R.id.contact_single_cb);
+//                    ContactBean cb = mDataMap.get(checkBox);
+//                    if (mAddedData.contains(cb)) {
+//                        checkBox.setVisibility(View.GONE);
+//
+//                        TextView textView = (TextView) contactView.findViewById(R.id.contact_added);
+//                        textView.setVisibility(View.VISIBLE);
+//                    } else {
+//                        checkBox.setChecked(false);
+//                    }
+//                }
+//                if (mAddedData.size() == mContactViews.size()) {
+//                    mContactBtnTv.setText(R.string.pri_contact_over);
+//                    mContactBtnLt.setClickable(false);
+//                    mSelectAllCb.setVisibility(View.GONE);
+//                    mContactBtnLt.setVisibility(View.GONE);
+//                    mContactBtnDiv.setVisibility(View.GONE);
+//                    mImpTv.setVisibility(View.GONE);
+//                } else {
+//                    setAddPrivacyText(false);
+//                    mSelectAllCb.setChecked(false);
+//                }
+//                resetContact();
+                resetCheckState();
                 if (mMessageCallBean != null) {
                     showImportDlg();
                 }
             }
         });
     }
+
+    public void resetCheckState() {
+        ChangeContactColor();
+        for (View contactView : mContactViews) {
+            CheckBox checkBox = (CheckBox) contactView.findViewById(R.id.contact_single_cb);
+            ContactBean cb = mDataMap.get(checkBox);
+            if (mAddedData.contains(cb)) {
+                checkBox.setVisibility(View.GONE);
+
+                TextView textView = (TextView) contactView.findViewById(R.id.contact_added);
+                textView.setVisibility(View.VISIBLE);
+            } else {
+                checkBox.setChecked(false);
+            }
+        }
+        if (mAddedData.size() == mContactViews.size()) {
+            mContactBtnTv.setText(R.string.pri_contact_over);
+            mContactBtnLt.setClickable(false);
+            mSelectAllCb.setVisibility(View.GONE);
+            mContactBtnLt.setVisibility(View.GONE);
+            mContactBtnDiv.setVisibility(View.GONE);
+            mImpTv.setVisibility(View.GONE);
+        } else {
+            setAddPrivacyText(false);
+            mSelectAllCb.setChecked(false);
+        }
+        resetContact();
+
+    }
+
 
     /*设置在隐私清理页面添加联系人时按钮显示状态*/
     private void setAddPrivacyText(boolean isImport) {
@@ -1126,10 +1156,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                                     public void run() {
                                         String str = getResources().getString(R.string.call_filter_have_add_black_num);
                                         Toast.makeText(mActivity, str, Toast.LENGTH_SHORT).show();
-                                        setAddPrivacyText(false);
-                                        mAddedData.clear();
-                                        resetContact();
-                                        ChangeContactColor();
+//                                        setAddPrivacyText(false);
+//                                        mAddedData.clear();
+//                                        resetContact();
+//                                        ChangeContactColor();
+                                        resetCheckState();
                                     }
                                 });
                             } else {
@@ -1145,6 +1176,19 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                                 if (isHaveBlackNum) {
                                     mSelectData.remove(contact);
                                 }
+                            }
+                            if (mSelectData == null || mSelectData.size() < 1) {
+                                ThreadManager.getUiThreadHandler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String str = getResources().getString(R.string.call_filter_have_add_black_num);
+                                        Toast.makeText(mActivity, str, Toast.LENGTH_SHORT).show();
+                                        setAddPrivacyText(false);
+                                        mAddedData.clear();
+                                        resetContact();
+                                        ChangeContactColor();
+                                    }
+                                });
                             }
                             mMessageCallBean = pcm.addPrivacyContact(mSelectData);
                             mAddedData.addAll(mSelectData);
