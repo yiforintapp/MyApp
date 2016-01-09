@@ -580,7 +580,7 @@ public class PrivacyContactUtils {
                         number = cursor.getString(numberColum);
                     }
                     if (!calllog.containsKey(number)) {
-                        calllog.put(number, callLog);
+//                        calllog.put(number, callLog);
                         start = SystemClock.elapsedRealtime();
                         Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
                                 context, number);
