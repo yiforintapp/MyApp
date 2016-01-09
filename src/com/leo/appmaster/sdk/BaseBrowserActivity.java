@@ -152,7 +152,9 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     }
 
     protected abstract WebView getWebView();
+
     protected abstract ProgressBar getLoadingView();
+
     protected abstract View getErrorView();
 
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -186,6 +188,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
         if (!NetWorkUtil.isNetworkAvailable(this) || errorCode == ERR_404) {
             //-2, 找不到网页
         }
+
         mReceivedError = true;
         mWebView.setVisibility(View.GONE);
         mLoadingView.setVisibility(View.GONE);
@@ -206,8 +209,16 @@ public abstract class BaseBrowserActivity extends BaseActivity {
             mLoadingView.setProgress(newProgress);
             mLoadingView.setVisibility(View.VISIBLE);
         } else {
-            mLoadingView.setVisibility(View.GONE);
-            mWebView.setVisibility(View.VISIBLE);
+
+            if (!NetWorkUtil.isNetworkAvailable(this) || mReceivedError) {
+                //-2, 找不到网页
+                mLoadingView.setVisibility(View.GONE);
+                mWebView.setVisibility(View.GONE);
+                mErrorView.setVisibility(View.VISIBLE);
+            } else {
+                mLoadingView.setVisibility(View.GONE);
+                mWebView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -227,7 +238,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 //        result.cancel();
         return false;
     }
-    
+
     protected WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         return null;
     }
@@ -266,7 +277,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
             if (result == null) {
                 return super.shouldInterceptRequest(view, url);
             }
-            
+
             return result;
         }
 
