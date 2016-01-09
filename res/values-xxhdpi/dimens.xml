@@ -361,7 +361,7 @@
     <dimen name="privacy_input_cb_pd_lf">14dp</dimen>
     <dimen name="sec_gde_content_pd">35dp</dimen>
 
-    <dimen name="pp_process_rv_width">210dp</dimen>
+    <dimen name="pp_process_rv_width">180dp</dimen>
 
     <dimen name="applock_text_title_size">17dp</dimen>
     <dimen name="applock_text_desc_size">13dp</dimen>
