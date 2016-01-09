@@ -421,7 +421,6 @@ public class HomeAnimShieldLayer extends AnimLayer {
         } else /*if (mShieldAlpha != 0)*/ {
             shieldAlpha = mShieldAlpha;
         }
-        LeoLog.d(TAG, "drawShieldScore, shieldAlpha: " + shieldAlpha);
         mShieldMatrix.set(Matrix.IDENTITY_MATRIX);
         mFlipDecor.applyDecor(canvas, mShieldMatrix);//TODO
         mShieldMatrix.postScale(shieldScale, shieldScale, mShieldPx, mShieldPy);
