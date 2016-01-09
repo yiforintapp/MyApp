@@ -157,6 +157,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onClick(View arg0) {
+                mAddPrivacyContact.cancel();
                 Intent intent = new Intent(mActivity,
                         AddFromCallLogListActivity.class);
                 intent.putExtra(CallFilterConstants.FROMWHERE,
@@ -167,7 +168,6 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
                 } finally {
                     intent = null;
                 }
-                mAddPrivacyContact.cancel();
             }
         });
         // 联系人列表添加
@@ -175,6 +175,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onClick(View arg0) {
+                mAddPrivacyContact.cancel();
                 Intent intent = new Intent(mActivity,
                         AddFromContactListActivity.class);
                 intent.putExtra(CallFilterConstants.FROMWHERE,
@@ -185,7 +186,6 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
                 } finally {
                     intent = null;
                 }
-                mAddPrivacyContact.cancel();
             }
         });
         // 短信列表添加
@@ -193,6 +193,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onClick(View arg0) {
+                mAddPrivacyContact.cancel();
                 Intent intent = new Intent(mActivity,
                         AddFromMessageListActivity.class);
                 intent.putExtra(CallFilterConstants.FROMWHERE,
@@ -203,13 +204,13 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
                 } finally {
                     intent = null;
                 }
-                mAddPrivacyContact.cancel();
             }
         });
         // 手动输入
         mAddPrivacyContact.setInputListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                mAddPrivacyContact.cancel();
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "contactsadd",
                         "handadd");
                 Intent intent = new Intent(mActivity,
@@ -223,7 +224,6 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
                 } finally {
                     intent = null;
                 }
-                mAddPrivacyContact.cancel();
             }
         });
         mAddPrivacyContact.show();
