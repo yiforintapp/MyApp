@@ -583,17 +583,17 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         String channelStr = "unknown";
         if (channel == IUIHelper.APP_MARKET) {
             channelStr = "GP";
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent2 = new Intent(
-                            UpdateActivity.this,
-                            GooglePlayGuideActivity.class);
-                    intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent2);
-                }
-            }, 200);
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Intent intent2 = new Intent(
+//                            UpdateActivity.this,
+//                            GooglePlayGuideActivity.class);
+//                    intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent2);
+//                }
+//            }, 200);
         } else if (channel == IUIHelper.DIRECT_DOWNLOAD) {
             channelStr = "link";
         }
