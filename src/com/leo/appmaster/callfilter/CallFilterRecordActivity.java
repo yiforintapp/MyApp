@@ -156,8 +156,11 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
     }
 
     private void fillData() {
+        List<CallFilterInfo> list = mCallManger.getFilterDetListFroNum(info.getNumber());
         mRecordTime.clear();
-        mRecordTime = mCallManger.getFilterDetListFroNum(info.getNumber());
+        if (list != null) {
+            mRecordTime.addAll(list);
+        }
         mLvMain.setAdapter(mAdapter);
     }
 
