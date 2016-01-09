@@ -250,13 +250,6 @@ public class CallFilterManager {
             LeoLog.i("testdata", "hide toast");
         }
 
-        if (!TextUtils.isEmpty(phoneNumber)) {
-            //是否为隐私联系人
-            boolean isUsePr = CallFilterUtils.isNumberUsePrivacy(phoneNumber);
-            if (isUsePr) {
-                return;
-            }
-        }
         /* 判断骚扰拦截是否打开 */
         final CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean filOpSta = cmp.getFilterOpenState();
@@ -272,6 +265,15 @@ public class CallFilterManager {
         if (!TextUtils.isEmpty(phoneNumber)) {
             mPhoneNumber = phoneNumber;
         }
+
+        if (!TextUtils.isEmpty(mPhoneNumber)) {
+            //是否为隐私联系人
+            boolean isUsePr = CallFilterUtils.isNumberUsePrivacy(phoneNumber);
+            if (isUsePr) {
+                return;
+            }
+        }
+
         setCurrentRecePhNum(mPhoneNumber);
         if (mPhoneNumber.equals(mLastNumBeUsedToGetInfo)) {
             useCache = true;
@@ -362,14 +364,6 @@ public class CallFilterManager {
             if (info != null || isComingOut()) {
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
                 return;
-            }
-
-            if (!TextUtils.isEmpty(mPhoneNumber)) {
-                //是否为隐私联系人
-                boolean isUsePr = CallFilterUtils.isNumberUsePrivacy(phoneNumber);
-                if (isUsePr) {
-                    return;
-                }
             }
 
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
