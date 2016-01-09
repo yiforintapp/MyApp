@@ -134,8 +134,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mShownIgnoreDlg;
     private boolean mShowContact;
 
-    private boolean mFromNotification; // 是否从通知栏进入了应用
-
     private LEOAnimationDialog mMessageDialog;
 
     private String mAppScanText;
@@ -191,7 +189,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         openAdvanceProtectDialogHandler();
 
-
     }
 
     private void requestCamera() {
@@ -246,20 +243,15 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh", "push_scan_cnts");
                 LeoLog.d("testFromWhere", "HomeActivity from push");
             }
-//            mPrivacyFragment.onFromNotifi();
-//            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    onShieldClick();
-//                }
-//            }, 4000);
-              mFromNotification = true;
+            mPrivacyFragment.onFromNotifi();
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onShieldClick();
+                }
+            }, 1000);
 
         }
-    }
-
-    public boolean isFromNotification() {
-        return mFromNotification;
     }
 
     public void registerLocaleChange() {
@@ -322,7 +314,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onShieldClick() {
-        mFromNotification = false;
         int securityScore = mPrivacyHelper.getSecurityScore();
         if (securityScore == 100) {
             mShowContact = false;
@@ -1093,6 +1084,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     public void onItemClick(final AdapterView<?> arg0, final View arg1, final int position, final long arg3) {
+
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }

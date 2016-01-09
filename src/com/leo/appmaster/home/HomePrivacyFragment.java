@@ -84,7 +84,12 @@ public class HomePrivacyFragment extends Fragment {
     private AnimatorSet mFullScoreMove;
     private ObjectAnimator mFullScoreStart;
 
+    private ObjectAnimator mTimeAnim;
+    private ObjectAnimator mProgressAnim;
+    private List<Animator> mAnimators;
+
     private boolean mIsReset; //是否在扫描时点击取消按钮或回退 控制满分动画中断
+
 
     public HomePrivacyFragment() {
 
@@ -183,15 +188,15 @@ public class HomePrivacyFragment extends Fragment {
 
         AnimatorSet firstAnimSet = new AnimatorSet();
         // 时间减少
-        ObjectAnimator timeAnim = ObjectAnimator.ofInt(mHomeAnimView, "securityScore", 100, currentScore);
-        timeAnim.setDuration(time);
-        timeAnim.setInterpolator(new LinearInterpolator());
+        mTimeAnim = ObjectAnimator.ofInt(mHomeAnimView, "securityScore", 100, currentScore);
+        mTimeAnim.setDuration(time);
+        mTimeAnim.setInterpolator(new LinearInterpolator());
 
         // 进度条
-        ObjectAnimator progressAnim = ObjectAnimator.ofInt(mHomeAnimView, "progress", 0, mWidth);
-        progressAnim.setDuration(time);
-        progressAnim.setInterpolator(new LinearInterpolator());
-        progressAnim.addListener(new SimpleAnimatorListener() {
+        mProgressAnim = ObjectAnimator.ofInt(mHomeAnimView, "progress", 0, mWidth);
+        mProgressAnim.setDuration(time);
+        mProgressAnim.setInterpolator(new LinearInterpolator());
+        mProgressAnim.addListener(new SimpleAnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
@@ -207,22 +212,22 @@ public class HomePrivacyFragment extends Fragment {
                 }
             }
         });
-        firstAnimSet.playTogether(timeAnim, progressAnim);
+        firstAnimSet.playTogether(mTimeAnim, mProgressAnim);
 
-        List<Animator> animators = new ArrayList<Animator>();
+        mAnimators = new ArrayList<Animator>();
         // 外环放大
         ObjectAnimator outCircleScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "outCircleScaleRatio",
                 HomeAnimShieldLayer.MIN_OUT_CIRCLE_SCALE_RATIO, HomeAnimShieldLayer.MAX_OUT_CIRCLE_SCALE_RATIO);
         outCircleScaleAnim.setInterpolator(new LinearInterpolator());
         outCircleScaleAnim.setDuration(600);
-        animators.add(outCircleScaleAnim);
+        mAnimators.add(outCircleScaleAnim);
 
         // 内环放大
         ObjectAnimator inCircleScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "inCircleScaleRatio",
                 HomeAnimShieldLayer.MIN_IN_CIRCLE_SCALE_RATIO, HomeAnimShieldLayer.MAX_IN_CIRCLE_SCALE_RATIO);
         inCircleScaleAnim.setInterpolator(new LinearInterpolator());
         inCircleScaleAnim.setDuration(600);
-        animators.add(inCircleScaleAnim);
+        mAnimators.add(inCircleScaleAnim);
 
         inCircleScaleAnim.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -249,42 +254,42 @@ public class HomePrivacyFragment extends Fragment {
             mHomeAnimView.setLessMemory();
             mMemoryLess = true;
         }
-        animators.add(mCircleRotateAnim);
+        mAnimators.add(mCircleRotateAnim);
 
         // 盾牌缩小
         ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
                 HomeAnimShieldLayer.MAX_SHIELD_SCALE_RATIO, HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
         shieldScaleAnim.setInterpolator(new LinearInterpolator());
         shieldScaleAnim.setDuration(600);
-        animators.add(shieldScaleAnim);
+        mAnimators.add(shieldScaleAnim);
 
         // 内环、外环透明度
         ObjectAnimator inCircleAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "inCircleAlpha", 0, 255);
         inCircleAlphaAnim.setInterpolator(new LinearInterpolator());
         inCircleAlphaAnim.setDuration(600);
-        animators.add(inCircleAlphaAnim);
+        mAnimators.add(inCircleAlphaAnim);
 
         ObjectAnimator outCircleAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "outCircleAlpha", 0, 255);
         outCircleAlphaAnim.setInterpolator(new LinearInterpolator());
         outCircleAlphaAnim.setDuration(600);
-        outCircleAlphaAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (mActivity != null && isAdded() && mActivity.isFromNotification()) {
-                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mActivity.onShieldClick();
-                        }
-                    }, 100);
-
-                }
-            }
-        });
-        animators.add(outCircleAlphaAnim);
+//        outCircleAlphaAnim.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                if (mActivity != null && isAdded() && mActivity.isFromNotification()) {
+//                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mActivity.onShieldClick();
+//                        }
+//                    }, 100);
+//
+//                }
+//            }
+//        });
+        mAnimators.add(outCircleAlphaAnim);
 
         AnimatorSet secondAnimSet = new AnimatorSet();
-        secondAnimSet.playTogether(animators);
+        secondAnimSet.playTogether(mAnimators);
 
         firstAnimSet.addListener(new SimpleAnimatorListener() {
             @Override
@@ -304,6 +309,11 @@ public class HomePrivacyFragment extends Fragment {
             mAnimatorSet.end();
             LeoLog.e(TAG, "onFromNotifi");
             mAnimatorSet = null;
+        }
+        endAnim(mTimeAnim);
+        endAnim(mProgressAnim);
+        for (Animator animator: mAnimators) {
+            endAnim(animator);
         }
 
         showScanningPercent(-1);
@@ -582,10 +592,12 @@ public class HomePrivacyFragment extends Fragment {
             }
             mHomeAnimView.setScanningPercent(-1);
         } else {
+            LeoLog.e("showScanningPercent", "showScanningPercent: -1 ");
             if (mScanningAnimator != null) {
                 mScanningAnimator.end();
             }
-            if (mMoveLeftTopAnim == null) {
+            if (mMoveLeftTopAnim == null || mIsReset) {
+                LeoLog.e("showScanningPercent", "showScanningPercent:" + mIsReset);
                 return;
             }
             mScanningAnimator = ObjectAnimator.ofInt(mHomeAnimView, "scanningPercent", from, to);
@@ -896,10 +908,7 @@ public class HomePrivacyFragment extends Fragment {
 
     public void reset() {
 
-
         mIsReset = true;
-
-        LeoLog.i("TheTest", "reset mIsReset:" + mIsReset);
 
         endAnim(mMoveLeftTopAnim);
         final HomeAnimShieldLayer shieldLayer = mHomeAnimView.getShieldLayer();
