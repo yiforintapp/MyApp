@@ -17,6 +17,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.bootstrap.Bootstrap;
@@ -53,6 +55,9 @@ public class AppMasterApplication extends Application {
     public static SharedPreferences sharedPreferences;
     public static String usedThemePackage;
     private static int sLastVersion;
+
+    public static int sScreenWidth = 0;
+    public static int sScreenHeight = 0;
 
     private Bootstrap mRootBootstrap;
 
@@ -103,6 +108,16 @@ public class AppMasterApplication extends Application {
             } catch (Throwable e) {
                 e.printStackTrace();
             }
+        }
+        try {
+            WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+            DisplayMetrics metrics = new DisplayMetrics();
+            wm.getDefaultDisplay().getMetrics(metrics);
+            sScreenWidth = metrics.widthPixels;
+            sScreenWidth = metrics.heightPixels;
+            LeoLog.d(TAG, "zany, width: " + sScreenWidth + " | height: " + sScreenHeight);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         mRootBootstrap = new BootstrapGroup();

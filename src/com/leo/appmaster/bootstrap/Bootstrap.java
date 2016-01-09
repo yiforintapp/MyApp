@@ -11,12 +11,12 @@ import com.leo.appmaster.utils.LeoLog;
 
 /**
  * 启动程序抽象类
- * @author Jasper
  *
+ * @author Jasper
  */
 public abstract class Bootstrap {
     private static final String TAG = "Bootstrap";
-    
+
     /**
      * 前台任务
      */
@@ -33,26 +33,26 @@ public abstract class Bootstrap {
      * 后台延时任务
      */
     public static final int STEP_BACKGROUND_DELAY = STEP_FOREGROUND_DELAY + 100;
-    
+
     private static final int TIME_UI_ALARM = 300;
     private static final int TIME_ASYNC_ALARM = 10 * 1000;
-    
+
     public int[] mStepIds;
     protected int mStepId;
-    
+
     protected AppMasterApplication mApp;
-    
+
     protected LongSparseArray<Bootstrap> mStrapArray;
-    
+
     Bootstrap() {
         mApp = AppMasterApplication.getInstance();
         mStrapArray = new LongSparseArray<Bootstrap>();
     }
-    
+
     public Bootstrap getBootstrap(int stepId) {
         Bootstrap step = mStrapArray.get(stepId);
         if (step != null) return step;
-        
+
         step = createBootstrap(stepId);
         if (step == null) {
             throw new RuntimeException("create strap failed. strap is null.");
@@ -62,9 +62,10 @@ public abstract class Bootstrap {
 
         return step;
     }
-    
+
     /**
      * 创建单独启动任务
+     *
      * @param stepId
      * @return
      */
@@ -85,13 +86,13 @@ public abstract class Bootstrap {
         }
         return step;
     }
-    
+
     protected final void strap() {
         long start = SystemClock.elapsedRealtime();
         try {
             doStrap();
         } catch (Exception e) {
-            
+
         }
         long cost = SystemClock.elapsedRealtime() - start;
         if (!(this instanceof BootstrapGroup)) {
@@ -109,8 +110,11 @@ public abstract class Bootstrap {
             }
         }
     }
-    
+
     private void toast(final String msg) {
+        if (AppMasterApplication.sScreenWidth <= 320) {
+            return;
+        }
         ThreadManager.executeOnUiThread(new Runnable() {
 
             @Override
@@ -119,8 +123,9 @@ public abstract class Bootstrap {
             }
         });
     }
-    
+
     protected abstract boolean doStrap();
+
     public abstract String getClassTag();
 
     public void execute() {
