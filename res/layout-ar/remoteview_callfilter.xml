@@ -13,19 +13,20 @@
             android:id="@+id/iv_ic"
             android:layout_width="42dp"
             android:layout_height="42dp"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/noti_spe_icon_m_left"
+            android:layout_marginRight="@dimen/noti_spe_icon_m_left"
             android:src="@drawable/intercept" />
 
         <LinearLayout
-            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp"
             android:id="@+id/appwall_mid_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/appwall_left"
-            android:layout_marginLeft="@dimen/noti_spe_content_m_left"
-            android:layout_toRightOf="@id/iv_ic"
+            android:layout_toRightOf="@id/appwall_left"
+            android:layout_marginRight="@dimen/noti_spe_content_m_left"
+            android:layout_toLeftOf="@id/iv_ic"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -59,9 +60,9 @@
             android:id="@+id/appwall_left"
             android:layout_width="60dp"
             android:layout_height="@dimen/noti_spe_butt_height"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
             android:background="@drawable/clr_mem_noti_bt"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
