@@ -1002,6 +1002,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         return haveCheckedPic() + haveCheckedVid();
     }
 
+    @Override
+    public int getMaxScore() {
+        return MAX_PIC_SCORE + MAX_VID_SCORE;
+    }
+
     public int getScoreRightNow() {
         int score = 0;
 

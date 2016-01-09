@@ -184,6 +184,8 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
 //                    mActivity.setShownIngoreDlg();
 //                }
                 onIgnoreClick(true);
+                mIgnoreClick.setEnabled(false);
+                mIgnoreClick.setClickable(false);
                 break;
         }
     }

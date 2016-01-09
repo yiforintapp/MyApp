@@ -254,6 +254,8 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
             onProcessClick();
         } else if (v.getId() == R.id.pp_process_ignore_rv_click) {
             onIgnoreClick();
+            mIgnoreClick.setEnabled(false);
+            mIgnoreClick.setClickable(false);
         } else if (v.getId() == R.id.pri_pro_click_rv) {
             for (int i = 0; i < mAdapter.getGroupCount(); i++) {
                 mListView.collapseGroup(i);

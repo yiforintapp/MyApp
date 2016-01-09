@@ -1374,6 +1374,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onIgnoreClick(int increaseScore, String mgr) {
+        LeoLog.d(TAG, "onIgnoreClick, increaseScore: " + increaseScore + " | mgr: " + mgr);
         int score = mPrivacyHelper.getSecurityScore(mgr);
         int totalScore = mPrivacyHelper.getSecurityScore();
         Manager manager = MgrContext.getManager(mgr);
