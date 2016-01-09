@@ -1048,7 +1048,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         } else {
             if (isScnnedEver) {
-                mNewWifiImg.setImageResource(R.drawable.ic_scan_safe);
+                int type = wsm.getWifiSafety();
+                if (type == 0) {
+                    mNewWifiImg.setImageResource(R.drawable.ic_scan_error);
+                } else {
+                    mNewWifiImg.setImageResource(R.drawable.ic_scan_safe);
+                }
             } else {
                 mNewWifiImg.setImageResource(R.drawable.ic_scan_error);
             }
