@@ -128,7 +128,20 @@ public class CallFilterManager {
      */
     private String mFilterNum;
 
+    /**
+     * 当前来电接受时间
+     */
+    private long mCurrCallRecivTime = 0;
+
     private boolean mIisAddFilter;
+
+    public long getCurrCallRecivTime() {
+        return mCurrCallRecivTime;
+    }
+
+    public void setCurrCallRecivTime(long currCallRecivTime) {
+        this.mCurrCallRecivTime = currCallRecivTime;
+    }
 
     public int getLastShowedCallLogsBigestId() {
         return mLastShowedCallLogsBigestId;

@@ -46,6 +46,8 @@ public class BuildProperties {
     public static final String HUAWEI_P8_API_LEVEL = "8";
     public static final String KEY_SAMSUNG_ROM_NAME = "ro.product.manufacturer";
     public static final String SAMSUNG_NAME = "samsung";
+    public static final String KEY_SAMSUNG_VERSINON_INCREMENTAL = "ro.build.version.incremental";
+    public static final String SAMSUNG_INCREMENTAL = "I8552ZCAME1";
     private final Properties properties;
 
     private BuildProperties() throws IOException {
@@ -458,6 +460,22 @@ public class BuildProperties {
         if (!TextUtils.isEmpty((CharSequence) (manufac))) {
             if (SAMSUNG_NAME.equals(manufac)) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 是否为samsung内部版本号incremental为 "I8552ZCAME1"的rom
+     */
+    public static boolean isSmsgIcrI855() {
+        boolean isSmg = isSamSungModel();
+        if (isSmg) {
+            String manufac = getSystemProperty(KEY_SAMSUNG_VERSINON_INCREMENTAL);
+            if (!TextUtils.isEmpty((CharSequence) (manufac))) {
+                if (SAMSUNG_INCREMENTAL.equals(manufac)) {
+                    return true;
+                }
             }
         }
         return false;

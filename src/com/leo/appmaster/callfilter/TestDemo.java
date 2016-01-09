@@ -18,6 +18,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.Utilities;
 
 import java.io.File;
@@ -190,10 +191,10 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //                String filePath = sb12.toString();
 //                CallFilterUtils.parseBlactList(filePath);
 
-                File file = new File(Constants.PG_DB_PATH);
-                boolean exist = file.exists();
-                Toast.makeText(TestDemo.this, "DB EXISTS:" + exist, Toast.LENGTH_SHORT).show();
-
+//                File file = new File(Constants.PG_DB_PATH);
+//                boolean exist = file.exists();
+//                Toast.makeText(TestDemo.this, "DB EXISTS:" + exist, Toast.LENGTH_SHORT).show();
+                Toast.makeText(TestDemo.this,"is samSung i855 :"+BuildProperties.isSmsgIcrI855(),Toast.LENGTH_SHORT).show();
                 break;
         }
     }

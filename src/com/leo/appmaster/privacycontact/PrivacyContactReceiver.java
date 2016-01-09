@@ -35,6 +35,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFIlterUIHelper;
+import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterToast;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -43,6 +44,7 @@ import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
@@ -57,6 +59,7 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
     private long mSendDate;
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
+    private byte[] mByte = new byte[1];
 
     public PrivacyContactReceiver() {
     }
@@ -155,6 +158,23 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             final String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             PrivacyContactManager.getInstance(mContext).testValue = true;
 
+            /**
+             * 解决SamSungI855系统会重复接受两次广播问题，去重
+             */
+            boolean isSamI855 = BuildProperties.isSmsgIcrI855();
+            if (isSamI855) {
+                LeoLog.d(TAG,"state:"+state);
+                synchronized (mByte) {
+                    long lastTime = CallFilterManager.getInstance(mContext).getCurrCallRecivTime();
+                    long currTime = System.currentTimeMillis();
+                    boolean isFlag = (currTime - lastTime) < CallFilterConstants.CALL_RECEIV_DURAT;
+                    LeoLog.d(TAG,"lastTime:"+lastTime+",currTime:"+currTime+",currTime-lastTime:"+(currTime-lastTime)+",isFlag:"+isFlag);
+                    if (isFlag) {
+                        return;
+                    }
+                    CallFilterManager.getInstance(mContext).setCurrCallRecivTime(currTime);
+                }
+            }
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {

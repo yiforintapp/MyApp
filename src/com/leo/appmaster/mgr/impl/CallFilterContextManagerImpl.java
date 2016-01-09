@@ -293,7 +293,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             cur = sd.query(table, new String[]{numbColum, addBlColum, addMarkColum}, numbColum + numSelcts,
                     new String[]{selArgs}, null, null, null);
             if (cur != null && cur.getCount() > 0) {
-                while (cur.moveToFirst()) {
+                while (cur.moveToNext()) {
                     int addBlk = cur.getInt(cur.getColumnIndex(CallFilterConstants.BLACK_ADD_NUMBER));
                     int addMrk = cur.getInt(cur.getColumnIndex(CallFilterConstants.MARKER_NUMBER));
 
@@ -307,7 +307,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     selectArgs = new String[]{selArgs};
                     try {
                         mContext.getContentResolver().update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
-                        LeoLog.d(TAG, "remove black sucess !");
+                        LeoLog.d(TAG, "remove black sucess number:"+number);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1536,6 +1536,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         if (infos != null && infos.size() > 0) {
             for (BlackListInfo info : infos) {
                 if (info.getNumber().contains(formateNum)) {
+                    LeoLog.d(TAG,"number get black info :"+info.getRemoveState());
                     return info;
                 }
             }
