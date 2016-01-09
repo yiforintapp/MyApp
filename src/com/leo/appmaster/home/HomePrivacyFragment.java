@@ -689,12 +689,12 @@ public class HomePrivacyFragment extends Fragment {
         ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
                 HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO, HomeAnimShieldLayer.SHIELD_SCANNING_RATIO);
         shieldScaleAnim.setInterpolator(new LinearInterpolator());
-        shieldScaleAnim.setDuration(150);
+        shieldScaleAnim.setDuration(200);
         animators.add(shieldScaleAnim);
         // 盾牌透明
         ObjectAnimator alphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "shieldAlpha", 255, 0);
         alphaAnim.setInterpolator(new LinearInterpolator());
-        alphaAnim.setDuration(150);
+        alphaAnim.setDuration(200);
         animators.add(alphaAnim);
         // 内环缩小
         ObjectAnimator inScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "inCircleScaleRatio",
@@ -710,12 +710,12 @@ public class HomePrivacyFragment extends Fragment {
         // 外环缩小至0.5
         ObjectAnimator outScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "outCircleScaleRatio", 1f, 0.5f);
         outScaleAnim.setInterpolator(new LinearInterpolator());
-        outScaleAnim.setDuration(200);
+        outScaleAnim.setDuration(300);
         animators.add(outScaleAnim);
         // 虚线框缩小至0.5
         ObjectAnimator dashScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView.getShieldLayer(), "scanningScale", 1f, 0.64f);
         dashScaleAnim.setInterpolator(new LinearInterpolator());
-        dashScaleAnim.setDuration(200);
+        dashScaleAnim.setDuration(300);
         animators.add(dashScaleAnim);
         // 虚线框透明度
         mHomeAnimView.getShieldLayer().setDashAlpha(0);

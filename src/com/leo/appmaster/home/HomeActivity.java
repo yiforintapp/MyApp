@@ -340,27 +340,32 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_privacyScan");
-
             mPrivacyFragment.startScanningAnim();
-            mScanningFragment = new HomeScanningFragment();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, 0);
-            ft.addToBackStack(null);
-            ft.replace(R.id.pri_pro_content, mScanningFragment);
-            boolean commited = false;
-            try {
-                ft.commit();
-                commited = true;
-            } catch (Exception e) {
-            }
-            if (!commited) {
-                try {
-                    ft.commitAllowingStateLoss();
-                } catch (Exception e) {
+
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScanningFragment = new HomeScanningFragment();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, 0);
+                    ft.addToBackStack(null);
+                    ft.replace(R.id.pri_pro_content, mScanningFragment);
+                    boolean commited = false;
+                    try {
+                        ft.commit();
+                        commited = true;
+                    } catch (Exception e) {
+                    }
+                    if (!commited) {
+                        try {
+                            ft.commitAllowingStateLoss();
+                        } catch (Exception e) {
+                        }
+                    }
+                    mPrivacyFragment.onScanStart();
+                    mCurrentFragment = mScanningFragment;
                 }
-            }
-            mPrivacyFragment.onScanStart();
-            mCurrentFragment = mScanningFragment;
+            }, 50);
         }
     }
 

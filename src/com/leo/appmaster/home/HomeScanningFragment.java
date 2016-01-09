@@ -192,81 +192,87 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
-        mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
-        mScrollLayout = (RelativeLayout) view.findViewById(R.id.scrollView_layout);
-
-        mCancelBtn = view.findViewById(R.id.scan_cancel_rv);
-        mCancelTv = (TextView) view.findViewById(R.id.scan_cancel_tv);
-
-        mProcessBtn = view.findViewById(R.id.scan_process_rv);
-        mProcessTv = (TextView) view.findViewById(R.id.scan_process_tv);
-
-        mCancelTv.setOnClickListener(this);
-        mProcessTv.setOnClickListener(this);
-
-        mNowHeight = DipPixelUtil.dip2px(mActivity, 74);
-
-        initAppLayout(view);
-
-        initPicLayout(view);
-
-        initVidLayout(view);
-
-        initLostLayout(view);
-
-        initInstructLayout(view);
-
-        initWifiLayout(view);
-
-        initContactLayout(view);
-
-        mAdLayout = view.findViewById(R.id.ad_content);
-        mAdLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                adTypeHeight = mAdLayout.getHeight();
-            }
-        });
-
-        mBackView = view.findViewById(R.id.back_view);
-        ViewGroup.LayoutParams params = mBackView.getLayoutParams();
-        mBackViewHeight = params.height;
-
-
-        WindowManager wm = (WindowManager) mActivity
-                .getSystemService(Context.WINDOW_SERVICE);
-        mScreenHeight = wm.getDefaultDisplay().getHeight();
-        LeoLog.e("theDipHeight", "" + mScreenHeight + wm.getDefaultDisplay().getWidth());
-
-        IntrudeSecurityManager manager = (IntrudeSecurityManager)
-                MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-        mIsInsAvaliable = manager.getIsIntruderSecurityAvailable();
-
-        mTransition = new LayoutTransition();
-        mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
-                mTransition.getAnimator(LayoutTransition.CHANGE_APPEARING));
-
-
-        mController = new HomeScanningController(mActivity, this, mNewAppLayout, mNewPicLayout,
-                mNewVidLayout, mNewLostLayout, mNewWifiLayout, mNewInstructLayout,
-                mNewContactLayout, mIsInsAvaliable);
-
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startScanController();
-            }
-        }, 300);
+                long start = SystemClock.elapsedRealtime();
+                mScannTitleTv = (TextView) view.findViewById(R.id.scan_title_tv);
+                mProgressTv = (TextView) view.findViewById(R.id.scan_progress_tv);
+                mScrollLayout = (RelativeLayout) view.findViewById(R.id.scrollView_layout);
 
-        mRootView = view;
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                LeoLog.d("AfterPrivacyScan", "onMobvistaFinished: start");
-                loadAd();
+                mCancelBtn = view.findViewById(R.id.scan_cancel_rv);
+                mCancelTv = (TextView) view.findViewById(R.id.scan_cancel_tv);
+
+                mProcessBtn = view.findViewById(R.id.scan_process_rv);
+                mProcessTv = (TextView) view.findViewById(R.id.scan_process_tv);
+
+                mCancelTv.setOnClickListener(HomeScanningFragment.this);
+                mProcessTv.setOnClickListener(HomeScanningFragment.this);
+
+                mNowHeight = DipPixelUtil.dip2px(mActivity, 74);
+
+                initAppLayout(view);
+
+                initPicLayout(view);
+
+                initVidLayout(view);
+
+                initLostLayout(view);
+
+                initInstructLayout(view);
+
+                initWifiLayout(view);
+
+                initContactLayout(view);
+
+                mAdLayout = view.findViewById(R.id.ad_content);
+                mAdLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adTypeHeight = mAdLayout.getHeight();
+                    }
+                });
+
+                mBackView = view.findViewById(R.id.back_view);
+                ViewGroup.LayoutParams params = mBackView.getLayoutParams();
+                mBackViewHeight = params.height;
+
+
+                WindowManager wm = (WindowManager) mActivity
+                        .getSystemService(Context.WINDOW_SERVICE);
+                mScreenHeight = wm.getDefaultDisplay().getHeight();
+                LeoLog.e("theDipHeight", "" + mScreenHeight + wm.getDefaultDisplay().getWidth());
+
+                IntrudeSecurityManager manager = (IntrudeSecurityManager)
+                        MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+                mIsInsAvaliable = manager.getIsIntruderSecurityAvailable();
+
+                mTransition = new LayoutTransition();
+                mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING,
+                        mTransition.getAnimator(LayoutTransition.CHANGE_APPEARING));
+
+                LeoLog.d(TAG, "zany, cost: " + (SystemClock.elapsedRealtime() - start));
+                mController = new HomeScanningController(mActivity, HomeScanningFragment.this, mNewAppLayout, mNewPicLayout,
+                        mNewVidLayout, mNewLostLayout, mNewWifiLayout, mNewInstructLayout,
+                        mNewContactLayout, mIsInsAvaliable);
+
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startScanController();
+                    }
+                }, 200);
+
+                mRootView = view;
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LeoLog.d("AfterPrivacyScan", "onMobvistaFinished: start");
+                        loadAd();
+                    }
+                });
             }
-        });
+        }, 200);
     }
 
     @Nullable
@@ -421,9 +427,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         LeoLog.d("AfterPrivacyScan", "" + amp.getADAfterScan());
         if (amp.getADAfterScan() == 1) {
-            ThreadManager.executeOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+//            ThreadManager.executeOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
                     MobvistaEngine.getInstance(mActivity).loadMobvista(AD_AFTER_SCAN,
                             new MobvistaEngine.MobvistaListener() {
 
@@ -444,8 +450,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                             lm.filterSelfOneMinites();
                         }
                     });
-                }
-            });
+//                }
+//            });
 
 
         }
@@ -479,12 +485,17 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
 
         @Override
-        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            HomeScanningFragment fragment = mFragment.get();
+        public void onLoadingComplete(String imageUri, View view, final Bitmap loadedImage) {
+            final HomeScanningFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 fragment.mAdLoaded = true;
                 LeoLog.d("AfterPrivacyScan", "[HomeScanningFragment] onLoadingComplete -> " + imageUri);
-                fragment.initAdLayout(fragment.mRootView, mCampaign, loadedImage);
+                ThreadManager.getUiThreadHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.initAdLayout(fragment.mRootView, mCampaign, loadedImage);
+                    }
+                });
 
             }
         }
