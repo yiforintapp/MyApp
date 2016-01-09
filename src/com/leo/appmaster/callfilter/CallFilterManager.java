@@ -363,6 +363,15 @@ public class CallFilterManager {
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
                 return;
             }
+
+            if (!TextUtils.isEmpty(mPhoneNumber)) {
+                //是否为隐私联系人
+                boolean isUsePr = CallFilterUtils.isNumberUsePrivacy(phoneNumber);
+                if (isUsePr) {
+                    return;
+                }
+            }
+
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
             long currentTime = System.currentTimeMillis();
