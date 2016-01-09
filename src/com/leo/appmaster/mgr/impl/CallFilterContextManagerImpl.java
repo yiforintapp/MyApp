@@ -22,6 +22,7 @@ import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.imageloader.utils.IoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1373,16 +1374,12 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 //                    }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LeoLog.e(TAG, "number: " + number, e);
+            } finally {
+                IoUtils.closeSilently(cur);
             }
         }
-//        if (values != null && values.length > 0) {
-//            cr.bulkInsert(uri, values);
-//        }
 
-        if (cur != null) {
-            cur.close();
-        }
         return false;
     }
 
