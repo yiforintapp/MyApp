@@ -556,6 +556,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 values.put(CallFilterConstants.FIL_READ_STATE, isRead);
             }
 
+            Cursor cur = null;
             try {
                 if (update) {
                     String table = CallFilterConstants.FILTER_GROUP_TAB;
@@ -563,7 +564,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     String colum2 = CallFilterConstants.FIL_GR_DATE;
                     String colum3 = CallFilterConstants.FIL_CALL_TYPE;
                     String colum4 = CallFilterConstants.FIL_NUMBER;
-                    Cursor cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3, colum4}, number);
+                    cur = CallFilterUtils.getCursor(table, new String[]{colum1, colum2, colum3, colum4}, number);
                     boolean isKeyExist = (cur != null) ? cur.getCount() > 0 : false;
                     if (isKeyExist) {
                         String numSelcts = null;
@@ -609,6 +610,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                if (cur != null) {
+                    cur.close();
+                }
             }
         }
 
