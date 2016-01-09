@@ -154,6 +154,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private int mScoreBeforeProcess;
 
     private View mTabWhiteBg;
+    private boolean mEnterScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +230,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         String fromWhere = intent.getStringExtra(Constants.FROM_WHERE);
         LeoLog.i(TAG, "checkEnterScanIntent, enterScan: " + enterScan + " | type: " + type);
         if (enterScan) {
+            mEnterScan = true;
             String description = null;
             if (type == PrivacyHelper.PRIVACY_APP_LOCK) {
                 description = "prilevel_cnts_app";
@@ -253,6 +255,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             }, 2500);
 
         }
+    }
+
+    public boolean isEnterScan() {
+        return mEnterScan;
     }
 
     public void registerLocaleChange() {
@@ -326,6 +332,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mShowContact = true;
         }
         if (!mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
+            LeoLog.d(TAG, "zany, start dismiss tab.");
             mTabFragment.dismissTab();
             mPrivacyFragment.setShowColorProgress(false);
             mMoreFragment.setEnable(false);
@@ -346,6 +353,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    LeoLog.d(TAG, "zany, start scanning fragment.");
                     mScanningFragment = new HomeScanningFragment();
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, 0);
@@ -353,16 +361,20 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     ft.replace(R.id.pri_pro_content, mScanningFragment);
                     boolean commited = false;
                     try {
-                        ft.commit();
+                        ft.commitAllowingStateLoss();
                         commited = true;
+                        LeoLog.d(TAG, "zany, start scanning commit success.");
                     } catch (Exception e) {
+                        LeoLog.e(TAG, "zany, start scanning commit ex.", e);
                     }
-                    if (!commited) {
-                        try {
-                            ft.commitAllowingStateLoss();
-                        } catch (Exception e) {
-                        }
-                    }
+//                    if (!commited) {
+//                        try {
+//                            ft.commitAllowingStateLoss();
+//                            LeoLog.d(TAG, "zany, start scanning commitAllowingStateLoss success.");
+//                        } catch (Exception e) {
+//                            LeoLog.e(TAG, "zany, start scanning commitAllowingStateLoss ex.", e);
+//                        }
+//                    }
                     mPrivacyFragment.onScanStart();
                     mCurrentFragment = mScanningFragment;
                 }
