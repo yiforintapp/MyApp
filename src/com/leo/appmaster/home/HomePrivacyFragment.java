@@ -272,20 +272,6 @@ public class HomePrivacyFragment extends Fragment {
         ObjectAnimator outCircleAlphaAnim = ObjectAnimator.ofInt(mHomeAnimView.getShieldLayer(), "outCircleAlpha", 0, 255);
         outCircleAlphaAnim.setInterpolator(new LinearInterpolator());
         outCircleAlphaAnim.setDuration(600);
-//        outCircleAlphaAnim.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                if (mActivity != null && isAdded() && mActivity.isFromNotification()) {
-//                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mActivity.onShieldClick();
-//                        }
-//                    }, 100);
-//
-//                }
-//            }
-//        });
         mAnimators.add(outCircleAlphaAnim);
 
         AnimatorSet secondAnimSet = new AnimatorSet();
