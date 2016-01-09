@@ -40,8 +40,8 @@ public class CallFilterToast {
     public static final int BLACK_LIST_TYPE = 0;
     public static final int FILTER_TYPE = 1;
     public static final int TYPE_ANNOY = 1;
-    public static final int TYPE_AD = 2;
-    public static final int TYPE_CHEAT = 3;
+    public static final int TYPE_CHEAT = 2;
+    public static final int TYPE_AD = 3;
     public static final String TOAST_Y = "record_toast_y";
 
     public static TextView mTextOne, mTextTwo, mTextThree;
