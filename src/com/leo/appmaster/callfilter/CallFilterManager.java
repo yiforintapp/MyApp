@@ -69,7 +69,7 @@ public class CallFilterManager {
     private int[] mLastFilterTips = null;
     private int mLastShowedCallLogsBigestId = -1;
     private int mLastClickedCallLogsId = 0;
-    private boolean mHasIdle = false;
+    private boolean mHasIdle = false;//是否已经处理完所有的挂断逻辑，用于过滤重复挂断广播
     private boolean mFilObHad = true;
 
     public boolean isFilObHad() {
@@ -249,7 +249,7 @@ public class CallFilterManager {
             tryHideToast();
             LeoLog.i("testdata", "hide toast");
         } else {
-            mHasIdle = false;
+            mHasIdle = false; //只要不是挂断广播，先将标记置为false，此时未处理挂断逻辑（挂断广播总会在其他广播之后）
         }
         
         if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
@@ -262,7 +262,7 @@ public class CallFilterManager {
             if (TelephonyManager.EXTRA_STATE_IDLE.equalsIgnoreCase(state)) {
                 LeoLog.i("testdata", "set out going false  because isComingOut() = " + isComingOut() + "    TextUtils.isEmpty(state) = " + TextUtils.isEmpty(state));
                 setIsComingOut(false);
-                mHasIdle = true;
+                mHasIdle = true;//是本机拨出号码的情况，此时挂断，将重置外拨标记为false，并将是否完成挂断逻辑的标记置为true，使挂断弹框逻辑不用执行
                 mLastNumBeUsedToGetInfo = "xx*()*())**&*^&^(*&^*&(";//让记录的号码变乱，下次就会重新赋值
                 mLastLocInfo = null;
                 mLastSerInfo = null;
@@ -373,11 +373,12 @@ public class CallFilterManager {
             mLastSerInfo = null;
             mLastFilterTips = null;
             if (info != null || isComingOut() || mHasIdle) {
+                //如果mHasIdle是true 是已经处理完挂断逻辑 也要返回，
                 CallFilterManager.getInstance(mContext).setIsComingOut(false);
-                mHasIdle = false;
                 return;
             }
-            mHasIdle = false;
+            mHasIdle = true;
+            //从这以下，是满足所有条件走的挂断逻辑，将mHasIdle置为true，表示已经处理
             // 挂断后，判断当前时间和之前接听的时间的差值，小于配置的判定时间则在挂断后弹出对话框
             long durationMax = cmp.getCallDurationMax();
             long currentTime = System.currentTimeMillis();
