@@ -13,6 +13,7 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.privacycontact.ContactBean;
@@ -71,6 +72,16 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         for (ContactBean contact : addContacts) {
             String name = contact.getContactName();
             String number = PrivacyContactUtils.simpleFromateNumber(contact.getContactNumber());
+
+            if (TextUtils.isEmpty(number)) {
+                continue;
+            }
+
+//            CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//            boolean isHaveBlackNum = cmp.isExistBlackList(number);
+//            if (isHaveBlackNum) {
+//                continue;
+//            }
             Bitmap contactIcon = contact.getContactIcon();
             /*隐私联系人去重*/
             boolean flagContact = PrivacyContactUtils.pryContRemovSame(number);

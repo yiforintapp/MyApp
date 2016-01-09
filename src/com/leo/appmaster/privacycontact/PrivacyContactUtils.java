@@ -579,25 +579,22 @@ public class PrivacyContactUtils {
                     } else {
                         number = cursor.getString(numberColum);
                     }
-                    if (!calllog.containsKey(number)) {
+//                    if (!calllog.containsKey(number)) {
 //                        calllog.put(number, callLog);
-                        start = SystemClock.elapsedRealtime();
-                        Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
-                                context, number);
+//                        start = SystemClock.elapsedRealtime();
+                        Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(context, number);
                         // LeoLog.d(TAG, "zany, --getIcon, icon: " + icon + " , " + (SystemClock.elapsedRealtime() - start));
                         if (icon != null) {
-                            int size = (int) context.getResources().getDimension(R.dimen.contact_icon_scale_size);
-                            icon = PrivacyContactUtils.getScaledContactIcon(icon, size);
                             callLog.setContactIcon(icon);
                         } else {
                             BitmapDrawable bitDra = (BitmapDrawable) context.getResources().getDrawable(R.drawable.default_user_avatar);
                             Bitmap bitmapIcon = bitDra.getBitmap();
                             callLog.setContactIcon(bitmapIcon);
                         }
-                    } else {
-                        ContactCallLog log = calllog.get(number);
-                        callLog.setContactIcon(log.getContactIcon());
-                    }
+//                    } else {
+//                        ContactCallLog log = calllog.get(number);
+//                        callLog.setContactIcon(log.getContactIcon());
+//                    }
                     String name = cursor.getString(nameColum);
                     int id = cursor.getInt(idColum);
                     Date date = new Date(Long.parseLong(cursor.getString(dateColum)));
@@ -1379,8 +1376,6 @@ public class PrivacyContactUtils {
         if (TextUtils.isEmpty(number)) {
             return -1;
         }
-        String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-
         String numSelcts = null;
         String selArgs = null;
         if (number.length() >= PrivacyContactUtils.NUM_LEGH) {

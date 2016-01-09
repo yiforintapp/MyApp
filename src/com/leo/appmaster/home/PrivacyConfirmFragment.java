@@ -38,6 +38,7 @@ import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.mgr.WifiSecurityManager;
+import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
@@ -326,23 +327,23 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     MobvistaEngine.getInstance(mActivity).loadMobvista(
                             Constants.UNIT_ID_67, new MobvistaListener() {
 
-                        @Override
-                        public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
-                            if (code == MobvistaEngine.ERR_OK) {
-                                sAdImageListener = new AdPreviewLoaderListener(
-                                        PrivacyConfirmFragment.this, campaign);
-                                ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
-                            }
-                        }
+                                @Override
+                                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
+                                    if (code == MobvistaEngine.ERR_OK) {
+                                        sAdImageListener = new AdPreviewLoaderListener(
+                                                PrivacyConfirmFragment.this, campaign);
+                                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                                    }
+                                }
 
-                        @Override
-                        public void onMobvistaClick(Campaign campaign) {
-                            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                            lm.filterSelfOneMinites();
+                                @Override
+                                public void onMobvistaClick(Campaign campaign) {
+                                    LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                                    lm.filterSelfOneMinites();
 
-                            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_scanRST");
-                        }
-                    });
+                                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_scanRST");
+                                }
+                            });
                 }
             });
 
@@ -358,10 +359,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             if (mPanelView == null) {
                 mPanelView = mRootView.findViewById(R.id.list_parent_layout);
                 // AM-3143: add animation for advertise cell
-                    LeoLog.i("tempp", android.os.Build.MODEL);
-                 if (!("ZTE U817".equals(android.os.Build.MODEL))) {
-                     ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
-                 }
+                LeoLog.i("tempp", android.os.Build.MODEL);
+                if (!("ZTE U817".equals(android.os.Build.MODEL))) {
+                    ((ViewGroup) mPanelView).setLayoutTransition(new LayoutTransition());
+                }
 
                 initWifiLayout(mPanelView);
                 initLostLayout(mPanelView);
@@ -480,7 +481,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void initContactLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.contact_security_stub);
 //        View include = view.findViewById(R.id.contact_security);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         mContactInclude = viewStub.inflate();
@@ -595,6 +596,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 ChangeContactColor();
                 Toast.makeText(mActivity, mActivity.getString(R.string.pri_contact_succ), Toast.LENGTH_SHORT).show();
                 for (View contactView : mContactViews) {
@@ -605,6 +607,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
                         TextView textView = (TextView) contactView.findViewById(R.id.contact_added);
                         textView.setVisibility(View.VISIBLE);
+                    }else {
+                        checkBox.setChecked(false);
                     }
                 }
                 if (mAddedData.size() == mContactViews.size()) {
@@ -616,8 +620,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     mImpTv.setVisibility(View.GONE);
                 } else {
                     setAddPrivacyText(false);
+                    mSelectAllCb.setChecked(false);
                 }
                 resetContact();
+
                 if (mMessageCallBean != null) {
                     showImportDlg();
                 }
@@ -643,7 +649,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         if (view != null) {
             ViewStub viewStub = (ViewStub) view.findViewById(R.id.advertise_security_stub);
 //            View include = view.findViewById(R.id.advertise_security);
-            if(viewStub == null) {
+            if (viewStub == null) {
                 return;
             }
             View include = viewStub.inflate();
@@ -704,7 +710,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void initWifiLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.wifi_security_stub);
 //        View include = view.findViewById(R.id.wifi_security);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         mWIfiInclude = viewStub.inflate();
@@ -775,7 +781,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private void initSwiftyLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.swifty_security_stub);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
 
@@ -836,7 +842,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private void initFbLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.fb_security_stub);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
 
@@ -890,7 +896,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
             if (score == 100) {  // 等于100分
                 ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_high_security_stub);
-                if(viewStub == null) {
+                if (viewStub == null) {
                     return;
                 }
                 View highInclude = viewStub.inflate();
@@ -924,8 +930,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                         mHighFourStar, mHighFiveStar, mHighFiveEmptyStar, mHighGradeGesture);
 
             } else {
-                ViewStub  viewStub= (ViewStub) view.findViewById(R.id.grade_security_stub);
-                if(viewStub == null) {
+                ViewStub viewStub = (ViewStub) view.findViewById(R.id.grade_security_stub);
+                if (viewStub == null) {
                     return;
                 }
                 View include = viewStub.inflate();
@@ -1111,10 +1117,40 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
-                        mMessageCallBean = pcm.addPrivacyContact(mSelectData);
-                        mAddedData.addAll(mSelectData);
-                        mSelectData.clear();
-                        onAddContactFinish();
+                        CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                        if (mSelectData != null && mSelectData.size() == 1) {
+                            boolean isHaveBlackNum = cmp.isExistBlackList(mSelectData.get(0).getContactNumber());
+                            if (isHaveBlackNum) {
+                                ThreadManager.getUiThreadHandler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String str = getResources().getString(R.string.call_filter_have_add_black_num);
+                                        Toast.makeText(mActivity, str, Toast.LENGTH_SHORT).show();
+                                        setAddPrivacyText(false);
+                                        mAddedData.clear();
+                                        resetContact();
+                                        ChangeContactColor();
+                                    }
+                                });
+                            } else {
+                                mMessageCallBean = pcm.addPrivacyContact(mSelectData);
+                                mAddedData.addAll(mSelectData);
+                                mSelectData.clear();
+                                onAddContactFinish();
+                            }
+                        } else {
+                            List<ContactBean> selectDat = (List<ContactBean>) ((ArrayList) mSelectData).clone();
+                            for (ContactBean contact : selectDat) {
+                                boolean isHaveBlackNum = cmp.isExistBlackList(contact.getContactNumber());
+                                if (isHaveBlackNum) {
+                                    mSelectData.remove(contact);
+                                }
+                            }
+                            mMessageCallBean = pcm.addPrivacyContact(mSelectData);
+                            mAddedData.addAll(mSelectData);
+                            mSelectData.clear();
+                            onAddContactFinish();
+                        }
                     }
                 });
             } else {
