@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.callfilter;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -84,7 +85,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 mNothingToShowView.setVisibility(View.GONE);
                 mCallListView.setVisibility(View.VISIBLE);
                 mAdapter.setFlag(CallFilterConstants.ADAPTER_FLAG_CALL_FILTER);
-                mAdapter.setData(mFilterList,mSysContacts);
+                mAdapter.setData(mFilterList, mSysContacts);
             }
         }
     }
@@ -185,7 +186,15 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             loadData(false);
         }
         isFristIn = false;
-        CallFilterManager.getInstance(getActivity()).setIsFilterTab(true);
+        int curTab = CallFilterManager.getInstance(getActivity()).getCurrFilterTab();
+        if (CallFilterMainActivity.FILTER_TAB == curTab) {
+            CallFilterManager.getInstance(getActivity()).setIsFilterTab(true);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     @Override
@@ -215,7 +224,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 mCallManger.removeFilterGr(mFilterList);
 
                 mFilterList.clear();
-                mAdapter.setData(mFilterList,mSysContacts);
+                mAdapter.setData(mFilterList, mSysContacts);
                 dialog.dismiss();
             }
         });
@@ -403,7 +412,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                     }
                 });
 
-                mAdapter.setData(mFilterList,mSysContacts);
+                mAdapter.setData(mFilterList, mSysContacts);
                 mDeleteDialog.dismiss();
             }
         });
@@ -417,6 +426,6 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         mCallManger.removeFilterGr(removeList);
 
         mFilterList.remove(position);
-        mAdapter.setData(mFilterList,mSysContacts);
+        mAdapter.setData(mFilterList, mSysContacts);
     }
 }

@@ -13,6 +13,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 import android.app.Activity;
@@ -112,6 +113,7 @@ public class CallFIlterUIHelper {
         boolean filOpSta = cmp.getFilterNotiOpState();
         boolean isFilterSelected = cmp.getFilterOpenState();
         boolean isFilterTab = CallFilterManager.getInstance(ama).isIsFilterTab();
+        LeoLog.d("showReceiveCallNotification","isFilterTab:"+isFilterTab);
         if (!filOpSta || !isFilterSelected || isFilterTab) {
             return;
         }

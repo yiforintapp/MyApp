@@ -2,6 +2,7 @@
 package com.leo.appmaster.callfilter;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,8 +33,8 @@ import java.util.List;
 public class CallFilterMainActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
 
-    private static final int BLACK_TAB = 0;
-    private static final int FILTER_TAB = 1;
+    public static final int BLACK_TAB = 0;
+    public static final int FILTER_TAB = 1;
 
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
@@ -48,11 +49,15 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_filter_main);
+        CallFilterManager.getInstance(this).setIsFilterTab(false);
+        CallFilterManager.getInstance(this).setCurrFilterTab(BLACK_TAB);
         initUI();
         mNeedToHomeWhenFinish = getIntent().getBooleanExtra("needToHomeWhenFinish", false);
+
     }
 
     private void initUI() {
+
         mTitleBar = (CommonToolbar) findViewById(R.id.call_filter_toolbar);
         mTitleBar.setToolbarTitle(R.string.call_filter_name);
         mTitleBar.setToolbarColorResource(R.color.cb);
@@ -81,7 +86,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     public void finish() {
         if (mNeedToHomeWhenFinish) {
             mNeedToHomeWhenFinish = false;
-            Intent intent=new Intent(Intent.ACTION_MAIN);
+            Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             startActivity(intent);
             super.finish();
@@ -89,13 +94,17 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
             super.finish();
         }
     }
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
         mNeedToHomeWhenFinish = intent.getBooleanExtra("needToHomeWhenFinish", false);
         LeoLog.i("CallFilterMainActivity", "new intent ! mNeedToHomeWhenFinish = " + mNeedToHomeWhenFinish);
+        if (intent.getBooleanExtra("needMoveToTab2", false)) {
+            mViewPager.setCurrentItem(1);
+        }
+
     }
-    
+
     private void initFragment() {
         CallFilterFragmentHoler holder = new CallFilterFragmentHoler();
         holder.title = this.getString(R.string.call_filter_black_list_tab);
@@ -125,8 +134,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         }
     }
 
-    
-    
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
@@ -197,8 +205,10 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     public void onPageSelected(int arg0) {
         if (arg0 == FILTER_TAB) {
             CallFilterManager.getInstance(this).setIsFilterTab(true);
+            CallFilterManager.getInstance(this).setCurrFilterTab(FILTER_TAB);
         } else if (arg0 == BLACK_TAB) {
             CallFilterManager.getInstance(this).setIsFilterTab(false);
+            CallFilterManager.getInstance(this).setCurrFilterTab(BLACK_TAB);
         }
     }
 

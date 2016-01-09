@@ -133,7 +133,20 @@ public class CallFilterManager {
      */
     private long mCurrCallRecivTime = 0;
 
+    /**
+     * 当前骚扰拦截Tab记录
+     */
+    private int mCurrFilterTab = 0;
+
     private boolean mIisAddFilter;
+
+    public int getCurrFilterTab() {
+        return mCurrFilterTab;
+    }
+
+    public void setCurrFilterTab(int currFilterTab) {
+        this.mCurrFilterTab = currFilterTab;
+    }
 
     public long getCurrCallRecivTime() {
         return mCurrCallRecivTime;
