@@ -907,6 +907,7 @@
     <string name="call_filter_add_strange_num">加入黑名单</string>
     <string name="call_filter_clear_all_black">清空所有</string>
 
+    <string name="lock_app_item_desc_cb_color">已有<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>人加锁</string>
     <string name="lock_app_item_desc_cb">已有%1$s人加锁</string>
     <string name="menu_left_item_problem">常见问题</string>
     <string name="feedback_problem_text">去常见问题看看</string>

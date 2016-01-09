@@ -77,7 +77,7 @@ public class ListLockItem extends RelativeLayout {
                     text = context.getString(R.string.have_added_lock);
                 } else {
                     String string = makePosRight(info);
-                    text = context.getString(R.string.lock_app_item_desc_cb, string);
+                    text = context.getString(R.string.lock_app_item_desc_cb_color, string);
                 }
                 if (text != null) {
                     applocknums.setText(text);
@@ -104,7 +104,7 @@ public class ListLockItem extends RelativeLayout {
                     applocknums.setText(text);
                 } else {
                     String string = makePosRight(info);
-                    text = context.getString(R.string.lock_app_item_desc_cb, string);
+                    text = context.getString(R.string.lock_app_item_desc_cb_color, string);
                     applocknums.setText(Html.fromHtml(text));
                 }
             } else {

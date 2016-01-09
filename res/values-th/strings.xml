@@ -887,6 +887,7 @@
     <string name="scan_find_vid">พบ<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>คลิป แนะนำให้ซ่อนทันที</string>
     <string name="call_filter_add_strange_num">เพิ่มเข้าแบล็คลิสต์</string>
     <string name="call_filter_clear_all_black">ลบทั้งหมด</string>
+    <string name="lock_app_item_desc_cb_color">มี<Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>คนบล็อคแล้ว</string>
     <string name="lock_app_item_desc_cb">มี%1$sคนบล็อคแล้ว</string>
     <string name="menu_left_item_problem">ปัญหาที่พบบ่อย</string>
     <string name="feedback_problem_text">ไปดูปัญหาที่พบบ่อย</string>

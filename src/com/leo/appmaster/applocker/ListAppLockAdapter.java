@@ -68,7 +68,7 @@ public class ListAppLockAdapter extends BaseAdapter {
             itemView.setTitle(info.label);
             if (info.topPos > -1) {
                 String infoTopPos = makePosRight(info);
-                String text = mContext.getString(R.string.lock_app_item_desc_cb, infoTopPos);
+                String text = mContext.getString(R.string.lock_app_item_desc_cb_color, infoTopPos);
                 itemView.setText(Html.fromHtml(text));
             } else {
                 itemView.setText("");
