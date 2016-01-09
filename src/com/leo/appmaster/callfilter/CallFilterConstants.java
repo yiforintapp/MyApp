@@ -231,10 +231,10 @@ public class CallFilterConstants {
     public static final int BLACK_LIST_TYP = 0;
     /*骚扰电话*/
     public static final int FILTER_CALL_TYPE = 1;
-    /*广告推销*/
-    public static final int AD_SALE_TYPE = 2;
     /*诈骗电话*/
-    public static final int CHEAT_NUM_TYPE = 3;
+    public static final int CHEAT_NUM_TYPE  = 2;
+    /*广告推销*/
+    public static final int AD_SALE_TYPE = 3;
 
     /*黑名单未上传*/
     public static final int UPLOAD_NO = 0;
