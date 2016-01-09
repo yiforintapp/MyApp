@@ -162,7 +162,7 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
              * 解决SamSungI855系统会重复接受两次广播问题，去重
              */
             boolean isSamI855 = BuildProperties.isSmsgIcrI855();
-            if (isSamI855) {
+            if (isSamI855 && (!PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action))) {
                 LeoLog.d(TAG,"state:"+state);
                 synchronized (mByte) {
                     long lastTime = CallFilterManager.getInstance(mContext).getCurrCallRecivTime();
