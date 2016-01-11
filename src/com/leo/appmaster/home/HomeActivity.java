@@ -1239,8 +1239,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void menuFaqJump() {
 
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "faq", "faq_cnts");
-
         String faqtitle = getString(R.string.menu_left_item_problem);
         String country = DeviceUtil.getCountry();
         country = Utilities.exChange(country);

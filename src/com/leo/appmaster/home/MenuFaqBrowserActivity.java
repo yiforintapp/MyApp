@@ -71,6 +71,8 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq_browser);
 
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "faq", "faq_cnts");
+
         mUrl = getIntent().getStringExtra(MsgConsts.KEY_URL);
         if (TextUtils.isEmpty(mUrl)) {
             finish();
