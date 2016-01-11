@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,30 +12,22 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
-import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 首页下方4个tab
@@ -289,6 +280,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.home_lost_tab:
                     // 骚扰拦截
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_sv_block");
                     Intent callFilter = new Intent(activity, CallFilterMainActivity.class);
                     if (mIsHasCallFilterRecords) {
                         callFilter.putExtra("needMoveToTab2", true);

@@ -51,7 +51,6 @@ import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
-import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
@@ -1217,6 +1216,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     unistallPG();
                 } else if (position == 4) {
                     /* 常见问题 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "FAQ");
                     menuFaqJump();
                 } else if (position == 5) {
                     /* 检查更新 */
