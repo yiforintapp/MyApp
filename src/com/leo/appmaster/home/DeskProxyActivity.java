@@ -264,6 +264,7 @@ public class DeskProxyActivity extends Activity {
         startActivity(intent);
         CallFilterManager manager = CallFilterManager.getInstance(this);
         manager.setLastClickedCallLogsId(manager.getLastShowedCallLogsBigestId());
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "notify_stranger_cnts");
     }
 
     private void goToBlackList(int type) {
@@ -273,6 +274,7 @@ public class DeskProxyActivity extends Activity {
         intent.putExtra("needToHomeWhenFinish", true);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity(intent);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "notify_blacklist_cnts");
     }
     
     private void gotoBackUp(int type) {

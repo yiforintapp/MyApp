@@ -20,6 +20,7 @@ import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
+import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -285,6 +286,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (mIsHasCallFilterRecords) {
                         callFilter.putExtra("needMoveToTab2", true);
                     }
+                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "block", "block_cnts");
                     startActivity(callFilter);
 //                    if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());

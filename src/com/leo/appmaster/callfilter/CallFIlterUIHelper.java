@@ -9,6 +9,7 @@ import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
@@ -106,6 +107,10 @@ public class CallFIlterUIHelper {
     private CallFIlterUIHelper() {
     }
 
+    /**
+     * 收到拦截的通知
+     * @param number
+     */
     public void showReceiveCallNotification(String number) {
         AppMasterApplication ama = AppMasterApplication.getInstance();
         /*判断通知提示是否打开*/
@@ -135,9 +140,13 @@ public class CallFIlterUIHelper {
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_launcher);
         mNotificationManager.notify(1, mBuilder.build());
-        
+        SDKWrapper.addEvent(ama, SDKWrapper.P1, "block", "notify_blacklist");
     }
 
+    /**
+     * 陌生人来电通知
+     * @param count
+     */
     public void showStrangerNotification(int count) {
         Context context = AppMasterApplication.getInstance();
         String title = String.format(context.getResources().getString(R.string.str_noti_title_txt), "("+count+")");
@@ -159,6 +168,7 @@ public class CallFIlterUIHelper {
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_launcher);
         mNotificationManager.notify(CallFilterConstants.NOTI_ID_STRA, mBuilder.build());
+        SDKWrapper.addEvent(context, SDKWrapper.P1, "block", "notify_stranger");
     }
 
     public LEOAlarmDialog getConfirmAddToBlacklistDialog(Context context, String number, String markedPeople) {

@@ -34,6 +34,7 @@ import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.BuildProperties;
@@ -377,8 +378,10 @@ public class CallFilterManager {
                         public void run() {
                             if (CallFilterConstants.DIALOG_TYPE[0] == tipType) {
                                 mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.FILTER_TYPE, filterType);
+                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "block", "calling_mark");
                             } else {
                                 mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.BLACK_LIST_TYPE, 0);
+                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "block", "calling_blacklist");
                             }
                             if (mTipToast != null) {
                                 mTipToast.show();
