@@ -317,5 +317,4 @@ public class CallFilterConstants {
     public static final String EVENT_MSG_LOAD_BLACK = "EVENT_MSG_LOAD_BLACK";
 
 
-
 }

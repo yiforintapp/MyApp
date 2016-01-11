@@ -33,9 +33,6 @@ import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.Utilities;
 
 public class CallFilterRecordActivity extends BaseActivity implements OnClickListener {
-    public static final int TYPE_ANNOY = 1;
-    public static final int TYPE_CHEAT = 2;
-    public static final int TYPE_AD = 3;
     private TextView mTvTitleName;
     private TextView mTvTitleNumber;
     private ListView mLvMain;
@@ -84,9 +81,9 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 }
             } else {
                 String string;
-                if (mark == TYPE_ANNOY) {
+                if (mark == CallFilterConstants.FILTER_CALL_TYPE) {
                     string = this.getString(R.string.filter_number_type_saorao);
-                } else if (mark == TYPE_AD) {
+                } else if (mark == CallFilterConstants.AD_SALE_TYPE) {
                     string = this.getString(R.string.filter_number_type_ad);
                 } else {
                     string = this.getString(R.string.filter_number_type_zhapian);
@@ -235,15 +232,15 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 }
 
                 if (position == 0) {
-                    info.setFilterType(TYPE_ANNOY);
+                    info.setFilterType(CallFilterConstants.FILTER_CALL_TYPE);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_saorao);
                 } else if (position == 1) {
-                    info.setFilterType(TYPE_AD);
+                    info.setFilterType(CallFilterConstants.AD_SALE_TYPE);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_ad);
                 } else if (position == 2) {
-                    info.setFilterType(TYPE_CHEAT);
+                    info.setFilterType(CallFilterConstants.CHEAT_NUM_TYPE);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_zhapian);
                 }
