@@ -20,6 +20,7 @@ import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.schedule.BlackListFileFetchJob;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -28,6 +29,7 @@ import com.leo.appmaster.utils.Utilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -506,10 +508,12 @@ public class CallFilterUtils {
             return;
         }
         List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
+        BufferedReader br = null;
+        StringBuffer sb = null;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            br = new BufferedReader(new FileReader(file));
             String temp = null;
-            StringBuffer sb = new StringBuffer();
+            sb = new StringBuffer();
             temp = br.readLine();
             while (temp != null) {
                 String[] dates = temp.split(",");
@@ -539,9 +543,16 @@ public class CallFilterUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             /*删除文件*/
-//            String filePaht = BlackListFileFetchJob.getBlackFilePath();
-//            deleteFile(filePaht);
+            String filePaht = BlackListFileFetchJob.getBlackFilePath();
+            deleteFile(filePaht);
         }
     }
 
