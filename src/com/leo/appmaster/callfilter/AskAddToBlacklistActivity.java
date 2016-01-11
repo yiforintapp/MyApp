@@ -120,10 +120,10 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                         infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
                         break;
                     case 1:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
                         break;
                     case 2:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
                         break;
                     default:
                         break;
@@ -185,10 +185,10 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                         infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
                         break;
                     case 1:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
                         break;
                     case 2:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
                         break;
                     default:
                         break;
@@ -238,10 +238,10 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                         infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
                         break;
                     case 1:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
                         break;
                     case 2:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
                         break;
                     default:
                         break;
