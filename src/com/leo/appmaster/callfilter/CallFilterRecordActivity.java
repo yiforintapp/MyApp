@@ -25,6 +25,7 @@ import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
@@ -171,20 +172,21 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 finish();
                 break;
             case R.id.remove_black_list:
+                SDKWrapper.addEvent(CallFilterRecordActivity.this, SDKWrapper.P1, "block", "detail_blacklist");
                 showRemoveDialog();
                 break;
             case R.id.mark_number:
-
+                SDKWrapper.addEvent(CallFilterRecordActivity.this, SDKWrapper.P1, "block", "detail_mark");
                 String title;
                 if (Utilities.isEmpty(info.getNumberName())) {
                     title = info.getNumber();
                 } else {
                     title = info.getNumberName();
                 }
-
                 showMarkDialog(title);
                 break;
             case R.id.clear_all_fliter:
+                SDKWrapper.addEvent(CallFilterRecordActivity.this, SDKWrapper.P1, "block", "detail_delete");
                 showRemoveAllFilter();
                 break;
             default:
@@ -264,80 +266,80 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
         final LEOWithSingleCheckboxDialog mDialog = CallFIlterUIHelper.getInstance().
                 getConfirmRemoveFromBlacklistDialog(this);
         mDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
-                BlackListInfo blacklistInfo = new BlackListInfo();
-                blacklistInfo.setNumber(info.getNumber());
-                list.add(blacklistInfo);
-                mCallManger.removeBlackList(list);
-                boolean restrLog = mDialog.getCheckBoxState();
-                if (restrLog) {
-                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+                                            BlackListInfo blacklistInfo = new BlackListInfo();
+                                            blacklistInfo.setNumber(info.getNumber());
+                                            list.add(blacklistInfo);
+                                            mCallManger.removeBlackList(list);
+                                            boolean restrLog = mDialog.getCheckBoxState();
+                                            if (restrLog) {
+                                                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
-                    List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
-                    if (infos != null && infos.size() > 0) {
-                        for (CallFilterInfo CallInfo : infos) {
-                            cmp.insertCallToSys(CallInfo);
-                        }
-                }
-            }
-                List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
-                removeFilterList.add(info);
-                mCallManger.removeFilterGr(removeFilterList);
-            mDialog.dismiss();
+                                                List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
+                                                if (infos != null && infos.size() > 0) {
+                                                    for (CallFilterInfo CallInfo : infos) {
+                                                        cmp.insertCallToSys(CallInfo);
+                                                    }
+                                                }
+                                            }
+                                            List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
+                                            removeFilterList.add(info);
+                                            mCallManger.removeFilterGr(removeFilterList);
+                                            mDialog.dismiss();
 
-            onBackPressed();
-        }
+                                            onBackPressed();
+                                        }
+                                    }
+
+        );
+        mDialog.show();
     }
 
-    );
-    mDialog.show();
-}
 
+    class MyAdapter extends BaseAdapter {
 
-class MyAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            if (mRecordTime == null) {
+                return 0;
+            }
+            return mRecordTime.size();
+        }
 
-    @Override
-    public int getCount() {
-        if (mRecordTime == null) {
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
             return 0;
         }
-        return mRecordTime.size();
-    }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ItemHolder holder;
+            if (convertView == null) {
+                holder = new ItemHolder();
+                View view = LayoutInflater.from(CallFilterRecordActivity.this).inflate(R.layout.item_callfilter_record, null);
+                holder.tv = (TextView) view.findViewById(R.id.tv_record_time);
+                view.setTag(holder);
+                convertView = view;
+            } else {
+                holder = (ItemHolder) convertView.getTag();
+            }
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+            long time = mRecordTime.get(position).getTimeLong();
+            SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mma");
+            holder.tv.setText(finalFormat.format(time));
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ItemHolder holder;
-        if (convertView == null) {
-            holder = new ItemHolder();
-            View view = LayoutInflater.from(CallFilterRecordActivity.this).inflate(R.layout.item_callfilter_record, null);
-            holder.tv = (TextView) view.findViewById(R.id.tv_record_time);
-            view.setTag(holder);
-            convertView = view;
-        } else {
-            holder = (ItemHolder) convertView.getTag();
+            return convertView;
         }
-
-        long time = mRecordTime.get(position).getTimeLong();
-        SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mma");
-        holder.tv.setText(finalFormat.format(time));
-
-        return convertView;
     }
-}
 
-class ItemHolder {
-    public TextView tv;
-}
+    class ItemHolder {
+        public TextView tv;
+    }
 }

@@ -253,6 +253,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         switch (view.getId()) {
             case R.id.click_check_box:
                 if (mLoadDone) {
+
+                    SDKWrapper.addEvent(StrangeCallActivity.this, SDKWrapper.P1, "block", "recently_all");
+
                     boolean isCheck = (Boolean) mAddAll.getTag();
                     if (isCheck) {
                         mAddAll.setTag(false);
@@ -274,6 +277,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
 
     private void addToBlackList() {
         if (mLoadDone) {
+            SDKWrapper.addEvent(StrangeCallActivity.this, SDKWrapper.P1, "block", "recently_add");
             if (mCallLogList != null && mCallLogList.size() > 0) {
                 if (mAddPrivacyCallLog.size() > 0 && mAddPrivacyCallLog != null) {
 

@@ -28,6 +28,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
@@ -234,6 +235,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent;
         try {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "block", "detail_cnts");
             intent = new Intent(mActivity, CallFilterRecordActivity.class);
             Bundle bundle = new Bundle();
             CallFilterInfo info = mFilterList.get(i);
@@ -251,6 +253,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
         if (mFilterList.size() > 0) {
+
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "block", "longpress_cnts");
+
             CallFilterInfo info = mFilterList.get(i);
 
             boolean isNeedMarkItem = true;
@@ -268,12 +273,15 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                     LeoLog.d("testPosition", "position : " + position);
 
                     if (position == 0) {
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "block", "longpress_delete");
                         deleteFilter(i);
                         dialog.dismiss();
                     } else if (position == 1) {
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "block", "longpress_blacklist");
                         removeBlackList(i);
                         dialog.dismiss();
                     } else if (position == 2) {
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "block", "longpress_mark");
                         dialog.dismiss();
                         showChoiseDialog(i);
                     }

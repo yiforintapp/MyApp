@@ -14,6 +14,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
+import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.privacycontact.AddFromCallLogListActivity;
 import com.leo.appmaster.privacycontact.AddFromContactListActivity;
@@ -140,6 +141,9 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void showStrangeCallPage() {
+
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "block", "recently_cnts");
+
         Intent intent = new Intent(mActivity,
                 StrangeCallActivity.class);
         intent.putExtra(CallFilterConstants.FROMWHERE,

@@ -20,6 +20,7 @@ import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.CircleImageView;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -110,6 +111,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         switch (view.getId()) {
             case R.id.bg_delete:
                 int position = (Integer) view.getTag(R.id.bg_delete);
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "block", "blacklist_remove");
                 showDialog(position);
                 break;
         }
@@ -123,6 +125,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+
                 List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                 final BlackListInfo info = mList.get(position);
                 list.add(info);
@@ -131,6 +134,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
                 boolean restrLog = mDialog.getCheckBoxState();
                 //恢复拦截记录到系统
                 if (restrLog) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "block", "blacklist_remove_export");
 //                    ThreadManager.executeOnAsyncThread(new Runnable() {
 //                        @Override
 //                        public void run() {
@@ -142,6 +146,8 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
                             cmp.insertCallToSys(CallInfo);
                         }
                     }
+                } else {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "block", "blacklist_remove_noexport");
                 }
 //                    });
 //                }
