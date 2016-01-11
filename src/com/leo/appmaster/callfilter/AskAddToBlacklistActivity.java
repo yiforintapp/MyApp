@@ -137,7 +137,6 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogTooShort.dismiss();
-                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block");
                 AskAddToBlacklistActivity.this.finish();
             }
         });
@@ -203,7 +202,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmrMark.dismiss();
-                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block");
+                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_mark&block");
                 AskAddToBlacklistActivity.this.finish();
             }
         });
@@ -256,7 +255,6 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmr.dismiss();
-                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block");
                 AskAddToBlacklistActivity.this.finish();
                 
             }

@@ -286,7 +286,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     if (mIsHasCallFilterRecords) {
                         callFilter.putExtra("needMoveToTab2", true);
                     }
-                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "block", "block_cnts");
                     startActivity(callFilter);
 //                    if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());

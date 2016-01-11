@@ -54,7 +54,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         CallFilterManager.getInstance(this).setCurrFilterTab(BLACK_TAB);
         initUI();
         mNeedToHomeWhenFinish = getIntent().getBooleanExtra("needToHomeWhenFinish", false);
-
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "block_cnts");
     }
 
     private void initUI() {
