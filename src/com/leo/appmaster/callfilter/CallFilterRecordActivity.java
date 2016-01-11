@@ -33,6 +33,9 @@ import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.Utilities;
 
 public class CallFilterRecordActivity extends BaseActivity implements OnClickListener {
+    public static final int TYPE_ANNOY = 1;
+    public static final int TYPE_CHEAT = 2;
+    public static final int TYPE_AD = 3;
     private TextView mTvTitleName;
     private TextView mTvTitleNumber;
     private ListView mLvMain;
@@ -81,9 +84,9 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 }
             } else {
                 String string;
-                if (mark == 1) {
+                if (mark == TYPE_ANNOY) {
                     string = this.getString(R.string.filter_number_type_saorao);
-                } else if (mark == 2) {
+                } else if (mark == TYPE_AD) {
                     string = this.getString(R.string.filter_number_type_ad);
                 } else {
                     string = this.getString(R.string.filter_number_type_zhapian);
@@ -232,15 +235,15 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 }
 
                 if (position == 0) {
-                    info.setFilterType(1);
+                    info.setFilterType(TYPE_ANNOY);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_saorao);
                 } else if (position == 1) {
-                    info.setFilterType(2);
+                    info.setFilterType(TYPE_AD);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_ad);
                 } else if (position == 2) {
-                    info.setFilterType(3);
+                    info.setFilterType(TYPE_CHEAT);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_zhapian);
                 }

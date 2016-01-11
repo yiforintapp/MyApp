@@ -108,9 +108,9 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
                 holder.desc.setText(number);
             } else {
                 String string;
-                if (filterType == 1) {
+                if (filterType == CallFilterFragment.TYPE_ANNOY) {
                     string = mContext.getString(R.string.filter_number_type_saorao);
-                } else if (filterType == 2) {
+                } else if (filterType == CallFilterFragment.TYPE_AD) {
                     string = mContext.getString(R.string.filter_number_type_ad);
                 } else {
                     string = mContext.getString(R.string.filter_number_type_zhapian);

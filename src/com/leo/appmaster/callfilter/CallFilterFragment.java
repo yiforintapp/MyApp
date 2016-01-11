@@ -44,8 +44,8 @@ import java.util.List;
 public class CallFilterFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     public static final int TYPE_ANNOY = 1;
-    public static final int TYPE_AD = 2;
-    public static final int TYPE_CHEAT = 3;
+    public static final int TYPE_CHEAT = 2;
+    public static final int TYPE_AD = 3;
     private static final String TAG = "CallFilterFragment";
 
     private ListView mCallListView;
