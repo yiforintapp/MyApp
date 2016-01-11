@@ -231,29 +231,31 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                     mTvTitleName.setVisibility(View.VISIBLE);
                 }
 
+                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+                BlackListInfo newInfo = new BlackListInfo();
+                newInfo.setNumber(info.getNumber());
+
                 if (position == 0) {
                     info.setFilterType(CallFilterConstants.FILTER_CALL_TYPE);
+                    newInfo.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_saorao);
                 } else if (position == 1) {
                     info.setFilterType(CallFilterConstants.AD_SALE_TYPE);
+                    newInfo.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_ad);
                 } else if (position == 2) {
                     info.setFilterType(CallFilterConstants.CHEAT_NUM_TYPE);
+                    newInfo.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_zhapian);
                 }
                 mTvTitleName.setText(string);
                 mMark.setVisibility(View.GONE);
 
-                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
-                BlackListInfo newInfo = new BlackListInfo();
-                newInfo.setNumber(info.getNumber());
-                newInfo.setLocHandlerType(position + 1);
                 list.add(newInfo);
                 mCallManger.addBlackList(list, true);
-
 
                 dialog.dismiss();
             }
