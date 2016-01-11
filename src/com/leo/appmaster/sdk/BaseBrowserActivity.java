@@ -44,7 +44,6 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     protected View mErrorView;
     protected boolean mReceivedError;
     private long mLastPageStartedTs;
-    public boolean isFAQWeb = false;
 
     @Override
     protected void onDestroy() {
@@ -187,6 +186,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         LeoLog.d(TAG, "--->onReceivedError, errorCode: " + errorCode + " | des: " + description);
+
         if (!NetWorkUtil.isNetworkAvailable(this) || errorCode == ERR_404) {
             //-2, 找不到网页
         }
@@ -195,14 +195,6 @@ public abstract class BaseBrowserActivity extends BaseActivity {
         mWebView.setVisibility(View.GONE);
         mLoadingView.setVisibility(View.GONE);
         mErrorView.setVisibility(View.VISIBLE);
-
-        if (isFAQWeb) {
-            if (mWebView.canGoBack()) {
-                SDKWrapper.addEvent(BaseBrowserActivity.this, SDKWrapper.P1, "faq", "faq_snd_none");
-            } else {
-                SDKWrapper.addEvent(BaseBrowserActivity.this, SDKWrapper.P1, "faq", "faq_fst_none");
-            }
-        }
 
     }
 

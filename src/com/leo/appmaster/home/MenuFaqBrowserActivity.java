@@ -22,6 +22,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NetWorkUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,8 +70,6 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq_browser);
-
-        isFAQWeb = true;
 
         mUrl = getIntent().getStringExtra(MsgConsts.KEY_URL);
         if (TextUtils.isEmpty(mUrl)) {
@@ -166,6 +165,19 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
         if (getWebView().getVisibility() == View.VISIBLE) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoGet", "get_dataOK");
         }
+    }
+
+    @Override
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        super.onReceivedError(view, errorCode, description, failingUrl);
+
+
+        if (mWebView.canGoBack()) {
+            SDKWrapper.addEvent(MenuFaqBrowserActivity.this, SDKWrapper.P1, "faq", "faq_snd_none");
+        } else {
+            SDKWrapper.addEvent(MenuFaqBrowserActivity.this, SDKWrapper.P1, "faq", "faq_fst_none");
+        }
+
     }
 
     @Override
