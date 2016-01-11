@@ -302,6 +302,9 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         } else if (v == mEmailImg) {
             showEmailListDialog();
         } else if (v == mProblemView) {
+
+            SDKWrapper.addEvent(FeedbackActivity.this, SDKWrapper.P1, "feedback", "faq");
+
             String faqtitle = getString(R.string.menu_left_item_problem);
             String country = DeviceUtil.getCountry();
             country = Utilities.exChange(country);
@@ -313,7 +316,6 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             LeoLog.d("testFaq", "url : " + url);
 
 
-//            mLockManager.filterSelfOneMinites();
             MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
         }
     }

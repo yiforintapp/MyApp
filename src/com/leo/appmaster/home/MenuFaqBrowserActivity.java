@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.msgcenter.MsgConsts;
 import com.leo.appmaster.msgcenter.MsgUtil;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
@@ -44,6 +45,7 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
     private boolean mVerifySuccess;
     private WebView mWebView;
 
+
     /**
      * 启动FAQ页面
      *
@@ -67,6 +69,8 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq_browser);
+
+        isFAQWeb = true;
 
         mUrl = getIntent().getStringExtra(MsgConsts.KEY_URL);
         if (TextUtils.isEmpty(mUrl)) {
@@ -95,6 +99,13 @@ public class MenuFaqBrowserActivity extends BaseBrowserActivity implements
         mTitleBar.setOptionClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (mWebView.canGoBack()) {
+                    SDKWrapper.addEvent(MenuFaqBrowserActivity.this, SDKWrapper.P1, "faq", "faq_snd_refresh");
+                } else {
+                    SDKWrapper.addEvent(MenuFaqBrowserActivity.this, SDKWrapper.P1, "faq", "faq_fst_refresh");
+                }
+
                 mWebView.reload();
             }
         });

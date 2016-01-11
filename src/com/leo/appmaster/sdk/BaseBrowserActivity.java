@@ -18,6 +18,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.leo.appmaster.home.MenuFaqBrowserActivity;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 
@@ -43,6 +44,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     protected View mErrorView;
     protected boolean mReceivedError;
     private long mLastPageStartedTs;
+    public boolean isFAQWeb = false;
 
     @Override
     protected void onDestroy() {
@@ -193,6 +195,15 @@ public abstract class BaseBrowserActivity extends BaseActivity {
         mWebView.setVisibility(View.GONE);
         mLoadingView.setVisibility(View.GONE);
         mErrorView.setVisibility(View.VISIBLE);
+
+        if (isFAQWeb) {
+            if (mWebView.canGoBack()) {
+                SDKWrapper.addEvent(BaseBrowserActivity.this, SDKWrapper.P1, "faq", "faq_snd_none");
+            } else {
+                SDKWrapper.addEvent(BaseBrowserActivity.this, SDKWrapper.P1, "faq", "faq_fst_none");
+            }
+        }
+
     }
 
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
