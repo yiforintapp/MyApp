@@ -161,6 +161,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onClick(View arg0) {
+                SDKWrapper.addEvent(getActivity(),SDKWrapper.P1,"block","add_call");
                 mAddPrivacyContact.cancel();
                 Intent intent = new Intent(mActivity,
                         AddFromCallLogListActivity.class);
@@ -179,6 +180,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onClick(View arg0) {
+                SDKWrapper.addEvent(getActivity(),SDKWrapper.P1,"block","add_contacts");
                 mAddPrivacyContact.cancel();
                 Intent intent = new Intent(mActivity,
                         AddFromContactListActivity.class);
@@ -197,6 +199,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onClick(View arg0) {
+                SDKWrapper.addEvent(getActivity(),SDKWrapper.P1,"block","add_sms");
                 mAddPrivacyContact.cancel();
                 Intent intent = new Intent(mActivity,
                         AddFromMessageListActivity.class);
@@ -214,6 +217,7 @@ public class BlackListFragment extends BaseFragment implements View.OnClickListe
         mAddPrivacyContact.setInputListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                SDKWrapper.addEvent(getActivity(),SDKWrapper.P1,"block","add_inputs");
                 mAddPrivacyContact.cancel();
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "contactsadd",
                         "handadd");

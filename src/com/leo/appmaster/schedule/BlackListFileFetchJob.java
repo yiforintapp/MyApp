@@ -10,6 +10,7 @@ import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.Utilities;
@@ -61,6 +62,8 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
+        Context context = AppMasterApplication.getInstance();
+        SDKWrapper.addEvent(context, SDKWrapper.P1, "block", "server_lib");
         StringBuilder sbName = new StringBuilder();
         String countryId = Utilities.getCountryID(AppMasterApplication.getInstance());
         sbName.append(countryId);
@@ -81,8 +84,9 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
     private static void startWorkImmediately(FetchScheduleJob job) {
          /*存在wifi网络再去拉取*/
         if (NetWorkUtil.isWifiConnected(AppMasterApplication.getInstance())) {
-            FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
+            SDKWrapper.addEvent(context, SDKWrapper.P1, "block", "server_lib_try");
+            FetchScheduleListener listener = job.newJsonObjListener();
             String filePath = getBlackFilePath();
             LeoLog.d(KEY_JOB, "start work immediately. path: " + filePath);
             CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);

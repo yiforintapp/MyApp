@@ -23,6 +23,7 @@ import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.utils.LeoLog;
@@ -185,6 +186,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
                 onBackPressed();
                 break;
             case R.id.ct_option_1_rl:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "settings_cnts");
                 Intent intent = new Intent(this, CallFilterSettingActivity.class);
                 startActivity(intent);
                 break;

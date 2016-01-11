@@ -11,6 +11,7 @@ import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 
@@ -97,8 +98,10 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
                     mFilterTv.setText(R.string.call_filter_setting_one_desc);
                     cmp.setFilterOpenState(true);
                     if (cmp.getFilterNotiOpState()) {
+                        SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "settings_on");
                         checkBoxTwo.setImageResource(R.drawable.switch_on);
                     } else {
+                        SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "settings_off");
                         checkBoxTwo.setImageResource(R.drawable.switch_off);
                     }
                 } else {
@@ -118,11 +121,13 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
                 if (!isNotiSelected && isFilter) {
 //                    PreferenceTable.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, true);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "settings_notify_on");
                     checkBoxTwo.setImageResource(R.drawable.switch_on);
                     cmpi.setFilterNotiOpState(true);
                 } else {
 //                    PreferenceTable.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, false);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "settings_notify_off");
                     checkBoxTwo.setImageResource(R.drawable.switch_off);
                     cmpi.setFilterNotiOpState(false);
                 }
