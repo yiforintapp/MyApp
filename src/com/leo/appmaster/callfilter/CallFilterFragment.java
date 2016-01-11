@@ -42,10 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CallFilterFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-
-    public static final int TYPE_ANNOY = 1;
-    public static final int TYPE_CHEAT = 2;
-    public static final int TYPE_AD = 3;
     private static final String TAG = "CallFilterFragment";
 
     private ListView mCallListView;
@@ -334,11 +330,11 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 CallFilterInfo info = mFilterList.get(i);
 
                 if (position == 0) {
-                    info.setFilterType(TYPE_ANNOY);
+                    info.setFilterType(CallFilterConstants.FILTER_CALL_TYPE);
                 } else if (position == 1) {
-                    info.setFilterType(TYPE_AD);
+                    info.setFilterType(CallFilterConstants.AD_SALE_TYPE);
                 } else if (position == 2) {
-                    info.setFilterType(TYPE_CHEAT);
+                    info.setFilterType(CallFilterConstants.CHEAT_NUM_TYPE);
                 }
 
                 List<BlackListInfo> list = new ArrayList<BlackListInfo>();
