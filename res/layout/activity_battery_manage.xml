@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/ctb_battery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cb" />
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ctb_battery" >
+
+        <RelativeLayout
+            android:id="@+id/rl_dial"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/white" >
+
+            <ImageView
+                android:id="@+id/iv_dial"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/circle_corner_button_bg" />
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_dial"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="dafadsfa"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_list_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/rl_dial"
+            android:background="@color/fl" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rl_bottom"
+            android:layout_below="@+id/tv_list_title" >
+        </ListView>
+
+        <RelativeLayout
+            android:id="@+id/rl_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true" >
+        </RelativeLayout>
+        
+    </RelativeLayout>
+
+</RelativeLayout>

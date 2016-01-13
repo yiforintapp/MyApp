@@ -530,6 +530,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults"></activity>
         <activity
+            android:name=".appmanage.NewEleActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.PageIndicatorDefaults"></activity>
+        <activity
             android:name=".appmanage.TrafficSetting"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
