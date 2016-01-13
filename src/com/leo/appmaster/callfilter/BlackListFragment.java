@@ -1,20 +1,19 @@
 
 package com.leo.appmaster.callfilter;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
-import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.privacycontact.AddFromCallLogListActivity;
 import com.leo.appmaster.privacycontact.AddFromContactListActivity;
@@ -24,10 +23,6 @@ import com.leo.appmaster.privacycontact.PrivacyContactInputActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BlackListFragment extends BaseFragment implements View.OnClickListener {
 

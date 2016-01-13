@@ -1,7 +1,6 @@
 package com.leo.appmaster.callfilter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
@@ -12,26 +11,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.WifiSecurityManager;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
-import com.leo.tools.animator.Animator;
-import com.leo.tools.animator.AnimatorListenerAdapter;
-import com.leo.tools.animator.AnimatorSet;
-import com.leo.tools.animator.ObjectAnimator;
 
 
 public class CallFilterToast {
@@ -389,17 +374,23 @@ public class CallFilterToast {
             }
             mParams.verticalMargin = mVerticalMargin;
             mParams.horizontalMargin = mHorizontalMargin;
-            if (mView.getParent() != null) {
-                mWM.removeView(mView);
+            try {
+                if (mView.getParent() != null) {
+                    mWM.removeView(mView);
+                }
+                mWM.addView(mView, mParams);
+            } catch (Exception e) {
             }
-            mWM.addView(mView, mParams);
         }
     }
 
     private static void handleHide() {
         if (mView != null) {
-            if (mView.getParent() != null) {
-                mWM.removeView(mView);
+            try {
+                if (mView.getParent() != null) {
+                    mWM.removeView(mView);
+                }
+            } catch (Exception e) {
             }
             mView = null;
         }

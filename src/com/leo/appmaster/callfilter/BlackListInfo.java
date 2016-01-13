@@ -1,8 +1,8 @@
 package com.leo.appmaster.callfilter;
 
-import android.graphics.Bitmap;
-
 import java.io.Serializable;
+
+import android.graphics.Bitmap;
 
 /**
  * Created by runlee on 15-12-19.

@@ -2,22 +2,6 @@ package com.leo.appmaster.callfilter;
 
 import java.util.ArrayList;
 
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.home.DeskProxyActivity;
-import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
-import com.leo.appmaster.mgr.CallFilterContextManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
-import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
-import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
-
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -30,6 +14,19 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RemoteViews;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.home.DeskProxyActivity;
+import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
+import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
+import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class CallFIlterUIHelper {
     //    private static LEOWithSIngleCheckboxDialog mConfirmRemoveFromBlacklistDialog;

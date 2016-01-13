@@ -23,7 +23,6 @@ import android.view.WindowManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
-import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;

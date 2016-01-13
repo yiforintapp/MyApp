@@ -1,15 +1,16 @@
 package com.leo.appmaster.callfilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.content.DialogInterface;
-import android.provider.CallLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -22,11 +23,7 @@ import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by qili on 15-10-10.

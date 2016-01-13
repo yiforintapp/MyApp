@@ -1001,7 +1001,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 wallAd = null;
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         LeoLog.d(TAG, "onDestroy...");
         LeoEventBus.getDefaultBus().unregister(this);
@@ -1027,7 +1026,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             e.printStackTrace();
         }
         if(mBannerContainer != null) {
-            mBannerContainer.setVisibility(View.GONE);
+            try {
+                mBannerContainer.setVisibility(View.GONE);
+            } catch(Exception e) {
+            }
         }
     }
 
