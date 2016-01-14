@@ -30,8 +30,12 @@ public class BatterProtectView {
     private static final int API_LEVEL_19 = 19;
 
     private static Context mContext;
-    //    private static View mMoveContent;
     private static int currSDK_INT = Build.VERSION.SDK_INT;
+    private static BatteryMainViewLayout view;
+
+    private boolean mIsCharing;
+    private int mBatteryLevel;
+    private String mTime;
 
     private static Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -46,13 +50,23 @@ public class BatterProtectView {
         final BatterProtectView result = new BatterProtectView(context);
         mContext = context;
         LayoutInflater inflater = LayoutInflater.from(context);
-        BatteryMainViewLayout view = (BatteryMainViewLayout)
-                inflater.inflate(R.layout.activity_battery_test, null);
-
+        view = (BatteryMainViewLayout)
+                inflater.inflate(R.layout.activity_battery_view, null);
         result.mNextView = view;
         return result;
     }
 
+    public void setBatteryStatus(boolean isCharing) {
+        mIsCharing = isCharing;
+    }
+
+    public void setBatteryLevel(int level) {
+        mBatteryLevel = level;
+    }
+
+    public void setBatteryTime(String text) {
+        mTime = text;
+    }
 
 
     public static final int LENGTH_SHORT = 2000;
@@ -69,7 +83,6 @@ public class BatterProtectView {
 
     private static WindowManager mWM;
     private static WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
-
 
     public BatterProtectView(Context context) {
         init(context);
@@ -236,7 +249,7 @@ public class BatterProtectView {
         if (mView != mNextView) {
 
             // remove the old view if necessary
-            handleHide();
+//            handleHide();
             mView = mNextView;
 //            mWM = WindowManagerImpl.getDefault();
             final int gravity = mGravity;
@@ -256,6 +269,7 @@ public class BatterProtectView {
                 if (mView.getParent() != null) {
                     mWM.removeView(mView);
                 }
+                view.notifyUI(mIsCharing, mBatteryLevel, mTime);
                 mWM.addView(mView, mParams);
             } catch (Exception e) {
 

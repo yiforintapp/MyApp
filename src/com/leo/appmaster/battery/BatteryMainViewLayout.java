@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
@@ -13,12 +14,19 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.ObjectAnimator;
 
+import org.w3c.dom.Text;
 
 
 public class BatteryMainViewLayout extends RelativeLayout {
     private static final int API_LEVEL_19 = 19;
     private static int currSDK_INT = Build.VERSION.SDK_INT;
     private static View mMoveContent;
+    private boolean mIsCharing = false;
+    private int mBatteryLevel;
+    private String mTime;
+    private View mTimeContent;
+    private TextView mTvLevel;
+    private TextView mTvStatus;
 
 
     public BatteryMainViewLayout(Context context) {
@@ -38,6 +46,9 @@ public class BatteryMainViewLayout extends RelativeLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mMoveContent = findViewById(R.id.move_content);
+        mTimeContent = findViewById(R.id.time_content);
+        mTvLevel = (TextView) findViewById(R.id.battery_num);
+        mTvStatus = (TextView) findViewById(R.id.battery_status);
     }
 
     private int startX;
@@ -101,6 +112,23 @@ public class BatteryMainViewLayout extends RelativeLayout {
             }
         });
         animX.start();
+    }
+
+    public void notifyUI(boolean isCharing, int level, String time) {
+        mIsCharing = isCharing;
+        mBatteryLevel = level;
+        mTime = time;
+
+        if (isCharing) {
+            mTimeContent.setVisibility(VISIBLE);
+            mTvLevel.setVisibility(VISIBLE);
+            mTvLevel.setText("电量 : " + level);
+        } else {
+            mTvLevel.setVisibility(GONE);
+            mTimeContent.setVisibility(GONE);
+        }
+
+
     }
 
 //    @Override
