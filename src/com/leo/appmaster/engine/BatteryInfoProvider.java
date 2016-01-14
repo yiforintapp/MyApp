@@ -66,6 +66,8 @@ public class BatteryInfoProvider {
 	private static final String LEO_FAMILY_PREFIX = "com.leo.";
 	private static final String PS = "ps";
 	private static final String SHELL = "sh";
+	private static final String APP_PREFIX_1 = "u0";
+	private static final String APP_PREFIX_2 = "app";
 	private static final boolean DBG = true;
 	protected static final String REGEX_SPACE = "\\s+";
 	private static final int INDEX_USER = 0;
@@ -308,7 +310,11 @@ public class BatteryInfoProvider {
 			if (processAdj.pkg.startsWith(LEO_FAMILY_PREFIX)) {
 				return true;
 			}
-			return false;
+			// only check app stuff
+			if (processAdj.user.startsWith(APP_PREFIX_1) || processAdj.user.startsWith(APP_PREFIX_2)) {
+				return false;
+			}
+			return true;
 		}
 
 	}

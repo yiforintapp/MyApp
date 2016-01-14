@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.SystemClock;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.BatteryComsuption;
@@ -15,7 +16,10 @@ import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.imageloader.utils.L;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -80,9 +84,27 @@ public class BatteryManagerImpl extends BatteryManager {
         BatteryInfoProvider ip = new BatteryInfoProvider(mContext);
         ip.setMinPercentOfTotal(0.01);
         List<BatteryComsuption> list = ip.getBatteryStats();
+        for (BatteryComsuption bc:list) {
+            LeoLog.d("stone_test", "BatteryComsuption -> " + bc.getDefaultPackageName());
+        }
+
         // TODO - filter out system apps or background music apps
 
-        return ip.getBatteryStats();
+        List<ProcessAdj> processAdjList = ip.getProcessWithPS();
+        ArrayList<String> pkgs = new ArrayList<String>();
+        for (ProcessAdj processAdj: processAdjList) {
+            pkgs.add(processAdj.pkg);
+            LeoLog.d("stone_test", "processAdj -> " + processAdj.pkg);
+        }
+
+        Iterator<BatteryComsuption> batteryComsuptionIterator = list.iterator();
+        while (batteryComsuptionIterator.hasNext()) {
+            BatteryComsuption bc = batteryComsuptionIterator.next();
+            if (!pkgs.contains(bc.getDefaultPackageName())) {
+                batteryComsuptionIterator.remove();
+            }
+        }
+        return list;
     }
 
     @Override
