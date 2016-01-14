@@ -216,7 +216,10 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
 
                 mFilterList.clear();
                 mAdapter.setData(mFilterList, mSysContacts);
-                dialog.dismiss();
+                try {
+                    dialog.dismiss();
+                } catch (Exception e) {
+                }
             }
         });
         dialog.show();
@@ -342,7 +345,10 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
 
                 mAdapter.notifyDataSetChanged();
                 Toast.makeText(mActivity, R.string.mark_number_from_list, Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                try {
+                    dialog.dismiss();
+                } catch (Exception e) {
+                }
 
             }
         });
@@ -411,7 +417,10 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 });
 
                 mAdapter.setData(mFilterList, mSysContacts);
-                mDeleteDialog.dismiss();
+                try {
+                    mDeleteDialog.dismiss();
+                } catch (Exception e) {
+                }
             }
         });
         mDeleteDialog.show();

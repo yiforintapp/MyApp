@@ -8,8 +8,6 @@ import java.util.List;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
@@ -21,7 +19,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -528,149 +525,149 @@ public class CallFilterManager {
         mContext.startActivity(intent);
     }
 
-    private void showAskAddWhenNoOffHook(final CallFilterContextManager cmp, int[] filterTip) {
-        mDialogAskAdd = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
-        mDialogAskAdd.setRightBtnListener(new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo infot = new BlackListInfo();
-                infot.setNumber(mPhoneNumber);
-                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
-                infost.add(infot);
-                cmp.addBlackList(infost, false);
-                notiUpdateBlackList();
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
-                mDialogAskAdd.dismiss();
-            }
-        });
-        mDialogAskAdd.show();
-        mIsOffHook = false;
-    }
+//    private void showAskAddWhenNoOffHook(final CallFilterContextManager cmp, int[] filterTip) {
+//        mDialogAskAdd = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
+//        mDialogAskAdd.setRightBtnListener(new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+//                BlackListInfo infot = new BlackListInfo();
+//                infot.setNumber(mPhoneNumber);
+//                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+//                infost.add(infot);
+//                cmp.addBlackList(infost, false);
+//                notiUpdateBlackList();
+//                Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
+//                mDialogAskAdd.dismiss();
+//            }
+//        });
+//        mDialogAskAdd.show();
+//        mIsOffHook = false;
+//    }
 
-    private void showAskAddBlackWithoutMark(final CallFilterContextManager cmp, int[] filterTip) {
-        mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
-        String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
-        String summaryF = String.format(summaryS, filterTip[2]);
-        mDialogAskAddWithSmr.setContent(summaryF);
-        mDialogAskAddWithSmr.setRightBtnListener(new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo infot = new BlackListInfo();
-                int nowItemPosition = mDialogAskAddWithSmr.getNowItemPosition();
-                infot.setNumber(mPhoneNumber);
-                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
-                switch (nowItemPosition) {
-                    case 0:
-                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-                        break;
-                    case 1:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-                        break;
-                    case 2:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                        break;
-                    default:
-                        break;
-                }
-                infost.add(infot);
-                cmp.addBlackList(infost, false);
-                notiUpdateBlackList();
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
-                mDialogAskAddWithSmr.dismiss();
-            }
-        });
-        mDialogAskAddWithSmr.show();
-        mIsOffHook = false;
-    }
+//    private void showAskAddBlackWithoutMark(final CallFilterContextManager cmp, int[] filterTip) {
+//        mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
+//        String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
+//        String summaryF = String.format(summaryS, filterTip[2]);
+//        mDialogAskAddWithSmr.setContent(summaryF);
+//        mDialogAskAddWithSmr.setRightBtnListener(new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+//                BlackListInfo infot = new BlackListInfo();
+//                int nowItemPosition = mDialogAskAddWithSmr.getNowItemPosition();
+//                infot.setNumber(mPhoneNumber);
+//                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+//                switch (nowItemPosition) {
+//                    case 0:
+//                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+//                        break;
+//                    case 1:
+//                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+//                        break;
+//                    case 2:
+//                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                infost.add(infot);
+//                cmp.addBlackList(infost, false);
+//                notiUpdateBlackList();
+//                Toast.makeText(mContext, mContext.getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
+//                mDialogAskAddWithSmr.dismiss();
+//            }
+//        });
+//        mDialogAskAddWithSmr.show();
+//        mIsOffHook = false;
+//    }
 
-    private void showAskAddBlackWithMark(final CallFilterContextManager cmp, int[] filterTip) {
-        mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
-        String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
-        String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
-        switch (filterTip[3]) {
-            case CallFilterConstants.FILTER_CALL_TYPE:
-                mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
-                break;
-            case CallFilterConstants.AD_SALE_TYPE:
-                mark = mContext.getResources().getString(R.string.call_filter_mark_as_tx);
-                break;
-            case CallFilterConstants.CHEAT_NUM_TYPE:
-                mark = mContext.getResources().getString(R.string.call_filter_mark_as_zp);
-                break;
-            default:
-                break;
-        }
-        String summaryF = String.format(summaryS, filterTip[2], mark);
-        mDialogAskAddWithSmrMark.setContent(summaryF);
-        mDialogAskAddWithSmrMark.setRightBtnListener(new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo infot = new BlackListInfo();
-                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
-                int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
-                infot.setNumber(mPhoneNumber);
-                switch (nowItemPosition) {
-                    case 0:
-                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-                        break;
-                    case 1:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-                        break;
-                    case 2:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                        break;
-                    default:
-                        break;
-                }
-                infost.add(infot);
-                cmp.addBlackList(infost, false);
-                notiUpdateBlackList();
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
-                mDialogAskAddWithSmrMark.dismiss();
+//    private void showAskAddBlackWithMark(final CallFilterContextManager cmp, int[] filterTip) {
+//        mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
+//        String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
+//        String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
+//        switch (filterTip[3]) {
+//            case CallFilterConstants.FILTER_CALL_TYPE:
+//                mark = mContext.getResources().getString(R.string.call_filter_mark_as_sr);
+//                break;
+//            case CallFilterConstants.AD_SALE_TYPE:
+//                mark = mContext.getResources().getString(R.string.call_filter_mark_as_tx);
+//                break;
+//            case CallFilterConstants.CHEAT_NUM_TYPE:
+//                mark = mContext.getResources().getString(R.string.call_filter_mark_as_zp);
+//                break;
+//            default:
+//                break;
+//        }
+//        String summaryF = String.format(summaryS, filterTip[2], mark);
+//        mDialogAskAddWithSmrMark.setContent(summaryF);
+//        mDialogAskAddWithSmrMark.setRightBtnListener(new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+//                BlackListInfo infot = new BlackListInfo();
+//                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+//                int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
+//                infot.setNumber(mPhoneNumber);
+//                switch (nowItemPosition) {
+//                    case 0:
+//                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+//                        break;
+//                    case 1:
+//                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+//                        break;
+//                    case 2:
+//                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                infost.add(infot);
+//                cmp.addBlackList(infost, false);
+//                notiUpdateBlackList();
+//                Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
+//                mDialogAskAddWithSmrMark.dismiss();
+//
+//            }
+//        });
+//        mDialogAskAddWithSmrMark.show();
+//        mIsOffHook = false;
+//    }
 
-            }
-        });
-        mDialogAskAddWithSmrMark.show();
-        mIsOffHook = false;
-    }
-
-    private void showTooShortDialog(long durationMax, final CallFilterContextManager cmp) {
-        mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0, true);
-        String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (Math.ceil(durationMax / 1000)));
-        mDialogTooShort.setContent(summaryF);
-        mDialogTooShort.setRightBtnListener(new OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo infot = new BlackListInfo();
-                int nowItemPosition = mDialogTooShort.getNowItemPosition();
-                infot.setNumber(mPhoneNumber);
-                switch (nowItemPosition) {
-                    case 0:
-                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
-                        break;
-                    case 1:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
-                        break;
-                    case 2:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                        break;
-                    default:
-                        break;
-                }
-                infost.add(infot);
-                cmp.addBlackList(infost, false);
-                notiUpdateBlackList();
-                Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
-                mDialogTooShort.dismiss();
-            }
-        });
-        mIsOffHook = false;
-        mDialogTooShort.show();
-    }
+//    private void showTooShortDialog(long durationMax, final CallFilterContextManager cmp) {
+//        mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0, true);
+//        String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (Math.ceil(durationMax / 1000)));
+//        mDialogTooShort.setContent(summaryF);
+//        mDialogTooShort.setRightBtnListener(new OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+//                BlackListInfo infot = new BlackListInfo();
+//                int nowItemPosition = mDialogTooShort.getNowItemPosition();
+//                infot.setNumber(mPhoneNumber);
+//                switch (nowItemPosition) {
+//                    case 0:
+//                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+//                        break;
+//                    case 1:
+//                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+//                        break;
+//                    case 2:
+//                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                infost.add(infot);
+//                cmp.addBlackList(infost, false);
+//                notiUpdateBlackList();
+//                Toast.makeText(mContext, mContext.getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
+//                mDialogTooShort.dismiss();
+//            }
+//        });
+//        mIsOffHook = false;
+//        mDialogTooShort.show();
+//    }
 
     private synchronized void endCallAndRecord(final String phoneNumber, final ITelephony iTelephony,
                                                final CallFilterContextManager cmp) {
@@ -896,7 +893,6 @@ public class CallFilterManager {
         if (filterNum == null) {
             return;
         }
-        final ContentResolver cr = mContext.getContentResolver();
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {

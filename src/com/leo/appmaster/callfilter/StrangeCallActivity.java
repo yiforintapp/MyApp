@@ -176,14 +176,9 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
-        mListCallLog.post(new Runnable() {
-            @Override
-            public void run() {
-                for (ContactCallLog callLog : mCallLogList) {
-                    callLog.setCheck(false);
-                }
-            }
-        });
+        for (ContactCallLog callLog : mCallLogList) {
+            callLog.setCheck(false);
+        }
         mHandler = null;
     }
 

@@ -258,8 +258,10 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
 
                 list.add(newInfo);
                 mCallManger.addBlackList(list, true);
-
-                dialog.dismiss();
+                try {
+                    dialog.dismiss();
+                } catch (Exception e) {
+                }
             }
         });
         dialog.show();
