@@ -8,6 +8,7 @@ import android.content.Context;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
+import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
@@ -50,6 +51,14 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             } else {
                 LeoLog.i(TAG, "手机防盗开启人数小于0");
             }
+
+            /* 3.3 耗电app阈值 */
+            if (!resp.isNull(BatteryManager.APP_THRESHOLD_KEY)) {
+                int appNumber = resp.getInt(BatteryManager.APP_THRESHOLD_KEY);
+                BatteryManager bm = (BatteryManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                bm.setAppThreshold(appNumber);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

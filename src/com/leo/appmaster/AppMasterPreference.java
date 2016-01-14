@@ -296,6 +296,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // 3.2 ad
     public static final String PREF_AD_INTRUDER = "pref_ad_intruder";
     public static final String PREF_AD_AFTER_SCAN = "pref_ad_after_scan";
+    // 3.3 耗电app数量阈值
+    public static final String PREF_BATTERY_APP_NUM = "pref_battery_app_num";
 
     //intruder
 //    public static final String KEY_SWITCH_FOR_INTRUDER_PROTECTION = "switch_for_intruder_protection";
@@ -323,6 +325,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final int CLOSE_FLAG = 0;
     public static final int DEFAULT_FETCH_INTERAL = 10; // in minutes
     public static final int DEFAULT_SWITCHER_STATE = 0;
+    // 3.3 耗电app数量阈值
+    private static final int DEFAULT_APP_NUM_THRESHOLD = 20;
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mRecommendNumList;
@@ -408,6 +412,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mForegroundScore = -1;
     private int mForegroundMinScore = -1;
     private long mFilterTime = -1;
+    // 3.3 耗电app数量阈值
+    private int mAppThreshold = -1;
     
     private Executor mSerialExecutor;
     private HashMap<String, Object> mValues;
@@ -3123,6 +3129,21 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     /*潜水艇广告点击安装时间*/
     public void setAdSubmarineClickTime(long time) {
         commitAsync(mPref.edit().putLong(PREF_SUBMARIN_AD_CLICK_TIME, time));
+    }
+
+    /* 3.3 耗电app清理阈值 */
+    public void setPowerConsumeAppThreshold(int threshold) {
+        if (threshold != getPowerConsumeAppThreshold()) {
+            commitAsync(mPref.edit().putInt(PREF_BATTERY_APP_NUM, threshold));
+        }
+        mAppThreshold = threshold;
+    }
+
+    public int getPowerConsumeAppThreshold() {
+        if (mAppThreshold < 0) {
+            mAppThreshold = mPref.getInt(PREF_BATTERY_APP_NUM, DEFAULT_APP_NUM_THRESHOLD);
+        }
+        return mAppThreshold;
     }
 
     public long getAdSubmarineClickTime() {

@@ -1,18 +1,16 @@
 package com.leo.appmaster.mgr.impl;
 
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.sdk.BaseActivity;
 
 import java.util.List;
 
@@ -21,7 +19,9 @@ import java.util.List;
  */
 public class BatteryManagerImpl extends BatteryManager {
 
-    private final static String TAG = MgrContext.MGR_BATTERY;
+    private static final String TAG = MgrContext.MGR_BATTERY;
+
+    private AppMasterPreference mSp;
 
     @Override
     public List<BatteryComsuption> getBatteryDrainApps() {
@@ -41,10 +41,21 @@ public class BatteryManagerImpl extends BatteryManager {
         }
     }
 
+    @Override
+    public void setAppThreshold(int threshold) {
+        mSp.setPowerConsumeAppThreshold(threshold);
+    }
+
+    @Override
+    public int getAppThreshold() {
+        return mSp.getPowerConsumeAppThreshold();
+    }
+
     public BatteryManagerImpl() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
         mContext.registerReceiver(mReceiver, filter);
+        mSp = AppMasterPreference.getInstance(mContext);
     }
 
     @Override
@@ -57,6 +68,7 @@ public class BatteryManagerImpl extends BatteryManager {
         @Override
         public void onReceive(Context context, Intent intent) {
             // TODO post event through LeoEventBus here
+
         }
     };
 }
