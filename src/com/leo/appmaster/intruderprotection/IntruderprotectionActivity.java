@@ -38,7 +38,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
-import com.leo.appmaster.appmanage.NewEleActivity;
+import com.leo.appmaster.battery.BatterMainActivity;
 import com.leo.appmaster.callfilter.CallFIlterUIHelper;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -108,6 +108,8 @@ public class IntruderprotectionActivity extends BaseActivity {
 //        long availMemory = PropertyInfoUtil.getAvailMemory(this);
 //        Toast.makeText(this, "availMemory = "+availMemory+"       totalMemory = "+totalMemory2, 1).show()
 //        CallFIlterUIHelper.getInstance().showReceiveCallNotification("13510261550");
+//        Intent i = new Intent(this, BatterMainActivity.class);
+//        startActivity(i);
     }
 
     /**

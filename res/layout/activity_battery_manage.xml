@@ -47,12 +47,13 @@
             android:layout_below="@id/rl_dial"
             android:background="@color/fl" />
 
-        <ListView
+        <GridView
+            android:id="@+id/gv_apps"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/rl_bottom"
             android:layout_below="@+id/tv_list_title" >
-        </ListView>
+        </GridView>
 
         <RelativeLayout
             android:id="@+id/rl_bottom"
