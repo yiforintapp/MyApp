@@ -29,6 +29,7 @@ import com.leo.appmaster.model.AppItemInfo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppUtil {
@@ -394,6 +395,24 @@ public class AppUtil {
         int height = displayMetrics.heightPixels;
         pix[1] = height;
         return pix;
+    }
+
+    /**
+     * 获取可以接收分享intent的App集合
+     * @param context
+     * @return
+     */
+    public static List<ResolveInfo> getShareApps(Context context) {
+        List<ResolveInfo> mApps = new ArrayList<ResolveInfo>();
+        Intent intent = new Intent(Intent.ACTION_SEND, null);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setType("text/plain");
+//        intent.setType("*/*");
+//        intent.setType("image/*");
+        PackageManager pManager = context.getPackageManager();
+        mApps = pManager.queryIntentActivities(intent,
+                PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
+        return mApps;
     }
 
 }

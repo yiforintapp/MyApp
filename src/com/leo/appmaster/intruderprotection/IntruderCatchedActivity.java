@@ -3,6 +3,7 @@ package com.leo.appmaster.intruderprotection;
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -24,6 +25,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -99,6 +101,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private boolean mNeedIntoHomeWhenFinish = false;
     private LinearLayout mFiveStarLayout;
 
+    private RelativeLayout mShareLayout; // 分享layout
+
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
 
@@ -165,6 +169,12 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         String times1 = getString(R.string.intruder_times_of_catch);
         String times2 = String.format(times1, mISManager.getCatchTimes());
         mTvTotalTimes.setText(Html.fromHtml(times2));
+
+        if (mISManager.getCatchTimes() >= 3) {
+            mShareLayout.setVisibility(View.VISIBLE);
+        } else {
+            mShareLayout.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -287,6 +297,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mLvMain = (ListView) findViewById(R.id.lv_mainlist);
         mFiveStarLayout = (LinearLayout) findViewById(R.id.ll_fivestars_layout);
         mFiveStarLayout.setOnClickListener(this);
+
+        mShareLayout = (RelativeLayout) findViewById(R.id.share_layout);
+        mShareLayout.setOnClickListener(this);
     }
 
     /* 3.2 advertise stuff - begin */
@@ -755,6 +768,36 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     startActivity(intent);
                 }
                 break;
+            case R.id.share_layout:  // 分享
+                Toast.makeText(IntruderCatchedActivity.this, "点击分享", Toast.LENGTH_SHORT).show();
+//                List<ResolveInfo> mApps = AppUtil.getShareApps(IntruderCatchedActivity.this);
+//                PackageManager packageManager = getPackageManager();
+//                for (ResolveInfo resolveInfo: mApps) {
+//                    LeoLog.e("IntruderCatchedActivity", "resolveInfo:" + resolveInfo.loadLabel(packageManager).toString());
+//                }
+//                final ResolveInfo mInfo = mApps.get(2);
+//                ThreadManager.getSubThreadHandler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//                        shareIntent.setComponent(new ComponentName(mInfo.activityInfo.packageName, mInfo.activityInfo.name));
+//                        shareIntent.setType("text/plain");
+//                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "测试， 标题");
+//                        shareIntent.putExtra(Intent.EXTRA_TEXT, "测试，这里发送推广地址");
+//                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(shareIntent);
+//                    }
+//                }, 2000);
+//                Intent intent=new Intent(Intent.ACTION_SEND);
+//                intent.setType("text/plain");
+//                intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+//                intent.putExtra(Intent.EXTRA_TEXT, "分享内容");
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(Intent.createChooser(intent, "分享到"));
+                break;
         }
     }
+
+
+
 }

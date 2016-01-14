@@ -948,4 +948,13 @@
      <string name="batterymanage_switch_noti">应用耗电通知</string>
      <string name="batterymanage_switch_noti_summary">检测后台应用耗电情况</string>
      <string name="batterymanage_setting_title">设置</string>
+
+    <string name="phone_share_dialog_content">你的手机已经处于防盗的保护之下，但你的朋友们却不一定，快去帮助他们吧～</string>
+    <string name="callfilter_share_dialog_content">叫上你的朋友们一起屏蔽那些恼人的骚扰电话吧～</string>
+    <string name="intruder_share_dialog_content">觉得我们还不错？分享给好友吧～</string>
+    <string name="share_dialog_btn_query">分享</string>
+    <string name="share_dialog_query_btn_cancel">取消</string>
+    <string name="phone_share_content">Hi，我现在正在使用隐私卫士的防盗功能。只需要发条短信，我就能够远程控制我的手机，实在是太方便了，我想让你也试试这个软件。</string>
+    <string name="callfilter_share_content">Hi，我正在使用隐私卫士的电话拦截功能。我把那些烦人的推销员都屏蔽掉了，最关键的是，它还能自动识别来电，简直太方便了。我真的很想让你也一起来用它。</string>
+    <string name="intruder_share_content">Hi，我正在使用隐私卫士的入侵者防护功能。他已经帮我拍到了%1$s个偷看我手机的人，现在我已经知道是哪些人在偷看我的手机了，你也快来试试看～</string>
 </resources>

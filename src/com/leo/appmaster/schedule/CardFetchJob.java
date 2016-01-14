@@ -47,6 +47,8 @@ public class CardFetchJob extends FetchScheduleJob {
             setWifiWifiMasterEmpty(preferenceTable);
             setWifiGradeEmpty(preferenceTable);
             setWifiFbEmpty(preferenceTable);
+            setChargeSwiftyEmpty(preferenceTable);
+            setIntruderSwiftyEmpty(preferenceTable);
 
             return;
         }
@@ -182,6 +184,49 @@ public class CardFetchJob extends FetchScheduleJob {
                 setWifiFbEmpty(preferenceTable);
             }
 
+            boolean isChargeSwiftyNull = object.isNull(
+                    PrefConst.KEY_CHARGE_SWIFTY); // 判断key是否存在
+            if (!isChargeSwiftyNull) {  // 充电屏保页swifty
+                JSONObject chargeSwifty = object.getJSONObject(PrefConst.KEY_CHARGE_SWIFTY);
+                setValue(chargeSwifty, "content",
+                        PrefConst.KEY_CHARGE_SWIFTY_CONTENT, preferenceTable);
+                setValue(chargeSwifty, "gp_url",
+                        PrefConst.KEY_CHARGE_SWIFTY_GP_URL, preferenceTable);
+                setValue(chargeSwifty, "img_url",
+                        PrefConst.KEY_CHARGE_SWIFTY_IMG_URL, preferenceTable);
+                setValue(chargeSwifty, "type",
+                        PrefConst.KEY_CHARGE_SWIFTY_TYPE, preferenceTable);
+                setValue(chargeSwifty, "url",
+                        PrefConst.KEY_CHARGE_SWIFTY_URL, preferenceTable);
+                setValue(chargeSwifty, "title",
+                        PrefConst.KEY_CHARGE_SWIFTY_TITLE, preferenceTable);
+
+            } else {
+                setChargeSwiftyEmpty(preferenceTable);
+            }
+
+            boolean isIntruderSwiftyNull = object.isNull(
+                    PrefConst.KEY_INTRUDER_SWIFTY); // 判断key是否存在
+            if (!isIntruderSwiftyNull) {  // 入侵者防护页swifty
+                JSONObject intruderSwifty = object.getJSONObject(PrefConst.KEY_INTRUDER_SWIFTY);
+                setValue(intruderSwifty, "content",
+                        PrefConst.KEY_INTRUDER_SWIFTY_CONTENT, preferenceTable);
+                setValue(intruderSwifty, "gp_url",
+                        PrefConst.KEY_INTRUDER_SWIFTY_GP_URL, preferenceTable);
+                setValue(intruderSwifty, "img_url",
+                        PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL, preferenceTable);
+                setValue(intruderSwifty, "type",
+                        PrefConst.KEY_INTRUDER_SWIFTY_TYPE, preferenceTable);
+                setValue(intruderSwifty, "url",
+                        PrefConst.KEY_INTRUDER_SWIFTY_URL, preferenceTable);
+                setValue(intruderSwifty, "title",
+                        PrefConst.KEY_INTRUDER_SWIFTY_TITLE, preferenceTable);
+
+
+            } else {
+                setIntruderSwiftyEmpty(preferenceTable);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -249,6 +294,26 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_WIFI_FB_IMG_URL, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_FB_URL, "");
         preferenceTable.putString(PrefConst.KEY_WIFI_FB_TITLE, "");
+    }
+
+    /** 充电屏保swifty数据置空 */
+    private void setChargeSwiftyEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_SWIFTY_GP_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_SWIFTY_TYPE, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_SWIFTY_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_SWIFTY_TITLE, "");
+    }
+
+    /** 入侵者防护swifty数据置空 */
+    private void setIntruderSwiftyEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putString(PrefConst.KEY_INTRUDER_SWIFTY_CONTENT, "");
+        preferenceTable.putString(PrefConst.KEY_INTRUDER_SWIFTY_GP_URL, "");
+        preferenceTable.putString(PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL, "");
+        preferenceTable.putString(PrefConst.KEY_INTRUDER_SWIFTY_TYPE, "");
+        preferenceTable.putString(PrefConst.KEY_INTRUDER_SWIFTY_URL, "");
+        preferenceTable.putString(PrefConst.KEY_INTRUDER_SWIFTY_TITLE, "");
     }
 
 }

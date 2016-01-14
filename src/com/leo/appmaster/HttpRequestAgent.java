@@ -20,7 +20,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.leo.appmaster.cloud.UploadRequest;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
@@ -627,6 +626,45 @@ public class HttpRequestAgent {
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
+        mRequestQueue.add(request);
+    }
+
+    /**
+     * 加载自分享数据
+     *
+     * @param listener
+     * @param errorListener
+     */
+    public void loadShareMsg(Listener<JSONObject> listener, ErrorListener errorListener) {
+        String object = "";
+        Context context = AppMasterApplication.getInstance();
+        String language = getPostLanguage();
+        String country = Utilities.getCountryID(context);
+        String versionCodeString = "";
+        try {
+            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+            versionCodeString = String.valueOf(versionCode);
+        } catch (NameNotFoundException e) {
+        }
+        String channelCode = mContext.getString(R.string.channel_code);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(Utilities.getURL(Constants.PRIVACY_WIFI_URL)).append("/")
+                .append(country).append("/")
+                .append(language).append("/")
+                .append(versionCodeString).append("/")
+                .append(channelCode)
+                .append(".html");
+        String url = stringBuilder.toString();
+        LeoLog.i("ShareFetchJob", "load url: " + url);
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
+                errorListener);
+        request.setShouldCache(true);
+        // 最多重试3次
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         mRequestQueue.add(request);
     }
 
