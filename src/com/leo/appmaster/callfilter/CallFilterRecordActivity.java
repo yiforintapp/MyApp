@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -205,8 +204,11 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 removeFilterList.add(info);
                 mCallManger.removeFilterGr(removeFilterList);
 
-                dialog.dismiss();
-                onBackPressed();
+                try {
+                    dialog.dismiss();
+                    onBackPressed();
+                } catch (Throwable t) {
+                }
             }
         });
         dialog.show();
@@ -289,9 +291,11 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                                             List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
                                             removeFilterList.add(info);
                                             mCallManger.removeFilterGr(removeFilterList);
-                                            mDialog.dismiss();
-
-                                            onBackPressed();
+                                            try {
+                                                mDialog.dismiss();
+                                                onBackPressed();
+                                            } catch (Throwable t) {
+                                            }
                                         }
                                     }
 

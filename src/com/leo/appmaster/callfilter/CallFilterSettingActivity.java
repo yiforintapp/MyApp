@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;

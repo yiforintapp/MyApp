@@ -1,8 +1,9 @@
 
 package com.leo.appmaster.callfilter;
 
+import java.util.List;
+
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,24 +13,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.CommonEvent;
-import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.utils.LeoLog;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CallFilterMainActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {

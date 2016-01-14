@@ -1,6 +1,10 @@
 
 package com.leo.appmaster.callfilter;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,7 +18,6 @@ import android.os.RemoteException;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
@@ -25,14 +28,12 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.home.PrivacyConfirmFragment;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
-import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -40,10 +41,6 @@ import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by runlee on 15-12-18.
