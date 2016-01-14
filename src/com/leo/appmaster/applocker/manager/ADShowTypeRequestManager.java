@@ -64,6 +64,8 @@ public class ADShowTypeRequestManager {
     private static final String AD_INTRUDER = "v";
     /* 3.2 after privacy scan */
     private static final String AD_AFTER_SCAN = "u";
+    /* 3.3 充电屏保广告位 */
+    private static final String AD_ON_SCREEN_SAVER = "w";
 
     /* 如果后台配置本地没有的广告形式时，默认广告类型 */
     public static final int DEFAULT_AD_SHOW_TYPE = 3;
@@ -368,7 +370,7 @@ public class ADShowTypeRequestManager {
     
     private void updateADEntryAtHomeActivityConfig(JSONObject response, boolean forceClose) {
         try {
-            LeoLog.d("poha","请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+            LeoLog.d("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
             int value = forceClose ? 0 : (response.getInt(AD_AT_APPLOCK_FRAGMENT));
             if (value != mSp.getIsADAtAppLockFragmentOpen()) {
                 mSp.setIsADAtAppLockFragmentOpen(value);
@@ -427,6 +429,21 @@ public class ADShowTypeRequestManager {
             int value = forceClose?0:(response.getInt(AD_AFTER_SCAN));
             if (value != mSp.getADAfterScan()) {
                 mSp.setADAfterScan(value);
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull",
+                        (value == 1) ? "adv_scan_on" : "adv_scan_off");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateScreenSaverAdConfig(JSONObject response, boolean forceClose) {
+        try {
+            LeoLog.d("poha", "请求成功，屏保广告位开关:" + response.getInt(AD_ON_SCREEN_SAVER));
+            int value = forceClose?0:(response.getInt(AD_ON_SCREEN_SAVER));
+            if (value != mSp.getADOnScreenSaver()) {
+                mSp.setADOnScreenSaver(value);
+                // TODO 修改打点字段
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull",
                         (value == 1) ? "adv_scan_on" : "adv_scan_off");
             }
@@ -516,6 +533,8 @@ public class ADShowTypeRequestManager {
                     updateIntruderAdConfig(response, forceClose);
                     // 3.2 扫描结果页广告配置
                     updateAfterScanAdConfig(response, forceClose);
+                    // 3.3 屏保界面广告位
+                    updateScreenSaverAdConfig(response, forceClose);
                     // 注意：下述3个非广告开关
                     mSp.setVersionUpdateTipsAfterUnlockOpen((response.getInt(VERSION_UPDATE_AFTER_UNLOCK)));
                     LeoLog.d("poha", "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));

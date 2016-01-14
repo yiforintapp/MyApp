@@ -1,6 +1,8 @@
 package com.leo.appmaster.battery;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
@@ -10,7 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.mobvista.sdk.m.core.entity.Campaign;
+
+import java.lang.ref.WeakReference;
 
 
 public class BatterProtectView {
@@ -286,4 +299,71 @@ public class BatterProtectView {
             mView = null;
         }
     }
+
+    /* 广告相关 - 开始 */
+    private boolean mShouldLoadAd = false;
+    private void loadAd() {
+        mShouldLoadAd = AppMasterPreference.getInstance(mContext).getADOnScreenSaver() == 1;
+        if (mShouldLoadAd) {
+            MobvistaEngine.getInstance(mContext).loadMobvista(Constants.UNIT_ID_CHARGING,
+                    new MobvistaEngine.MobvistaListener() {
+                @Override
+                public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                    if (code == MobvistaEngine.ERR_OK) {
+                        sAdImageListener = new AdPreviewLoaderListener(BatterProtectView.this, campaign);
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                    }
+                }
+
+                @Override
+                public void onMobvistaClick(Campaign campaign) {
+                    // TODO 埋点
+                }
+            });
+        }
+    }
+
+    private void releaseAd() {
+        if (mShouldLoadAd) {
+            MobvistaEngine.getInstance(mContext).release(Constants.UNIT_ID_CHARGING);
+        }
+    }
+
+    public static class AdPreviewLoaderListener implements ImageLoadingListener {
+        WeakReference<BatterProtectView> mView;
+        Campaign mCampaign;
+
+        public AdPreviewLoaderListener(BatterProtectView view, final Campaign campaign) {
+            mView = new WeakReference<BatterProtectView>(view);
+            mCampaign = campaign;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            LeoLog.e(TAG, "failed to load AD preview: " +
+                    failReason.getCause().getLocalizedMessage());
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            BatterProtectView screenView = mView.get();
+            if (loadedImage != null && screenView != null) {
+                LeoLog.d(TAG, "load done: " + imageUri);
+                // TODO fill advertise view here
+            }
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+
+        }
+    }
+
+    private static AdPreviewLoaderListener sAdImageListener;
+    /* 广告相关 - 结束 */
 }

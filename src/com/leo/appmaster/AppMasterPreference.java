@@ -296,6 +296,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // 3.2 ad
     public static final String PREF_AD_INTRUDER = "pref_ad_intruder";
     public static final String PREF_AD_AFTER_SCAN = "pref_ad_after_scan";
+    // 3.3 屏保广告位开关
+    public static final String PREF_AD_ON_SCREEN_SAVER = "pref_ad_on_screen_saver";
     // 3.3 耗电app数量阈值
     public static final String PREF_BATTERY_APP_NUM = "pref_battery_app_num";
 
@@ -2815,6 +2817,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getADAfterScan() {
         return mPref.getInt(PREF_AD_AFTER_SCAN,
+                AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
+    }
+
+    // 3.3 屏保广告开关
+    public void setADOnScreenSaver(int flag) {
+        commitAsync(mPref.edit().putInt(PREF_AD_ON_SCREEN_SAVER, flag));
+    }
+
+    public int getADOnScreenSaver() {
+        return mPref.getInt(PREF_AD_ON_SCREEN_SAVER,
                 AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
     }
 

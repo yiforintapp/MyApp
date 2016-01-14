@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -160,6 +161,7 @@ public class MobvistaEngine {
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_67, Constants.PLACEMENT_ID_67);
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_243, Constants.PLACEMENT_ID_243);
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_244, Constants.PLACEMENT_ID_244);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_CHARGING, Constants.PLACEMENT_ID_CHARGING);
 
         LeoLog.i(TAG, "MobvistaEngine() called done");
     }
