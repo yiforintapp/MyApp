@@ -173,6 +173,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         for (int i = 0; i < mListBatteryComsuptions.size(); i++) {
             try {
                 am.killBackgroundProcesses(mListBatteryComsuptions.get(i).getDefaultPackageName());
+                LeoLog.i(TAG, "pkg : " + mListBatteryComsuptions.get(i).getDefaultPackageName() + " is killed");
             } catch (Throwable e) {
                 if (DBG) {
                     Toast.makeText(this, "throwable when killing..." + e.toString(), 1).show();

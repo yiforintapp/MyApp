@@ -936,4 +936,15 @@
     <string name="number_call_duration_h_m">%1$sH %2$sM</string>
     <string name="number_call_duration_m_s">%1$sM %2$sS</string>
     <string name="ad_blk_fail">failed</string>
+    
+     <!-- 3.3 start -->
+     <string name="batterymanager_label">%1$s个应用正在偷偷耗电</string>
+     <string name="batterymanager_boost">省电优化</string>
+     <string name="batterymanager_boost_finished">优化完成</string>
+     <string name="batterymanager_tip_loading">正在检测耗电应用</string>
+     <string name="batterymanager_tip_nothing_to_boost">没有可优化的app了</string>
+     <string name="batterymanager_switch_screen">充电屏保</string>
+     <string name="batterymanager_switch_screen_summary">使用充电屏保加速充电，防止过度充电</string>
+     <string name="batterymanager_switch_noti">应用耗电通知</string>
+     <string name="batterymanager_switch_noti_summary">检测后台应用耗电情况</string>
 </resources>
