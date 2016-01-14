@@ -51,6 +51,7 @@
             android:id="@+id/gv_apps"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:verticalSpacing="10dp"
             android:layout_above="@+id/rl_bottom"
             android:layout_below="@+id/tv_list_title" >
         </GridView>
@@ -90,5 +91,46 @@
     </RelativeLayout>
         
     </RelativeLayout>
+
+	<RelativeLayout
+	    android:id="@+id/rl_empty_or_loading"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/ctb_battery"
+	    android:background="@color/white" >
+       
+       <RelativeLayout
+           android:id="@+id/rl_empty"
+           android:visibility="gone"
+           android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/just_nothing_show_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_width="@dimen/kongbaiye_width_height"
+                android:layout_height="@dimen/kongbaiye_width_height"
+                android:background="@drawable/elect_empty" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/just_nothing_show_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"
+                android:gravity="center"
+                android:text="@string/elect_empty_content"
+                android:textColor="@color/nothing_show_text"
+                android:textSize="@dimen/kongbaiye_text_size" />
+        </RelativeLayout>
+
+	    <ProgressBar
+	        android:id="@+id/pb_loading"
+	        style="@style/ProgressBarCricle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true" />
+	</RelativeLayout>
 
 </RelativeLayout>

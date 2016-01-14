@@ -2,8 +2,10 @@
 package com.leo.appmaster.battery;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,15 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.fragment.PretendAppBeautyFragment;
-import com.leo.appmaster.home.SimpleAnimatorListener;
+import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
@@ -32,22 +39,40 @@ import com.leo.tools.animator.PropertyValuesHolder;
 
 public class BatteryMainActivity extends BaseFragmentActivity implements OnClickListener {
     private final String TAG = "BatterMainActivity";
+    private boolean DBG = true;
     private CommonToolbar mCtbMain;
     private RelativeLayout mRlContent;
     private Fragment mFrgmResult;
     private GridView mGvApps;
-    private List mListInfos;
+    private ArrayList<BatteryComsuption> mListBatteryComsuptions;
     private RippleView mRvBoost;
     private final int APPS_COLUMNS = 5;
+    private AppsAdapter mAdapter;
+    private ProgressBar mPbLoading;
+    private RelativeLayout mRlEmpty;
+    private RelativeLayout mRlLoadingOrEmpty;
+    private BatteryManager mBtrManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battery_manage);
-        LeoLog.i(TAG, "onCreate!");
         initUI();
+        mBtrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
+        
     }
 
+//            FragmentManager fm = getSupportFragmentManager();
+//            FragmentTransaction transaction = fm.beginTransaction();  
+//            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+//            mFrgmResult = new PretendAppBeautyFragment();  
+//            transaction.replace(mRlContent.getId(), mFrgmResult);
+//            transaction.commit();  
+    
+    
     private void initUI() {
+        mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
+        mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
+        mRlEmpty = (RelativeLayout) findViewById(R.id.rl_empty);
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_battery);
         mCtbMain.setToolbarTitle(R.string.app_elec_aca);
         mCtbMain.setToolbarColorResource(R.color.cb);
@@ -57,21 +82,11 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mCtbMain.setOptionMenuVisible(true);
         mGvApps = (GridView) findViewById(R.id.gv_apps);
         mGvApps.setNumColumns(APPS_COLUMNS);
-        mGvApps.setAdapter(new AppsAdapter());
+        mAdapter = new AppsAdapter();
         mRlContent = (RelativeLayout) findViewById(R.id.rl_content);
         mRvBoost = (RippleView) findViewById(R.id.rv_accelerate);
         mRvBoost.setOnClickListener(this);
-//        ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
-//            @Override
-//            public void run() {
-//                FragmentManager fm = getSupportFragmentManager();
-//                FragmentTransaction transaction = fm.beginTransaction();  
-//                transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-//                mFrgmResult = new PretendAppBeautyFragment();  
-//                transaction.replace(mContent.getId(), mFrgmResult);
-//                transaction.commit();  
-//            }
-//        }, 3000);
+        mGvApps.setAdapter(mAdapter);
     }
 
     @Override
@@ -82,6 +97,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
             transaction.remove(mFrgmResult);
             transaction.commit();
+            mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
+            mPbLoading.setVisibility(View.VISIBLE);
+            mRlEmpty.setVisibility(View.GONE);
+            loadData();
         } else {
             super.onBackPressed();
         }
@@ -97,14 +116,51 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     @Override
     public void onResume() {
         super.onResume();
-        
+        LeoLog.i(TAG, "onResume");
+        if (mFrgmResult != null && mFrgmResult.isVisible()) {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();  
+            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+            transaction.remove(mFrgmResult);
+            transaction.commit();
+        }
+        mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
+        mPbLoading.setVisibility(View.VISIBLE);
+        mRlEmpty.setVisibility(View.GONE);
+        loadData();
     }
 
+    private void loadData() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                mListBatteryComsuptions = (ArrayList<BatteryComsuption>) mBtrManager.getBatteryDrainApps();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        onDataLoaded();
+                    }
+                });
+            }
+        });
+    }
+
+    private void onDataLoaded() {
+        mAdapter.fillData(mListBatteryComsuptions);
+        if (mListBatteryComsuptions == null || mListBatteryComsuptions.size() == 0) {
+            mPbLoading.setVisibility(View.GONE);
+            mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
+        } else {
+            mRlLoadingOrEmpty.setVisibility(View.GONE);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+    
+    
     @Override
     public void onClick(View v) {
          switch (v.getId()) {
             case R.id.rv_accelerate:
-                startBoostAnim();
+                startBoost();
                 break;
 
             default:
@@ -112,45 +168,40 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
     }
 
-    private void startBoostAnim() {
-        final View v = (View) mGvApps.getAdapter().getView(3, null, null);
-        PropertyValuesHolder vh = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0.0f);
-        ObjectAnimator oa = ObjectAnimator.ofPropertyValuesHolder(v, vh);
-        oa.setDuration(500);
-        oa.addListener(new AnimatorListener() {
-            
-            @Override
-            public void onAnimationStart(Animator animation) {
-                
+    private void startBoost() {
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (int i = 0; i < mListBatteryComsuptions.size(); i++) {
+            try {
+                am.killBackgroundProcesses(mListBatteryComsuptions.get(i).getDefaultPackageName());
+            } catch (Throwable e) {
+                if (DBG) {
+                    Toast.makeText(this, "throwable when killing..." + e.toString(), 1).show();
+                }
             }
-            
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                
-            }
-            
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
-            
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                
-            }
-        });
-        oa.start();
+        }
+        FragmentManager fm = getSupportFragmentManager();
+      FragmentTransaction transaction = fm.beginTransaction();  
+      transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+      mFrgmResult = new PretendAppBeautyFragment();  
+      transaction.replace(mRlContent.getId(), mFrgmResult);
+      transaction.commit();  
     }
 
     class AppsAdapter extends BaseAdapter {
-        View mView;
+        private List<BatteryComsuption> mList;
         LayoutInflater mInflater;
+        
+        public void fillData(ArrayList<BatteryComsuption> list) {
+            mList = list;
+        }
+
         public AppsAdapter() {
             mInflater = LayoutInflater.from(BatteryMainActivity.this);
         }
         
         @Override
         public int getCount() {
-            return 12;
+            return mList == null ? 0 : mList.size();
         }
 
         @Override
@@ -165,10 +216,23 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            mView = mInflater.inflate(R.layout.item_battery_app, null);
-            View v = mView.findViewById(R.id.iv_app);
-            return mView;
+            Holder holder = null;
+            if (convertView == null) {
+                holder = new Holder();
+                convertView = mInflater.inflate(R.layout.item_battery_app, null);
+                holder.iv_appicon = (ImageView) convertView.findViewById(R.id.iv_app);
+                convertView.setTag(holder);
+            } else {
+                holder = (Holder) convertView.getTag();
+            }
+            if (mList != null && mList.size() != 0) {
+                holder.iv_appicon.setImageDrawable(mList.get(position).getIcon());
+            }
+            return convertView;
         }
     }
 
+    class Holder {
+        ImageView iv_appicon;
+    }
 }
