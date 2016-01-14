@@ -102,12 +102,7 @@ public class HomeMoreAdapter extends BaseAdapter {
         arrayList.add(ARRAY_MEDIA);
         arrayList.add(ARRAY_CONTACT_SINGLE);
         arrayList.add(ARRAY_APP);
-        if (Build.VERSION.SDK_INT > 21) {
-            // 版本号高于（含）5.1.1，不显示电量
-            arrayList.add(ARRAY_DEVICE_51);
-        } else {
-            arrayList.add(ARRAY_DEVICE);
-        }
+        arrayList.add(ARRAY_DEVICE);
         arrayList.add(ARRAY_HELPER);
 
         mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);

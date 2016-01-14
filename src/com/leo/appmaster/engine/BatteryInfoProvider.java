@@ -1,14 +1,19 @@
 package com.leo.appmaster.engine;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -18,13 +23,17 @@ import android.os.Parcel;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.telephony.SignalStrength;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.internal.app.IBatteryStats;
 import com.android.internal.os.BatteryStatsImpl;
 import com.android.internal.os.PowerProfile;
+import com.leo.appmaster.applocker.model.ProcessAdj;
+import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.utils.BatteryUtils;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.utils.IoUtils;
 
 public class BatteryInfoProvider {
 	private static final String TAG = "BatteryInfo";
@@ -52,6 +61,18 @@ public class BatteryInfoProvider {
 	private Context mContext;
 	public int testType;
 
+	/* 3.3 增加最后一个策略，使用PS命令获取app电量消耗 */
+	private ArrayList<ProcessDetector.ProcessFilter> mFilters;
+	private static final String LEO_FAMILY_PREFIX = "com.leo.";
+	private static final String PS = "ps";
+	private static final String SHELL = "sh";
+	private static final boolean DBG = true;
+	protected static final String REGEX_SPACE = "\\s+";
+	private static final int INDEX_USER = 0;
+	private static final int INDEX_PID = 1;
+	private static final int INDEX_PPID = 2;
+	private static final int INDEX_PROCESS_NAME = 8;
+
 	public enum DrainType {
 		IDLE, CELL, PHONE, WIFI, BLUETOOTH, SCREEN, APP, KERNEL, MEDIASERVER;
 	}
@@ -68,6 +89,14 @@ public class BatteryInfoProvider {
 		this.mMinPercentOfTotal = minPercentOfTotal;
 	}
 
+	private List<ProcessDetector.ProcessFilter> getBatteryFilters() {
+		if (mFilters == null) {
+			mFilters = new ArrayList<ProcessDetector.ProcessFilter>();
+			mFilters.add(new BatteryProcessFilter());
+		}
+		return mFilters;
+	}
+
 	public double getTotalPower() {
 		return mTotalPower;
 	}
@@ -77,6 +106,7 @@ public class BatteryInfoProvider {
 	}
 
 	public List<BatteryComsuption> getBatteryStats() {
+
 		if (mStats == null) {
 			mStats = load();
 		}
@@ -179,28 +209,57 @@ public class BatteryInfoProvider {
 		List<RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
 
 		HashMap<String, BatteryComsuption> templist = new HashMap<String, BatteryComsuption>();
-		for (RunningAppProcessInfo info : runningApps) {
-			final long time = getAppProcessTime(info.pid);
-			String[] pkgNames = info.pkgList;
-			if (pkgNames == null) {
-				if (templist.containsKey(info.processName)) {
-					BatteryComsuption sipper = templist.get(info.processName);
-					sipper.setValue(sipper.getValue() + time);
-				} else {
-					templist.put(info.processName, new BatteryComsuption(
-							mContext, info.processName, time));
-				}
-				totalTime += time;
-			} else {
-				for (String pkgName : pkgNames) {
-					if (templist.containsKey(pkgName)) {
-						BatteryComsuption sipper = templist.get(pkgName);
+
+		// stone: magic number 5, to be decided
+		if (runningApps.size() > 5) {
+			for (RunningAppProcessInfo info : runningApps) {
+				final long time = getAppProcessTime(info.pid);
+				String[] pkgNames = info.pkgList;
+				if (pkgNames == null) {
+					if (templist.containsKey(info.processName)) {
+						BatteryComsuption sipper = templist.get(info.processName);
 						sipper.setValue(sipper.getValue() + time);
 					} else {
-						templist.put(pkgName, new BatteryComsuption(mContext,
-								pkgName, time));
+						templist.put(info.processName, new BatteryComsuption(
+								mContext, info.processName, time));
 					}
 					totalTime += time;
+				} else {
+					for (String pkgName : pkgNames) {
+						if (templist.containsKey(pkgName)) {
+							BatteryComsuption sipper = templist.get(pkgName);
+							sipper.setValue(sipper.getValue() + time);
+						} else {
+							templist.put(pkgName, new BatteryComsuption(mContext,
+									pkgName, time));
+						}
+						totalTime += time;
+					}
+				}
+			}
+		}else{
+			HashMap<String, Long> tmpConsumtion = new HashMap<String, Long>();
+			List<ProcessAdj> allProcesses =  getProcessWithPS();
+			for (ProcessAdj processAdj: allProcesses) {
+				long consumption = getAppProcessTime(processAdj.pid);
+				if (tmpConsumtion.containsKey(processAdj.pkg)) {
+					tmpConsumtion.put(processAdj.pkg, tmpConsumtion.get(processAdj.pkg)+consumption);
+				} else {
+					tmpConsumtion.put(processAdj.pkg, consumption);
+				}
+			}
+
+			templist.clear();
+			totalTime = 0;
+			for (String key: tmpConsumtion.keySet()) {
+				LeoLog.d(TAG, key + " : " + tmpConsumtion.get(key));
+				long time = tmpConsumtion.get(key);
+				totalTime += time;
+				BatteryComsuption batteryComsuption = new BatteryComsuption(mContext, key, time);
+				if (batteryComsuption != null &&
+						batteryComsuption.getName() != null &&
+						batteryComsuption.getIcon() != null) {
+					templist.put(key, batteryComsuption);
 				}
 			}
 		}
@@ -236,6 +295,125 @@ public class BatteryInfoProvider {
 		});
 
 		return list;
+	}
+
+
+	private static class BatteryProcessFilter implements ProcessDetector.ProcessFilter {
+
+		@Override
+		public boolean filterProcess(ProcessAdj processAdj) {
+			if (processAdj.pkg.equals(PS) || processAdj.pkg.equals(SHELL)) {
+				return true;
+			}
+			if (processAdj.pkg.startsWith(LEO_FAMILY_PREFIX)) {
+				return true;
+			}
+			return false;
+		}
+
+	}
+
+	public List<ProcessAdj> getProcessWithPS() {
+
+		Process p = null;
+		InputStream is = null;
+		BufferedReader br = null;
+		ArrayList<ProcessAdj> allProcess = new ArrayList<ProcessAdj>();
+		try {
+			p = Runtime.getRuntime().exec(PS);
+			is = p.getInputStream();
+
+			br = new BufferedReader(new InputStreamReader(is));
+			String line = null;
+
+			int zygoteId = 0;
+			while ((line = br.readLine()) != null) {
+				ProcessAdj pair = getProcessAdjByFormatedLine(line, zygoteId);
+				if (pair != null) {
+					allProcess.add(pair);
+				}
+			}
+		} catch (Exception e) {
+			LeoLog.e(TAG, "getForegroundProcess ex  " + e.getMessage());
+		} finally {
+			IoUtils.closeSilently(br);
+			IoUtils.closeSilently(is);
+
+			if (p != null) {
+				p.destroy();
+			}
+		}
+
+		return allProcess;
+	}
+
+
+
+	protected ProcessAdj getProcessAdjByFormatedLine(String line, int zygoteId) {
+		if (TextUtils.isEmpty(line)) return null;
+
+		Pattern pattern = Pattern.compile(REGEX_SPACE);
+		Matcher matcher = pattern.matcher(line);
+
+		if (matcher.find()) {
+			line = matcher.replaceAll(",");
+		}
+
+		if (DBG) {
+			LeoLog.i(TAG, line);
+		}
+
+		String[] array = line.split(",");
+		if (array == null || array.length == 0) return null;
+
+		if (array.length <= INDEX_PROCESS_NAME) return null;
+
+		if (DBG) {
+			LeoLog.i(TAG, "array length: " + array.length);
+		}
+
+		ProcessAdj processAdj = new ProcessAdj();
+
+		String user = array[INDEX_USER];
+		processAdj.user = user;
+
+		String ppidStr = array[INDEX_PPID];
+		int ppid = Integer.parseInt(ppidStr);
+		if (zygoteId != 0 && ppid != zygoteId) return null;
+
+
+		String processName = array[INDEX_PROCESS_NAME];
+		processAdj.pkg = processName;
+		for (ProcessDetector.ProcessFilter filter : getBatteryFilters()) {
+			if (filter.filterProcess(processAdj)) return null;
+		}
+
+		String processIdStr = array[INDEX_PID];
+		if (TextUtils.isEmpty(processName)) return null;
+
+		int processId = 0;
+		try {
+			processId = Integer.parseInt(processIdStr);
+		} catch (Exception e) {
+		}
+		if (processId == 0) return null;
+
+		int oomAdj = 0; // getOomScoreAdj(processId);
+
+		// 解决一些前台进程的进程名是子进程的问题,com.mobisystems.office:browser
+		if (processName.contains(":")) {
+			processName = processName.substring(0, processName.indexOf(":"));
+		}
+		processAdj.oomAdj = oomAdj;
+		processAdj.pid = processId;
+		processAdj.pkg = processName;
+		processAdj.ppid = ppid;
+
+		if (DBG) {
+			LeoLog.i(TAG, "inner: " + processAdj.toString());
+		}
+
+		return processAdj;
 	}
 
 	private void processMiscUsage() {
