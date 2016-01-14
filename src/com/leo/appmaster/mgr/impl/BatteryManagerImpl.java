@@ -44,7 +44,7 @@ public class BatteryManagerImpl extends BatteryManager {
 
     private static class BatteryState {
         public int level = DEFAULT_LEVEL;
-        public int plugged = UNPLUGGED; // 0 means on battery
+        public int plugged = android.os.BatteryManager.BATTERY_PLUGGED_USB;
         public boolean present = DEFAULT_PRESENT;
         public int scale = DEFAULT_SCALE;
         public int status = android.os.BatteryManager.BATTERY_STATUS_UNKNOWN;
@@ -74,7 +74,7 @@ public class BatteryManagerImpl extends BatteryManager {
         }
 
         public String toString() {
-            return "status: " + status + "; level: " + level + "; voltage: " + voltage;
+            return "status: " + status + "; level: " + level + "; plugged: " + plugged;
         }
     }
 
@@ -83,6 +83,8 @@ public class BatteryManagerImpl extends BatteryManager {
     public BatteryManagerImpl() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
         mContext.registerReceiver(mReceiver, filter);
         mSp = AppMasterPreference.getInstance(mContext);
     }
@@ -148,11 +150,20 @@ public class BatteryManagerImpl extends BatteryManager {
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
             // TODO post event through LeoEventBus here
-            if (intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
+            if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
                 BatteryState bs = new BatteryState(intent);
                 handleBatteryChange(bs);
                 LeoLog.d(TAG, "newState: " + bs.toString());
+            } else {
+                LeoLog.d(TAG, "action: " + action +
+                        "; mPreviousState: " + mPreviousState.toString());
+                if (action.equals(Intent.ACTION_SCREEN_ON) &&
+                        mPreviousState.plugged != UNPLUGGED) {
+                    LeoLog.d(TAG, "need to show charging screen");
+                    handlePluginEvent(mPreviousState);
+                }
             }
         }
     };
