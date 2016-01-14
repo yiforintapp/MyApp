@@ -5,24 +5,12 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Html;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.tools.animator.Animator;
-import com.leo.tools.animator.AnimatorListenerAdapter;
-import com.leo.tools.animator.ObjectAnimator;
 
 
 public class BatterProtectView {
@@ -36,6 +24,7 @@ public class BatterProtectView {
     private boolean mIsCharing;
     private int mBatteryLevel;
     private String mTime;
+    private static boolean isShowing = false;
 
     private static Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -49,10 +38,14 @@ public class BatterProtectView {
     public static BatterProtectView makeText(final Context context) {
         final BatterProtectView result = new BatterProtectView(context);
         mContext = context;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        view = (BatteryMainViewLayout)
-                inflater.inflate(R.layout.activity_battery_view, null);
-        result.mNextView = view;
+        if (!isShowing) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            view = (BatteryMainViewLayout)
+                    inflater.inflate(R.layout.activity_battery_view, null);
+            result.mNextView = view;
+        } else {
+            result.mNextView = mView;
+        }
         return result;
     }
 
@@ -68,6 +61,9 @@ public class BatterProtectView {
         mTime = text;
     }
 
+    public void notifyViewUi() {
+        view.notifyUI(mIsCharing, mBatteryLevel, mTime);
+    }
 
     public static final int LENGTH_SHORT = 2000;
     public static final int LENGTH_LONG = 20000;
@@ -228,7 +224,9 @@ public class BatterProtectView {
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
 
         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                WindowManager.LayoutParams.PRIVATE_FLAG_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_FULLSCREEN;
 
         params.format = PixelFormat.TRANSLUCENT;
         params.windowAnimations = android.R.style.Animation_Toast;
@@ -247,7 +245,6 @@ public class BatterProtectView {
     private void handleShow() {
 
         if (mView != mNextView) {
-
             // remove the old view if necessary
 //            handleHide();
             mView = mNextView;
@@ -269,8 +266,8 @@ public class BatterProtectView {
                 if (mView.getParent() != null) {
                     mWM.removeView(mView);
                 }
-                view.notifyUI(mIsCharing, mBatteryLevel, mTime);
                 mWM.addView(mView, mParams);
+                isShowing = true;
             } catch (Exception e) {
 
             }
@@ -282,6 +279,7 @@ public class BatterProtectView {
             try {
                 if (mView.getParent() != null) {
                     mWM.removeView(mView);
+                    isShowing = false;
                 }
             } catch (Exception e) {
             }

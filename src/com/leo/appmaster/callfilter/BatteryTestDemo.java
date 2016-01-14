@@ -153,7 +153,7 @@ public class BatteryTestDemo extends BaseActivity implements OnClickListener {
                 mTvTitleNumber.setText("状态 : " + BatteryStatusStr);
 
                 if ("充电状态".equals(BatteryStatusStr)) {
-                    BatterProtectView.makeText(BatteryTestDemo.this).show();
+
                 }
             }
         }

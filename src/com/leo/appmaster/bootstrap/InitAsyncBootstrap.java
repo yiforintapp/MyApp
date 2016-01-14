@@ -66,6 +66,8 @@ public class InitAsyncBootstrap extends Bootstrap {
         saveSimIMEI();
         PrivacyContactManager.getInstance(mApp).getPrivateContacts();
 
+        MgrContext.getManager(MgrContext.MGR_BATTERY);
+
         return true;
     }
 

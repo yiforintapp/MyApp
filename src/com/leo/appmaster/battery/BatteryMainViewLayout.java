@@ -120,12 +120,10 @@ public class BatteryMainViewLayout extends RelativeLayout {
         mTime = time;
 
         if (isCharing) {
-            mTimeContent.setVisibility(VISIBLE);
             mTvLevel.setVisibility(VISIBLE);
             mTvLevel.setText("电量 : " + level);
         } else {
             mTvLevel.setVisibility(GONE);
-            mTimeContent.setVisibility(GONE);
         }
 
 

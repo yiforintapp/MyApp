@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.SystemClock;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
+import com.leo.appmaster.battery.BatterProtectView;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.BatteryComsuption;
@@ -39,6 +41,7 @@ public class BatteryManagerImpl extends BatteryManager {
     private static final int DEFAULT_TEMP = 0;
     private static final int DEFAULT_VOLTAGE = 0;
     private static final boolean DEFAULT_PRESENT = false;
+
     private static class BatteryState {
         public int level = DEFAULT_LEVEL;
         public int plugged = UNPLUGGED; // 0 means on battery
@@ -48,7 +51,10 @@ public class BatteryManagerImpl extends BatteryManager {
         public int temperature = DEFAULT_TEMP;
         public int voltage = DEFAULT_VOLTAGE;
         public long timestamp = 0;
-        public BatteryState() {}
+
+        public BatteryState() {
+        }
+
         public BatteryState(Intent intent) {
             level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL,
                     DEFAULT_LEVEL);
@@ -66,10 +72,12 @@ public class BatteryManagerImpl extends BatteryManager {
                     DEFAULT_VOLTAGE);
             timestamp = SystemClock.elapsedRealtime();
         }
+
         public String toString() {
             return "status: " + status + "; level: " + level + "; voltage: " + voltage;
         }
     }
+
     private BatteryState mPreviousState = new BatteryState();
 
     public BatteryManagerImpl() {
@@ -84,7 +92,7 @@ public class BatteryManagerImpl extends BatteryManager {
         BatteryInfoProvider ip = new BatteryInfoProvider(mContext);
         ip.setMinPercentOfTotal(0.01);
         List<BatteryComsuption> list = ip.getBatteryStats();
-        for (BatteryComsuption bc:list) {
+        for (BatteryComsuption bc : list) {
             LeoLog.d("stone_test", "BatteryComsuption -> " + bc.getDefaultPackageName());
         }
 
@@ -92,7 +100,7 @@ public class BatteryManagerImpl extends BatteryManager {
 
         List<ProcessAdj> processAdjList = ip.getProcessWithPS();
         ArrayList<String> pkgs = new ArrayList<String>();
-        for (ProcessAdj processAdj: processAdjList) {
+        for (ProcessAdj processAdj : processAdjList) {
             pkgs.add(processAdj.pkg);
             LeoLog.d("stone_test", "processAdj -> " + processAdj.pkg);
         }
@@ -110,7 +118,7 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public void killBatteryDrainApps() {
         List<BatteryComsuption> appsToKill = getBatteryDrainApps();
-        for (BatteryComsuption batteryComsuption: appsToKill) {
+        for (BatteryComsuption batteryComsuption : appsToKill) {
             ProcessCleaner.getInstance(mContext).cleanProcess(batteryComsuption.getDefaultPackageName());
         }
         mLastKillTime = SystemClock.elapsedRealtime();
@@ -143,6 +151,7 @@ public class BatteryManagerImpl extends BatteryManager {
             // TODO post event through LeoEventBus here
             if (intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
                 BatteryState bs = new BatteryState(intent);
+                handleBatteryChange(bs);
                 LeoLog.d(TAG, "newState: " + bs.toString());
             }
         }
@@ -152,11 +161,11 @@ public class BatteryManagerImpl extends BatteryManager {
     private void handleBatteryChange(BatteryState newState) {
         if (newState.plugged != UNPLUGGED && mPreviousState.plugged == UNPLUGGED) {
             handlePluginEvent(newState);
-        } else if(mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
+        } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
-        } else if(newState.plugged != UNPLUGGED) {
+        } else if (newState.plugged != UNPLUGGED && newState.level != mPreviousState.level) {
             handleChargingEvent(newState);
-        } else {
+        } else if (newState.level != mPreviousState.level) {
             handleConsumingState(newState);
         }
 
@@ -165,34 +174,56 @@ public class BatteryManagerImpl extends BatteryManager {
 
     /***
      * 用户插上充电器事件
+     *
      * @param newState
      */
-    private void handlePluginEvent(BatteryState newState){
-
+    private void handlePluginEvent(BatteryState newState) {
+        Toast.makeText(mContext, "用户插上充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
+        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
+        mProtectView.setBatteryStatus(true);
+        mProtectView.setBatteryLevel(newState.level);
+        mProtectView.notifyViewUi();
+        mProtectView.show();
     }
 
     /***
      * 用户拔下充电器事件
+     *
      * @param newState
      */
-    private void handleUnplugEvent(BatteryState newState){
-
+    private void handleUnplugEvent(BatteryState newState) {
+        Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
+        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
+        mProtectView.setBatteryStatus(false);
+        mProtectView.setBatteryLevel(newState.level);
+        mProtectView.notifyViewUi();
     }
 
     /***
      * 正在充电的电量变化事件
+     *
      * @param newState
      */
     private void handleChargingEvent(BatteryState newState) {
-
+        Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
+        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
+        mProtectView.setBatteryStatus(true);
+        mProtectView.setBatteryLevel(newState.level);
+        mProtectView.notifyViewUi();
     }
 
     /***
      * 正在耗电的电量变化事件
+     *
      * @param newState
      */
     private void handleConsumingState(BatteryState newState) {
-        
+        Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
+        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
+        mProtectView.setBatteryStatus(true);
+        mProtectView.setBatteryLevel(newState.level);
+        mProtectView.notifyViewUi();
+
     }
 
     @Override
