@@ -3,26 +3,23 @@ package com.leo.appmaster.mgr.impl;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.text.TextUtils;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterInfo;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.StrangerInfo;
-import com.leo.appmaster.db.AppMasterDBHelper;
+import com.leo.appmaster.cloud.crypto.CryptoUtils;
+import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-import com.leo.imageloader.utils.IoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,398 +33,76 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public List<BlackListInfo> getBlackList() {
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String sortOrder = CallFilterConstants.ADD_BLK_TIME + " " + CallFilterConstants.DESC;
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
-        String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
-                String.valueOf(CallFilterConstants.REMOVE_NO)};
-        return CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
+        String selection = CallFilterConstants.COL_BLACK_REMOVE_STATE + " = ?";
+        String[] selectionArgs = new String[]{CallFilterConstants.REMOVE_NO + ""};
+
+        String sortOrder = CallFilterConstants.COL_TIME + " " + CallFilterConstants.DESC;
+        return BlacklistTab.getInstance().getBlackList(selection, selectionArgs, sortOrder);
     }
 
     @Override
     public int getBlackListCount() {
-        ContentResolver cr = mContext.getContentResolver();
-        Cursor cursor = null;
-        int count = 0;
-        try {
-            Uri uri = CallFilterConstants.BLACK_LIST_URI;
-            String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-            StringBuilder sb = new StringBuilder();
-            sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-            sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? ");
-            String selects = sb.toString();
-            String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
-                    String.valueOf(CallFilterConstants.REMOVE_NO)};
-            cursor = cr.query(uri, null, selects, selectArgs, sortOrder);
-            if (cursor != null) {
-                count = cursor.getCount();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return count;
+        String selection = CallFilterConstants.COL_BLACK_REMOVE_STATE + " = ?";
+        String[] selectionArgs = new String[]{CallFilterConstants.REMOVE_NO + ""};
+        return BlacklistTab.getInstance().getBlackListCount(selection, selectionArgs);
     }
 
     @Override
     public boolean addBlackList(List<BlackListInfo> blackList, boolean update) {
         if (blackList == null || blackList.size() <= 0) {
+            LeoLog.d(TAG, "addBlackList is empty. ");
             return false;
         }
-        boolean flag = true;
-        ContentValues[] values = null;
-        int blackCount = blackList.size();
-        if (blackCount > 1) {
-            values = new ContentValues[blackCount];
-        }
-        Cursor cur = null;
-        ContentResolver cr = mContext.getContentResolver();
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        int i = 0;
-        for (BlackListInfo info : blackList) {
-            if (TextUtils.isEmpty(info.getNumber())) {
-                continue;
-            }
-            int id = info.getId();
-            String name = info.getNumberName();
-            String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
-            Bitmap icon = info.getIcon();
-            String area = info.getNumberArea();
-            int uploadState = info.getUploadState();
-            int locHd = info.getLocHandler();
-            int locHdType = info.getLocHandlerType();
-            int readState = info.getReadState();
-            int removeState = info.getRemoveState();
-            int filUpState = info.getFiltUpState();
-            ContentValues value = new ContentValues();
+        LeoLog.d(TAG, "addBlackList....size: " + blackList.size());
 
-            if (!TextUtils.isEmpty(name)) {
-                value.put(CallFilterConstants.BLACK_NAME, name);
-            }
-            if (!TextUtils.isEmpty(number)) {
-                value.put(CallFilterConstants.BLACK_PHONE_NUMBER, number);
-            }
-            if (icon != null) {
-                byte[] iconByte = PrivacyContactUtils.formateImg(icon);
-                value.put(CallFilterConstants.BLACK_ICON, iconByte);
-            }
-            if (!TextUtils.isEmpty(area)) {
-                value.put(CallFilterConstants.BLACK_NUMBER_AREA, area);
-            }
-
-            if (locHd != -1) {
-                value.put(CallFilterConstants.BLACK_LOC_HD, locHd);
-            }
-            if (locHdType != -1) {
-                value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, locHdType);
-            }
-            //是否上传
-            if (uploadState != -1) {
-                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, uploadState);
-            }
-            //是否删除
-            if (removeState != -1) {
-                value.put(CallFilterConstants.BLACK_REMOVE_STATE, removeState);
-            }
-            //是否已读
-            if (readState != -1) {
-                value.put(CallFilterConstants.BLACK_READ_STATE, readState);
-            }
-            //是否为拦截上传
-            if (filUpState != -1) {
-                value.put(CallFilterConstants.BLACK_FIL_UP, filUpState);
-            }
-
-            try {
-                String table = CallFilterConstants.BLACK_LIST_TAB;
-                String numbColum = CallFilterConstants.BLACK_PHONE_NUMBER;
-                String upColum = CallFilterConstants.BLACK_UPLOAD_STATE;
-                String locHdTypeColum = CallFilterConstants.BLACK_LOC_HD_TYPE;
-                String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
-                String locH = CallFilterConstants.BLACK_LOC_HD;
-                String addBlColum = CallFilterConstants.BLACK_ADD_NUMBER;
-                String addMarkColum = CallFilterConstants.MARKER_NUMBER;
-                SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
-                SQLiteDatabase sd = dbHelper.getReadableDatabase();
-
-                String numSelcts = null;
-                String selArgs = null;
-                if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-                    number = PrivacyContactUtils.formatePhoneNumber(number);
-                    numSelcts = " LIKE ? ";
-                    selArgs = "%" + number;
-                } else {
-                    numSelcts = " = ? ";
-                    selArgs = number;
-                }
-
-                cur = sd.query(table, new String[]{numbColum, upColum, locH, locHdTypeColum, removeColum, addBlColum, addMarkColum}, numbColum + numSelcts/* + sel*/,
-                        new String[]{selArgs}, null, null, null);
-                if (cur != null && cur.getCount() > 0) {
-                    /**
-                     * 本地黑名单引起的更新操作
-                     * 1.伪删除引发的更新
-                     * 2.更改标记类型引起的更新
-                     * 3.恢复删除的黑名单引发的更新
-                     */
-                    while (cur.moveToNext()) {
-                        int locHdTypeCom = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD_TYPE);
-                        int locHdTypeFlag = cur.getInt(locHdTypeCom);
-                        int locHColu = cur.getColumnIndex(CallFilterConstants.BLACK_LOC_HD);
-                        int loc = cur.getInt(locHColu);
-                        int remove = cur.getInt(cur.getColumnIndex(removeColum));
-                        int addBlk = cur.getInt(cur.getColumnIndex(addBlColum));
-                        int addMrk = cur.getInt(cur.getColumnIndex(addMarkColum));
-                        //本地标记类型
-                        if (locHdType != -1 && (locHdTypeFlag != locHdType)) {
-                            value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-                        }
-
-                        //不是伪删除引发的更新
-                        if (removeState != CallFilterConstants.REMOVE) {
-                            if (CallFilterConstants.REMOVE_NO != remove) {
-                                value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
-                            }
-                            if (CallFilterConstants.LOC_HD != loc) {
-                                value.put(CallFilterConstants.ADD_BLK_TIME, System.currentTimeMillis());
-                                value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
-                            }
-                            //恢复删除的黑名单引发的更新
-                            if (locHdType == -1) {
-                                value.put(CallFilterConstants.ADD_BLK_TIME, System.currentTimeMillis());
-                                value.put(CallFilterConstants.BLACK_NAME, name);
-                                value.put(CallFilterConstants.BLACK_LOC_HD_TYPE, CallFilterConstants.BLACK_LIST_TYP);
-                                value.put(CallFilterConstants.BLACK_READ_STATE, readState);
-                            }
-                        } else {
-                            if (addBlk > 0 || addMrk > 0) {
-                                value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
-                            }
-                        }
-
-                        String where = null;
-                        String[] selectArgs = null;
-                        where = CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts;
-                        selectArgs = new String[]{selArgs};
-                        int count = cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
-                        if (count < 0) {
-                            flag = false;
-                        }
-                    }
-                } else {
-                    /*新增操作*/
-                    value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.LOC_HD);
-                    value.put(CallFilterConstants.BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-                    value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
-                    value.put(CallFilterConstants.BLACK_READ_STATE, CallFilterConstants.READ_NO);
-                    value.put(CallFilterConstants.BLACK_FIL_UP, CallFilterConstants.FIL_UP_NO);
-                    value.put(CallFilterConstants.ADD_BLK_TIME, System.currentTimeMillis());
-                    if (values != null) {
-                        values[i] = value;
-                        i = i + 1;
-                    } else {
-                        long insert = sd.insert(table, null, value);
-                        if (insert < 0) {
-                            flag = false;
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (values != null && values.length > 0) {
-            int count = cr.bulkInsert(uri, values);
-            if (count < 0) {
-                flag = false;
-            }
-        }
-        if (cur != null) {
-            cur.close();
-        }
-        return flag;
+        BlacklistTab.getInstance().addBlackList(blackList);
+        return true;
     }
 
     @Override
     public boolean removeBlackList(List<BlackListInfo> blackList) {
-        if (blackList == null || blackList.size() <= 0) {
-            return false;
-        }
-        Cursor cur = null;
-        SQLiteOpenHelper dbHelper = AppMasterDBHelper.getInstance(AppMasterApplication.getInstance());
-        SQLiteDatabase sd = dbHelper.getReadableDatabase();
-
-        String table = CallFilterConstants.BLACK_LIST_TAB;
-        String numbColum = CallFilterConstants.BLACK_PHONE_NUMBER;
-        String addBlColum = CallFilterConstants.BLACK_ADD_NUMBER;
-        String addMarkColum = CallFilterConstants.MARKER_NUMBER;
-
-        String numSelcts = null;
-        String selArgs = null;
-
-        for (BlackListInfo info : blackList) {
-            if (TextUtils.isEmpty(info.getNumber())) {
-                continue;
-            }
-            String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
-
-            ContentValues value = new ContentValues();
-            value.put(CallFilterConstants.BLACK_REMOVE_STATE, CallFilterConstants.REMOVE);
-            value.put(CallFilterConstants.BLACK_PHONE_NUMBER, number);
-
-            if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-                number = PrivacyContactUtils.formatePhoneNumber(number);
-                numSelcts = " LIKE ? ";
-                selArgs = "%" + number;
-            } else {
-                numSelcts = " = ? ";
-                selArgs = number;
-            }
-
-            cur = sd.query(table, new String[]{numbColum, addBlColum, addMarkColum}, numbColum + numSelcts,
-                    new String[]{selArgs}, null, null, null);
-            if (cur != null && cur.getCount() > 0) {
-                while (cur.moveToNext()) {
-                    int addBlk = cur.getInt(cur.getColumnIndex(CallFilterConstants.BLACK_ADD_NUMBER));
-                    int addMrk = cur.getInt(cur.getColumnIndex(CallFilterConstants.MARKER_NUMBER));
-
-                    if (addBlk > 0 || addMrk > 0) {
-                        value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
-                    }
-
-                    String where = null;
-                    String[] selectArgs = null;
-                    where = CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts;
-                    selectArgs = new String[]{selArgs};
-                    try {
-                        mContext.getContentResolver().update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
-                        LeoLog.d(TAG, "remove black sucess number:"+number);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    break;
-                }
-            }
-        }
-        if (cur != null) {
-            cur.close();
-        }
+        BlacklistTab.getInstance().deleteBlackList(blackList);
         return true;
     }
 
     @Override
     public boolean isExistBlackList(String number) {
-//        List<BlackListInfo> blacks = getBlackList();
-        if (TextUtils.isEmpty(number)) {
-            return false;
-        }
-        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        String numSelcts = null;
-        String selArgs = null;
-        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-            number = PrivacyContactUtils.formatePhoneNumber(number);
-            numSelcts = " LIKE ? ";
-            selArgs = "%" + number;
-        } else {
-            numSelcts = " = ? ";
-            selArgs = number;
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts);
-        String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
-                String.valueOf(CallFilterConstants.REMOVE_NO), selArgs};
-        List<BlackListInfo> blacks = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
-        if (blacks != null && blacks.size() > 0 && !TextUtils.isEmpty(number)) {
-            for (BlackListInfo info : blacks) {
-                if (info.getNumber().contains(formateNum)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return BlacklistTab.getInstance().isBlackInfoExist(number);
     }
 
     @Override
     public List<BlackListInfo> getNoUploadBlackList() {
         Uri uri = CallFilterConstants.BLACK_LIST_URI;
         StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ?");
+        sb.append(CallFilterConstants.COL_BLACK_UPLOAD_STATE + " = ? AND ");
+        sb.append(CallFilterConstants.COL_BLACK_REMOVE_STATE + " = ?");
         String selection = sb.toString();
         String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD_NO),
-                String.valueOf(CallFilterConstants.LOC_HD), String.valueOf(CallFilterConstants.REMOVE_NO)};
+                String.valueOf(CallFilterConstants.REMOVE_NO)};
 
-        return CallFilterUtils.getNoUpBlack(uri, selection, selectionArgs, null);
+        return BlacklistTab.getInstance().getBlackList(selection, selectionArgs, null);
     }
 
     @Override
     public BlackListInfo getBlackListFroNum(String number) {
-        if (TextUtils.isEmpty(number)) {
-            return null;
-        }
-        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
-        BlackListInfo info = new BlackListInfo();
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        String numSelcts = null;
-        String selArgs = null;
-        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-            number = PrivacyContactUtils.formatePhoneNumber(number);
-            numSelcts = " LIKE ? ";
-            selArgs = "%" + number;
-        } else {
-            numSelcts = " = ? ";
-            selArgs = number;
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts);
-        String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
-                String.valueOf(CallFilterConstants.REMOVE_NO), selArgs};
-        List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
-        if (infos != null && infos.size() > 0) {
-            for (BlackListInfo black : infos) {
-                info = black;
-                break;
-            }
-        }
-
-        return info;
+        return BlacklistTab.getInstance().getBlackInfoByNumber(number);
     }
 
     @Override
     public List<BlackListInfo> getNoUpBlackListLimit(int page) {
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
         StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ?");
+        sb.append(CallFilterConstants.COL_BLACK_UPLOAD_STATE + " = ? and ");
+        sb.append(CallFilterConstants.COL_BLACK_REMOVE_STATE + " = ?");
         String selection = sb.toString();
-        String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD_NO),
-                String.valueOf(CallFilterConstants.LOC_HD), String.valueOf(CallFilterConstants.REMOVE_NO)};
+        String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD_NO), String.valueOf(CallFilterConstants.REMOVE_NO)};
         int pageSize = PAGE_SIZE;
-        int currentOffset = (page - 1) * PAGE_SIZE;
         StringBuilder sbOr = new StringBuilder();
-        sbOr.append(CallFilterConstants.BLACK_ID);
+        sbOr.append(CallFilterConstants.COL_BLACK_ID);
         sbOr.append(" " + CallFilterConstants.DESC);
-        sbOr.append(" limit  " + pageSize + " offset " + currentOffset);
+        sbOr.append(" limit  " + pageSize);
         String sortOrder = sbOr.toString();
-        return CallFilterUtils.getNoUpBlack(uri, selection, selectionArgs, sortOrder);
+
+        return BlacklistTab.getInstance().getBlackList(selection, selectionArgs, sortOrder);
     }
 
     @Override
@@ -470,10 +145,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     String name = null;
                     BlackListInfo black = getBlackListFroNum(number);
                     if (black != null) {
-                        filterType = black.getLocHandlerType();
-                        name = black.getNumberName();
-                        if (!TextUtils.isEmpty(black.getNumberName())) {
-                            name = black.getNumberName();
+                        filterType = black.markType;
+                        if (!TextUtils.isEmpty(black.name)) {
+                            name = black.name;
                         }
                     }
                     Bitmap icon = getBlackIcon(number);
@@ -560,7 +234,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
             Cursor cur = null;
             try {
                 if (update) {
-                    String table = CallFilterConstants.FILTER_GROUP_TAB;
+                    String table = CallFilterConstants.TAB_FILTER_GROUP;
                     String colum1 = CallFilterConstants.FIL_GR_PH_NUMB;
                     String colum2 = CallFilterConstants.FIL_GR_DATE;
                     String colum3 = CallFilterConstants.FIL_CALL_TYPE;
@@ -787,7 +461,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                     int filterType = -1;
                     BlackListInfo black = getBlackListFroNum(number);
                     if (black != null) {
-                        filterType = black.getLocHandlerType();
+                        filterType = black.markType;
                     }
                     Bitmap icon = getBlackIcon(number);
                     int filterNumber = -1;
@@ -882,7 +556,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 values.put(CallFilterConstants.FIL_DET_READ_STATE, isRead);
             }
             try {
-                String table = CallFilterConstants.FILTER_DETAIL_TAB;
+                String table = CallFilterConstants.TAB_FILTER_DETAIL;
                 String colum1 = CallFilterConstants.FIL_DET_PHONE_NUMBER;
                 String colum2 = CallFilterConstants.FIL_DET_DATE;
 
@@ -1055,7 +729,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
                 }
                 values.put(CallFilterConstants.STR_TP_TYPE, tipType);
 
-                String table = CallFilterConstants.STRANGER_TP_TAB;
+                String table = CallFilterConstants.TAB_STRANGER_TP;
                 String colum = CallFilterConstants.STR_TP_NUM;
 
                 boolean isKeyExist = CallFilterUtils.isDbKeyExist(table, new String[]{colum}, number);
@@ -1154,35 +828,39 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     @Override
     public BlackListInfo getSerBlackForNum(String number) {
         if (TextUtils.isEmpty(number)) {
+            LeoLog.d(TAG, "getSerBlackForNum, number is null.");
             return null;
         }
-        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        String numSelcts = null;
-        String selArgs = null;
-        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-            number = PrivacyContactUtils.formatePhoneNumber(number);
-            numSelcts = " LIKE ? ";
-            selArgs = "%" + number;
-        } else {
-            numSelcts = " = ? ";
-            selArgs = number;
+        String simpleNumber = PrivacyContactUtils.formatePhoneNumber(number);
+        List<String> serverList = BlacklistTab.getInstance().getServerNumberList();
+        if (serverList == null || serverList.isEmpty()) {
+            return null;
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts);
-        String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD), selArgs};
-        List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
-        if (infos != null && infos.size() > 0) {
-            for (BlackListInfo info : infos) {
-                if (info.getNumber().contains(formateNum)) {
-                    return info;
-                }
+
+        String savedNumber = null;
+        for (String serverNumber : serverList) {
+            if (TextUtils.isEmpty(serverNumber)) {
+                continue;
             }
+            if (!serverNumber.endsWith(simpleNumber)) {
+                continue;
+            }
+
+            savedNumber = serverNumber;
+            break;
         }
-        return null;
+        if (savedNumber == null) {
+            LeoLog.d(TAG, "getSerBlackForNum, savedNumber is null.");
+            return null;
+        }
+        String encryptedNumber = null;
+        try {
+            encryptedNumber = CryptoUtils.encrypt(savedNumber);
+        } catch (Exception e) {
+            LeoLog.e(TAG, "getSerBlackForNum, encrypt number ex." + e.toString());
+            return null;
+        }
+        return BlacklistTab.getInstance().getServerBlackInfo(encryptedNumber);
     }
 
     @Override
@@ -1201,9 +879,9 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         int markType = -1;
         BlackListInfo blacks = getSerBlackForNum(number);
         if (blacks != null) {
-            addBlackCount = blacks.getAddBlackNumber();
-            markCount = blacks.getMarkerNumber();
-            markType = blacks.getMarkerType();
+            addBlackCount = blacks.blackNum;
+            markCount = blacks.markNum;
+            markType = blacks.markType;
         } else {
             return null;
         }
@@ -1288,137 +966,16 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
     }
 
     @Override
-    public List<BlackListInfo> getServerBlackList() {
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? ");
-        String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.NO_LOC_HD)};
-        return CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
-    }
-
-    @Override
-    public boolean addSerBlackList(List<BlackListInfo> infos) {
-        if (infos == null || infos.size() <= 0) {
-            return false;
-        }
-
-//        ContentValues[] values = null;
-//        if (infos.size() > 1) {
-//            values = new ContentValues[infos.size()];
-//        }
-        Cursor cur = null;
-        ContentResolver cr = mContext.getContentResolver();
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        int i = 0;
-        for (BlackListInfo info : infos) {
-            if (TextUtils.isEmpty(info.getNumber())) {
-                continue;
-            }
-            String name = info.getNumberName();
-            String number = PrivacyContactUtils.simpleFromateNumber(info.getNumber());
-            boolean isContactUse = CallFilterUtils.isNumberUsePrivacy(number);
-            if (isContactUse) {
-                continue;
-            }
-            int addBlackNumber = info.getAddBlackNumber();
-            int markerType = info.getMarkerType();
-            int markerNum = info.getMarkerNumber();
-
-            ContentValues value = new ContentValues();
-            if (!TextUtils.isEmpty(name)) {
-                value.put(CallFilterConstants.BLACK_NAME, name);
-            }
-            if (!TextUtils.isEmpty(number)) {
-                value.put(CallFilterConstants.BLACK_PHONE_NUMBER, number);
-            }
-            value.put(CallFilterConstants.BLACK_ADD_NUMBER, addBlackNumber);
-            value.put(CallFilterConstants.MARKER_TYPE, markerType);
-            value.put(CallFilterConstants.MARKER_NUMBER, markerNum);
-
-            try {
-                String table = CallFilterConstants.BLACK_LIST_TAB;
-                String colum = CallFilterConstants.BLACK_PHONE_NUMBER;
-                String removeColum = CallFilterConstants.BLACK_REMOVE_STATE;
-                cur = CallFilterUtils.getCursor(table, new String[]{colum, removeColum}, number);
-                if (cur != null && cur.getCount() > 0) {
-                    while (cur.moveToNext()) {
-                        int remove = cur.getInt(cur.getColumnIndex(removeColum));
-                        if (CallFilterConstants.REMOVE == remove) {
-                            value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
-                        }
-                        String numSelcts = null;
-                        String selArgs = null;
-                        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-                            number = PrivacyContactUtils.formatePhoneNumber(number);
-                            numSelcts = " LIKE ? ";
-                            selArgs = "%" + number;
-                        } else {
-                            numSelcts = " = ? ";
-                            selArgs = number;
-                        }
-                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                        String where = CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts;
-                        String[] selectArgs = new String[]{String.valueOf(selArgs)};
-                        cr.update(CallFilterConstants.BLACK_LIST_URI, value, where, selectArgs);
-                    }
-                } else {
-                    value.put(CallFilterConstants.BLACK_LOC_HD, CallFilterConstants.NO_LOC_HD);
-
-//                    if (values != null) {
-//                        values[i] = value;
-//                        i = i + 1;
-//                    } else {
-                    cr.insert(uri, value);
-//                    }
-                }
-            } catch (Exception e) {
-                LeoLog.e(TAG, "number: " + number, e);
-            } finally {
-                IoUtils.closeSilently(cur);
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean removeSerBlackList(List<BlackListInfo> infos) {
-
-        return false;
-    }
-
-    @Override
-    public List<BlackListInfo> getSerBlackListFroNum(String number) {
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        String numSelcts = null;
-        String selArgs = null;
-        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-            number = PrivacyContactUtils.formatePhoneNumber(number);
-            numSelcts = " LIKE ? ";
-            selArgs = "%" + number;
-        } else {
-            numSelcts = " = ? ";
-            selArgs = number;
-        }
-//        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts + "and ");
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? ");
-        String selects = sb.toString();
-        String[] selectArgs = new String[]{selArgs, String.valueOf(CallFilterConstants.NO_LOC_HD)};
-        return CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
+    public BlackListInfo getSerBlackListFroNum(String number) {
+        return BlacklistTab.getInstance().getServerBlackInfo(number);
     }
 
     @Override
     public int getSerBlackNumFroNum(String number) {
-        List<BlackListInfo> infos = getSerBlackListFroNum(number);
+        BlackListInfo info = getSerBlackListFroNum(number);
         int addBlackNum = 0;
-        for (BlackListInfo info : infos) {
-            addBlackNum = info.getAddBlackNumber();
-            break;
+        if (info != null) {
+            addBlackNum = info.blackNum;
         }
         int params = getBlackMarkTipParam();
         return addBlackNum * params;
@@ -1426,11 +983,10 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public int getSerMarkerNumFroNum(String number) {
-        List<BlackListInfo> infos = getSerBlackListFroNum(number);
+        BlackListInfo info = getSerBlackListFroNum(number);
         int addMarkerNum = 0;
-        for (BlackListInfo info : infos) {
-            addMarkerNum = info.getMarkerNumber();
-            break;
+        if (info != null) {
+            addMarkerNum = info.markNum;
         }
         int params = getBlackMarkTipParam();
         return addMarkerNum * params;
@@ -1508,40 +1064,7 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
 
     @Override
     public BlackListInfo getBlackFroNum(String number) {
-        if (TextUtils.isEmpty(number)) {
-            return null;
-        }
-        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
-
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        String sortOrder = CallFilterConstants.BLACK_ID + " " + CallFilterConstants.DESC;
-        String numSelcts = null;
-        String selArgs = null;
-        if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
-            number = PrivacyContactUtils.formatePhoneNumber(number);
-            numSelcts = " LIKE ? ";
-            selArgs = "%" + number;
-        } else {
-            numSelcts = " = ? ";
-            selArgs = number;
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_PHONE_NUMBER + numSelcts);
-        String selects = sb.toString();
-        String[] selectArgs = new String[]{String.valueOf(CallFilterConstants.LOC_HD),
-                String.valueOf(CallFilterConstants.REMOVE_NO), selArgs};
-        List<BlackListInfo> infos = CallFilterUtils.getBlackList(uri, null, selects, selectArgs, sortOrder);
-        if (infos != null && infos.size() > 0) {
-            for (BlackListInfo info : infos) {
-                if (info.getNumber().contains(formateNum)) {
-                    LeoLog.d(TAG,"number get black info :"+info.getRemoveState());
-                    return info;
-                }
-            }
-        }
-        return null;
+        return BlacklistTab.getInstance().getBlackInfoByNumber(number);
     }
 
     @Override
@@ -1551,44 +1074,55 @@ public class CallFilterContextManagerImpl extends CallFilterContextManager {
         }
         BlackListInfo info = getBlackFroNum(number);
         if (info != null) {
-            Bitmap icon = info.getIcon();
-            if (icon != null) {
-                return icon;
-            }
+            return info.icon;
         }
         return null;
     }
 
     @Override
     public List<BlackListInfo> getUpBlackListLimit(int page) {
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
         StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ?");
+        sb.append(CallFilterConstants.COL_BLACK_UPLOAD_STATE + " = ? and ");
+        sb.append(CallFilterConstants.COL_BLACK_REMOVE_STATE + " = ?");
         String selection = sb.toString();
-        String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD),
-                String.valueOf(CallFilterConstants.LOC_HD), String.valueOf(CallFilterConstants.REMOVE_NO)};
+        String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD), String.valueOf(CallFilterConstants.REMOVE_NO)};
         int pageSize = PAGE_SIZE;
-        int currentOffset = (page - 1) * PAGE_SIZE;
         StringBuilder sbOr = new StringBuilder();
-        sbOr.append(CallFilterConstants.BLACK_ID);
+        sbOr.append(CallFilterConstants.COL_BLACK_ID);
         sbOr.append(" " + CallFilterConstants.DESC);
-        sbOr.append(" limit  " + pageSize + " offset " + currentOffset);
+        sbOr.append(" limit  " + pageSize);
         String sortOrder = sbOr.toString();
-        return CallFilterUtils.getNoUpBlack(uri, selection, selectionArgs, sortOrder);
+        return BlacklistTab.getInstance().getBlackList(selection, selectionArgs, sortOrder);
+    }
+
+//    @Override
+//    public List<BlackListInfo> getUploadBlackList() {
+//        Uri uri = CallFilterConstants.BLACK_LIST_URI;
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(CallFilterConstants.COL_BLACK_UPLOAD_STATE + " = ? and ");
+//        sb.append(CallFilterConstants.COL_BLACK_REMOVE_STATE + " = ?");
+//        String selection = sb.toString();
+//        String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD), String.valueOf(CallFilterConstants.REMOVE_NO)};
+//
+//        return BlacklistTab.getInstance().getBlackList(selection, selectionArgs, null);
+//    }
+
+    @Override
+    public void markBlackInfo(BlackListInfo info, int markType) {
+        if (info == null || markType == CallFilterConstants.MK_BLACK_LIST) {
+            return;
+        }
+
+        BlacklistTab.getInstance().updateMarkType(info, markType);
     }
 
     @Override
-    public List<BlackListInfo> getUploadBlackList() {
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
-        StringBuilder sb = new StringBuilder();
-        sb.append(CallFilterConstants.BLACK_UPLOAD_STATE + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_LOC_HD + " = ? and ");
-        sb.append(CallFilterConstants.BLACK_REMOVE_STATE + " = ?");
-        String selection = sb.toString();
-        String[] selectionArgs = new String[]{String.valueOf(CallFilterConstants.UPLOAD),
-                String.valueOf(CallFilterConstants.LOC_HD), String.valueOf(CallFilterConstants.REMOVE_NO)};
-        return CallFilterUtils.getNoUpBlack(uri, selection, selectionArgs, null);
+    public void interceptCall(BlackListInfo info) {
+        if (info == null) {
+            return;
+        }
+
+        info.filtUpState = CallFilterConstants.FIL_UP;
+        BlacklistTab.getInstance().updateIntercept(info);
     }
 }

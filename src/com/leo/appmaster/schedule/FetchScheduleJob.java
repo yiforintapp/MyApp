@@ -113,7 +113,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         if (lastTime <= 0 || AppMasterApplication.isAppUpgrade()) {
             // 两种情况会直接开始执行：1、之前未加载过，2、升级
             LeoLog.i(getJobKey(), "Haven't worked before, start work.");
-            ThreadManager.executeOnAsyncThread(new Runnable() {
+            ThreadManager.executeOnNetworkThread(new Runnable() {
                 @Override
                 public void run() {
                     work();
@@ -153,7 +153,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         long lastTime = pref.getScheduleTime(getJobTimeKey());
         long goesBy = System.currentTimeMillis() - lastTime;
         if (goesBy >= period) {
-            ThreadManager.executeOnAsyncThread(new Runnable() {
+            ThreadManager.executeOnNetworkThread(new Runnable() {
                 @Override
                 public void run() {
                     work();

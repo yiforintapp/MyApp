@@ -303,13 +303,6 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract void setFilterUserNumber(int number);
 
     /**
-     * 后台下发黑名单列表(本地未添加处理的黑名单)
-     *
-     * @return
-     */
-    public abstract List<BlackListInfo> getServerBlackList();
-
-    /**
      * 骚扰拦截显示提示框：通过指定用户量参数值对比显示
      *
      * @return
@@ -324,27 +317,11 @@ public abstract class CallFilterContextManager extends Manager {
     public abstract void setFilterTipFroUser(int number);
 
     /**
-     * 添加服务器下发黑名单
-     *
-     * @param infos
-     * @return
-     */
-    public abstract boolean addSerBlackList(List<BlackListInfo> infos);
-
-    /**
-     * 删除服务器下发黑名单
-     *
-     * @param infos
-     * @return
-     */
-    public abstract boolean removeSerBlackList(List<BlackListInfo> infos);
-
-    /**
      * 通过指定的号码，查询服务器下发黑名单
      *
      * @return
      */
-    public abstract List<BlackListInfo> getSerBlackListFroNum(String number);
+    public abstract BlackListInfo getSerBlackListFroNum(String number);
 
     /**
      * 通过指定的号码，查询服务器下发黑名单人数
@@ -443,10 +420,18 @@ public abstract class CallFilterContextManager extends Manager {
      */
     public abstract List<BlackListInfo> getUpBlackListLimit(int page);
 
+//    /**
+//     * 查询为上传到服务器的黑名单列表
+//     *
+//     * @return
+//     */
+//    public abstract List<BlackListInfo> getUploadBlackList();
+
     /**
-     * 查询为上传到服务器的黑名单列表
-     *
-     * @return
+     * 标记黑名单
      */
-    public abstract List<BlackListInfo> getUploadBlackList();
+    public abstract void markBlackInfo(BlackListInfo info, int markType);
+
+    public abstract void interceptCall(BlackListInfo info);
+
 }

@@ -508,9 +508,9 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                     boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
                                     if (!isHaveBlackNum) {
                                         BlackListInfo info = new BlackListInfo();
-                                        info.setNumberName(name);
-                                        info.setNumber(number);
-                                        info.setIcon(message.getContactIcon());
+                                        info.name = name;
+                                        info.number = number;
+                                        info.icon = message.getContactIcon();
                                         blackList.add(info);
                                     }
                                 }

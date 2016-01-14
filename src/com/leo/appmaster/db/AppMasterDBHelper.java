@@ -12,7 +12,8 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "appmaster.db";
     // 3.2 -> 9
-    public static final int DB_VERSION = 9;
+    // 3.3 -> 10
+    public static final int DB_VERSION = 10;
 
     private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
             + Constants.TABLE_DOWNLOAD
@@ -159,7 +160,8 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
             "com.leo.appmaster.db.IntruderPhotoTable",
             "com.leo.appmaster.db.PreferenceTable",
             "com.leo.appmaster.db.InstalledAppTable",
-            "com.leo.appmaster.db.LockRecommentTable"
+            "com.leo.appmaster.db.LockRecommentTable",
+            "com.leo.appmaster.db.BlacklistTab"
     };
 
     private static AppMasterDBHelper sInstance;
@@ -245,12 +247,9 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     /*骚扰拦截*/
     private void execSQLForFilter(SQLiteDatabase db) {
-        db.execSQL(CallFilterConstants.CREATE_BLACK_LIST_TAB);
         db.execSQL(CallFilterConstants.CREATE_FILTER_GR_TAB);
         db.execSQL(CallFilterConstants.CREATE_FILTER_DET_TAB);
         db.execSQL(CallFilterConstants.CREATE_STRANGER_TP_TAB);
-
-        db.execSQL("CREATE INDEX IF NOT EXISTS phone_idx on black_list(phone_number);");
     }
 
     @Override

@@ -80,9 +80,9 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                 }
             } else {
                 String string;
-                if (mark == CallFilterConstants.FILTER_CALL_TYPE) {
+                if (mark == CallFilterConstants.MK_CRANK) {
                     string = this.getString(R.string.filter_number_type_saorao);
-                } else if (mark == CallFilterConstants.AD_SALE_TYPE) {
+                } else if (mark == CallFilterConstants.MK_ADVERTISE) {
                     string = this.getString(R.string.filter_number_type_ad);
                 } else {
                     string = this.getString(R.string.filter_number_type_zhapian);
@@ -233,31 +233,32 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                     mTvTitleName.setVisibility(View.VISIBLE);
                 }
 
-                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+//                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                 BlackListInfo newInfo = new BlackListInfo();
-                newInfo.setNumber(info.getNumber());
+                newInfo.number = info.number;
 
                 if (position == 0) {
-                    info.setFilterType(CallFilterConstants.FILTER_CALL_TYPE);
-                    newInfo.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+                    info.setFilterType(CallFilterConstants.MK_CRANK);
+                    newInfo.markType = CallFilterConstants.MK_CRANK;
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_saorao);
                 } else if (position == 1) {
-                    info.setFilterType(CallFilterConstants.AD_SALE_TYPE);
-                    newInfo.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                    info.setFilterType(CallFilterConstants.MK_ADVERTISE);
+                    newInfo.markType = CallFilterConstants.MK_ADVERTISE;
                     string = CallFilterRecordActivity.this.
                             getString(R.string.filter_number_type_ad);
                 } else if (position == 2) {
-                    info.setFilterType(CallFilterConstants.CHEAT_NUM_TYPE);
-                    newInfo.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
-                    string = CallFilterRecordActivity.this.
-                            getString(R.string.filter_number_type_zhapian);
+                    info.setFilterType(CallFilterConstants.MK_FRAUD);
+                    newInfo.markType = CallFilterConstants.MK_FRAUD;
+                    string = CallFilterRecordActivity.this.getString(R.string.filter_number_type_zhapian);
                 }
                 mTvTitleName.setText(string);
                 mMark.setVisibility(View.GONE);
 
-                list.add(newInfo);
-                mCallManger.addBlackList(list, true);
+//                list.add(newInfo);
+                mCallManger.markBlackInfo(newInfo, newInfo.markType);
+//                mCallManger.addBlackList(list, true);
+
                 try {
                     dialog.dismiss();
                 } catch (Exception e) {
@@ -276,7 +277,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                                             BlackListInfo blacklistInfo = new BlackListInfo();
-                                            blacklistInfo.setNumber(info.getNumber());
+                                            blacklistInfo.number = info.number;
                                             list.add(blacklistInfo);
                                             mCallManger.removeBlackList(list);
                                             boolean restrLog = mDialog.getCheckBoxState();

@@ -1,15 +1,13 @@
 package com.leo.appmaster.callfilter;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -17,7 +15,14 @@ import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by qili on 15-10-10.
@@ -103,9 +108,9 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
                 holder.desc.setText(number);
             } else {
                 String string;
-                if (filterType == CallFilterConstants.FILTER_CALL_TYPE) {
+                if (filterType == CallFilterConstants.MK_CRANK) {
                     string = mContext.getString(R.string.filter_number_type_saorao);
-                } else if (filterType == CallFilterConstants.AD_SALE_TYPE) {
+                } else if (filterType == CallFilterConstants.MK_ADVERTISE) {
                     string = mContext.getString(R.string.filter_number_type_ad);
                 } else {
                     string = mContext.getString(R.string.filter_number_type_zhapian);

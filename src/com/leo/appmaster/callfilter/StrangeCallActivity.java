@@ -542,8 +542,8 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                         if (!isHaveBlackNum) {
 
                                             BlackListInfo info = new BlackListInfo();
-                                            info.setNumberName(name);
-                                            info.setNumber(number);
+                                            info.name = name;
+                                            info.number = number;
                                             blackList.add(info);
 
                                         }
@@ -665,7 +665,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         List<String> numbers = new ArrayList<String>();
         List<ContactCallLog> toRemove = new ArrayList<ContactCallLog>();
         for (int i = 0; i < blackList.size(); i++) {
-            numbers.add(blackList.get(i).getNumber());
+            numbers.add(blackList.get(i).number);
             LeoLog.i(TAG, "numbers " + i + " : " + numbers.get(numbers.size() - 1));
         }
         for (int i = 0; i < mCallLogList.size(); i++) {
@@ -707,7 +707,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                 if (info != null) {
                                     int[] type = cmp.isCallFilterTip(call.getCallLogNumber());
                                     if (type[0] != CallFilterConstants.IS_TIP_DIA[0]) {
-                                        int addToBlackNum = info.getAddBlackNumber();
+                                        int addToBlackNum = info.blackNum;
                                         // LeoLog.d("testAddBlack", "addToBlackNum:" + addToBlackNum);
                                         if (addToBlackNum > 0) {
                                             call.setAddBlackNumber(addToBlackNum);

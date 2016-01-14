@@ -10,6 +10,7 @@ import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.CallFilterUtils;
+import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
@@ -21,6 +22,7 @@ import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -46,7 +48,6 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     private static final int FETCH_PERIOD = 24 * 60 * 60 * 1000;
     private static List<BlackListInfo> mInfos;
     private static List<BlackListInfo> mFilUpInfos;
-
 
     /**
      * 直接请求
@@ -84,29 +85,26 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
-
-        CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        List<BlackListInfo> blacks = new ArrayList<BlackListInfo>();
-        if (mInfos != null && mInfos.size() > 0) {
+        if (mInfos != null) {
             for (BlackListInfo info : mInfos) {
-                info.setUploadState(CallFilterConstants.UPLOAD);
-                blacks.add(info);
+                if (info == null) {
+                    continue;
+                }
+                info.uploadState = CallFilterConstants.UPLOAD;
             }
+            BlacklistTab.getInstance().updateUploadState(mInfos);
             mInfos.clear();
-            mInfos = null;
         }
-        cmp.addBlackList(blacks, true);
 
-        if (mFilUpInfos != null && mFilUpInfos.size() > 0) {
+        if (mFilUpInfos != null) {
             for (BlackListInfo info : mFilUpInfos) {
-                BlackListInfo black = new BlackListInfo();
-                black.setNumber(info.getNumber());
-                black.setFiltUpState(CallFilterConstants.FIL_UP_NO);
-                Context context = AppMasterApplication.getInstance();
-                CallFilterManager.getInstance(context).updateUpBlack(black);
+                if (info == null) {
+                    continue;
+                }
+                info.filtUpState = CallFilterConstants.FIL_UP_NO;
             }
+            BlacklistTab.getInstance().updateIntercept(mFilUpInfos);
             mFilUpInfos.clear();
-            mFilUpInfos = null;
         }
 
     }
@@ -137,13 +135,15 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
             if (mFilUpInfos == null) {
                 mFilUpInfos = new ArrayList<BlackListInfo>();
             }
+            mInfos.clear();
+            mFilUpInfos.clear();
             int i = 1;
             //已上传的拦截名单
             List<BlackListInfo> filInfos = pm.getUpBlackListLimit(i);
             List<BlackListInfo> tmpFilInfos = new ArrayList<BlackListInfo>();
             if (filInfos != null && filInfos.size() > 0) {
                 for (BlackListInfo info : filInfos) {
-                    if (info.getFiltUpState() == CallFilterConstants.FIL_UP) {
+                    if (info.filtUpState == CallFilterConstants.FIL_UP) {
                         tmpFilInfos.add(info);
                     }
                 }
@@ -162,76 +162,51 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
                 return;
             }
             String bodyString = getJsonString(infos);
-            HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
+            if (!TextUtils.isEmpty(bodyString)) {
+                HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
+            }
         }
     }
 
     public static String getJsonString(List<BlackListInfo> infos) {
         if (infos == null || infos.size() <= 0) {
-            return "";
+            return null;
         }
 
         Context context = AppMasterApplication.getInstance();
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (int i = 1; i <= infos.size(); i++) {
-            int type = 0;
-            if (infos.get(i - 1).getFiltUpState() == CallFilterConstants.FIL_UP) {
-                type = -1;
-            } else {
-                type = infos.get(i - 1).getLocHandlerType();
-            }
-            sb.append("{");
-            sb.append("\"" + NUMBER + "\":");
-            String number = infos.get(i - 1).getNumber();
-            sb.append("\"" + number + "\",");
-            sb.append("\"" + COUNTRY + "\":");
-            sb.append("\"" + Utilities.getCountryID(context) + "\",");
-            sb.append("\"" + TYPE + "\":");
-            sb.append(type + ",");
-            sb.append("\"" + ANDROID_ID + "\":");
-            sb.append("\"" + DeviceUtil.getAndroidId(context) + "\"");
-            sb.append("}");
-            if (i != infos.size()) {
-                sb.append(",");
+
+        JSONArray array = new JSONArray();
+        int type = 0;
+        for (BlackListInfo info : infos) {
+            JSONObject object = new JSONObject();
+            try {
+                object.put(NUMBER, info.number);
+                if (info.filtUpState == CallFilterConstants.FIL_UP) {
+                    type = -1;
+                } else {
+                    type = info.markType;
+                }
+                object.put(TYPE, type);
+                object.put(COUNTRY, Utilities.getCountryID(context));
+                object.put(ANDROID_ID, DeviceUtil.getAndroidId(context));
+
+                array.put(object);
+            } catch (JSONException e) {
+                LeoLog.e(TAG, "getJsonString object put ex.");
             }
         }
-        sb.append("]");
-        LeoLog.i(TAG, "" + sb.toString());
-        return sb.toString();
+        String result = null;
+        if (array.length() > 0) {
+            result = array.toString();
+        }
+        LeoLog.i(TAG, "getJsonString, result: " + result);
+
+        return result;
     }
 
     @Override
     protected int getPeriod() {
         return FETCH_PERIOD;
-    }
-
-    public static void filterUpload(String number) {
-        if (TextUtils.isEmpty(number)) {
-            return;
-        }
-        CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        List<BlackListInfo> blacks = cmp.getNoUploadBlackList();
-        String formateNum = PrivacyContactUtils.formatePhoneNumber(number);
-        for (BlackListInfo info : blacks) {
-            if (info.getNumber().contains(formateNum)) {
-                BlackUploadFetchJob job = new BlackUploadFetchJob();
-                FetchScheduleListener listener = job.newJsonObjListener();
-                Context context = AppMasterApplication.getInstance();
-                CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
-                BlackListInfo black = new BlackListInfo();
-                black.setNumber(info.getNumber());
-                black.setLocHandlerType(-1);
-                infos.add(black);
-                String bodyString = getJsonString(infos);
-
-                HttpRequestAgent.getInstance(context).commitBlackList(listener, listener, bodyString);
-
-                break;
-            }
-
-        }
     }
 
     @Override

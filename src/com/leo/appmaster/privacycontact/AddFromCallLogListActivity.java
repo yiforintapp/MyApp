@@ -453,9 +453,9 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                     boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
                                     if (!isHaveBlackNum) {
                                         BlackListInfo info = new BlackListInfo();
-                                        info.setNumberName(name);
-                                        info.setNumber(number);
-                                        info.setIcon(contact.getContactIcon());
+                                        info.name = name;
+                                        info.number = number;
+                                        info.icon = contact.getContactIcon();
                                         blackList.add(info);
                                     }
                                 }
@@ -465,8 +465,6 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
                                     CallFilterManager cm = CallFilterManager.getInstance(AddFromCallLogListActivity.this);
                                     cm.addBlackFailTip();
                                 }
-
-                                mCallManger.addBlackList(blackList, false);
                                 //cancel Process Dialog
                                 Message messge = new Message();
                                 count = count + 1;

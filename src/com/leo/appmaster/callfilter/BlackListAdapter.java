@@ -80,8 +80,8 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         }
 
         BlackListInfo info = mList.get(i);
-        String numberName = info.getNumberName();
-        String number = info.getNumber();
+        String numberName = info.name;
+        String number = info.number;
 
         if (!Utilities.isEmpty(numberName) && !numberName.equals("null")) {
             holder.title.setText(numberName);
@@ -93,8 +93,8 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
         }
 
         holder.clickView.setOnClickListener(BlackListAdapter.this);
-        if (info.getIcon() != null) {
-            holder.imageView.setImageBitmap(info.getIcon());
+        if (info.icon != null) {
+            holder.imageView.setImageBitmap(info.icon);
         } else {
             holder.imageView.setImageResource(R.drawable.default_user_avatar);
         }
@@ -137,7 +137,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
 //                        public void run() {
                     CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
-                    List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
+                    List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.number);
                     if (infos != null && infos.size() > 0) {
                         for (CallFilterInfo CallInfo : infos) {
                             cmp.insertCallToSys(CallInfo);
@@ -154,13 +154,13 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
                     public void run() {
                         List<CallFilterInfo> removeFilterList = new ArrayList<CallFilterInfo>();
                         CallFilterInfo callFil = new CallFilterInfo();
-                        callFil.setNumber(info.getNumber());
+                        callFil.setNumber(info.number);
                         removeFilterList.add(callFil);
                         mCallManger.removeFilterGr(removeFilterList);
                         int id = EventId.EVENT_LOAD_FIL_GR_ID;
                         String msg = CallFilterConstants.EVENT_MSG_REM_BLK_FIL_GR;
                         CommonEvent event = new CommonEvent(id, msg);
-                        event.setDate(info.getNumber());
+                        event.setDate(info.number);
                         LeoEventBus.getDefaultBus().post(event);
                     }
                 });

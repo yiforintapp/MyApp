@@ -15,8 +15,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.db.AppMasterProvider;
-import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.imageloader.utils.IoUtils;
 
 /**
@@ -60,54 +58,6 @@ public class DebugActivity extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 }
                 mDecryptMsgTv.setText(text);
-                break;
-            case R.id.insert_data:
-                /*新增操作*/
-                value.put(CallFilterConstants.BLACK_LOC_HD, 1);
-                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, 1);
-                value.put(CallFilterConstants.BLACK_REMOVE_STATE, 1);
-                value.put(CallFilterConstants.BLACK_READ_STATE, 1);
-                value.put(CallFilterConstants.BLACK_FIL_UP, 1);
-                value.put(CallFilterConstants.BLACK_PHONE_NUMBER, "123");
-                cr.insert(uri, value);
-                break;
-            case R.id.update_data:
-                value.put(AppMasterProvider.SQL_INSERT_OR_REPLACE, true);
-                value.put(CallFilterConstants.BLACK_LOC_HD, 2);
-                value.put(CallFilterConstants.BLACK_UPLOAD_STATE, 2);
-                value.put(CallFilterConstants.BLACK_PHONE_NUMBER, "123");
-                cr.insert(uri, value);
-                break;
-            case R.id.query_data:
-                Cursor cursor = null;
-                try {
-                    cursor = cr.query(uri, null, null, null, null);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    if (cursor != null && cursor.getCount() > 0) {
-                        cursor.moveToFirst();
-                        do {
-                            stringBuilder.append(cursor.getInt(cursor.getColumnIndex(CallFilterConstants.BLACK_LOC_HD)))
-                                    .append("\n");
-                            stringBuilder.append(cursor.getInt(cursor.getColumnIndex(CallFilterConstants.BLACK_UPLOAD_STATE)))
-                                    .append("\n");
-                            stringBuilder.append(cursor.getInt(cursor.getColumnIndex(CallFilterConstants.BLACK_REMOVE_STATE)))
-                                    .append("\n");
-                            stringBuilder.append(cursor.getInt(cursor.getColumnIndex(CallFilterConstants.BLACK_READ_STATE)))
-                                    .append("\n");
-                            stringBuilder.append(cursor.getInt(cursor.getColumnIndex(CallFilterConstants.BLACK_FIL_UP)))
-                                    .append("\n");
-                            stringBuilder.append(cursor.getString(cursor.getColumnIndex(CallFilterConstants.BLACK_PHONE_NUMBER)))
-                                    .append("\n");
-                        } while (cursor.moveToNext());
-                    } else {
-                        stringBuilder.append("null");
-                    }
-                    mDecryptMsgTv.setText(stringBuilder.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    IoUtils.closeSilently(cursor);
-                }
                 break;
         }
     }

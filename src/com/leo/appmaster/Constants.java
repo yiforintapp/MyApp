@@ -458,7 +458,7 @@ public class Constants {
 
     public static final String PATTERN_DATE = "yyyy/MM/dd HH:mm:ss";
 
-    public static final String PG_DB_PATH = "data/data/com.leo.appmaster/databases/" + DATABASE_NAME;
+    public static final String PG_DB_PATH = "/data/data/com.leo.appmaster/databases/" + DATABASE_NAME;
 
 
     /**

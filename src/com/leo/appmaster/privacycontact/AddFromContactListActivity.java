@@ -488,10 +488,10 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     boolean isHaveBlackNum = mCallManger.isExistBlackList(number);
                                     if (!isHaveBlackNum) {
                                         BlackListInfo info = new BlackListInfo();
-                                        info.setNumberName(name);
-                                        info.setNumber(number);
+                                        info.name = name;
+                                        info.number = number;
                                         if (icon != null) {
-                                            info.setIcon(icon);
+                                            info.icon = icon;
                                         }
                                         blackList.add(info);
 
@@ -503,7 +503,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     CallFilterManager cm = CallFilterManager.getInstance(AddFromContactListActivity.this);
                                     cm.addBlackFailTip();
                                 }
-                                mCallManger.addBlackList(blackList, false);
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;

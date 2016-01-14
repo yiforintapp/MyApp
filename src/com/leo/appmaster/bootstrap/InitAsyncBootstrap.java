@@ -9,6 +9,7 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.MgrContext;
@@ -67,6 +68,8 @@ public class InitAsyncBootstrap extends Bootstrap {
         PrivacyContactManager.getInstance(mApp).getPrivateContacts();
 
         MgrContext.getManager(MgrContext.MGR_BATTERY);
+
+        BlacklistTab.getInstance().initEncryptList();
 
         return true;
     }

@@ -25,92 +25,80 @@ public class CallFilterConstants {
     public final static String DESC = "desc";
 
     /*黑名单表名*/
-    public static final String BLACK_LIST_TAB = "black_list";
+    public static final String TAB_BLACK_LIST = "black_list";
+    public static final String TAB_SERVER_BLACK_LIST = "server_black_list";
     /*拦截分组表*/
-    public static final String FILTER_GROUP_TAB = "filter_group";
+    public static final String TAB_FILTER_GROUP = "filter_group";
     /*拦截详细表*/
-    public static final String FILTER_DETAIL_TAB = "filter_detail";
+    public static final String TAB_FILTER_DETAIL = "filter_detail";
     /*陌生人提示标记表*/
-    public static final String STRANGER_TP_TAB = "stranger_tp";
+    public static final String TAB_STRANGER_TP = "stranger_tp";
 
     public static final Uri BLACK_LIST_URI = Uri.parse("content://" + Constants.AUTHORITY
-            + "/" + BLACK_LIST_TAB);
+            + "/" + TAB_BLACK_LIST);
     public static final Uri FILTER_GROUP_URI = Uri.parse("content://" + Constants.AUTHORITY
-            + "/" + FILTER_GROUP_TAB);
+            + "/" + TAB_FILTER_GROUP);
     public static final Uri FILTER_DETAIL_URI = Uri.parse("content://" + Constants.AUTHORITY
-            + "/" + FILTER_DETAIL_TAB);
+            + "/" + TAB_FILTER_DETAIL);
     public static final Uri STRANGER_TP_URI = Uri.parse("content://" + Constants.AUTHORITY
-            + "/" + STRANGER_TP_TAB);
+            + "/" + TAB_STRANGER_TP);
 
     /**
      * 创建黑名单表
      */
     /*黑名单表字段*/
-    public static final String BLACK_ID = "_id";
-    public static final String BLACK_NAME = "name";
-    public static final String BLACK_PHONE_NUMBER = "phone_number";
-    public static final String BLACK_ICON = "icon";
-    public static final String BLACK_NUMBER_AREA = "number_area";
-    public static final String BLACK_ADD_NUMBER = "add_number";
-    public static final String MARKER_TYPE = "marker_type";
-    public static final String MARKER_NUMBER = "marker_number";
-    public static final String BLACK_UPLOAD_STATE = "upload_state";
-    public static final String BLACK_READ_STATE = "read_state";
-    public static final String BLACK_REMOVE_STATE = "remove_state";
-    public static final String BLACK_FIL_UP = "BLACK_FIL_UP";
+    public static final String COL_BLACK_ID = "_id";
+    public static final String COL_BLACK_NAME = "name";
+    public static final String COL_BLACK_NUMBER = "phone_number";
+    public static final String COL_BLACK_MARK_TYPE = "mark_type";
+    public static final String COL_BLACK_ICON = "icon";
+    public static final String COL_BLACK_ADD_NUMBER = "add_number";
+    public static final String COL_BLACK_UPLOAD_STATE = "upload_state";
+    public static final String COL_BLACK_REMOVE_STATE = "remove_state";
+    public static final String COL_BLACK_FIL_UP = "black_fil_up";
+    public static final String COL_TIME = "add_blk_time";
+
+    // 服务器表字段
     /**
-     * 本地是否处理
-     * 0：未处理
-     * 1：已处理
+     *  号码
      */
-    public static final String BLACK_LOC_HD = "loc_hd";
+    public static final String COL_SERVER_NUMBER = "phone_number";
     /**
-     * 本地处理类型
-     * 0：黑名单
-     * 1：骚扰电话
-     * 2：广告推销
-     * 3：诈骗电话
+     * 黑名单人数
      */
-    public static final String BLACK_LOC_HD_TYPE = "loc_hd_type";
-    public static final String ADD_BLK_TIME = "add_blk_time";
-    public static final String BLACK_OTHER_FLAG = "other_flag";
+    public static final String COL_SERVER_BLACK_NUM = "black_num";
+    /**
+     * 标记类型
+     */
+    public static final String COL_SERVER_MARK_TYPE = "mark_type";
+    /**
+     * 标记人数
+     */
+    public static final String COL_SERVER_MARK_NUM = "mark_num";
 
     public static final String CREATE_BLACK_LIST_TAB = "CREATE TABLE IF NOT EXISTS "
-            + BLACK_LIST_TAB
+            + TAB_BLACK_LIST
             + " ( "
-            + BLACK_ID
+            + COL_BLACK_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + BLACK_NAME
+            + COL_BLACK_NAME
             + " TEXT,"
-            + BLACK_PHONE_NUMBER
+            + COL_BLACK_NUMBER
             + " TEXT,"
-            + BLACK_ICON
+            + COL_BLACK_ICON
             + " BLOB,"
-            + BLACK_NUMBER_AREA
-            + " TEXT,"
-            + BLACK_ADD_NUMBER
+            + COL_BLACK_ADD_NUMBER
             + " INTEGER,"
-            + MARKER_TYPE
-            + " TEXT,"
-            + MARKER_NUMBER
+            + COL_BLACK_UPLOAD_STATE
             + " INTEGER,"
-            + BLACK_UPLOAD_STATE
+            + COL_BLACK_REMOVE_STATE
             + " INTEGER,"
-            + BLACK_LOC_HD
+            + COL_BLACK_FIL_UP
             + " INTEGER,"
-            + BLACK_LOC_HD_TYPE
+            + COL_BLACK_MARK_TYPE
             + " INTEGER,"
-            + BLACK_READ_STATE
-            + " INTEGER,"
-            + BLACK_REMOVE_STATE
-            + " INTEGER,"
-            + BLACK_FIL_UP
-            + " INTEGER,"
-            +ADD_BLK_TIME
-            + " INTEGER,"
-            + BLACK_OTHER_FLAG
-            + " TEXT"
-            + ");";
+            + COL_TIME
+            + " INTEGER);";
 
     /**
      * 创建拦截分组表
@@ -130,7 +118,7 @@ public class CallFilterConstants {
     public static final String FIL_GR_TYPE = "fil_gr_type";
 
     public static final String CREATE_FILTER_GR_TAB = "CREATE TABLE IF NOT EXISTS "
-            + FILTER_GROUP_TAB
+            + TAB_FILTER_GROUP
             + " ( "
             + FIL_GR_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -176,7 +164,7 @@ public class CallFilterConstants {
     public static final String FIL_DET_TYPE = "fil_det_type";
 
     public static final String CREATE_FILTER_DET_TAB = "CREATE TABLE IF NOT EXISTS "
-            + FILTER_DETAIL_TAB
+            + TAB_FILTER_DETAIL
             + " ( "
             + FIL_DET_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -213,7 +201,7 @@ public class CallFilterConstants {
     public static final String STR_TP_TYPE = "tp_type";
 
     public static final String CREATE_STRANGER_TP_TAB = "CREATE TABLE IF NOT EXISTS "
-            + STRANGER_TP_TAB
+            + TAB_STRANGER_TP
             + " ( "
             + STR_GR_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -227,14 +215,14 @@ public class CallFilterConstants {
             + " INTEGER"
             + ");";
 
-    /*没有标记类型，只是黑名单*/
-    public static final int BLACK_LIST_TYP = 0;
-    /*骚扰电话*/
-    public static final int FILTER_CALL_TYPE = 1;
-    /*诈骗电话*/
-    public static final int CHEAT_NUM_TYPE  = 2;
-    /*广告推销*/
-    public static final int AD_SALE_TYPE = 3;
+    /**没有标记类型，只是黑名单*/
+    public static final int MK_BLACK_LIST = 0;
+    /**骚扰电话*/
+    public static final int MK_CRANK = 1;
+    /**诈骗电话*/
+    public static final int MK_FRAUD = 2;
+    /**广告推销*/
+    public static final int MK_ADVERTISE = 3;
 
     /*黑名单未上传*/
     public static final int UPLOAD_NO = 0;
@@ -263,11 +251,11 @@ public class CallFilterConstants {
     /**
      * 本地已处理
      */
-    public static final int LOC_HD = 1;
+//    public static final int LOC_HD = 1;
     /**
      * 本地未处理
      */
-    public static final int NO_LOC_HD = 0;
+//    public static final int NO_LOC_HD = 0;
 
     /**
      * 弹框类型 ：0,标记;1,黑名单

@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.callfilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +33,9 @@ import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CallFilterFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private static final String TAG = "CallFilterFragment";
@@ -303,6 +303,10 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         return false;
     }
 
+    /**
+     * 标记摊款
+     * @param i
+     */
     private void showChoiseDialog(final int i) {
         String title;
         if (Utilities.isEmpty(mFilterList.get(i).getNumberName())) {
@@ -316,7 +320,6 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
         dialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
                 dialog.setNowItemPosition(position);
 
             }
@@ -328,20 +331,23 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
 
                 CallFilterInfo info = mFilterList.get(i);
 
+                int mkType = CallFilterConstants.MK_BLACK_LIST;
                 if (position == 0) {
-                    info.setFilterType(CallFilterConstants.FILTER_CALL_TYPE);
+                    mkType = CallFilterConstants.MK_CRANK;
                 } else if (position == 1) {
-                    info.setFilterType(CallFilterConstants.AD_SALE_TYPE);
+                    mkType = CallFilterConstants.MK_ADVERTISE;
                 } else if (position == 2) {
-                    info.setFilterType(CallFilterConstants.CHEAT_NUM_TYPE);
+                    mkType = CallFilterConstants.MK_FRAUD;
                 }
+                info.setFilterType(mkType);
 
-                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
+//                List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                 BlackListInfo newInfo = new BlackListInfo();
-                newInfo.setNumber(info.getNumber());
-                newInfo.setLocHandlerType(position + 1);
-                list.add(newInfo);
-                mCallManger.addBlackList(list, true);
+                newInfo.number = info.getNumber();
+                newInfo.markType = mkType;
+//                list.add(newInfo);
+                mCallManger.markBlackInfo(newInfo, newInfo.markType);
+//                mCallManger.addBlackList(list, true);
 
                 mAdapter.notifyDataSetChanged();
                 Toast.makeText(mActivity, R.string.mark_number_from_list, Toast.LENGTH_SHORT).show();
@@ -375,7 +381,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 //remove BlackList
                 List<BlackListInfo> removeBlacklist = new ArrayList<BlackListInfo>();
                 BlackListInfo infoBlack = new BlackListInfo();
-                infoBlack.setNumber(infoFilter.getNumber());
+                infoBlack.number = infoFilter.getNumber();
                 removeBlacklist.add(infoBlack);
                 mCallManger.removeBlackList(removeBlacklist);
 

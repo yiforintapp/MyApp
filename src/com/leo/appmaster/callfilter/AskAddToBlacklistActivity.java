@@ -6,10 +6,11 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.content.DialogInterface.OnClickListener;
+import android.hardware.camera2.dispatch.MethodNameInvoker;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
@@ -142,27 +143,27 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo infot = new BlackListInfo();
+                BlackListInfo info = new BlackListInfo();
                 String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
                 if (!Utilities.isEmpty(name)) {
-                    infot.setNumberName(name);
+                    info.name = name;
                 }
                 int nowItemPosition = mDialogTooShort.getNowItemPosition();
-                infot.setNumber(mPhoneNumber);
+                info.number = mPhoneNumber;
                 switch (nowItemPosition) {
                     case 0:
-                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+                        info.markType = CallFilterConstants.MK_CRANK;
                         break;
                     case 1:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        info.markType = CallFilterConstants.MK_ADVERTISE;
                         break;
                     case 2:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        info.markType = CallFilterConstants.MK_FRAUD;
                         break;
                     default:
                         break;
                 }
-                infost.add(infot);
+                infost.add(info);
                 boolean inerFlag = mCmp.addBlackList(infost, false);
                 if (!inerFlag) {
                     CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
@@ -188,13 +189,13 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         String summaryS = this.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
         String mark = this.getResources().getString(R.string.call_filter_black_list_tab);
         switch (filterTip[3]) {
-            case CallFilterConstants.FILTER_CALL_TYPE:
+            case CallFilterConstants.MK_CRANK:
                 mark = this.getResources().getString(R.string.call_filter_mark_as_sr);
                 break;
-            case CallFilterConstants.AD_SALE_TYPE:
+            case CallFilterConstants.MK_ADVERTISE:
                 mark = this.getResources().getString(R.string.call_filter_mark_as_tx);
                 break;
-            case CallFilterConstants.CHEAT_NUM_TYPE:
+            case CallFilterConstants.MK_FRAUD:
                 mark = this.getResources().getString(R.string.call_filter_mark_as_zp);
                 break;
             default:
@@ -206,28 +207,28 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo infot = new BlackListInfo();
+                BlackListInfo info = new BlackListInfo();
                 String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
                 if (!Utilities.isEmpty(name)) {
-                    infot.setNumberName(name);
+                    info.name = name;
                 }
-                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+                info.markType = CallFilterConstants.MK_BLACK_LIST;
                 int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
-                infot.setNumber(mPhoneNumber);
+                info.number = mPhoneNumber;
                 switch (nowItemPosition) {
                     case 0:
-                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+                        info.markType = CallFilterConstants.MK_CRANK;
                         break;
                     case 1:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        info.markType = CallFilterConstants.MK_ADVERTISE;
                         break;
                     case 2:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        info.markType = CallFilterConstants.MK_FRAUD;
                         break;
                     default:
                         break;
                 }
-                infost.add(infot);
+                infost.add(info);
                 boolean inerFlag = mCmp.addBlackList(infost, false);
                 if (!inerFlag) {
                     CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
@@ -259,28 +260,28 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo infot = new BlackListInfo();
+                BlackListInfo info = new BlackListInfo();
                 String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
                 if (!Utilities.isEmpty(name)) {
-                    infot.setNumberName(name);
+                    info.name = name;
                 }
                 int nowItemPosition = mDialogAskAddWithSmr.getNowItemPosition();
-                infot.setNumber(mPhoneNumber);
-                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
+                info.number = mPhoneNumber;
+                info.markType = CallFilterConstants.MK_BLACK_LIST;
                 switch (nowItemPosition) {
                     case 0:
-                        infot.setLocHandlerType(CallFilterConstants.FILTER_CALL_TYPE);
+                        info.markType = CallFilterConstants.MK_CRANK;
                         break;
                     case 1:
-                        infot.setLocHandlerType(CallFilterConstants.AD_SALE_TYPE);
+                        info.markType = CallFilterConstants.MK_ADVERTISE;
                         break;
                     case 2:
-                        infot.setLocHandlerType(CallFilterConstants.CHEAT_NUM_TYPE);
+                        info.markType = CallFilterConstants.MK_FRAUD;
                         break;
                     default:
                         break;
                 }
-                infost.add(infot);
+                infost.add(info);
                 boolean inerFlag = mCmp.addBlackList(infost, false);
                 if (!inerFlag) {
                     CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
@@ -308,14 +309,14 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo infot = new BlackListInfo();
+                BlackListInfo info = new BlackListInfo();
                 String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
                 if (!Utilities.isEmpty(name)) {
-                    infot.setNumberName(name);
+                    info.name = name;
                 }
-                infot.setNumber(mPhoneNumber);
-                infot.setLocHandlerType(CallFilterConstants.BLACK_LIST_TYP);
-                infost.add(infot);
+                info.number = mPhoneNumber;
+                info.markType = CallFilterConstants.MK_BLACK_LIST;
+                infost.add(info);
                 boolean inerFlag =  mCmp.addBlackList(infost, false);
                 if (!inerFlag) {
                     CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);

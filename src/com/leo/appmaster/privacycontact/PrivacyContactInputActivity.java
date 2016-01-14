@@ -137,11 +137,10 @@ public class PrivacyContactInputActivity extends BaseActivity {
             if (!isHaveBlackNum) {
                 List<BlackListInfo> list = new ArrayList<BlackListInfo>();
                 BlackListInfo info = new BlackListInfo();
-                info.setNumberName(mPhoneName);
-                info.setNumber(mPhoneNumber);
-                Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(
-                        this, mPhoneNumber);
-                info.setIcon(icon);
+                info.number = mPhoneNumber;
+                info.name = mPhoneName;
+                Bitmap icon = PrivacyContactUtils.getContactIconFromSystem(this, mPhoneNumber);
+                info.icon = icon;
                 list.add(info);
 
                 boolean inerFlag = mCallManger.addBlackList(list, false);
