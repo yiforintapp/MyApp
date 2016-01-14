@@ -51,6 +51,7 @@ public class QuickHelperActivity extends BaseActivity {
     private static final int SECOND_CLASS_FIRST_ONE_POSITION;
     private static final int THIRD_CLASS_FIRST_ONE_POSITION;
 
+    private static final int POSITION_CALL_FILTER;
     private static final int POSITION_BOOST;
     private static final int POSITION_IMAGE_HIDE;
     private static final int POSITION_VIDEO_HIEDE;
@@ -65,59 +66,61 @@ public class QuickHelperActivity extends BaseActivity {
     private static final int POSITION_APPJOY;
 
     static {
-        if (Build.VERSION.SDK_INT > 21) {               //去除隐私短信和电量
+//        if (Build.VERSION.SDK_INT > 21) {    
+//            mHelperResourceIDs = new int[]{
+//                    R.drawable.qh_image_icon, R.drawable.qh_video_icon,
+//                    R.drawable.qh_intruder_icon,R.drawable.ic_launcher,
+//                    R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
+//                    R.drawable.qh_uninstall_icon, R.drawable.qh_backup_icon,
+//                    R.drawable.qh_flow_icon,R.drawable.qh_battery_icon,
+//                    R.drawable.qh_speedup_icon,
+//                    R.drawable.qh_appjoy_icon
+//            };
+//            mHelperNames = new int[]
+//            {
+//                    R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
+//                    R.string.quick_helper_intruder, R.string.quick_helper_callfilter,
+//                    R.string.privacy_contacts,
+//                    R.string.quick_helper_wifi_safety,
+//                    R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
+//                    R.string.quick_helper_flow_manage,R.string.quick_helper_elec_manage,
+//                    R.string.accelerate, R.string.desk_ad_name
+//            };
+//
+//            mHelperDescs = new int[]
+//            {
+//                    R.string.app_name,
+//                    R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
+//                    R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_call,
+//                    R.string.quick_helper_desc_wifi,
+//                    R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
+//                    R.string.quick_helper_desc_flow,R.string.quick_helper_desc_elec,
+//                    R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
+//            };
+//
+//            FIRST_CLASS_LAST_ONE_POSITION = 4;
+//            SECOND_CLASS_LAST_ONE_POSITION = 8;
+//            THIRD_CLASS_LAST_ONE_POSITION = 9;
+//
+//            FIRST_CLASS_FIRST_ONE_POSITION = 0;
+//            SECOND_CLASS_FIRST_ONE_POSITION = 5;
+//            THIRD_CLASS_FIRST_ONE_POSITION = 9;
+//
+//            POSITION_IMAGE_HIDE = 0;
+//            POSITION_VIDEO_HIEDE = 1;
+//            POSITION_INTRUDER = 2;
+//            POSITION_SECRET_CALL = 3;
+//            POSITION_WIFI = 4;
+//            POSITION_APP_UNSTALL = 5;
+//            POSITION_APP_BACKUP = 6;
+//            POSITION_FLOW = 7;
+//            POSITION_BOOST = 9;
+//            POSITION_APPJOY = 10;
+//            POSITION_ELEC = 8;
+//            } else {
             mHelperResourceIDs = new int[]{
                     R.drawable.qh_image_icon, R.drawable.qh_video_icon,
-                    R.drawable.qh_intruder_icon,
-                    R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
-                    R.drawable.qh_uninstall_icon, R.drawable.qh_backup_icon,
-                    R.drawable.qh_flow_icon,
-                    R.drawable.qh_speedup_icon,
-                    R.drawable.qh_appjoy_icon
-            };
-            mHelperNames = new int[]
-            {
-                    R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
-                    R.string.quick_helper_intruder, R.string.privacy_contacts,
-                    R.string.quick_helper_wifi_safety,
-                    R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
-                    R.string.quick_helper_flow_manage,
-                    R.string.accelerate, R.string.desk_ad_name
-            };
-
-            mHelperDescs = new int[]
-            {
-                    R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
-                    R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_call,
-                    R.string.quick_helper_desc_wifi,
-                    R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
-                    R.string.quick_helper_desc_flow,
-                    R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
-            };
-
-            FIRST_CLASS_LAST_ONE_POSITION = 4;
-            SECOND_CLASS_LAST_ONE_POSITION = 8;
-            THIRD_CLASS_LAST_ONE_POSITION = 9;
-
-            FIRST_CLASS_FIRST_ONE_POSITION = 0;
-            SECOND_CLASS_FIRST_ONE_POSITION = 5;
-            THIRD_CLASS_FIRST_ONE_POSITION = 9;
-
-            POSITION_IMAGE_HIDE = 0;
-            POSITION_VIDEO_HIEDE = 1;
-            POSITION_INTRUDER = 2;
-            POSITION_SECRET_CALL = 3;
-            POSITION_WIFI = 4;
-            POSITION_APP_UNSTALL = 5;
-            POSITION_APP_BACKUP = 6;
-            POSITION_FLOW = 7;
-            POSITION_BOOST = 8;
-            POSITION_APPJOY = 9;
-            POSITION_ELEC = -1;
-            } else {
-            mHelperResourceIDs = new int[]{
-                    R.drawable.qh_image_icon, R.drawable.qh_video_icon,
-                    R.drawable.qh_intruder_icon,
+                    R.drawable.qh_intruder_icon,R.drawable.qh_call_filter,
                     R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
                     R.drawable.qh_uninstall_icon, R.drawable.qh_backup_icon,
                     R.drawable.qh_flow_icon,
@@ -128,7 +131,7 @@ public class QuickHelperActivity extends BaseActivity {
             mHelperNames = new int[]
             {
                     R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
-                    R.string.quick_helper_intruder, R.string.privacy_contacts,
+                    R.string.quick_helper_intruder, R.string.quick_helper_callfilter, R.string.privacy_contacts,
                     R.string.quick_helper_wifi_safety,
                     R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
                     R.string.quick_helper_flow_manage, R.string.quick_helper_elec_manage,
@@ -138,41 +141,41 @@ public class QuickHelperActivity extends BaseActivity {
             mHelperDescs = new int[]
             {
                     R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
-                    R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_call,
+                    R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_callfilter, R.string.quick_helper_desc_call,
                     R.string.quick_helper_desc_wifi,
                     R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
                     R.string.quick_helper_desc_flow, R.string.quick_helper_desc_elec,
                     R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
             };
 
-            FIRST_CLASS_LAST_ONE_POSITION = 4;
-            SECOND_CLASS_LAST_ONE_POSITION = 9;
-            THIRD_CLASS_LAST_ONE_POSITION = 10;
+            FIRST_CLASS_LAST_ONE_POSITION = 5;
+            SECOND_CLASS_LAST_ONE_POSITION = 10;
+            THIRD_CLASS_LAST_ONE_POSITION = 11;
 
             FIRST_CLASS_FIRST_ONE_POSITION = 0;
-            SECOND_CLASS_FIRST_ONE_POSITION = 5;
-            THIRD_CLASS_FIRST_ONE_POSITION = 10;
+            SECOND_CLASS_FIRST_ONE_POSITION = 6;
+            THIRD_CLASS_FIRST_ONE_POSITION = 11;
 
             POSITION_IMAGE_HIDE = 0;
             POSITION_VIDEO_HIEDE = 1;
             POSITION_INTRUDER = 2;
-            POSITION_SECRET_CALL = 3;
-            POSITION_WIFI = 4;
-            POSITION_APP_UNSTALL = 5;
-            POSITION_APP_BACKUP = 6;
-            POSITION_FLOW = 7;
-            POSITION_ELEC = 8;
-            POSITION_BOOST = 9;
-            POSITION_APPJOY = 10;
-        }
+            POSITION_CALL_FILTER = 3;
+            POSITION_SECRET_CALL = 4;
+            POSITION_WIFI = 5;
+            POSITION_APP_UNSTALL = 6;
+            POSITION_APP_BACKUP = 7;
+            POSITION_FLOW = 8;
+            POSITION_ELEC = 9;
+            POSITION_BOOST = 10;
+            POSITION_APPJOY = 11;
+//        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quickhelper);
-        SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
-                "assistant", "assistant_enter");
+        SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1, "assistant", "assistant_enter");
         init();
     }
 
