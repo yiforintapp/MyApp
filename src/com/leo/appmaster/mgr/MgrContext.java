@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.text.TextUtils;
 
+import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.mgr.impl.DeviceManagerImpl;
 import com.leo.appmaster.mgr.impl.IntrudeSecurityManagerImpl;
@@ -63,6 +64,11 @@ public class MgrContext {
 
     public static final String MGR_CALL_FILTER = "mgr_call_filter";
 
+    /**
+     * 电池管理
+     * */
+    public static final String MGR_BATTERY = "mgr_battery";
+
     private static HashMap<String, Manager> sManagerMap = new HashMap<String, Manager>();
 
     static {
@@ -97,6 +103,8 @@ public class MgrContext {
             manager = new LostSecurityManagerImpl();
         } else if(MGR_CALL_FILTER.equals(mgr)){
             manager = new CallFilterContextManagerImpl();
+        } else if (MGR_BATTERY.equals(mgr)) {
+            manager = new BatteryManagerImpl();
         }
 
         if (manager != null) {
