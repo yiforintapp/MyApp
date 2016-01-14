@@ -49,80 +49,10 @@ public class BatterProtectView {
         BatteryMainViewLayout view = (BatteryMainViewLayout)
                 inflater.inflate(R.layout.activity_battery_test, null);
 
-
-
-//        mMoveContent = view.findViewById(R.id.move_content);
-//        view.setOnTouchListener(new View.OnTouchListener() {
-//            // 定义手指的初始化位置
-//            int startX;
-//
-//            @Override
-//            public boolean onTouch(View view, MotionEvent event) {
-//                if (view == null) {
-//                    return false;
-//                } else {
-//                    if (currSDK_INT >= API_LEVEL_19 && !view.isAttachedToWindow()) {
-//                        return false;
-//                    }
-//                }
-//                switch (event.getAction()) {
-//
-//                    case MotionEvent.ACTION_DOWN:// 手指按下屏幕
-//                        startX = (int) event.getRawX();
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
-//                        int newX = (int) event.getRawX() - startX;
-//
-//                        int stayL = mMoveContent.getLeft();
-//                        int stayR = mMoveContent.getRight();
-//
-//                        int left = stayL + newX;
-//                        int right = stayR + newX;
-//
-//                        if (left <= 0) {
-//                            left = 0;
-//                            right = mMoveContent.getWidth();
-//                        }
-//
-//                        LeoLog.d("testToastMove", "left : " + left);
-//                        LeoLog.d("testToastMove", "right : " + right);
-//
-//                        mMoveContent.layout(left, mMoveContent.getTop(), right, mMoveContent.getBottom());
-//                        startX = (int) event.getRawX();
-//
-//                        break;
-//                    case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
-//
-//                        if (mMoveContent.getLeft() < mMoveContent.getWidth() / 3) {
-//                            mMoveContent.layout(0, mMoveContent.getTop(), mMoveContent.getWidth(), mMoveContent.getBottom());
-//                        } else {
-//                            unLockAnimation();
-//                        }
-//
-//                        break;
-//                }
-//
-//                return false;
-//            }
-//        });
-
         result.mNextView = view;
         return result;
     }
 
-//    private static void unLockAnimation() {
-//        ObjectAnimator animX = ObjectAnimator.ofFloat(mMoveContent,
-//                "x", mMoveContent.getLeft(), mMoveContent.getWidth());
-//        animX.setDuration(300);
-//        animX.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                super.onAnimationEnd(animation);
-//                handleHide();
-//            }
-//        });
-//        animX.start();
-//    }
 
 
     public static final int LENGTH_SHORT = 2000;

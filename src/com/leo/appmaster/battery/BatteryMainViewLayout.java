@@ -1,30 +1,18 @@
 package com.leo.appmaster.battery;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.ObjectAnimator;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class BatteryMainViewLayout extends RelativeLayout {
@@ -115,13 +103,14 @@ public class BatteryMainViewLayout extends RelativeLayout {
         animX.start();
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        super.dispatchKeyEvent(event);
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            BatterProtectView.handleHide();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        LeoLog.d("testDisPatch", "dispatchKeyEvent");
+////        super.dispatchKeyEvent(event);
+//        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+//            BatterProtectView.handleHide();
+//        }
+//        return false;
+//    }
 
 }

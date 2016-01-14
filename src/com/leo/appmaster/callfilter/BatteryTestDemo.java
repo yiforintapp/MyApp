@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.battery.BatterProtectView;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.LeoLog;
@@ -152,7 +153,7 @@ public class BatteryTestDemo extends BaseActivity implements OnClickListener {
                 mTvTitleNumber.setText("状态 : " + BatteryStatusStr);
 
                 if ("充电状态".equals(BatteryStatusStr)) {
-                    CallFilterToast.makeText(BatteryTestDemo.this, "13632840685", 20, 0, 0).show();
+                    BatterProtectView.makeText(BatteryTestDemo.this).show();
                 }
             }
         }
