@@ -948,7 +948,8 @@
      <string name="batterymanage_switch_noti">应用耗电通知</string>
      <string name="batterymanage_switch_noti_summary">检测后台应用耗电情况</string>
      <string name="batterymanage_setting_title">设置</string>
-
+     <string name="quick_helper_callfilter">骚扰拦截</string>
+	<string name="quick_helper_desc_callfilter">识别并拦截骚扰电话</string>
     <string name="phone_share_dialog_content">你的手机已经处于防盗的保护之下，但你的朋友们却不一定，快去帮助他们吧～</string>
     <string name="callfilter_share_dialog_content">叫上你的朋友们一起屏蔽那些恼人的骚扰电话吧～</string>
     <string name="intruder_share_dialog_content">觉得我们还不错？分享给好友吧～</string>

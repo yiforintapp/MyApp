@@ -57,18 +57,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battery_manage);
-        initUI();
         mBtrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
-        
+        initUI();
     }
 
-//            FragmentManager fm = getSupportFragmentManager();
-//            FragmentTransaction transaction = fm.beginTransaction();  
-//            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-//            mFrgmResult = new PretendAppBeautyFragment();  
-//            transaction.replace(mRlContent.getId(), mFrgmResult);
-//            transaction.commit();  
-    
     
     private void initUI() {
         mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
@@ -178,7 +170,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         for (int i = 0; i < mListBatteryComsuptions.size(); i++) {
             try {
                 am.killBackgroundProcesses(mListBatteryComsuptions.get(i).getDefaultPackageName());
-                LeoLog.i(TAG, "pkg : " + mListBatteryComsuptions.get(i).getDefaultPackageName() + " is killed");
+                LeoLog.i(TAG, "pkg : " + mListBatteryComsuptions.get(i).getDefaultPackageName()
+                        + " is killed");
             } catch (Throwable e) {
                 if (DBG) {
                     Toast.makeText(this, "throwable when killing..." + e.toString(), 1).show();
@@ -186,11 +179,11 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             }
         }
         FragmentManager fm = getSupportFragmentManager();
-      FragmentTransaction transaction = fm.beginTransaction();  
-      transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-      mFrgmResult = new PretendAppBeautyFragment();  
-      transaction.replace(mRlContent.getId(), mFrgmResult);
-      transaction.commit();  
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+        mFrgmResult = new PretendAppBeautyFragment();
+        transaction.replace(mRlContent.getId(), mFrgmResult);
+        transaction.commit();
     }
 
     class AppsAdapter extends BaseAdapter {
