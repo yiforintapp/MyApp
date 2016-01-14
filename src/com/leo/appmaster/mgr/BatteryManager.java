@@ -34,6 +34,12 @@ public abstract class BatteryManager extends Manager {
      */
     public abstract int getAppThreshold();
 
+    /***
+     * 更新电量管理主页的状态，请在对应activity的onResume()/onPause()中调用
+     * @param isForeground 电量管理主页是否在前台
+     */
+    public abstract void updateBatteryPageState(boolean isForeground);
+
     @Override
     public void onDestory() {
 
