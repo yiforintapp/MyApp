@@ -5,11 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.BaseActivity;
 
 import java.util.List;
 
@@ -33,7 +36,9 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public void killBatteryDrainApps() {
         List<BatteryComsuption> appsToKill = getBatteryDrainApps();
-        // TODO implement this - kill them
+        for (BatteryComsuption batteryComsuption: appsToKill) {
+            ProcessCleaner.getInstance(mContext).cleanProcess(batteryComsuption.getDefaultPackageName());
+        }
     }
 
     public BatteryManagerImpl() {
