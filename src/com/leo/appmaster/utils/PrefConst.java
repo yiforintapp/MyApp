@@ -166,6 +166,11 @@ public class PrefConst {
     public static final String KEY_APP_LOCK_HANDLER = "APP_LOCK_HANDLER";
     /*骚扰拦截打开状态*/
     public static final String KEY_FIL_OP_STA = "FIL_OP_STA";
+    
+    //充电屏保的开关状态
+    public static final String KEY_BATTERY_SCREEN_VIEW_STATUS = "battery_screen_view_status";
+    //耗电应用通知的开关状态
+    public static final String KEY_BATTERY_NOTIFICATION_STATUS = "battery_notification_status";
     /**
      * 黑名单提示人数
      */

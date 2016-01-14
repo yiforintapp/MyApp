@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/ctb_main"
+        android:layout_width="match_parent"
+        android:background="@color/cb"
+        android:layout_height="wrap_content" />
+
+    <com.leo.appmaster.ui.RippleView
+        android:id="@+id/rv_item_screenview"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_below="@id/ctb_main"
+        app:rippleAlpha="1"
+        app:rippleColor="@color/home_tab_pressed"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="false">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_title_screenview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/batterymanage_switch_screen"
+                android:textColor="@color/c2"
+                android:textSize="@dimen/wifi_set_title_text_size" />
+
+            <TextView
+                android:id="@+id/tv_summary_screenview"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_screenview"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/batterymanage_switch_screen_summary"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/wifi_set_title_text_des_size" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_switch_screenview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="26dp" />
+
+        <View style="@style/priAppItem" />
+    </com.leo.appmaster.ui.RippleView>
+
+    <com.leo.appmaster.ui.RippleView
+        android:id="@+id/rv_item_noti"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_below="@id/rv_item_screenview"
+        app:rippleAlpha="1"
+        app:rippleColor="@color/home_tab_pressed"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="false">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_title_noti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/batterymanage_switch_noti"
+                android:textColor="@color/c2"
+                android:textSize="@dimen/wifi_set_title_text_size" />
+
+            <TextView
+                android:id="@+id/tv_summary_noti"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_noti"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/batterymanage_switch_noti_summary"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/wifi_set_title_text_des_size" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_switch_noti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="26dp" />
+
+        <View style="@style/priAppItem" />
+    </com.leo.appmaster.ui.RippleView>
+</RelativeLayout>

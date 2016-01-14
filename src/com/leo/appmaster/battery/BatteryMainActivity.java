@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActivityManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -76,8 +77,13 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_battery);
         mCtbMain.setToolbarTitle(R.string.app_elec_aca);
         mCtbMain.setToolbarColorResource(R.color.cb);
-        mCtbMain.setOptionClickListener(this);
-        mCtbMain.setNavigationClickListener(this);
+        mCtbMain.setOptionClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BatteryMainActivity.this, BatterySettingActivity.class);
+                startActivity(intent);
+            }
+        });
         mCtbMain.setOptionImageResource(R.drawable.setup_icon);
         mCtbMain.setOptionMenuVisible(true);
         mGvApps = (GridView) findViewById(R.id.gv_apps);
@@ -162,7 +168,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             case R.id.rv_accelerate:
                 startBoost();
                 break;
-
             default:
                 break;
         }

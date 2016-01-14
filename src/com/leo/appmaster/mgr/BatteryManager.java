@@ -49,4 +49,28 @@ public abstract class BatteryManager extends Manager {
     public String description() {
         return MgrContext.MGR_BATTERY;
     }
+    
+    /**
+     * 获取电量屏保的开关
+     * @return
+     */
+    public abstract boolean getScreenViewStatus();
+    
+    /**
+     * 设置电量屏保的开关
+     * @return
+     */
+    public abstract void setScreenViewStatus(boolean value);
+    
+    /**
+     * 获取耗电应用通知的开关
+     * @return
+     */
+    public abstract boolean getBatteryNotiStatus();
+    
+    /**
+     * 设置耗电应用通知的开关
+     * @return
+     */
+    public abstract void setBatteryNotiStatus(boolean value);
 }

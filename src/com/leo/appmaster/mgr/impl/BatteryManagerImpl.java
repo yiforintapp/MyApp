@@ -8,11 +8,13 @@ import android.os.SystemClock;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ import java.util.List;
  * Created by stone on 16/1/13.
  */
 public class BatteryManagerImpl extends BatteryManager {
-
+    private PreferenceTable mPt = PreferenceTable.getInstance();
     private static final String TAG = MgrContext.MGR_BATTERY;
 
     private AppMasterPreference mSp;
@@ -168,6 +170,26 @@ public class BatteryManagerImpl extends BatteryManager {
      * @param newState
      */
     private void handleConsumingState(BatteryState newState) {
+        
+    }
 
+    @Override
+    public boolean getScreenViewStatus() {
+        return mPt.getBoolean(PrefConst.KEY_BATTERY_SCREEN_VIEW_STATUS, true);
+    }
+
+    @Override
+    public void setScreenViewStatus(boolean value) {
+        mPt.putBoolean(PrefConst.KEY_BATTERY_SCREEN_VIEW_STATUS, value);
+    }
+
+    @Override
+    public boolean getBatteryNotiStatus() {
+        return mPt.getBoolean(PrefConst.KEY_BATTERY_NOTIFICATION_STATUS, true);
+    }
+
+    @Override
+    public void setBatteryNotiStatus(boolean value) {
+        mPt.putBoolean(PrefConst.KEY_BATTERY_NOTIFICATION_STATUS, value);
     }
 }
