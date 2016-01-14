@@ -71,7 +71,6 @@ public class BatteryTestDemo extends BaseActivity implements OnClickListener {
     private void initUI() {
         mTvTitleName = (TextView) findViewById(R.id.battery_num);
         mTvTitleNumber = (TextView) findViewById(R.id.battery_status);
-        mSlideView = findViewById(R.id.move_content);
     }
 
     private void processUI() {
