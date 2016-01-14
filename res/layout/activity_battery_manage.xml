@@ -55,12 +55,39 @@
             android:layout_below="@+id/tv_list_title" >
         </GridView>
 
-        <RelativeLayout
-            android:id="@+id/rl_bottom"
+       <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white" >
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true" >
-        </RelativeLayout>
+            android:layout_height="1px"
+            android:layout_gravity="top"
+            android:background="@color/pri_pro_divider" />
+
+        <com.leo.appmaster.ui.RippleView
+            xmlns:ripple="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rv_accelerate"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/green_radius_btn_shape"
+            ripple:rippleColor="@color/button_green_ripple"
+            ripple:rippleDuration="250"
+            ripple:rippleHover="true"
+            ripple:rippleOverlay="true" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </com.leo.appmaster.ui.RippleView>
+    </RelativeLayout>
         
     </RelativeLayout>
 

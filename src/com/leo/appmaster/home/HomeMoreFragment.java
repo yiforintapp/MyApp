@@ -22,6 +22,7 @@ import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
+import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -357,7 +358,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                 case R.string.hp_device_power:
                     // 电量管理
                     SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "battery");
-                    Intent dlIntent = new Intent(activity, EleActivity.class);
+                    Intent dlIntent = new Intent(activity, BatteryMainActivity.class);
                     startActivity(dlIntent);
                     break;
                 case R.string.hp_helper_shot:
