@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
+import com.leo.appmaster.battery.BatteryNotifyHelper;
 import com.leo.appmaster.battery.RemainTimeHelper;
 import com.leo.appmaster.battery.BatteryShowViewActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
@@ -37,6 +38,7 @@ public class BatteryManagerImpl extends BatteryManager {
     private long mLastKillTime = 0;
 
     private RemainTimeHelper mRemainTimeHelper;
+    private BatteryNotifyHelper mNotifyHelper;
 
     private static final int UNPLUGGED = 0;
     private static final int DEFAULT_LEVEL = -1;
@@ -92,6 +94,7 @@ public class BatteryManagerImpl extends BatteryManager {
         mContext.registerReceiver(mReceiver, filter);
         mSp = AppMasterPreference.getInstance(mContext);
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mNotifyHelper = new BatteryNotifyHelper(mContext, this);
     }
 
     @Override
@@ -124,10 +127,7 @@ public class BatteryManagerImpl extends BatteryManager {
 
     @Override
     public void killBatteryDrainApps() {
-        List<BatteryComsuption> appsToKill = getBatteryDrainApps();
-        for (BatteryComsuption batteryComsuption : appsToKill) {
-            ProcessCleaner.getInstance(mContext).cleanProcess(batteryComsuption.getDefaultPackageName());
-        }
+        ProcessCleaner.getInstance(mContext).cleanAllProcess(mContext);
         mLastKillTime = SystemClock.elapsedRealtime();
     }
 
@@ -235,7 +235,7 @@ public class BatteryManagerImpl extends BatteryManager {
         Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
         int remainTime = getRemainTimeHelper(newState)
                 .getEstimatedTime(mPreviousState.level, newState.level,
-                        (newState.timestamp-mPreviousState.timestamp));
+                        (newState.timestamp - mPreviousState.timestamp));
 //        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
 //        mProtectView.setBatteryStatus(true);
 //        mProtectView.setBatteryLevel(newState.level);

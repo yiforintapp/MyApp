@@ -114,6 +114,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     @Override
     public void onResume() {
         super.onResume();
+        mBtrManager.updateBatteryPageState(true);
         LeoLog.i(TAG, "onResume");
         if (mFrgmResult != null && mFrgmResult.isVisible()) {
             FragmentManager fm = getSupportFragmentManager();
@@ -126,6 +127,12 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mPbLoading.setVisibility(View.VISIBLE);
         mRlEmpty.setVisibility(View.GONE);
         loadData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mBtrManager.updateBatteryPageState(false);
     }
 
     private void loadData() {
@@ -166,18 +173,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     private void startBoost() {
-        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (int i = 0; i < mListBatteryComsuptions.size(); i++) {
-            try {
-                am.killBackgroundProcesses(mListBatteryComsuptions.get(i).getDefaultPackageName());
-                LeoLog.i(TAG, "pkg : " + mListBatteryComsuptions.get(i).getDefaultPackageName()
-                        + " is killed");
-            } catch (Throwable e) {
-                if (DBG) {
-                    Toast.makeText(this, "throwable when killing..." + e.toString(), 1).show();
-                }
-            }
-        }
+        mBtrManager.killBatteryDrainApps();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
