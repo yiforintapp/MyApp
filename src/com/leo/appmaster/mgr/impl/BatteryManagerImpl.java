@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.battery.BatteryNotifyHelper;
+import com.leo.appmaster.battery.BatteryProtectView;
 import com.leo.appmaster.battery.RemainTimeHelper;
 import com.leo.appmaster.battery.BatteryShowViewActivity;
 import com.leo.appmaster.callfilter.CallFilterInfo;
@@ -174,30 +175,31 @@ public class BatteryManagerImpl extends BatteryManager {
      */
     private void handlePluginEvent(BatteryState newState) {
         Toast.makeText(mContext, "用户插上充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
-
         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
                 newState.level, 0);
-
-        Intent intent = new Intent(mContext, BatteryShowViewActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        intent.putExtra(PROTECT_VIEW_TYPE, SHOW_TYPE_IN);
-        intent.putExtra(REMAIN_TIME, remainTime);
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(SEND_BUNDLE, newState);
-        intent.putExtras(bundle);
 
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
 
-        mContext.startActivity(intent);
+        if (!BatteryProtectView.isShowing) {
+            Intent intent = new Intent(mContext, BatteryShowViewActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(PROTECT_VIEW_TYPE, SHOW_TYPE_IN);
+            intent.putExtra(REMAIN_TIME, remainTime);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(SEND_BUNDLE, newState);
+            intent.putExtras(bundle);
+            mContext.startActivity(intent);
+        } else {
+            if (mListenerRef != null) {
+                BatteryStateListener listener = mListenerRef.get();
+                if (listener != null) {
+                    listener.onStateChange(EventType.SHOW_TYPE_IN, newState, remainTime);
+                }
+            }
+        }
 
-//        BatteryProtectView mProtectView = BatteryProtectView.makeText(mContext);
-//        mProtectView.setBatteryStatus(true);
-//        mProtectView.setBatteryLevel(newState.level);
-//        mProtectView.notifyViewUi();
-//        mProtectView.show();
+
     }
 
     /***
@@ -208,14 +210,13 @@ public class BatteryManagerImpl extends BatteryManager {
     private void handleUnplugEvent(BatteryState newState) {
         Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
 
-        BatteryViewEvent event = new BatteryViewEvent(SHOW_TYPE_OUT);
-        event.state = newState;
-        LeoEventBus.getDefaultBus().post(event);
+        if (mListenerRef != null) {
+            BatteryStateListener listener = mListenerRef.get();
+            if (listener != null) {
+                listener.onStateChange(EventType.SHOW_TYPE_OUT, newState, 0);
+            }
+        }
 
-//        BatteryProtectView mProtectView = BatteryProtectView.makeText(mContext);
-//        mProtectView.setBatteryStatus(false);
-//        mProtectView.setBatteryLevel(newState.level);
-//        mProtectView.notifyViewUi();
     }
 
     /***
@@ -236,15 +237,7 @@ public class BatteryManagerImpl extends BatteryManager {
             }
         }
 
-        BatteryViewEvent event = new BatteryViewEvent(UPDATE_UP);
-        event.state = newState;
-        event.remainTime = remainTime;
-        LeoEventBus.getDefaultBus().post(event);
 
-//        BatteryProtectView mProtectView = BatteryProtectView.makeText(mContext);
-//        mProtectView.setBatteryStatus(true);
-//        mProtectView.setBatteryLevel(newState.level);
-//        mProtectView.notifyViewUi();
     }
 
     /***
@@ -261,16 +254,6 @@ public class BatteryManagerImpl extends BatteryManager {
                 listener.onStateChange(EventType.BAT_EVENT_CONSUMING, newState, 0);
             }
         }
-
-        BatteryViewEvent event = new BatteryViewEvent(UPDATE_DONW);
-        event.state = newState;
-        LeoEventBus.getDefaultBus().post(event);
-
-
-//        BatteryProtectView mProtectView = BatteryProtectView.makeText(mContext);
-//        mProtectView.setBatteryStatus(true);
-//        mProtectView.setBatteryLevel(newState.level);
-//        mProtectView.notifyViewUi();
 
     }
 

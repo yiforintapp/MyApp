@@ -14,12 +14,14 @@ import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
+import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 
 public class BaseActivity extends Activity {
     protected LockManager mLockManager;
     protected WifiSecurityManager mWifiManager;
     protected CallFilterContextManager mCallManger;
     private ActivityLifeCircle mLifeCircle;
+    protected BatteryManagerImpl mBatteryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class BaseActivity extends Activity {
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        mBatteryManager = (BatteryManagerImpl) MgrContext.getManager(MgrContext.MGR_BATTERY);
 
         mLifeCircle = new ActivityLifeCircle(this);
         mLifeCircle.onCreate();

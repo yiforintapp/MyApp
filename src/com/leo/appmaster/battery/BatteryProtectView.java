@@ -35,7 +35,7 @@ public class BatteryProtectView {
     private boolean mIsCharing;
     private int mBatteryLevel;
     private String mTime;
-    private static boolean isShowing = false;
+    public static boolean isShowing = false;
 
     private static Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -282,7 +282,7 @@ public class BatteryProtectView {
                 mWM.addView(mView, mParams);
                 isShowing = true;
             } catch (Exception e) {
-
+                isShowing = false;
             }
         }
     }
@@ -295,6 +295,7 @@ public class BatteryProtectView {
                     isShowing = false;
                 }
             } catch (Exception e) {
+                isShowing = false;
             }
             mView = null;
         }
