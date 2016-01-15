@@ -1,13 +1,17 @@
 package com.leo.appmaster.callfilter;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
@@ -19,6 +23,8 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.showTrafficTip;
+import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.LeoLog;
@@ -26,10 +32,12 @@ import com.leo.appmaster.utils.Utilities;
 
 
 public class AskAddToBlacklistActivity extends BaseActivity {
+    private final String  TAG = "AskAddToBlacklistActivity";
     private CallFilterContextManager mCmp;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmrMark;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmr;
     private LEOAlarmDialog mDialogAskAdd;
+    private showTrafficTip mFlowTipDialog;
     private MultiChoicesWitchSummaryDialog mDialogTooShort;
     private String mPhoneNumber = "";
     public static final int TYPE_SHOW_NO_OFFHOOK = 1;
@@ -39,16 +47,19 @@ public class AskAddToBlacklistActivity extends BaseActivity {
     public static final String EXTRA_NUMBER = "number";
     public static final String EXTRA_FILTERTYPE_ARRAY = "filterTip";
     public static final String EXTRA_WHAT_TO_SHOW = "which";
+    public static final String EXTRA_FLOW_TIPS = "flow_tips";
     public static final int CASE_ASK_WHEN_NO_OFFHOOK = 1;
     public static final int CASE_ASK_WITHOUT_MARK = 2;
     public static final int CASE_ASK_WITH_MARK = 3;
     public static final int CASE_ASK_WHEN_TOO_SHORT = 4;
-
+    public static final int CASE_ALERT_FLOW = 5;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask_add_to_blacklist);
         mCmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        LeoLog.i(TAG, "on Create");
         handleIntent();
     }
 
@@ -57,6 +68,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mPhoneNumber = intent.getStringExtra(EXTRA_NUMBER);
         int intExtra = intent.getIntExtra(EXTRA_WHAT_TO_SHOW, -1);
         int[] filterTip = intent.getIntArrayExtra(EXTRA_FILTERTYPE_ARRAY);
+        String flowTip = intent.getStringExtra(EXTRA_FLOW_TIPS);
         switch (intExtra) {
             case CASE_ASK_WHEN_NO_OFFHOOK:
                 showAskAddWhenNoOffHook(filterTip);
@@ -70,6 +82,10 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             case CASE_ASK_WHEN_TOO_SHORT:
                 showTooShortDialog();
                 break;
+            case CASE_ALERT_FLOW:
+                showFlowAlertDialog(flowTip);
+                LeoLog.i("testtt", "show flow tip");
+                break;
             default:
                 this.finish();
                 break;
@@ -82,6 +98,35 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         super.finish();
     }
 
+    private void showFlowAlertDialog(String tip) {
+        if (mFlowTipDialog == null) {
+            mFlowTipDialog = new showTrafficTip(this);
+        }
+        if (mFlowTipDialog.isShowing()) {
+            return;
+        }
+        mFlowTipDialog.setTitle(R.string.traffic_used_lot);
+        mFlowTipDialog.setContent(tip);
+        mFlowTipDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                AskAddToBlacklistActivity.this.finish();
+            }
+        });
+        mFlowTipDialog.setOnClickListener(new OnDiaogClickListener() {
+          @Override
+          public void onClick(int which) {
+              if (which == 0) {
+                  SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "datapage", "data_cnts_notify");
+                  // 关闭网络
+                  setMobileNetUnable();
+              }
+              mFlowTipDialog.cancel();
+          }
+      });
+        mFlowTipDialog.show();
+    }
+    
     private void showTooShortDialog() {
         long durationMax = mCmp.getCallDurationMax();
         mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, this, true, 0, false);
@@ -293,64 +338,64 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         LeoEventBus.getDefaultBus().post(event);
     }
 
+    public final void setMobileNetUnable() {
+        // LeoLog.d("ServiceTraffic", "关闭网络咯！！");
+        if (android.os.Build.VERSION.SDK_INT > 19) {
+            try {
+                Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(intent);
+                this.finish();//TODO need finish?
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Object[] arg = null;
+            try {
+                boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled", arg);
+                if (isMobileDataEnable) {
+                    invokeBooleanArgMethod("setMobileDataEnabled", false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public boolean invokeMethod(String methodName, Object[] arg)
+            throws Exception {
 
-//    private class MyAdapter extends BaseAdapter {
-//        private Context mContext;
-//
-//        public MyAdapter(Context ctx) {
-//            this.mContext = ctx;
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            if (convertView == null) {
-//                convertView = getLayoutInflater().inflate(R.layout.traffic_day_list, parent, false);
-//            }
-//            TextView tvContent = (TextView) convertView.findViewById(R.id.tv_showday);
-//            ImageView ivCheckBox = (ImageView) convertView.findViewById(R.id.iv_showday);
-//            tvContent.setText(strings[position]);
-//
-//            if (nowItemPosition == position) {
-//                ivCheckBox.setImageResource(R.drawable.dialog_check_on);
-//            } else {
-//                ivCheckBox.setImageResource(R.drawable.dialog_check_off);
-//            }
-//            return convertView;
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return 0;
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return null;
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return strings.length;
-//        }
-//
-//    }
+        ConnectivityManager mConnectivityManager = (ConnectivityManager) 
+                getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        Class ownerClass = mConnectivityManager.getClass();
 
-//    private void showCheckFailed() {
-//        mLlSummary = (LinearLayout) findViewById(R.id.ll_summary);
-//        mTitle = (TextView) findViewById(R.id.dlg_title);
-//        mSummary = (TextView) findViewById(R.id.tv_summary);
-//        mLvMain = (ListView) findViewById(R.id.lv_main);
-//        mAdapter = new MyAdapter(this);
-//        mRvRight = (RippleView) findViewById(R.id.rv_dialog_blue_button);
-//        mRvLeft = (RippleView) findViewById(R.id.rv_dialog_whitle_button);
-//        mLeftBtn = (TextView) findViewById(R.id.dlg_left_btn);
-//        mRightBtn = (TextView) findViewById(R.id.dlg_right_btn);
-//        
-//        
-//        
-//        
-//    }
+        Class[] argsClass = null;
+        if (arg != null) {
+            argsClass = new Class[1];
+            argsClass[0] = arg.getClass();
+        }
 
+        Method method = ownerClass.getMethod(methodName, argsClass);
 
+        Boolean isOpen = (Boolean) method.invoke(mConnectivityManager, arg);
+
+        return isOpen;
+    }
+
+    public Object invokeBooleanArgMethod(String methodName, boolean value)
+            throws Exception {
+
+        ConnectivityManager mConnectivityManager = (ConnectivityManager) 
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        Class ownerClass = mConnectivityManager.getClass();
+
+        Class[] argsClass = new Class[1];
+        argsClass[0] = boolean.class;
+
+        Method method = ownerClass.getMethod(methodName, argsClass);
+
+        return method.invoke(mConnectivityManager, value);
+    }
 }

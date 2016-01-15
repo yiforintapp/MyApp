@@ -15,7 +15,9 @@ import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.callfilter.AskAddToBlacklistActivity;
 import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.showTrafficTip;
@@ -41,8 +43,8 @@ public class showTrafficAlof extends BroadcastReceiver {
         secondIn = System.currentTimeMillis();
         String action = intent.getAction();
         // 开机启动服务，开始获取，计算流量
+         LeoLog.d("trafictest", "服务来通知咯，超额提示");
         if ("com.leo.appmaster.traffic.alot".equals(action)) {
-            // LeoLog.d("ServiceTraffic", "服务来通知咯，超额提示");
             showAlarmDialog("com.leo.appmaster.traffic.alot");
         } else if ("android.net.conn.CONNECTIVITY_CHANGE".equals(action)) {
             // LeoLog.d("ServiceTraffic",
@@ -109,16 +111,21 @@ public class showTrafficAlof extends BroadcastReceiver {
     }
 
     private void showAlarmDialog(String action) {
-        final showTrafficTip dialog = new showTrafficTip(mContext);
+        LeoLog.i("testtt", "to show");
+        Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ALERT_FLOW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mLockManager.filterPackage(mContext.getPackageName(), 2000);
+//        mContext.startActivity(intent);
+        
+//        final showTrafficTip dialog = new showTrafficTip(mContext);
         String tip = "";
         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "data_notify");
         if (action.equals("com.leo.appmaster.traffic.alot")) {
             // LeoLog.d("ServiceTraffic", "流量超额通知！！");
             sp_broadcast.setAlotNotice(true);
-            tip = mContext.getString(
-                    R.string.traffic_used_lot_text,
-                    ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
-                            getOverDataInvokePercent());
+            tip = mContext.getString(R.string.traffic_used_lot_text,((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)). getOverDataInvokePercent());
 
         } else if (action.equals("com.leo.appmaster.traffic.finish")) {
             // LeoLog.d("ServiceTraffic", "流量用完通知！！");
@@ -126,24 +133,25 @@ public class showTrafficAlof extends BroadcastReceiver {
             tip = mContext.getString(R.string.traffic_used_finish_text);
         }
 
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_FLOW_TIPS, tip);
         // dialog.setTitle(R.string.traffic_used_lot);
-        dialog.setTitle(R.string.traffic_used_lot);
-        dialog.setContent(tip);
-        dialog.setOnClickListener(new OnDiaogClickListener() {
-            @Override
-            public void onClick(int which) {
-                if (which == 0) {
-                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "data_cnts_notify");
-                    // 关闭网络
-                    setMobileNetUnable();
-                }
-                dialog.cancel();
-            }
-        });
-        dialog.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        dialog.show();
-
+//        dialog.setTitle(R.string.traffic_used_lot);
+//        dialog.setContent(tip);
+//        dialog.setOnClickListener(new OnDiaogClickListener() {
+//            @Override
+//            public void onClick(int which) {
+//                if (which == 0) {
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "data_cnts_notify");
+//                    // 关闭网络
+//                    setMobileNetUnable();
+//                }
+//                dialog.cancel();
+//            }
+//        });
+//        dialog.getWindow().setType(
+//                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//        dialog.show();
+        mContext.startActivity(intent);
     }
 
     public final void setMobileNetUnable() {

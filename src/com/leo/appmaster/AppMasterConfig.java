@@ -22,7 +22,7 @@ public class AppMasterConfig {
     public static final int TIME_24_HOUR = 24 * 60 * 60 * 1000;
     public static final long MIN_PULL_TIME = 60 * 1000;
         public static final long TRAFFIC_INTERNAL = 5 * 60 * 1000;
-//    public static final long TRAFFIC_INTERNAL = 60 * 1000;
+//    public static final long TRAFFIC_INTERNAL = 10 * 1000;
 
     // 区分国内外渠道
     public static final boolean IS_FOR_MAINLAND_CHINA = false;

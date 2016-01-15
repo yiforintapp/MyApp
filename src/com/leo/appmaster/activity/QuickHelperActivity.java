@@ -289,6 +289,15 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_ELEC]), mHelperResourceIDs[POSITION_ELEC], intent, QuickHelperActivity.this);
                                 break;
+                             // 骚扰拦截 (免密码)
+                            case R.drawable.qh_call_filter:
+//                             SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1, "assistant", "assistant_wifi");
+                                intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
+                                intent.putExtra("from_quickhelper", true);
+                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mCallfilter);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_CALL_FILTER]), mHelperResourceIDs[POSITION_CALL_FILTER], intent, QuickHelperActivity.this);
+                                break;
                             // WIFI安全 (免密码)
                             case R.drawable.qh_wifi_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,

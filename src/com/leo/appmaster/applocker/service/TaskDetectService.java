@@ -248,12 +248,15 @@ public class TaskDetectService extends Service {
                 new TrafficInfoPackage(getApplicationContext()).getRunningProcess(false);
             }
 
+            LeoLog.i("testtt", "in task");
+            
             if (network_state.equals(STATE_NORMAL)) {
                 long TotalTraffic = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
                         getMonthTotalTraffic() * 1024;
 //                long TotalTraffic = sp_traffic.getTotalTraffic() * 1024;
                 // 设置了流量套餐才去检测
                 if (TotalTraffic > 0) {
+                    LeoLog.i("testtt", "in task 2");
                     TrafficNote(TotalTraffic);
                 }
             }
@@ -282,6 +285,7 @@ public class TaskDetectService extends Service {
 
         if (isSwtich && !haveNotice) {
             if (bili > TrafficSeekBar) {
+                LeoLog.i("testtt", "in task 3");
                 Intent shortcut = new Intent();
                 shortcut.setAction("com.leo.appmaster.traffic.alot");
                 sendBroadcast(shortcut);
@@ -293,6 +297,7 @@ public class TaskDetectService extends Service {
         if (isSwtich && !mFinishNotice) {
             if (MonthItSelfTraffic > 0) {
                 if (totalTraffic < MonthItSelfTraffic) {
+                    LeoLog.i("testtt", "in task 4");
                     // 流量用光了
                     Intent longcut = new Intent();
                     longcut.setAction("com.leo.appmaster.traffic.finish");

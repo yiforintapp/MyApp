@@ -57,6 +57,7 @@ public class DeskProxyActivity extends Activity {
     public static final int mStrangerCallNoti =16;
     public static final int mMissCallNoti =17;
     
+    public static final int mCallfilter = 18;
 
     private MobvistaAdWall wallAd;
 
@@ -86,6 +87,8 @@ public class DeskProxyActivity extends Activity {
                     goToFlow(type);
                 } else if (type == mStrangerCallNoti) {
                     goToStrangerCall(type);
+                } else if (type == mCallfilter) {
+                    goToBlackListTab1(type);
                 } else if (type == mFilterNoti) {
                     goToBlackList(type);
                 } else if (type == mElec) {
@@ -152,6 +155,9 @@ public class DeskProxyActivity extends Activity {
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "videoHide");
                         goToHideVio(type);
+                        break;
+                    case mCallfilter:
+                        goToBlackListTab1(type);
                         break;
                     case mStrangerCallNoti:
 //                        SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
@@ -275,6 +281,13 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity(intent);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "notify_blacklist_cnts");
+    }
+    
+    private void goToBlackListTab1(int type) {
+        mLockManager.filterPackage(this.getPackageName(), 1000);
+        Intent intent = new Intent(this, CallFilterMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
     
     private void gotoBackUp(int type) {
