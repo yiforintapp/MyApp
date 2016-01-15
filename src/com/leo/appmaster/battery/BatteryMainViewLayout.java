@@ -153,14 +153,15 @@ public class BatteryMainViewLayout extends RelativeLayout {
 
     }
 
-//    @Override
-//    public boolean dispatchKeyEvent(KeyEvent event) {
-//        LeoLog.d("testDisPatch", "dispatchKeyEvent");
-////        super.dispatchKeyEvent(event);
-//        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-//            BatterProtectView.handleHide();
-//        }
-//        return false;
-//    }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        super.dispatchKeyEvent(event);
+        LeoLog.d("testDisPatch", "dispatchKeyEvent");
+
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            BatterProtectView.handleHide();
+        }
+        return false;
+    }
 
 }

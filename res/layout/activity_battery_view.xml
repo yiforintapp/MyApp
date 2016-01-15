@@ -109,23 +109,12 @@
                 android:textSize="20dp" />
         </RelativeLayout>
 
-        <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/slider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            slider:maskText=">> 滑动来解锁"
-            slider:maskTextMarginLeft="1dp"
-            slider:maskTextMarginTop="15dp"
-            slider:maskTextSize="20sp"
-            slider:slidableLength="208dp" />
-
         <RelativeLayout
             android:id="@+id/unlock_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="25dp">
+            android:background="@color/black">
 
 
             <!--<RelativeLayout-->
@@ -141,5 +130,17 @@
             <!--android:textSize="20dp" />-->
             <!--</RelativeLayout>-->
         </RelativeLayout>
+
+        <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/slider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            slider:maskText=">> 滑动来解锁"
+            slider:maskTextMarginLeft="1dp"
+            slider:maskTextMarginTop="15dp"
+            slider:maskTextSize="20sp"
+            slider:slidableLength="208dp" />
+
     </RelativeLayout>
 </com.leo.appmaster.battery.BatteryMainViewLayout>

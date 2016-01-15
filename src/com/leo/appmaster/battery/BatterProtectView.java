@@ -236,18 +236,20 @@ public class BatterProtectView {
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
 
-        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                WindowManager.LayoutParams.PRIVATE_FLAG_KEYGUARD
-                | WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        params.flags =
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                        | WindowManager.LayoutParams.PRIVATE_FLAG_KEYGUARD
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
 
         params.format = PixelFormat.TRANSLUCENT;
         params.windowAnimations = android.R.style.Animation_Toast;
 
         if (currSDK_INT < API_LEVEL_19) {
-            params.type = WindowManager.LayoutParams.TYPE_PRIORITY_PHONE;
+            params.type = WindowManager.LayoutParams.TYPE_PRIORITY_PHONE
+                    | WindowManager.LayoutParams.TYPE_KEYGUARD;
         } else {
-            params.type = WindowManager.LayoutParams.TYPE_TOAST;
+            params.type = WindowManager.LayoutParams.TYPE_TOAST
+                    | WindowManager.LayoutParams.TYPE_KEYGUARD;
         }
 
         mWM = (WindowManager) context.getApplicationContext()
@@ -302,24 +304,25 @@ public class BatterProtectView {
 
     /* 广告相关 - 开始 */
     private boolean mShouldLoadAd = false;
+
     private void loadAd() {
         mShouldLoadAd = AppMasterPreference.getInstance(mContext).getADOnScreenSaver() == 1;
         if (mShouldLoadAd) {
             MobvistaEngine.getInstance(mContext).loadMobvista(Constants.UNIT_ID_CHARGING,
                     new MobvistaEngine.MobvistaListener() {
-                @Override
-                public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                    if (code == MobvistaEngine.ERR_OK) {
-                        sAdImageListener = new AdPreviewLoaderListener(BatterProtectView.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
-                    }
-                }
+                        @Override
+                        public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                            if (code == MobvistaEngine.ERR_OK) {
+                                sAdImageListener = new AdPreviewLoaderListener(BatterProtectView.this, campaign);
+                                ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                            }
+                        }
 
-                @Override
-                public void onMobvistaClick(Campaign campaign) {
-                    // TODO 埋点
-                }
-            });
+                        @Override
+                        public void onMobvistaClick(Campaign campaign) {
+                            // TODO 埋点
+                        }
+                    });
         }
     }
 

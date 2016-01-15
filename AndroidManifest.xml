@@ -362,6 +362,12 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame"></activity>
+        <activity
+            android:name=".battery.BatteryShowViewActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme"></activity>
 
         <activity
             android:name=".feedback.FeedbackActivity"
