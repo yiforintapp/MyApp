@@ -937,19 +937,24 @@
     <string name="number_call_duration_m_s">%1$sM %2$sS</string>
     <string name="ad_blk_fail">failed</string>
 
-    <!-- 3.3 start -->
-    <string name="batterymanage_label">%1$s个应用正在偷偷耗电</string>
-    <string name="batterymanage_boost">省电优化</string>
-    <string name="batterymanage_boost_finished">优化完成</string>
-    <string name="batterymanage_tip_loading">正在检测耗电应用</string>
-    <string name="batterymanage_tip_nothing_to_boost">没有可优化的app了</string>
-    <string name="batterymanage_switch_screen">充电屏保</string>
-    <string name="batterymanage_switch_screen_summary">使用充电屏保加速充电，防止过度充电</string>
-    <string name="batterymanage_switch_noti">应用耗电通知</string>
-    <string name="batterymanage_switch_noti_summary">检测后台应用耗电情况</string>
-    <string name="batterymanage_setting_title">设置</string>
-    <string name="quick_helper_callfilter">骚扰拦截</string>
-    <string name="quick_helper_desc_callfilter">识别并拦截骚扰电话</string>
+    
+     <!-- 3.3 start -->
+      <string name="batterymanage_result_ad_wifi_title">检测您连接的wifi安全性</string>
+      <string name="batterymanage_result_ad_wifi_content">不安全的wifi随时会威胁您的隐私安全</string>
+      <string name="batterymanage_result_ad_callfilter_title">骚扰拦截</string>
+      <string name="batterymanage_result_ad_callfilter_content">识别并拦截那些烦人的骚扰电话</string>
+     <string name="batterymanage_label">%1$s个应用正在偷偷耗电</string>
+     <string name="batterymanage_boost">省电优化</string>
+     <string name="batterymanage_boost_finished">优化完成</string>
+     <string name="batterymanage_tip_loading">正在检测耗电应用</string>
+     <string name="batterymanage_tip_nothing_to_boost">没有可优化的app了</string>
+     <string name="batterymanage_switch_screen">充电屏保</string>
+     <string name="batterymanage_switch_screen_summary">使用充电屏保加速充电，防止过度充电</string>
+     <string name="batterymanage_switch_noti">应用耗电通知</string>
+     <string name="batterymanage_switch_noti_summary">检测后台应用耗电情况</string>
+     <string name="batterymanage_setting_title">设置</string>
+     <string name="quick_helper_callfilter">骚扰拦截</string>
+	<string name="quick_helper_desc_callfilter">识别并拦截骚扰电话</string>
     <string name="phone_share_dialog_content">你的手机已经处于防盗的保护之下，但你的朋友们却不一定，快去帮助他们吧～</string>
     <string name="callfilter_share_dialog_content">叫上你的朋友们一起屏蔽那些恼人的骚扰电话吧～</string>
     <string name="intruder_share_dialog_content">觉得我们还不错？分享给好友吧～</string>
