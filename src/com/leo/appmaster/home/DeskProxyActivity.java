@@ -20,6 +20,7 @@ import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
+import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.CallFilterManager;
 import com.leo.appmaster.callfilter.StrangeCallActivity;
@@ -319,7 +320,7 @@ public class DeskProxyActivity extends Activity {
                     "assistant", "power_cnts");
         }
         mLockManager.filterPackage(this.getPackageName(), 1000);
-        Intent dlIntent = new Intent(this, EleActivity.class);
+        Intent dlIntent = new Intent(this, BatteryMainActivity.class);
         dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         dlIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
         startActivity(dlIntent);
