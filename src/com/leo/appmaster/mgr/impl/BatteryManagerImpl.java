@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.battery.BatterProtectView;
+import com.leo.appmaster.battery.RemainTimeHelper;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.BatteryComsuption;
@@ -35,8 +36,10 @@ public class BatteryManagerImpl extends BatteryManager {
     private boolean mPageOnForeground = false;
     private long mLastKillTime = 0;
 
+    private RemainTimeHelper mRemainTimeHelper;
+
     private static final int UNPLUGGED = 0;
-    private static final int DEFAULT_LEVEL = 0;
+    private static final int DEFAULT_LEVEL = -1;
     private static final int DEFAULT_SCALE = 100;
     private static final int DEFAULT_TEMP = 0;
     private static final int DEFAULT_VOLTAGE = 0;
@@ -190,6 +193,8 @@ public class BatteryManagerImpl extends BatteryManager {
      */
     private void handlePluginEvent(BatteryState newState) {
         Toast.makeText(mContext, "用户插上充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
+        int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
+                newState.level, 0);
         BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
         mProtectView.setBatteryStatus(true);
         mProtectView.setBatteryLevel(newState.level);
@@ -217,6 +222,9 @@ public class BatteryManagerImpl extends BatteryManager {
      */
     private void handleChargingEvent(BatteryState newState) {
         Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
+        int remainTime = getRemainTimeHelper(newState)
+                .getEstimatedTime(mPreviousState.level, newState.level,
+                        (newState.timestamp-mPreviousState.timestamp));
         BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
         mProtectView.setBatteryStatus(true);
         mProtectView.setBatteryLevel(newState.level);
@@ -255,5 +263,13 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public void setBatteryNotiStatus(boolean value) {
         mPt.putBoolean(PrefConst.KEY_BATTERY_NOTIFICATION_STATUS, value);
+    }
+
+    /* 剩余充电时间计算相关 */
+    private RemainTimeHelper getRemainTimeHelper(BatteryState batteryState) {
+        if (mRemainTimeHelper == null) {
+            mRemainTimeHelper = new RemainTimeHelper(batteryState.scale);
+        }
+        return mRemainTimeHelper;
     }
 }
