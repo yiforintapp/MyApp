@@ -15,6 +15,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
@@ -293,6 +295,9 @@ public class BatteryProtectView {
                 if (mView.getParent() != null) {
                     mWM.removeView(mView);
                     isShowing = false;
+
+                    LeoEventBus.getDefaultBus().post(new BatteryViewEvent("finish_activity"));
+
                 }
             } catch (Exception e) {
                 isShowing = false;

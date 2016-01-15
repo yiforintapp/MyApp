@@ -89,6 +89,9 @@ public class BatteryShowViewActivity extends BaseActivity implements BatteryMana
 
     public void onEventMainThread(BatteryViewEvent event) {
         LeoLog.d("testBatteryEvent", "getEvent : " + event.eventMsg);
+        if (event.eventMsg.equals("finish_activity")) {
+            finish();
+        }
     }
 
 

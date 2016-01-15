@@ -210,6 +210,9 @@ public class BatteryManagerImpl extends BatteryManager {
     private void handleUnplugEvent(BatteryState newState) {
         Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
 
+        mLockManager.filterSelfOneMinites();
+        mLockManager.filterPackage(mContext.getPackageName(), 1000);
+
         if (mListenerRef != null) {
             BatteryStateListener listener = mListenerRef.get();
             if (listener != null) {
@@ -230,6 +233,9 @@ public class BatteryManagerImpl extends BatteryManager {
                 .getEstimatedTime(mPreviousState.level, newState.level,
                         (newState.timestamp - mPreviousState.timestamp));
 
+        mLockManager.filterSelfOneMinites();
+        mLockManager.filterPackage(mContext.getPackageName(), 1000);
+
         if (mListenerRef != null) {
             BatteryStateListener listener = mListenerRef.get();
             if (listener != null) {
@@ -247,6 +253,9 @@ public class BatteryManagerImpl extends BatteryManager {
      */
     private void handleConsumingState(BatteryState newState) {
         Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
+
+        mLockManager.filterSelfOneMinites();
+        mLockManager.filterPackage(mContext.getPackageName(), 1000);
 
         if (mListenerRef != null) {
             BatteryStateListener listener = mListenerRef.get();
