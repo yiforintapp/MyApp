@@ -211,7 +211,7 @@ public class PrefConst {
     public static final String KEY_FIL_NOTI_STATE = "FIL_NOTI_STATE";
 
     //  手机防盗分享
-    public static final String KEY_PHONE_SHARE = "phone_security";
+    public static final String KEY_PHONE_SHARE = "phonesecurity";
     public static final String KEY_PHONE_SHARE_CONTENT = "phone_security_content";
     public static final String KEY_PHONE_SHARE_URL = "phone_security_url";
 
@@ -221,12 +221,12 @@ public class PrefConst {
     public static final String KEY_INTRUDER_SHARE_URL = "intruder_url";
 
     // 骚扰拦截分享
-    public static final String KEY_CALL_FILTER_SHARE = "call_filter";
+    public static final String KEY_CALL_FILTER_SHARE = "callfilter";
     public static final String KEY_CALL_FILTER_SHARE_CONTENT = "call_filter_content";
     public static final String KEY_CALL_FILTER_SHARE_URL = "call_filter_url";
 
     // 充电屏保界面swifty
-    public static final String KEY_CHARGE_SWIFTY = "charge_swifty";
+    public static final String KEY_CHARGE_SWIFTY = "chargeswifty";
     public static final String KEY_CHARGE_SWIFTY_CONTENT = "charge_swifty_content";
     public static final String KEY_CHARGE_SWIFTY_GP_URL = "charge_swifty_gp_url";
     public static final String KEY_CHARGE_SWIFTY_IMG_URL = "charge_swifty_img_url";
@@ -236,7 +236,7 @@ public class PrefConst {
 
 
     // 入侵者防护抓拍界面swifty
-    public static final String KEY_INTRUDER_SWIFTY = "intruder_swifty";
+    public static final String KEY_INTRUDER_SWIFTY = "intruderswifty";
     public static final String KEY_INTRUDER_SWIFTY_CONTENT = "intruder_swifty_content";
     public static final String KEY_INTRUDER_SWIFTY_GP_URL = "intruder_swifty_gp_url";
     public static final String KEY_INTRUDER_SWIFTY_IMG_URL = "intruder_swifty_img_url";

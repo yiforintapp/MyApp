@@ -619,7 +619,8 @@ public final class Utilities {
         }
     }
 
-    private static void selectType(PreferenceTable preferenceTable, String type, String gpUrl,
+
+    public static void selectType(PreferenceTable preferenceTable, String type, String gpUrl,
                                    String url, String pkgName, Context context) {
 
         if (Constants.BROWSER_URL_TYPE.equals(

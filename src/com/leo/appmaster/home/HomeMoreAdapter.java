@@ -1,10 +1,6 @@
 package com.leo.appmaster.home;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
-import android.os.Build;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +16,9 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.utils.PrefConst;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 首页上拉列表Adaper
  * Created by Jasper on 2015/10/8.
@@ -28,6 +27,12 @@ public class HomeMoreAdapter extends BaseAdapter {
     private static final int ITEM_LABEL = 1;
 
     private static final int IDX_LABEL = 0;
+
+    private static final int[] SWIFTY = new int[]{
+            R.string.up_list_swifty_title,
+            R.string.hp_helper_iswipe
+    };
+
     private static final int[] ARRAY_MEDIA = new int[]{
             R.string.hp_media_label,
             R.string.hp_hide_img,
@@ -66,8 +71,7 @@ public class HomeMoreAdapter extends BaseAdapter {
 
     private static final int[] ARRAY_HELPER = new int[]{
             R.string.hp_helper_label,
-            R.string.hp_helper_shot,
-            R.string.hp_helper_iswipe
+            R.string.hp_helper_shot
     };
     private static final int ID_RES_HIDE_IMG = R.drawable.ic_up_hide_img;
     private static final int ID_RES_HIDE_VIDEO = R.drawable.ic_up_hide_video;
@@ -99,12 +103,14 @@ public class HomeMoreAdapter extends BaseAdapter {
         mDrawableArray = new SparseIntArray();
 
         List<int[]> arrayList = new ArrayList<int[]>();
+        arrayList.add(SWIFTY);
         arrayList.add(ARRAY_MEDIA);
         arrayList.add(ARRAY_CONTACT_SINGLE);
         arrayList.add(ARRAY_APP);
         arrayList.add(ARRAY_DEVICE);
         arrayList.add(ARRAY_HELPER);
 
+        mDrawableArray.put(R.string.hp_helper_iswipe, ID_RES_HELPER_ISWIPE);
         mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);
         mDrawableArray.put(R.string.hp_hide_video, ID_RES_HIDE_VIDEO);
         mDrawableArray.put(R.string.home_tab_lost, ID_RES_PHONE_LOST);
@@ -114,7 +120,6 @@ public class HomeMoreAdapter extends BaseAdapter {
         mDrawableArray.put(R.string.hp_device_gprs, ID_RES_DEVICE_GPRS);
         mDrawableArray.put(R.string.hp_device_power, ID_RES_DEVICE_POWER);
         mDrawableArray.put(R.string.hp_helper_shot, ID_RES_HELPER_SHOT);
-        mDrawableArray.put(R.string.hp_helper_iswipe, ID_RES_HELPER_ISWIPE);
 
         int num = 0;
         for (int[] array : arrayList) {

@@ -3,7 +3,6 @@ package com.leo.appmaster.intruderprotection;
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -42,6 +42,7 @@ import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
@@ -51,9 +52,11 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageScaleType;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.io.File;
@@ -102,6 +105,12 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private LinearLayout mFiveStarLayout;
 
     private RelativeLayout mShareLayout; // 分享layout
+
+    private LinearLayout mSwiftylayout; //swifty卡片
+    private TextView mSwiftyTitle;
+    private ImageView mSwiftyImg;
+    private TextView mSwiftyContent;
+    private RippleView mSwiftyBtnLt;
 
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
@@ -300,6 +309,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
         mShareLayout = (RelativeLayout) findViewById(R.id.share_layout);
         mShareLayout.setOnClickListener(this);
+        initSwiftyLayout();
     }
 
     /* 3.2 advertise stuff - begin */
@@ -697,6 +707,66 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         MobvistaEngine.getInstance(this).release(INTRUDER_AD_ID);
     }
 
+    private void initSwiftyLayout() {
+        ViewStub viewStub = (ViewStub) findViewById(R.id.swifty_stub);
+        if (viewStub == null) {
+            return;
+        }
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL));
+
+        boolean isTypeEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_TYPE));
+
+        boolean isGpUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_GP_URL));
+
+        boolean isBrowserUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_URL));
+
+        boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+            View include = viewStub.inflate();
+            mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
+            mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
+            mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
+            mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+            mSwiftyBtnLt.setOnClickListener(this);
+            mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_TITLE));
+            if (!isTitleEmpty) {
+                mSwiftyTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_INTRUDER_SWIFTY_TITLE));
+            }
+        }
+
+    }
+
+    public DisplayImageOptions getOptions(int drawble) {  //需要提供默认图
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(drawble)
+                .showImageForEmptyUri(drawble)
+                .showImageOnFail(drawble)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+
+        return options;
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -794,6 +864,18 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 //                intent.putExtra(Intent.EXTRA_TEXT, "分享内容");
 //                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                startActivity(Intent.createChooser(intent, "分享到"));
+                break;
+            case R.id.item_btn_rv:
+                mLockManager.filterSelfOneMinites();
+                boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(IntruderCatchedActivity.this);
+                if (installISwipe) {
+                    Utilities.startISwipIntent(IntruderCatchedActivity.this);
+                } else {
+                    PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                    Utilities.selectType(preferenceTable, PrefConst.KEY_INTRUDER_SWIFTY_TYPE,
+                            PrefConst.KEY_INTRUDER_SWIFTY_GP_URL, PrefConst.KEY_INTRUDER_SWIFTY_URL,
+                            Constants.ISWIPE_PACKAGE, IntruderCatchedActivity.this);
+                }
                 break;
         }
     }

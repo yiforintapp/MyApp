@@ -640,21 +640,15 @@ public class HttpRequestAgent {
         Context context = AppMasterApplication.getInstance();
         String language = getPostLanguage();
         String country = Utilities.getCountryID(context);
-        String versionCodeString = "";
-        try {
-            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-            versionCodeString = String.valueOf(versionCode);
-        } catch (NameNotFoundException e) {
-        }
-        String channelCode = mContext.getString(R.string.channel_code);
-
+        final String productId = "appmaster";
+        final String unitName = "selfshare";
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Utilities.getURL(Constants.PRIVACY_WIFI_URL)).append("/")
-                .append(country).append("/")
-                .append(language).append("/")
-                .append(versionCodeString).append("/")
-                .append(channelCode)
-                .append(".html");
+        stringBuilder.append(Utilities.getURL("")).append("/")
+                  .append(productId).append("/")
+                  .append(unitName).append("/")
+                  .append(country).append("/")
+                  .append(language)
+                  .append(".html");
         String url = stringBuilder.toString();
         LeoLog.i("ShareFetchJob", "load url: " + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,

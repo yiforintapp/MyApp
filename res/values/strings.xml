@@ -958,6 +958,7 @@
     <string name="phone_share_content">Hi，我现在正在使用隐私卫士的防盗功能。只需要发条短信，我就能够远程控制我的手机，实在是太方便了，我想让你也试试这个软件。</string>
     <string name="callfilter_share_content">Hi，我正在使用隐私卫士的电话拦截功能。我把那些烦人的推销员都屏蔽掉了，最关键的是，它还能自动识别来电，简直太方便了。我真的很想让你也一起来用它。</string>
     <string name="intruder_share_content">Hi，我正在使用隐私卫士的入侵者防护功能。他已经帮我拍到了%1$s个偷看我手机的人，现在我已经知道是哪些人在偷看我的手机了，你也快来试试看～</string>
+    <string name="up_list_swifty_title">效率提升</string>
 
     <string name="screen_protect_type_one">快速充电</string>
     <string name="screen_protect_type_two">恒流充电</string>
