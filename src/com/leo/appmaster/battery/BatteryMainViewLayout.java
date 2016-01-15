@@ -2,6 +2,7 @@ package com.leo.appmaster.battery;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +31,7 @@ public class BatteryMainViewLayout extends RelativeLayout {
     private TextView mTvBigTime;
     private TextView mTvSmallLeft;
     private TextView mTvSmallRight;
+    private TextView mTvTime;
 
 
     public BatteryMainViewLayout(Context context) {
@@ -57,12 +59,16 @@ public class BatteryMainViewLayout extends RelativeLayout {
         mTvBigTime = (TextView) findViewById(R.id.battery_num);
         mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
         mTvSmallRight = (TextView) findViewById(R.id.battery_num);
+        mTvTime = (TextView) findViewById(R.id.right_time);
 
         fillTime();
     }
 
     private void fillTime() {
-
+        String string = "17";
+        String string2 = "33";
+        String text = mContext.getString(R.string.screen_protect_time_right, string, string2);
+        mTvTime.setText(Html.fromHtml(text));
     }
 
     private int startX;
