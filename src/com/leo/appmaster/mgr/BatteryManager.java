@@ -139,4 +139,15 @@ public abstract class BatteryManager extends Manager {
      * 清除监听电池状态listener
      */
     public abstract void clearBatteryStateListener();
+
+    /**
+     * 是否满足弹耗电通知条件
+     */
+    public abstract boolean shouldNotify();
+
+    /***
+     * “电源管理页”是否需要开启“一键省电”功能
+     * @return
+     */
+    public abstract boolean shouldEnableCleanFunction();
 }

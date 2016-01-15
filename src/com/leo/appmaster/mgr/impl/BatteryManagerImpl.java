@@ -48,6 +48,8 @@ public class BatteryManagerImpl extends BatteryManager {
     public static final String UPDATE_UP = "type_3";
     public static final String UPDATE_DONW = "type_4";
 
+    // 两分钟内不能连续两次清理应用
+    private static final int KILL_INTERVAL = 2 * 60 * 1000;
 
     private AppMasterPreference mSp;
     private boolean mPageOnForeground = false;
@@ -67,8 +69,10 @@ public class BatteryManagerImpl extends BatteryManager {
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
         mContext.registerReceiver(mReceiver, filter);
+
         mSp = AppMasterPreference.getInstance(mContext);
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+
         mNotifyHelper = new BatteryNotifyHelper(mContext, this);
     }
 
@@ -78,7 +82,7 @@ public class BatteryManagerImpl extends BatteryManager {
         ip.setMinPercentOfTotal(0.01);
         List<BatteryComsuption> list = ip.getBatteryStats();
         for (BatteryComsuption bc : list) {
-            LeoLog.d("stone_test", "BatteryComsuption -> " + bc.getDefaultPackageName());
+            LeoLog.d(TAG, "BatteryComsuption -> " + bc.getDefaultPackageName());
         }
 
         // TODO - filter out system apps or background music apps
@@ -87,7 +91,7 @@ public class BatteryManagerImpl extends BatteryManager {
         ArrayList<String> pkgs = new ArrayList<String>();
         for (ProcessAdj processAdj : processAdjList) {
             pkgs.add(processAdj.pkg);
-            LeoLog.d("stone_test", "processAdj -> " + processAdj.pkg);
+            LeoLog.d(TAG, "processAdj -> " + processAdj.pkg);
         }
 
         Iterator<BatteryComsuption> batteryComsuptionIterator = list.iterator();
@@ -298,6 +302,18 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public void clearBatteryStateListener() {
         mListenerRef = null;
+    }
+
+    @Override
+    public boolean shouldNotify() {
+        return (!mPageOnForeground
+                && mPreviousState.plugged == UNPLUGGED
+                && getBatteryNotiStatus());
+    }
+
+    @Override
+    public boolean shouldEnableCleanFunction() {
+        return (SystemClock.elapsedRealtime()-mLastKillTime)>KILL_INTERVAL;
     }
 
     /* 剩余充电时间计算相关 */
