@@ -40,6 +40,7 @@
         android:layout_below="@id/tv_ask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
         ></ListView>
     
      <View 

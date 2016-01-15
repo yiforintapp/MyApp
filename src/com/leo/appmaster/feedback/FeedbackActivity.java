@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,6 +38,7 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.DeviceUtil;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.Utilities;
@@ -66,7 +68,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private final static int[] sCategoryIds = {
             R.string.home_tab_wifi, R.string.home_tab_lost,
             R.string.home_tab_instruder, R.string.privacy_scan, R.string.category_lock, R.string.pravicy_protect,
-            R.string.app_manager, R.string.category_other,
+            R.string.app_manager, R.string.hp_device_power, R.string.call_filter_name, R.string.category_other,
     };
 
     private final ArrayList<String> mCategories = new ArrayList<String>();
@@ -358,6 +360,12 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private void showQuesCategoryDialog() {
         if (mCategoryDialog == null) {
             mCategoryDialog = new LEOChoiceDialog(this);
+        }
+        try {
+            ListView itemsListView = mCategoryDialog.getItemsListView();
+            LayoutParams layoutParams = itemsListView.getLayoutParams();
+            layoutParams.height = DipPixelUtil.dip2px(this, 300);
+        } catch (Throwable e) {
         }
         mCategoryDialog.setTitle(getResources().getString(R.string.feedback_category_tip));
         mCategoryDialog.setItemsWithDefaultStyle(mCategories, mCategoryPos);
