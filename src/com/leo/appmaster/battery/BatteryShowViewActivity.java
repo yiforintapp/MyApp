@@ -46,7 +46,7 @@ public class BatteryShowViewActivity extends BaseActivity {
     }
 
     private void process() {
-        BatterProtectView mProtectView = BatterProtectView.makeText(this);
+        BatteryProtectView mProtectView = BatteryProtectView.makeText(this);
 
         if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN)) {
             mProtectView.setBatteryStatus(true);
@@ -94,6 +94,6 @@ public class BatteryShowViewActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BatterProtectView.handleHide();
+        BatteryProtectView.handleHide();
     }
 }

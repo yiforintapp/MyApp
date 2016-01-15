@@ -229,7 +229,7 @@ public class BatteryManagerImpl extends BatteryManager {
 
         mContext.startActivity(intent);
 
-//        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
+//        BatteryProtectView mProtectView = BatteryProtectView.makeText(mContext);
 //        mProtectView.setBatteryStatus(true);
 //        mProtectView.setBatteryLevel(newState.level);
 //        mProtectView.notifyViewUi();
@@ -248,7 +248,7 @@ public class BatteryManagerImpl extends BatteryManager {
         event.state = newState;
         LeoEventBus.getDefaultBus().post(event);
 
-//        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
+//        BatteryProtectView mProtectView = BatteryProtectView.makeText(mContext);
 //        mProtectView.setBatteryStatus(false);
 //        mProtectView.setBatteryLevel(newState.level);
 //        mProtectView.notifyViewUi();
@@ -270,7 +270,7 @@ public class BatteryManagerImpl extends BatteryManager {
         event.remainTime = remainTime;
         LeoEventBus.getDefaultBus().post(event);
 
-//        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
+//        BatteryProtectView mProtectView = BatteryProtectView.makeText(mContext);
 //        mProtectView.setBatteryStatus(true);
 //        mProtectView.setBatteryLevel(newState.level);
 //        mProtectView.notifyViewUi();
@@ -289,7 +289,7 @@ public class BatteryManagerImpl extends BatteryManager {
         LeoEventBus.getDefaultBus().post(event);
 
 
-//        BatterProtectView mProtectView = BatterProtectView.makeText(mContext);
+//        BatteryProtectView mProtectView = BatteryProtectView.makeText(mContext);
 //        mProtectView.setBatteryStatus(true);
 //        mProtectView.setBatteryLevel(newState.level);
 //        mProtectView.notifyViewUi();

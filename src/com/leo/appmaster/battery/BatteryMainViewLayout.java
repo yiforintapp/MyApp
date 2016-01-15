@@ -16,8 +16,6 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.ObjectAnimator;
 
-import org.w3c.dom.Text;
-
 
 public class BatteryMainViewLayout extends RelativeLayout {
     private static final int API_LEVEL_19 = 19;
@@ -132,7 +130,7 @@ public class BatteryMainViewLayout extends RelativeLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                BatterProtectView.handleHide();
+                BatteryProtectView.handleHide();
             }
         });
         animX.start();
@@ -159,7 +157,7 @@ public class BatteryMainViewLayout extends RelativeLayout {
         LeoLog.d("testDisPatch", "dispatchKeyEvent");
 
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            BatterProtectView.handleHide();
+            BatteryProtectView.handleHide();
         }
         return false;
     }
