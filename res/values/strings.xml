@@ -969,4 +969,5 @@
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>分</string>
 
     <string name="screen_protect_unlock_text">滑动来解锁</string>
+    <string name="oppo_rom_tip_txt">由于系统限制，隐私卫士需要开启权限才能正常工作。开启步骤“添加程序”-->“添加允许后台运行的应用”-->选择添加隐私卫士</string>
 </resources>
