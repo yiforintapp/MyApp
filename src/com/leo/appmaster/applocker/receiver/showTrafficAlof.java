@@ -21,6 +21,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.showTrafficTip;
 import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
+import com.leo.appmaster.utils.LeoLog;
 
 public class showTrafficAlof extends BroadcastReceiver {
     private Context mContext;

@@ -6,11 +6,18 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.BatteryViewEvent;
+import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.utils.LeoLog;
 
 
 public class BatteryShowViewActivity extends BaseActivity {
     private final String TAG = "AskAddToBlacklistActivity";
+    private BatteryManagerImpl.BatteryState newState;
+    private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
+    private int mRemainTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +41,49 @@ public class BatteryShowViewActivity extends BaseActivity {
         setContentView(R.layout.activity_batter_show_view);
 
         handleIntent();
+        initAll();
+        process();
+    }
+
+    private void process() {
+        BatterProtectView mProtectView = BatterProtectView.makeText(this);
+
+        if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN)) {
+            mProtectView.setBatteryStatus(true);
+            mProtectView.setBatteryLevel(newState.level);
+            mProtectView.notifyViewUi();
+            mProtectView.show();
+        } else if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
+            mProtectView.setBatteryLevel(newState.level);
+            mProtectView.notifyViewUi();
+            mProtectView.setBatteryStatus(false);
+        } else if (mChangeType.equals(BatteryManagerImpl.UPDATE_UP)) {
+            mProtectView.setBatteryLevel(newState.level);
+            mProtectView.notifyViewUi();
+            mProtectView.setBatteryStatus(true);
+        } else {
+            mProtectView.setBatteryLevel(newState.level);
+            mProtectView.notifyViewUi();
+            mProtectView.setBatteryStatus(true);
+        }
+
+    }
+
+    private void initAll() {
+        LeoEventBus.getDefaultBus().register(this);
     }
 
     private void handleIntent() {
         Intent intent = getIntent();
-//        switch (intExtra) {
-//            default:
-//                this.finish();
-//                break;
-//        }
+        newState = (BatteryManagerImpl.BatteryState)
+                intent.getExtras().get(BatteryManagerImpl.SEND_BUNDLE);
+        mChangeType = intent.getStringExtra(BatteryManagerImpl.PROTECT_VIEW_TYPE);
+        mRemainTime = intent.getIntExtra(BatteryManagerImpl.REMAIN_TIME, 0);
+        LeoLog.d("testNewActivity", newState.toString());
+    }
+
+    public void onEventMainThread(BatteryViewEvent event) {
+        LeoLog.d("testBatteryEvent", "getEvent : " + event.eventMsg);
     }
 
     @Override
@@ -50,4 +91,9 @@ public class BatteryShowViewActivity extends BaseActivity {
         super.finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BatterProtectView.handleHide();
+    }
 }
