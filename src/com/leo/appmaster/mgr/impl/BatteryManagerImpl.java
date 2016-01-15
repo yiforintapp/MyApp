@@ -28,6 +28,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -55,49 +56,8 @@ public class BatteryManagerImpl extends BatteryManager {
     private RemainTimeHelper mRemainTimeHelper;
     private BatteryNotifyHelper mNotifyHelper;
 
-    private static final int UNPLUGGED = 0;
-    private static final int DEFAULT_LEVEL = -1;
-    private static final int DEFAULT_SCALE = 100;
-    private static final int DEFAULT_TEMP = 0;
-    private static final int DEFAULT_VOLTAGE = 0;
-    private static final boolean DEFAULT_PRESENT = false;
     private LockManager mLockManager;
-
-    public static class BatteryState implements Serializable {
-        public int level = DEFAULT_LEVEL;
-        public int plugged = android.os.BatteryManager.BATTERY_PLUGGED_USB;
-        public boolean present = DEFAULT_PRESENT;
-        public int scale = DEFAULT_SCALE;
-        public int status = android.os.BatteryManager.BATTERY_STATUS_UNKNOWN;
-        public int temperature = DEFAULT_TEMP;
-        public int voltage = DEFAULT_VOLTAGE;
-        public long timestamp = 0;
-
-        public BatteryState() {
-        }
-
-        public BatteryState(Intent intent) {
-            level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL,
-                    DEFAULT_LEVEL);
-            plugged = intent.getIntExtra(android.os.BatteryManager.EXTRA_PLUGGED,
-                    UNPLUGGED);
-            present = intent.getBooleanExtra(android.os.BatteryManager.EXTRA_PRESENT,
-                    DEFAULT_PRESENT);
-            scale = intent.getIntExtra(android.os.BatteryManager.EXTRA_SCALE,
-                    DEFAULT_SCALE);
-            status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS,
-                    android.os.BatteryManager.BATTERY_STATUS_UNKNOWN);
-            temperature = intent.getIntExtra(android.os.BatteryManager.EXTRA_TEMPERATURE,
-                    DEFAULT_TEMP);
-            voltage = intent.getIntExtra(android.os.BatteryManager.EXTRA_VOLTAGE,
-                    DEFAULT_VOLTAGE);
-            timestamp = SystemClock.elapsedRealtime();
-        }
-
-        public String toString() {
-            return "status: " + status + "; level: " + level + "; plugged: " + plugged;
-        }
-    }
+    private WeakReference<BatteryStateListener> mListenerRef;
 
     private BatteryState mPreviousState = new BatteryState();
 
@@ -265,6 +225,13 @@ public class BatteryManagerImpl extends BatteryManager {
                 .getEstimatedTime(mPreviousState.level, newState.level,
                         (newState.timestamp - mPreviousState.timestamp));
 
+        if (mListenerRef != null) {
+            BatteryStateListener listener = mListenerRef.get();
+            if (listener != null) {
+                listener.onStateChange(EventType.BAT_EVENT_CHARGING, newState, remainTime);
+            }
+        }
+
         BatteryViewEvent event = new BatteryViewEvent(UPDATE_UP);
         event.state = newState;
         event.remainTime = remainTime;
@@ -283,6 +250,13 @@ public class BatteryManagerImpl extends BatteryManager {
      */
     private void handleConsumingState(BatteryState newState) {
         Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
+
+        if (mListenerRef != null) {
+            BatteryStateListener listener = mListenerRef.get();
+            if (listener != null) {
+                listener.onStateChange(EventType.BAT_EVENT_CONSUMING, newState, 0);
+            }
+        }
 
         BatteryViewEvent event = new BatteryViewEvent(UPDATE_DONW);
         event.state = newState;
@@ -314,6 +288,16 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public void setBatteryNotiStatus(boolean value) {
         mPt.putBoolean(PrefConst.KEY_BATTERY_NOTIFICATION_STATUS, value);
+    }
+
+    @Override
+    public void setBatteryStateListener(BatteryStateListener listener) {
+        mListenerRef = new WeakReference<BatteryStateListener>(listener);
+    }
+
+    @Override
+    public void clearBatteryStateListener() {
+        mListenerRef = null;
     }
 
     /* 剩余充电时间计算相关 */
