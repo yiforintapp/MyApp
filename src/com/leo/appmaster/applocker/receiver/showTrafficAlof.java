@@ -41,7 +41,6 @@ public class showTrafficAlof extends BroadcastReceiver {
         secondIn = System.currentTimeMillis();
         String action = intent.getAction();
         // 开机启动服务，开始获取，计算流量
-         LeoLog.d("trafictest", "服务来通知咯，超额提示");
         if ("com.leo.appmaster.traffic.alot".equals(action)) {
             showAlarmDialog("com.leo.appmaster.traffic.alot");
         } else if ("android.net.conn.CONNECTIVITY_CHANGE".equals(action)) {
@@ -112,7 +111,6 @@ public class showTrafficAlof extends BroadcastReceiver {
     }
 
     private void showAlarmDialog(String action) {
-        LeoLog.i("testtt", "to show");
         Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ALERT_FLOW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
