@@ -27,6 +27,9 @@ public class BatteryMainViewLayout extends RelativeLayout {
     private View mTimeContent;
     private TextView mTvLevel;
     private TextView mTvStatus;
+    private TextView mTvBigTime;
+    private TextView mTvSmallLeft;
+    private TextView mTvSmallRight;
 
 
     public BatteryMainViewLayout(Context context) {
@@ -47,8 +50,19 @@ public class BatteryMainViewLayout extends RelativeLayout {
         super.onFinishInflate();
         mMoveContent = findViewById(R.id.move_content);
         mTimeContent = findViewById(R.id.time_content);
+
         mTvLevel = (TextView) findViewById(R.id.battery_num);
         mTvStatus = (TextView) findViewById(R.id.battery_status);
+
+        mTvBigTime = (TextView) findViewById(R.id.battery_num);
+        mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
+        mTvSmallRight = (TextView) findViewById(R.id.battery_num);
+
+        fillTime();
+    }
+
+    private void fillTime() {
+
     }
 
     private int startX;

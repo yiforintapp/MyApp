@@ -16,7 +16,7 @@ import com.leo.appmaster.R;
 public class DayView extends TextView implements OnClickListener {
 
     public static String[] days = AppMasterApplication.getInstance().getResources()
-            .getStringArray(R.array.days_of_week);;
+            .getStringArray(R.array.days_of_week);
 
     private DayOfWeek dayOfWeek;
 
