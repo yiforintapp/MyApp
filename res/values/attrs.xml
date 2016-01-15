@@ -183,4 +183,14 @@
             <enum name="auto_fit" value="-1" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="SlideView">
+        <attr name="maskText" format="string" />
+        <attr name="maskTextSize" format="dimension" />
+        <attr name="maskTextMarginLeft" format="dimension" />
+        <attr name="maskTextMarginTop" format="dimension" />
+        <attr name="slider" format="reference" />
+        <attr name="slidableLength" format="dimension" />
+    </declare-styleable>
+
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.text.Html;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -32,6 +33,7 @@ public class BatteryMainViewLayout extends RelativeLayout {
     private TextView mTvSmallLeft;
     private TextView mTvSmallRight;
     private TextView mTvTime;
+    private BatteryProtectSlideView mSlide;
 
 
     public BatteryMainViewLayout(Context context) {
@@ -60,6 +62,8 @@ public class BatteryMainViewLayout extends RelativeLayout {
         mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
         mTvSmallRight = (TextView) findViewById(R.id.battery_num);
         mTvTime = (TextView) findViewById(R.id.right_time);
+
+        mSlide = (BatteryProtectSlideView) findViewById(R.id.slider);
 
         fillTime();
     }
