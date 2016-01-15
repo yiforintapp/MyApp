@@ -244,6 +244,24 @@ public class PrefConst {
     public static final String KEY_INTRUDER_SWIFTY_URL = "intruder_swifty_url";
     public static final String KEY_INTRUDER_SWIFTY_TITLE = "intruder_swifty_title";
 
+    // 清理耗电应用界面swifty
+    public static final String KEY_CLEAN_SWIFTY = "cleanswifty";
+    public static final String KEY_CLEAN_SWIFTY_CONTENT = "clean_swifty_content";
+    public static final String KEY_CLEAN_SWIFTY_GP_URL = "clean_swifty_gp_url";
+    public static final String KEY_CLEAN_SWIFTY_IMG_URL = "clean_swifty_img_url";
+    public static final String KEY_CLEAN_SWIFTY_TYPE = "clean_swifty_type";
+    public static final String KEY_CLEAN_SWIFTY_URL = "clean_swifty_url";
+    public static final String KEY_CLEAN_SWIFTY_TITLE = "clean_swifty_title";
+
+    // 充电屏保界面预留推广位数据
+    public static final String KEY_CHARGE_EXTRA = "chargeextra";
+    public static final String KEY_CHARGE_EXTRA_CONTENT = "charge_extra_content";
+    public static final String KEY_CHARGE_EXTRA_GP_URL = "charge_extra_gp_url";
+    public static final String KEY_CHARGE_EXTRA_IMG_URL = "charge_extra_img_url";
+    public static final String KEY_CHARGE_EXTRA_TYPE = "charge_extra_type";
+    public static final String KEY_CHARGE_EXTRA_URL = "charge_extra_url";
+    public static final String KEY_CHARGE_EXTRA_TITLE = "charge_extra_title";
+
     // 骚扰拦截弹出分享框需要次数
     public static final String KEY_CALL_FILTER_SHARE_TIMES = "call_filter_share_times";
 }

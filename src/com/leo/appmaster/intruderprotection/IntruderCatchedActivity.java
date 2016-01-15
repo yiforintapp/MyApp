@@ -1,8 +1,10 @@
 package com.leo.appmaster.intruderprotection;
 
 import android.animation.LayoutTransition;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -840,24 +842,24 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.share_layout:  // 分享
                 Toast.makeText(IntruderCatchedActivity.this, "点击分享", Toast.LENGTH_SHORT).show();
-//                List<ResolveInfo> mApps = AppUtil.getShareApps(IntruderCatchedActivity.this);
-//                PackageManager packageManager = getPackageManager();
-//                for (ResolveInfo resolveInfo: mApps) {
-//                    LeoLog.e("IntruderCatchedActivity", "resolveInfo:" + resolveInfo.loadLabel(packageManager).toString());
-//                }
-//                final ResolveInfo mInfo = mApps.get(2);
-//                ThreadManager.getSubThreadHandler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//                        shareIntent.setComponent(new ComponentName(mInfo.activityInfo.packageName, mInfo.activityInfo.name));
-//                        shareIntent.setType("text/plain");
-//                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "测试， 标题");
-//                        shareIntent.putExtra(Intent.EXTRA_TEXT, "测试，这里发送推广地址");
-//                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(shareIntent);
-//                    }
-//                }, 2000);
+                List<ResolveInfo> mApps = AppUtil.getShareApps(IntruderCatchedActivity.this);
+                PackageManager packageManager = getPackageManager();
+                for (ResolveInfo resolveInfo: mApps) {
+                    LeoLog.e("IntruderCatchedActivity", "resolveInfo:" + resolveInfo.loadLabel(packageManager).toString());
+                }
+                final ResolveInfo mInfo = mApps.get(2);
+                ThreadManager.getSubThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setComponent(new ComponentName(mInfo.activityInfo.packageName, mInfo.activityInfo.name));
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "测试， 标题");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "测试，这里发送推广地址");
+                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(shareIntent);
+                    }
+                }, 2000);
 //                Intent intent=new Intent(Intent.ACTION_SEND);
 //                intent.setType("text/plain");
 //                intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
@@ -865,7 +867,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 //                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                startActivity(Intent.createChooser(intent, "分享到"));
                 break;
-            case R.id.item_btn_rv:
+            case R.id.item_btn_rv:  // 点击swifty卡片
                 mLockManager.filterSelfOneMinites();
                 boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(IntruderCatchedActivity.this);
                 if (installISwipe) {

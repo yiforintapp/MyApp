@@ -49,6 +49,8 @@ public class CardFetchJob extends FetchScheduleJob {
             setWifiFbEmpty(preferenceTable);
             setChargeSwiftyEmpty(preferenceTable);
             setIntruderSwiftyEmpty(preferenceTable);
+            setChargeExtraEmpty(preferenceTable);
+            setCleanSwiftyEmpty(preferenceTable);
 
             return;
         }
@@ -222,9 +224,50 @@ public class CardFetchJob extends FetchScheduleJob {
                 setValue(intruderSwifty, "title",
                         PrefConst.KEY_INTRUDER_SWIFTY_TITLE, preferenceTable);
 
-
             } else {
                 setIntruderSwiftyEmpty(preferenceTable);
+            }
+
+            boolean isCleanSwiftyNull = object.isNull(
+                    PrefConst.KEY_CLEAN_SWIFTY); // 判断key是否存在
+            if (!isCleanSwiftyNull) {  // 入侵者防护页swifty
+                JSONObject cleanSwifty = object.getJSONObject(PrefConst.KEY_CLEAN_SWIFTY);
+                setValue(cleanSwifty, "content",
+                        PrefConst.KEY_CLEAN_SWIFTY_CONTENT, preferenceTable);
+                setValue(cleanSwifty, "gp_url",
+                        PrefConst.KEY_CLEAN_SWIFTY_GP_URL, preferenceTable);
+                setValue(cleanSwifty, "img_url",
+                        PrefConst.KEY_CLEAN_SWIFTY_IMG_URL, preferenceTable);
+                setValue(cleanSwifty, "type",
+                        PrefConst.KEY_CLEAN_SWIFTY_TYPE, preferenceTable);
+                setValue(cleanSwifty, "url",
+                        PrefConst.KEY_CLEAN_SWIFTY_URL, preferenceTable);
+                setValue(cleanSwifty, "title",
+                        PrefConst.KEY_CLEAN_SWIFTY_TITLE, preferenceTable);
+
+            } else {
+                setCleanSwiftyEmpty(preferenceTable);
+            }
+
+            boolean isChargeExtraNull = object.isNull(
+                    PrefConst.KEY_CHARGE_EXTRA); // 判断key是否存在
+            if (!isChargeExtraNull) {  // 入侵者防护页swifty
+                JSONObject chargeExtra = object.getJSONObject(PrefConst.KEY_CHARGE_EXTRA);
+                setValue(chargeExtra, "content",
+                        PrefConst.KEY_CHARGE_EXTRA_CONTENT, preferenceTable);
+                setValue(chargeExtra, "gp_url",
+                        PrefConst.KEY_CHARGE_EXTRA_GP_URL, preferenceTable);
+                setValue(chargeExtra, "img_url",
+                        PrefConst.KEY_CHARGE_EXTRA_IMG_URL, preferenceTable);
+                setValue(chargeExtra, "type",
+                        PrefConst.KEY_CHARGE_EXTRA_TYPE, preferenceTable);
+                setValue(chargeExtra, "url",
+                        PrefConst.KEY_CHARGE_EXTRA_URL, preferenceTable);
+                setValue(chargeExtra, "title",
+                        PrefConst.KEY_CHARGE_EXTRA_TITLE, preferenceTable);
+
+            } else {
+                setChargeExtraEmpty(preferenceTable);
             }
 
         } catch (JSONException e) {
@@ -316,4 +359,23 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_INTRUDER_SWIFTY_TITLE, "");
     }
 
+    /** 应用清理swifty数据置空 */
+    private void setCleanSwiftyEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putString(PrefConst.KEY_CLEAN_SWIFTY_CONTENT, "");
+        preferenceTable.putString(PrefConst.KEY_CLEAN_SWIFTY_GP_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CLEAN_SWIFTY_IMG_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CLEAN_SWIFTY_TYPE, "");
+        preferenceTable.putString(PrefConst.KEY_CLEAN_SWIFTY_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CLEAN_SWIFTY_TITLE, "");
+    }
+
+    /** 充电屏保预留位数据置空 */
+    private void setChargeExtraEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putString(PrefConst.KEY_CHARGE_EXTRA_CONTENT, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_EXTRA_GP_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_EXTRA_TYPE, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_EXTRA_URL, "");
+        preferenceTable.putString(PrefConst.KEY_CHARGE_EXTRA_TITLE, "");
+    }
 }
