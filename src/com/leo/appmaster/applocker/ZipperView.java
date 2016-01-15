@@ -130,7 +130,7 @@ public class ZipperView extends View {
         mHeight = getHeight();
         try {
             initScaleBitmap();
-        } catch (Error e) {
+        } catch (Throwable t) {
             
         }
     }

@@ -4,7 +4,6 @@ package com.leo.appmaster.applocker.receiver;
 import java.lang.reflect.Method;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -22,7 +21,6 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.showTrafficTip;
 import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
-import com.leo.appmaster.utils.LeoLog;
 
 public class showTrafficAlof extends BroadcastReceiver {
     private Context mContext;
@@ -53,13 +51,16 @@ public class showTrafficAlof extends BroadcastReceiver {
             State mobileState = null;
             ConnectivityManager cm = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            if (ni != null) {
-                wifiState = ni.getState();
-            }
-            ni = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            if (ni != null) {
-                mobileState = ni.getState();
+            try {
+                NetworkInfo ni = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                if (ni != null) {
+                    wifiState = ni.getState();
+                }
+                ni = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                if (ni != null) {
+                    mobileState = ni.getState();
+                }
+            } catch (Exception e) {
             }
             if (wifiState != null && mobileState != null
                     && State.CONNECTED != wifiState
