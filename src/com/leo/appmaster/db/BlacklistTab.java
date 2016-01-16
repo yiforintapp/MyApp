@@ -313,14 +313,28 @@ public class BlacklistTab extends BaseTable {
         database.beginTransaction();
         try {
             for (BlackListInfo info : listInfos) {
-                if (info == null || TextUtils.isEmpty(info.number) || info.id == -1) {
+                if (info == null || (TextUtils.isEmpty(info.number) && info.id == -1)) {
                     continue;
                 }
 
                 values.clear();
                 values.put(CallFilterConstants.COL_BLACK_REMOVE_STATE, CallFilterConstants.REMOVE);
                 values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, CallFilterConstants.MK_BLACK_LIST);
-                database.update(CallFilterConstants.TAB_BLACK_LIST, values, "_id = ?", new String[]{info.id + ""});
+                if (info.id != -1) {
+                    database.update(CallFilterConstants.TAB_BLACK_LIST, values, "_id = ?", new String[]{info.id + ""});
+                } else {
+                    String number = PrivacyContactUtils.simpleFromateNumber(info.number);
+                    String selection = CallFilterConstants.COL_BLACK_NUMBER;
+                    String[] selectionArgs = null;
+                    if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                        selection += " LIKE ? ";
+                        selectionArgs = new String[]{"%" + number};
+                    } else {
+                        selection += " = ? ";
+                        selectionArgs = new String[]{number};
+                    }
+                    database.update(CallFilterConstants.TAB_BLACK_LIST, values, selection, selectionArgs);
+                }
             }
             database.setTransactionSuccessful();
         } catch (Exception e) {
