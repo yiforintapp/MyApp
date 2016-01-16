@@ -225,16 +225,6 @@ public class PrefConst {
     public static final String KEY_CALL_FILTER_SHARE_CONTENT = "call_filter_content";
     public static final String KEY_CALL_FILTER_SHARE_URL = "call_filter_url";
 
-    // 充电屏保界面swifty
-    public static final String KEY_CHARGE_SWIFTY = "chargeswifty";
-    public static final String KEY_CHARGE_SWIFTY_CONTENT = "charge_swifty_content";
-    public static final String KEY_CHARGE_SWIFTY_GP_URL = "charge_swifty_gp_url";
-    public static final String KEY_CHARGE_SWIFTY_IMG_URL = "charge_swifty_img_url";
-    public static final String KEY_CHARGE_SWIFTY_TYPE = "charge_swifty_type";
-    public static final String KEY_CHARGE_SWIFTY_URL = "charge_swifty_url";
-    public static final String KEY_CHARGE_SWIFTY_TITLE = "charge_swifty_title";
-
-
     // 入侵者防护抓拍界面swifty
     public static final String KEY_INTRUDER_SWIFTY = "intruderswifty";
     public static final String KEY_INTRUDER_SWIFTY_CONTENT = "intruder_swifty_content";
@@ -244,7 +234,7 @@ public class PrefConst {
     public static final String KEY_INTRUDER_SWIFTY_URL = "intruder_swifty_url";
     public static final String KEY_INTRUDER_SWIFTY_TITLE = "intruder_swifty_title";
 
-    // 清理耗电应用界面swifty
+    // 3.3 清理耗电应用界面swifty - 省电加速结果页推广位
     public static final String KEY_CLEAN_SWIFTY = "cleanswifty";
     public static final String KEY_CLEAN_SWIFTY_CONTENT = "clean_swifty_content";
     public static final String KEY_CLEAN_SWIFTY_GP_URL = "clean_swifty_gp_url";
@@ -253,7 +243,16 @@ public class PrefConst {
     public static final String KEY_CLEAN_SWIFTY_URL = "clean_swifty_url";
     public static final String KEY_CLEAN_SWIFTY_TITLE = "clean_swifty_title";
 
-    // 充电屏保界面预留推广位数据
+    // 3.3 充电屏保界面swifty - 充电屏保推广位一
+    public static final String KEY_CHARGE_SWIFTY = "chargeswifty";
+    public static final String KEY_CHARGE_SWIFTY_CONTENT = "charge_swifty_content";
+    public static final String KEY_CHARGE_SWIFTY_GP_URL = "charge_swifty_gp_url";
+    public static final String KEY_CHARGE_SWIFTY_IMG_URL = "charge_swifty_img_url";
+    public static final String KEY_CHARGE_SWIFTY_TYPE = "charge_swifty_type";
+    public static final String KEY_CHARGE_SWIFTY_URL = "charge_swifty_url";
+    public static final String KEY_CHARGE_SWIFTY_TITLE = "charge_swifty_title";
+
+    // 3.3 充电屏保界面预留推广位数据 - 充电屏保推广位二
     public static final String KEY_CHARGE_EXTRA = "chargeextra";
     public static final String KEY_CHARGE_EXTRA_CONTENT = "charge_extra_content";
     public static final String KEY_CHARGE_EXTRA_GP_URL = "charge_extra_gp_url";
