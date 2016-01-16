@@ -19,6 +19,8 @@ public class BatteryViewFragment extends BaseFragment {
     private TextView mTvBigTime;
     private TextView mTvSmallLeft;
     private TextView mTvSmallRight;
+
+    private TextView mTvLeftTime;
     private TextView mTvTime;
 
     private BatteryManagerImpl.BatteryState newState;
@@ -43,19 +45,14 @@ public class BatteryViewFragment extends BaseFragment {
         mTvBigTime = (TextView) findViewById(R.id.battery_num);
         mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
         mTvSmallRight = (TextView) findViewById(R.id.battery_num);
+
+        mTvLeftTime = (TextView) findViewById(R.id.left_time);
         mTvTime = (TextView) findViewById(R.id.right_time);
 
-        if(newState != null){
+        if (newState != null) {
             process(mChangeType, newState, mRemainTime);
         }
-        fillTime("17", "33");
-    }
 
-    private void fillTime(String s, String s1) {
-        String string = s;
-        String string2 = s1;
-        String text = mActivity.getString(R.string.screen_protect_time_right, string, string2);
-        mTvTime.setText(Html.fromHtml(text));
     }
 
     @Override
@@ -87,28 +84,96 @@ public class BatteryViewFragment extends BaseFragment {
         mRemainTime = remainTime;
 
         if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN)) {
-            notifyUI(true);
+            notifyUI(mChangeType, true);
         } else if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
-            notifyUI(false);
+            notifyUI(mChangeType, false);
         } else if (mChangeType.equals(BatteryManagerImpl.UPDATE_UP)) {
-            notifyUI(true);
+            notifyUI(mChangeType, true);
         } else {
-            notifyUI(true);
+            notifyUI(mChangeType, false);
         }
 
 
     }
 
-    public void notifyUI(boolean isCharing) {
+    public void notifyUI(String type, boolean isCharing) {
+
+        if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN) ||
+                mChangeType.equals(BatteryManagerImpl.UPDATE_UP)) {
+            setTime(mRemainTime);
+        } else {
+            noTime();
+        }
 
         if (isCharing) {
-            mTvLevel.setVisibility(View.VISIBLE);
-            mTvLevel.setText("电量 : " + newState.level);
-        } else {
-            mTvLevel.setVisibility(View.GONE);
-        }
 
+        } else {
+
+        }
 
     }
 
+    private void noTime() {
+        mTvLeftTime.setVisibility(View.GONE);
+        mTvTime.setVisibility(View.GONE);
+    }
+
+
+    public void setTime(int second) {
+
+        LeoLog.d("testBatteryView", "second : " + second);
+
+        int h = 0;
+        int d = 0;
+        int s = 0;
+        int temp = second % 3600;
+        if (second > 3600) {
+            h = second / 3600;
+            if (temp != 0) {
+                if (temp > 60) {
+                    d = temp / 60;
+                    if (temp % 60 != 0) {
+                        s = temp % 60;
+                    }
+                } else {
+                    s = temp;
+                }
+            }
+        } else {
+            d = second / 60;
+            if (second % 60 != 0) {
+                s = second % 60;
+            }
+        }
+
+
+        String hString, dString;
+        hString = String.valueOf(h);
+        dString = String.valueOf(d);
+
+        LeoLog.d("testBatteryView", "hString : " + hString + "dString : " + dString);
+
+        if (hString.equals("0")) {
+            if (!dString.equals("0")) {
+                String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
+                mTvLeftTime.setVisibility(View.VISIBLE);
+                mTvTime.setVisibility(View.VISIBLE);
+                mTvTime.setText(Html.fromHtml(text));
+            } else {
+                if (newState.level == 100) {
+                    mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
+                    mTvTime.setVisibility(View.GONE);
+                } else {
+                    mTvLeftTime.setVisibility(View.GONE);
+                    mTvTime.setVisibility(View.GONE);
+                }
+            }
+        } else {
+            String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
+            mTvLeftTime.setVisibility(View.VISIBLE);
+            mTvTime.setVisibility(View.VISIBLE);
+            mTvTime.setText(Html.fromHtml(text));
+        }
+
+    }
 }
