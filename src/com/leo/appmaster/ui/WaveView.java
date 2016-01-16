@@ -1,6 +1,8 @@
 package com.leo.appmaster.ui;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.DrawFilter;
 import android.graphics.Paint;
@@ -8,6 +10,8 @@ import android.graphics.Paint.Style;
 import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.leo.appmaster.R;
 
 
 public class WaveView extends View {  
@@ -35,13 +39,36 @@ public class WaveView extends View {
     private int mXTwoOffset;  
   
     private Paint mWavePaint;  
-    private DrawFilter mDrawFilter;  
+    private DrawFilter mDrawFilter;
+
+    /* draw bubbles - begin */
+    private Paint mBubblePaint;
+    private int mBubbleNumber;
+    private float mBubblePeriod;
+    private float mBubbleMinRadius;
+    private float mBubbleMaxRadius;
+    private int mLastBubbleIndex;
+    static class Bubble {
+        int index;
+        float y;
+    }
+    /* draw bubbles - end */
   
     public WaveView(Context context, AttributeSet attrs) {  
         super(context, attrs);  
         // 将dp转化为px，用于控制不同分辨率上移动速度基本一致  
         mXOffsetSpeedOne = TRANSLATE_X_SPEED_ONE;  //TODO dip2px
         mXOffsetSpeedTwo = TRANSLATE_X_SPEED_TWO;  //TODO dip2px
+
+        /* draw bubbles - begin */
+        // TODO - next version, low priority
+//        TypedArray typeArray = context.obtainStyledAttributes(attrs, R.styleable.WaveView);
+//        mBubbleNumber = typeArray.getInt();
+//
+//        mBubblePaint = new Paint();
+
+        /* draw bubbles - end */
+
   
         // 初始绘制波纹的画笔  
         mWavePaint = new Paint();  

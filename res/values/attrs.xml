@@ -193,4 +193,10 @@
         <attr name="slidableLength" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="WaveView">
+        <attr name="bubbleNumber" format="integer" />
+        <attr name="bubblePeriod" format="integer" />
+        <attr name="bubbleColor" format="color" />
+    </declare-styleable>
+
 </resources>
