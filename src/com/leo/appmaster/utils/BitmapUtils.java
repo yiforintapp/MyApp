@@ -1,15 +1,12 @@
 
 package com.leo.appmaster.utils;
 
-import java.io.ByteArrayOutputStream;
-
-import com.leo.appmaster.AppMasterApplication;
-
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -23,7 +20,12 @@ import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
 import android.view.WindowManager;
+
+import com.leo.appmaster.AppMasterApplication;
+
+import java.io.ByteArrayOutputStream;
 
 public class BitmapUtils {
 
@@ -213,4 +215,29 @@ public class BitmapUtils {
         LeoLog.i("test1", "final decode !! ");
         return bitmapt;
     }
+
+    /** 得到屏保需要drawable */
+    public static Drawable getDeskTopBitmap(Context context) {
+        WallpaperManager wallpaperManager = WallpaperManager
+                .getInstance(context);
+        Bitmap bitmap = null;
+        long startTime= SystemClock.elapsedRealtime();
+        try {
+            // 获取当前壁纸
+            Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+            // 将Drawable转成Bitmap
+            Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
+            Matrix matrix = new Matrix();
+            matrix.postScale(0.05f,0.05f); //长和宽放大缩小的比例
+            bitmap = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        LeoLog.e("getDeskTopBitmap", (SystemClock.elapsedRealtime() - startTime) + "");
+
+        return bitmapToDrawable(bitmap);
+
+    }
+
 }

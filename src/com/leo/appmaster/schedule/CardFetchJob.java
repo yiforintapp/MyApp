@@ -230,7 +230,7 @@ public class CardFetchJob extends FetchScheduleJob {
 
             boolean isCleanSwiftyNull = object.isNull(
                     PrefConst.KEY_CLEAN_SWIFTY); // 判断key是否存在
-            if (!isCleanSwiftyNull) {  // 入侵者防护页swifty
+            if (!isCleanSwiftyNull) {  // 耗电应用页swifty
                 JSONObject cleanSwifty = object.getJSONObject(PrefConst.KEY_CLEAN_SWIFTY);
                 setValue(cleanSwifty, "content",
                         PrefConst.KEY_CLEAN_SWIFTY_CONTENT, preferenceTable);
@@ -251,7 +251,7 @@ public class CardFetchJob extends FetchScheduleJob {
 
             boolean isChargeExtraNull = object.isNull(
                     PrefConst.KEY_CHARGE_EXTRA); // 判断key是否存在
-            if (!isChargeExtraNull) {  // 入侵者防护页swifty
+            if (!isChargeExtraNull) {  // 屏保页预留
                 JSONObject chargeExtra = object.getJSONObject(PrefConst.KEY_CHARGE_EXTRA);
                 setValue(chargeExtra, "content",
                         PrefConst.KEY_CHARGE_EXTRA_CONTENT, preferenceTable);
