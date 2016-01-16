@@ -5,7 +5,7 @@ package com.leo.appmaster.battery;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ActivityManager;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,22 +24,19 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.fragment.PretendAppBeautyFragment;
-import com.leo.appmaster.home.SimpleAnimatorListener;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.tools.animator.Animator;
-import com.leo.tools.animator.Animator.AnimatorListener;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
@@ -206,19 +203,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                 mBtrManager.killBatteryDrainApps();
             }
         });
-        startRemoveAnim();
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-//        mFrgmResult = new PretendAppBeautyFragment();
-//        transaction.replace(mRlContent.getId(), mFrgmResult);
-//        transaction.commit();
+        startBoostAnimation(0);
     }
 
-    private void startRemoveAnim() {
-        //TODO
-//        ObjectAnimator a = new ObjectAnimator();
-//        a.addListener(new );
+    private void startFlipAnimation() {
         final float centerX = mIvShield.getWidth() / 2.0f;  
         final float centerY = mIvShield.getHeight() / 2.0f;  
   
@@ -268,6 +256,47 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         anim.start();
     }
 
+    private void startBoostAnimation(final int startIndex) {
+        if (mGvApps.getCount() <= startIndex) {
+            startFlipAnimation();
+            return;
+        }
+
+        final long iconDisappearTime = 200;
+        final long iconGapTime = 80;
+        final long rowUpTime = 120;
+        final int rotateDegree = 180;
+
+        int columnNum = mGvApps.getNumColumns();
+
+        final int count = Math.min(columnNum, mGvApps.getCount()-startIndex);
+        // LeoLog.d(TAG, "startIndex="+startIndex+"; count="+count);
+        for (int i=0 ; i<count ; i++) {
+            final View vv = mGvApps.getChildAt(i+startIndex);
+            // LeoLog.d(TAG, "index="+(i+startIndex));
+            final boolean isLastIcon = (i == count-1);
+            vv.animate().setDuration(iconDisappearTime)
+                    .setStartDelay(i*iconGapTime)
+                    .rotation(rotateDegree)
+                    .scaleX(0.0f)
+                    .scaleY(0.0f)
+                    .setInterpolator(new AccelerateInterpolator())
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(android.animation.Animator animation) {
+                            super.onAnimationEnd(animation);
+                            vv.setAlpha(0.0f);
+                            if (isLastIcon) {
+                                // 一定要与xml里面的vertical spacing值一致！
+                                int vSpacing = DipPixelUtil.dip2px(BatteryMainActivity.this, 10);
+                                float rowHeight = vv.getHeight() + vSpacing;
+                                mGvApps.animate().setDuration(rowUpTime).translationYBy(-rowHeight);
+                                startBoostAnimation(startIndex+count);
+                            }
+                        }
+                    });
+        }
+    }
 
     class AppsAdapter extends BaseAdapter {
         private List<BatteryComsuption> mList;
