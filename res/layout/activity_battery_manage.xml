@@ -43,94 +43,103 @@
         <TextView
             android:id="@+id/tv_list_title"
             android:layout_width="match_parent"
+            android:gravity="center_vertical"
             android:layout_height="40dp"
             android:layout_below="@id/rl_dial"
             android:background="@color/fl" />
 
-        <GridView
-            android:id="@+id/gv_apps"
+        <RelativeLayout
+            android:id="@+id/rl_apps"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:verticalSpacing="10dp"
             android:layout_above="@+id/rl_bottom"
-            android:layout_below="@+id/tv_list_title" >
-        </GridView>
+            android:layout_below="@+id/tv_list_title"
+            android:verticalSpacing="10dp" >
 
-       <RelativeLayout
-        android:id="@+id/rl_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white" >
+            <GridView
+                android:id="@+id/gv_apps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                android:verticalSpacing="10dp" >
+            </GridView>
 
-        <TextView
+            <RelativeLayout
+                android:id="@+id/rl_empty_or_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:visibility="visible" >
+
+                <RelativeLayout
+                    android:id="@+id/rl_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" >
+
+                    <ImageView
+                        android:id="@+id/just_nothing_show_iv"
+                        android:layout_width="@dimen/kongbaiye_width_height"
+                        android:layout_height="@dimen/kongbaiye_width_height"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/elect_empty" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/just_nothing_show_iv"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="18dp"
+                        android:gravity="center"
+                        android:text="@string/elect_empty_content"
+                        android:textColor="@color/nothing_show_text"
+                        android:textSize="@dimen/kongbaiye_text_size" />
+                </RelativeLayout>
+
+                <ProgressBar
+                    android:id="@+id/pb_loading"
+                    style="@style/ProgressBarCricle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_bottom"
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_gravity="top"
-            android:background="@color/pri_pro_divider" />
-
-        <com.leo.appmaster.ui.RippleView
-            xmlns:ripple="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/rv_accelerate"
-            android:layout_width="210dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/green_radius_btn_shape"
-            ripple:rippleColor="@color/button_green_ripple"
-            ripple:rippleDuration="250"
-            ripple:rippleHover="true"
-            ripple:rippleOverlay="true" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-        </com.leo.appmaster.ui.RippleView>
-    </RelativeLayout>
-        
-    </RelativeLayout>
-
-	<RelativeLayout
-	    android:id="@+id/rl_empty_or_loading"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:layout_below="@id/ctb_battery"
-	    android:background="@color/white" >
-       
-       <RelativeLayout
-           android:id="@+id/rl_empty"
-           android:visibility="gone"
-           android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/just_nothing_show_iv"
-                android:layout_centerHorizontal="true"
-                android:layout_width="@dimen/kongbaiye_width_height"
-                android:layout_height="@dimen/kongbaiye_width_height"
-                android:background="@drawable/elect_empty" />
+            android:layout_height="63dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white" >
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/just_nothing_show_iv"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="18dp"
-                android:gravity="center"
-                android:text="@string/elect_empty_content"
-                android:textColor="@color/nothing_show_text"
-                android:textSize="@dimen/kongbaiye_text_size" />
-        </RelativeLayout>
+                android:layout_height="1px"
+                android:layout_gravity="top"
+                android:background="@color/pri_pro_divider" />
 
-	    <ProgressBar
-	        android:id="@+id/pb_loading"
-	        style="@style/ProgressBarCricle"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_centerInParent="true" />
-	</RelativeLayout>
+            <com.leo.appmaster.ui.RippleView
+                xmlns:ripple="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rv_accelerate"
+                android:layout_width="210dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/green_radius_btn_shape"
+                ripple:rippleColor="@color/button_green_ripple"
+                ripple:rippleDuration="250"
+                ripple:rippleHover="true"
+                ripple:rippleOverlay="true" >
+
+                <TextView
+                    android:text="@string/batterymanage_boost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+            </com.leo.appmaster.ui.RippleView>
+        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

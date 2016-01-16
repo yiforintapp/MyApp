@@ -11,10 +11,11 @@ import android.view.View;
 
 
 public class WaveView extends View {  
-  
     // 波纹颜色  
     private static final int WAVE_PAINT_COLOR = 0x8800aa00;  //TODO 两个波浪分别使用不同颜色
+   
     // y = Asin(wx+b)+h  
+    
     private static final float STRETCH_FACTOR_A = 10;  //公式中的A值，波的高点和低点与水平中线的距离
     private static final int OFFSET_Y = 0;  
     // 第一条水波移动速度  

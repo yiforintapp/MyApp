@@ -53,6 +53,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RelativeLayout mRlEmpty;
     private RelativeLayout mRlLoadingOrEmpty;
     private BatteryManager mBtrManager;
+    private TextView mTvListTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +64,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     
     private void initUI() {
+        mTvListTitle = (TextView) findViewById(R.id.tv_list_title);
         mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
         mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         mRlEmpty = (RelativeLayout) findViewById(R.id.rl_empty);
@@ -95,9 +97,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
             transaction.remove(mFrgmResult);
             transaction.commit();
-            mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
-            mPbLoading.setVisibility(View.VISIBLE);
-            mRlEmpty.setVisibility(View.GONE);
+            showLoading();
             loadData();
         } else {
             super.onBackPressed();
@@ -111,6 +111,25 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
     }
 
+    public void showLoading() {
+        mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
+        mPbLoading.setVisibility(View.VISIBLE);
+        mRlEmpty.setVisibility(View.GONE);
+        mTvListTitle.setText(R.string.batterymanage_tip_loading);
+    }
+    
+    public void hideLoadingOrEmpty() {
+        mRlLoadingOrEmpty.setVisibility(View.GONE);
+        if (mListBatteryComsuptions != null) {
+            mTvListTitle.setText(String.format(getString(R.string.batterymanage_label), mListBatteryComsuptions.size()));
+        }
+    }
+    
+    public void showEmpty() {
+        mPbLoading.setVisibility(View.GONE);
+        mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
+    }
+    
     @Override
     public void onResume() {
         super.onResume();
@@ -123,9 +142,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             transaction.remove(mFrgmResult);
             transaction.commit();
         }
-        mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
-        mPbLoading.setVisibility(View.VISIBLE);
-        mRlEmpty.setVisibility(View.GONE);
+        showLoading();
         loadData();
     }
 
@@ -152,10 +169,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private void onDataLoaded() {
         mAdapter.fillData(mListBatteryComsuptions);
         if (mListBatteryComsuptions == null || mListBatteryComsuptions.size() == 0) {
-            mPbLoading.setVisibility(View.GONE);
-            mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
+            showEmpty();
         } else {
-            mRlLoadingOrEmpty.setVisibility(View.GONE);
+            hideLoadingOrEmpty();
         }
         mAdapter.notifyDataSetChanged();
     }
