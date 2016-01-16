@@ -320,6 +320,11 @@ public class BatteryManagerImpl extends BatteryManager {
         return (SystemClock.elapsedRealtime() - mLastKillTime) > KILL_INTERVAL;
     }
 
+    @Override
+    public int getBatteryLevel() {
+        return mPreviousState.level;
+    }
+
     /* 剩余充电时间计算相关 */
     private RemainTimeHelper getRemainTimeHelper(BatteryState batteryState) {
         if (mRemainTimeHelper == null) {

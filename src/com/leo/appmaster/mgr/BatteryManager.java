@@ -158,4 +158,6 @@ public abstract class BatteryManager extends Manager {
      * @return
      */
     public abstract boolean shouldEnableCleanFunction();
+
+    public abstract int getBatteryLevel();
 }
