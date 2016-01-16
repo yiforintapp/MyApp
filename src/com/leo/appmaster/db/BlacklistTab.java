@@ -523,14 +523,14 @@ public class BlacklistTab extends BaseTable {
             LeoLog.d(TAG, "isBlackInfoExist, db is null.");
             return false;
         }
-        String selection = CallFilterConstants.COL_BLACK_NUMBER;
+        String selection = null;
         String selectionArgs = null;
         if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
             number = PrivacyContactUtils.formatePhoneNumber(number);
-            selection += " LIKE ? ";
+            selection = " LIKE ? ";
             selectionArgs = "%" + number;
         } else {
-            selection += " = ? ";
+            selection = " = ? ";
             selectionArgs = number;
         }
         StringBuilder sb = new StringBuilder();

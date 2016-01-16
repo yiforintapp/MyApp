@@ -162,7 +162,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
             @Override
             public void onClick(View arg0) {
                 if (mMessageList != null && mMessageList.size() > 0) {
-                    if (mAddPrivacyMessage.size() > 0 && mAddPrivacyMessage != null) {
+                    if (mAddPrivacyMessage != null && mAddPrivacyMessage.size() > 0) {
                         if (!Utilities.isEmpty(mFrom) &&
                                 mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
                             //black list process
