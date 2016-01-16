@@ -36,9 +36,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvLeftTime;
     private TextView mTvTime;
 
-    private ScrollView mScrollView;
+    private SelfScrollView mScrollView;
+    private View mClickTypeOne;
 
-    private boolean isExpand = false;
+    public static boolean isExpand = false;
     private int moveDistance = 350;
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
@@ -90,10 +91,31 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 adContentHeight = mSlideView.getHeight();
             }
         });
-
-        mScrollView = (ScrollView) findViewById(R.id.slide_content_sv);
-
         moveDistance = DipPixelUtil.dip2px(mActivity, 180);
+
+        mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
+        mScrollView.setScrollBottomListener(new SelfScrollView.ScrollBottomListener() {
+            @Override
+            public void scrollBottom() {
+                mSlideView.setScrollView(true);
+                expandContent(false);
+            }
+
+            @Override
+            public void scrollTop() {
+                mSlideView.setScrollView(true);
+                expandContent(true);
+            }
+        });
+
+        mClickTypeOne = findViewById(R.id.content_type_1);
+        mClickTypeOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mActivity, "Type1", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -116,6 +138,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     @Override
     public void onDestroy() {
         super.onDestroy();
+        isExpand = false;
+        mShowing = false;
     }
 
     public void initCreate(String type, BatteryManager.BatteryState state, int remainTime) {
@@ -229,7 +253,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     }
 
-    private boolean mShowing = false;
+    public static boolean mShowing = false;
     private int staryY;
 
     @Override
@@ -245,12 +269,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     int moveY = newY - staryY;
                     if (!isExpand) {
                         if (moveY < -100 && !mShowing) {
-                            mShowing = true;
                             expandContent(true);
                         }
                     } else {
                         if (moveY > 100 && !mShowing) {
-                            mShowing = true;
                             expandContent(false);
                         }
                     }
@@ -267,47 +289,44 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void showMoveUp() {
         if (moveUpCount <= moveDistance) {
-
             LeoLog.d("testBatteryView", "showMoveUp() : " + adContentHeight);
 
             ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
             params.height = adContentHeight + moveUpCount;
             mSlideView.setLayoutParams(params);
 
-            moveUpCount = moveUpCount + 20;
-            mHandler.sendEmptyMessageDelayed(MOVE_UP, 1);
+            moveUpCount = moveUpCount + 30;
+            mHandler.sendEmptyMessage(MOVE_UP);
+//            mHandler.sendEmptyMessageDelayed(MOVE_UP, 1);
         } else {
             isExpand = true;
             mShowing = false;
-//            mSlideView.setScrollView(false);
+            mScrollView.setScrollY(0);
+            mSlideView.setScrollView(false);
         }
     }
 
     private void showMoveDown() {
         if (moveUpCount <= moveDistance) {
-
             LeoLog.d("testBatteryView", "showMoveDown : " + adExpandContentHeight);
 
             ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
             params.height = adExpandContentHeight - moveUpCount;
             mSlideView.setLayoutParams(params);
 
-            moveUpCount = moveUpCount + 20;
-            mHandler.sendEmptyMessageDelayed(MOVE_DOWN, 1);
+            moveUpCount = moveUpCount + 30;
+            mHandler.sendEmptyMessage(MOVE_DOWN);
+//            mHandler.sendEmptyMessageDelayed(MOVE_DOWN, 1);
         } else {
             isExpand = false;
             mShowing = false;
-//            mSlideView.setScrollView(false);
+            mScrollView.setScrollY(0);
+            mSlideView.setScrollView(false);
         }
     }
 
     private void expandContent(boolean expand) {
-//        LeoLog.d("testBatteryView", "mMidContent height : " + mMidContent.getHeight());
-//        LeoLog.d("testBatteryView", "mRemainTimeContent height : " + mRemainTimeContent.getHeight());
-//        int remainTimeHeight = mRemainTimeContent.getHeight();
-//        int midHeight = mMidContent.getHeight();
-//        int marginTop = DipPixelUtil.dip2px(mActivity, 75);
-//        moveDistance = remainTimeHeight + midHeight + marginTop;
+        mShowing = true;
 
         if (expand) {
 

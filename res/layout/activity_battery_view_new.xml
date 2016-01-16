@@ -127,7 +127,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/grey">
 
-        <ScrollView
+        <com.leo.appmaster.battery.SelfScrollView
             android:id="@+id/slide_content_sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -169,7 +169,7 @@
                     android:background="@color/blue_button_click" />
 
             </RelativeLayout>
-        </ScrollView>
+        </com.leo.appmaster.battery.SelfScrollView>
     </com.leo.appmaster.battery.BatteryTestViewLayout>
 
     <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"

@@ -19,7 +19,7 @@ import com.leo.tools.animator.ObjectAnimator;
 
 public class BatteryTestViewLayout extends RelativeLayout {
 
-    private boolean isTouch = true;
+    private boolean isTouch = false;
 
     public BatteryTestViewLayout(Context context) {
         super(context);
