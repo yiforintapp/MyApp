@@ -298,6 +298,10 @@ public class BatteryManagerImpl extends BatteryManager {
 
     @Override
     public boolean shouldNotify() {
+        LeoLog.v(TAG, "mPageOnForeground: " + mPageOnForeground
+                + " mPreviousState.plugged: " + mPreviousState.plugged
+                + " getBatteryNotiStatus(): " + getBatteryNotiStatus()
+        );
         return (!mPageOnForeground
                 && mPreviousState.plugged == UNPLUGGED
                 && getBatteryNotiStatus());
