@@ -49,4 +49,6 @@ public interface EventId {
     public static final int EVENT_LOAD_FIL_GR_ID = 1096;
     public static final int EVENT_LOAD_BLCAK_ID = 1097;
 
+    /* 3.3 电池状态信息 */
+    public static final int EVENT_BATTERY_CHANGE_ID = 1098;
 }

@@ -1,18 +1,18 @@
 
 package com.leo.appmaster.eventbus.event;
 
-import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
+import com.leo.appmaster.mgr.BatteryManager;
 
 public class BatteryViewEvent extends BaseEvent {
 
     public String eventMsg;
-    public BatteryManagerImpl.BatteryState state;
+    public BatteryManager.BatteryState state;
     public int remainTime;
 
-    public BatteryViewEvent(int mEventId, String mEventMsg) {
-        super(mEventId, mEventMsg);
+    public BatteryViewEvent(int mEventId, BatteryManager.BatteryState state) {
+        super(mEventId, "battery state change");
 
-        this.eventMsg = mEventMsg;
+        this.state = state;
     }
 
 

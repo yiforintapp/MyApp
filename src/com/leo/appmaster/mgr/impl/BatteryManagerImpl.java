@@ -25,6 +25,7 @@ import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
+import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -182,7 +183,7 @@ public class BatteryManagerImpl extends BatteryManager {
         Toast.makeText(mContext, "用户插上充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
                 newState.level, 0);
-
+        broadcastBatteryLevel(newState);
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
 
@@ -215,7 +216,7 @@ public class BatteryManagerImpl extends BatteryManager {
      */
     private void handleUnplugEvent(BatteryState newState) {
         Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
-
+        broadcastBatteryLevel(newState);
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
 
@@ -238,6 +239,7 @@ public class BatteryManagerImpl extends BatteryManager {
      */
     private void handleChargingEvent(BatteryState newState) {
         Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
+        broadcastBatteryLevel(newState);
         int remainTime = getRemainTimeHelper(newState)
                 .getEstimatedTime(mPreviousState.level, newState.level,
                         (newState.timestamp - mPreviousState.timestamp));
@@ -262,7 +264,7 @@ public class BatteryManagerImpl extends BatteryManager {
      */
     private void handleConsumingState(BatteryState newState) {
         Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
-
+        broadcastBatteryLevel(newState);
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
         if (BatteryShowViewActivity.isActivityAlive) {
@@ -324,6 +326,13 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public int getBatteryLevel() {
         return mPreviousState.level;
+    }
+
+    /* 外发电量通知 */
+    private void broadcastBatteryLevel(BatteryState state) {
+        LeoLog.d(TAG, "broadcast battery event for audience");
+        LeoEventBus.getDefaultBus().postSticky(
+                new BatteryViewEvent(EventId.EVENT_BATTERY_CHANGE_ID, state));
     }
 
     /* 剩余充电时间计算相关 */
