@@ -27,6 +27,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.fragment.PretendAppBeautyFragment;
+import com.leo.appmaster.home.SimpleAnimatorListener;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -69,7 +70,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         mRlEmpty = (RelativeLayout) findViewById(R.id.rl_empty);
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_battery);
-        mCtbMain.setToolbarTitle(R.string.app_elec_aca);
+        mCtbMain.setToolbarTitle(R.string.hp_device_power);
         mCtbMain.setToolbarColorResource(R.color.cb);
         mCtbMain.setOptionClickListener(new OnClickListener() {
             @Override
@@ -91,17 +92,17 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     @Override
     public void onBackPressed() {
-        if (mFrgmResult != null && mFrgmResult.isVisible()) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction transaction = fm.beginTransaction();  
-            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-            transaction.remove(mFrgmResult);
-            transaction.commit();
-            showLoading();
-            loadData();
-        } else {
+//        if (mFrgmResult != null && mFrgmResult.isVisible()) {
+//            FragmentManager fm = getSupportFragmentManager();
+//            FragmentTransaction transaction = fm.beginTransaction();  
+//            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+//            transaction.remove(mFrgmResult);
+//            transaction.commit();
+//            showLoading();
+//            loadData();
+//        } else {
             super.onBackPressed();
-        }
+//        }
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -189,7 +190,13 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     private void startBoost() {
-        mBtrManager.killBatteryDrainApps();
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                mBtrManager.killBatteryDrainApps();
+            }
+        });
+        startRemoveAnim();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
@@ -198,6 +205,13 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         transaction.commit();
     }
 
+    private void startRemoveAnim() {
+        //TODO
+//        ObjectAnimator a = new ObjectAnimator();
+//        a.addListener(new );
+    }
+
+    
     class AppsAdapter extends BaseAdapter {
         private List<BatteryComsuption> mList;
         LayoutInflater mInflater;
