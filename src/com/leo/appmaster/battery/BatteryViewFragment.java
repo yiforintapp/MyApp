@@ -23,11 +23,11 @@ import com.leo.tools.animator.ObjectAnimator;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener {
     private static final int MOVE_UP = 1;
+    private static final int MOVE_DOWN = 2;
     private View mTimeContent;
     private View mMidContent;
     private View mRemainTimeContent;
     private BatteryTestViewLayout mSlideView;
-
 
     private TextView mTvLevel;
     private TextView mTvBigTime;
@@ -43,6 +43,23 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
+
+    private int moveUpCount = 0;
+    private int adContentHeight = 0;
+    private int adExpandContentHeight = 0;
+    //开始首页动画
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case MOVE_UP:
+                    showMoveUp();
+                    break;
+                case MOVE_DOWN:
+                    showMoveDown();
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -62,14 +79,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //        mTvBigTime = (TextView) findViewById(R.id.battery_num);
 //        mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
 //        mTvSmallRight = (TextView) findViewById(R.id.battery_num);
-
         mTvLeftTime = (TextView) findViewById(R.id.left_time);
         mTvTime = (TextView) findViewById(R.id.right_time);
 
         mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
         mSlideView.setOnTouchListener(this);
+        mSlideView.post(new Runnable() {
+            @Override
+            public void run() {
+                adContentHeight = mSlideView.getHeight();
+            }
+        });
 
         mScrollView = (ScrollView) findViewById(R.id.slide_content_sv);
+
+        moveDistance = DipPixelUtil.dip2px(mActivity, 180);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -205,7 +229,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     }
 
-    int staryY;
+    private boolean mShowing = false;
+    private int staryY;
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
@@ -219,11 +244,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     int newY = (int) event.getRawY();
                     int moveY = newY - staryY;
                     if (!isExpand) {
-                        if (moveY < -100) {
+                        if (moveY < -100 && !mShowing) {
+                            mShowing = true;
                             expandContent(true);
                         }
                     } else {
-                        if (moveY > 100) {
+                        if (moveY > 100 && !mShowing) {
+                            mShowing = true;
                             expandContent(false);
                         }
                     }
@@ -238,49 +265,91 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         return true;
     }
 
+    private void showMoveUp() {
+        if (moveUpCount <= moveDistance) {
+
+            LeoLog.d("testBatteryView", "showMoveUp() : " + adContentHeight);
+
+            ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
+            params.height = adContentHeight + moveUpCount;
+            mSlideView.setLayoutParams(params);
+
+            moveUpCount = moveUpCount + 20;
+            mHandler.sendEmptyMessageDelayed(MOVE_UP, 1);
+        } else {
+            isExpand = true;
+            mShowing = false;
+//            mSlideView.setScrollView(false);
+        }
+    }
+
+    private void showMoveDown() {
+        if (moveUpCount <= moveDistance) {
+
+            LeoLog.d("testBatteryView", "showMoveDown : " + adExpandContentHeight);
+
+            ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
+            params.height = adExpandContentHeight - moveUpCount;
+            mSlideView.setLayoutParams(params);
+
+            moveUpCount = moveUpCount + 20;
+            mHandler.sendEmptyMessageDelayed(MOVE_DOWN, 1);
+        } else {
+            isExpand = false;
+            mShowing = false;
+//            mSlideView.setScrollView(false);
+        }
+    }
 
     private void expandContent(boolean expand) {
-        LeoLog.d("testBatteryView", "mMidContent height : " + mMidContent.getHeight());
-        LeoLog.d("testBatteryView", "mRemainTimeContent height : " + mRemainTimeContent.getHeight());
+//        LeoLog.d("testBatteryView", "mMidContent height : " + mMidContent.getHeight());
+//        LeoLog.d("testBatteryView", "mRemainTimeContent height : " + mRemainTimeContent.getHeight());
 //        int remainTimeHeight = mRemainTimeContent.getHeight();
 //        int midHeight = mMidContent.getHeight();
 //        int marginTop = DipPixelUtil.dip2px(mActivity, 75);
 //        moveDistance = remainTimeHeight + midHeight + marginTop;
-        moveDistance = DipPixelUtil.dip2px(mActivity, 180);
 
         if (expand) {
+
+
+            moveUpCount = 0;
+            mHandler.sendEmptyMessage(MOVE_UP);
 
 //            ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
 //            params.height = mSlideView.getHeight() + moveDistance;
 //            mSlideView.setLayoutParams(params);
 
 
-            ObjectAnimator animUp = ObjectAnimator.ofFloat(mSlideView,
-                    "y", mSlideView.getTop(), mSlideView.getTop() - moveDistance);
-            animUp.setDuration(500);
-            animUp.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    isExpand = true;
-//                    mSlideView.setScrollView(false);
-                }
-            });
-            animUp.start();
+//            ObjectAnimator animUp = ObjectAnimator.ofFloat(mSlideView,
+//                    "y", mSlideView.getTop(), mSlideView.getTop() - moveDistance);
+//            animUp.setDuration(500);
+//            animUp.addListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    super.onAnimationEnd(animation);
+//                    isExpand = true;
+////                    mSlideView.setScrollView(false);
+//                }
+//            });
+//            animUp.start();
         } else {
 
-            ObjectAnimator animDown = ObjectAnimator.ofFloat(mSlideView,
-                    "y", mSlideView.getTop() - moveDistance, mSlideView.getTop());
-            animDown.setDuration(500);
-            animDown.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    isExpand = false;
-//                    mSlideView.setScrollView(true);
-                }
-            });
-            animDown.start();
+            moveUpCount = 0;
+            adExpandContentHeight = mSlideView.getHeight();
+            mHandler.sendEmptyMessage(MOVE_DOWN);
+
+//            ObjectAnimator animDown = ObjectAnimator.ofFloat(mSlideView,
+//                    "y", mSlideView.getTop() - moveDistance, mSlideView.getTop());
+//            animDown.setDuration(500);
+//            animDown.addListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    super.onAnimationEnd(animation);
+//                    isExpand = false;
+////                    mSlideView.setScrollView(true);
+//                }
+//            });
+//            animDown.start();
         }
 
 
