@@ -139,38 +139,53 @@
             </com.leo.appmaster.ui.RippleView>
         </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="11dp">
         <RelativeLayout
             android:id="@+id/share_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
+            android:background="@drawable/share_good_bg"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:background="#fff1f1"
             android:visibility="gone">
+
+            <TextView
+                android:id="@+id/share_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="88dp"
+                android:layout_marginRight="18dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/share_go"
+                android:text="@string/intruder_share_dialog_content"
+                android:textSize="@dimen/f4"
+                android:textColor="@color/c1"/>
+
+            <ImageView
+                android:id="@+id/share_go"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="14dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/share_good_go"/>
+        </RelativeLayout>
 
             <ImageView
                 android:id="@+id/share_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher"
-                android:layout_marginLeft="20dp"
-                android:layout_centerVertical="true"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/share_img"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_centerVertical="true"
-                android:text="觉得我们还不错，分享给好友吧~"
-                android:textSize="16dp"/>
-
-        </RelativeLayout>
+                android:src="@drawable/share_goodhand"
+                android:layout_marginLeft="4dp"
+                android:layout_gravity="bottom|left"/>
+        </FrameLayout>
 
         <!-- 切换有图片和无图片 -->
 

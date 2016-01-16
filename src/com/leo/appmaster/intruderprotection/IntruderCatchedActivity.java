@@ -1,10 +1,8 @@
 package com.leo.appmaster.intruderprotection;
 
 import android.animation.LayoutTransition;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -27,7 +25,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -107,6 +104,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private LinearLayout mFiveStarLayout;
 
     private RelativeLayout mShareLayout; // 分享layout
+    private TextView mShareText;  //分享按钮
 
     private LinearLayout mSwiftylayout; //swifty卡片
     private TextView mSwiftyTitle;
@@ -310,6 +308,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mFiveStarLayout.setOnClickListener(this);
 
         mShareLayout = (RelativeLayout) findViewById(R.id.share_layout);
+        mShareText = (TextView) findViewById(R.id.share_text);
+        mShareText.setText(Html.fromHtml(getResources().getString(
+                R.string.intruder_share_dialog_content)));
         mShareLayout.setOnClickListener(this);
         initSwiftyLayout();
     }
@@ -841,35 +842,53 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 }
                 break;
             case R.id.share_layout:  // 分享
-                Toast.makeText(IntruderCatchedActivity.this, "点击分享", Toast.LENGTH_SHORT).show();
-                List<ResolveInfo> mApps = AppUtil.getShareApps(IntruderCatchedActivity.this);
-                PackageManager packageManager = getPackageManager();
-                for (ResolveInfo resolveInfo: mApps) {
-                    LeoLog.e("IntruderCatchedActivity", "resolveInfo:" + resolveInfo.loadLabel(packageManager).toString());
+//                Toast.makeText(IntruderCatchedActivity.this, "点击分享", Toast.LENGTH_SHORT).show();
+//                List<ResolveInfo> mApps = AppUtil.getShareApps(IntruderCatchedActivity.this);
+//                PackageManager packageManager = getPackageManager();
+//                for (ResolveInfo resolveInfo: mApps) {
+//                    LeoLog.e("IntruderCatchedActivity", "resolveInfo:" + resolveInfo.loadLabel(packageManager).toString());
+//                }
+//                final ResolveInfo mInfo = mApps.get(2);
+//                ThreadManager.getSubThreadHandler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//                        shareIntent.setComponent(new ComponentName(mInfo.activityInfo.packageName, mInfo.activityInfo.name));
+//                        shareIntent.setType("text/plain");
+//                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "测试， 标题");
+//                        shareIntent.putExtra(Intent.EXTRA_TEXT, "测试，这里发送推广地址");
+//                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(shareIntent);
+//                    }
+//                }, 2000);
+                mLockManager.filterSelfOneMinites();
+                PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
+                boolean isContentEmpty = TextUtils.isEmpty(
+                        sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT));
+                boolean isUrlEmpty = TextUtils.isEmpty(
+                        sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
+                String shareString;
+                if (!isContentEmpty && !isUrlEmpty) {
+                    shareString = sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT)
+                            .concat(" ")
+                            .concat(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
+                } else {
+                    shareString = getResources().getString(R.string.intruder_share_content)
+                            .concat(" ")
+                            .concat("www.baidu.com");
                 }
-                final ResolveInfo mInfo = mApps.get(2);
-                ThreadManager.getSubThreadHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                        shareIntent.setComponent(new ComponentName(mInfo.activityInfo.packageName, mInfo.activityInfo.name));
-                        shareIntent.setType("text/plain");
-                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "测试， 标题");
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, "测试，这里发送推广地址");
-                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(shareIntent);
-                    }
-                }, 2000);
-//                Intent intent=new Intent(Intent.ACTION_SEND);
-//                intent.setType("text/plain");
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
 //                intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-//                intent.putExtra(Intent.EXTRA_TEXT, "分享内容");
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(Intent.createChooser(intent, "分享到"));
+                intent.putExtra(Intent.EXTRA_TEXT, shareString);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(intent, getTitle()));
                 break;
             case R.id.item_btn_rv:  // 点击swifty卡片
                 mLockManager.filterSelfOneMinites();
-                boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(IntruderCatchedActivity.this);
+                boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(
+                        IntruderCatchedActivity.this);
+
                 if (installISwipe) {
                     Utilities.startISwipIntent(IntruderCatchedActivity.this);
                 } else {
