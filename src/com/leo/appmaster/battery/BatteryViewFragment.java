@@ -2,26 +2,32 @@
 package com.leo.appmaster.battery;
 
 import android.text.Html;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.tools.animator.ObjectAnimator;
 
-public class BatteryViewFragment extends BaseFragment {
-    private View mMoveContent;
+public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener {
     private View mTimeContent;
+    private View mMidContent;
+    private View mRemainTimeContent;
+    private View mSlideView;
+
     private TextView mTvLevel;
-    private TextView mTvStatus;
     private TextView mTvBigTime;
     private TextView mTvSmallLeft;
     private TextView mTvSmallRight;
-
     private TextView mTvLeftTime;
     private TextView mTvTime;
+
+    private boolean isExpand = false;
 
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
@@ -36,18 +42,22 @@ public class BatteryViewFragment extends BaseFragment {
     protected void onInitUI() {
 
         LeoLog.d("testBatteryView", "INIT UI");
-        mMoveContent = findViewById(R.id.move_content);
         mTimeContent = findViewById(R.id.time_content);
+        mMidContent = findViewById(R.id.infos_content);
+        mRemainTimeContent = findViewById(R.id.remain_time);
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
-        mTvStatus = (TextView) findViewById(R.id.battery_status);
-
-        mTvBigTime = (TextView) findViewById(R.id.battery_num);
-        mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
-        mTvSmallRight = (TextView) findViewById(R.id.battery_num);
+//        mTvBigTime = (TextView) findViewById(R.id.battery_num);
+//        mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
+//        mTvSmallRight = (TextView) findViewById(R.id.battery_num);
 
         mTvLeftTime = (TextView) findViewById(R.id.left_time);
         mTvTime = (TextView) findViewById(R.id.right_time);
+
+        mSlideView = findViewById(R.id.slide_content);
+
+        mSlideView.getParent().requestDisallowInterceptTouchEvent(true);
+        mSlideView.setOnTouchListener(this);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -105,12 +115,18 @@ public class BatteryViewFragment extends BaseFragment {
             noTime();
         }
 
+        setBatteryPercent();
+
         if (isCharing) {
 
         } else {
 
         }
 
+    }
+
+    private void setBatteryPercent() {
+        mTvLevel.setText(newState.level + "%");
     }
 
     private void noTime() {
@@ -174,6 +190,60 @@ public class BatteryViewFragment extends BaseFragment {
             mTvTime.setVisibility(View.VISIBLE);
             mTvTime.setText(Html.fromHtml(text));
         }
+
+    }
+
+    int staryY;
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+        if (view == mSlideView) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:// 手指按下屏幕
+                    LeoLog.d("testBatteryView", "ACTION_DOWN");
+                    staryY = (int) event.getRawY();
+                    break;
+                case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
+                    int newY = (int) event.getRawY();
+                    int moveY = newY - staryY;
+                    if (!isExpand) {
+                        if (moveY < -100) {
+                            expandContent(true);
+                        }
+                    } else {
+                        if (moveY > 100) {
+                            expandContent(false);
+                        }
+                    }
+
+                    break;
+                case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
+
+                    break;
+            }
+
+        }
+        return true;
+    }
+
+    private void expandContent(boolean expand) {
+        LeoLog.d("testBatteryView", "mMidContent height : " + mMidContent.getHeight());
+        LeoLog.d("testBatteryView", "mRemainTimeContent height : " + mRemainTimeContent.getHeight());
+        int remainTimeHeight = mRemainTimeContent.getHeight();
+        int midHeight = mMidContent.getHeight();
+
+        if (expand) {
+            ObjectAnimator animUp = ObjectAnimator.ofFloat(mSlideView,
+                    "y", mSlideView.getTop(), mSlideView.getTop() - remainTimeHeight - midHeight);
+            animUp.setDuration(500);
+            animUp.start();
+            isExpand = true;
+        } else {
+
+
+            isExpand = false;
+        }
+
 
     }
 }

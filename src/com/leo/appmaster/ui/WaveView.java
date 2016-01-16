@@ -24,7 +24,7 @@ public class WaveView extends View {
     private static final int TRANSLATE_X_SPEED_TWO = 7;  
     
     private float mCycleFactorW;  //完整波的周期
-    private float mPercent = 0;	//波纹高度占满View的百分比
+    private float mPercent = 50;	//波纹高度占满View的百分比
     private int mTotalWidth, mTotalHeight;  //整体宽高
     private float[] mYPositions;  
     private float[] mResetOneYPositions;  
