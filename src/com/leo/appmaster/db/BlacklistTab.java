@@ -319,6 +319,7 @@ public class BlacklistTab extends BaseTable {
 
                 values.clear();
                 values.put(CallFilterConstants.COL_BLACK_REMOVE_STATE, CallFilterConstants.REMOVE);
+                values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, CallFilterConstants.MK_BLACK_LIST);
                 database.update(CallFilterConstants.TAB_BLACK_LIST, values, "_id = ?", new String[]{info.id + ""});
             }
             database.setTransactionSuccessful();
