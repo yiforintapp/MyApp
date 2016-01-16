@@ -24,7 +24,7 @@
             android:background="@color/white" >
 
             <com.leo.appmaster.ui.WaveView
-                android:id="@+id/iv_battery"
+                android:id="@+id/wv_battery"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@color/black"

@@ -36,6 +36,7 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
@@ -61,6 +62,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RelativeLayout mRlWholeBattery;
     private RelativeLayout mRlWholeShield;
     private ImageView mIvShield;
+    private WaveView mWvBattery;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     
     private void initUI() {
+        mWvBattery = (WaveView) findViewById(R.id.wv_battery);
+        mWvBattery.setPercent(30);
         mIvShield= (ImageView) findViewById(R.id.iv_shield);
         mTvListTitle = (TextView) findViewById(R.id.tv_list_title);
         mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
@@ -217,11 +221,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             @Override
             public void onAnimationStart(Animation animation) {
             }
-            
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
-            
             @Override
             public void onAnimationEnd(Animation animation) {
                 startTranslateAnim();
