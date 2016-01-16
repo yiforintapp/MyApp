@@ -33,7 +33,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -382,7 +382,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
             try {
                 int addToBlackNum = mb.getAddBlackNumber();
                 if (addToBlackNum > 0) {
-                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl)
+                    CallFilterManagerImpl cmp = (CallFilterManagerImpl)
                             MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                     int showPar = cmp.getBlackMarkTipParam();
                     vh.addnum.setVisibility(View.VISIBLE);
@@ -556,7 +556,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                                     }
                                     boolean inerFlag = mCallManger.addBlackList(blackList, false);
                                     if (!inerFlag) {
-                                        CallFilterManager cm = CallFilterManager.getInstance(StrangeCallActivity.this);
+                                        CallFilterHelper cm = CallFilterHelper.getInstance(StrangeCallActivity.this);
                                         cm.addBlackFailTip();
                                     }
                                 } else {
@@ -702,7 +702,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                             if (!mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
 
                                 //add to black list num
-                                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                                CallFilterManagerImpl cmp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                                 BlackListInfo info = cmp.getSerBlackForNum(call.getCallLogNumber());
                                 if (info != null) {
                                     int[] type = cmp.isCallFilterTip(call.getCallLogNumber());

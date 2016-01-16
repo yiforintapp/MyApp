@@ -6,9 +6,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -36,7 +36,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
     }
 
     private void fillData() {
-        CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        CallFilterManager cmp = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean isFilterSelected = cmp.getFilterOpenState();
         if (isFilterSelected) {
             checkBox.setImageResource(R.drawable.switch_on);
@@ -87,7 +87,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
         switch (view.getId()) {
             case R.id.content_item_filter:
 
-                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                CallFilterManagerImpl cmp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 boolean isFilterSelected = cmp.getFilterOpenState();
                 if (!isFilterSelected) {
                     //拦截从关到开
@@ -114,7 +114,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
                 }
                 break;
             case R.id.content_item_noti:
-                CallFilterContextManagerImpl cmpi = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                CallFilterManagerImpl cmpi = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 boolean isNotiSelected = cmpi.getFilterNotiOpState();
                 boolean isFilter = cmpi.getFilterOpenState();
                 if (!isNotiSelected && isFilter) {

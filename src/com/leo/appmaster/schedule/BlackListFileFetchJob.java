@@ -8,7 +8,6 @@ import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
@@ -17,8 +16,7 @@ import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
-import com.leo.appmaster.msgcenter.Message;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
@@ -31,8 +29,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.conn.ConnectTimeoutException;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketTimeoutException;
@@ -118,7 +114,7 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
             FetchScheduleListener listener = job.newJsonObjListener();
             String filePath = getBlackFilePath();
             LeoLog.d(TAG, "start work immediately. path: " + filePath);
-            CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
             String uri = pm.getSerBlackFilePath();
             if (TextUtils.isEmpty(uri)) {
                 return;
@@ -151,7 +147,7 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
     }
 
     private static void requestBlackListFile(FetchScheduleListener listener) {
-        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         String url = pm.getSerBlackFilePath();
 
         HttpStack stack = new HurlStack();

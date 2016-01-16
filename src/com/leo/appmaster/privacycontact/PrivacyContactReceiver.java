@@ -2,51 +2,31 @@
 package com.leo.appmaster.privacycontact;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.provider.CallLog;
-import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.callfilter.BlackListInfo;
-import com.leo.appmaster.callfilter.CallFIlterUIHelper;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterManager;
-import com.leo.appmaster.callfilter.CallFilterToast;
+import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.mgr.CallFilterContextManager;
-import com.leo.appmaster.mgr.IntrudeSecurityManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactReceiver extends BroadcastReceiver {
@@ -165,14 +145,14 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             if (isSamI855 && (!PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action))) {
                 LeoLog.d(TAG,"state:"+state);
                 synchronized (mByte) {
-                    long lastTime = CallFilterManager.getInstance(mContext).getCurrCallRecivTime();
+                    long lastTime = CallFilterHelper.getInstance(mContext).getCurrCallRecivTime();
                     long currTime = System.currentTimeMillis();
                     boolean isFlag = (currTime - lastTime) < CallFilterConstants.CALL_RECEIV_DURAT;
                     LeoLog.d(TAG,"lastTime:"+lastTime+",currTime:"+currTime+",currTime-lastTime:"+(currTime-lastTime)+",isFlag:"+isFlag);
                     if (isFlag) {
                         return;
                     }
-                    CallFilterManager.getInstance(mContext).setCurrCallRecivTime(currTime);
+                    CallFilterHelper.getInstance(mContext).setCurrCallRecivTime(currTime);
                 }
             }
             ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -181,7 +161,7 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                     /**
                      * 骚扰拦截处理
                      */
-                    CallFilterManager cfm = CallFilterManager.getInstance(mContext);
+                    CallFilterHelper cfm = CallFilterHelper.getInstance(mContext);
                     cfm.filterCallHandler(action, phoneNumber, state, mITelephony, mAudioManager);
                 }
             });

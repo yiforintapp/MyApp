@@ -22,7 +22,7 @@ import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -165,7 +165,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onDestroy() {
         LeoEventBus.getDefaultBus().unregister(this);
-        CallFilterManager.getInstance(getActivity()).setIsFilterTab(false);
+        CallFilterHelper.getInstance(getActivity()).setIsFilterTab(false);
         super.onDestroy();
     }
 
@@ -177,9 +177,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             loadData(false);
         }
         isFristIn = false;
-        int curTab = CallFilterManager.getInstance(getActivity()).getCurrFilterTab();
+        int curTab = CallFilterHelper.getInstance(getActivity()).getCurrFilterTab();
         if (CallFilterMainActivity.FILTER_TAB == curTab) {
-            CallFilterManager.getInstance(getActivity()).setIsFilterTab(true);
+            CallFilterHelper.getInstance(getActivity()).setIsFilterTab(true);
         }
     }
 
@@ -191,7 +191,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onStop() {
         super.onStop();
-        CallFilterManager.getInstance(getActivity()).setIsFilterTab(false);
+        CallFilterHelper.getInstance(getActivity()).setIsFilterTab(false);
     }
 
     @Override
@@ -395,7 +395,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 boolean restrLog = mDeleteDialog.getCheckBoxState();
                 //恢复拦截记录到系统
                 if (restrLog) {
-                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl)
+                    CallFilterManagerImpl cmp = (CallFilterManagerImpl)
                             MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
                     List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(infoFilter.getNumber());

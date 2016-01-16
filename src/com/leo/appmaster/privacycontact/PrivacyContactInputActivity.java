@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,7 +33,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterManager;
+import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
@@ -145,7 +144,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
 
                 boolean inerFlag = mCallManger.addBlackList(list, false);
                 if (!inerFlag) {
-                    CallFilterManager cm = CallFilterManager.getInstance(PrivacyContactInputActivity.this);
+                    CallFilterHelper cm = CallFilterHelper.getInstance(PrivacyContactInputActivity.this);
                     cm.addBlackFailTip();
                 }
                 Context context = this;

@@ -35,7 +35,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterManager;
+import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -50,7 +50,6 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.imageloader.core.BaseImageDecoder;
 
 public class AddFromContactListActivity extends BaseActivity implements OnItemClickListener {
     public static final String TAG = "AddFromContactListActivity";
@@ -500,7 +499,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
 
                                 boolean inerFlag = mCallManger.addBlackList(blackList, false);
                                 if (!inerFlag) {
-                                    CallFilterManager cm = CallFilterManager.getInstance(AddFromContactListActivity.this);
+                                    CallFilterHelper cm = CallFilterHelper.getInstance(AddFromContactListActivity.this);
                                     cm.addBlackFailTip();
                                 }
                                 Message messge = new Message();

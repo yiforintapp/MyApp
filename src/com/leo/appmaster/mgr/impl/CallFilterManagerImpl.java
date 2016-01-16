@@ -16,7 +16,7 @@ import com.leo.appmaster.callfilter.StrangerInfo;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by runlee on 15-12-18.
  */
-public class CallFilterContextManagerImpl extends CallFilterContextManager {
+public class CallFilterManagerImpl extends CallFilterManager {
     public static final int PAGE_SIZE = 100;
     private static final String TAG = "CallFilterManager";
 

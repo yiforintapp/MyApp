@@ -38,7 +38,7 @@ import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.mgr.WifiSecurityManager;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
@@ -1147,7 +1147,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
-                        CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                        CallFilterManagerImpl cmp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                         if (mSelectData != null && mSelectData.size() == 1) {
                             boolean isHaveBlackNum = cmp.isExistBlackList(mSelectData.get(0).getContactNumber());
                             if (isHaveBlackNum) {

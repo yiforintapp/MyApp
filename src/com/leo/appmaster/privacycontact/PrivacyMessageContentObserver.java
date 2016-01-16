@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.os.Handler;
 
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.callfilter.CallFilterManager;
+import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -88,7 +88,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     /**
                      * 骚扰拦截
                      */
-                    CallFilterManager.getInstance(mContext).filterObserHandler();
+                    CallFilterHelper.getInstance(mContext).filterObserHandler();
                 }
             });
             /**

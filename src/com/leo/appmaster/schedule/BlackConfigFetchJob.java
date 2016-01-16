@@ -6,10 +6,9 @@ import android.text.TextUtils;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
@@ -106,7 +105,7 @@ public class BlackConfigFetchJob extends FetchScheduleJob {
             int starNotiTip = jo.getInt(STRA_TP);
             int blkTip = jo.getInt(BLK_TP);
             int markTip = jo.getInt(MARK_TP);
-            CallFilterContextManagerImpl lsm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            CallFilterManagerImpl lsm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
             if (user > 0) {
                 lsm.setFilterUserNumber(user);
             }

@@ -6,13 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
@@ -20,17 +17,16 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -44,11 +40,11 @@ import com.leo.imageloader.utils.IoUtils;
 /**
  * Created by runlee on 15-12-18.
  */
-public class CallFilterManager {
-    public static final String TAG = "CallFilterManager";
+public class CallFilterHelper {
+    public static final String TAG = "CallFilterHelper";
     private static final boolean DBG = false;
 
-    private static CallFilterManager mInstance;
+    private static CallFilterHelper mInstance;
     private Context mContext;
     private long mLastOffHookTime = 0;
     private List<BlackListInfo> mBlackList;
@@ -218,14 +214,14 @@ public class CallFilterManager {
         this.mIsComingOut = isComingOut;
     }
 
-    public static synchronized CallFilterManager getInstance(Context context) {
+    public static synchronized CallFilterHelper getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new CallFilterManager(context.getApplicationContext());
+            mInstance = new CallFilterHelper(context.getApplicationContext());
         }
         return mInstance;
     }
 
-    private CallFilterManager(Context context) {
+    private CallFilterHelper(Context context) {
         mContext = context;
     }
 
@@ -274,7 +270,7 @@ public class CallFilterManager {
             return;
         }
         /* 判断骚扰拦截是否打开 */
-        final CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        final CallFilterManager cmp = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean filOpSta = cmp.getFilterOpenState();
         if (!filOpSta) {
             LeoLog.i("testdata", "closed！ return");
@@ -347,7 +343,7 @@ public class CallFilterManager {
                 if (CallFilterConstants.IS_TIP_DIA[0] == isTip) {
                     return;
                 }
-                boolean isComOut = CallFilterManager.getInstance(mContext).isComingOut();
+                boolean isComOut = CallFilterHelper.getInstance(mContext).isComingOut();
                 if (!isComOut) {
                     ThreadManager.getUiThreadHandler().post(new Runnable() {
                         @Override
@@ -379,7 +375,7 @@ public class CallFilterManager {
             mLastFilterTips = null;
             if (info != null || isComingOut() || mHasIdle) {
                 //如果mHasIdle是true 是已经处理完挂断逻辑 也要返回，
-                CallFilterManager.getInstance(mContext).setIsComingOut(false);
+                CallFilterHelper.getInstance(mContext).setIsComingOut(false);
                 return;
             }
             mHasIdle = true;
@@ -507,7 +503,7 @@ public class CallFilterManager {
         mContext.startActivity(intent);
     }
 
-//    private void showAskAddWhenNoOffHook(final CallFilterContextManager cmp, int[] filterTip) {
+//    private void showAskAddWhenNoOffHook(final CallFilterManager cmp, int[] filterTip) {
 //        mDialogAskAdd = CallFIlterUIHelper.getInstance().getConfirmAddToBlacklistDialog(mContext, mPhoneNumber, String.valueOf(filterTip[2]));
 //        mDialogAskAdd.setRightBtnListener(new DialogInterface.OnClickListener() {
 //            @Override
@@ -527,7 +523,7 @@ public class CallFilterManager {
 //        mIsOffHook = false;
 //    }
 
-//    private void showAskAddBlackWithoutMark(final CallFilterContextManager cmp, int[] filterTip) {
+//    private void showAskAddBlackWithoutMark(final CallFilterManager cmp, int[] filterTip) {
 //        mDialogAskAddWithSmr = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
 //        String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
 //        String summaryF = String.format(summaryS, filterTip[2]);
@@ -564,7 +560,7 @@ public class CallFilterManager {
 //        mIsOffHook = false;
 //    }
 
-//    private void showAskAddBlackWithMark(final CallFilterContextManager cmp, int[] filterTip) {
+//    private void showAskAddBlackWithMark(final CallFilterManager cmp, int[] filterTip) {
 //        mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, mContext, true, 0, true);
 //        String summaryS = mContext.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
 //        String mark = mContext.getResources().getString(R.string.call_filter_black_list_tab);
@@ -616,7 +612,7 @@ public class CallFilterManager {
 //        mIsOffHook = false;
 //    }
 
-//    private void showTooShortDialog(long durationMax, final CallFilterContextManager cmp) {
+//    private void showTooShortDialog(long durationMax, final CallFilterManager cmp) {
 //        mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, AppMasterApplication.getInstance(), true, 0, true);
 //        String summaryF = String.format(mContext.getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (Math.ceil(durationMax / 1000)));
 //        mDialogTooShort.setContent(summaryF);
@@ -652,7 +648,7 @@ public class CallFilterManager {
 //    }
 
     private synchronized void endCallAndRecord(final String phoneNumber, final ITelephony iTelephony,
-                                               final CallFilterContextManager cmp) {
+                                               final CallFilterManager cmp) {
         /* 为本地黑名单：拦截 */
         LeoLog.d("testdata", "endCallAndRecord enter.");
         try {
@@ -738,7 +734,7 @@ public class CallFilterManager {
         LeoLog.i(TAG, "incoming count：" + (callLogs != null ? callLogs.size() : 0));
         List<ContactBean> contactsList = PrivacyContactUtils.getSysContact(mContext, null, null,
                 false);
-        CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        CallFilterManagerImpl cmp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         final List<ContactCallLog> straCalls = new ArrayList<ContactCallLog>();
         if (callLogs != null && callLogs.size() > 0) {
             for (ContactCallLog call : callLogs) {
@@ -782,7 +778,7 @@ public class CallFilterManager {
 
             LeoLog.i(TAG, "strange in coming count：" + count);
 
-            CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext
+            CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext
                     .getManager(MgrContext.MGR_CALL_FILTER);
             int param = pm.getStraNotiTipParam();
             if (param <= 0) {

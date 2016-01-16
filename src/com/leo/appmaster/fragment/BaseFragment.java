@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 
@@ -23,14 +23,14 @@ public abstract class BaseFragment extends Fragment {
     protected View mRootView;
 
     protected LockManager mLockManager;
-    protected CallFilterContextManager mCallManger;
+    protected CallFilterManager mCallManger;
     final String TAG = getClass().getSimpleName();
 
     @Override
     public void onAttach(Activity activity) {
         mActivity = (FragmentActivity) activity;
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        mCallManger = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         getArguments();
         super.onAttach(activity);
     }

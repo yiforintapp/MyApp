@@ -16,7 +16,7 @@ import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -43,8 +43,8 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_filter_main);
-        CallFilterManager.getInstance(this).setIsFilterTab(false);
-        CallFilterManager.getInstance(this).setCurrFilterTab(BLACK_TAB);
+        CallFilterHelper.getInstance(this).setIsFilterTab(false);
+        CallFilterHelper.getInstance(this).setCurrFilterTab(BLACK_TAB);
         initUI();
         mNeedToHomeWhenFinish = getIntent().getBooleanExtra("needToHomeWhenFinish", false);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "block_cnts");
@@ -139,7 +139,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     protected void onDestroy() {
-        CallFilterManager.getInstance(this).setIsFilterTab(false);
+        CallFilterHelper.getInstance(this).setIsFilterTab(false);
         super.onDestroy();
     }
 
@@ -169,8 +169,8 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         BaseFragment fragment;
     }
 
-    protected CallFilterContextManager mCallManger =
-            (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+    protected CallFilterManager mCallManger =
+            (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
     @Override
     public void onClick(View v) {
@@ -199,11 +199,11 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     @Override
     public void onPageSelected(int arg0) {
         if (arg0 == FILTER_TAB) {
-            CallFilterManager.getInstance(this).setIsFilterTab(true);
-            CallFilterManager.getInstance(this).setCurrFilterTab(FILTER_TAB);
+            CallFilterHelper.getInstance(this).setIsFilterTab(true);
+            CallFilterHelper.getInstance(this).setCurrFilterTab(FILTER_TAB);
         } else if (arg0 == BLACK_TAB) {
-            CallFilterManager.getInstance(this).setIsFilterTab(false);
-            CallFilterManager.getInstance(this).setCurrFilterTab(BLACK_TAB);
+            CallFilterHelper.getInstance(this).setIsFilterTab(false);
+            CallFilterHelper.getInstance(this).setCurrFilterTab(BLACK_TAB);
         }
     }
 

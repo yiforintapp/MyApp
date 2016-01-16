@@ -17,9 +17,9 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
@@ -34,13 +34,13 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     private Context mContext;
     private LayoutInflater layoutInflater;
     private LEOWithSingleCheckboxDialog mDialog;
-    protected CallFilterContextManager mCallManger;
+    protected CallFilterManager mCallManger;
 
     public BlackListAdapter(Context mContext) {
         this.mContext = mContext;
         mList = new ArrayList<BlackListInfo>();
         layoutInflater = LayoutInflater.from(mContext);
-        mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        mCallManger = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
 //                    ThreadManager.executeOnAsyncThread(new Runnable() {
 //                        @Override
 //                        public void run() {
-                    CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                    CallFilterManagerImpl cmp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
                     List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.number);
                     if (infos != null && infos.size() > 0) {

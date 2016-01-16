@@ -19,7 +19,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.home.DeskProxyActivity;
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -111,10 +111,10 @@ public class CallFIlterUIHelper {
     public void showReceiveCallNotification(String number) {
         AppMasterApplication ama = AppMasterApplication.getInstance();
         /*判断通知提示是否打开*/
-        CallFilterContextManager cmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        CallFilterManager cmp = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         boolean filOpSta = cmp.getFilterNotiOpState();
         boolean isFilterSelected = cmp.getFilterOpenState();
-        boolean isFilterTab = CallFilterManager.getInstance(ama).isIsFilterTab();
+        boolean isFilterTab = CallFilterHelper.getInstance(ama).isIsFilterTab();
         LeoLog.d("showReceiveCallNotification","isFilterTab:"+isFilterTab);
         if (!filOpSta || !isFilterSelected || isFilterTab) {
             return;

@@ -8,14 +8,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterManager;
-import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.db.BlacklistTab;
-import com.leo.appmaster.mgr.CallFilterContextManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
-import com.leo.appmaster.privacycontact.ContactCallLog;
-import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
@@ -26,9 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by runlee on 15-12-23.
@@ -128,7 +121,7 @@ public class BlackUploadFetchJob extends FetchScheduleJob {
             FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
 
-            CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+            CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
             if (mInfos == null) {
                 mInfos = new ArrayList<BlackListInfo>();
             }

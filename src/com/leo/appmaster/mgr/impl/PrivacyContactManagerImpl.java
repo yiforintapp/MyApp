@@ -77,7 +77,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                 continue;
             }
 
-//            CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//            CallFilterManagerImpl cmp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //            boolean isHaveBlackNum = cmp.isExistBlackList(number);
 //            if (isHaveBlackNum) {
 //                continue;

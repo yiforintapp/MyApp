@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by runlee on 15-12-18.
  */
-public abstract class CallFilterContextManager extends Manager {
+public abstract class CallFilterManager extends Manager {
     @Override
     public void onDestory() {
 

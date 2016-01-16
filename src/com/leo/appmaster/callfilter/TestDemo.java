@@ -49,7 +49,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //        int id = v.getId();
 //        switch (id) {
 //            case R.id.B1:
-//                CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                pm.setFilterUserNumber(1000);
 //                pm.setFilterTipFroUser(3000);
 //                List<BlackListInfo> infos1 = new ArrayList<BlackListInfo>();
@@ -59,7 +59,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //                info.setMarkerType(0);
 //                info.setMarkerNumber(30);
 //                infos1.add(info);
-//                CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
+//                CallFilterHelper cm = CallFilterHelper.getInstance(AppMasterApplication.getInstance());
 //                cm.addFilterFroParse(infos1);
 //                pm.setCallDurationMax(7000);
 //                pm.setStraNotiTipParam(2);
@@ -68,7 +68,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //                new BlackUploadFetchJob().startImmediately(true);
 //                break;
 //            case R.id.B3:
-//                CallFilterContextManagerImpl lsm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                CallFilterManagerImpl lsm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                int user = lsm.getFilterUserNumber();
 //                int tipUser = lsm.getFilterTipFroUser();
 //                long dration = lsm.getCallDurationMax();
@@ -98,11 +98,11 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //                    black.setUploadState(CallFilterConstants.UPLOAD);
 //                    blacks.add(black);
 //                }
-//                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                CallFilterManagerImpl cmp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                cmp.addBlackList(blacks, true);
 //                break;
 //            case R.id.B5:
-//                CallFilterContextManagerImpl cmps = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                CallFilterManagerImpl cmps = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                int i = 1;
 //                //已上传的拦截名单
 //                List<BlackListInfo> filInfos = cmps.getUpBlackListLimit(1);
@@ -120,12 +120,12 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //                        black.setNumber(info2.getNumber());
 //                        black.setFiltUpState(CallFilterConstants.FIL_UP_NO);
 //                        Context context = AppMasterApplication.getInstance();
-//                        CallFilterManager.getInstance(context).updateUpBlack(black);
+//                        CallFilterHelper.getInstance(context).updateUpBlack(black);
 //                    }
 //                }
 //                break;
 //            case R.id.B6:
-//                List<BlackListInfo> blacksSer = CallFilterManager.getInstance(TestDemo.this).getSerBlackList();
+//                List<BlackListInfo> blacksSer = CallFilterHelper.getInstance(TestDemo.this).getSerBlackList();
 //                if (blacksSer != null) {
 //                    StringBuilder sbw = new StringBuilder();
 //                    for (BlackListInfo infos : blacksSer) {
@@ -135,7 +135,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //                }
 //                break;
 //            case R.id.B7:
-//                CallFilterContextManagerImpl lsm1 = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                CallFilterManagerImpl lsm1 = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                lsm1.setStraNotiTipParam(2);
 //                Uri uri = CallFilterConstants.BLACK_LIST_URI;
 //                String sortOrder = CallFilterConstants.COL_TIME + " " + CallFilterConstants.DESC;
@@ -154,7 +154,7 @@ public class TestDemo extends Activity implements View.OnClickListener {
 //
 //                break;
 //            case R.id.B8:
-//                CallFilterContextManagerImpl LM = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                CallFilterManagerImpl LM = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                CallFilterInfo info8 = new CallFilterInfo();
 //                info8.setNumber("18790729990");
 //                info8.setTimeLong(System.currentTimeMillis() + 2000);

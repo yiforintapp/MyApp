@@ -10,7 +10,6 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.content.DialogInterface.OnClickListener;
-import android.hardware.camera2.dispatch.MethodNameInvoker;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
@@ -19,7 +18,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -34,7 +33,7 @@ import com.leo.appmaster.utils.Utilities;
 
 public class AskAddToBlacklistActivity extends BaseActivity {
     private final String  TAG = "AskAddToBlacklistActivity";
-    private CallFilterContextManager mCmp;
+    private CallFilterManager mCmp;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmrMark;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmr;
     private LEOAlarmDialog mDialogAskAdd;
@@ -59,7 +58,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask_add_to_blacklist);
-        mCmp = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        mCmp = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         LeoLog.i(TAG, "on Create");
         handleIntent();
     }
@@ -166,7 +165,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 infost.add(info);
                 boolean inerFlag = mCmp.addBlackList(infost, false);
                 if (!inerFlag) {
-                    CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
+                    CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
                     cm.addBlackFailTip();
                 }
                 notiUpdateBlackList();
@@ -231,7 +230,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 infost.add(info);
                 boolean inerFlag = mCmp.addBlackList(infost, false);
                 if (!inerFlag) {
-                    CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
+                    CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
                     cm.addBlackFailTip();
                 }
                 notiUpdateBlackList();
@@ -284,7 +283,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 infost.add(info);
                 boolean inerFlag = mCmp.addBlackList(infost, false);
                 if (!inerFlag) {
-                    CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
+                    CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
                     cm.addBlackFailTip();
                 }
                 notiUpdateBlackList();
@@ -319,7 +318,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 infost.add(info);
                 boolean inerFlag =  mCmp.addBlackList(infost, false);
                 if (!inerFlag) {
-                    CallFilterManager cm = CallFilterManager.getInstance(AskAddToBlacklistActivity.this);
+                    CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
                     cm.addBlackFailTip();
                 }
                 notiUpdateBlackList();

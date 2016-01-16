@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -282,7 +282,7 @@ public class CallFilterRecordActivity extends BaseActivity implements OnClickLis
                                             mCallManger.removeBlackList(list);
                                             boolean restrLog = mDialog.getCheckBoxState();
                                             if (restrLog) {
-                                                CallFilterContextManagerImpl cmp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                                                CallFilterManagerImpl cmp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 
                                                 List<CallFilterInfo> infos = cmp.getFilterDetListFroNum(info.getNumber());
                                                 if (infos != null && infos.size() > 0) {

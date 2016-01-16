@@ -5,7 +5,7 @@ import java.util.HashMap;
 import android.text.TextUtils;
 
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.mgr.impl.DeviceManagerImpl;
 import com.leo.appmaster.mgr.impl.IntrudeSecurityManagerImpl;
 import com.leo.appmaster.mgr.impl.LockManagerImpl;
@@ -102,7 +102,7 @@ public class MgrContext {
         } else if (MGR_LOST_SECURITY.equals(mgr)) {
             manager = new LostSecurityManagerImpl();
         } else if(MGR_CALL_FILTER.equals(mgr)){
-            manager = new CallFilterContextManagerImpl();
+            manager = new CallFilterManagerImpl();
         } else if (MGR_BATTERY.equals(mgr)) {
             manager = new BatteryManagerImpl();
         }

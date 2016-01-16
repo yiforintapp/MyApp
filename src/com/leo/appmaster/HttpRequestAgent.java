@@ -21,7 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.DeviceUtil;
@@ -608,7 +608,7 @@ public class HttpRequestAgent {
      * @param errorListener
      */
     public void downloadBlackList(String filePath, Listener<File> listener, ErrorListener errorListener) {
-        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         String uri = pm.getSerBlackFilePath();
         FileRequest request = new FileRequest(Method.GET, uri, filePath, listener, errorListener);
         request.setShouldCache(true);

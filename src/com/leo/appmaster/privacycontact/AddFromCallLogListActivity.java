@@ -36,7 +36,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterManager;
+import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
@@ -462,7 +462,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
 
                                 boolean inerFlag = mCallManger.addBlackList(blackList, false);
                                 if (!inerFlag) {
-                                    CallFilterManager cm = CallFilterManager.getInstance(AddFromCallLogListActivity.this);
+                                    CallFilterHelper cm = CallFilterHelper.getInstance(AddFromCallLogListActivity.this);
                                     cm.addBlackFailTip();
                                 }
                                 //cancel Process Dialog

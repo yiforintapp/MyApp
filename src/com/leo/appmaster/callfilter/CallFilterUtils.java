@@ -3,34 +3,26 @@ package com.leo.appmaster.callfilter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.R;
 import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.db.BlacklistTab;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterContextManagerImpl;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackListFileFetchJob;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.utils.IoUtils;
 
 /**
@@ -246,7 +238,7 @@ public class CallFilterUtils {
      * 测试用
      */
 //    public static void addData() {
-//        CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//        CallFilterManagerImpl mp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //        List<BlackListInfo> list = new ArrayList<BlackListInfo>();
 //        for (int i = 0; i < 10; i++) {
 //            BlackListInfo info = CallFilterUtils.getBlackListInfo(-1, "110" + i, "测试", 0, null,
@@ -281,7 +273,7 @@ public class CallFilterUtils {
 //    }
 
 //    public static void removeDate(Context context) {
-//        CallFilterContextManagerImpl mp = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//        CallFilterManagerImpl mp = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //        List<StrangerInfo> list = new ArrayList<StrangerInfo>();
 //        for (int i = 1; i <= 10; i++) {
 //            long date = Long.valueOf("5454545554");

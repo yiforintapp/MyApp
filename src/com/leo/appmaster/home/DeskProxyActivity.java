@@ -17,12 +17,11 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.BackUpActivity;
-import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
-import com.leo.appmaster.callfilter.CallFilterManager;
+import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.callfilter.StrangeCallActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
@@ -269,7 +268,7 @@ public class DeskProxyActivity extends Activity {
         Intent intent = new Intent(this, StrangeCallActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        CallFilterManager manager = CallFilterManager.getInstance(this);
+        CallFilterHelper manager = CallFilterHelper.getInstance(this);
         manager.setLastClickedCallLogsId(manager.getLastShowedCallLogsBigestId());
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "notify_stranger_cnts");
     }

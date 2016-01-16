@@ -20,9 +20,8 @@ import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
-import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
-import com.leo.appmaster.mgr.CallFilterContextManager;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -82,7 +81,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                CallFilterContextManager mCallManger = (CallFilterContextManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                CallFilterManager mCallManger = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
                 LeoLog.i("tess", "getCallFilterGrCount = " + mCallManger.getCallFilterGrCount());
                 if (mCallManger.getCallFilterGrCount() != 0) {
                     mIsHasCallFilterRecords = true;
@@ -290,7 +289,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                    if (DBG) {
 //                        int[] pix = AppUtil.getScreenPix(getActivity());
 //                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//                        CallFilterContextManagerImpl pm = (CallFilterContextManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                        CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
 //                        pm.setFilterUserNumber(50000);
 //                        pm.setFilterTipFroUser(3000);
 //                        pm.setSerBlackTipNum(3000);
@@ -302,7 +301,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                        info.setAddBlackNumber(2258);
 //                        info.setMarkerType(2);
 //                        info.setMarkerNumber(50000);
-//                        CallFilterManager cm = CallFilterManager.getInstance(AppMasterApplication.getInstance());
+//                        CallFilterHelper cm = CallFilterHelper.getInstance(AppMasterApplication.getInstance());
 //                        lits.add(info);
 //                        cm.addFilterFroParse(lits);
 //                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
