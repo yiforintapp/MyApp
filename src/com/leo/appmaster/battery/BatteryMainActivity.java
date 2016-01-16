@@ -15,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -25,6 +28,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.fragment.PretendAppBeautyFragment;
 import com.leo.appmaster.home.SimpleAnimatorListener;
@@ -38,6 +42,8 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.Animator.AnimatorListener;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
+import com.leo.tools.animator.ValueAnimator;
+import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 
 public class BatteryMainActivity extends BaseFragmentActivity implements OnClickListener {
     private final String TAG = "BatterMainActivity";
@@ -55,6 +61,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RelativeLayout mRlLoadingOrEmpty;
     private BatteryManager mBtrManager;
     private TextView mTvListTitle;
+    private RelativeLayout mRlWholeBattery;
+    private RelativeLayout mRlWholeShield;
+    private ImageView mIvShield;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +74,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     
     private void initUI() {
+        mIvShield= (ImageView) findViewById(R.id.iv_shield);
         mTvListTitle = (TextView) findViewById(R.id.tv_list_title);
         mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
         mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
@@ -197,21 +207,68 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             }
         });
         startRemoveAnim();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-        mFrgmResult = new PretendAppBeautyFragment();
-        transaction.replace(mRlContent.getId(), mFrgmResult);
-        transaction.commit();
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction transaction = fm.beginTransaction();
+//        transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+//        mFrgmResult = new PretendAppBeautyFragment();
+//        transaction.replace(mRlContent.getId(), mFrgmResult);
+//        transaction.commit();
     }
 
     private void startRemoveAnim() {
         //TODO
 //        ObjectAnimator a = new ObjectAnimator();
 //        a.addListener(new );
+        final float centerX = mIvShield.getWidth() / 2.0f;  
+        final float centerY = mIvShield.getHeight() / 2.0f;  
+  
+        final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(0, 180,  
+                centerX, centerY, 0.0f, true);  
+        rotation.setDuration(2000);  
+        rotation.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+            
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                startTranslateAnim();
+            }
+        });
+        rotation.setFillAfter(false);  
+        rotation.setInterpolator(new AccelerateInterpolator());  
+        mIvShield.startAnimation(rotation);  
     }
 
     
+    protected void startTranslateAnim() {
+        float initialX = mIvShield.getX();
+        float initialY = mIvShield.getY();
+        float initialW = mIvShield.getWidth();
+        float initialH = mIvShield.getHeight();
+        PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, 0f);
+        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("y", initialY, 0f);
+        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.5f);
+        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.5f);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX, holderY, holderScaleX, holderScaleY);
+        anim.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                LeoLog.i(TAG, "x :" + mIvShield.getX());
+                LeoLog.i(TAG, "y :" + mIvShield.getY());
+                LeoLog.i(TAG, "sx :" + mIvShield.getScaleX());
+                LeoLog.i(TAG, "sy :" + mIvShield.getScaleX());
+            }
+        });
+        anim.setDuration(1000);
+        anim.start();
+    }
+
+
     class AppsAdapter extends BaseAdapter {
         private List<BatteryComsuption> mList;
         LayoutInflater mInflater;

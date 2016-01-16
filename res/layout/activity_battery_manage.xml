@@ -18,34 +18,32 @@
         android:layout_below="@id/ctb_battery" >
 
         <RelativeLayout
-            android:id="@+id/rl_dial"
+            android:id="@+id/rl_anim_layout"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:background="@color/white" >
 
+            <com.leo.appmaster.ui.WaveView
+                android:id="@+id/iv_battery"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@color/black"
+                android:layout_centerInParent="true"/>
+
             <ImageView
-                android:id="@+id/iv_dial"
+                android:id="@+id/iv_shield"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/circle_corner_button_bg" />
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/iv_dial"
-                android:layout_centerHorizontal="true"
-                android:gravity="center_horizontal"
-                android:text="dafadsfa"
-                android:textColor="@color/black" />
-        </RelativeLayout>
+                android:src="@drawable/speed_rocket" />
+</RelativeLayout>
 
         <TextView
             android:id="@+id/tv_list_title"
             android:layout_width="match_parent"
             android:gravity="center_vertical"
             android:layout_height="40dp"
-            android:layout_below="@id/rl_dial"
+            android:layout_below="@id/rl_anim_layout"
             android:background="@color/fl" />
 
         <RelativeLayout

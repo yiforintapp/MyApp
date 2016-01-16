@@ -81,6 +81,7 @@ public class BatteryManagerImpl extends BatteryManager {
         mNotifyHelper = new BatteryNotifyHelper(mContext, this);
     }
 
+    
     @Override
     public List<BatteryComsuption> getBatteryDrainApps() {
         BatteryInfoProvider ip = new BatteryInfoProvider(mContext);
