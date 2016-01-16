@@ -1,6 +1,9 @@
 package com.leo.appmaster.mgr.impl;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -8,6 +11,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.battery.BatteryNotifyHelper;
@@ -181,7 +185,7 @@ public class BatteryManagerImpl extends BatteryManager {
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
 
-        if (!BatteryProtectView.isShowing) {
+        if (!BatteryShowViewActivity.isActivityAlive) {
             Intent intent = new Intent(mContext, BatteryShowViewActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(PROTECT_VIEW_TYPE, SHOW_TYPE_IN);
@@ -202,6 +206,7 @@ public class BatteryManagerImpl extends BatteryManager {
 
     }
 
+
     /***
      * 用户拔下充电器事件
      *
@@ -213,12 +218,15 @@ public class BatteryManagerImpl extends BatteryManager {
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
 
-        if (mListenerRef != null) {
-            BatteryStateListener listener = mListenerRef.get();
-            if (listener != null) {
-                listener.onStateChange(EventType.SHOW_TYPE_OUT, newState, 0);
+        if (BatteryShowViewActivity.isActivityAlive) {
+            if (mListenerRef != null) {
+                BatteryStateListener listener = mListenerRef.get();
+                if (listener != null) {
+                    listener.onStateChange(EventType.SHOW_TYPE_OUT, newState, 0);
+                }
             }
         }
+
 
     }
 
@@ -235,14 +243,14 @@ public class BatteryManagerImpl extends BatteryManager {
 
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
-
-        if (mListenerRef != null) {
-            BatteryStateListener listener = mListenerRef.get();
-            if (listener != null) {
-                listener.onStateChange(EventType.BAT_EVENT_CHARGING, newState, remainTime);
+        if (BatteryShowViewActivity.isActivityAlive) {
+            if (mListenerRef != null) {
+                BatteryStateListener listener = mListenerRef.get();
+                if (listener != null) {
+                    listener.onStateChange(EventType.BAT_EVENT_CHARGING, newState, remainTime);
+                }
             }
         }
-
 
     }
 
@@ -256,14 +264,14 @@ public class BatteryManagerImpl extends BatteryManager {
 
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
-
-        if (mListenerRef != null) {
-            BatteryStateListener listener = mListenerRef.get();
-            if (listener != null) {
-                listener.onStateChange(EventType.BAT_EVENT_CONSUMING, newState, 0);
+        if (BatteryShowViewActivity.isActivityAlive) {
+            if (mListenerRef != null) {
+                BatteryStateListener listener = mListenerRef.get();
+                if (listener != null) {
+                    listener.onStateChange(EventType.BAT_EVENT_CONSUMING, newState, 0);
+                }
             }
         }
-
     }
 
     @Override
@@ -309,7 +317,7 @@ public class BatteryManagerImpl extends BatteryManager {
 
     @Override
     public boolean shouldEnableCleanFunction() {
-        return (SystemClock.elapsedRealtime()-mLastKillTime)>KILL_INTERVAL;
+        return (SystemClock.elapsedRealtime() - mLastKillTime) > KILL_INTERVAL;
     }
 
     /* 剩余充电时间计算相关 */

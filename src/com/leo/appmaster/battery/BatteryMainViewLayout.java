@@ -147,8 +147,6 @@ public class BatteryMainViewLayout extends RelativeLayout {
         } else {
             mTvLevel.setVisibility(GONE);
         }
-
-
     }
 
     @Override

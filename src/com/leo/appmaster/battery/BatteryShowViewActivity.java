@@ -11,16 +11,11 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.appmanage.view.BackUpFragment;
-import com.leo.appmaster.appmanage.view.RestoreFragment;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
-import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -28,20 +23,23 @@ import java.util.List;
 
 
 public class BatteryShowViewActivity extends BaseFragmentActivity implements BatteryManager.BatteryStateListener, ViewPager.OnPageChangeListener {
-    private final String TAG = "AskAddToBlacklistActivity";
+    private final String TAG = "testBatteryView";
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
     private ViewPager mViewPager;
     private BatteryFragmentHoler[] mFragmentHolders = new BatteryFragmentHoler[2];
 
-    private EmptyFragment backupFragment;
-    private BatteryViewFragment restoreFragment;
+    private EmptyFragment emptyFragment;
+    private BatteryViewFragment batteryFragment;
+
+    public static Boolean isActivityAlive = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LeoLog.d(TAG, "onCreate");
         //隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //隐藏状态栏
@@ -60,8 +58,9 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
         setContentView(R.layout.activity_batter_show_view);
 
-        initAll();
         handleIntent();
+        initAll();
+        isActivityAlive = true;
     }
 
     private void initAll() {
@@ -70,26 +69,28 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
         mViewPager = (ViewPager) findViewById(R.id.battery_viewpager);
         initFragment();
-
         mViewPager.setAdapter(new BatteryPagerAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setCurrentItem(1);
-
         mViewPager.setOnPageChangeListener(this);
+
+        if (batteryFragment != null) {
+            batteryFragment.initCreate(mChangeType, newState, mRemainTime);
+        }
     }
 
     private void initFragment() {
         BatteryFragmentHoler holder = new BatteryFragmentHoler();
 
         holder.title = "type_0";
-        backupFragment = new EmptyFragment();
-        holder.fragment = backupFragment;
+        emptyFragment = new EmptyFragment();
+        holder.fragment = emptyFragment;
         mFragmentHolders[0] = holder;
 
         holder = new BatteryFragmentHoler();
         holder.title = "type_1";
-        restoreFragment = new BatteryViewFragment();
-        holder.fragment = restoreFragment;
+        batteryFragment = new BatteryViewFragment();
+        holder.fragment = batteryFragment;
         mFragmentHolders[1] = holder;
 
         // AM-614, remove cached fragments
@@ -141,7 +142,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                 intent.getExtras().get(BatteryManagerImpl.SEND_BUNDLE);
         mChangeType = intent.getStringExtra(BatteryManagerImpl.PROTECT_VIEW_TYPE);
         mRemainTime = intent.getIntExtra(BatteryManagerImpl.REMAIN_TIME, 0);
-//        process();
     }
 
     public void onEventMainThread(BatteryViewEvent event) {
@@ -155,13 +155,14 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     @Override
     public void finish() {
         super.finish();
-//        BatteryProtectView.handleHide();
+        LeoLog.d(TAG, "onDestroy");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        LeoLog.d(TAG, "onDestroy");
+        isActivityAlive = false;
     }
 
     @Override
@@ -185,29 +186,10 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     }
 
     private void process() {
-        BatteryProtectView mProtectView = BatteryProtectView.makeText(this);
-
-        LeoLog.d("testBatteryEvent", "mChangeType : " + mChangeType);
-
-        if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN)) {
-            mProtectView.setBatteryStatus(true);
-            mProtectView.setBatteryLevel(newState.level);
-            mProtectView.notifyViewUi();
-            mProtectView.show();
-        } else if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
-            mProtectView.setBatteryLevel(newState.level);
-            mProtectView.setBatteryStatus(false);
-            mProtectView.notifyViewUi();
-        } else if (mChangeType.equals(BatteryManagerImpl.UPDATE_UP)) {
-            mProtectView.setBatteryLevel(newState.level);
-            mProtectView.setBatteryStatus(true);
-            mProtectView.notifyViewUi();
-        } else {
-            mProtectView.setBatteryLevel(newState.level);
-            mProtectView.setBatteryStatus(true);
-            mProtectView.notifyViewUi();
+        LeoLog.d(TAG, "process mChangeType : " + mChangeType);
+        if (batteryFragment != null) {
+            batteryFragment.process(mChangeType, newState, mRemainTime);
         }
-
     }
 
     @Override
