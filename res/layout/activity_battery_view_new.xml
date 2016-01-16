@@ -133,8 +133,9 @@
 
         <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
             android:id="@+id/slider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             slider:maskText=">> 滑动来解锁"
             slider:maskTextMarginLeft="1dp"

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
 import android.os.Handler;
 import android.os.Message;
@@ -100,6 +101,7 @@ public class BatteryProtectSlideView extends View {
         mPaint = new Paint();
         mMatrix = new Matrix();
         mPaint.setTextSize(mTextSize);
+        mPaint.setTextAlign(Paint.Align.CENTER);
         mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
     }
 
@@ -117,7 +119,9 @@ public class BatteryProtectSlideView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mPaint.setShader(mGradient);
-        canvas.drawText(mText, mTextLeft, mTextTop, mPaint);
+        int centerX = getWidth()/2;
+        int baseline = getHeight()/2+mTextSize/2;
+        canvas.drawText(mText, centerX, baseline, mPaint);
     }
 
 }
