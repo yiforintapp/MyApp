@@ -9,7 +9,7 @@
         android:id="@+id/ctb_battery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cb" />
+        android:background="#1167f0" />
 
     <RelativeLayout
         android:id="@+id/rl_content"
@@ -20,15 +20,27 @@
         <RelativeLayout
             android:id="@+id/rl_anim_layout"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@color/white" >
+            android:layout_height="160dp"
+            android:background="#1167f0" >
 
-            <com.leo.appmaster.ui.WaveView
-                android:id="@+id/wv_battery"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@color/black"
-                android:layout_centerInParent="true"/>
+            <RelativeLayout
+                android:id="@+id/rl_wholebattery"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_centerInParent="true" >
+
+                <com.leo.appmaster.ui.WaveView
+                    android:id="@+id/wv_battery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:background="#0866ec" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/battery_mask" />
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/iv_shield"
@@ -36,15 +48,18 @@
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/speed_rocket" />
-</RelativeLayout>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_list_title"
             android:layout_width="match_parent"
-            android:gravity="center_vertical"
             android:layout_height="40dp"
             android:layout_below="@id/rl_anim_layout"
-            android:background="@color/fl" />
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="14dp"
+            android:textColor="@color/c3"
+            android:textSize="@dimen/f3" />
 
         <RelativeLayout
             android:id="@+id/rl_apps"
@@ -52,6 +67,8 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/rl_bottom"
             android:layout_below="@+id/tv_list_title"
+            android:background="@color/cbg"
+            android:padding="8dp"
             android:verticalSpacing="10dp" >
 
             <GridView
@@ -130,10 +147,10 @@
                 ripple:rippleOverlay="true" >
 
                 <TextView
-                    android:text="@string/batterymanage_boost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:text="@string/batterymanage_boost"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
             </com.leo.appmaster.ui.RippleView>

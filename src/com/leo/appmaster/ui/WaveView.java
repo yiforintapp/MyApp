@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DrawFilter;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -154,5 +155,9 @@ public class WaveView extends View {
         for (int i = 0; i < mTotalWidth; i++) {  
             mYPositions[i] = (float) (STRETCH_FACTOR_A * Math.sin(mCycleFactorW * i) + OFFSET_Y);  
         }  
+    }
+
+    public void setWaveColor(int color) {
+        mWavePaint.setColor(color);
     }  
 }

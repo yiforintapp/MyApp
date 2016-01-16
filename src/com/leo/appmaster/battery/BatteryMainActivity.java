@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +39,8 @@ import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.Animator.AnimatorListener;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
@@ -73,7 +76,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     
     private void initUI() {
+        mRlWholeBattery = (RelativeLayout) findViewById(R.id.rl_wholebattery);
         mWvBattery = (WaveView) findViewById(R.id.wv_battery);
+        mWvBattery.setWaveColor(0xff00ccff);
         mWvBattery.setPercent(30);
         mIvShield= (ImageView) findViewById(R.id.iv_shield);
         mTvListTitle = (TextView) findViewById(R.id.tv_list_title);
@@ -82,7 +87,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mRlEmpty = (RelativeLayout) findViewById(R.id.rl_empty);
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_battery);
         mCtbMain.setToolbarTitle(R.string.hp_device_power);
-        mCtbMain.setToolbarColorResource(R.color.cb);
         mCtbMain.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,7 +264,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     private void startBoostAnimation(final int startIndex) {
         if (mGvApps.getCount() <= startIndex) {
-            startFlipAnimation();
+            startBatteryDismissAnim();
             return;
         }
 
@@ -289,7 +293,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                             super.onAnimationEnd(animation);
                             vv.setAlpha(0.0f);
                             if (isLastIcon) {
-                                // 一定要与xml里面的vertical spacing值一致！
+                                //TODO 一定要与xml里面的vertical spacing值一致！
                                 int vSpacing = DipPixelUtil.dip2px(BatteryMainActivity.this, 10);
                                 float rowHeight = vv.getHeight() + vSpacing;
                                 mGvApps.animate().setDuration(rowUpTime).translationYBy(-rowHeight);
@@ -298,6 +302,31 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                         }
                     });
         }
+    }
+
+    private void startBatteryDismissAnim() {
+        PropertyValuesHolder holderAlpha = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0.0f);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlWholeBattery, holderAlpha);
+        anim.setDuration(400);
+        anim.addListener(new AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+            
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                startFlipAnimation();
+            }
+            
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+        });
+        anim.start();
     }
 
     class AppsAdapter extends BaseAdapter {
