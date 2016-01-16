@@ -415,4 +415,16 @@ public class AppUtil {
         return mApps;
     }
 
+    public static boolean belongToLeoFamily(String pkgName) {
+        if (pkgName.equals(Constants.LEO_FAMILY_PG)
+                || pkgName.equals(Constants.LEO_FAMILY_PL)
+                || pkgName.equals(Constants.LEO_FAMILY_SWIFTY)
+                || pkgName.equals(Constants.LEO_FAMILY_CB)
+                || pkgName.equals(Constants.LEO_FAMILY_WIFI)
+                || pkgName.startsWith(Constants.LEO_FAMILY_THEMES)) {
+            return true;
+        }
+        return false;
+    }
+
 }

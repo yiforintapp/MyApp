@@ -31,6 +31,7 @@ import com.android.internal.os.BatteryStatsImpl;
 import com.android.internal.os.PowerProfile;
 import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.applocker.model.ProcessDetector;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BatteryUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -63,7 +64,6 @@ public class BatteryInfoProvider {
 
 	/* 3.3 增加最后一个策略，使用PS命令获取app电量消耗 */
 	private ArrayList<ProcessDetector.ProcessFilter> mFilters;
-	private static final String LEO_FAMILY_PREFIX = "com.leo.";
 	private static final String PS = "ps";
 	private static final String SHELL = "sh";
 	private static final String APP_PREFIX_1 = "u0";
@@ -307,7 +307,7 @@ public class BatteryInfoProvider {
 			if (processAdj.pkg.equals(PS) || processAdj.pkg.equals(SHELL)) {
 				return true;
 			}
-			if (processAdj.pkg.startsWith(LEO_FAMILY_PREFIX)) {
+			if (AppUtil.belongToLeoFamily(processAdj.pkg)) {
 				return true;
 			}
 			// only check app stuff

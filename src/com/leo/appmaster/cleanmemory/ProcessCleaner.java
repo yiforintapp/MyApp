@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.ProcessUtils;
 
 public class ProcessCleaner {
@@ -116,7 +117,8 @@ public class ProcessCleaner {
         List<String> launchers = getLauncherPkgs(cxt);
         for (RunningAppProcessInfo runningAppProcessInfo : list) {
             if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
-                if (!launchers.contains(runningAppProcessInfo.processName)) {
+                if (!launchers.contains(runningAppProcessInfo.processName)
+                        && !AppUtil.belongToLeoFamily(runningAppProcessInfo.processName)) {
                     mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
                 }
             }

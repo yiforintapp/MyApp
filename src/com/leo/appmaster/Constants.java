@@ -461,4 +461,13 @@ public class Constants {
     public static final String PG_DB_PATH = "data/data/com.leo.appmaster/databases/" + DATABASE_NAME;
 
 
+    /**
+     * LEO产品白名单
+     * */
+    public static final String LEO_FAMILY_PG = "com.leo.appmaster";
+    public static final String LEO_FAMILY_PL = "com.leo.privacylock";
+    public static final String LEO_FAMILY_SWIFTY = "com.leo.iswipe";
+    public static final String LEO_FAMILY_CB = "com.cool.coolbrowser";
+    public static final String LEO_FAMILY_WIFI = "com.leo.wifi";
+    public static final String LEO_FAMILY_THEMES = "com.leo.theme.";
 }
