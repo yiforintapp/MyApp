@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:id="@+id/move_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:id="@+id/time_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="75dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/time_big"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="10:33"
+                android:textColor="@color/white"
+                android:textSize="50dp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time_big"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:id="@+id/time_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/31"
+                    android:textColor="@color/white"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/time_small_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toRightOf="@id/time_small"
+                    android:text="周四"
+                    android:textColor="@color/white"
+                    android:textSize="13dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/infos_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/time_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/battery_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/battery_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/battery_num"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/infos_content"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/left_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/screen_protect_time"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/right_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@id/left_time"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/unlock_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black">
+
+
+            <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=">> 滑动来解锁"-->
+            <!--android:textColor="#30ffffff"-->
+            <!--android:textSize="20dp" />-->
+            <!--</RelativeLayout>-->
+        </RelativeLayout>
+
+        <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/slider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            slider:maskText=">> 滑动来解锁"
+            slider:maskTextMarginLeft="1dp"
+            slider:maskTextMarginTop="15dp"
+            slider:maskTextSize="20sp"
+            slider:slidableLength="208dp" />
+
+    </RelativeLayout>
+</RelativeLayout>
