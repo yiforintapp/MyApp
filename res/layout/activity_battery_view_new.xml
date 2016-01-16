@@ -117,33 +117,78 @@
             android:textSize="20dp" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <com.leo.appmaster.battery.BatteryTestViewLayout
         android:id="@+id/slide_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/remain_time"
+        android:layout_height="410dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-180dp"
+
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:background="@color/grey">
 
-    </RelativeLayout>
+        <ScrollView
+            android:id="@+id/slide_content_sv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
 
-    <RelativeLayout
-        android:id="@+id/unlock_content"
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
-        android:layout_alignParentBottom="true"
-        android:background="#e0ffffff">
+            android:scrollbars="none">
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/content_type_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white" />
+
+                <RelativeLayout
+                    android:id="@+id/content_type_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_below="@id/content_type_1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/green_button" />
+
+                <RelativeLayout
+                    android:id="@+id/content_type_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_below="@id/content_type_2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/blue_button_click" />
+
+                <RelativeLayout
+                    android:id="@+id/content_type_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_below="@id/content_type_3"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/black" />
+            </RelativeLayout>
+        </ScrollView>
+    </com.leo.appmaster.battery.BatteryTestViewLayout>
 
     <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
         android:id="@+id/slider"
         android:layout_width="match_parent"
         android:layout_height="85dp"
         android:layout_alignParentBottom="true"
-        android:background="#e0ffffff"
+        android:background="#20ffffff"
         slider:maskText=">> 滑动来解锁"
         slider:maskTextMarginLeft="1dp"
         slider:maskTextMarginTop="15dp"

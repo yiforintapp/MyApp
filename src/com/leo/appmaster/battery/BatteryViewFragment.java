@@ -4,6 +4,8 @@ package com.leo.appmaster.battery;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,14 +13,21 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PropertyInfoUtil;
+import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.ObjectAnimator;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener {
+    private static final int MOVE_UP = 1;
     private View mTimeContent;
     private View mMidContent;
     private View mRemainTimeContent;
-    private View mSlideView;
+    private BatteryTestViewLayout mSlideView;
+
 
     private TextView mTvLevel;
     private TextView mTvBigTime;
@@ -27,11 +36,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvLeftTime;
     private TextView mTvTime;
 
-    private boolean isExpand = false;
+    private ScrollView mScrollView;
 
+    private boolean isExpand = false;
+    private int moveDistance = 350;
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
+
 
     @Override
     protected int layoutResourceId() {
@@ -54,10 +66,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mTvLeftTime = (TextView) findViewById(R.id.left_time);
         mTvTime = (TextView) findViewById(R.id.right_time);
 
-        mSlideView = findViewById(R.id.slide_content);
-
-        mSlideView.getParent().requestDisallowInterceptTouchEvent(true);
+        mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
         mSlideView.setOnTouchListener(this);
+
+        mScrollView = (ScrollView) findViewById(R.id.slide_content_sv);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -226,22 +238,49 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         return true;
     }
 
+
     private void expandContent(boolean expand) {
         LeoLog.d("testBatteryView", "mMidContent height : " + mMidContent.getHeight());
         LeoLog.d("testBatteryView", "mRemainTimeContent height : " + mRemainTimeContent.getHeight());
-        int remainTimeHeight = mRemainTimeContent.getHeight();
-        int midHeight = mMidContent.getHeight();
+//        int remainTimeHeight = mRemainTimeContent.getHeight();
+//        int midHeight = mMidContent.getHeight();
+//        int marginTop = DipPixelUtil.dip2px(mActivity, 75);
+//        moveDistance = remainTimeHeight + midHeight + marginTop;
+        moveDistance = DipPixelUtil.dip2px(mActivity, 180);
 
         if (expand) {
+
+//            ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
+//            params.height = mSlideView.getHeight() + moveDistance;
+//            mSlideView.setLayoutParams(params);
+
+
             ObjectAnimator animUp = ObjectAnimator.ofFloat(mSlideView,
-                    "y", mSlideView.getTop(), mSlideView.getTop() - remainTimeHeight - midHeight);
+                    "y", mSlideView.getTop(), mSlideView.getTop() - moveDistance);
             animUp.setDuration(500);
+            animUp.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    isExpand = true;
+//                    mSlideView.setScrollView(false);
+                }
+            });
             animUp.start();
-            isExpand = true;
         } else {
 
-
-            isExpand = false;
+            ObjectAnimator animDown = ObjectAnimator.ofFloat(mSlideView,
+                    "y", mSlideView.getTop() - moveDistance, mSlideView.getTop());
+            animDown.setDuration(500);
+            animDown.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    isExpand = false;
+//                    mSlideView.setScrollView(true);
+                }
+            });
+            animDown.start();
         }
 
 
