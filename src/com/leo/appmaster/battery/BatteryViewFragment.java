@@ -1,20 +1,34 @@
 
 package com.leo.appmaster.battery;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.activity.PrivacyOptionActivity;
+import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.SimpleAnimatorListener;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.BatteryMenu;
+import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PropertyInfoUtil;
@@ -26,7 +40,10 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
 
-public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, SelfScrollView.ScrollBottomListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, SelfScrollView.ScrollBottomListener, View.OnClickListener {
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
     private static final int GREEN_ARROW_MOVE = 3;
@@ -62,6 +79,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvHideTime;
     private TextView mTvHideText;
 
+    private View mSettingView;
 
     public static boolean isExpand = false;
     public static String mBatteryText;
@@ -69,10 +87,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
-
     private int moveUpCount = 0;
     private int adContentHeight = 0;
     private int adExpandContentHeight = 0;
+    private BatteryMenu mLeoPopMenu;
+
     //开始首页动画
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -264,6 +283,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mHideTextView = findViewById(R.id.hide_tv_content);
         mTvHideTime = (TextView) findViewById(R.id.hide_tv_one);
         mTvHideText = (TextView) findViewById(R.id.hide_tv_two);
+
+        mSettingView = findViewById(R.id.ct_option_2_rl);
+        mSettingView.setOnClickListener(this);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -535,4 +557,37 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mSlideView.setScrollView(true);
         expandContent(true);
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ct_option_2_rl:
+//                Intent dlIntent = new Intent(mActivity, BatterySettingActivity.class);
+//                dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                dlIntent.putExtra(Constants.BATTERY_FROM, "battery");
+//                mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+//                startActivity(dlIntent);
+
+                initSettingMenu();
+                mLeoPopMenu.setPopMenuItems(mActivity, getRightMenuItems(), null);
+                mLeoPopMenu.showPopMenu(mActivity, mGreenArrow, null, null);
+                break;
+        }
+    }
+
+    private List<String> getRightMenuItems() {
+        List<String> listItems = new ArrayList<String>();
+        Context ctx = mActivity;
+        listItems.add(ctx.getString(R.string.screen_protect_type_pop_one));
+        return listItems;
+    }
+
+    private void initSettingMenu() {
+        if (mLeoPopMenu != null) return;
+        mLeoPopMenu = new BatteryMenu();
+        mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
+        mLeoPopMenu.setListViewDivider(null);
+    }
+
+
 }

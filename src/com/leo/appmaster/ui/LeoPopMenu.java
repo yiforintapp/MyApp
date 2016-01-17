@@ -74,7 +74,6 @@ public class LeoPopMenu {
     protected int mAnimaStyle = -1;
 
     /**
-     * @param aContext
      * @param anchorView 显示tab列表
      */
     public void showPopMenu(Activity activity, View anchorView, LayoutStyles styles,

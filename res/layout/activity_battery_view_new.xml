@@ -4,6 +4,28 @@
     android:layout_height="match_parent"
     android:background="@color/transparent">
 
+    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        app:rippleColor="@color/menu_ripple"
+        app:rippleDuration="150"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
+        <RelativeLayout
+            android:id="@+id/ct_option_2_rl"
+            style="@style/ToolbarIcon">
+
+            <ImageView
+                android:id="@+id/ct_option_iv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/setup_icon" />
+        </RelativeLayout>
+    </com.leo.appmaster.ui.MaterialRippleLayout>
 
     <RelativeLayout
         android:id="@+id/time_content"
@@ -234,6 +256,7 @@
 
         </RelativeLayout>
         <!-- 电池 && 图标 -->
+
     </RelativeLayout>
 
 

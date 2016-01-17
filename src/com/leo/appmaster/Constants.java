@@ -470,4 +470,6 @@ public class Constants {
     public static final String LEO_FAMILY_CB = "com.cool.coolbrowser";
     public static final String LEO_FAMILY_WIFI = "com.leo.wifi";
     public static final String LEO_FAMILY_THEMES = "com.leo.theme.";
+
+    public static final String BATTERY_FROM = "from_battery";
 }
