@@ -13,40 +13,49 @@
         android:layout_marginTop="75dp"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/time_big"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="10:33"
-            android:textColor="@color/white"
-            android:textSize="50dp" />
-
         <RelativeLayout
+            android:id="@+id/time_move_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/time_big"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp">
+            android:layout_centerHorizontal="true">
 
             <TextView
-                android:id="@+id/time_small"
+                android:id="@+id/time_big"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12/31"
+                android:layout_centerHorizontal="true"
+                android:text="10:33"
                 android:textColor="@color/white"
-                android:textSize="13dp" />
+                android:textSize="50dp" />
 
-            <TextView
-                android:id="@+id/time_small_right"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="11dp"
-                android:layout_toRightOf="@id/time_small"
-                android:text="周四"
-                android:textColor="@color/white"
-                android:textSize="13dp" />
+                android:layout_below="@id/time_big"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:id="@+id/time_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/31"
+                    android:textColor="@color/white"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/time_small_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toRightOf="@id/time_small"
+                    android:text="周四"
+                    android:textColor="@color/white"
+                    android:textSize="13dp" />
+            </RelativeLayout>
         </RelativeLayout>
+
+
     </RelativeLayout>
     <!-- 时间 -->
 

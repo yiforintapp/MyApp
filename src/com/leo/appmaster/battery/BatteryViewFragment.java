@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.home.SimpleAnimatorListener;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -20,7 +21,9 @@ import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.ValueAnimator;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, SelfScrollView.ScrollBottomListener {
     private static final int MOVE_UP = 1;
@@ -70,6 +73,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             switch (msg.what) {
                 case MOVE_UP:
                     showMoveUp();
+                    TimeContentMoveSmall();
                     break;
                 case MOVE_DOWN:
                     showMoveDown();
@@ -90,6 +94,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     };
 
+    private void TimeContentMoveSmall() {
+        ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mTimeContent,
+                "scaleX", 1f, 0.8f);
+        ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
+                "scaleY", 1f, 0.8f);
+        ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
+                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() * 3 / 4);
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(animScaleX).with(animScaleY);
+        set.play(animScaleY).with(animMoveX);
+        set.setDuration(1500);
+        set.start();
+    }
+
 
     @Override
     protected int layoutResourceId() {
@@ -99,7 +118,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     @Override
     protected void onInitUI() {
         LeoLog.d("testBatteryView", "INIT UI");
-        mTimeContent = findViewById(R.id.time_content);
+        mTimeContent = findViewById(R.id.time_move_content);
         mRemainTimeContent = findViewById(R.id.remain_time);
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
@@ -324,34 +343,59 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveUp() {
-        if (moveUpCount <= moveDistance) {
-            mSlideParams.height = adContentHeight + moveUpCount;
-            mSlideView.setLayoutParams(mSlideParams);
 
-            moveUpCount = moveUpCount + 30;
-            mHandler.sendEmptyMessage(MOVE_UP);
-        } else {
-            isExpand = true;
-            mShowing = false;
-            mScrollView.setScrollY(0);
-            mSlideView.setScrollView(false);
-        }
+        final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
+                "scaleX", 1f, 1f);
+        anim.setRepeatCount(ValueAnimator.INFINITE);
+        anim.setDuration(1);
+        anim.addListener(new SimpleAnimatorListener() {
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                LeoLog.d("testBatteryView", "onAnimationRepeat");
+                if (moveUpCount <= moveDistance) {
+                    mSlideParams.height = adContentHeight + moveUpCount;
+                    mSlideView.setLayoutParams(mSlideParams);
+
+                    moveUpCount = moveUpCount + 35;
+                } else {
+                    isExpand = true;
+                    mShowing = false;
+                    mScrollView.setScrollY(0);
+                    mSlideView.setScrollView(false);
+                    anim.cancel();
+                }
+            }
+        });
+        anim.start();
+
     }
 
     private void showMoveDown() {
-        if (moveUpCount <= moveDistance) {
 
-            mSlideParams.height = adExpandContentHeight - moveUpCount;
-            mSlideView.setLayoutParams(mSlideParams);
+        final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
+                "scaleX", 1f, 1f);
+        anim.setRepeatCount(ValueAnimator.INFINITE);
+        anim.setDuration(1);
+        anim.addListener(new SimpleAnimatorListener() {
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                LeoLog.d("testBatteryView", "onAnimationRepeat");
+                if (moveUpCount <= moveDistance) {
+                    mSlideParams.height = adExpandContentHeight - moveUpCount;
+                    mSlideView.setLayoutParams(mSlideParams);
+                    moveUpCount = moveUpCount + 35;
+                } else {
+                    isExpand = false;
+                    mShowing = false;
+                    mScrollView.setScrollY(0);
+                    mSlideView.setScrollView(false);
+                    anim.cancel();
+                }
+            }
+        });
+        anim.start();
 
-            moveUpCount = moveUpCount + 30;
-            mHandler.sendEmptyMessage(MOVE_DOWN);
-        } else {
-            isExpand = false;
-            mShowing = false;
-            mScrollView.setScrollY(0);
-            mSlideView.setScrollView(false);
-        }
+
     }
 
     private void expandContent(boolean expand) {
