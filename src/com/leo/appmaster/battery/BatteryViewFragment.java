@@ -35,6 +35,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static final int CHARING_TYPE_TRICKLE = 3;
 
     private View mTimeContent;
+    private View mBatteryIcon;
     private View mRemainTimeContent;
     private BatteryTestViewLayout mSlideView;
     ViewGroup.LayoutParams mSlideParams;
@@ -73,39 +74,111 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             switch (msg.what) {
                 case MOVE_UP:
                     showMoveUp();
-                    TimeContentMoveSmall();
+                    timeContentMoveSmall();
+                    batteryIconMoveSmall();
                     break;
                 case MOVE_DOWN:
                     showMoveDown();
+                    timeContentMoveBig();
+                    batteryIconMoveBig();
                     break;
                 case GREEN_ARROW_MOVE:
-
-                    float stayY;
-                    if (place == CHARING_TYPE_SPEED) {
-                        stayY = mThreeMoveView.getHeight() - mIvSpeed.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
-                    } else if (place == CHARING_TYPE_CONTINUOUS) {
-                        stayY = mThreeMoveView.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
-                    } else {
-                        stayY = mIvSpeed.getHeight() / 2;
-                    }
-                    mGreenArrow.setY(stayY);
+                    arrowMove();
                     break;
             }
         }
     };
 
-    private void TimeContentMoveSmall() {
+    private void batteryIconMoveBig() {
+        ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
+                "x", mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 4, mBatteryIcon.getLeft());
+        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
+                "y", mBatteryIcon.getTop()
+                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 40), mBatteryIcon.getTop());
+
+        ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mBatteryIcon,
+                "scaleX", 0.6f, 1f);
+        ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mBatteryIcon,
+                "scaleY", 0.6f, 1f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(animMoveX).with(animMoveY);
+        set.play(animMoveY).with(animScaleX);
+        set.play(animScaleX).with(animScaleY);
+        set.setDuration(1000);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mThreeMoveView.setVisibility(View.VISIBLE);
+                mRemainTimeContent.setVisibility(View.VISIBLE);
+            }
+        });
+        set.start();
+    }
+
+    private void batteryIconMoveSmall() {
+        mThreeMoveView.setVisibility(View.INVISIBLE);
+        mRemainTimeContent.setVisibility(View.INVISIBLE);
+        ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
+                "x", mBatteryIcon.getLeft(), mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 4);
+        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
+                "y", mBatteryIcon.getTop(), mBatteryIcon.getTop()
+                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 40));
+
+
+        ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mBatteryIcon,
+                "scaleX", 1f, 0.6f);
+        ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mBatteryIcon,
+                "scaleY", 1f, 0.6f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(animMoveX).with(animMoveY);
+        set.play(animMoveY).with(animScaleX);
+        set.play(animScaleX).with(animScaleY);
+        set.setDuration(1000);
+        set.start();
+    }
+
+    private void arrowMove() {
+        float stayY;
+        if (place == CHARING_TYPE_SPEED) {
+            stayY = mThreeMoveView.getHeight() - mIvSpeed.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
+        } else if (place == CHARING_TYPE_CONTINUOUS) {
+            stayY = mThreeMoveView.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
+        } else {
+            stayY = mIvSpeed.getHeight() / 2;
+        }
+        mGreenArrow.setY(stayY);
+    }
+
+    private void timeContentMoveBig() {
+        ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mTimeContent,
+                "scaleX", 0.8f, 1f);
+        ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
+                "scaleY", 0.8f, 1f);
+        ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
+                "x", mTimeContent.getLeft() - mTimeContent.getWidth() / 2, mTimeContent.getLeft());
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(animScaleX).with(animScaleY);
+        set.play(animScaleY).with(animMoveX);
+        set.setDuration(1000);
+        set.start();
+    }
+
+    private void timeContentMoveSmall() {
         ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mTimeContent,
                 "scaleX", 1f, 0.8f);
         ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
                 "scaleY", 1f, 0.8f);
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
-                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() * 3 / 4);
+                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() / 2);
 
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
         set.play(animScaleY).with(animMoveX);
-        set.setDuration(1500);
+        set.setDuration(1000);
         set.start();
     }
 
@@ -119,6 +192,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     protected void onInitUI() {
         LeoLog.d("testBatteryView", "INIT UI");
         mTimeContent = findViewById(R.id.time_move_content);
+        mBatteryIcon = findViewById(R.id.infos_content);
         mRemainTimeContent = findViewById(R.id.remain_time);
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
@@ -351,7 +425,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         anim.addListener(new SimpleAnimatorListener() {
             @Override
             public void onAnimationRepeat(Animator animation) {
-                LeoLog.d("testBatteryView", "onAnimationRepeat");
                 if (moveUpCount <= moveDistance) {
                     mSlideParams.height = adContentHeight + moveUpCount;
                     mSlideView.setLayoutParams(mSlideParams);
@@ -379,7 +452,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         anim.addListener(new SimpleAnimatorListener() {
             @Override
             public void onAnimationRepeat(Animator animation) {
-                LeoLog.d("testBatteryView", "onAnimationRepeat");
                 if (moveUpCount <= moveDistance) {
                     mSlideParams.height = adExpandContentHeight - moveUpCount;
                     mSlideView.setLayoutParams(mSlideParams);
