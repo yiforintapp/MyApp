@@ -18,6 +18,7 @@ import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PropertyInfoUtil;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
@@ -57,9 +58,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvContinuous;
     private ImageView mIvSpeed;
     private TextView mTvSpeed;
+    private View mHideTextView;
+    private TextView mTvHideTime;
+    private TextView mTvHideText;
 
 
     public static boolean isExpand = false;
+    public static String mBatteryText;
     private int moveDistance = 350;
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
@@ -91,7 +96,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void batteryIconMoveBig() {
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
-                "x", mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 4, mBatteryIcon.getLeft());
+                "x", mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 5, mBatteryIcon.getLeft());
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop()
                         - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 40), mBatteryIcon.getTop());
@@ -108,6 +113,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         set.setDuration(1000);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mHideTextView.setVisibility(View.GONE);
+            }
+
+            @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mThreeMoveView.setVisibility(View.VISIBLE);
@@ -118,10 +129,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void batteryIconMoveSmall() {
-        mThreeMoveView.setVisibility(View.INVISIBLE);
-        mRemainTimeContent.setVisibility(View.INVISIBLE);
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
-                "x", mBatteryIcon.getLeft(), mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 4);
+                "x", mBatteryIcon.getLeft(), mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 5);
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop(), mBatteryIcon.getTop()
                         - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 40));
@@ -137,6 +146,33 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         set.play(animMoveY).with(animScaleX);
         set.play(animScaleX).with(animScaleY);
         set.setDuration(1000);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mThreeMoveView.setVisibility(View.INVISIBLE);
+                mRemainTimeContent.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mHideTextView.setVisibility(View.VISIBLE);
+                if (newState.level == 100) {
+                    mTvHideText.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
+                    mTvHideTime.setVisibility(View.GONE);
+                } else {
+                    mTvHideTime.setVisibility(View.VISIBLE);
+                    if (mBatteryText != null) {
+                        mTvHideTime.setVisibility(View.VISIBLE);
+                        mTvHideTime.setText(Html.fromHtml(mBatteryText));
+                    } else {
+                        mTvHideTime.setVisibility(View.GONE);
+                        LeoLog.d("testBatteryView", "mBatteryText is Empty");
+                    }
+                }
+            }
+        });
         set.start();
     }
 
@@ -158,7 +194,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
                 "scaleY", 0.8f, 1f);
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
-                "x", mTimeContent.getLeft() - mTimeContent.getWidth() / 2, mTimeContent.getLeft());
+                "x", mTimeContent.getLeft() - mTimeContent.getWidth() * 3 / 4, mTimeContent.getLeft());
 
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
@@ -173,7 +209,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
                 "scaleY", 1f, 0.8f);
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
-                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() / 2);
+                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() * 3 / 4);
 
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
@@ -225,7 +261,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mTvContinuous = (TextView) findViewById(R.id.tv_continuous);
         mIvSpeed = (ImageView) findViewById(R.id.iv_speed);
         mTvSpeed = (TextView) findViewById(R.id.tv_speed);
-
+        mHideTextView = findViewById(R.id.hide_tv_content);
+        mTvHideTime = (TextView) findViewById(R.id.hide_tv_one);
+        mTvHideText = (TextView) findViewById(R.id.hide_tv_two);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -364,6 +402,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mTvLeftTime.setVisibility(View.VISIBLE);
                 mTvTime.setVisibility(View.VISIBLE);
                 mTvTime.setText(Html.fromHtml(text));
+                mBatteryText = text;
             } else {
                 if (newState.level == 100) {
                     mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
@@ -378,6 +417,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mTvLeftTime.setVisibility(View.VISIBLE);
             mTvTime.setVisibility(View.VISIBLE);
             mTvTime.setText(Html.fromHtml(text));
+            mBatteryText = text;
         }
 
     }

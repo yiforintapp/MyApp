@@ -96,15 +96,14 @@
                     android:textSize="21sp" />
             </RelativeLayout>
 
-            <!-- 图标 -->
+            <!-- 图标1 -->
             <RelativeLayout
                 android:id="@+id/battery_icon_flag"
                 android:layout_width="wrap_content"
                 android:layout_height="90dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@id/battery_icon_content"
-                android:background="@color/transparent">
+                android:layout_toRightOf="@id/battery_icon_content">
 
                 <!-- 绿色箭头 -->
                 <ImageView
@@ -199,7 +198,40 @@
 
                 </RelativeLayout>
             </RelativeLayout>
-            <!-- 图标 -->
+            <!-- 图标1 -->
+
+            <!-- 图标2 -->
+            <RelativeLayout
+                android:id="@+id/hide_tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/battery_icon_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/hide_tv_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="3dp"
+                    android:text="30"
+                    android:textColor="@color/white"
+                    android:textSize="30dp" />
+
+                <TextView
+                    android:id="@+id/hide_tv_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/hide_tv_one"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="9dp"
+                    android:text="@string/screen_protect_time"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+            </RelativeLayout>
+
         </RelativeLayout>
         <!-- 电池 && 图标 -->
     </RelativeLayout>
@@ -377,7 +409,6 @@
         android:layout_width="match_parent"
         android:layout_height="85dp"
         android:layout_alignParentBottom="true"
-        android:background="#20ffffff"
         slider:maskText=">> 滑动来解锁"
         slider:maskTextMarginLeft="1dp"
         slider:maskTextMarginTop="15dp"
