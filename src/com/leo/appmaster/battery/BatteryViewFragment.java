@@ -5,6 +5,7 @@ import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
     private View mTimeContent;
-    private View mMidContent;
     private View mRemainTimeContent;
     private BatteryTestViewLayout mSlideView;
 
@@ -35,8 +35,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvSmallRight;
     private TextView mTvLeftTime;
     private TextView mTvTime;
-
     private SelfScrollView mScrollView;
+
+    private View mThreeMoveView;
+    private ImageView mGreenArrow;
+    private ImageView mIvTrickle;
+    private TextView mTvTrickle;
+    private ImageView mIvContinuous;
+    private TextView mTvContinuous;
+    private ImageView mIvSpeed;
+    private TextView mTvSpeed;
+
 
     public static boolean isExpand = false;
     private int moveDistance = 350;
@@ -72,7 +81,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         LeoLog.d("testBatteryView", "INIT UI");
         mTimeContent = findViewById(R.id.time_content);
-        mMidContent = findViewById(R.id.infos_content);
         mRemainTimeContent = findViewById(R.id.remain_time);
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);

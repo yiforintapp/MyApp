@@ -73,9 +73,9 @@ public class SelfScrollView extends ScrollView {
                 }
 
                 int moveY = newY - firstTab;
-//                LeoLog.d("testBatteryView", "top : " + top);
-//                LeoLog.d("testBatteryView", "oldTop : " + oldTop);
-//                LeoLog.d("testBatteryView", "newY : " + newY);
+
+                LeoLog.d("testBatteryView", "top : " + top);
+                LeoLog.d("testBatteryView", "oldTop : " + oldTop);
                 LeoLog.d("testBatteryView", "moveY : " + moveY);
 
 
@@ -87,7 +87,7 @@ public class SelfScrollView extends ScrollView {
                 }
 
                 if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
-                        top == 0 && oldTop != 0 && moveY > 120) {
+                        top == 0 && moveY > 120) {
                     if (scrollBottomListener != null) {
                         scrollBottomListener.scrollBottom();
                     }
