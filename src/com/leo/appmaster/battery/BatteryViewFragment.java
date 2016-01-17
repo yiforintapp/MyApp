@@ -25,9 +25,16 @@ import com.leo.tools.animator.ObjectAnimator;
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, SelfScrollView.ScrollBottomListener {
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
+    private static final int GREEN_ARROW_MOVE = 3;
+
+    private static final int CHARING_TYPE_SPEED = 1;
+    private static final int CHARING_TYPE_CONTINUOUS = 2;
+    private static final int CHARING_TYPE_TRICKLE = 3;
+
     private View mTimeContent;
     private View mRemainTimeContent;
     private BatteryTestViewLayout mSlideView;
+    ViewGroup.LayoutParams mSlideParams;
 
     private TextView mTvLevel;
     private TextView mTvBigTime;
@@ -36,6 +43,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvLeftTime;
     private TextView mTvTime;
     private SelfScrollView mScrollView;
+
 
     private View mThreeMoveView;
     private ImageView mGreenArrow;
@@ -66,6 +74,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 case MOVE_DOWN:
                     showMoveDown();
                     break;
+                case GREEN_ARROW_MOVE:
+
+                    float stayY;
+                    if (place == CHARING_TYPE_SPEED) {
+                        stayY = mThreeMoveView.getHeight() - mIvSpeed.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
+                    } else if (place == CHARING_TYPE_CONTINUOUS) {
+                        stayY = mThreeMoveView.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
+                    } else {
+                        stayY = mIvSpeed.getHeight() / 2;
+                    }
+                    mGreenArrow.setY(stayY);
+                    break;
             }
         }
     };
@@ -78,7 +98,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     @Override
     protected void onInitUI() {
-
         LeoLog.d("testBatteryView", "INIT UI");
         mTimeContent = findViewById(R.id.time_content);
         mRemainTimeContent = findViewById(R.id.remain_time);
@@ -96,12 +115,24 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void run() {
                 adContentHeight = mSlideView.getHeight();
+                mSlideParams = mSlideView.getLayoutParams();
             }
         });
         moveDistance = DipPixelUtil.dip2px(mActivity, 180);
 
         mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
         mScrollView.setScrollBottomListener(this);
+
+
+        mThreeMoveView = findViewById(R.id.battery_icon_flag);
+        mGreenArrow = (ImageView) findViewById(R.id.little_arrow);
+        mIvTrickle = (ImageView) findViewById(R.id.iv_trickle);
+        mTvTrickle = (TextView) findViewById(R.id.tv_trickle);
+        mIvContinuous = (ImageView) findViewById(R.id.iv_continuous);
+        mTvContinuous = (TextView) findViewById(R.id.tv_continuous);
+        mIvSpeed = (ImageView) findViewById(R.id.iv_speed);
+        mTvSpeed = (TextView) findViewById(R.id.tv_speed);
+
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -162,6 +193,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         setBatteryPercent();
 
+
         if (isCharing) {
 
         } else {
@@ -170,8 +202,30 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     }
 
+    private int place = 0;
+
     private void setBatteryPercent() {
         mTvLevel.setText(newState.level + "%");
+
+        if (newState.level < 70) {
+            place = CHARING_TYPE_SPEED;
+            mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
+            mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
+            mIvSpeed.setBackgroundResource(R.drawable.bay_speed2);
+        } else if (newState.level < 85) {
+            place = CHARING_TYPE_CONTINUOUS;
+            mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
+            mIvContinuous.setBackgroundResource(R.drawable.bay_continuous2);
+            mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
+        } else {
+            place = CHARING_TYPE_TRICKLE;
+            mIvTrickle.setBackgroundResource(R.drawable.bay_trickle2);
+            mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
+            mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
+        }
+
+        mHandler.sendEmptyMessage(GREEN_ARROW_MOVE);
+
     }
 
     private void noTime() {
@@ -181,9 +235,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
 
     public void setTime(int second) {
-
-        LeoLog.d("testBatteryView", "second : " + second);
-
         int h = 0;
         int d = 0;
         int s = 0;
@@ -274,11 +325,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void showMoveUp() {
         if (moveUpCount <= moveDistance) {
-            LeoLog.d("testBatteryView", "showMoveUp() : " + adContentHeight);
-
-            ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
-            params.height = adContentHeight + moveUpCount;
-            mSlideView.setLayoutParams(params);
+            mSlideParams.height = adContentHeight + moveUpCount;
+            mSlideView.setLayoutParams(mSlideParams);
 
             moveUpCount = moveUpCount + 30;
             mHandler.sendEmptyMessage(MOVE_UP);
@@ -292,11 +340,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void showMoveDown() {
         if (moveUpCount <= moveDistance) {
-            LeoLog.d("testBatteryView", "showMoveDown : " + adExpandContentHeight);
 
-            ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
-            params.height = adExpandContentHeight - moveUpCount;
-            mSlideView.setLayoutParams(params);
+            mSlideParams.height = adExpandContentHeight - moveUpCount;
+            mSlideView.setLayoutParams(mSlideParams);
 
             moveUpCount = moveUpCount + 30;
             mHandler.sendEmptyMessage(MOVE_DOWN);
