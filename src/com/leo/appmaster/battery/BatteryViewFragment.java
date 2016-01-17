@@ -21,7 +21,7 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.ObjectAnimator;
 
-public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener {
+public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, SelfScrollView.ScrollBottomListener {
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
     private View mTimeContent;
@@ -37,7 +37,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvTime;
 
     private SelfScrollView mScrollView;
-    private View mClickTypeOne;
 
     public static boolean isExpand = false;
     private int moveDistance = 350;
@@ -94,33 +93,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         moveDistance = DipPixelUtil.dip2px(mActivity, 180);
 
         mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
-        mScrollView.setScrollBottomListener(new SelfScrollView.ScrollBottomListener() {
-            @Override
-            public void scrollBottom() {
-                mSlideView.setScrollView(true);
-                expandContent(false);
-            }
-
-            @Override
-            public void scrollTop() {
-                mSlideView.setScrollView(true);
-                expandContent(true);
-            }
-        });
-
-        mClickTypeOne = findViewById(R.id.content_type_1);
-        mClickTypeOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mActivity, "Type1", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        mScrollView.setScrollBottomListener(this);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
         }
-
     }
 
     @Override
@@ -258,32 +235,32 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        if (view == mSlideView) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:// 手指按下屏幕
-                    LeoLog.d("testBatteryView", "ACTION_DOWN");
-                    staryY = (int) event.getRawY();
-                    break;
-                case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
-                    int newY = (int) event.getRawY();
-                    int moveY = newY - staryY;
-                    if (!isExpand) {
-                        if (moveY < -100 && !mShowing) {
-                            expandContent(true);
-                        }
-                    } else {
-                        if (moveY > 100 && !mShowing) {
-                            expandContent(false);
-                        }
-                    }
-
-                    break;
-                case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
-
-                    break;
-            }
-
-        }
+//        if (view == mSlideView) {
+//            switch (event.getAction()) {
+//                case MotionEvent.ACTION_DOWN:// 手指按下屏幕
+//                    LeoLog.d("testBatteryView", "ACTION_DOWN");
+//                    staryY = (int) event.getRawY();
+//                    break;
+//                case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
+//                    int newY = (int) event.getRawY();
+//                    int moveY = newY - staryY;
+//                    if (!isExpand) {
+//                        if (moveY < -100 && !mShowing) {
+//                            expandContent(true);
+//                        }
+//                    } else {
+//                        if (moveY > 100 && !mShowing) {
+//                            expandContent(false);
+//                        }
+//                    }
+//
+//                    break;
+//                case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
+//
+//                    break;
+//            }
+//
+//        }
         return true;
     }
 
@@ -297,7 +274,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
             moveUpCount = moveUpCount + 30;
             mHandler.sendEmptyMessage(MOVE_UP);
-//            mHandler.sendEmptyMessageDelayed(MOVE_UP, 1);
         } else {
             isExpand = true;
             mShowing = false;
@@ -316,7 +292,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
             moveUpCount = moveUpCount + 30;
             mHandler.sendEmptyMessage(MOVE_DOWN);
-//            mHandler.sendEmptyMessageDelayed(MOVE_DOWN, 1);
         } else {
             isExpand = false;
             mShowing = false;
@@ -329,48 +304,25 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShowing = true;
 
         if (expand) {
-
-
             moveUpCount = 0;
             mHandler.sendEmptyMessage(MOVE_UP);
-
-//            ViewGroup.LayoutParams params = mSlideView.getLayoutParams();
-//            params.height = mSlideView.getHeight() + moveDistance;
-//            mSlideView.setLayoutParams(params);
-
-
-//            ObjectAnimator animUp = ObjectAnimator.ofFloat(mSlideView,
-//                    "y", mSlideView.getTop(), mSlideView.getTop() - moveDistance);
-//            animUp.setDuration(500);
-//            animUp.addListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    super.onAnimationEnd(animation);
-//                    isExpand = true;
-////                    mSlideView.setScrollView(false);
-//                }
-//            });
-//            animUp.start();
         } else {
-
             moveUpCount = 0;
             adExpandContentHeight = mSlideView.getHeight();
             mHandler.sendEmptyMessage(MOVE_DOWN);
-
-//            ObjectAnimator animDown = ObjectAnimator.ofFloat(mSlideView,
-//                    "y", mSlideView.getTop() - moveDistance, mSlideView.getTop());
-//            animDown.setDuration(500);
-//            animDown.addListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    super.onAnimationEnd(animation);
-//                    isExpand = false;
-////                    mSlideView.setScrollView(true);
-//                }
-//            });
-//            animDown.start();
         }
 
+    }
 
+    @Override
+    public void scrollBottom() {
+        mSlideView.setScrollView(true);
+        expandContent(false);
+    }
+
+    @Override
+    public void scrollTop() {
+        mSlideView.setScrollView(true);
+        expandContent(true);
     }
 }

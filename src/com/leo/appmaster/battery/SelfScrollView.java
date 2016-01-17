@@ -30,22 +30,8 @@ public class SelfScrollView extends ScrollView {
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-
         top = t;
         oldTop = oldt;
-
-//        LeoLog.d("testBatteryView", "l : " + l);
-//        LeoLog.d("testBatteryView", "t : " + t);
-//
-//        LeoLog.d("testBatteryView", "oldl : " + oldl);
-//        LeoLog.d("testBatteryView", "oldt : " + oldt);
-
-//        if (oldt != 0 && t == 0) {
-//            if (scrollBottomListener != null) {
-//                scrollBottomListener.scrollTop();
-//            }
-//        }
-
 //        if(t + getHeight() >=  computeVerticalScrollRange()){
 //            if(scrollBottomListener != null){
 //                //ScrollView滑动到底部了
@@ -64,7 +50,6 @@ public class SelfScrollView extends ScrollView {
         public void scrollTop();
     }
 
-    int startY;
 
     @Override
     public void scrollTo(int x, int y) {
@@ -72,29 +57,37 @@ public class SelfScrollView extends ScrollView {
         super.scrollTo(x, y);
     }
 
+    private int firstTab = 0;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:// 手指按下屏幕
-                startY = (int) event.getRawY();
-//                LeoLog.d("testBatteryView", "startY : " + startY);
                 break;
             case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
                 int newY = (int) event.getRawY();
-                int moveY = newY - startY;
 
-                LeoLog.d("testBatteryView", "top : " + top);
-                LeoLog.d("testBatteryView", "oldTop : " + oldTop);
+
+                if (firstTab == 0) {
+                    firstTab = (int) event.getRawY();
+                }
+
+                int moveY = newY - firstTab;
+//                LeoLog.d("testBatteryView", "top : " + top);
+//                LeoLog.d("testBatteryView", "oldTop : " + oldTop);
 //                LeoLog.d("testBatteryView", "newY : " + newY);
-//                LeoLog.d("testBatteryView", "moveY : " + moveY);
+                LeoLog.d("testBatteryView", "moveY : " + moveY);
 
-                if (!BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing && top > 0 && oldTop >= 0) {
-                    if (scrollBottomListener != null) {
+
+                if (!BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing) {
+                    if (scrollBottomListener != null &&
+                            top > 0 && oldTop >= 0 && moveY < -50) {
                         scrollBottomListener.scrollTop();
                     }
                 }
 
-                if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing && top == 0 && oldTop != 0) {
+                if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
+                        top == 0 && oldTop != 0 && moveY > 120) {
                     if (scrollBottomListener != null) {
                         scrollBottomListener.scrollBottom();
                     }
@@ -103,7 +96,7 @@ public class SelfScrollView extends ScrollView {
 
                 break;
             case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
-
+                firstTab = 0;
                 break;
         }
         return super.onTouchEvent(event);
