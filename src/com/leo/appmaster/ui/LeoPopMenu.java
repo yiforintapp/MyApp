@@ -77,7 +77,7 @@ public class LeoPopMenu {
      * @param anchorView 显示tab列表
      */
     public void showPopMenu(Activity activity, View anchorView, LayoutStyles styles,
-            OnDismissListener dimissListener) {
+                            OnDismissListener dimissListener) {
         if (mLeoPopMenu != null) {
             if (mLeoPopMenu.isShowing()) {
                 return;
@@ -122,6 +122,15 @@ public class LeoPopMenu {
         } catch (Exception e) {
         }
 
+    }
+
+    public void dimissPop() {
+        if (mLeoPopMenu != null) {
+            if (mLeoPopMenu.isShowing()) {
+                mLeoPopMenu.dismiss();
+            }
+            mLeoPopMenu = null;
+        }
     }
 
     private void setWindowStyle(LayoutStyles styles) {
@@ -201,21 +210,21 @@ public class LeoPopMenu {
 
         return convertView;
     }
-    
-    public void setPopMenuItems(Context context,Map<Integer, String> map){
-        if(null == map)
+
+    public void setPopMenuItems(Context context, Map<Integer, String> map) {
+        if (null == map)
             return;
         List<Integer> itemIdList = new ArrayList<Integer>();
         List<String> itemList = new ArrayList<String>();
-        for (Entry<Integer, String> entry: map.entrySet()) {
+        for (Entry<Integer, String> entry : map.entrySet()) {
             itemIdList.add(entry.getKey());
             itemList.add(entry.getValue());
-          }
+        }
         this.mItemIds = itemIdList;
         setPopMenuItems(context, itemList);
     }
-    
-    public List<Integer> getPopMenuItemIds(){
+
+    public List<Integer> getPopMenuItemIds() {
         return mItemIds;
     }
 
@@ -245,13 +254,12 @@ public class LeoPopMenu {
         }
 
         Log.e("hehe", "最长字符占的宽度px=" + mMaxLength);
-        
+
         newSmallWidth = W / 4;
         newLongWidth = W / 2;
         finalWidth = mMaxLength + DipPixelUtil.dip2px(mContext, 7);
 
-        if (mMaxLength > newLongWidth)
-        {
+        if (mMaxLength > newLongWidth) {
             mIsNewLine = true;
 
             finalWidth = newLongWidth;
@@ -261,8 +269,7 @@ public class LeoPopMenu {
             mMaxLength = 0;
             // 取出第二长
             for (int i = 0; i < mItems.size(); i++) {
-                if (i == MaxIndex)
-                {
+                if (i == MaxIndex) {
                     continue;
                 }
                 testTextView.setText(mItems.get(i));
@@ -274,8 +281,7 @@ public class LeoPopMenu {
             finalWidth = mMaxLength + DipPixelUtil.dip2px(mContext, 7);
 
         }
-        if (mMaxLength < newSmallWidth)
-        {
+        if (mMaxLength < newSmallWidth) {
             finalWidth = newSmallWidth;
         }
 
@@ -329,7 +335,7 @@ public class LeoPopMenu {
 
         @Override
         public View getView(final int position, View convertView,
-                ViewGroup parent) {
+                            ViewGroup parent) {
             if (convertView != null) {
                 mHolder = (Holder) convertView.getTag();
             } else {
@@ -337,11 +343,10 @@ public class LeoPopMenu {
                 convertView = inflater.inflate(R.layout.popmenu_window_home_list_item, null);
                 mHolder.mItemName = (TextView) convertView.findViewById(R.id.menu_text);
                 mHolder.mItemIcon = (ImageView) convertView.findViewById(R.id.menu_icon);
-                mHolder.mItemName.setWidth((int) finalWidth+1);
-                if(!mIsNewLine)
-                {
+                mHolder.mItemName.setWidth((int) finalWidth + 1);
+                if (!mIsNewLine) {
                     mHolder.mItemName.setMaxLines(1);
-                }    
+                }
                 convertView.setTag(mHolder);
             }
 
@@ -350,8 +355,7 @@ public class LeoPopMenu {
                 mHolder.mItemName.setText(itemText);
             } else {
                 mHolder.mItemName.setText(mItems.get(position));
-                if(mIcons==null || mIcons.size() <=0)
-                {
+                if (mIcons == null || mIcons.size() <= 0) {
                     mHolder.mItemIcon.setVisibility(View.GONE);
                 }
             }

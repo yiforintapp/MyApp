@@ -68,6 +68,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static final int CHARING_TYPE_CONTINUOUS = 2;
     private static final int CHARING_TYPE_TRICKLE = 3;
 
+    private static final int DIMISS_POP = 5;
+
     private View mTimeContent;
     private View mBatteryIcon;
     private View mRemainTimeContent;
@@ -161,6 +163,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     break;
                 case GREEN_ARROW_MOVE:
                     arrowMove();
+                    break;
+                case DIMISS_POP:
+                    mLeoPopMenu.dimissPop();
                     break;
             }
         }
@@ -851,6 +856,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
 
             mLeoPopMenu.showPopMenu(mActivity, view, null, null);
+            mHandler.sendEmptyMessageDelayed(DIMISS_POP, 5000);
         }
     }
 
