@@ -140,19 +140,19 @@
         </LinearLayout>
 
         <FrameLayout
+            android:id="@+id/share_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="11dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="11dp">
+            android:layout_marginRight="11dp"
+            android:visibility="gone">
         <RelativeLayout
-            android:id="@+id/share_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/share_good_bg"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:visibility="gone">
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/share_text"

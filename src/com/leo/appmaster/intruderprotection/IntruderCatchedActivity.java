@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -103,7 +104,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private boolean mNeedIntoHomeWhenFinish = false;
     private LinearLayout mFiveStarLayout;
 
-    private RelativeLayout mShareLayout; // 分享layout
+    private FrameLayout mShareLayout; // 分享layout
     private TextView mShareText;  //分享按钮
 
     private LinearLayout mSwiftylayout; //swifty卡片
@@ -307,7 +308,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mFiveStarLayout = (LinearLayout) findViewById(R.id.ll_fivestars_layout);
         mFiveStarLayout.setOnClickListener(this);
 
-        mShareLayout = (RelativeLayout) findViewById(R.id.share_layout);
+        mShareLayout = (FrameLayout) findViewById(R.id.share_layout);
         mShareText = (TextView) findViewById(R.id.share_text);
         mShareText.setText(Html.fromHtml(getResources().getString(
                 R.string.intruder_share_dialog_content)));
