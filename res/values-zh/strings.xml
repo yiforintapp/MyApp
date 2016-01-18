@@ -934,7 +934,7 @@
     <string name="quick_helper_desc_callfilter">識別並攔截騷擾電話</string>
     <string name="phone_share_dialog_content">你的手機已經處於防盜功能的保護之下，但你的朋友們卻不一定，快去幫助他們吧～</string>
     <string name="callfilter_share_dialog_content">叫上你的朋友們一起屏蔽那些惱人的騷擾電話吧～</string>
-    <string name="intruder_share_dialog_content">覺得我們還不錯？分享給好友吧～</string>
+    <string name="intruder_share_dialog_content">覺得我們還不錯？<Data><![CDATA[<font color="#FFF600">分享給好友吧～</font>]]></Data></string>
     <string name="share_dialog_btn_query">分享</string>
     <string name="share_dialog_query_btn_cancel">取消</string>
     <string name="phone_share_content">Hi，我現在正在使用隱私衛士的防盜功能。只需要發條短信，我就能夠遠程控制我的手機，實在是太方便了，我想讓你也試試這個軟件。</string>

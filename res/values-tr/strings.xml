@@ -931,7 +931,7 @@
     <string name="quick_helper_desc_callfilter">Rahatsız eden numarayı tanı ve engelle</string>
     <string name="phone_share_dialog_content">Telefonunuz koruma altındadır. Arkadaşınıza da aldığınız önlemi önerin.</string>
     <string name="callfilter_share_dialog_content">Arkadaşlarınızla birlikte rahatsız eden numaraları engelleyin</string>
-    <string name="intruder_share_dialog_content">Sizce nasıl? Arkadaşlarınızla paylaşın</string>
+    <string name="intruder_share_dialog_content">Sizce nasıl? <Data><![CDATA[<font color="#FFF600">Arkadaşlarınızla paylaşın</font>]]></Data></string>
     <string name="share_dialog_btn_query">Paylaş</string>
     <string name="share_dialog_query_btn_cancel">İptal</string>
     <string name="phone_share_content">Leomaster Privacy Guard çalıntılara karşı fonksiyonunu kullanıyorum. Yalnızca bir kısa mesaj ile telefonumu uzaktan kontrol edebiliyorum. Çok kullanışlı. Senin de denemeni öneriyorum!</string>

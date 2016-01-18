@@ -957,7 +957,7 @@
     <string name="quick_helper_desc_callfilter">Identify and intercept those annoying crank calls</string>
     <string name="phone_share_dialog_content">Your mobile is under protection of the anti-theft function, but this is maybe not the case for your friends\' mobiles. Be quick to help them.</string>
     <string name="callfilter_share_dialog_content">Tell your friends to mask those annoying crank calls.</string>
-    <string name="intruder_share_dialog_content">Think me pretty good? Share with your friends</string>
+    <string name="intruder_share_dialog_content">Think me pretty good? <Data><![CDATA[<font color="#FFF600">Share with your friends</font>]]></Data></string>
     <string name="share_dialog_btn_query">Share</string>
     <string name="share_dialog_query_btn_cancel">Cancel</string>
     <string name="phone_share_content">Hi, I\'m using the anti-theft function of Privacy Guard. I can remotely control my mobile just by sending an MMS. It\'s so convenient and I want you to have a try.</string>
