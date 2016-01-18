@@ -101,7 +101,6 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
             intent.putExtras(bundle);
             startActivity(intent);
         }
-
         finish();
     }
 

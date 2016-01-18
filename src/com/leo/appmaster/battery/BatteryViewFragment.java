@@ -33,6 +33,7 @@ import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.BatteryMenu;
 import com.leo.appmaster.ui.LeoHomePopMenu;
+import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PropertyInfoUtil;
@@ -79,6 +80,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private SelfScrollView mScrollView;
 
 
+    private WaveView mBottleWater;
     private View mThreeMoveView;
     private ImageView mGreenArrow;
     private ImageView mIvTrickle;
@@ -192,6 +194,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mHideTextView.setVisibility(View.VISIBLE);
+//                setTime(mRemainTime, true);
                 if (newState.level == 100) {
                     mTvHideText.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
                     mTvHideTime.setVisibility(View.GONE);
@@ -205,6 +208,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         LeoLog.d("testBatteryView", "mBatteryText is Empty");
                     }
                 }
+
             }
         });
         set.start();
@@ -286,7 +290,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
         mScrollView.setScrollBottomListener(this);
 
-
+        mBottleWater = (WaveView) findViewById(R.id.bottle_water);
         mThreeMoveView = findViewById(R.id.battery_icon_flag);
         mGreenArrow = (ImageView) findViewById(R.id.little_arrow);
         mTrickleContent = findViewById(R.id.trickle_content);
@@ -345,36 +349,34 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mChangeType = type;
         newState = state;
         mRemainTime = remainTime;
-
-        if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN)) {
-            notifyUI(mChangeType, true);
-        } else if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
-            notifyUI(mChangeType, false);
-        } else if (mChangeType.equals(BatteryManagerImpl.UPDATE_UP)) {
-            notifyUI(mChangeType, true);
-        } else {
-            notifyUI(mChangeType, false);
-        }
+        notifyUI(mChangeType);
+//        if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN)) {
+//            notifyUI(mChangeType, true);
+//        } else if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
+//            notifyUI(mChangeType, false);
+//        } else if (mChangeType.equals(BatteryManagerImpl.UPDATE_UP)) {
+//            notifyUI(mChangeType, true);
+//        } else {
+//            notifyUI(mChangeType, false);
+//        }
     }
 
-    public void notifyUI(String type, boolean isCharing) {
+    public void notifyUI(String type) {
 
-        if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN) ||
-                mChangeType.equals(BatteryManagerImpl.UPDATE_UP)) {
-            setTime(mRemainTime);
-        } else {
-            noTime();
+        if (!type.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
+            setTime(mRemainTime, isExpand);
         }
 
         setBatteryPercent();
+        setBottleWater();
+    }
 
-
-        if (isCharing) {
-
-        } else {
-
+    private void setBottleWater() {
+        int level = newState.level;
+        if (level > 90) {
+            level = 90;
         }
-
+        mBottleWater.setPercent(level);
     }
 
     private int place = 0;
@@ -409,7 +411,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
 
-    public void setTime(int second) {
+    public void setTime(int second, boolean isExpandContent) {
         int h = 0;
         int d = 0;
         int s = 0;
@@ -437,8 +439,77 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         String hString, dString;
         hString = String.valueOf(h);
         dString = String.valueOf(d);
-
         LeoLog.d("testBatteryView", "hString : " + hString + "dString : " + dString);
+        boolean isCharing = mBatteryManager.getIsCharing();
+
+//        if (newState.level >= 100) {
+//            if (isExpandContent) {
+//                String text = mActivity.getString(R.string.screen_protect_charing_text_four);
+//                mTvHideText.setText(text);
+//                mTvHideTime.setVisibility(View.GONE);
+//            } else {
+//                String text;
+//                if (isCharing) {
+//                    text = mActivity.getString(R.string.screen_protect_charing_text_three);
+//                } else {
+//                    text = mActivity.getString(R.string.screen_protect_charing_text_four);
+//                }
+//                mTvLeftTime.setText(text);
+//                mTvTime.setVisibility(View.GONE);
+//            }
+//        } else {
+//            if (hString.equals("0")) {
+//                if (!dString.equals("0")) {
+//                    String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
+//                    if (isExpandContent) {
+//                        if (isCharing) {
+//                            mTvHideText.setVisibility(View.VISIBLE);
+//                            mTvHideTime.setVisibility(View.VISIBLE);
+//                            mTvHideTime.setText(Html.fromHtml(text));
+//                        } else {
+//                            String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
+//                            mTvHideText.setText(text2);
+//                            mTvHideTime.setVisibility(View.GONE);
+//                        }
+//                    } else {
+//                        mTvLeftTime.setVisibility(View.VISIBLE);
+//                        mTvTime.setVisibility(View.VISIBLE);
+//                        mTvTime.setText(Html.fromHtml(text));
+//                    }
+//                } else {
+//                    String text = mActivity.getString(R.string.screen_protect_charing_text_four);
+//                    if (isExpandContent) {
+//                        mTvHideText.setText(text);
+//                        mTvHideTime.setVisibility(View.GONE);
+//                    } else {
+//                        mTvLeftTime.setText(text);
+//                        mTvTime.setVisibility(View.GONE);
+//                    }
+//                }
+//            } else {
+//                LeoLog.d("testBatteryView", "two fit");
+//                String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
+//                if (isExpandContent) {
+//                    LeoLog.d("testBatteryView", "expand");
+//                    if (isCharing) {
+//                        LeoLog.d("testBatteryView", "isCharing");
+//                        mTvHideText.setVisibility(View.VISIBLE);
+//                        mTvHideTime.setVisibility(View.VISIBLE);
+//                        mTvHideTime.setText(Html.fromHtml(text));
+//                    } else {
+//                        LeoLog.d("testBatteryView", "NOT Charing");
+//                        String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
+//                        mTvHideText.setText(text2);
+//                        mTvHideTime.setVisibility(View.GONE);
+//                    }
+//                } else {
+//                    mTvLeftTime.setVisibility(View.VISIBLE);
+//                    mTvTime.setVisibility(View.VISIBLE);
+//                    mTvTime.setText(Html.fromHtml(text));
+//                }
+//            }
+//        }
+
 
         if (hString.equals("0")) {
             if (!dString.equals("0")) {
@@ -452,7 +523,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
                     mTvTime.setVisibility(View.GONE);
                 } else {
-                    mTvLeftTime.setVisibility(View.GONE);
+                    mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_two));
                     mTvTime.setVisibility(View.GONE);
                 }
             }

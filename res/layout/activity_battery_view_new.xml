@@ -94,6 +94,7 @@
                 android:layout_centerHorizontal="true">
 
                 <com.leo.appmaster.ui.WaveView xmlns:wave="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/bottle_water"
                     android:layout_width="62dp"
                     android:layout_height="96dp"
                     android:layout_centerInParent="true"

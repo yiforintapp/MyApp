@@ -12,6 +12,7 @@ import android.view.ViewParent;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 
 /**
  * @author zwy if we extends this class,we must: first provider layout id in
@@ -24,6 +25,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected LockManager mLockManager;
     protected CallFilterManager mCallManger;
+    protected BatteryManagerImpl mBatteryManager;
     final String TAG = getClass().getSimpleName();
 
     @Override
@@ -31,6 +33,7 @@ public abstract class BaseFragment extends Fragment {
         mActivity = (FragmentActivity) activity;
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mCallManger = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+        mBatteryManager = (BatteryManagerImpl) MgrContext.getManager(MgrContext.MGR_BATTERY);
         getArguments();
         super.onAttach(activity);
     }
