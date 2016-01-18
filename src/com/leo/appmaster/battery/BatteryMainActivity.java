@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,9 +30,14 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
+import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.engine.BatteryComsuption;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.BatteryViewEvent;
+import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.fragment.PretendAppBeautyFragment;
 import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.mgr.BatteryManager.BatteryState;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -49,8 +55,10 @@ import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 public class BatteryMainActivity extends BaseFragmentActivity implements OnClickListener {
     private final String TAG = "BatterMainActivity";
     private boolean DBG = true;
+    private TextView mTvEmpty;
     private CommonToolbar mCtbMain;
     private RelativeLayout mRlContent;
+    private TextView mTvPercentValue;
     private Fragment mFrgmResult;
     private GridView mGvApps;
     private ArrayList<BatteryComsuption> mListBatteryComsuptions;
@@ -62,6 +70,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RelativeLayout mRlLoadingOrEmpty;
     private BatteryManager mBtrManager;
     private TextView mTvListTitle;
+    private TextView mTvComplete;
     private RelativeLayout mRlWholeBattery;
     private RelativeLayout mRlWholeShield;
     private ImageView mIvShield;
@@ -71,15 +80,29 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battery_manage);
         mBtrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
+        LeoEventBus.getDefaultBus().register(this);
         initUI();
     }
 
+    public void onEventMainThread(BatteryViewEvent event) {
+        BatteryState state = event.state;
+        mTvPercentValue.setText(state.level + "");             
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LeoEventBus.getDefaultBus().unregister(this);
+    }
     
     private void initUI() {
+        mTvComplete = (TextView) findViewById(R.id.tv_boost_complete);
+        mTvPercentValue = (TextView) findViewById(R.id.tv_percent_value);
+        mTvEmpty = (TextView) findViewById(R.id.tv_empty);
         mRlWholeBattery = (RelativeLayout) findViewById(R.id.rl_wholebattery);
         mWvBattery = (WaveView) findViewById(R.id.wv_battery);
         mWvBattery.setWaveColor(0xff00ccff);
-        mWvBattery.setPercent(30);
+        mWvBattery.setPercent(mBtrManager.getBatteryLevel());
         mIvShield= (ImageView) findViewById(R.id.iv_shield);
         mTvListTitle = (TextView) findViewById(R.id.tv_list_title);
         mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
@@ -137,29 +160,50 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     public void hideLoadingOrEmpty() {
         mRlLoadingOrEmpty.setVisibility(View.GONE);
         if (mListBatteryComsuptions != null) {
-            mTvListTitle.setText(String.format(getString(R.string.batterymanage_label), mListBatteryComsuptions.size()));
+            mTvListTitle.setText(Html.fromHtml(String.format(getString(R.string.batterymanage_label), mListBatteryComsuptions.size())));
         }
     }
     
     public void showEmpty() {
         mPbLoading.setVisibility(View.GONE);
+        mRlEmpty.setVisibility(View.VISIBLE);
         mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
     }
     
     @Override
     public void onResume() {
         super.onResume();
+        mTvPercentValue.setText(mBtrManager.getBatteryLevel() + "");
         mBtrManager.updateBatteryPageState(true);
         LeoLog.i(TAG, "onResume");
-        if (mFrgmResult != null && mFrgmResult.isVisible()) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction transaction = fm.beginTransaction();  
-            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-            transaction.remove(mFrgmResult);
-            transaction.commit();
-        }
+//        if (mFrgmResult != null && mFrgmResult.isVisible()) {
+//            FragmentManager fm = getSupportFragmentManager();
+//            FragmentTransaction transaction = fm.beginTransaction();  
+//            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+//            transaction.remove(mFrgmResult);
+//            transaction.commit();
+//        }
         showLoading();
-        loadData();
+        if (mBtrManager.shouldEnableCleanFunction()) {
+            //不在上一次清理的两分钟内 可以重新load应用列表和清理加速
+            mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+            mRvBoost.setEnabled(true);
+            LeoLog.i(TAG, "set green and enable");
+            loadData();
+        } else {
+            //在上一次清理的两分钟内 UI做特殊显示
+            mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+            mRvBoost.setEnabled(false);
+            LeoLog.i(TAG, "set grey and disanable");
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showEmpty();
+                    mTvListTitle.setText(R.string.batterymanage_tip_nothing_to_boost);
+                    mTvEmpty.setText(R.string.batterymanage_tip_nothing_to_boost);
+                }
+            }, 1000);//TODO 假loading的持续时间
+        }
     }
 
     @Override
@@ -218,9 +262,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         final float centerX = mIvShield.getWidth() / 2.0f;  
         final float centerY = mIvShield.getHeight() / 2.0f;  
   
-        final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(0, 180,  
+        final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,  
                 centerX, centerY, 0.0f, true);  
-        rotation.setDuration(2000);  
+        rotation.setDuration(1000);  
         rotation.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -231,6 +275,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             @Override
             public void onAnimationEnd(Animation animation) {
                 startTranslateAnim();
+                startShowCompleteAnim();
+                showResultFragment();
             }
         });
         rotation.setFillAfter(false);  
@@ -239,15 +285,33 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     
+    
+    protected void showResultFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+      FragmentTransaction transaction = fm.beginTransaction();  
+      transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+      transaction.replace(R.id.rl_result_layout, new BatteryBoostResultFragment());
+      transaction.commit();
+    }
+
+    protected void startShowCompleteAnim() {
+        mTvComplete.setVisibility(View.VISIBLE);
+        PropertyValuesHolder alphaHolder = PropertyValuesHolder.ofFloat("alpha", 0.0f, 1.0f);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mTvComplete, alphaHolder);
+        anim.setDuration(600);
+        anim.start();
+    }
+
     protected void startTranslateAnim() {
+        mIvShield.setVisibility(View.VISIBLE);
         float initialX = mIvShield.getX();
         float initialY = mIvShield.getY();
         float initialW = mIvShield.getWidth();
         float initialH = mIvShield.getHeight();
-        PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, 0f);
-        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("y", initialY, 0f);
-        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.5f);
-        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.5f);
+        PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, DipPixelUtil.dip2px(this, 15));
+        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("y", initialY, DipPixelUtil.dip2px(this, 1));
+        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.66f);
+        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.66f);
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX, holderY, holderScaleX, holderScaleY);
         anim.addUpdateListener(new AnimatorUpdateListener() {
             @Override

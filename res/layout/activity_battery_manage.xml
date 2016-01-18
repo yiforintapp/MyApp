@@ -40,14 +40,69 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/battery_mask" />
+                
+                <LinearLayout 
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:layout_above="@+id/iv_littlebattery"
+                    >
+                    <TextView 
+                        android:textSize="18dp"
+                        android:textColor="@color/white"
+                         android:layout_width="0dp"
+                         android:layout_weight="5"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical|right"
+                    android:id="@+id/tv_percent_value"
+                        />
+                    <TextView 
+                         android:layout_width="0dp"
+                         android:layout_weight="4"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="2dp"
+                    android:text="%"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:id="@+id/tv_percent"
+                        />
+                    
+                </LinearLayout>
+                
+                <ImageView
+                    android:id="@+id/iv_littlebattery"
+                    android:layout_width="30dp"
+                    android:layout_height="17dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="30dp"
+                    android:src="@drawable/batterymanage_littlebattery" />
+                
             </RelativeLayout>
 
             <ImageView
                 android:id="@+id/iv_shield"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:visibility="invisible"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/speed_rocket" />
+                android:src="@drawable/batterymanage_shield" />
+            
+            <TextView 
+                android:id="@+id/tv_boost_complete"
+                android:text="@string/batterymanage_boost_finished"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="30dp"
+                android:textSize="@dimen/f3"
+                android:visibility="invisible"
+                android:textColor="@color/c1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            
         </RelativeLayout>
 
         <TextView
@@ -60,6 +115,7 @@
             android:paddingLeft="14dp"
             android:textColor="@color/c3"
             android:textSize="@dimen/f3" />
+        
 
         <RelativeLayout
             android:id="@+id/rl_apps"
@@ -101,6 +157,7 @@
                         android:background="@drawable/elect_empty" />
 
                     <TextView
+                        android:id="@+id/tv_empty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/just_nothing_show_iv"
@@ -156,5 +213,10 @@
             </com.leo.appmaster.ui.RippleView>
         </RelativeLayout>
     </RelativeLayout>
-
+    <RelativeLayout 
+            android:layout_marginTop="160dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rl_result_layout"
+            ></RelativeLayout>
 </RelativeLayout>
