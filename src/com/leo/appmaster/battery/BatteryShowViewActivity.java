@@ -1,6 +1,7 @@
 package com.leo.appmaster.battery;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -73,8 +74,11 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         LeoEventBus.getDefaultBus().register(this);
         mBatteryManager.setBatteryStateListener(this);
         mBatterViewBg = (RelativeLayout) findViewById(R.id.batter_view_bg);
-        mBatterViewBg.setBackgroundDrawable(BitmapUtils.getDeskTopBitmap(
-                BatteryShowViewActivity.this));
+        Drawable drawable = BitmapUtils.getDeskTopBitmap(
+                BatteryShowViewActivity.this);
+        if (drawable != null) {
+            mBatterViewBg.setBackgroundDrawable(drawable);
+        }
 
         mViewPager = (ViewPager) findViewById(R.id.battery_viewpager);
         initFragment();

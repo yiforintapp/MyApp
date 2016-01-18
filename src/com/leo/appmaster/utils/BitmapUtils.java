@@ -236,9 +236,10 @@ public class BitmapUtils {
             // 获取当前壁纸
             final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
             PreferenceTable preferenceTable = PreferenceTable.getInstance();
-            int theSaveCode = preferenceTable.getInt(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
+            long theSaveCode = preferenceTable.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
             LeoLog.e("getDeskTopBitmap", "theSaveCode:" + theSaveCode + "wallpaperDrawable.hashCode():" + wallpaperDrawable.hashCode());
             if (theSaveCode != wallpaperDrawable.hashCode()) {
+                preferenceTable.putLong(PrefConst.VIRTUAL_IMG_HASH_CODE, wallpaperDrawable.hashCode());
                 // 将Drawable转成Bitmap
                 final Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
                 ThreadManager.getSubThreadHandler().post(new Runnable() {
