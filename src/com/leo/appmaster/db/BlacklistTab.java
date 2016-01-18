@@ -106,6 +106,7 @@ public class BlacklistTab extends BaseTable {
 
     @Override
     public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+        LeoLog.d(TAG, "upgradeTable oldVer: " + oldVersion + " | newVer: " + newVersion);
         if (oldVersion <= 9 && newVersion == 10) {
             db.execSQL("DROP TABLE IF EXISTS " + CallFilterConstants.TAB_SERVER_BLACK_LIST);
             db.execSQL("DROP TABLE IF EXISTS " + CallFilterConstants.TAB_BLACK_LIST);
@@ -556,7 +557,8 @@ public class BlacklistTab extends BaseTable {
 
         Cursor cursor = null;
         try {
-            cursor = db.query(CallFilterConstants.TAB_BLACK_LIST, null, selects, selectArgs, null, null, null);
+            cursor = db.query(CallFilterConstants.TAB_BLACK_LIST, new String[]{CallFilterConstants.COL_BLACK_ID},
+                    selects, selectArgs, null, null, null);
             if (cursor != null) {
                 return cursor.getCount() > 0;
             }
