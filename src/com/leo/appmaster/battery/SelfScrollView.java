@@ -39,6 +39,11 @@ public class SelfScrollView extends ScrollView {
 //            }
 //        }
     }
+    private BatteryTestViewLayout mParent;
+
+    public void setParent(BatteryTestViewLayout layout) {
+        mParent = layout;
+    }
 
     public void setScrollBottomListener(ScrollBottomListener scrollBottomListener) {
         this.scrollBottomListener = scrollBottomListener;
@@ -79,19 +84,40 @@ public class SelfScrollView extends ScrollView {
                 LeoLog.d("testBatteryView", "moveY : " + moveY);
 
 
+//                if (!BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing) {
+//                    if (scrollBottomListener != null &&
+//                            top > 0 && oldTop >= 0 && moveY < -50) {
+//                        scrollBottomListener.scrollTop();
+//                    }
+//                }
                 if (!BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing) {
-                    if (scrollBottomListener != null &&
+                    if (/*scrollBottomListener != null &&*/
                             top > 0 && oldTop >= 0 && moveY < -50) {
-                        scrollBottomListener.scrollTop();
+                        LeoLog.d("testBatteryView", "top : " + top);
+                        mParent.getScrollBottomListener().scrollTop();
+//                        scrollBottomListener.scrollTop();
                     }
                 }
 
+
+
+//                if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
+//                        top == 0 && moveY > 120) {
+//                    if (scrollBottomListener != null) {
+//                        scrollBottomListener.scrollBottom();
+//                    }
+//                }
+
                 if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
                         top == 0 && moveY > 120) {
-                    if (scrollBottomListener != null) {
-                        scrollBottomListener.scrollBottom();
-                    }
+//                    if (scrollBottomListener != null) {
+                    LeoLog.d("testBatteryView", "top : " + top);
+                    mParent.getScrollBottomListener().scrollBottom();
+//                        scrollBottomListener.scrollBottom();
+//                    }
                 }
+
+
 
 
                 break;

@@ -56,7 +56,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
-public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, SelfScrollView.ScrollBottomListener, View.OnClickListener {
+public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
     private static final String TAG = "BatteryViewFragment";
 
@@ -145,7 +145,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 case MOVE_UP:
                     if (mSlideView.getVisibility() == View.VISIBLE) {
                         mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
-                        mSlideView.setScrollView(true);
+                        mSlideView.setScrollable(true);
                         mShowing = true;
                         showMoveUp();
                         timeContentMoveSmall();
@@ -155,7 +155,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 case MOVE_DOWN:
                     if (mBatteryManager.getIsCharing()) {
                         mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
-                        mSlideView.setScrollView(true);
+                        mSlideView.setScrollable(true);
                         mShowing = true;
                         showMoveDown();
                         timeContentMoveBig();
@@ -359,7 +359,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         moveDistance = DipPixelUtil.dip2px(mActivity, 180);
 
         mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
-        mScrollView.setScrollBottomListener(this);
+        mScrollView.setParent(mSlideView);
+        mSlideView.setScrollBottomListener(this);
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
         mThreeMoveView = findViewById(R.id.battery_icon_flag);
@@ -457,7 +458,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (type.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
             if (!isExpand) {
-                mSlideView.setScrollView(true);
+                mSlideView.setScrollable(true);
                 expandContent(true);
             }
         }
@@ -744,7 +745,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 isExpand = true;
                 mShowing = false;
                 mScrollView.setScrollY(0);
-                mSlideView.setScrollView(false);
+                mSlideView.setScrollable(true);
             }
         });
         animMoveY.start();
@@ -786,7 +787,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 isExpand = false;
                 mShowing = false;
                 mScrollView.setScrollY(0);
-                mSlideView.setScrollView(false);
+                mSlideView.setScrollable(false);
             }
         });
         animMoveY.start();
