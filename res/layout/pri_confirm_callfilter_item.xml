@@ -10,12 +10,12 @@
         <View
             android:id="@+id/item_label"
             style="@style/ItemLabelLost"
-            android:background="@color/security_wifi" />
+            android:background="#4dcf00" />
 
         <TextView
             android:id="@+id/item_title"
             style="@style/ItemTitle"
-            android:text="@string/quick_helper_callfilter" />
+            android:text="@string/batterymanage_result_ad_callfilter_title" />
     </LinearLayout>
 
     <RelativeLayout
@@ -32,7 +32,7 @@
             android:id="@+id/item_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_pri_wifi_security"
+            android:src="@drawable/ic_pri_call_filter"
             android:layout_centerVertical="true"/>
 
 
@@ -47,11 +47,12 @@
                 android:textColor="@color/c2"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="@string/quick_helper_desc_callfilter" />
+                android:text="@string/batterymanage_result_ad_callfilter_content" />
 
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/item_btn"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -82,5 +83,11 @@
                 style="@style/ItemBtnText" />
         </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_below="@+id/item_btn"
+        android:background="@color/pri_pro_list_bg"/>
 
 </RelativeLayout>

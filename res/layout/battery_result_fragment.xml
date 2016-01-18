@@ -6,10 +6,10 @@
     android:layout_marginTop="@dimen/toolbar_height"
     android:background="@color/transparent"
     android:overScrollMode="never"
-    android:paddingBottom="63dp"
+    android:fillViewport="true"
     android:scrollbars="none">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -22,9 +22,8 @@
         <LinearLayout
             android:id="@+id/card_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/pri_pro_list_bg"
-            android:layout_below="@+id/empty_header"
             android:orientation="vertical"
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
@@ -55,7 +54,13 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/pri_pro_list_bg"/>
 
-    </RelativeLayout>
+
+    </LinearLayout>
 
 </ScrollView>
