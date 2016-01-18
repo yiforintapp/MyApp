@@ -66,7 +66,7 @@ public class BatteryNotifyHelper {
         RemoteViews view_custom;
         if (!BuildProperties.checkIsHuaWeiEmotion31()) {
             // 先设定RemoteViews
-            view_custom = new RemoteViews(mContext.getPackageName(), R.layout.clean_mem_notify);
+            view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_apps_notify);
         } else {
             // 先设定RemoteViews
             view_custom = new RemoteViews(mContext.getPackageName(), R.layout.clean_mem_notify_huawei);

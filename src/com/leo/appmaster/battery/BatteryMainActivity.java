@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -62,7 +63,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RelativeLayout mRlContent;
     private TextView mTvPercentValue;
     private RelativeLayout mRlBottom;
-    private GridView mGvApps;
+    private Fragment mFrgmResult;
+    private BatteryAppGridView mGvApps;
     private ArrayList<BatteryComsuption> mListBatteryComsuptions;
     private RippleView mRvBoost;
     private final int APPS_COLUMNS = 5;
@@ -124,7 +126,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         });
         mCtbMain.setOptionImageResource(R.drawable.setup_icon);
         mCtbMain.setOptionMenuVisible(true);
-        mGvApps = (GridView) findViewById(R.id.gv_apps);
+        mGvApps = (BatteryAppGridView) findViewById(R.id.gv_apps);
         mGvApps.setNumColumns(APPS_COLUMNS);
         mAdapter = new AppsAdapter();
         mRlContent = (RelativeLayout) findViewById(R.id.rl_content);
@@ -342,7 +344,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
         // 添加空白item
         for (int i=0;i<100;i++) {
-            mListBatteryComsuptions.add(new BatteryComsuption(this, "", 0));
+            mListBatteryComsuptions.add(BatteryComsuption.buildEmptyBatteryComsuption(this));
         }
         mAdapter.fillData(mListBatteryComsuptions);
         mAdapter.notifyDataSetChanged();
@@ -360,14 +362,26 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
         });
 
-        // 移动回顶端
-        mGvApps.smoothScrollToPosition(0);
-        mGvApps.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startBoostAnimation(remainItemCount);
-            }
-        }, 50);
+        if (mGvApps.computeVerticalScrollOffset() == 0) {
+            startBoostAnimation(remainItemCount);
+        } else {
+            // 移动回顶端
+            mGvApps.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                            && mGvApps.computeVerticalScrollOffset() == 0) {
+                        startBoostAnimation(remainItemCount);
+                    }
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                }
+            });
+            mGvApps.smoothScrollToPosition(0);
+        }
     }
 
     private void startBoostAnimation2() {

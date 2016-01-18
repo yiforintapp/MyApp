@@ -63,6 +63,15 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 		}
 	}
 
+	private BatteryComsuption(Context context) {
+		mContext = context;
+	}
+
+	public static BatteryComsuption buildEmptyBatteryComsuption (Context context) {
+		BatteryComsuption bc = new BatteryComsuption(context);
+		return bc;
+	}
+
 	public DrainType getDrainType() {
 		return drainType;
 	}
