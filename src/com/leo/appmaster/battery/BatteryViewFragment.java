@@ -183,6 +183,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 super.onAnimationEnd(animation);
                 mThreeMoveView.setVisibility(View.VISIBLE);
                 mRemainTimeContent.setVisibility(View.VISIBLE);
+                setTime(mRemainTime, false);
             }
         });
         set.start();
@@ -218,20 +219,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mHideTextView.setVisibility(View.VISIBLE);
-//                setTime(mRemainTime, true);
-                if (newState.level == 100) {
-                    mTvHideText.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
-                    mTvHideTime.setVisibility(View.GONE);
-                } else {
-                    mTvHideTime.setVisibility(View.VISIBLE);
-                    if (mBatteryText != null) {
-                        mTvHideTime.setVisibility(View.VISIBLE);
-                        mTvHideTime.setText(Html.fromHtml(mBatteryText));
-                    } else {
-                        mTvHideTime.setVisibility(View.GONE);
-                        LeoLog.d("testBatteryView", "mBatteryText is Empty");
-                    }
-                }
+                setTime(mRemainTime, true);
+
+//                if (newState.level == 100) {
+//                    mTvHideText.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
+//                    mTvHideTime.setVisibility(View.GONE);
+//                } else {
+//                    mTvHideTime.setVisibility(View.VISIBLE);
+//                    if (mBatteryText != null) {
+//                        mTvHideTime.setVisibility(View.VISIBLE);
+//                        mTvHideTime.setText(Html.fromHtml(mBatteryText));
+//                    } else {
+//                        mTvHideTime.setVisibility(View.GONE);
+//                        LeoLog.d("testBatteryView", "mBatteryText is Empty");
+//                    }
+//                }
 
             }
         });
@@ -400,10 +402,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         setBatteryPercent();
         setBottleWater();
+        setTime(mRemainTime, isExpand);
 
-        if (!type.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
-            setTime(mRemainTime, isExpand);
-        } else {
+        if (type.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
             if (!isExpand) {
                 mSlideView.setScrollView(true);
                 expandContent(true);
@@ -477,105 +478,125 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
 
-
         String hString, dString;
         hString = String.valueOf(h);
         dString = String.valueOf(d);
         LeoLog.d("testBatteryView", "hString : " + hString + "dString : " + dString);
-        boolean isCharing = mBatteryManager.getIsCharing();
+        boolean isCharing = newState.plugged != 0 ? true : false;
 
-//        if (newState.level >= 100) {
-//            if (isExpandContent) {
-//                String text = mActivity.getString(R.string.screen_protect_charing_text_four);
-//                mTvHideText.setText(text);
-//                mTvHideTime.setVisibility(View.GONE);
+//        if (hString.equals("0")) {
+//            if (!dString.equals("0")) {
+//                String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
+//                mTvLeftTime.setVisibility(View.VISIBLE);
+//                mTvTime.setVisibility(View.VISIBLE);
+//                mTvTime.setText(Html.fromHtml(text));
+//                mBatteryText = text;
 //            } else {
-//                String text;
-//                if (isCharing) {
-//                    text = mActivity.getString(R.string.screen_protect_charing_text_three);
+//                if (newState.level == 100) {
+//                    mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
+//                    mTvTime.setVisibility(View.GONE);
 //                } else {
-//                    text = mActivity.getString(R.string.screen_protect_charing_text_four);
+//                    mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_two));
+//                    mTvTime.setVisibility(View.GONE);
 //                }
-//                mTvLeftTime.setText(text);
-//                mTvTime.setVisibility(View.GONE);
 //            }
 //        } else {
-//            if (hString.equals("0")) {
-//                if (!dString.equals("0")) {
-//                    String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
-//                    if (isExpandContent) {
-//                        if (isCharing) {
-//                            mTvHideText.setVisibility(View.VISIBLE);
-//                            mTvHideTime.setVisibility(View.VISIBLE);
-//                            mTvHideTime.setText(Html.fromHtml(text));
-//                        } else {
-//                            String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
-//                            mTvHideText.setText(text2);
-//                            mTvHideTime.setVisibility(View.GONE);
-//                        }
-//                    } else {
-//                        mTvLeftTime.setVisibility(View.VISIBLE);
-//                        mTvTime.setVisibility(View.VISIBLE);
-//                        mTvTime.setText(Html.fromHtml(text));
-//                    }
-//                } else {
-//                    String text = mActivity.getString(R.string.screen_protect_charing_text_four);
-//                    if (isExpandContent) {
-//                        mTvHideText.setText(text);
-//                        mTvHideTime.setVisibility(View.GONE);
-//                    } else {
-//                        mTvLeftTime.setText(text);
-//                        mTvTime.setVisibility(View.GONE);
-//                    }
-//                }
-//            } else {
-//                LeoLog.d("testBatteryView", "two fit");
-//                String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
-//                if (isExpandContent) {
-//                    LeoLog.d("testBatteryView", "expand");
-//                    if (isCharing) {
-//                        LeoLog.d("testBatteryView", "isCharing");
-//                        mTvHideText.setVisibility(View.VISIBLE);
-//                        mTvHideTime.setVisibility(View.VISIBLE);
-//                        mTvHideTime.setText(Html.fromHtml(text));
-//                    } else {
-//                        LeoLog.d("testBatteryView", "NOT Charing");
-//                        String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
-//                        mTvHideText.setText(text2);
-//                        mTvHideTime.setVisibility(View.GONE);
-//                    }
-//                } else {
-//                    mTvLeftTime.setVisibility(View.VISIBLE);
-//                    mTvTime.setVisibility(View.VISIBLE);
-//                    mTvTime.setText(Html.fromHtml(text));
-//                }
-//            }
+//            String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
+//            mTvLeftTime.setVisibility(View.VISIBLE);
+//            mTvTime.setVisibility(View.VISIBLE);
+//            mTvTime.setText(Html.fromHtml(text));
+//            mBatteryText = text;
 //        }
 
 
-        if (hString.equals("0")) {
-            if (!dString.equals("0")) {
-                String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
-                mTvLeftTime.setVisibility(View.VISIBLE);
-                mTvTime.setVisibility(View.VISIBLE);
-                mTvTime.setText(Html.fromHtml(text));
-                mBatteryText = text;
+//        int texta;
+//        if (isCharing) {
+//            texta = 1;
+//        } else {
+//            texta = 0;
+//        }
+//
+//        int textb;
+//        if (isExpandContent) {
+//            textb = 1;
+//        } else {
+//            textb = 0;
+//        }
+//        Toast.makeText(mActivity, "level:" + newState.level +
+//                ",isCharing:" + texta + ",isExpand:" + textb + ",h:" + hString + ",d:" + dString
+//                , Toast.LENGTH_LONG).show();
+
+        if (newState.level >= 100) {
+            if (isExpandContent) {
+                String text = mActivity.getString(R.string.screen_protect_charing_text_four);
+                mTvHideText.setText(text);
+                mTvHideTime.setVisibility(View.GONE);
             } else {
-                if (newState.level == 100) {
-                    mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
-                    mTvTime.setVisibility(View.GONE);
+                String text;
+                if (isCharing) {
+                    text = mActivity.getString(R.string.screen_protect_charing_text_three);
                 } else {
-                    mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_two));
-                    mTvTime.setVisibility(View.GONE);
+                    text = mActivity.getString(R.string.screen_protect_charing_text_four);
                 }
+                mTvLeftTime.setText(text);
+                mTvTime.setVisibility(View.GONE);
             }
         } else {
-            String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
-            mTvLeftTime.setVisibility(View.VISIBLE);
-            mTvTime.setVisibility(View.VISIBLE);
-            mTvTime.setText(Html.fromHtml(text));
-            mBatteryText = text;
+            if (isExpandContent) {
+                if (isCharing) {
+                    if (hString.equals("0")) {
+                        if (!dString.equals("0")) {
+                            String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
+                            String text2 = mActivity.getString(R.string.screen_protect_time);
+                            mTvHideText.setVisibility(View.VISIBLE);
+                            mTvHideTime.setVisibility(View.VISIBLE);
+                            mTvHideText.setText(text2);
+                            mTvHideTime.setText(Html.fromHtml(text));
+                        } else {
+                            String text = mActivity.getString(R.string.screen_protect_charing_text_four);
+                            mTvHideText.setText(text);
+                            mTvHideTime.setVisibility(View.GONE);
+                        }
+                    } else {
+                        String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
+                        String text2 = mActivity.getString(R.string.screen_protect_time);
+                        mTvHideText.setVisibility(View.VISIBLE);
+                        mTvHideTime.setVisibility(View.VISIBLE);
+                        mTvHideText.setText(text2);
+                        mTvHideTime.setText(Html.fromHtml(text));
+                    }
+                } else {
+                    String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
+                    mTvHideText.setText(text2);
+                    mTvHideTime.setVisibility(View.GONE);
+                }
+            } else {
+                if (hString.equals("0")) {
+                    if (!dString.equals("0")) {
+                        String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
+                        String text2 = mActivity.getString(R.string.screen_protect_time);
+                        mTvLeftTime.setVisibility(View.VISIBLE);
+                        mTvTime.setVisibility(View.VISIBLE);
+                        mTvLeftTime.setText(text2);
+                        mTvTime.setText(Html.fromHtml(text));
+                    } else {
+                        String text = mActivity.getString(R.string.screen_protect_charing_text_four);
+                        mTvLeftTime.setText(text);
+                        mTvTime.setVisibility(View.GONE);
+                    }
+                } else {
+                    String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
+                    String text2 = mActivity.getString(R.string.screen_protect_time);
+                    mTvLeftTime.setVisibility(View.VISIBLE);
+                    mTvTime.setVisibility(View.VISIBLE);
+                    mTvLeftTime.setText(text2);
+                    mTvTime.setText(Html.fromHtml(text));
+                }
+            }
+
+
         }
+
 
     }
 
@@ -641,7 +662,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveDown() {
-
         final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
                 "scaleX", 1f, 1f);
         anim.setRepeatCount(ValueAnimator.INFINITE);
