@@ -1000,42 +1000,42 @@
     <string name="ad_blk_fail">باءت بالفشل</string>
 
     <!--3.3-->
-    <string name="batterymanage_result_ad_wifi_title">اختبار أمانية wifi التى يربطها</string>
-    <string name="batterymanage_result_ad_wifi_content">Wifi غير السالم يخطر أمان خصوصيتكم فى أى وقت</string>
-    <string name="batterymanage_result_ad_callfilter_title">ظر الإزعاج</string>
+    <string name="batterymanage_result_ad_wifi_title">التى يربطها  wifi اختبار أمانية </string>
+    <string name="batterymanage_result_ad_wifi_content"> غير السالم يخطر أمان خصوصيتكم فى أى وقت Wifi</string>
+    <string name="batterymanage_result_ad_callfilter_title">حظر الإزعاج</string>
     <string name="batterymanage_result_ad_callfilter_content">تبيين هذه المكالمات المزعاجة لكم واعتراضها</string>
-    <string name="batterymanage_label"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> تطبيق جارى استهلاك التيار الكهرباء في سر</string>
+    <string name="batterymanage_label"> سر في الكهرباء استهلاك جاري تطبيق  <Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data></string>
     <string name="batterymanage_boost">تحسين توفير الكهرباء</string>
-    <string name="batterymanage_boost_finished">تحسين توفير الكهرباء</string>
-    <string name="batterymanage_tip_loading">جارى اختبار تطبيق استهلاك الكهرباء</string>
-    <string name="batterymanage_tip_nothing_to_boost">لا يوجد تحسين app</string>
-    <string name="batterymanage_switch_screen">حماية الشاشة بالشحن</string>
-    <string name="batterymanage_switch_screen_summary">استخدام حماية الشاشة بالشحن لتسريع الشحن ، لوقاية من مفرط الشحن</string>
+    <string name="batterymanage_boost_finished">تم التحسين</string>
+    <string name="batterymanage_tip_loading">جارى اختبار التطبيق المستهلك الكهرباء</string>
+    <string name="batterymanage_tip_nothing_to_boost"> app لا يوجد تحسين</string>
+    <string name="batterymanage_switch_screen">حماية الشاشة عند لشحن</string>
+    <string name="batterymanage_switch_screen_summary">استخدام حماية الشاشة عند الشحن لتسريع الشحن ،ولوقاية من مفرط الشحن</string>
     <string name="batterymanage_switch_noti">اشعار استهلاك الكهرباء للتطبيق</string>
-    <string name="batterymanage_switch_noti_summary">اختبار حالة استهلاك الكهرباء للتطيبقيات الخلفية</string>
-    <string name="batterymanage_setting_title">اعداد</string>
+    <string name="batterymanage_switch_noti_summary">اختبار حالة استهلاك الكهرباء للتطيبقات الخلفية</string>
+    <string name="batterymanage_setting_title">اعدادات</string>
     <string name="quick_helper_callfilter">حظر  الإزعاج</string>
-    <string name="quick_helper_desc_callfilter">تبيين هذه المكالمات الإزعاجية وحظرها </string>
-    <string name="phone_share_dialog_content">جوالكم فى حالة وظيفة حماية السرق ، لكن أصدقائكم ليسوا بذلك ، أرسع لتساعدهم ～ </string>
-    <string name="callfilter_share_dialog_content">داع أصدقائكم معا لمنع المكالمات المزعاجة ～</string>
-    <string name="intruder_share_dialog_content">يشعر بأننا طيبون ؟ شاطرها الى الأصديقاء ～</string>
+    <string name="quick_helper_desc_callfilter">تبيين هذه المكالمات المزعاجة واعتراضها</string>
+    <string name="phone_share_dialog_content">جوالكم فى حالة الحماية من وظيفة وقاية من السرق ، لكن أصدقائكم ليسوا بذلك ، أرسع～ لتساعدهم </string>
+    <string name="callfilter_share_dialog_content">～داع أصدقائكم معا لمنع المكالمات المزعاجة </string>
+    <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">～يشعر بأننا طيبون</font>]]></Data> ؟ شاطرها الى الأصديقاء </string>
     <string name="share_dialog_btn_query">مشاطرة</string>
     <string name="share_dialog_query_btn_cancel">الغاء</string>
-    <string name="phone_share_content">ها ـ جارى أن استخدم وظيفة وقاية من السرق لحارس كتم الأسرار . باحتاج الى ارسال رسالة قصيرة ، يمكننى أن أحكم فى جوالي ، ما أسهل ، أرغب فى أن تجرب هذا البرنامج .</string>
-    <string name="callfilter_share_content">ها ، جارى أن أستخدم وظيفة اعتراض المكالمة هاتفيا بحارس كتم الأسرار . وأمنع هؤلاء المتروجين ، المهم : يتبين المكالمات الواردة أليا ، بمجرد البسيط . أرغب فى أن تستخدمه معا .</string>
-    <string name="intruder_share_content">ها ، جارى أن أستخدم وظيفة حارس كتم الإسرار لوقاية من الغزو . قد ساعدنى لتصوير %1$s شخص لتصفح جوالي ، الآن عرفت هؤلاء أن يتصفحوا جوالي ، جرب بسرعة ～</string>
-    <string name="up_list_swifty_title">ترقية الصلاحية</string>
+    <string name="phone_share_content">أهلا ـ جارى أن استخدم وظيفة وقاية من السرق لحارس الخصوصية. باحتاج الى ارسال رسالة قصيرة ، يمكننى أن أتحكم فى جوالي ، ما أسهل ، أرغب فى أن تجرب هذا البرنامج .</string>
+    <string name="callfilter_share_content">أهلا، جارى أن أستخدم وظيفة اعتراض المكالمة هاتفيا بحارس الخصوصية. وأمنع هؤلاء البائعين، المهم : يتبين المكالمات الواردة تلقائيا، بمجرد البسيط . أرغب فى أن تستخدمه معا .</string>
+    <string name="intruder_share_content"> قد.الغزاة من لوقاية الخصوصية حارس وظييفة أستخدم أن جاري  يتصفحوا أن هؤلاء عرفت الآن جوالي لتصفح شخص لتصوير ساعدني  بسرعة اجرب جوالي</string>
+    <string name="up_list_swifty_title">ترقية الفعالية</string>
 
     <string name="screen_protect_type_one">الشحن سريعا</string>
-    <string name="screen_protect_type_two">الشحن بالتيار المناسب</string>
+    <string name="screen_protect_type_two">الشحن بالتيار الثابت</string>
     <string name="screen_protect_type_three">الشحن بالتيار المتكسر</string>
 
-    <string name="screen_protect_time">باق الوقت للشحن :</string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color=""#0ad931"">%1$s</font>]]></Data> ساعة <Data><![CDATA[<font color=""#0ad931"">%2$s</font>]]> دقيقة </Data></string>
+    <string name="screen_protect_time"> :وقت الباقية للشحن</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color=""#0ad931"">%1$s</font>]]></Data> ساعة<Data><![CDATA[<font color=""#0ad931"">%2$s</font>]]></Data> دقيقة</string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> دقيقة</string>
 
-    <string name="screen_protect_unlock_text">حرك لفك القفل</string>
-    <string name="oppo_rom_tip_txt">بنسبة قيد النظام ، تعمل الصلاحية عادية بعد تشغيل حارس كتم الأسرار . خطوة التشغيل " اضافة البرنامج " ـ ـ > " تشغيل التطبيقات الخلفية بعد اجازة الإضافة " ـ ـ > اختر اضافة حارس كتم الأسررا</string>
+    <string name="screen_protect_unlock_text">حرك لفتح القفل</string>
+    <string name="oppo_rom_tip_txt">،الخصوصية حارس تشغيل بعد عادية الصلاحية تعمل النظام قيد بنسبة  اجازة بعد الخافية التطبيقات تشغيل ، البرنامج اختر اضافة اضافة التشغيل الخصوصية حارس خطوة ، اضافة</string>
     <string name="recom_lft_txt">لا داعى بذلك</string>
-    <string name="recom_rgt_txt">أريد أن أحول</string>
+    <string name="recom_rgt_txt">أريد أن أحاول</string>
 </resources>
