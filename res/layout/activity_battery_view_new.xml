@@ -323,44 +323,36 @@
                     android:id="@+id/ad_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
                     layout="@layout/scan_ad_layout" />
                 <!-- Advertise -->
 
                 <!-- 推广位1 -->
-                <RelativeLayout
+                <ViewStub
                     android:id="@+id/content_type_1"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/ad_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/white" />
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    layout="@layout/pri_confirm_swifty_item"/>
 
                 <!-- 推广位2 -->
-                <RelativeLayout
+                <ViewStub
                     android:id="@+id/content_type_2"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_below="@id/content_type_1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/green_button" />
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    layout="@layout/pri_confirm_swifty_item"/>
 
-                <!-- 推广位3 -->
-                <RelativeLayout
-                    android:id="@+id/content_type_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_below="@id/content_type_2"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/blue_button_click" />
 
             </RelativeLayout>
         </com.leo.appmaster.battery.SelfScrollView>

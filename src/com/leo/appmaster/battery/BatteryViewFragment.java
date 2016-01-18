@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -34,11 +35,14 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.BatteryMenu;
 import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.WaveView;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PropertyInfoUtil;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -108,6 +112,24 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private int adContentHeight = 0;
     private int adExpandContentHeight = 0;
     private BatteryMenu mLeoPopMenu;
+
+    /**
+     * Swifty
+     */
+    private TextView mSwiftyTitle;
+    private ImageView mSwiftyImg;
+    private TextView mSwiftyContent;
+    private RippleView mSwiftyBtnLt;
+
+    /**
+     * 预留推广位
+     */
+    private TextView mExtraTitle;
+    private ImageView mExtraImg;
+    private TextView mExtraContent;
+    private RippleView mExtraBtnLt;
+
+    private ImageLoader mImageLoader;
 
     //开始首页动画
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -275,6 +297,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     @Override
     protected void onInitUI() {
         LeoLog.d("testBatteryView", "INIT UI");
+        mImageLoader = ImageLoader.getInstance();
+
         mTimeContent = findViewById(R.id.time_move_content);
         mBatteryIcon = findViewById(R.id.infos_content);
         mRemainTimeContent = findViewById(R.id.remain_time);
@@ -327,6 +351,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
 
         loadAd();
+
+        initSwiftyLayout(mRootView);
+        initExtraLayout(mRootView);
+
     }
 
     @Override
@@ -690,6 +718,26 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             case R.id.trickle_content:
                 showPop(CHARING_TYPE_TRICKLE);
                 break;
+            case R.id.item_btn_rv:
+                mLockManager.filterSelfOneMinites();
+                if (view == mSwiftyBtnLt) {
+                    boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
+
+                    if (installISwipe) {
+                        Utilities.startISwipIntent(mActivity);
+                    } else {
+                        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                        Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_SWIFTY_TYPE,
+                                PrefConst.KEY_CHARGE_SWIFTY_GP_URL, PrefConst.KEY_CHARGE_SWIFTY_URL,
+                                Constants.ISWIPE_PACKAGE, mActivity);
+                    }
+                } else if (view == mExtraBtnLt) {
+                    PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                    Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
+                              PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
+                              Constants.ISWIPE_PACKAGE, mActivity);
+                }
+                break;
         }
     }
 
@@ -822,4 +870,109 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         adView.setVisibility(View.VISIBLE);
     }
     /* 广告相关 - 结束 */
+
+    private void initSwiftyLayout(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.content_type_1);
+        if (viewStub == null) {
+            return;
+        }
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL));
+
+        boolean isTypeEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TYPE));
+
+        boolean isGpUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_GP_URL));
+
+        boolean isBrowserUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_URL));
+
+        boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+            View include = viewStub.inflate();
+            mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
+            mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
+            mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
+            mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+            mSwiftyBtnLt.setOnClickListener(this);
+            mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TITLE));
+            if (!isTitleEmpty) {
+                mSwiftyTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_CHARGE_SWIFTY_TITLE));
+            }
+        }
+
+    }
+
+    private void initExtraLayout(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.content_type_2);
+        if (viewStub == null) {
+            return;
+        }
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
+
+        boolean isImgUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL));
+
+        boolean isTypeEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_TYPE));
+
+        boolean isGpUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_GP_URL));
+
+        boolean isBrowserUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_URL));
+
+        boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
+
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+            View include = viewStub.inflate();
+            mExtraTitle = (TextView) include.findViewById(R.id.item_title);
+            mExtraImg = (ImageView) include.findViewById(R.id.swifty_img);
+            mExtraContent = (TextView) include.findViewById(R.id.swifty_content);
+            mExtraBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+            mExtraBtnLt.setOnClickListener(this);
+            mExtraContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mExtraImg, getOptions(R.drawable.swifty_banner));
+            boolean isTitleEmpty = TextUtils.isEmpty(
+                    preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_TITLE));
+            if (!isTitleEmpty) {
+                mExtraTitle.setText(preferenceTable.getString(
+                        PrefConst.KEY_CHARGE_EXTRA_TITLE));
+            }
+        }
+
+    }
+
+    public DisplayImageOptions getOptions(int drawble) {  //需要提供默认图
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(drawble)
+                .showImageForEmptyUri(drawble)
+                .showImageOnFail(drawble)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+
+        return options;
+    }
 }

@@ -880,6 +880,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 }
                 Intent intent=new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
+//                intent.setType("image/*");
 //                intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
                 intent.putExtra(Intent.EXTRA_TEXT, shareString);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
