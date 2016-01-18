@@ -441,17 +441,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         int day_of_week = c.get(Calendar.DAY_OF_WEEK);
-        LeoLog.d(TAG, year+":"+month+":"+day+":"+hour+":"+minute+":"+day_of_week);
+        LeoLog.d(TAG, year + ":" + month + ":" + day + ":" + hour + ":" + minute + ":" + day_of_week);
 
         mTvBigTime.setText(hour + ":" + minute);
         mTvSmallLeft.setText((month + 1) + "/" + day);
 
-        switch (day_of_week) {
-            case 0:
-                mTvSmallRight.setText(days[6]);
-                break;
-            default:
-                mTvSmallRight.setText(days[day_of_week-2]);
+        // 资源应该从周日 - 周六 这样的顺序
+        if (day_of_week >= 2) {
+            mTvSmallRight.setText(days[day_of_week-2]);
+        } else {
+            mTvSmallRight.setText(days[6]);
         }
     }
 
