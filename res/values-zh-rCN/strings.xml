@@ -932,7 +932,7 @@
 
     <!-- 3.3 start -->
     <string name="batterymanage_result_ad_wifi_title">检测您连接的wifi安全性</string>
-    <string name="batterymanage_result_ad_wifi_content">不安全的wifi随时会威胁您的隐私安全</string>
+    <string name="batterymanage_result_ad_wifi_content">不安全的wifi随时会威胁您私安全</string>
     <string name="batterymanage_result_ad_callfilter_title">骚扰拦截</string>
     <string name="batterymanage_result_ad_callfilter_content">识别并拦截那些烦人的骚扰电话</string>
     <string name="batterymanage_label"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data>个应用正在偷偷耗电</string>
