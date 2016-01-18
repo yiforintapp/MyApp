@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -51,19 +51,16 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
     private View mWifiFixedSummaryLt;
     private View mWIfiInclude;
 
+    private RippleView mCallFilterBtn;
+
     @Override
     public void onViewCreated(final View view, @Nullable
     Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                initSwiftyLayout(view);
-                initWifiLayout(view);
-                initCallFilterLayout(view);
-            }
-        });
+        initSwiftyLayout(view);
+        initWifiLayout(view);
+        initCallFilterLayout(view);
     }
 
     @Override
@@ -111,6 +108,9 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
                         PrefConst.KEY_CLEAN_SWIFTY_GP_URL, PrefConst.KEY_CLEAN_SWIFTY_URL,
                         Constants.ISWIPE_PACKAGE, mActivity);
             }
+        } else if (mCallFilterBtn == v) {
+            Intent intent = new Intent(mActivity, CallFilterMainActivity.class);
+            startActivity(intent);
         }
 
     }
@@ -243,6 +243,8 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
         if (viewStub == null) {
             return;
         }
-        viewStub.inflate();
+        View include = viewStub.inflate();
+        mCallFilterBtn = (RippleView) include.findViewById(R.id.item_btn_rv);
+        mCallFilterBtn.setOnClickListener(this);
     }
 }

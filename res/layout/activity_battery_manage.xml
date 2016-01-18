@@ -213,10 +213,10 @@
             </com.leo.appmaster.ui.RippleView>
         </RelativeLayout>
     </RelativeLayout>
-    <RelativeLayout 
-            android:layout_marginTop="160dp"
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rl_result_layout"
             ></RelativeLayout>
+
 </RelativeLayout>
