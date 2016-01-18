@@ -1,51 +1,43 @@
 
 package com.leo.appmaster.battery;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.activity.PrivacyOptionActivity;
-import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.PasswdProtectActivity;
-import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.SimpleAnimatorListener;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.BatteryMenu;
-import com.leo.appmaster.ui.LeoHomePopMenu;
-import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -352,9 +344,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         loadAd();
 
-        initSwiftyLayout(mRootView);
-        initExtraLayout(mRootView);
-
+        try {
+            if (mRootView != null) {
+                initSwiftyLayout(mRootView);
+                initExtraLayout(mRootView);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -896,7 +893,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
-        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+        if (/*!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty*/true) {
             View include = viewStub.inflate();
             mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
@@ -941,7 +938,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
-        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+        if (/*!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty*/true) {
             View include = viewStub.inflate();
             mExtraTitle = (TextView) include.findViewById(R.id.item_title);
             mExtraImg = (ImageView) include.findViewById(R.id.swifty_img);

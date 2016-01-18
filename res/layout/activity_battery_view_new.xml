@@ -300,7 +300,7 @@
         android:layout_above="@id/slider"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@color/grey">
+        android:background="#7FFFFFFF">
 
         <com.leo.appmaster.battery.SelfScrollView
             android:id="@+id/slide_content_sv"
@@ -314,9 +314,10 @@
             android:paddingBottom="10dp"
             android:scrollbars="none">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <!-- Advertise -->
                 <include
@@ -339,22 +340,22 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@color/white"
-                    layout="@layout/pri_confirm_swifty_item"/>
+                    android:layout="@layout/pri_confirm_swifty_item"/>
 
                 <!-- 推广位2 -->
                 <ViewStub
                     android:id="@+id/content_type_2"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/content_type_1"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@color/white"
-                    layout="@layout/pri_confirm_swifty_item"/>
+                    android:layout="@layout/pri_confirm_swifty_item"/>
 
 
-            </RelativeLayout>
+            </LinearLayout>
         </com.leo.appmaster.battery.SelfScrollView>
     </com.leo.appmaster.battery.BatteryTestViewLayout>
     <!-- 滑动区域 -->
