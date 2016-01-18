@@ -955,14 +955,14 @@
     <string name="batterymanage_setting_title">Setting</string>
     <string name="quick_helper_callfilter">Disturbance interception</string>
     <string name="quick_helper_desc_callfilter">Identify and intercept those annoying crank calls</string>
-    <string name="phone_share_dialog_content">Your mobile is under protection of the anti-theft function, but this is maybe not the case for your friends' mobiles. Be quick to help them.</string>
+    <string name="phone_share_dialog_content">Your mobile is under protection of the anti-theft function, but this is maybe not the case for your friends\' mobiles. Be quick to help them.</string>
     <string name="callfilter_share_dialog_content">Tell your friends to mask those annoying crank calls.</string>
     <string name="intruder_share_dialog_content">Think me pretty good? Share with your friends</string>
     <string name="share_dialog_btn_query">Share</string>
     <string name="share_dialog_query_btn_cancel">Cancel</string>
-    <string name="phone_share_content">Hi, I'm using the anti-theft function of Privacy Guard. I can remotely control my mobile just by sending an MMS. It's so convenient and I want you to have a try.</string>
-    <string name="callfilter_share_content">Hi, I'm using the crank call interception function of Privacy Guard. By using it, I mask all annoying salesmen. The most important is, it can automatically identify incoming calls. It's so convenient and I really want you to have a try.</string>
-    <string name="intruder_share_content">Hi, I'm using the Intrusion Prevention function of Privacy Guard. It has helped me shoot %1$s persons who peek at my mobile. Now, I know who are peeking at my mobile. Do you want to have a try?</string>
+    <string name="phone_share_content">Hi, I\'m using the anti-theft function of Privacy Guard. I can remotely control my mobile just by sending an MMS. It\'s so convenient and I want you to have a try.</string>
+    <string name="callfilter_share_content">Hi, I\'m using the crank call interception function of Privacy Guard. By using it, I mask all annoying salesmen. The most important is, it can automatically identify incoming calls. It\'s so convenient and I really want you to have a try.</string>
+    <string name="intruder_share_content">Hi, I\'m using the Intrusion Prevention function of Privacy Guard. It has helped me shoot %1$s persons who peek at my mobile. Now, I know who are peeking at my mobile. Do you want to have a try?</string>
     <string name="up_list_swifty_title">Efficiency promotion</string>
 
     <string name="screen_protect_type_one">Quick charging</string>
@@ -970,7 +970,7 @@
     <string name="screen_protect_type_three">Trickle charging</string>
 
     <string name="screen_protect_time">Remaining charging time</string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color=""#0ad931"">%1$s</font>]]></Data> hours<Data><![CDATA[<font color=""#0ad931"">%2$s</font>]]> minutes</Data></string>"
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> hours<Data><![CDATA[<font color="#0ad931">%2$s</font>]]> minutes</Data></string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> minutes</string>
 
     <string name="screen_protect_unlock_text">Slide to unlock</string>

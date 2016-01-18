@@ -948,7 +948,7 @@
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>dk.</string>
 
     <string name="screen_protect_unlock_text">Kaydırarak ekranı açın</string>
-    <string name="oppo_rom_tip_txt">Sistem kısıtlamaları yüzünden Privacy Guard işlem yetkilerini açmanız gerekmektedir. İşlemler -- "Arka planda çalışan uygulama izinleri"--Privacy Guard'ı ekleyin</string>
+    <string name="oppo_rom_tip_txt">Sistem kısıtlamaları yüzünden Privacy Guard işlem yetkilerini açmanız gerekmektedir. İşlemler -- "Arka planda çalışan uygulama izinleri"--Privacy Guard\'ı ekleyin</string>
     <string name="recom_lft_txt">Hayır</string>
     <string name="recom_rgt_txt">Dene</string>
 </resources>
