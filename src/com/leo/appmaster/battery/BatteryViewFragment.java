@@ -114,14 +114,24 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MOVE_UP:
+
+                    mSlideView.setScrollView(true);
+                    mShowing = true;
+
                     showMoveUp();
                     timeContentMoveSmall();
                     batteryIconMoveSmall();
                     break;
                 case MOVE_DOWN:
-                    showMoveDown();
-                    timeContentMoveBig();
-                    batteryIconMoveBig();
+                    if (mBatteryManager.getIsCharing()) {
+
+                        mSlideView.setScrollView(true);
+                        mShowing = true;
+
+                        showMoveDown();
+                        timeContentMoveBig();
+                        batteryIconMoveBig();
+                    }
                     break;
                 case GREEN_ARROW_MOVE:
                     arrowMove();
@@ -363,12 +373,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     public void notifyUI(String type) {
 
-        if (!type.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
-            setTime(mRemainTime, isExpand);
-        }
-
         setBatteryPercent();
         setBottleWater();
+
+        if (!type.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
+            setTime(mRemainTime, isExpand);
+        } else {
+            if (!isExpand) {
+                mSlideView.setScrollView(true);
+                expandContent(true);
+            }
+        }
+
+
     }
 
     private void setBottleWater() {
@@ -626,8 +643,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void expandContent(boolean expand) {
-        mShowing = true;
-
         if (expand) {
             moveUpCount = 0;
             mHandler.sendEmptyMessage(MOVE_UP);
@@ -641,13 +656,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     @Override
     public void scrollBottom() {
-        mSlideView.setScrollView(true);
         expandContent(false);
     }
 
     @Override
     public void scrollTop() {
-        mSlideView.setScrollView(true);
         expandContent(true);
     }
 
