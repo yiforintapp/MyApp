@@ -76,6 +76,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RelativeLayout mRlWholeShield;
     private ImageView mIvShield;
     private WaveView mWvBattery;
+    private final int TOP_TRANSLUCENT_HEIGHT = DipPixelUtil.dip2px(this, 160);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +104,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mRlWholeBattery = (RelativeLayout) findViewById(R.id.rl_wholebattery);
         mWvBattery = (WaveView) findViewById(R.id.wv_battery);
         mWvBattery.setWaveColor(0xff00ccff);
-        mWvBattery.setPercent(mBtrManager.getBatteryLevel());
         mIvShield= (ImageView) findViewById(R.id.iv_shield);
         mTvListTitle = (TextView) findViewById(R.id.tv_list_title);
         mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
@@ -175,6 +175,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     public void onResume() {
         super.onResume();
         mTvPercentValue.setText(mBtrManager.getBatteryLevel() + "");
+        mWvBattery.setPercent(mBtrManager.getBatteryLevel());
+//        mWvBattery.setPercent(98);
         mBtrManager.updateBatteryPageState(true);
         LeoLog.i(TAG, "onResume");
 //        if (mFrgmResult != null && mFrgmResult.isVisible()) {
@@ -265,7 +267,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
   
         final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,  
                 centerX, centerY, 0.0f, true);  
-        rotation.setDuration(1000);  
+        rotation.setDuration(680);  
         rotation.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -288,7 +290,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     
     
     protected void showResultFragment() {
-        FragmentManager fm = getSupportFragmentManager();
+      FragmentManager fm = getSupportFragmentManager();
       FragmentTransaction transaction = fm.beginTransaction();  
       transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
       transaction.replace(R.id.rl_result_layout, new BatteryBoostResultFragment());
@@ -323,7 +325,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                 LeoLog.i(TAG, "sy :" + mIvShield.getScaleX());
             }
         });
-        anim.setDuration(1000);
+        anim.setDuration(360);
         anim.start();
     }
 
