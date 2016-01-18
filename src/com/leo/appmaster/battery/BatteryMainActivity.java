@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -50,6 +51,7 @@ import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.Animator.AnimatorListener;
+import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
@@ -81,6 +83,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private ImageView mIvShield;
     private WaveView mWvBattery;
     private final int TOP_TRANSLUCENT_HEIGHT = DipPixelUtil.dip2px(this, 160);
+    private final int TRANSLATE_ANIM_DURATION = 600;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -291,13 +294,22 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     
     
-    protected void startShortenTopLayoutAnim() {
-        int height = mRlTopAnimLayout.getHeight();
-        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofFloat("height", height, height * 0.8f);
-        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
-        anim.setDuration(360);
-        anim.start();
-    }
+//    protected void startShortenTopLayoutAnim() {
+//        LeoLog.i("tempp", "start shorten anim");
+//        int height = mRlTopAnimLayout.getHeight();
+//        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("height", height, (int)(height * 0.8));
+//        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
+//        anim.addUpdateListener(new AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                LayoutParams layoutParams = mRlTopAnimLayout.getLayoutParams();
+//                layoutParams.height = (Integer) animation.getAnimatedValue();
+//                LeoLog.i("tempp", "heigh = " + mRlTopAnimLayout.getHeight());
+//            }
+//        });
+//        anim.setDuration(TRANSLATE_ANIM_DURATION);
+//        anim.start();
+//    }
 
     protected void showResultFragment() {
         FragmentManager fm = getSupportFragmentManager();
@@ -326,17 +338,32 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.66f);
         PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.66f);
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX, holderY, holderScaleX, holderScaleY);
-        anim.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                LeoLog.i(TAG, "x :" + mIvShield.getX());
-                LeoLog.i(TAG, "y :" + mIvShield.getY());
-                LeoLog.i(TAG, "sx :" + mIvShield.getScaleX());
-                LeoLog.i(TAG, "sy :" + mIvShield.getScaleX());
-            }
-        });
-        anim.setDuration(360);
+        anim.setDuration(TRANSLATE_ANIM_DURATION);
         anim.start();
+//        int height = mRlTopAnimLayout.getHeight();
+//        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("height", height, (int)(height * 0.8));
+//        ObjectAnimator anim2 = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
+//        anim.addUpdateListener(new AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                LayoutParams layoutParams = mRlTopAnimLayout.getLayoutParams();
+//                layoutParams.height = (Integer) animation.getAnimatedValue();
+//                LeoLog.i("tempp", "heigh = " + mRlTopAnimLayout.getHeight());
+//            }
+//        });
+//        anim.addUpdateListener(new AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                LeoLog.i(TAG, "x :" + mIvShield.getX());
+//                LeoLog.i(TAG, "y :" + mIvShield.getY());
+//                LeoLog.i(TAG, "sx :" + mIvShield.getScaleX());
+//                LeoLog.i(TAG, "sy :" + mIvShield.getScaleX());
+//            }
+//        });
+//        AnimatorSet as = new AnimatorSet();
+//        as.playTogether(anim, anim2);
+//        as.setDuration(TRANSLATE_ANIM_DURATION);
+//        as.start();
     }
 
     private void prepareBoostAnimation() {

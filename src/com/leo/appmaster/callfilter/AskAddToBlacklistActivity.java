@@ -60,11 +60,17 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         setContentView(R.layout.activity_ask_add_to_blacklist);
         mCmp = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
         LeoLog.i(TAG, "on Create");
-        handleIntent();
+        Intent intent = getIntent();
+        handleIntent(intent);
     }
 
-    private void handleIntent() {
-        Intent intent = getIntent();
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        handleIntent(intent);
+//    }
+    
+    private void handleIntent(Intent intent) {
         mPhoneNumber = intent.getStringExtra(EXTRA_NUMBER);
         int intExtra = intent.getIntExtra(EXTRA_WHAT_TO_SHOW, -1);
         int[] filterTip = intent.getIntArrayExtra(EXTRA_FILTERTYPE_ARRAY);

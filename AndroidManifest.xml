@@ -359,7 +359,7 @@
         <activity
             android:name=".callfilter.AskAddToBlacklistActivity"
             android:excludeFromRecents="true"
-            android:launchMode="singleTop"
+            android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame"></activity>
         <activity
