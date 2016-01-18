@@ -115,6 +115,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private int adContentHeight = 0;
     private int adExpandContentHeight = 0;
     private BatteryMenu mLeoPopMenu;
+    private View mBossView;
 
     /**
      * Swifty
@@ -167,9 +168,26 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 case DIMISS_POP:
                     mLeoPopMenu.dimissPop();
                     break;
+                case 110:
+                    testPart();
+                    break;
             }
         }
     };
+
+    private void testPart() {
+        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() / 2);
+        animMoveY.setDuration(50);
+        animMoveY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mBossView.setVisibility(View.VISIBLE);
+            }
+        });
+        animMoveY.start();
+    }
 
     private void batteryIconMoveBig() {
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
@@ -187,7 +205,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         set.play(animMoveX).with(animMoveY);
         set.play(animMoveY).with(animScaleX);
         set.play(animScaleX).with(animScaleY);
-        set.setDuration(1000);
+        set.setDuration(500);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -223,7 +241,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         set.play(animMoveX).with(animMoveY);
         set.play(animMoveY).with(animScaleX);
         set.play(animScaleX).with(animScaleY);
-        set.setDuration(1000);
+        set.setDuration(500);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -280,7 +298,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
         set.play(animScaleY).with(animMoveX);
-        set.setDuration(1000);
+        set.setDuration(500);
         set.start();
     }
 
@@ -295,7 +313,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
         set.play(animScaleY).with(animMoveX);
-        set.setDuration(1000);
+        set.setDuration(500);
         set.start();
     }
 
@@ -325,6 +343,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mTvLeftTime = (TextView) findViewById(R.id.left_time);
         mTvTime = (TextView) findViewById(R.id.right_time);
 
+        mBossView = findViewById(R.id.move_boss);
         mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
         mSlideView.setOnTouchListener(this);
         mSlideView.post(new Runnable() {
@@ -332,6 +351,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             public void run() {
                 adContentHeight = mSlideView.getHeight();
                 mSlideParams = mSlideView.getLayoutParams();
+                mHandler.sendEmptyMessage(110);
             }
         });
         moveDistance = DipPixelUtil.dip2px(mActivity, 180);
@@ -712,53 +732,84 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void showMoveUp() {
 
-        final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
-                "scaleX", 1f, 1f);
-        anim.setRepeatCount(ValueAnimator.INFINITE);
-        anim.setDuration(1);
-        anim.addListener(new SimpleAnimatorListener() {
+        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+                "y", mSlideView.getTop() + mBossView.getHeight() / 2, mSlideView.getTop());
+        animMoveY.setDuration(500);
+        animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationRepeat(Animator animation) {
-                if (moveUpCount <= moveDistance) {
-                    mSlideParams.height = adContentHeight + moveUpCount;
-                    mSlideView.setLayoutParams(mSlideParams);
-
-                    moveUpCount = moveUpCount + 35;
-                } else {
-                    isExpand = true;
-                    mShowing = false;
-                    mScrollView.setScrollY(0);
-                    mSlideView.setScrollView(false);
-                    anim.cancel();
-                }
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                isExpand = true;
+                mShowing = false;
+                mScrollView.setScrollY(0);
+                mSlideView.setScrollView(false);
             }
         });
-        anim.start();
+        animMoveY.start();
+
+//        final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
+//                "scaleX", 1f, 1f);
+//        anim.setRepeatCount(ValueAnimator.INFINITE);
+//        anim.setDuration(1);
+//        anim.addListener(new SimpleAnimatorListener() {
+//            @Override
+//            public void onAnimationRepeat(Animator animation) {
+//                if (moveUpCount <= moveDistance) {
+//                    mSlideParams.height = adContentHeight + moveUpCount;
+//                    mSlideView.setLayoutParams(mSlideParams);
+//
+//                    moveUpCount = moveUpCount + 35;
+//                } else {
+//                    isExpand = true;
+//                    mShowing = false;
+//                    mScrollView.setScrollY(0);
+//                    mSlideView.setScrollView(false);
+//                    anim.cancel();
+//                }
+//            }
+//        });
+//        anim.start();
 
     }
 
     private void showMoveDown() {
-        final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
-                "scaleX", 1f, 1f);
-        anim.setRepeatCount(ValueAnimator.INFINITE);
-        anim.setDuration(1);
-        anim.addListener(new SimpleAnimatorListener() {
+
+        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() / 2);
+        animMoveY.setDuration(500);
+        animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationRepeat(Animator animation) {
-                if (moveUpCount <= moveDistance) {
-                    mSlideParams.height = adExpandContentHeight - moveUpCount;
-                    mSlideView.setLayoutParams(mSlideParams);
-                    moveUpCount = moveUpCount + 35;
-                } else {
-                    isExpand = false;
-                    mShowing = false;
-                    mScrollView.setScrollY(0);
-                    mSlideView.setScrollView(false);
-                    anim.cancel();
-                }
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                isExpand = false;
+                mShowing = false;
+                mScrollView.setScrollY(0);
+                mSlideView.setScrollView(false);
             }
         });
-        anim.start();
+        animMoveY.start();
+
+//        final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
+//                "scaleX", 1f, 1f);
+//        anim.setRepeatCount(ValueAnimator.INFINITE);
+//        anim.setDuration(1);
+//        anim.addListener(new SimpleAnimatorListener() {
+//            @Override
+//            public void onAnimationRepeat(Animator animation) {
+//                if (moveUpCount <= moveDistance) {
+//                    mSlideParams.height = adExpandContentHeight - moveUpCount;
+//                    mSlideView.setLayoutParams(mSlideParams);
+//                    moveUpCount = moveUpCount + 35;
+//                } else {
+//                    isExpand = false;
+//                    mShowing = false;
+//                    mScrollView.setScrollY(0);
+//                    mSlideView.setScrollView(false);
+//                    anim.cancel();
+//                }
+//            }
+//        });
+//        anim.start();
 
 
     }
@@ -956,14 +1007,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
-        mSlideView.setVisibility(View.VISIBLE);
-        mSlideView.post(new Runnable() {
-            @Override
-            public void run() {
-                adContentHeight = mSlideView.getHeight();
-                mSlideParams = mSlideView.getLayoutParams();
-            }
-        });
+        mBossView.setVisibility(View.VISIBLE);
+//        mSlideView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                adContentHeight = mSlideView.getHeight();
+//                mSlideParams = mSlideView.getLayoutParams();
+//            }
+//        });
         View adView = rootView.findViewById(R.id.ad_content);
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
@@ -1006,15 +1057,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if(true){
-            mSlideView.setVisibility(View.VISIBLE);
-            mSlideView.post(new Runnable() {
-                @Override
-                public void run() {
-                    adContentHeight = mSlideView.getHeight();
-                    mSlideParams = mSlideView.getLayoutParams();
-                }
-            });
+//        if (true) {
+            mBossView.setVisibility(View.VISIBLE);
+//            mSlideView.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    adContentHeight = mSlideView.getHeight();
+//                    mSlideParams = mSlideView.getLayoutParams();
+//                }
+//            });
             View include = viewStub.inflate();
             mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
@@ -1060,14 +1111,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
 //        if (true) {
-            mSlideView.setVisibility(View.VISIBLE);
-            mSlideView.post(new Runnable() {
-                @Override
-                public void run() {
-                    adContentHeight = mSlideView.getHeight();
-                    mSlideParams = mSlideView.getLayoutParams();
-                }
-            });
+            mBossView.setVisibility(View.VISIBLE);
+//            mSlideView.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    adContentHeight = mSlideView.getHeight();
+//                    mSlideParams = mSlideView.getLayoutParams();
+//                }
+//            });
             View include = viewStub.inflate();
             mExtraTitle = (TextView) include.findViewById(R.id.item_title);
             mExtraImg = (ImageView) include.findViewById(R.id.swifty_img);
