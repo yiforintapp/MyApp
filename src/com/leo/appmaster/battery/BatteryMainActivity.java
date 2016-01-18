@@ -65,7 +65,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RelativeLayout mRlContent;
     private TextView mTvPercentValue;
     private RelativeLayout mRlBottom;
-    private Fragment mFrgmResult;
     private BatteryAppGridView mGvApps;
     private ArrayList<BatteryComsuption> mListBatteryComsuptions;
     private RippleView mRvBoost;
@@ -81,7 +80,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RelativeLayout mRlWholeBattery;
     private RelativeLayout mRlWholeShield;
     private ImageView mIvShield;
+    private boolean mIsResultShowed = false;
     private WaveView mWvBattery;
+    private BatteryBoostResultFragment mFrgmResult;
     private final int TOP_TRANSLUCENT_HEIGHT = DipPixelUtil.dip2px(this, 160);
     private final int TRANSLATE_ANIM_DURATION = 600;
     @Override
@@ -312,11 +313,18 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 //    }
 
     protected void showResultFragment() {
+        if (mIsResultShowed) {
+            return;
+        }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-        transaction.replace(R.id.rl_result_layout, new BatteryBoostResultFragment());
+        if (mFrgmResult == null) {
+            mFrgmResult = new BatteryBoostResultFragment();
+        }
+        transaction.replace(R.id.rl_result_layout, mFrgmResult);
         transaction.commit();
+        mIsResultShowed = true;
     }
 
     protected void startShowCompleteAnim() {
