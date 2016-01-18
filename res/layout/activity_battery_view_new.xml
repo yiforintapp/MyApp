@@ -31,7 +31,7 @@
         android:id="@+id/time_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp">
+        android:layout_marginTop="70dp">
 
         <!-- 时间 -->
         <RelativeLayout
@@ -268,7 +268,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/time_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp">
+        android:layout_marginTop="30dp">
 
         <TextView
             android:id="@+id/left_time"
@@ -296,18 +296,35 @@
     <com.leo.appmaster.battery.BatteryTestViewLayout
         android:id="@+id/slide_content"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="140dp"
         android:layout_above="@id/slider"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:visibility="invisible"
-        android:background="#7FFFFFFF">
+        android:background="#7FFFFFFF"
+        android:visibility="invisible">
+
+        <RelativeLayout
+            android:id="@+id/move_arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/transparent">
+
+            <ImageView
+                android:id="@+id/iv_move_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bay_arrow_up" />
+
+        </RelativeLayout>
 
         <com.leo.appmaster.battery.SelfScrollView
             android:id="@+id/slide_content_sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_below="@id/move_arrow"
             android:background="@color/transparent"
             android:fadingEdge="none"
             android:fillViewport="true"
@@ -366,7 +383,7 @@
     <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         slider:maskText=">> 滑动来解锁"
         slider:maskTextMarginLeft="1dp"

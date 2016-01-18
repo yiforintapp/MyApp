@@ -100,6 +100,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvHideText;
 
     private View mSettingView;
+    private View mArrowMoveContent;
+    private ImageView mIvArrowMove;
 
     public static boolean isExpand = false;
     public static String mBatteryText;
@@ -139,6 +141,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             switch (msg.what) {
                 case MOVE_UP:
                     if (mSlideView.getVisibility() == View.VISIBLE) {
+                        mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
                         mSlideView.setScrollView(true);
                         mShowing = true;
                         showMoveUp();
@@ -148,6 +151,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     break;
                 case MOVE_DOWN:
                     if (mBatteryManager.getIsCharing()) {
+                        mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
                         mSlideView.setScrollView(true);
                         mShowing = true;
                         showMoveDown();
@@ -351,6 +355,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mSettingView = findViewById(R.id.ct_option_2_rl);
         mSettingView.setOnClickListener(this);
+        mArrowMoveContent = findViewById(R.id.move_arrow);
+        mArrowMoveContent.setOnClickListener(this);
+        mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -446,7 +453,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         // 资源应该从周日 - 周六 这样的顺序
         if (day_of_week >= 2) {
-            mTvSmallRight.setText(days[day_of_week-2]);
+            mTvSmallRight.setText(days[day_of_week - 2]);
         } else {
             mTvSmallRight.setText(days[6]);
         }
@@ -817,6 +824,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
                             PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
                             Constants.ISWIPE_PACKAGE, mActivity);
+                }
+                break;
+            case R.id.move_arrow:
+                if (isExpand) {
+                    expandContent(false);
+                } else {
+                    expandContent(true);
                 }
                 break;
         }
