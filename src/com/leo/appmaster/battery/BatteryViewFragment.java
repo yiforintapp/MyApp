@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -15,9 +16,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -46,8 +49,12 @@ import com.leo.tools.animator.ValueAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimerTask;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, SelfScrollView.ScrollBottomListener, View.OnClickListener {
 
@@ -122,6 +129,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private RippleView mExtraBtnLt;
 
     private ImageLoader mImageLoader;
+
+    public static String[] days = AppMasterApplication.getInstance().getResources()
+            .getStringArray(R.array.days_of_week);
 
     //开始首页动画
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -297,6 +307,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mBatteryIcon = findViewById(R.id.infos_content);
         mRemainTimeContent = findViewById(R.id.remain_time);
 
+        mTvBigTime = (TextView) findViewById(R.id.time_big);
+        mTvSmallLeft = (TextView) findViewById(R.id.time_small);
+        mTvSmallRight = (TextView) findViewById(R.id.time_small_right);
+
         mTvLevel = (TextView) findViewById(R.id.battery_num);
 //        mTvBigTime = (TextView) findViewById(R.id.battery_num);
 //        mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
@@ -344,7 +358,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             process(mChangeType, newState, mRemainTime);
         }
 
-        loadAd();
+        if (mRootView != null) {
+            loadAd();
+        }
 
         try {
             if (mRootView != null) {
@@ -354,6 +370,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        updateTime();
+        new TimeThread(this).start();
     }
 
     @Override
@@ -412,6 +431,54 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
 
 
+    }
+
+    private void updateTime() {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int day_of_week = c.get(Calendar.DAY_OF_WEEK);
+        LeoLog.d(TAG, year+":"+month+":"+day+":"+hour+":"+minute+":"+day_of_week);
+
+        mTvBigTime.setText(hour + ":" + minute);
+        mTvSmallLeft.setText((month + 1) + "/" + day);
+
+        switch (day_of_week) {
+            case 0:
+                mTvSmallRight.setText(days[6]);
+                break;
+            default:
+                mTvSmallRight.setText(days[day_of_week-2]);
+        }
+    }
+
+    static class TimeThread extends Thread {
+        WeakReference<BatteryViewFragment> mFragmentRef;
+
+        public TimeThread(BatteryViewFragment fragment) {
+            mFragmentRef = new WeakReference<BatteryViewFragment>(fragment);
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                // update time every 10 second
+                SystemClock.sleep(10 * 1000);
+                final BatteryViewFragment fragment = mFragmentRef.get();
+                if (fragment == null) {
+                    return;
+                }
+                ThreadManager.executeOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.updateTime();
+                    }
+                });
+            }
+        }
     }
 
     private void setBottleWater() {
