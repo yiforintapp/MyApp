@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.telecom.Call;
 import android.text.TextUtils;
 
@@ -17,9 +18,11 @@ import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackListFileFetchJob;
+import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

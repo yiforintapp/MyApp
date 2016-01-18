@@ -1,6 +1,7 @@
 package com.leo.appmaster.schedule;
 
 import android.content.Context;
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
@@ -20,6 +21,7 @@ import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.Utilities;
@@ -31,6 +33,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.conn.ConnectTimeoutException;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketTimeoutException;
@@ -269,5 +272,44 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
         pref.setScheduleValue(job.getJobStateKey(), STATE_FAIL);
         // 保存重试次数
         pref.setScheduleValue(job.getJobFailCountKey(), 0);
+
+        // 删除3.2版本保留的残留文件
+        deleteOldInterceptPkg();
+    }
+
+    private static void deleteOldInterceptPkg() {
+        if (!FileOperationUtil.isSDReady()) {
+            return;
+        }
+        File file = Environment.getExternalStorageDirectory();
+        if (file == null) {
+            return;
+        }
+        String externalPath = file.getAbsolutePath();
+        if (!externalPath.endsWith(File.separator)) {
+            externalPath += File.separator;
+        }
+        externalPath += CallFilterConstants.BLACK_FILE_PATH;
+
+        File parentDir = new File(externalPath);
+        if (!parentDir.isDirectory() || !parentDir.exists()) {
+            return;
+        }
+        File[] files = parentDir.listFiles();
+        if (files == null) {
+            return;
+        }
+
+        for (File subFile : files) {
+            if (subFile == null) {
+                continue;
+            }
+
+            String subPath = subFile.getAbsolutePath();
+            LeoLog.d(TAG, "deleteOldInterceptPkg, path: " + subPath);
+            if (subPath.endsWith(".gz")) {
+                subFile.delete();
+            }
+        }
     }
 }
