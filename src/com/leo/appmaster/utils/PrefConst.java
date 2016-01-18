@@ -263,4 +263,6 @@ public class PrefConst {
 
     // 骚扰拦截弹出分享框需要次数
     public static final String KEY_CALL_FILTER_SHARE_TIMES = "call_filter_share_times";
+
+    public static final String VIRTUAL_IMG_HASH_CODE = "virtual_img_hash_code";
 }

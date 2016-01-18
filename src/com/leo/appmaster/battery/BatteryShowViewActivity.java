@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
+import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
@@ -65,6 +66,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         handleIntent();
         initAll();
         isActivityAlive = true;
+
     }
 
     private void initAll() {
@@ -220,5 +222,12 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     @Override
     public void onPageScrollStateChanged(int i) {
 
+    }
+
+    public void onEventMainThread(VirtualEvent event) {
+        if (event.mIsVirtual && mBatterViewBg != null) {
+            LeoLog.e("getDeskTopBitmap", "onEventMainThread");
+            mBatterViewBg.setBackgroundDrawable(BitmapUtils.getFinalDrawable(BatteryShowViewActivity.this));
+        }
     }
 }

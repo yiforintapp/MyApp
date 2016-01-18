@@ -473,4 +473,6 @@ public class Constants {
 
     public static final String BATTERY_FROM = "from_battery";
     public static final String FROM_BATTERY_PROTECT = "batteryprotect";
+
+    public static final String VIRTUAL_DESKTOP_PIC = "/virtual_desktop_pic";
 }

@@ -20,12 +20,22 @@ import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.VirtualEvent;
+import com.leo.appmaster.ui.VirtualBitmap;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class BitmapUtils {
 
@@ -217,27 +227,97 @@ public class BitmapUtils {
     }
 
     /** 得到屏保需要drawable */
-    public static Drawable getDeskTopBitmap(Context context) {
+    public static Drawable getDeskTopBitmap(final Context context) {
         WallpaperManager wallpaperManager = WallpaperManager
                 .getInstance(context);
-        Bitmap bitmap = null;
+        Drawable drawable = null;
         long startTime= SystemClock.elapsedRealtime();
         try {
             // 获取当前壁纸
-            Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-            // 将Drawable转成Bitmap
-            Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
-            Matrix matrix = new Matrix();
-            matrix.postScale(0.05f,0.05f); //长和宽放大缩小的比例
-            bitmap = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
+            final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+            int theSaveCode = preferenceTable.getInt(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
+            LeoLog.e("getDeskTopBitmap", "theSaveCode:" + theSaveCode + "wallpaperDrawable.hashCode():" + wallpaperDrawable.hashCode());
+            if (theSaveCode != wallpaperDrawable.hashCode()) {
+                // 将Drawable转成Bitmap
+                final Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
+                ThreadManager.getSubThreadHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        LeoLog.e("getDeskTopBitmap", "start");
+                        Drawable drawable = VirtualBitmap.BlurImages(bm, context);
+                        saveVirtualBitmap(drawable);
+                        ThreadManager.executeOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                LeoEventBus.getDefaultBus().postSticky(new VirtualEvent(true));
+                                LeoLog.e("getDeskTopBitmap", "end");
+                            }
+                        });
+
+                    }
+                });
+            }
+            if (theSaveCode != 0) {
+                getFinalDrawable(context);
+            }
         } catch (Throwable e) {
             e.printStackTrace();
         }
 
         LeoLog.e("getDeskTopBitmap", (SystemClock.elapsedRealtime() - startTime) + "");
 
-        return bitmapToDrawable(bitmap);
+        return drawable;
 
+    }
+
+    /** 获得最终虚化后的图片 */
+    public static Drawable getFinalDrawable(Context context) {
+        Bitmap bitmap = getVirtualBitmap(Environment.getExternalStorageDirectory().toString()
+                .concat(Constants.VIRTUAL_DESKTOP_PIC), context);
+        return bitmapToDrawable(bitmap);
+    }
+
+    /**  保存虚化后的桌面壁纸图片*/
+    public static void saveVirtualBitmap(Drawable drawable){
+        Bitmap bitmap = drawableToBitmap(drawable);
+        File f = new File(Environment.getExternalStorageDirectory().toString()
+                .concat(Constants.VIRTUAL_DESKTOP_PIC));
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            fOut.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            fOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Bitmap getVirtualBitmap(String path, Context context) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        int[] pix = AppUtil.getScreenPix(context);
+        int needWidth = pix[0];
+        int needHeight = pix[1];
+        options.inSampleSize = AppUtil.calculateInSampleSize(options, needWidth, needHeight);
+        options.inJustDecodeBounds = false;
+
+        return  BitmapFactory.decodeFile(path, options);
     }
 
 }
