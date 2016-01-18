@@ -155,9 +155,12 @@ public abstract class BatteryManager extends Manager {
 
     /***
      * “电源管理页”是否需要开启“一键省电”功能
+     *
      * @return
      */
     public abstract boolean shouldEnableCleanFunction();
 
     public abstract int getBatteryLevel();
+
+    public abstract Boolean getIsCharing();
 }

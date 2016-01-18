@@ -82,7 +82,7 @@ public class BatteryManagerImpl extends BatteryManager {
         mNotifyHelper = new BatteryNotifyHelper(mContext, this);
     }
 
-    
+
     @Override
     public List<BatteryComsuption> getBatteryDrainApps() {
         BatteryInfoProvider ip = new BatteryInfoProvider(mContext);
@@ -310,8 +310,8 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public boolean shouldNotify() {
         LeoLog.v(TAG, "mPageOnForeground: " + mPageOnForeground
-                + " mPreviousState.plugged: " + mPreviousState.plugged
-                + " getBatteryNotiStatus(): " + getBatteryNotiStatus()
+                        + " mPreviousState.plugged: " + mPreviousState.plugged
+                        + " getBatteryNotiStatus(): " + getBatteryNotiStatus()
         );
         return (!mPageOnForeground
                 && mPreviousState.plugged == UNPLUGGED
@@ -326,6 +326,11 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public int getBatteryLevel() {
         return mPreviousState.level;
+    }
+
+    @Override
+    public Boolean getIsCharing() {
+        return (mPreviousState.plugged != UNPLUGGED);
     }
 
     /* 外发电量通知 */

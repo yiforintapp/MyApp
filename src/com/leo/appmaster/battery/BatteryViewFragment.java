@@ -4,6 +4,7 @@ package com.leo.appmaster.battery;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
@@ -340,8 +341,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else {
             notifyUI(mChangeType, false);
         }
-
-
     }
 
     public void notifyUI(String type, boolean isCharing) {
@@ -571,11 +570,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ct_option_2_rl:
+                mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+
                 Intent dlIntent = new Intent(mActivity, BatterySettingActivity.class);
                 dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                dlIntent.putExtra(Constants.BATTERY_FROM, "battery");
-                mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+                dlIntent.putExtra(Constants.BATTERY_FROM, Constants.FROM_BATTERY_PROTECT);
+                dlIntent.putExtra(BatteryManagerImpl.REMAIN_TIME, mRemainTime);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(BatteryManagerImpl.SEND_BUNDLE, newState);
+                dlIntent.putExtras(bundle);
                 startActivity(dlIntent);
+                mActivity.finish();
+
                 break;
             case R.id.speed_content:
                 showPop(CHARING_TYPE_SPEED);

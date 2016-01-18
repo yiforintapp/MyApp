@@ -70,9 +70,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private void initAll() {
         LeoEventBus.getDefaultBus().register(this);
         mBatteryManager.setBatteryStateListener(this);
-
         mBatterViewBg = (RelativeLayout) findViewById(R.id.batter_view_bg);
-
         mBatterViewBg.setBackgroundDrawable(BitmapUtils.getDeskTopBitmap(
                 BatteryShowViewActivity.this));
 

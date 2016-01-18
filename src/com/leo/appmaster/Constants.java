@@ -472,4 +472,5 @@ public class Constants {
     public static final String LEO_FAMILY_THEMES = "com.leo.theme.";
 
     public static final String BATTERY_FROM = "from_battery";
+    public static final String FROM_BATTERY_PROTECT = "batteryprotect";
 }
