@@ -89,11 +89,13 @@
 
             <TextView
                 android:id="@+id/tv_boost_complete"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="140dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="32dp"
                 android:text="@string/batterymanage_boost_finished"
                 android:textColor="@color/c1"
                 android:textSize="@dimen/f3"
@@ -209,11 +211,12 @@
             </com.leo.appmaster.ui.RippleView>
         </RelativeLayout>
     </RelativeLayout>
-    <!-- android:layout_marginTop="160dp" -->
-    <RelativeLayout
+<!--          android:background="@color/app_usage_text" -->
+     <RelativeLayout
         android:id="@+id/rl_result_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </RelativeLayout>
+    <!-- android:layout_marginTop="160dp" -->
 
 </RelativeLayout>

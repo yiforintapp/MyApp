@@ -9,6 +9,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -60,7 +61,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private CommonToolbar mCtbMain;
     private RelativeLayout mRlContent;
     private TextView mTvPercentValue;
-    private Fragment mFrgmResult;
+    private RelativeLayout mRlBottom;
     private GridView mGvApps;
     private ArrayList<BatteryComsuption> mListBatteryComsuptions;
     private RippleView mRvBoost;
@@ -72,6 +73,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private BatteryManager mBtrManager;
     private TextView mTvListTitle;
     private TextView mTvComplete;
+    private RelativeLayout mRlTopAnimLayout;
     private RelativeLayout mRlWholeBattery;
     private RelativeLayout mRlWholeShield;
     private ImageView mIvShield;
@@ -98,6 +100,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
     
     private void initUI() {
+        mRlTopAnimLayout = (RelativeLayout) findViewById(R.id.rl_anim_layout);
+        mRlBottom = (RelativeLayout) findViewById(R.id.rl_bottom);
         mTvComplete = (TextView) findViewById(R.id.tv_boost_complete);
         mTvPercentValue = (TextView) findViewById(R.id.tv_percent_value);
         mTvEmpty = (TextView) findViewById(R.id.tv_empty);
@@ -131,17 +135,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     @Override
     public void onBackPressed() {
-//        if (mFrgmResult != null && mFrgmResult.isVisible()) {
-//            FragmentManager fm = getSupportFragmentManager();
-//            FragmentTransaction transaction = fm.beginTransaction();  
-//            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-//            transaction.remove(mFrgmResult);
-//            transaction.commit();
-//            showLoading();
-//            loadData();
-//        } else {
             super.onBackPressed();
-//        }
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -152,6 +146,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     public void showLoading() {
+        mRvBoost.setEnabled(false);
+        mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
         mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
         mPbLoading.setVisibility(View.VISIBLE);
         mRlEmpty.setVisibility(View.GONE);
@@ -189,8 +185,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         showLoading();
         if (mBtrManager.shouldEnableCleanFunction()) {
             //不在上一次清理的两分钟内 可以重新load应用列表和清理加速
-            mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-            mRvBoost.setEnabled(true);
+//            mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
+//            mRvBoost.setEnabled(true);
             LeoLog.i(TAG, "set green and enable");
             loadData();
         } else {
@@ -204,6 +200,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                     showEmpty();
                     mTvListTitle.setText(R.string.batterymanage_tip_nothing_to_boost);
                     mTvEmpty.setText(R.string.batterymanage_tip_nothing_to_boost);
+                    showResultFragment();
                 }
             }, 1000);//TODO 假loading的持续时间
         }
@@ -230,6 +227,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     private void onDataLoaded() {
+        mRvBoost.setEnabled(true);
+        mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
         mAdapter.fillData(mListBatteryComsuptions);
         if (mListBatteryComsuptions == null || mListBatteryComsuptions.size() == 0) {
             showEmpty();
@@ -278,6 +277,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             @Override
             public void onAnimationEnd(Animation animation) {
                 startTranslateAnim();
+//                startShortenTopLayoutAnim();
                 startShowCompleteAnim();
                 showResultFragment();
             }
@@ -289,12 +289,20 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     
     
+    protected void startShortenTopLayoutAnim() {
+        int height = mRlTopAnimLayout.getHeight();
+        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofFloat("height", height, height * 0.8f);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
+        anim.setDuration(360);
+        anim.start();
+    }
+
     protected void showResultFragment() {
-      FragmentManager fm = getSupportFragmentManager();
-      FragmentTransaction transaction = fm.beginTransaction();  
-      transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-      transaction.replace(R.id.rl_result_layout, new BatteryBoostResultFragment());
-      transaction.commit();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
+        transaction.replace(R.id.rl_result_layout, new BatteryBoostResultFragment());
+        transaction.commit();
     }
 
     protected void startShowCompleteAnim() {
