@@ -611,6 +611,11 @@ public class TaskDetectService extends Service {
         public void run() {
             LeoLog.d(TAG, "PG_StartThemeServerTask---- start theme server!!");
 
+            boolean isNewThemActive = ProxyStartService.isNewThemActive();
+            if (isNewThemActive) {
+                return;
+            }
+
             AppMasterApplication context = AppMasterApplication.getInstance();
             PackageManager pm = context.getPackageManager();
 
