@@ -34,7 +34,7 @@ public class BatteryNotifyHelper {
     private static final int MAX_ICON_ACCOUNT = 6;
     private static final String ACTION_LEO_BATTERY_APP =
             "com.leo.appmaster.battery.notification.action";
-    private static final int CHECK_INTERVAL = 20 * 1000;  // stone_debug  3 * 60 * 60 * 1000;
+    private static final int CHECK_INTERVAL = 3 * 60 * 60 * 1000;
 
     private BatteryManager mManager;
     private Context mContext;
@@ -66,56 +66,32 @@ public class BatteryNotifyHelper {
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews view_custom;
-        if (!BuildProperties.checkIsHuaWeiEmotion31()) {
-            // 先设定RemoteViews
-            view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_apps_notify);
-        } else {
-            // 先设定RemoteViews
-            view_custom = new RemoteViews(mContext.getPackageName(), R.layout.clean_mem_notify_huawei);
-        }
-        // 设置对应IMAGEVIEW的ID的资源图片
-//        view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
+        view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_apps_notify);
+        int[] imageViewIds = {
+                R.id.iv_app1, R.id.iv_app2, R.id.iv_app3,
+                R.id.iv_app4, R.id.iv_app5, R.id.iv_app6
+        };
+
         if (list != null) {
             BitmapDrawable icon = null;
             int finalSize = Math.min(MAX_ICON_ACCOUNT, list.size());
             for (int i = 0; i < finalSize; i++) {
                 icon = (BitmapDrawable) list.get(i).getIcon();
                 if (icon != null) {
-                    switch (i) {
-                        case 0:
-                                view_custom.setImageViewBitmap(R.id.iv_app1, icon.getBitmap());
-                            break;
-                        case 1:
-                                view_custom.setImageViewBitmap(R.id.iv_app2, icon.getBitmap());
-                            break;
-                        case 2:
-                                view_custom.setImageViewBitmap(R.id.iv_app3, icon.getBitmap());
-                            break;
-                        case 3:
-                                view_custom.setImageViewBitmap(R.id.iv_app4, icon.getBitmap());
-                            break;
-                        case 4:
-                                view_custom.setImageViewBitmap(R.id.iv_app5, icon.getBitmap());
-                            break;
-                        case 5:
-                                view_custom.setImageViewBitmap(R.id.iv_app6, icon.getBitmap());
-                            break;
-                        default:
-                            break;
-                    }
+                    view_custom.setImageViewBitmap(imageViewIds[i], icon.getBitmap());
                 }
             }
         }
-        
-        view_custom.setTextViewText(R.id.app_precent, "weeeeeeeeeeee");
-        view_custom.setTextViewText(R.id.free_bg, mContext.getApplicationContext().getString(R.string.batterymanage_boost));
-        view_custom.setTextViewText(R.id.appwallDescTV,
-                mContext.getApplicationContext().getString(R.string.clean_mem_notify_small));
-        view_custom.setTextViewText(R.id.app_precent, "weeeeeeeeeeee");
+
+        view_custom.setTextViewText(R.id.app_number, list.size()+"");
+
+        view_custom.setTextViewText(R.id.app_detail,
+                mContext.getApplicationContext().getString(R.string.batterymanage_label));
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setContent(view_custom)
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
-                .setTicker(mContext.getApplicationContext().getString(R.string.clean_mem_notify_big))
+                .setTicker(mContext.getApplicationContext().getString(R.string.batterymanage_switch_noti))
                 .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
                 .setOngoing(false)// 不是正在进行的 true为正在进行 效果和.flag一样
                 .setSmallIcon(R.drawable.statusbaricon)
@@ -140,7 +116,6 @@ public class BatteryNotifyHelper {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mManager.shouldNotify()) {
-//            if (true) {
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {

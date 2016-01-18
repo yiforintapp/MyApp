@@ -917,7 +917,7 @@
     <string name="batterymanage_result_ad_wifi_content">Güvenli olmayan wifi bağlantısı güvenliğinizi tehdit eder</string>
     <string name="batterymanage_result_ad_callfilter_title">Taciz Engelleme</string>
     <string name="batterymanage_result_ad_callfilter_content">Taciz eden numaraları tanımlar ve engeller</string>
-    <string name="batterymanage_label"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> adet uygulama güç harcıyor</string>
+    <string name="batterymanage_label"> adet uygulama güç harcıyor</string>
     <string name="batterymanage_boost">Güç Koruma</string>
     <string name="batterymanage_boost_finished">Ayarlar tamamlandı</string>
     <string name="batterymanage_tip_loading">Güç harcayan app aranıyor</string>
