@@ -180,13 +180,17 @@ public class BatteryManagerImpl extends BatteryManager {
      * @param newState
      */
     private void handlePluginEvent(BatteryState newState) {
+        boolean isSwitchOpen = getScreenViewStatus();
+        if (!isSwitchOpen) {
+            return;
+        }
+
         Toast.makeText(mContext, "用户插上充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
                 newState.level, 0);
         broadcastBatteryLevel(newState);
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
-
         if (!BatteryShowViewActivity.isActivityAlive) {
             Intent intent = new Intent(mContext, BatteryShowViewActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -204,8 +208,6 @@ public class BatteryManagerImpl extends BatteryManager {
                 }
             }
         }
-
-
     }
 
 
@@ -215,6 +217,10 @@ public class BatteryManagerImpl extends BatteryManager {
      * @param newState
      */
     private void handleUnplugEvent(BatteryState newState) {
+        boolean isSwitchOpen = getScreenViewStatus();
+        if (!isSwitchOpen) {
+            return;
+        }
         Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
         broadcastBatteryLevel(newState);
         mLockManager.filterSelfOneMinites();
@@ -238,6 +244,10 @@ public class BatteryManagerImpl extends BatteryManager {
      * @param newState
      */
     private void handleChargingEvent(BatteryState newState) {
+        boolean isSwitchOpen = getScreenViewStatus();
+        if (!isSwitchOpen) {
+            return;
+        }
         Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
         broadcastBatteryLevel(newState);
         int remainTime = getRemainTimeHelper(newState)
@@ -263,6 +273,10 @@ public class BatteryManagerImpl extends BatteryManager {
      * @param newState
      */
     private void handleConsumingState(BatteryState newState) {
+        boolean isSwitchOpen = getScreenViewStatus();
+        if (!isSwitchOpen) {
+            return;
+        }
         Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
         broadcastBatteryLevel(newState);
         mLockManager.filterSelfOneMinites();

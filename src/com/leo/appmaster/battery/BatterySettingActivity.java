@@ -40,9 +40,11 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
     private void handleIntent() {
         Intent intent = getIntent();
         mFromWhere = intent.getStringExtra(Constants.BATTERY_FROM);
-        newState = (BatteryManagerImpl.BatteryState)
-                intent.getExtras().get(BatteryManagerImpl.SEND_BUNDLE);
-        mRemainTime = intent.getIntExtra(BatteryManagerImpl.REMAIN_TIME, 0);
+        if (!Utilities.isEmpty(mFromWhere) && mFromWhere.equals(Constants.FROM_BATTERY_PROTECT)) {
+            mRemainTime = intent.getIntExtra(BatteryManagerImpl.REMAIN_TIME, 0);
+            newState = (BatteryManagerImpl.BatteryState)
+                    intent.getExtras().get(BatteryManagerImpl.SEND_BUNDLE);
+        }
     }
 
     private void fillData() {
@@ -94,13 +96,13 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(BatteryManagerImpl.PROTECT_VIEW_TYPE, BatteryManagerImpl.SHOW_TYPE_IN);
             intent.putExtra(BatteryManagerImpl.REMAIN_TIME, mRemainTime);
-
-
             Bundle bundle = new Bundle();
             bundle.putSerializable(BatteryManagerImpl.SEND_BUNDLE, newState);
             intent.putExtras(bundle);
             startActivity(intent);
         }
+
+        finish();
     }
 
     @Override
