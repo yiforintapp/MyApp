@@ -227,24 +227,26 @@ public class BitmapUtils {
     }
 
     /** 得到屏保需要drawable */
-    public static Drawable getDeskTopBitmap(final Context context) {
-        WallpaperManager wallpaperManager = WallpaperManager
+    public static Drawable getDeskTopBitmap(final Context context, PreferenceTable preferenceTable) {
+        final WallpaperManager wallpaperManager = WallpaperManager
                 .getInstance(context);
         Drawable drawable = null;
         long startTime= SystemClock.elapsedRealtime();
         try {
-            // 获取当前壁纸
-            final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-            long theSaveCode = preferenceTable.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
-            LeoLog.e("getDeskTopBitmap", "theSaveCode:" + theSaveCode + "wallpaperDrawable.hashCode():" + wallpaperDrawable.hashCode());
-            if (theSaveCode != wallpaperDrawable.hashCode()) {
-                preferenceTable.putLong(PrefConst.VIRTUAL_IMG_HASH_CODE, wallpaperDrawable.hashCode());
-                // 将Drawable转成Bitmap
-                final Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
-                ThreadManager.getSubThreadHandler().post(new Runnable() {
-                    @Override
-                    public void run() {
+            ThreadManager.getSubThreadHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    // 获取当前壁纸
+                    final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+                    // 将Drawable转成Bitmap
+                    final Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
+                    PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                    long theSaveCode = preferenceTable.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
+                    LeoLog.e("getDeskTopBitmap", "theSaveCode:" + theSaveCode + "bm.hashCode():" + bm.hashCode());
+                    if (theSaveCode != bm.hashCode()) {
+                        preferenceTable.putLong(PrefConst.VIRTUAL_IMG_HASH_CODE, bm.hashCode());
+
+
                         LeoLog.e("getDeskTopBitmap", "start");
                         Drawable drawable = VirtualBitmap.BlurImages(bm, context);
                         saveVirtualBitmap(drawable);
@@ -257,10 +259,10 @@ public class BitmapUtils {
                         });
 
                     }
-                });
-            }
-            if (theSaveCode != 0) {
-                getFinalDrawable(context);
+                }
+            });
+            if (preferenceTable.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0) != 0) {
+                return getFinalDrawable(context);
             }
         } catch (Throwable e) {
             e.printStackTrace();
@@ -276,15 +278,22 @@ public class BitmapUtils {
     public static Drawable getFinalDrawable(Context context) {
         Bitmap bitmap = getVirtualBitmap(Environment.getExternalStorageDirectory().toString()
                 .concat(Constants.VIRTUAL_DESKTOP_PIC), context);
+        LeoLog.e("getDeskTopBitmap", "getFinalDrawable" + bitmap);
         return bitmapToDrawable(bitmap);
     }
 
     /**  保存虚化后的桌面壁纸图片*/
     public static void saveVirtualBitmap(Drawable drawable){
         Bitmap bitmap = drawableToBitmap(drawable);
-        File f = new File(Environment.getExternalStorageDirectory().toString()
-                .concat(Constants.VIRTUAL_DESKTOP_PIC));
+        File f = null;
         try {
+            f = new File(Environment.getExternalStorageDirectory().toString()
+                    .concat(Constants.VIRTUAL_DESKTOP_PIC));
+
+            if (f.exists()) {
+                LeoLog.e("getDeskTopBitmap", "f.exists");
+                f.delete();
+            }
             f.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -292,7 +301,7 @@ public class BitmapUtils {
         FileOutputStream fOut = null;
         try {
             fOut = new FileOutputStream(f);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 80, fOut);
         } catch (Exception e) {
             e.printStackTrace();
         }

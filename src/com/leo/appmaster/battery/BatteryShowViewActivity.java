@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.eventbus.event.VirtualEvent;
@@ -74,9 +75,12 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         LeoEventBus.getDefaultBus().register(this);
         mBatteryManager.setBatteryStateListener(this);
         mBatterViewBg = (RelativeLayout) findViewById(R.id.batter_view_bg);
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
         Drawable drawable = BitmapUtils.getDeskTopBitmap(
-                BatteryShowViewActivity.this);
+                BatteryShowViewActivity.this, preferenceTable);
+        LeoLog.e("getDeskTopBitmap", "drawable :" + drawable);
         if (drawable != null) {
+            LeoLog.e("getDeskTopBitmap", "drawable != null");
             mBatterViewBg.setBackgroundDrawable(drawable);
         }
 
