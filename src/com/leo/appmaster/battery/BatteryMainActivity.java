@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -255,7 +256,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                 mBtrManager.killBatteryDrainApps();
             }
         });
-        startBoostAnimation(0);
+        prepareBoostAnimation();
     }
 
     private void startFlipAnimation() {
@@ -326,23 +327,61 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         anim.start();
     }
 
-    private void startBoostAnimation(final int startIndex) {
-        if (mGvApps.getCount() <= startIndex) {
+    private void prepareBoostAnimation() {
+        final int remainItemCount = mListBatteryComsuptions.size();
+
+        // 添加空白item
+        for (int i=0;i<100;i++) {
+            mListBatteryComsuptions.add(new BatteryComsuption(this, "", 0));
+        }
+        mAdapter.fillData(mListBatteryComsuptions);
+        mAdapter.notifyDataSetChanged();
+
+        // 禁止拖动
+        mGvApps.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    return true;
+                }
+                return false;
+            }
+
+        });
+
+        // 移动回顶端
+        mGvApps.smoothScrollToPosition(0);
+        mGvApps.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startBoostAnimation(remainItemCount);
+            }
+        }, 50);
+    }
+
+    private void startBoostAnimation2() {
+
+    }
+
+    private void startBoostAnimation(final int remainCount) {
+        if (remainCount <= 0) {
+            // 杀死app动画完成
             startBatteryDismissAnim();
             return;
         }
 
         final long iconDisappearTime = 200;
         final long iconGapTime = 80;
-        final long rowUpTime = 120;
+        final int rowUpTime = 120;
         final int rotateDegree = 180;
 
-        int columnNum = mGvApps.getNumColumns();
+        final int columnNum = mGvApps.getNumColumns();
 
-        final int count = Math.min(columnNum, mGvApps.getCount()-startIndex);
+        final int count = Math.min(columnNum, remainCount);
         // LeoLog.d(TAG, "startIndex="+startIndex+"; count="+count);
         for (int i=0 ; i<count ; i++) {
-            final View vv = mGvApps.getChildAt(i+startIndex);
+            final View vv = mGvApps.getChildAt(i);   //mGvApps.getChildAt(i+startIndex);
             // LeoLog.d(TAG, "index="+(i+startIndex));
             final boolean isLastIcon = (i == count-1);
             vv.animate().setDuration(iconDisappearTime)
@@ -357,11 +396,22 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                             super.onAnimationEnd(animation);
                             vv.setAlpha(0.0f);
                             if (isLastIcon) {
-                                //TODO 一定要与xml里面的vertical spacing值一致！
-                                int vSpacing = DipPixelUtil.dip2px(BatteryMainActivity.this, 10);
-                                float rowHeight = vv.getHeight() + vSpacing;
-                                mGvApps.animate().setDuration(rowUpTime).translationYBy(-rowHeight);
-                                startBoostAnimation(startIndex+count);
+                                for (int j=0;j<count;j++) {
+                                    mListBatteryComsuptions.remove(0);
+                                }
+                                mGvApps.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAdapter.notifyDataSetChanged();
+                                        mGvApps.startLayoutAnimation();
+                                        mGvApps.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                startBoostAnimation(remainCount - count);
+                                            }
+                                        }, 50);
+                                    }
+                                }, 50);
                             }
                         }
                     });
@@ -434,6 +484,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             if (mList != null && mList.size() != 0) {
                 holder.iv_appicon.setImageDrawable(mList.get(position).getIcon());
             }
+            convertView.setRotation(0.0f);
+            convertView.setScaleX(1.0f);
+            convertView.setScaleY(1.0f);
+            convertView.setAlpha(1.0f);
             return convertView;
         }
     }
