@@ -42,14 +42,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout="@layout/pri_confirm_wifi_item" />
+                android:layout="@layout/pri_confirm_callfilter_item" />
 
             <!-- callfilter -->
             <ViewStub
                 android:id="@+id/wifi_call_filter_stub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout="@layout/pri_confirm_callfilter_item" />
 
         </LinearLayout>

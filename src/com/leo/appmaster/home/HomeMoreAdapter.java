@@ -104,17 +104,17 @@ public class HomeMoreAdapter extends BaseAdapter {
 
         List<int[]> arrayList = new ArrayList<int[]>();
         arrayList.add(SWIFTY);
-        arrayList.add(ARRAY_MEDIA);
         arrayList.add(ARRAY_CONTACT_SINGLE);
+        arrayList.add(ARRAY_MEDIA);
         arrayList.add(ARRAY_APP);
         arrayList.add(ARRAY_DEVICE);
         arrayList.add(ARRAY_HELPER);
 
         mDrawableArray.put(R.string.hp_helper_iswipe, ID_RES_HELPER_ISWIPE);
-        mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);
-        mDrawableArray.put(R.string.hp_hide_video, ID_RES_HIDE_VIDEO);
         mDrawableArray.put(R.string.home_tab_lost, ID_RES_PHONE_LOST);
         mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT);
+        mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);
+        mDrawableArray.put(R.string.hp_hide_video, ID_RES_HIDE_VIDEO);
         mDrawableArray.put(R.string.hp_app_manage_del, ID_RES_APP_DEL);
         mDrawableArray.put(R.string.hp_app_manage_back, ID_RES_APP_BACK);
         mDrawableArray.put(R.string.hp_device_gprs, ID_RES_DEVICE_GPRS);
