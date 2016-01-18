@@ -448,7 +448,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         int day_of_week = c.get(Calendar.DAY_OF_WEEK);
         LeoLog.d(TAG, year + ":" + month + ":" + day + ":" + hour + ":" + minute + ":" + day_of_week);
 
-        mTvBigTime.setText(hour + ":" + minute);
+        mTvBigTime.setText(hour + ":" + String.format("%02d", minute));
         mTvSmallLeft.setText((month + 1) + "/" + day);
 
         // 资源应该从周日 - 周六 这样的顺序
