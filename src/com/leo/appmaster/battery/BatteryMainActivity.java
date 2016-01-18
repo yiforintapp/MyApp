@@ -362,26 +362,33 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
         });
 
-        if (mGvApps.computeVerticalScrollOffset() == 0) {
-            startBoostAnimation(remainItemCount);
-        } else {
-            // 移动回顶端
-            mGvApps.setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                    if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
-                            && mGvApps.computeVerticalScrollOffset() == 0) {
-                        startBoostAnimation(remainItemCount);
-                    }
-                }
+        // 等待notifyDataSetChanged响应完
+        mGvApps.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mGvApps.computeVerticalScrollOffset() == 0) {
+                    startBoostAnimation(remainItemCount);
+                } else {
+                    // 移动回顶端
+                    mGvApps.setOnScrollListener(new AbsListView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(AbsListView view, int scrollState) {
+                            if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                                    && mGvApps.computeVerticalScrollOffset() == 0) {
+                                startBoostAnimation(remainItemCount);
+                            }
+                        }
 
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+                        }
+                    });
+                    mGvApps.smoothScrollToPosition(0);
                 }
-            });
-            mGvApps.smoothScrollToPosition(0);
-        }
+            }
+        }, 50);
+
     }
 
     private void startBoostAnimation2() {
@@ -397,7 +404,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
         final long iconDisappearTime = 200;
         final long iconGapTime = 80;
-        final int rowUpTime = 120;
         final int rotateDegree = 180;
 
         final int columnNum = mGvApps.getNumColumns();
