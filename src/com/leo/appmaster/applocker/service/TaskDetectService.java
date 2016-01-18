@@ -1,6 +1,9 @@
 
 package com.leo.appmaster.applocker.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
@@ -15,8 +18,14 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.pm.ServiceInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
 import android.os.Binder;
@@ -24,8 +33,10 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.text.TextUtils;
 import android.widget.RemoteViews;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -38,6 +49,7 @@ import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -75,6 +87,9 @@ public class TaskDetectService extends Service {
     private ScheduledExecutorService mScheduledExecutor;
     private ScheduledFuture<?> mDetectFuture;
     private TimerTask mDetectTask;
+    private ScheduledFuture<?> mStartThemeFuture;
+    private TimerTask mStartThemeServer;
+
     // sony 5.1.1及Android M以上系统使用
     private DetectThreadCompat mDetectThreadCompat;
 
@@ -110,6 +125,9 @@ public class TaskDetectService extends Service {
         mScheduledExecutor = ThreadManager.getAsyncExecutor();
         flowDetecTask = new FlowTask();
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, AppMasterConfig.TRAFFIC_INTERNAL,
+                TimeUnit.MILLISECONDS);
+        mStartThemeServer = new StartThemeServerTask();
+        mStartThemeFuture = mScheduledExecutor.scheduleWithFixedDelay(mStartThemeServer, 0, AppMasterConfig.START_THEME_TIME,
                 TimeUnit.MILLISECONDS);
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
@@ -190,6 +208,14 @@ public class TaskDetectService extends Service {
         }
     }
 
+    private void stopStartThemeTask() {
+        if (mflowDatectFuture != null) {
+            mflowDatectFuture.cancel(false);
+            mStartThemeServer = null;
+            mStartThemeFuture = null;
+        }
+    }
+
     private void startDetectTask() {
         stopDetectTask();
         if (Build.VERSION.SDK_INT < 21 || isGetRunningProcessAvailable()) {// Android
@@ -225,6 +251,7 @@ public class TaskDetectService extends Service {
     public void onDestroy() {
         stopDetect();
         stopFlowTask();
+        stopStartThemeTask();
         sendBroadcast(new Intent("com.leo.appmaster.restart"));
         sService = null;
         super.onDestroy();
@@ -249,7 +276,7 @@ public class TaskDetectService extends Service {
             }
 
             LeoLog.i("testtt", "in task");
-            
+
             if (network_state.equals(STATE_NORMAL)) {
                 long TotalTraffic = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
                         getMonthTotalTraffic() * 1024;
@@ -576,5 +603,75 @@ public class TaskDetectService extends Service {
             sNotification.setLatestEventInfo(context, title, title, pi);
         }
         return sNotification;
+    }
+
+    public class StartThemeServerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            LeoLog.d(TAG, "PG_StartThemeServerTask---- start theme server!!");
+
+            AppMasterApplication context = AppMasterApplication.getInstance();
+            PackageManager pm = context.getPackageManager();
+
+            Intent intentQe = new Intent(Intent.ACTION_VIEW, null);
+            intentQe.setAction("com.leo.appmaster.action.START_SERVER");
+            List<ResolveInfo> apps = pm.queryIntentServices(intentQe, 0);
+            List<AppItemInfo> infos = null;
+            if (apps == null || apps.size() < 1) {
+                return;
+            }
+            infos = new ArrayList<AppItemInfo>();
+            for (ResolveInfo info : apps) {
+                ServiceInfo actiInfo = info.serviceInfo;
+                String className = actiInfo.name;
+                String pkgName = actiInfo.packageName;
+                if (TextUtils.isEmpty(pkgName)) {
+                    continue;
+                }
+                AppItemInfo appInfo = new AppItemInfo();
+                appInfo.packageName = pkgName;
+                appInfo.className = className;
+                PackageInfo pkgInfo = null;
+                try {
+                    pkgInfo = context.getPackageManager().getPackageInfo(pkgName, 0);
+                    int verCode = pkgInfo.versionCode;
+                    appInfo.versionCode = verCode;
+                    infos.add(appInfo);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (infos == null || infos.size() < 1) {
+                return;
+            }
+
+            Collections.sort(infos, new ThemeVerCodeComparator());
+            AppItemInfo app = infos.get(0);
+            Intent intent = new Intent();
+            ComponentName componentName = new ComponentName(app.packageName, app.className);
+            intent.setComponent(componentName);
+            try {
+                startService(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private class ThemeVerCodeComparator implements Comparator<AppItemInfo> {
+
+        @Override
+        public int compare(AppItemInfo a1, AppItemInfo a2) {
+            if (a2.versionCode > a1.versionCode) {
+                return 1;
+            }
+            if (a2.versionCode == a1.versionCode) {
+                return 0;
+            }
+            return -1;
+        }
     }
 }

@@ -52,11 +52,11 @@ public class DeskProxyActivity extends Activity {
 
     public static final int mWifi = 13;
     public static final int mQuickHelper = 14;
-    
+
     public static final int mFilterNoti =15;
     public static final int mStrangerCallNoti =16;
     public static final int mMissCallNoti =17;
-    
+
     public static final int mCallfilter = 18;
 
     private MobvistaAdWall wallAd;
@@ -262,7 +262,7 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-    
+
     private void goToStrangerCall(int type) {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, StrangeCallActivity.class);
@@ -282,14 +282,14 @@ public class DeskProxyActivity extends Activity {
         startActivity(intent);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "notify_blacklist_cnts");
     }
-    
+
     private void goToBlackListTab1(int type) {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, CallFilterMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-    
+
     private void gotoBackUp(int type) {
         if (getIntent().getBooleanExtra("from_quickhelper", false)) {
             SDKWrapper.addEvent(this, SDKWrapper.P1,

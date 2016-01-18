@@ -28,6 +28,7 @@ public class AppItemInfo extends AppInfo {
 	
 	public long lastLaunchTime;
 
+	public String className;
 
 	public AppItemInfo() {
 		cacheInfo = new CacheInfo();

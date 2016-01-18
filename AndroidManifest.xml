@@ -646,6 +646,16 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+        <activity
+            android:name=".applocker.service.ProxyStartService"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/unified_loading_dialog">
+            <intent-filter>
+                <action android:name="com.leo.theme.action.START_SERVER"></action>
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".applocker.service.TaskDetectService"
@@ -805,6 +815,13 @@
             android:permission="com.leo.appmaster.permission.IPC_REQUEST">
             <intent-filter>
                 <action android:name="com.leo.appmaster.IPC_REQUEST" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".applocker.service.ProxyStartService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.leo.theme.action.START_SERVER"></action>
             </intent-filter>
         </service>
 
