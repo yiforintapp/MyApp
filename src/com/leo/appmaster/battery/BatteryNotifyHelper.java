@@ -10,6 +10,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
@@ -29,7 +31,7 @@ public class BatteryNotifyHelper {
 
     private static final String TAG = "BatteryNotifyHelper";
     private static final int NOTIFICATION_ID = 20160116;
-
+    private static final int MAX_ICON_ACCOUNT = 6;
     private static final String ACTION_LEO_BATTERY_APP =
             "com.leo.appmaster.battery.notification.action";
     private static final int CHECK_INTERVAL = 20 * 1000;  // stone_debug  3 * 60 * 60 * 1000;
@@ -72,9 +74,41 @@ public class BatteryNotifyHelper {
             view_custom = new RemoteViews(mContext.getPackageName(), R.layout.clean_mem_notify_huawei);
         }
         // 设置对应IMAGEVIEW的ID的资源图片
-        view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
+//        view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
+        if (list != null) {
+            BitmapDrawable icon = null;
+            int finalSize = Math.min(MAX_ICON_ACCOUNT, list.size());
+            for (int i = 0; i < finalSize; i++) {
+                icon = (BitmapDrawable) list.get(i).getIcon();
+                if (icon != null) {
+                    switch (i) {
+                        case 0:
+                                view_custom.setImageViewBitmap(R.id.iv_app1, icon.getBitmap());
+                            break;
+                        case 1:
+                                view_custom.setImageViewBitmap(R.id.iv_app2, icon.getBitmap());
+                            break;
+                        case 2:
+                                view_custom.setImageViewBitmap(R.id.iv_app3, icon.getBitmap());
+                            break;
+                        case 3:
+                                view_custom.setImageViewBitmap(R.id.iv_app4, icon.getBitmap());
+                            break;
+                        case 4:
+                                view_custom.setImageViewBitmap(R.id.iv_app5, icon.getBitmap());
+                            break;
+                        case 5:
+                                view_custom.setImageViewBitmap(R.id.iv_app6, icon.getBitmap());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        
         view_custom.setTextViewText(R.id.app_precent, "weeeeeeeeeeee");
-
+        view_custom.setTextViewText(R.id.free_bg, mContext.getApplicationContext().getString(R.string.batterymanage_boost));
         view_custom.setTextViewText(R.id.appwallDescTV,
                 mContext.getApplicationContext().getString(R.string.clean_mem_notify_small));
         view_custom.setTextViewText(R.id.app_precent, "weeeeeeeeeeee");
@@ -100,6 +134,7 @@ public class BatteryNotifyHelper {
         notify.contentView = view_custom;
         mNotificationManager.notify(NOTIFICATION_ID, notify);
     }
+
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
