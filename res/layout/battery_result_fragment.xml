@@ -9,7 +9,7 @@
     android:paddingBottom="63dp"
     android:scrollbars="none">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -20,9 +20,11 @@
             android:layout_height="160dp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/card_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/pri_pro_list_bg"
+            android:layout_below="@+id/empty_header"
             android:orientation="vertical"
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
@@ -41,7 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@color/pri_pro_list_bg"
                 android:layout="@layout/pri_confirm_wifi_item" />
 
             <!-- callfilter -->
@@ -50,12 +51,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/pri_pro_list_bg"
                 android:layout="@layout/pri_confirm_callfilter_item" />
 
         </LinearLayout>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 </ScrollView>
