@@ -138,20 +138,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MOVE_UP:
-
-                    mSlideView.setScrollView(true);
-                    mShowing = true;
-
-                    showMoveUp();
-                    timeContentMoveSmall();
-                    batteryIconMoveSmall();
+                    if (mSlideView.getVisibility() == View.VISIBLE) {
+                        mSlideView.setScrollView(true);
+                        mShowing = true;
+                        showMoveUp();
+                        timeContentMoveSmall();
+                        batteryIconMoveSmall();
+                    }
                     break;
                 case MOVE_DOWN:
                     if (mBatteryManager.getIsCharing()) {
-
                         mSlideView.setScrollView(true);
                         mShowing = true;
-
                         showMoveDown();
                         timeContentMoveBig();
                         batteryIconMoveBig();
@@ -619,7 +617,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             mTvHideText.setText(text2);
                             mTvHideTime.setText(Html.fromHtml(text));
                         } else {
-                            String text = mActivity.getString(R.string.screen_protect_charing_text_four);
+                            String text = mActivity.getString(R.string.screen_protect_charing_text_one);
                             mTvHideText.setText(text);
                             mTvHideTime.setVisibility(View.GONE);
                         }
@@ -646,7 +644,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mTvLeftTime.setText(text2);
                         mTvTime.setText(Html.fromHtml(text));
                     } else {
-                        String text = mActivity.getString(R.string.screen_protect_charing_text_four);
+                        String text = mActivity.getString(R.string.screen_protect_charing_text_one);
                         mTvLeftTime.setText(text);
                         mTvTime.setVisibility(View.GONE);
                     }
@@ -817,8 +815,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 } else if (view == mExtraBtnLt) {
                     PreferenceTable preferenceTable = PreferenceTable.getInstance();
                     Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
-                              PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
-                              Constants.ISWIPE_PACKAGE, mActivity);
+                            PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
+                            Constants.ISWIPE_PACKAGE, mActivity);
                 }
                 break;
         }
@@ -938,6 +936,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
+        mSlideView.setVisibility(View.VISIBLE);
+        mSlideView.post(new Runnable() {
+            @Override
+            public void run() {
+                adContentHeight = mSlideView.getHeight();
+                mSlideParams = mSlideView.getLayoutParams();
+            }
+        });
         View adView = rootView.findViewById(R.id.ad_content);
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
@@ -979,7 +985,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
-        if (/*!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty*/true) {
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+//        if(true){
+            mSlideView.setVisibility(View.VISIBLE);
+            mSlideView.post(new Runnable() {
+                @Override
+                public void run() {
+                    adContentHeight = mSlideView.getHeight();
+                    mSlideParams = mSlideView.getLayoutParams();
+                }
+            });
             View include = viewStub.inflate();
             mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
@@ -996,7 +1011,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         PrefConst.KEY_CHARGE_SWIFTY_TITLE));
             }
         }
-
     }
 
     private void initExtraLayout(View view) {
@@ -1024,7 +1038,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
-        if (/*!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty*/true) {
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+//        if (true) {
+            mSlideView.setVisibility(View.VISIBLE);
+            mSlideView.post(new Runnable() {
+                @Override
+                public void run() {
+                    adContentHeight = mSlideView.getHeight();
+                    mSlideParams = mSlideView.getLayoutParams();
+                }
+            });
             View include = viewStub.inflate();
             mExtraTitle = (TextView) include.findViewById(R.id.item_title);
             mExtraImg = (ImageView) include.findViewById(R.id.swifty_img);

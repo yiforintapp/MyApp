@@ -300,6 +300,7 @@
         android:layout_above="@id/slider"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:visibility="invisible"
         android:background="#7FFFFFFF">
 
         <com.leo.appmaster.battery.SelfScrollView
@@ -322,12 +323,12 @@
                 <!-- Advertise -->
                 <include
                     android:id="@+id/ad_content"
+                    layout="@layout/scan_ad_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    layout="@layout/scan_ad_layout" />
+                    android:layout_marginTop="8dp" />
                 <!-- Advertise -->
 
                 <!-- 推广位1 -->
@@ -340,7 +341,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@color/white"
-                    android:layout="@layout/pri_confirm_swifty_item"/>
+                    android:layout="@layout/pri_confirm_swifty_item" />
 
                 <!-- 推广位2 -->
                 <ViewStub
@@ -352,7 +353,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@color/white"
-                    android:layout="@layout/pri_confirm_swifty_item"/>
+                    android:layout="@layout/pri_confirm_swifty_item" />
 
 
             </LinearLayout>
