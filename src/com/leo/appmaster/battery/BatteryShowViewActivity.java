@@ -74,7 +74,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         mBatterViewBg = (RelativeLayout) findViewById(R.id.batter_view_bg);
 
         mBatterViewBg.setBackgroundDrawable(BitmapUtils.getDeskTopBitmap(
-                            BatteryShowViewActivity.this));
+                BatteryShowViewActivity.this));
 
         mViewPager = (ViewPager) findViewById(R.id.battery_viewpager);
         initFragment();
@@ -155,7 +155,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     public void onEventMainThread(BatteryViewEvent event) {
         LeoLog.d("testBatteryEvent", "getEvent : " + event.eventMsg);
-        if (event.eventMsg.equals("finish_activity")) {
+        if (("finish_activity").equals(event.eventMsg)) {
             finish();
         }
     }

@@ -70,10 +70,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mThreeMoveView;
     private ImageView mGreenArrow;
     private ImageView mIvTrickle;
+    private View mTrickleContent;
     private TextView mTvTrickle;
     private ImageView mIvContinuous;
+    private View mContinuousContent;
     private TextView mTvContinuous;
     private ImageView mIvSpeed;
+    private View mSpeedContent;
     private TextView mTvSpeed;
     private View mHideTextView;
     private TextView mTvHideTime;
@@ -274,10 +277,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mThreeMoveView = findViewById(R.id.battery_icon_flag);
         mGreenArrow = (ImageView) findViewById(R.id.little_arrow);
+        mTrickleContent = findViewById(R.id.trickle_content);
+        mTrickleContent.setOnClickListener(this);
         mIvTrickle = (ImageView) findViewById(R.id.iv_trickle);
         mTvTrickle = (TextView) findViewById(R.id.tv_trickle);
+        mContinuousContent = findViewById(R.id.continuous_content);
+        mContinuousContent.setOnClickListener(this);
         mIvContinuous = (ImageView) findViewById(R.id.iv_continuous);
         mTvContinuous = (TextView) findViewById(R.id.tv_continuous);
+        mSpeedContent = findViewById(R.id.speed_content);
+        mSpeedContent.setOnClickListener(this);
         mIvSpeed = (ImageView) findViewById(R.id.iv_speed);
         mTvSpeed = (TextView) findViewById(R.id.tv_speed);
         mHideTextView = findViewById(R.id.hide_tv_content);
@@ -562,32 +571,61 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ct_option_2_rl:
-//                Intent dlIntent = new Intent(mActivity, BatterySettingActivity.class);
-//                dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                dlIntent.putExtra(Constants.BATTERY_FROM, "battery");
-//                mLockManager.filterPackage(mActivity.getPackageName(), 1000);
-//                startActivity(dlIntent);
-
-                initSettingMenu();
-                mLeoPopMenu.setPopMenuItems(mActivity, getRightMenuItems(), null);
-                mLeoPopMenu.showPopMenu(mActivity, mGreenArrow, null, null);
+                Intent dlIntent = new Intent(mActivity, BatterySettingActivity.class);
+                dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                dlIntent.putExtra(Constants.BATTERY_FROM, "battery");
+                mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+                startActivity(dlIntent);
+                break;
+            case R.id.speed_content:
+                showPop(CHARING_TYPE_SPEED);
+                break;
+            case R.id.continuous_content:
+                showPop(CHARING_TYPE_CONTINUOUS);
+                break;
+            case R.id.trickle_content:
+                showPop(CHARING_TYPE_TRICKLE);
                 break;
         }
     }
 
-    private List<String> getRightMenuItems() {
+    private void showPop(int type) {
+        if (!isExpand && !mShowing) {
+            initPopMenu();
+            mLeoPopMenu.setPopMenuItems(mActivity, getRightMenuItems(type), null);
+
+            View view;
+            if (type == CHARING_TYPE_SPEED) {
+                view = mSpeedContent;
+            } else if (type == CHARING_TYPE_CONTINUOUS) {
+                view = mContinuousContent;
+            } else {
+                view = mTrickleContent;
+            }
+
+            mLeoPopMenu.showPopMenu(mActivity, view, null, null);
+        }
+    }
+
+    private List<String> getRightMenuItems(int type) {
         List<String> listItems = new ArrayList<String>();
         Context ctx = mActivity;
-        listItems.add(ctx.getString(R.string.screen_protect_type_pop_one));
+        String mStr;
+        if (type == CHARING_TYPE_SPEED) {
+            mStr = ctx.getString(R.string.screen_protect_type_pop_one);
+        } else if (type == CHARING_TYPE_CONTINUOUS) {
+            mStr = ctx.getString(R.string.screen_protect_type_pop_two);
+        } else {
+            mStr = ctx.getString(R.string.screen_protect_type_pop_three);
+        }
+        listItems.add(mStr);
         return listItems;
     }
 
-    private void initSettingMenu() {
+    public void initPopMenu() {
         if (mLeoPopMenu != null) return;
         mLeoPopMenu = new BatteryMenu();
         mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
         mLeoPopMenu.setListViewDivider(null);
     }
-
-
 }

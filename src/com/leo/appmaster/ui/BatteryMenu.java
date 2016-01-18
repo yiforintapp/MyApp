@@ -65,7 +65,7 @@ public class BatteryMenu extends LeoPopMenu {
                 mHolder = (Holder) convertView.getTag();
             } else {
                 mHolder = new Holder();
-                convertView = inflater.inflate(R.layout.popmenu_window_home_list_item, null);
+                convertView = inflater.inflate(R.layout.popmenu_window_battery_list_item, null);
                 mHolder.mItemName = (TextView) convertView.findViewById(R.id.menu_text);
                 convertView.setTag(mHolder);
             }
