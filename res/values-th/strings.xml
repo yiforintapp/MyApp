@@ -911,4 +911,44 @@
     <string name="number_call_duration_m_s">%1$sนาท %2$sวินาท</string>
     <string name="gud_page_call_fil">เพิ่มเบอร์ที่ไม่ชอบเข้าแบล็คลิสต์ จะได้ไม่ต้องถูกรบกวน</string>
     <string name="ad_blk_fail">ล้มเหลว</string>
+
+    <!--3.3-->
+    <string name="batterymanage_result_ad_wifi_title">ตรวจสอบความปลอดภัยของ wifi ที่เชื่อมต่ออยู่</string>
+    <string name="batterymanage_result_ad_wifi_content">wifi ที่อันตรายอาจกระทบความปลอดภัยของข้อมูลส่วนตัวของคุณได้ในทุกเวลา</string>
+    <string name="batterymanage_result_ad_callfilter_title">ปิดกั้นการรบกวน</string>
+    <string name="batterymanage_result_ad_callfilter_content">แยกแยะและปิดกั้นโทรศัพท์สายรบกวน</string>
+    <string name="batterymanage_label">มี <Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> แอพแอบใช้ไฟอยู่</string>
+    <string name="batterymanage_boost">ปรับปรุงเพื่อประหยัดไฟ</string>
+    <string name="batterymanage_boost_finished">ปรับปรุงเสร็จลุล่วง</string>
+    <string name="batterymanage_tip_loading">กำลังตรวจสอบแอพที่ใช้ไฟอยู่</string>
+    <string name="batterymanage_tip_nothing_to_boost">ไม่มีแอพที่ต้องปรับปรุงแล้ว</string>
+    <string name="batterymanage_switch_screen">ภาพพักหน้าจอขณะชาร์จ</string>
+    <string name="batterymanage_switch_screen_summary">ใช้ภาพพักหน้าจอเร่งการชาร์จไฟ ป้องกันโอเวอร์ชาร์จ</string>
+    <string name="batterymanage_switch_noti">แจ้งสภาพการใช้ไฟของแอพ</string>
+    <string name="batterymanage_switch_noti_summary">ตรวจสอบสภาพการใช้ไฟของแอพที่ทำงานอยู่เบื้องหลัง</string>
+    <string name="batterymanage_setting_title">การตั้งค่า</string>
+    <string name="quick_helper_callfilter">ปิดกั้นการรบกวน</string>
+    <string name="quick_helper_desc_callfilter">แยกแยะและปิดกั้นโทรศัพท์สายรบกวน</string>
+    <string name="phone_share_dialog_content">โทรศัพท์ของคุณอยู่ภายใต้การคุ้มครองเพื่อป้องกันขโมย แต่เพื่อนของคุณอาจยังไม่มี รีบไปช่วยพวกเขากัน</string>
+    <string name="callfilter_share_dialog_content">ชวนเพื่อนของคุณมาปิดกั้นโทรศัพท์สายรบกวน</string>
+    <string name="intruder_share_dialog_content">หากรู้สึกใช้งานได้ดี กรุณาแชร์ให้เพื่อนใช้ด้วยกัน</string>
+    <string name="share_dialog_btn_query">แชร์</string>
+    <string name="share_dialog_query_btn_cancel">ยกเลิก</string>
+    <string name="phone_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นกันขโมยของ LEO Privacy Guard อยู่ เพียงแค่ส่งข้อความสั้น ก็สามารถควบคุมมือถือได้จากระยะไกล สะดวกต่อการใช้งาน ฉันอยากให้คุณลองใช้แอพนี้ด้วย</string>
+    <string name="callfilter_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นปิดกั้นโทรศัพท์สายรบกวนของ LEO Privacy Guard อยู่ ฉันกั้นโทรศัพท์สายเข้าจากผู้ขายของทั้งหมด และที่สำคัญคือสามารถแยกแยะสายเข้าได้โดยอัตโนมัติ สะดวกต่อการใช้งานเป็นอย่างมาก ฉันอยากให้คุณมาใช้ด้วยกัน</string>
+    <string name="intruder_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นป้องกันผู้บุกรุกของ LEO Privacy Guard อยู่ มันถ่ายรูปของผู้แอบดูมือถือ %1$s คนแล้ว ตอนนี้ฉันรู้แล้วว่ามีใครบ้างที่แอบดูมือถือของฉันอยู่ มาลองใช้กันดู </string>
+    <string name="up_list_swifty_title">เพิ่มประสิทธิภาพ</string>
+
+    <string name="screen_protect_type_one">ชาร์จแบบรวดเร็ว</string>
+    <string name="screen_protect_type_two">ชาร์จด้วยกระแสคงที่</string>
+    <string name="screen_protect_type_three">ชาร์จด้วยกระแสต่ำ</string>
+
+    <string name="screen_protect_time">เวลาส่วนที่เหลือในการชาร์จไฟ:</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>ชั่วโมง <Data><![CDATA[<font color="#0ad931">%2$s</font>]]>นาที</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>นาที</string>
+
+    <string name="screen_protect_unlock_text">เลื่อนเพื่อปลดล็อค</string>
+    <string name="oppo_rom_tip_txt">ด้วยข้อจำกัดของระบบมือถือ LEO Privacy Guard ต้องได้รับการมอบอำนาจก่อนใช้งาน ขั้นตอนการมอบคือ "เพิ่มแอพ" --> "เพิ่มแอพที่ทำงานอยู่เบื้องหลังได้" --> เลือกเพิ่ม LEO Privacy Guard</string>
+    <string name="recom_lft_txt">ไม่ต้องแล้ว</string>
+    <string name="recom_rgt_txt">ลองใช้ดู</string>
 </resources>

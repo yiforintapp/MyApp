@@ -911,4 +911,44 @@
     <string name="number_call_duration_m_s">%1$sdk %2$ssn</string>
     <string name="gud_page_call_fil">İstenmeyen numaraları kara listeye ekleyin</string>
     <string name="ad_blk_fail">Başarısız</string>
+
+    <!--3.3-->
+    <string name="batterymanage_result_ad_wifi_title">Wifi Güvenliğini test et</string>
+    <string name="batterymanage_result_ad_wifi_content">Güvenli olmayan wifi bağlantısı güvenliğinizi tehdit eder</string>
+    <string name="batterymanage_result_ad_callfilter_title">Taciz Engelleme</string>
+    <string name="batterymanage_result_ad_callfilter_content">Taciz eden numaraları tanımlar ve engeller</string>
+    <string name="batterymanage_label"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> adet uygulama güç harcıyor</string>
+    <string name="batterymanage_boost">Güç Koruma</string>
+    <string name="batterymanage_boost_finished">Ayarlar tamamlandı</string>
+    <string name="batterymanage_tip_loading">Güç harcayan app aranıyor</string>
+    <string name="batterymanage_tip_nothing_to_boost">Düzenlenecek app bulunamadı</string>
+    <string name="batterymanage_switch_screen">Şarj Ekran Koruyucu</string>
+    <string name="batterymanage_switch_screen_summary">Şarj ekran koruyucusunu kullanarak daha hızlı şarj edin</string>
+    <string name="batterymanage_switch_noti">APP Güç Bildirisi</string>
+    <string name="batterymanage_switch_noti_summary">Test sonrası APP Güç Durumu</string>
+    <string name="batterymanage_setting_title">Ayarlar</string>
+    <string name="quick_helper_callfilter">Taciz Engelleme</string>
+    <string name="quick_helper_desc_callfilter">Rahatsız eden numarayı tanı ve engelle</string>
+    <string name="phone_share_dialog_content">Telefonunuz koruma altındadır. Arkadaşınıza da aldığınız önlemi önerin.</string>
+    <string name="callfilter_share_dialog_content">Arkadaşlarınızla birlikte rahatsız eden numaraları engelleyin</string>
+    <string name="intruder_share_dialog_content">Sizce nasıl? Arkadaşlarınızla paylaşın</string>
+    <string name="share_dialog_btn_query">Paylaş</string>
+    <string name="share_dialog_query_btn_cancel">İptal</string>
+    <string name="phone_share_content">Leomaster Privacy Guard çalıntılara karşı fonksiyonunu kullanıyorum. Yalnızca bir kısa mesaj ile telefonumu uzaktan kontrol edebiliyorum. Çok kullanışlı. Senin de denemeni öneriyorum!</string>
+    <string name="callfilter_share_content">Leomaster Privacy Guard rahatsız eden telefon numaraları engelleme fonksiyonunu kullanıyorum. Ayrıca telefon numaralarını otomatik olarak da tanımlıyor. Çok kullanışlı. Senin de denemeni öneriyorum!</string>
+    <string name="intruder_share_content">Leomaster Privacy Guard davetsiz misafir fonksiyonunu kullanıyorum. Şimdiye kadar %1$s kişinin telefonuma baktığını gördüm. Senin de denemeni öneriyorum!</string>
+    <string name="up_list_swifty_title">Etki Oranı Yükselt</string>
+
+    <string name="screen_protect_type_one">Hızlı Şarj</string>
+    <string name="screen_protect_type_two">Sabit Akım Şarj</string>
+    <string name="screen_protect_type_three">Dengeli Şarj</string>
+
+    <string name="screen_protect_time">Kalan Şarj Süresi:</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>Saat <Data><![CDATA[<font color="#0ad931">%2$s</font>]]>dk</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>dk.</string>
+
+    <string name="screen_protect_unlock_text">Kaydırarak ekranı açın</string>
+    <string name="oppo_rom_tip_txt">Sistem kısıtlamaları yüzünden Privacy Guard işlem yetkilerini açmanız gerekmektedir. İşlemler -- "Arka planda çalışan uygulama izinleri"--Privacy Guard'ı ekleyin</string>
+    <string name="recom_lft_txt">Hayır</string>
+    <string name="recom_rgt_txt">Dene</string>
 </resources>

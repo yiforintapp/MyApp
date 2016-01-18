@@ -914,4 +914,44 @@
     <string name="number_call_duration_m_s">%1$s分 %2$s秒</string>
     <string name="gud_page_call_fil">將不喜歡的號碼加入黑名單，從此遠離騷擾~</string>
     <string name="ad_blk_fail">添加失敗</string>
+
+    <!--3.3-->
+    <string name="batterymanage_result_ad_wifi_title">檢測您連接的wifi安全性</string>
+    <string name="batterymanage_result_ad_wifi_content">不安全的wifi隨時會威脅您的隱私安全</string>
+    <string name="batterymanage_result_ad_callfilter_title">騷擾攔截</string>
+    <string name="batterymanage_result_ad_callfilter_content">識別並攔截那些煩人的騷擾電話</string>
+    <string name="batterymanage_label"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data>個應用正在偷偷耗電</string>
+    <string name="batterymanage_boost">省電優化</string>
+    <string name="batterymanage_boost_finished">優化完成</string>
+    <string name="batterymanage_tip_loading">正在檢測耗電應用</string>
+    <string name="batterymanage_tip_nothing_to_boost">沒有可優化的app了</string>
+    <string name="batterymanage_switch_screen">充電屏保</string>
+    <string name="batterymanage_switch_screen_summary">使用充電屏保加速充電，防止過度充電</string>
+    <string name="batterymanage_switch_noti">應用耗電通知</string>
+    <string name="batterymanage_switch_noti_summary">檢測後台應用耗電情況</string>
+    <string name="batterymanage_setting_title">設置</string>
+    <string name="quick_helper_callfilter">騷擾攔截</string>
+    <string name="quick_helper_desc_callfilter">識別並攔截騷擾電話</string>
+    <string name="phone_share_dialog_content">你的手機已經處於防盜功能的保護之下，但你的朋友們卻不一定，快去幫助他們吧～</string>
+    <string name="callfilter_share_dialog_content">叫上你的朋友們一起屏蔽那些惱人的騷擾電話吧～</string>
+    <string name="intruder_share_dialog_content">覺得我們還不錯？分享給好友吧～</string>
+    <string name="share_dialog_btn_query">分享</string>
+    <string name="share_dialog_query_btn_cancel">取消</string>
+    <string name="phone_share_content">Hi，我現在正在使用隱私衛士的防盜功能。只需要發條短信，我就能夠遠程控制我的手機，實在是太方便了，我想讓你也試試這個軟件。</string>
+    <string name="callfilter_share_content">Hi，我正在使用隱私衛士的電話攔截功能。我把那些煩人的推銷員都屏蔽掉了，最關鍵的是，它還能自動識別來電，簡直太方便了。我真的很想讓你也一起來用它。</string>
+    <string name="intruder_share_content">Hi，我正在使用隱私衛士的入侵者防護功能。他已經幫我拍到了%1$s個偷看我手機的人，現在我已經知道是哪些人在偷看我的手機了，你也快來試試看～</string>
+    <string name="up_list_swifty_title">效率提升</string>
+
+    <string name="screen_protect_type_one">快速充電</string>
+    <string name="screen_protect_type_two">恆流充電</string>
+    <string name="screen_protect_type_three">涓流充電</string>
+
+    <string name="screen_protect_time">充電剩餘時間 :</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>時<Data><![CDATA[<font color="#0ad931"> %2$s</font>]]>分</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>分</string>
+
+    <string name="screen_protect_unlock_text">滑動來解鎖</string>
+    <string name="oppo_rom_tip_txt">由於系統限制，隱私衛士需要開啟權限才能正常工作。開啟步驟“添加程序”-->“添加允許後台運行的應用”-->選擇添加隱私衛士</string>
+    <string name="recom_lft_txt">不用了</string>
+    <string name="recom_rgt_txt">我要試試</string>
 </resources>

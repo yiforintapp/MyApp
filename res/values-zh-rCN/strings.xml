@@ -929,7 +929,52 @@
     <string name="number_call_duration_h_m">%1$s时 %2$s分</string>
     <string name="number_call_duration_m_s">%1$s分 %2$s秒</string>
     <string name="ad_blk_fail">添加失败</string>
-    
-    
+
+    <!-- 3.3 start -->
+    <string name="batterymanage_result_ad_wifi_title">检测您连接的wifi安全性</string>
+    <string name="batterymanage_result_ad_wifi_content">不安全的wifi随时会威胁您的隐私安全</string>
+    <string name="batterymanage_result_ad_callfilter_title">骚扰拦截</string>
+    <string name="batterymanage_result_ad_callfilter_content">识别并拦截那些烦人的骚扰电话</string>
+    <string name="batterymanage_label"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data>个应用正在偷偷耗电</string>
+    <string name="batterymanage_boost">省电优化</string>
+    <string name="batterymanage_boost_finished">优化完成</string>
+    <string name="batterymanage_tip_loading">正在检测耗电应用</string>
+    <string name="batterymanage_tip_nothing_to_boost">没有可优化的app了</string>
+    <string name="batterymanage_switch_screen">充电屏保</string>
+    <string name="batterymanage_switch_screen_summary">使用充电屏保加速充电，防止过度充电</string>
+    <string name="batterymanage_switch_noti">应用耗电通知</string>
+    <string name="batterymanage_switch_noti_summary">检测后台应用耗电情况</string>
+    <string name="batterymanage_setting_title">设置</string>
+    <string name="quick_helper_callfilter">骚扰拦截</string>
+    <string name="quick_helper_desc_callfilter">识别并拦截骚扰电话</string>
+    <string name="phone_share_dialog_content">你的手机已经处于防盗的保护之下，但你的朋友们却不一定，快去帮助他们吧～</string>
+    <string name="callfilter_share_dialog_content">叫上你的朋友们一起屏蔽那些恼人的骚扰电话吧～</string>
+    <string name="intruder_share_dialog_content">觉得我们还不错？<Data><![CDATA[<font color="#FFF600">分享给好友吧～</font>]]></Data></string>
+    <string name="share_dialog_btn_query">分享</string>
+    <string name="share_dialog_query_btn_cancel">取消</string>
+    <string name="phone_share_content">Hi，我现在正在使用隐私卫士的防盗功能。只需要发条短信，我就能够远程控制我的手机，实在是太方便了，我想让你也试试这个软件。</string>
+    <string name="callfilter_share_content">Hi，我正在使用隐私卫士的电话拦截功能。我把那些烦人的推销员都屏蔽掉了，最关键的是，它还能自动识别来电，简直太方便了。我真的很想让你也一起来用它。</string>
+    <string name="intruder_share_content">Hi，我正在使用隐私卫士的入侵者防护功能。他已经帮我拍到了%1$s个偷看我手机的人，现在我已经知道是哪些人在偷看我的手机了，你也快来试试看～</string>
+    <string name="up_list_swifty_title">效率提升</string>
+
+    <string name="screen_protect_type_one">快速充电</string>
+    <string name="screen_protect_type_two">恒流充电</string>
+    <string name="screen_protect_type_three">涓流充电</string>
+
+    <string name="screen_protect_time">充电剩余时间 :</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>时 <Data><![CDATA[<font color="#0ad931">%2$s</font>]]>分</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>分</string>
+
+    <string name="screen_protect_unlock_text">滑动来解锁</string>
+    <string name="oppo_rom_tip_txt">由于系统限制，隐私卫士需要开启权限才能正常工作。开启步骤“添加程序”-->“添加允许后台运行的应用”-->选择添加隐私卫士</string>
+
+    <string name="screen_protect_type_pop_one">电量低于70%时快速进行充电</string>
+    <string name="screen_protect_type_pop_two">电量充足，稳定充电电流以保护电池</string>
+    <string name="screen_protect_type_pop_three">即将充满，减小充电电流以延长电池寿命</string>
+
+    <string name="screen_protect_charing_text_one">请连接充电器</string>
+    <string name="screen_protect_charing_text_two">充电中</string>
+    <string name="screen_protect_charing_text_three">已充满，请移除充电器</string>
+    <string name="screen_protect_charing_text_four">已充满</string>
 
 </resources>
