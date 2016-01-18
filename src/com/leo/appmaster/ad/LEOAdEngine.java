@@ -8,7 +8,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.leoadlib.LeoAdFactory;
-import com.leo.leoadlib.LeoAdNative;
+import com.leo.leoadlib.LeoAdNative;import com.leo.leoadlib.MaxSdk;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -98,6 +98,9 @@ public class LEOAdEngine {
     }
     
     private LEOAdEngine(Context ctx) {
+        // 必须初始化
+        MaxSdk.init(ctx, "appmaster");
+
         mAppContext = ctx;
         mPref = AppMasterPreference.getInstance(ctx);
         mLEOLoadedNatives = new HashMap<String, LeoCompositeData>();
