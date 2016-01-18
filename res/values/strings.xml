@@ -944,6 +944,7 @@
     <string name="batterymanage_result_ad_callfilter_title">Disturbance interception</string>
     <string name="batterymanage_result_ad_callfilter_content">Identify and intercept those annoying crank calls</string>
     <string name="batterymanage_label"> applications are using power secretly</string>
+    <string name="batterymanage_label_old"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> applications are using power secretly</string>
     <string name="batterymanage_boost">Power consumption optimization</string>
     <string name="batterymanage_boost_finished">Optimization completed</string>
     <string name="batterymanage_tip_loading">Checking power-consuming applications</string>

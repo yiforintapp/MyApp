@@ -163,7 +163,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     public void hideLoadingOrEmpty() {
         mRlLoadingOrEmpty.setVisibility(View.GONE);
         if (mListBatteryComsuptions != null) {
-            mTvListTitle.setText(Html.fromHtml(String.format(getString(R.string.batterymanage_label), mListBatteryComsuptions.size())));
+            mTvListTitle.setText(Html.fromHtml(String.format(getString(R.string.batterymanage_label_old), mListBatteryComsuptions.size())));
         }
     }
     

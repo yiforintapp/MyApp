@@ -921,6 +921,7 @@
     <string name="batterymanage_result_ad_callfilter_title">騷擾攔截</string>
     <string name="batterymanage_result_ad_callfilter_content">識別並攔截那些煩人的騷擾電話</string>
     <string name="batterymanage_label">個應用正在偷偷耗電</string>
+    <string name="batterymanage_label_old"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data>個應用正在偷偷耗電</string>
     <string name="batterymanage_boost">省電優化</string>
     <string name="batterymanage_boost_finished">優化完成</string>
     <string name="batterymanage_tip_loading">正在檢測耗電應用</string>
