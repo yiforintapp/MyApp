@@ -16,6 +16,7 @@ import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.schedule.BlackListFileFetchJob;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
@@ -113,6 +114,11 @@ public class BlacklistTab extends BaseTable {
 
             db.execSQL("DROP INDEX IF EXISTS phone_idx");
             createTable(db);
+
+            if (oldVersion == 9) {
+                // 3.2版本需要先把拉取任务时间及状态重置一下
+                BlackListFileFetchJob.resetTimesAndCounts();
+            }
         }
     }
 
@@ -434,6 +440,8 @@ public class BlacklistTab extends BaseTable {
                 if (rows <= 0) {
                     long rowId = database.insert(CallFilterConstants.TAB_SERVER_BLACK_LIST, null, values);
                     LeoLog.d(TAG, "addServerBlackList, insert rowid: " + rowId);
+                } else {
+                    LeoLog.d(TAG, "addServerBlackList, update rows: " + rows);
                 }
             }
             database.setTransactionSuccessful();

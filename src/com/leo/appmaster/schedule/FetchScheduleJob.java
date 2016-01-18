@@ -92,15 +92,15 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         return getClass().getSimpleName();
     }
 
-    private String getJobTimeKey() {
+    protected String getJobTimeKey() {
         return getClass().getSimpleName() + "_time";
     }
 
-    private String getJobFailCountKey() {
+    protected String getJobFailCountKey() {
         return getClass().getSimpleName() + "_fail";
     }
 
-    private String getJobStateKey() {
+    protected String getJobStateKey() {
         return getClass().getSimpleName() + "_state";
     }
 

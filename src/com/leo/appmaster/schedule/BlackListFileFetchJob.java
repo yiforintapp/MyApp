@@ -8,11 +8,13 @@ import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.db.BlacklistTab;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.mgr.MgrContext;
@@ -253,5 +255,19 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
             result.put(headers[i].getName(), headers[i].getValue());
         }
         return result;
+    }
+
+    public static void resetTimesAndCounts() {
+        LeoLog.i(TAG, "resetTimesAndCounts....");
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(context);
+
+        FetchScheduleJob job = new BlackListFileFetchJob();
+        // 保存时间
+        pref.setScheduleTime(job.getJobTimeKey(), 0);
+        // 保存状态
+        pref.setScheduleValue(job.getJobStateKey(), STATE_FAIL);
+        // 保存重试次数
+        pref.setScheduleValue(job.getJobFailCountKey(), 0);
     }
 }
