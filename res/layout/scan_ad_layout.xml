@@ -12,7 +12,7 @@
     android:paddingLeft="9dp"
     android:paddingRight="9dp"
     android:paddingTop="9dp"
-    android:visibility="invisible">
+    android:visibility="gone">
 
     <RelativeLayout
         android:id="@+id/preview_title_layout"

@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.graphics.Bitmap;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import com.leo.appmaster.activity.PrivacyOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.SimpleAnimatorListener;
 import com.leo.appmaster.mgr.BatteryManager;
@@ -35,16 +38,24 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, SelfScrollView.ScrollBottomListener, View.OnClickListener {
+
+    private static final String TAG = "BatteryViewFragment";
+
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
     private static final int GREEN_ARROW_MOVE = 3;
@@ -300,11 +311,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
         }
+
+        loadAd();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        releaseAd();
     }
 
 
@@ -634,4 +648,94 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
         mLeoPopMenu.setListViewDivider(null);
     }
+
+    /* 广告相关 - 开始 */
+    private boolean mShouldLoadAd = false;
+
+    private void loadAd() {
+        LeoLog.d(TAG, "loadAd called");
+        mShouldLoadAd = AppMasterPreference.getInstance(mActivity).getADOnScreenSaver() == 1;
+        if (mShouldLoadAd) {
+            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_CHARGING,
+                    new MobvistaEngine.MobvistaListener() {
+                        @Override
+                        public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                            if (code == MobvistaEngine.ERR_OK) {
+                                LeoLog.d(TAG, "Ad data ready");
+                                sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign);
+                                ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                            }
+                        }
+
+                        @Override
+                        public void onMobvistaClick(Campaign campaign) {
+                            // TODO 埋点
+                            LeoLog.d(TAG, "Ad clicked");
+                        }
+                    });
+        }
+    }
+
+    private void releaseAd() {
+        if (mShouldLoadAd) {
+            LeoLog.d(TAG, "release ad");
+            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_CHARGING);
+        }
+    }
+
+    public static class AdPreviewLoaderListener implements ImageLoadingListener {
+        WeakReference<BatteryViewFragment> mFragment;
+        Campaign mCampaign;
+
+        public AdPreviewLoaderListener(BatteryViewFragment fragment, final Campaign campaign) {
+            mFragment = new WeakReference<BatteryViewFragment>(fragment);
+            mCampaign = campaign;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+            LeoLog.e(TAG, "failed to load AD preview: " +
+                    failReason.getCause().getLocalizedMessage());
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            LeoLog.d(TAG, "Ad preview image ready");
+            BatteryViewFragment fragment = mFragment.get();
+            if (loadedImage != null && fragment != null) {
+                LeoLog.d(TAG, "load done: " + imageUri);
+                // TODO fill advertise view here
+                fragment.initAdLayout(fragment.mRootView, mCampaign, loadedImage);
+            }
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+
+        }
+    }
+
+    private static AdPreviewLoaderListener sAdImageListener;
+
+    private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
+        View adView = rootView.findViewById(R.id.ad_content);
+        TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
+        tvTitle.setText(campaign.getAppName());
+        Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
+        btnCTA.setText(campaign.getAdCall());
+        ImageView preview = (ImageView) adView.findViewById(R.id.item_ad_preview);
+        preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        preview.setImageBitmap(previewImage);
+        ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
+        ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
+        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, adView);
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
+        adView.setVisibility(View.VISIBLE);
+    }
+    /* 广告相关 - 结束 */
 }
