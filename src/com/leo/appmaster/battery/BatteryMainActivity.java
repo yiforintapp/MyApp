@@ -206,7 +206,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                     showEmpty();
                     mTvListTitle.setText(R.string.batterymanage_tip_nothing_to_boost);
                     mTvEmpty.setText(R.string.batterymanage_tip_nothing_to_boost);
-                    showResultFragment();
+//                    showResultFragment();//
+                    startBatteryDismissAnim();
                 }
             }, 1000);//TODO 假loading的持续时间
         }
@@ -283,7 +284,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             @Override
             public void onAnimationEnd(Animation animation) {
                 startTranslateAnim();
-//                startShortenTopLayoutAnim();
+                startShortenTopLayoutAnim();
                 startShowCompleteAnim();
                 showResultFragment();
             }
@@ -295,22 +296,23 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     
     
-//    protected void startShortenTopLayoutAnim() {
-//        LeoLog.i("tempp", "start shorten anim");
-//        int height = mRlTopAnimLayout.getHeight();
-//        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("height", height, (int)(height * 0.8));
-//        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
-//        anim.addUpdateListener(new AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//                LayoutParams layoutParams = mRlTopAnimLayout.getLayoutParams();
-//                layoutParams.height = (Integer) animation.getAnimatedValue();
-//                LeoLog.i("tempp", "heigh = " + mRlTopAnimLayout.getHeight());
-//            }
-//        });
-//        anim.setDuration(TRANSLATE_ANIM_DURATION);
-//        anim.start();
-//    }
+    protected void startShortenTopLayoutAnim() {
+        LeoLog.i("tempp", "start shorten anim");
+        int height = mRlTopAnimLayout.getHeight();
+        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("sdafasdf", height, (int)(height * 0.7));
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
+        anim.addUpdateListener(new AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                LayoutParams layoutParams = mRlTopAnimLayout.getLayoutParams();
+                layoutParams.height = (Integer) animation.getAnimatedValue();
+                LeoLog.i("tempp", "heigh = " + mRlTopAnimLayout.getHeight());
+                mRlTopAnimLayout.setLayoutParams(layoutParams);
+            }
+        });
+        anim.setDuration(TRANSLATE_ANIM_DURATION);
+        anim.start();
+    }
 
     protected void showResultFragment() {
         if (mIsResultShowed) {
@@ -342,7 +344,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         float initialW = mIvShield.getWidth();
         float initialH = mIvShield.getHeight();
         PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, DipPixelUtil.dip2px(this, 15));
-        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("y", initialY, DipPixelUtil.dip2px(this, 1));
+        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("top", initialY, DipPixelUtil.dip2px(this, 0));
         PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.66f);
         PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.66f);
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX, holderY, holderScaleX, holderScaleY);

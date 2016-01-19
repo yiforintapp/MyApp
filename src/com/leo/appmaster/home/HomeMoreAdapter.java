@@ -77,7 +77,7 @@ public class HomeMoreAdapter extends BaseAdapter {
     private static final int ID_RES_HIDE_VIDEO = R.drawable.ic_up_hide_video;
     private static final int ID_RES_CONTACT_CALL = R.drawable.ic_up_contact_call;
     private static final int ID_RES_CONTACT_SMS = R.drawable.ic_up_contact_sns;
-    private static final int ID_RES_PHONE_LOST = R.drawable.ic_up_phone_lost;//TODO
+    private static final int ID_RES_PHONE_LOST = R.drawable.ic_home_more_intruder;
     private static final int ID_RES_INTERCEPT = R.drawable.intercept;
     private static final int ID_RES_CONTACT = R.drawable.ic_up_contact;
     private static final int ID_RES_APP_DEL = R.drawable.ic_up_del;
