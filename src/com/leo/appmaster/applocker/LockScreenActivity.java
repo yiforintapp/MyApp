@@ -1215,16 +1215,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
 							@Override
 							public void onLoadingStarted(String imageUri, View view) {
-
+                                LeoLog.d("STONE_AD_DEBUG", "start to load preview for: " + imageUri);
 							}
 
 							@Override
 							public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 								mAdMap.remove(unitId);
+                                LeoLog.d("STONE_AD_DEBUG", "onLoadingFailed for: " + imageUri);
 							}
 
 							@Override
 							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                                LeoLog.d("STONE_AD_DEBUG", "onLoadingComplete for: " + imageUri);
 								mAdBitmapMap.put(unitId, loadedImage);
 								mAdUnitIdList.add(unitId);
 								if (mAdapterCycle == null) {
