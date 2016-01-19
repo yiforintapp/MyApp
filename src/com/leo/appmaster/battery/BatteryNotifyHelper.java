@@ -35,7 +35,7 @@ public class BatteryNotifyHelper {
     private static final String ACTION_LEO_BATTERY_APP =
             "com.leo.appmaster.battery.notification.action";
     private static final int CHECK_INTERVAL = 3 * 60 * 60 * 1000;
-
+//    private static final int CHECK_INTERVAL = 10 * 1000;
     private BatteryManager mManager;
     private Context mContext;
 

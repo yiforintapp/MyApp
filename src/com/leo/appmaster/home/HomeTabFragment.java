@@ -24,6 +24,10 @@ import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.LeoLog;
@@ -264,9 +268,24 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.home_intruder_tv:
                     // 入侵者防护
+//                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
+//                    Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
+//                    startActivity(intent);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
-                    Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
-                    startActivity(intent);
+                    LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                    boolean flag = manager.isUsePhoneSecurity();
+                    Intent intent = null;
+                    if (!flag) {
+                        intent = new Intent(activity, PhoneSecurityGuideActivity.class);
+                        intent.putExtra(PhoneSecurityConstants.KEY_FORM_HOME_SECUR, true);
+                    } else {
+                        intent = new Intent(activity, PhoneSecurityActivity.class);
+                    }
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case R.id.home_wifi_tab:
 //                     wifi安全

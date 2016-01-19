@@ -31,6 +31,7 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
@@ -374,10 +375,12 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
                     startISwipHandlerForInstallIS(installISwipe);
                     break;
-                case R.string.home_tab_lost:
+                case R.string.home_tab_instruder:
                     // 手机防盗
+                    LeoLog.i(TAG, "start i");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
-                    startPhoneSecurity();
+                    intent = new Intent(getActivity(), IntruderprotectionActivity.class);
+                    startActivity(intent);
                     break;
             }
         }

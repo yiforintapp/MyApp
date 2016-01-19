@@ -158,12 +158,12 @@
                     android:layout_width="@dimen/home_tab_ic_size"
                     android:layout_height="@dimen/home_tab_ic_size"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_home_tab_intuder" />
+                    android:src="@drawable/ic_home_tab_antilost" />
 
                 <TextView
                     style="@style/HomeTabText"
                     android:layout_below="@id/home_ic_intruder_img"
-                    android:text="@string/home_tab_instruder" />
+                    android:text="@string/home_tab_lost" />
             </RelativeLayout>
         </RelativeLayout>
 

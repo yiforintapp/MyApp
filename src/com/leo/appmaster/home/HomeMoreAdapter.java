@@ -41,7 +41,7 @@ public class HomeMoreAdapter extends BaseAdapter {
 
     private static final int[] ARRAY_CONTACT_SINGLE = new int[]{
             R.string.class_privacy_protection,
-            R.string.home_tab_lost,
+            R.string.home_tab_instruder,
             R.string.privacy_contacts
     };
 
@@ -77,7 +77,7 @@ public class HomeMoreAdapter extends BaseAdapter {
     private static final int ID_RES_HIDE_VIDEO = R.drawable.ic_up_hide_video;
     private static final int ID_RES_CONTACT_CALL = R.drawable.ic_up_contact_call;
     private static final int ID_RES_CONTACT_SMS = R.drawable.ic_up_contact_sns;
-    private static final int ID_RES_PHONE_LOST = R.drawable.ic_up_phone_lost;
+    private static final int ID_RES_PHONE_LOST = R.drawable.ic_up_phone_lost;//TODO
     private static final int ID_RES_INTERCEPT = R.drawable.intercept;
     private static final int ID_RES_CONTACT = R.drawable.ic_up_contact;
     private static final int ID_RES_APP_DEL = R.drawable.ic_up_del;
@@ -111,7 +111,8 @@ public class HomeMoreAdapter extends BaseAdapter {
         arrayList.add(ARRAY_HELPER);
 
         mDrawableArray.put(R.string.hp_helper_iswipe, ID_RES_HELPER_ISWIPE);
-        mDrawableArray.put(R.string.home_tab_lost, ID_RES_PHONE_LOST);
+//        mDrawableArray.put(R.string.home_tab_lost, ID_RES_PHONE_LOST);
+        mDrawableArray.put(R.string.home_tab_instruder, ID_RES_PHONE_LOST);
         mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT);
         mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);
         mDrawableArray.put(R.string.hp_hide_video, ID_RES_HIDE_VIDEO);
