@@ -65,6 +65,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             PreferenceTable preferenceTable = PreferenceTable.getInstance();
             if (!isCallFilterShareTimesNull) {
                 int callFilterTimes = resp.getInt("harass_intercept_num");
+                LeoLog.i(TAG, "骚扰拦截限制次数:" + callFilterTimes);
                 preferenceTable.putInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, callFilterTimes);
             } else {
                 preferenceTable.putInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10); // 获取不到默认10次

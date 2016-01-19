@@ -1,8 +1,7 @@
 
 package com.leo.appmaster.callfilter;
 
-import java.util.List;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +10,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -22,7 +24,12 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.Utilities;
+
+import java.util.List;
 
 public class CallFilterMainActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
@@ -38,6 +45,8 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     private CallFilterFragment mCallFilterFragment;
     private boolean mNeedToHomeWhenFinish = false;
     private CallFilterFragmentHoler[] mFragmentHolders = new CallFilterFragmentHoler[2];
+
+    private LEOAlarmDialog mShareDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         if (getIntent().getBooleanExtra("needMoveToTab2", false)) {
             mViewPager.setCurrentItem(1);
         }
+        showShareDialog();
     }
 
     @Override
@@ -96,7 +106,75 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         if (intent.getBooleanExtra("needMoveToTab2", false)) {
             mViewPager.setCurrentItem(1);
         }
+        showShareDialog();
+    }
 
+    private void showShareDialog() {
+        Intent i = getIntent();
+        String from = i.getStringExtra("from");
+        if (from != null && from != "") {
+            return;
+        }
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        int currentTimes = preferenceTable.getInt(PrefConst.ENTER_CALL_FILTER_TIMES, 0);
+        int limitTimes = preferenceTable.getInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 0);
+        if (currentTimes < limitTimes) {  // 小于限制次数
+            preferenceTable.putInt(PrefConst.ENTER_CALL_FILTER_TIMES, currentTimes + 1);
+            return;
+        }
+        if (preferenceTable.getBoolean(PrefConst.CALL_FILTER_SHOW, false)) {
+            return;
+        }
+        if (mShareDialog == null) {
+            mShareDialog = new LEOAlarmDialog(CallFilterMainActivity.this);
+            mShareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mShareDialog != null) {
+                        mShareDialog = null;
+                    }
+                }
+            });
+        }
+        String content = getString(R.string.callfilter_share_dialog_content);
+        String shareButton = getString(R.string.share_dialog_btn_query);
+        String cancelButton = getString(R.string.share_dialog_query_btn_cancel);
+        mShareDialog.setContent(content);
+        mShareDialog.setLeftBtnStr(cancelButton);
+        mShareDialog.setRightBtnStr(shareButton);
+        mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mShareDialog != null) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+                shareApps();
+            }
+        });
+        mShareDialog.show();
+        preferenceTable.putBoolean(PrefConst.CALL_FILTER_SHOW, true);
+    }
+
+
+    /** 分享应用 */
+    private void shareApps() {
+        mLockManager.filterSelfOneMinites();
+        PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
+        boolean isContentEmpty = TextUtils.isEmpty(
+                sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT));
+        boolean isUrlEmpty = TextUtils.isEmpty(
+                sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_URL));
+        String shareString;
+        if (!isContentEmpty && !isUrlEmpty) {
+            shareString = sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT)
+                    .concat(" ")
+                    .concat(sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_URL));
+        } else {
+            shareString = getResources().getString(R.string.callfilter_share_content)
+                    .concat(" ").concat(Constants.DEFAULT_SHARE_URL);
+        }
+        Utilities.toShareApp(shareString, getTitle().toString(), CallFilterMainActivity.this);
     }
 
     private void initFragment() {

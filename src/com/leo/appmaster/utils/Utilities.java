@@ -762,4 +762,13 @@ public final class Utilities {
         return DipPixelUtil.px2dip(context, v.getMeasuredHeight());
     }
 
+    public static void toShareApp(String shareString,String title, Context context) {
+        Intent intent=new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+//                intent.setType("image/*");  //新浪微博只能使用这种type
+        intent.putExtra(Intent.EXTRA_TEXT, shareString);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(Intent.createChooser(intent, title));
+    }
+
 }

@@ -474,5 +474,6 @@ public class Constants {
     public static final String BATTERY_FROM = "from_battery";
     public static final String FROM_BATTERY_PROTECT = "batteryprotect";
 
-    public static final String VIRTUAL_DESKTOP_PIC = "/virtual_desktop_pic";
+    public static final String VIRTUAL_DESKTOP_PIC = "/virtual_desktop_pic"; // 虚化图片名
+    public static final String DEFAULT_SHARE_URL = "http://www.leomaster.com.cn/m/privacy/"; // 默认分享链接
 }

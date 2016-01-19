@@ -265,4 +265,11 @@ public class PrefConst {
     public static final String KEY_CALL_FILTER_SHARE_TIMES = "call_filter_share_times";
 
     public static final String VIRTUAL_IMG_HASH_CODE = "virtual_img_hash_code";
+    // 是否显示过手机防盗页分享框
+    public static final String PHONE_SECURITY_SHOW = "phone_security_show";
+    // 是否显示过骚扰拦截页分享框
+    public static final String CALL_FILTER_SHOW = "call_filter_show";
+    // 当前已经进入骚扰拦截的次数
+    public static final String ENTER_CALL_FILTER_TIMES = "enter_call_filter_times";
+
 }

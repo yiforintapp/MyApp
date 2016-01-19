@@ -843,25 +843,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 }
                 break;
             case R.id.share_layout:  // 分享
-//                Toast.makeText(IntruderCatchedActivity.this, "点击分享", Toast.LENGTH_SHORT).show();
-//                List<ResolveInfo> mApps = AppUtil.getShareApps(IntruderCatchedActivity.this);
-//                PackageManager packageManager = getPackageManager();
-//                for (ResolveInfo resolveInfo: mApps) {
-//                    LeoLog.e("IntruderCatchedActivity", "resolveInfo:" + resolveInfo.loadLabel(packageManager).toString());
-//                }
-//                final ResolveInfo mInfo = mApps.get(2);
-//                ThreadManager.getSubThreadHandler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//                        shareIntent.setComponent(new ComponentName(mInfo.activityInfo.packageName, mInfo.activityInfo.name));
-//                        shareIntent.setType("text/plain");
-//                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "测试， 标题");
-//                        shareIntent.putExtra(Intent.EXTRA_TEXT, "测试，这里发送推广地址");
-//                        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(shareIntent);
-//                    }
-//                }, 2000);
                 mLockManager.filterSelfOneMinites();
                 PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
                 boolean isContentEmpty = TextUtils.isEmpty(
@@ -875,15 +856,11 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                             .concat(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
                 } else {
                     shareString = getResources().getString(R.string.intruder_share_content)
-                            .concat(" ")
-                            .concat("www.baidu.com");
+                                    .concat(" ").concat(Constants.DEFAULT_SHARE_URL);
                 }
-                Intent intent=new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-//                intent.setType("image/*");  //新浪微博只能使用这种type
-                intent.putExtra(Intent.EXTRA_TEXT, shareString);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(Intent.createChooser(intent, getTitle()));
+
+                Utilities.toShareApp(shareString, getTitle().toString(), IntruderCatchedActivity.this);
+
                 break;
             case R.id.item_btn_rv:  // 点击swifty卡片
                 mLockManager.filterSelfOneMinites();
