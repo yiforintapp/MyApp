@@ -165,6 +165,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         super.onResume();
         mTvPercentValue.setText(mBtrManager.getBatteryLevel() + "");
         mWvBattery.setPercent(mBtrManager.getBatteryLevel());
+//        mWvBattery.setPercent(5);
         mBtrManager.updateBatteryPageState(true);
         LeoLog.i(TAG, "onResume");
 //        if (mFrgmResult != null && mFrgmResult.isVisible()) {

@@ -20,8 +20,7 @@ public class WaveView extends View {
     private static final int WAVE_PAINT_COLOR = 0x8800aa00;  //TODO 两个波浪分别使用不同颜色
    
     // y = Asin(wx+b)+h  
-    
-    private static final float STRETCH_FACTOR_A = 10;  //公式中的A值，波的高点和低点与水平中线的距离
+    private static final float STRETCH_FACTOR_A = 15;  //公式中的A值，波的高点和低点与水平中线的距离
     private static final int OFFSET_Y = 0;  
     // 第一条水波移动速度  
     private static final int TRANSLATE_X_SPEED_ONE = 9;  
@@ -103,10 +102,18 @@ public class WaveView extends View {
         resetPositonY();  
         for (int i = 0; i < mTotalWidth; i++) {  
         	if (mPercent != 0) {
+        	    if (mPercent == 100) {
+        	        canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint);
+                    canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint);
+        	    } else {
+        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * STRETCH_FACTOR_A) + mResetOneYPositions[i]) , i, mTotalHeight, mWavePaint);
+        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * STRETCH_FACTOR_A) + mResetTwoYPositions[i]) - 2 , i, mTotalHeight, mWavePaint);
+        	        
+        	    }
         		// 绘制第一条水波纹  
-        		canvas.drawLine(i, mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 7) - (mPercent/100 * (mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 7))), i, mTotalHeight, mWavePaint);  
-        		// 绘制第二条水波纹
-        		canvas.drawLine(i, mTotalHeight - mResetTwoYPositions[i] - (STRETCH_FACTOR_A + 8) - (mPercent/100 * (mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 8))), i, mTotalHeight, mWavePaint);  
+//        		canvas.drawLine(i, mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 7) - (mPercent/100 * (mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 7))), i, mTotalHeight, mWavePaint);  
+        	    // 绘制第二条水波纹
+//        		canvas.drawLine(i, mTotalHeight - mResetTwoYPositions[i] - (STRETCH_FACTOR_A + 8) - (mPercent/100 * (mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 8))), i, mTotalHeight, mWavePaint); 
         	}
         }  
   
