@@ -37,9 +37,9 @@ public class AutoStartGuideList extends WhiteList {
     public static final int HUAWEIP6 = 5;
     public static final int IUNI = 6;
     public static final int SAMSUMG_SYS = 7;
-    // private static final int OPPO = 3;
+    private static final int OPPO = 8;
     public static int[] LIST = {
-            XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6, IUNI, SAMSUMG_SYS
+            XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6, IUNI, SAMSUMG_SYS, OPPO
     };
 
 
@@ -50,8 +50,8 @@ public class AutoStartGuideList extends WhiteList {
 
     private static final int SAMSUNG_TIP_COUNT = 3;
     private static LockManager sLockManager;
-    
-    private static Boolean sIsSamSumg; 
+
+    private static Boolean sIsSamSumg;
 
     public AutoStartGuideList() {
         super();
@@ -72,7 +72,7 @@ public class AutoStartGuideList extends WhiteList {
                             break;
                         }
                     } else {
-                        LeoLog.i(TAG, "该手机机型不存在于白名单~~~");
+                        LeoLog.i(TAG, "This phone is exist!");
                         break;
                     }
                 }
@@ -110,6 +110,9 @@ public class AutoStartGuideList extends WhiteList {
                 break;
             case SAMSUMG_SYS:
                 list = new SamSungOptimize();
+                break;
+            case OPPO:
+                list = new Oppo();
                 break;
             default:
                 break;
@@ -153,8 +156,6 @@ public class AutoStartGuideList extends WhiteList {
             Intent intent = new Intent();
             ComponentName cn = new ComponentName("com.android.settings",
                     "com.miui.securitycenter.permission.PermMainActivity");
-            // ComponentName cn = new ComponentName("com.android.settings",
-            // "com.miui.securitycenter.power.SelectAutoRunApplicationActivity");
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
@@ -264,6 +265,28 @@ public class AutoStartGuideList extends WhiteList {
 
     }
 
+    /*oppo rom*/
+    public static class Oppo extends AutoStartGuideList {
+        @Override
+        protected boolean doHandler() {
+
+            Intent intent = new Intent();
+            ComponentName cm = new ComponentName("com.oppo.purebackground", "com.oppo.purebackground.PurebackgroundTopActivity");
+            intent.setComponent(cm);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                mContext.startActivity(intent);
+                sLockManager.filterSelfOneMinites();
+                LeoLog.e(TAG, "skip oppo rom sucess！");
+            } catch (Exception e) {
+                LeoLog.e(TAG, "skip oppo rom fail！");
+                e.printStackTrace();
+            }
+            return false;
+        }
+    }
+
+
     /* inui */
     public static class Iuini extends AutoStartGuideList {
         @Override
@@ -297,6 +320,7 @@ public class AutoStartGuideList extends WhiteList {
         }
     }
 
+
     /* 判断是否为添加自启动的白名单机型 */
     public static int isAutoWhiteListModel(Context context) {
         boolean miuiV5 = BuildProperties.isMiuiV5();
@@ -328,11 +352,14 @@ public class AutoStartGuideList extends WhiteList {
         if (inui) {
             return IUNI;
         }
-
          /*samsung 是否为存在“电池优化-应用程序优化”的系统*/
         boolean samSung = isSamSungGuideModel(context);
         if (samSung) {
             return SAMSUMG_SYS;
+        }
+        Boolean oppo = BuildProperties.isOppoOs();
+        if (oppo) {
+            return OPPO;
         }
 
         return -1;
@@ -364,6 +391,10 @@ public class AutoStartGuideList extends WhiteList {
         boolean samSung = isSamSungGuideModel(context);
         if (samSung) {
             return R.string.samsung_tip_txt;
+        }
+        Boolean oppo = BuildProperties.isOppoOs();
+        if (oppo) {
+            return R.string.oppo_rom_tip_txt;
         }
         return R.string.auto_start_guide_tip_content;
     }
@@ -466,7 +497,7 @@ public class AutoStartGuideList extends WhiteList {
     /*判断是否该手机存在三星Note的应用程序优化*/
     public static boolean isSamSungNActivity(Context context) {
         // PGL-21
-        if(PhoneInfo.getAndroidVersion() > 21) {
+        if (PhoneInfo.getAndroidVersion() > 21) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.setPackage("com.samsung.android.sm");
             intent.setClassName("com.samsung.android.sm", "com.samsung.android.sm.common.appmanager.AppLockingViewActivity");
@@ -513,7 +544,7 @@ public class AutoStartGuideList extends WhiteList {
 
 
     public static boolean isSamSungGuideModel(Context context) {
-        if(sIsSamSumg == null) {
+        if (sIsSamSumg == null) {
             sIsSamSumg = BuildProperties.isSamSungModel()
                     && (isSamSungSActivity(context) || isSamSungNActivity(context));
         }
