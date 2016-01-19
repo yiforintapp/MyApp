@@ -927,8 +927,8 @@
     <string name="screen_protect_type_three">Непрерывная зарядка малым током</string>
 
     <string name="screen_protect_time">Оставшееся время подзарядки </string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> часов <Data><![CDATA[<font color="#0ad931">%2$s</font>]]> минут</Data></string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> минут</string>
+    <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
+    <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
 
     <string name="screen_protect_unlock_text">Передвинуть для разблокировки</string>
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы Privacy Guard требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить Privacy Guard</string>

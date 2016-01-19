@@ -948,8 +948,8 @@
     <string name="screen_protect_type_three">涓流充電</string>
 
     <string name="screen_protect_time">充電剩餘時間 </string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>時<Data><![CDATA[<font color="#0ad931"> %2$s</font>]]>分</Data></string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>分</string>
+    <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>時<Data><![CDATA[<font color="#0ad931"> %2$s</font>]]>分</Data></string>-->
+    <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>分</string>-->
 
     <string name="screen_protect_unlock_text">滑動來解鎖</string>
     <string name="oppo_rom_tip_txt">由於系統限制，隱私衛士需要開啟權限才能正常工作。開啟步驟“添加程序”-->“添加允許後台運行的應用”-->選擇添加隱私衛士</string>

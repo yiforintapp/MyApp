@@ -242,7 +242,7 @@
                     android:layout_marginLeft="3dp"
                     android:text="30"
                     android:textColor="@color/white"
-                    android:textSize="30dp" />
+                    android:textSize="20dp" />
 
                 <TextView
                     android:id="@+id/hide_tv_two"
@@ -288,7 +288,7 @@
             android:layout_marginLeft="3dp"
             android:layout_toRightOf="@id/left_time"
             android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textSize="14dp" />
     </RelativeLayout>
     <!-- 剩余时间 -->
 

@@ -945,8 +945,8 @@
     <string name="screen_protect_type_three">ชาร์จด้วยกระแสต่ำ</string>
 
     <string name="screen_protect_time">เวลาส่วนที่เหลือในการชาร์จไฟ </string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>ชั่วโมง <Data><![CDATA[<font color="#0ad931">%2$s</font>]]>นาที</Data></string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>นาที</string>
+    <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
+    <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
 
     <string name="screen_protect_unlock_text">เลื่อนเพื่อปลดล็อค</string>
     <string name="oppo_rom_tip_txt">ด้วยข้อจำกัดของระบบมือถือ LEO Privacy Guard ต้องได้รับการมอบอำนาจก่อนใช้งาน ขั้นตอนการมอบคือ "เพิ่มแอพ" --> "เพิ่มแอพที่ทำงานอยู่เบื้องหลังได้" --> เลือกเพิ่ม LEO Privacy Guard</string>
