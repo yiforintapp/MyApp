@@ -64,12 +64,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static final int CHARING_TYPE_TRICKLE = 3;
 
     private static final int DIMISS_POP = 5;
+    private static final int LOAD_DONE_INIT_PLACE = 6;
 
     private View mTimeContent;
     private View mBatteryIcon;
     private View mRemainTimeContent;
     private BatteryTestViewLayout mSlideView;
-    ViewGroup.LayoutParams mSlideParams;
 
     private TextView mTvLevel;
     private TextView mTvBigTime;
@@ -78,7 +78,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvLeftTime;
     private TextView mTvTime;
     private SelfScrollView mScrollView;
-
 
     private WaveView mBottleWater;
     private View mThreeMoveView;
@@ -101,16 +100,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private ImageView mIvArrowMove;
 
     public static boolean isExpand = false;
-    public static String mBatteryText;
-    private int moveDistance = 350;
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
-    private int moveUpCount = 0;
-    private int adContentHeight = 0;
-    private int adExpandContentHeight = 0;
     private BatteryMenu mLeoPopMenu;
     private View mBossView;
+    private boolean isSetInitPlace = false;
 
     /**
      * Swifty
@@ -163,7 +158,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 case DIMISS_POP:
                     mLeoPopMenu.dimissPop();
                     break;
-                case 110:
+                case LOAD_DONE_INIT_PLACE:
                     reLocateMoveContent();
                     break;
             }
@@ -171,21 +166,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     };
 
     private void reLocateMoveContent() {
-
         LeoLog.d("testBatteryView", "slideview Y : " + mSlideView.getY());
-        mSlideView.setY(mBossView.getHeight() / 2);
-
-//        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-//                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() / 2);
-//        animMoveY.setDuration(1);
-//        animMoveY.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                super.onAnimationEnd(animation);
-//                mBossView.setVisibility(View.VISIBLE);
-//            }
-//        });
-//        animMoveY.start();
+        if (!isSetInitPlace) {
+            mSlideView.setY(mBossView.getHeight() / 2);
+            isSetInitPlace = true;
+        }
+        mBossView.setVisibility(View.VISIBLE);
     }
 
     private void batteryIconMoveBig() {
@@ -229,7 +215,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop(), mBatteryIcon.getTop()
                         - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 40));
-
 
         ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mBatteryIcon,
                 "scaleX", 1f, 0.6f);
@@ -328,15 +313,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mBossView.setOnTouchListener(this);
 
         mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
-        mSlideView.post(new Runnable() {
-            @Override
-            public void run() {
-                adContentHeight = mSlideView.getHeight();
-                mSlideParams = mSlideView.getLayoutParams();
-                mHandler.sendEmptyMessage(110);
-            }
-        });
-        moveDistance = DipPixelUtil.dip2px(mActivity, 180);
 
         mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
         mScrollView.setParent(mSlideView);
@@ -721,34 +697,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         });
         animMoveY.start();
-
-//        final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
-//                "scaleX", 1f, 1f);
-//        anim.setRepeatCount(ValueAnimator.INFINITE);
-//        anim.setDuration(1);
-//        anim.addListener(new SimpleAnimatorListener() {
-//            @Override
-//            public void onAnimationRepeat(Animator animation) {
-//                if (moveUpCount <= moveDistance) {
-//                    mSlideParams.height = adContentHeight + moveUpCount;
-//                    mSlideView.setLayoutParams(mSlideParams);
-//
-//                    moveUpCount = moveUpCount + 35;
-//                } else {
-//                    isExpand = true;
-//                    mShowing = false;
-//                    mScrollView.setScrollY(0);
-//                    mSlideView.setScrollView(false);
-//                    anim.cancel();
-//                }
-//            }
-//        });
-//        anim.start();
-
     }
 
     private void showMoveDown() {
-
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() / 2);
         animMoveY.setDuration(ANIMATION_TIME);
@@ -763,39 +714,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         });
         animMoveY.start();
-
-//        final ObjectAnimator anim = ObjectAnimator.ofFloat(mSlideView,
-//                "scaleX", 1f, 1f);
-//        anim.setRepeatCount(ValueAnimator.INFINITE);
-//        anim.setDuration(1);
-//        anim.addListener(new SimpleAnimatorListener() {
-//            @Override
-//            public void onAnimationRepeat(Animator animation) {
-//                if (moveUpCount <= moveDistance) {
-//                    mSlideParams.height = adExpandContentHeight - moveUpCount;
-//                    mSlideView.setLayoutParams(mSlideParams);
-//                    moveUpCount = moveUpCount + 35;
-//                } else {
-//                    isExpand = false;
-//                    mShowing = false;
-//                    mScrollView.setScrollY(0);
-//                    mSlideView.setScrollView(false);
-//                    anim.cancel();
-//                }
-//            }
-//        });
-//        anim.start();
-
-
     }
 
     private void expandContent(boolean expand) {
         if (expand) {
-            moveUpCount = 0;
             mHandler.sendEmptyMessage(MOVE_UP);
         } else {
-            moveUpCount = 0;
-            adExpandContentHeight = mSlideView.getHeight();
             mHandler.sendEmptyMessage(MOVE_DOWN);
         }
 
@@ -995,7 +919,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, adView);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
         adView.setVisibility(View.VISIBLE);
-        mBossView.setVisibility(View.VISIBLE);
+        mSlideView.post(new Runnable() {
+            @Override
+            public void run() {
+                mHandler.sendEmptyMessage(LOAD_DONE_INIT_PLACE);
+            }
+        });
     }
     /* 广告相关 - 结束 */
 
@@ -1042,7 +971,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mSwiftyTitle.setText(preferenceTable.getString(
                         PrefConst.KEY_CHARGE_SWIFTY_TITLE));
             }
-            mBossView.setVisibility(View.VISIBLE);
+            mSlideView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mHandler.sendEmptyMessage(LOAD_DONE_INIT_PLACE);
+                }
+            });
         }
     }
 
@@ -1088,7 +1022,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mExtraTitle.setText(preferenceTable.getString(
                         PrefConst.KEY_CHARGE_EXTRA_TITLE));
             }
-            mBossView.setVisibility(View.VISIBLE);
+            mSlideView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mHandler.sendEmptyMessage(LOAD_DONE_INIT_PLACE);
+                }
+            });
         }
 
     }

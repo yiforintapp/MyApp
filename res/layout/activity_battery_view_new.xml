@@ -300,7 +300,8 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_above="@id/slider"
-        android:background="@color/transparent">
+        android:background="@color/transparent"
+        android:visibility="invisible">
 
         <com.leo.appmaster.battery.BatteryTestViewLayout
             android:id="@+id/slide_content"
