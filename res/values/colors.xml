@@ -3,6 +3,7 @@
 
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
+    <color name="per50_black">#7d000000</color>
     <color name="gallery_bg">#80000000</color>
     <color name="white">#ffffffff</color>
     <color name="text_color_blue">#0582ff</color>
