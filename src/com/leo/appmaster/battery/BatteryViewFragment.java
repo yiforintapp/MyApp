@@ -24,7 +24,6 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.home.SimpleAnimatorListener;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
@@ -45,16 +44,12 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-import com.leo.tools.animator.ValueAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimerTask;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
@@ -169,24 +164,28 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mLeoPopMenu.dimissPop();
                     break;
                 case 110:
-                    testPart();
+                    reLocateMoveContent();
                     break;
             }
         }
     };
 
-    private void testPart() {
-        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() / 2);
-        animMoveY.setDuration(50);
-        animMoveY.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mBossView.setVisibility(View.VISIBLE);
-            }
-        });
-        animMoveY.start();
+    private void reLocateMoveContent() {
+
+        LeoLog.d("testBatteryView","slideview Y : " + mSlideView.getY());
+        mSlideView.setY(mBossView.getHeight() / 2);
+
+//        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+//                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() / 2);
+//        animMoveY.setDuration(1);
+//        animMoveY.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                super.onAnimationEnd(animation);
+//                mBossView.setVisibility(View.VISIBLE);
+//            }
+//        });
+//        animMoveY.start();
     }
 
     private void batteryIconMoveBig() {
@@ -1010,13 +1009,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
-//        mSlideView.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                adContentHeight = mSlideView.getHeight();
-//                mSlideParams = mSlideView.getLayoutParams();
-//            }
-//        });
         View adView = rootView.findViewById(R.id.ad_content);
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
@@ -1062,13 +1054,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
 //        if (true) {
 
-//            mSlideView.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    adContentHeight = mSlideView.getHeight();
-//                    mSlideParams = mSlideView.getLayoutParams();
-//                }
-//            });
             View include = viewStub.inflate();
             mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
@@ -1115,13 +1100,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
 //        if (true) {
-//            mSlideView.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    adContentHeight = mSlideView.getHeight();
-//                    mSlideParams = mSlideView.getLayoutParams();
-//                }
-//            });
             View include = viewStub.inflate();
             mExtraTitle = (TextView) include.findViewById(R.id.item_title);
             mExtraImg = (ImageView) include.findViewById(R.id.swifty_img);
