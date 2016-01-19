@@ -138,7 +138,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MOVE_UP:
-                    if (mSlideView.getVisibility() == View.VISIBLE) {
+                    if (mBossView.getVisibility() == View.VISIBLE) {
                         mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
                         mSlideView.setScrollable(true);
                         mShowing = true;
@@ -172,7 +172,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void reLocateMoveContent() {
 
-        LeoLog.d("testBatteryView","slideview Y : " + mSlideView.getY());
+        LeoLog.d("testBatteryView", "slideview Y : " + mSlideView.getY());
         mSlideView.setY(mBossView.getHeight() / 2);
 
 //        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
