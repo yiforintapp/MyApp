@@ -21,6 +21,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.GridLayoutAnimationController;
+import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -30,6 +34,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -344,13 +349,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private void prepareBoostAnimation() {
         final int remainItemCount = mListBatteryComsuptions.size();
 
-        // 添加空白item
-        for (int i=0;i<100;i++) {
-            mListBatteryComsuptions.add(BatteryComsuption.buildEmptyBatteryComsuption(this));
-        }
-        mAdapter.fillData(mListBatteryComsuptions);
-        mAdapter.notifyDataSetChanged();
-
         // 禁止拖动
         mGvApps.setOnTouchListener(new View.OnTouchListener() {
 
@@ -364,33 +362,42 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
         });
 
-        // 等待notifyDataSetChanged响应完
-        mGvApps.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mGvApps.computeVerticalScrollOffset() == 0) {
-                    startBoostAnimation(remainItemCount);
-                } else {
-                    // 移动回顶端
-                    mGvApps.setOnScrollListener(new AbsListView.OnScrollListener() {
-                        @Override
-                        public void onScrollStateChanged(AbsListView view, int scrollState) {
-                            if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
-                                    && mGvApps.computeVerticalScrollOffset() == 0) {
-                                startBoostAnimation(remainItemCount);
-                            }
-                        }
+        // 设置GridLayoutAnimation
+        float height = 150.0f;
+        View vv = mGvApps.getChildAt(0);
+        if (vv != null) {
+            // 需要与layout中的vertical spacing保持一致！
+            height = vv.getHeight() + DipPixelUtil.dip2px(BatteryMainActivity.this, 10);
+            LeoLog.d(TAG, "height = " + height);
+        }
+        TranslateAnimation ta = new TranslateAnimation(0.0f, 0.0f, height, 0.0f);
+        ta.setInterpolator(new AccelerateInterpolator());
+        ta.setDuration(120);
+        GridLayoutAnimationController gac = new GridLayoutAnimationController(ta, 0, 0);
+        gac.setDirection(GridLayoutAnimationController.DIRECTION_LEFT_TO_RIGHT);
+        mGvApps.setLayoutAnimation(gac);
 
-                        @Override
-                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-                        }
-                    });
-                    mGvApps.smoothScrollToPosition(0);
+        if (mGvApps.computeVerticalScrollOffset() == 0) {
+            startBoostAnimation(remainItemCount);
+        } else {
+            // 移动回顶端
+            mGvApps.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                            && mGvApps.computeVerticalScrollOffset() == 0) {
+                        startBoostAnimation(remainItemCount);
+                    }
                 }
-            }
-        }, 50);
 
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                }
+            });
+            mGvApps.setSmoothScrollbarEnabled(true);
+            mGvApps.smoothScrollToPosition(0);
+        }
     }
 
 
@@ -441,9 +448,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                                             public void run() {
                                                 startBoostAnimation(remainCount - count);
                                             }
-                                        }, 50);
+                                        }, 5);
                                     }
-                                }, 50);
+                                }, 125);
                             }
                         }
                     });
