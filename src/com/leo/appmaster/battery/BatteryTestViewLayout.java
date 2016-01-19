@@ -62,7 +62,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
                 if (e2.getY() < e1.getY()) {
                     scrollBottomListener.scrollTop();
                 } else {
-                    scrollBottomListener.scrollBottom();
+//                    scrollBottomListener.scrollBottom();
                 }
                 return true;
             }
@@ -77,7 +77,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
                 if (e2.getY() < e1.getY()) {
                     scrollBottomListener.scrollTop();
                 } else {
-                    scrollBottomListener.scrollBottom();
+//                    scrollBottomListener.scrollBottom();
                 }
                 return true;
             }
