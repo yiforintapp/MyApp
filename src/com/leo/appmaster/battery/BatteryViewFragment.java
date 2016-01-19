@@ -882,8 +882,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-            LeoLog.e(TAG, "failed to load AD preview: " +
-                    failReason.getCause().getLocalizedMessage());
+            LeoLog.e(TAG, "failed to load AD preview!");
         }
 
         @Override
