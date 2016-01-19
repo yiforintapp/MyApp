@@ -1033,7 +1033,7 @@
 
     <string name="screen_protect_time"> وقت الباقية للشحن</string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color=""#0ad931"">%1$s</font>]]></Data> H<Data><![CDATA[<font color=""#0ad931"">%2$s</font>]]></Data>M</string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>M </string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>M</string>
 
     <string name="screen_protect_unlock_text">حرك لفتح القفل</string>
     <string name="oppo_rom_tip_txt">،الخصوصية حارس تشغيل بعد عادية الصلاحية تعمل النظام قيد بنسبة  اجازة بعد الخافية التطبيقات تشغيل ، البرنامج اختر اضافة اضافة التشغيل الخصوصية حارس خطوة ، اضافة</string>
