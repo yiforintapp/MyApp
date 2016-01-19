@@ -513,10 +513,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void setBottleWater() {
-        int level = newState.level;
-        if (level > 90) {
-            level = 90;
-        }
+//        int level = newState.level;
+        int level = 99;
+//        if (level > 95) {
+//            level = 93;
+//        }
         mBottleWater.setPercent(level);
     }
 
