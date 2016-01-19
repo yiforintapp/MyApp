@@ -22,11 +22,12 @@
         app:rippleOverlay="false">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/iv_switch_screenview"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:gravity="center">
+            android:gravity="left">
 
             <TextView
                 android:id="@+id/tv_title_screenview"
@@ -35,7 +36,7 @@
                 android:singleLine="true"
                 android:text="@string/batterymanage_switch_screen"
                 android:textColor="@color/c2"
-                android:textSize="@dimen/wifi_set_title_text_size" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/tv_summary_screenview"
@@ -47,7 +48,7 @@
                 android:maxLines="2"
                 android:text="@string/batterymanage_switch_screen_summary"
                 android:textColor="@color/c4"
-                android:textSize="@dimen/wifi_set_title_text_des_size" />
+                android:textSize="10dp" />
         </RelativeLayout>
 
         <ImageView
@@ -73,11 +74,12 @@
         app:rippleOverlay="false">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iv_switch_noti"
             android:layout_marginLeft="20dp"
-            android:gravity="center">
+            android:gravity="left">
 
             <TextView
                 android:id="@+id/tv_title_noti"
@@ -86,7 +88,7 @@
                 android:singleLine="true"
                 android:text="@string/batterymanage_switch_noti"
                 android:textColor="@color/c2"
-                android:textSize="@dimen/wifi_set_title_text_size" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/tv_summary_noti"
@@ -98,7 +100,7 @@
                 android:maxLines="2"
                 android:text="@string/batterymanage_switch_noti_summary"
                 android:textColor="@color/c4"
-                android:textSize="@dimen/wifi_set_title_text_des_size" />
+                android:textSize="10dp" />
         </RelativeLayout>
 
         <ImageView
