@@ -21,7 +21,7 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
-import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -35,7 +35,6 @@ import com.leo.appmaster.ui.VirtualBitmap;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class BitmapUtils {
 
@@ -227,107 +226,131 @@ public class BitmapUtils {
     }
 
     /** 得到屏保需要drawable */
-    public static Drawable getDeskTopBitmap(final Context context, PreferenceTable preferenceTable) {
-        final WallpaperManager wallpaperManager = WallpaperManager
-                .getInstance(context);
-        Drawable drawable = null;
-        long startTime= SystemClock.elapsedRealtime();
+    public static Drawable getDeskTopBitmap(final Context context, final PreferenceTable preferenceTable) {
         try {
             ThreadManager.getSubThreadHandler().post(new Runnable() {
                 @Override
                 public void run() {
-                    // 获取当前壁纸
-                    final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-                    // 将Drawable转成Bitmap
-                    final Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
-                    PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                    long theSaveCode = preferenceTable.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
-                    LeoLog.e("getDeskTopBitmap", "theSaveCode:" + theSaveCode + "bm.hashCode():" + bm.hashCode());
-                    if (theSaveCode != bm.hashCode()) {
-                        preferenceTable.putLong(PrefConst.VIRTUAL_IMG_HASH_CODE, bm.hashCode());
-
-
-                        LeoLog.e("getDeskTopBitmap", "start");
-                        Drawable drawable = VirtualBitmap.BlurImages(bm, context);
-                        saveVirtualBitmap(drawable);
-                        ThreadManager.executeOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                LeoEventBus.getDefaultBus().postSticky(new VirtualEvent(true));
-                                LeoLog.e("getDeskTopBitmap", "end");
-                            }
-                        });
-
-                    }
+                    asyncVirtualPic(context, preferenceTable);
                 }
             });
-            if (preferenceTable.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0) != 0) {
-                return getFinalDrawable(context);
-            }
         } catch (Throwable e) {
             e.printStackTrace();
         }
 
-        LeoLog.e("getDeskTopBitmap", (SystemClock.elapsedRealtime() - startTime) + "");
+        return getFinalDrawable(context);
 
-        return drawable;
+    }
 
+    /** 异步虚化图片 */
+    public static void asyncVirtualPic(Context context, PreferenceTable preferenceTable) {
+        final WallpaperManager wallpaperManager = WallpaperManager
+                .getInstance(context);
+        // 获取当前壁纸
+        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        // 将Drawable转成Bitmap
+        final Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
+        long theSaveCode = preferenceTable.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
+        LeoLog.e("getDeskTopBitmap", "theSaveCode:" + theSaveCode + "bm.hashCode():" + bm.hashCode());
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED);
+        boolean isSaveFileExist = false;
+        if (sdCardExist) {
+            String path = Environment.getExternalStorageDirectory().toString()
+                    .concat(Constants.VIRTUAL_DESKTOP_PIC);
+            isSaveFileExist = new File(path).exists();
+        }
+        boolean codeLike = (theSaveCode == bm.hashCode());
+        if (!codeLike || (codeLike && !isSaveFileExist)) {
+            LeoLog.e("getDeskTopBitmap", "start");
+            Drawable drawable = VirtualBitmap.BlurImages(bm, context);
+            saveVirtualBitmap(drawable);
+            preferenceTable.putLong(PrefConst.VIRTUAL_IMG_HASH_CODE, bm.hashCode());
+            ThreadManager.executeOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    LeoEventBus.getDefaultBus().postSticky(new VirtualEvent(true));
+                    LeoLog.e("getDeskTopBitmap", "end");
+                }
+            });
+
+        }
     }
 
     /** 获得最终虚化后的图片 */
     public static Drawable getFinalDrawable(Context context) {
-        Bitmap bitmap = getVirtualBitmap(Environment.getExternalStorageDirectory().toString()
-                .concat(Constants.VIRTUAL_DESKTOP_PIC), context);
-        LeoLog.e("getDeskTopBitmap", "getFinalDrawable" + bitmap);
-        return bitmapToDrawable(bitmap);
+        Drawable drawable = null;
+        Bitmap bitmap = null;
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED);
+        if (sdCardExist) {
+            String path = Environment.getExternalStorageDirectory().toString()
+                    .concat(Constants.VIRTUAL_DESKTOP_PIC);
+            if (new File(path).exists()) {
+                bitmap = getVirtualBitmap(path, context);
+            }
+        }
+        if (bitmap != null) {
+            drawable = bitmapToDrawable(bitmap);
+        } else {
+            WallpaperManager wallpaperManager = WallpaperManager
+                    .getInstance(context);
+            drawable = wallpaperManager.getDrawable();
+        }
+        return drawable;
     }
 
     /**  保存虚化后的桌面壁纸图片*/
     public static void saveVirtualBitmap(Drawable drawable){
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED);
+        if (!sdCardExist || drawable == null) {
+            return;
+        }
         Bitmap bitmap = drawableToBitmap(drawable);
         File f = null;
+        FileOutputStream fOut = null;
         try {
             f = new File(Environment.getExternalStorageDirectory().toString()
                     .concat(Constants.VIRTUAL_DESKTOP_PIC));
 
             if (f.exists()) {
-                LeoLog.e("getDeskTopBitmap", "f.exists");
                 f.delete();
             }
             f.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        FileOutputStream fOut = null;
-        try {
             fOut = new FileOutputStream(f);
             bitmap.compress(Bitmap.CompressFormat.PNG, 80, fOut);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
-        }
-        try {
-            fOut.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } finally {
+            try {
+                fOut.flush();
+                fOut.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static Bitmap getVirtualBitmap(String path, Context context) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        int[] pix = AppUtil.getScreenPix(context);
-        int needWidth = pix[0];
-        int needHeight = pix[1];
-        options.inSampleSize = AppUtil.calculateInSampleSize(options, needWidth, needHeight);
-        options.inJustDecodeBounds = false;
+        Bitmap bitmap = null;
+        try {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, options);
+            int[] pix = AppUtil.getScreenPix(context);
+            int needWidth = pix[0];
+            int needHeight = pix[1];
+            options.inSampleSize = AppUtil.calculateInSampleSize(options, needWidth, needHeight);
+            options.inJustDecodeBounds = false;
+            if (!TextUtils.isEmpty(path)) {
+                bitmap = BitmapFactory.decodeFile(path, options);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
-        return  BitmapFactory.decodeFile(path, options);
+        return  bitmap;
     }
 
 }

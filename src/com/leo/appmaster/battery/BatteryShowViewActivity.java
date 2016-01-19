@@ -234,8 +234,10 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     public void onEventMainThread(VirtualEvent event) {
         if (event.mIsVirtual && mBatterViewBg != null) {
-            LeoLog.e("getDeskTopBitmap", "onEventMainThread");
-            mBatterViewBg.setBackgroundDrawable(BitmapUtils.getFinalDrawable(BatteryShowViewActivity.this));
+            Drawable drawable = BitmapUtils.getFinalDrawable(BatteryShowViewActivity.this);
+            if (drawable != null) {
+                mBatterViewBg.setBackgroundDrawable(drawable);
+            }
         }
     }
 }
