@@ -171,7 +171,8 @@
     <dimen name="app_manager_hotactivity_list_item_download_button_height">30dp</dimen> <!-- 26dp -->
     <dimen name="app_manager_home_logo_width_height">88dp</dimen> <!-- 83dp -->
 
-    <dimen name="kongbaiye_width_height">150dp</dimen> <!-- 135dp -->
+	<dimen name="kongbaiye_width_width">150dp</dimen>
+    <dimen name="kongbaiye_width_height">116dp</dimen> <!-- 135dp -->
     <dimen name="kongbaiye_text_size">18dp</dimen> <!-- 15dp -->
 
 

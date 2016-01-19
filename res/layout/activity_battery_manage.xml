@@ -99,7 +99,7 @@
                 android:layout_marginRight="30dp"
                 android:text="@string/batterymanage_boost_finished"
                 android:textColor="@color/c1"
-                android:textSize="@dimen/f3"
+                android:textSize="@dimen/f1"
                 android:visibility="invisible" />
         </RelativeLayout>
 
@@ -146,11 +146,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:visibility="gone" >
+                    android:visibility="visible" >
 
                     <ImageView
                         android:id="@+id/just_nothing_show_iv"
-                        android:layout_width="@dimen/kongbaiye_width_height"
+                        android:layout_width="@dimen/kongbaiye_width_width"
                         android:layout_height="@dimen/kongbaiye_width_height"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/elect_empty" />
