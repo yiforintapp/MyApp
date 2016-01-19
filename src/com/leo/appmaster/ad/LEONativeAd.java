@@ -91,6 +91,8 @@ public class LEONativeAd {
 
 			@Override
 			public void onLoadFailed() {
+				LeoLog.e(TAG, "fb ad loading fail");
+				LeoLog.e(TAG, "ready for loading max ad");
 				loadMinorAd();
 			}
 
@@ -164,12 +166,14 @@ public class LEONativeAd {
 			mMinorAd.loadAd();
 		} else if (mMinorAd2 != null) {
 			HashMap<String, String> map = new HashMap<String, String>();
+			LeoLog.e(TAG, "begin to load max ad");
 			mMinorAd2.loadAd(map, new AdListener() {
 				@Override
 				public void onAdLoaded(Campaign campaign) {
 					isLoading = false;
 //					mAvailableAd = mMinorAd2;
 					mCampaign = campaign;
+					LeoLog.e(TAG, "loading max ad success");
 					mHandler.sendEmptyMessage(MSG_NATIVE_AD_LOAD_OK);
 				}
 
