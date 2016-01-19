@@ -970,7 +970,7 @@
     <string name="screen_protect_type_two">Constant current charging</string>
     <string name="screen_protect_type_three">Trickle charging</string>
 
-    <string name="screen_protect_time">Remaining charging time</string>
+    <string name="screen_protect_time">Remaining charging time </string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> hours<Data><![CDATA[<font color="#0ad931">%2$s</font>]]> minutes</Data></string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> minutes</string>
 

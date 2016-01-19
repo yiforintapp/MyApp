@@ -1031,7 +1031,7 @@
     <string name="screen_protect_type_two">الشحن بالتيار الثابت</string>
     <string name="screen_protect_type_three">الشحن بالتيار المتكسر</string>
 
-    <string name="screen_protect_time"> :وقت الباقية للشحن</string>
+    <string name="screen_protect_time"> وقت الباقية للشحن</string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color=""#0ad931"">%1$s</font>]]></Data> ساعة<Data><![CDATA[<font color=""#0ad931"">%2$s</font>]]></Data> دقيقة</string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> دقيقة</string>
 

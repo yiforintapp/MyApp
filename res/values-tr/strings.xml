@@ -944,7 +944,7 @@
     <string name="screen_protect_type_two">Sabit Akım Şarj</string>
     <string name="screen_protect_type_three">Dengeli Şarj</string>
 
-    <string name="screen_protect_time">Kalan Şarj Süresi:</string>
+    <string name="screen_protect_time">Kalan Şarj Süresi </string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>Saat <Data><![CDATA[<font color="#0ad931">%2$s</font>]]>dk</Data></string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>dk.</string>
 

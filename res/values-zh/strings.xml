@@ -947,7 +947,7 @@
     <string name="screen_protect_type_two">恆流充電</string>
     <string name="screen_protect_type_three">涓流充電</string>
 
-    <string name="screen_protect_time">充電剩餘時間 :</string>
+    <string name="screen_protect_time">充電剩餘時間 </string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>時<Data><![CDATA[<font color="#0ad931"> %2$s</font>]]>分</Data></string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>分</string>
 

@@ -894,4 +894,44 @@
     <string name="number_call_duration_m_s">%1$sминут %2$sсекунд</string>
     <string name="gud_page_call_fil">Добавляйте нежелательные номера в черный список, будьте вдали от беспокойств!</string>
     <string name="ad_blk_fail">Не смогли</string>
+
+    <!--3.3-->
+    <string name="batterymanage_result_ad_wifi_title">Проверка безопасности Вашего wifi</string>
+    <string name="batterymanage_result_ad_wifi_content">Небезопасный wifi угрожает Вашей конфиденциальности</string>
+    <string name="batterymanage_result_ad_callfilter_title">Блокировка нежелательных звонков</string>
+    <string name="batterymanage_result_ad_callfilter_content">Распознавание и блокировка нежелательных звонков</string>
+    <string name="batterymanage_label"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> приложений тайком тратят питание</string>
+    <string name="batterymanage_boost">Оптимизация энергосбережения</string>
+    <string name="batterymanage_boost_finished">Оптимизация завершена</string>
+    <string name="batterymanage_tip_loading">Идет проверка приложений, потребляющих питание</string>
+    <string name="batterymanage_tip_nothing_to_boost">Нет app, которые можно оптимизировать</string>
+    <string name="batterymanage_switch_screen">Заставка с индикатором зарядки</string>
+    <string name="batterymanage_switch_screen_summary">Заставка с индикатором зарядки предотвращает лишнюю зарядку и увеличивает скорость зарядки</string>
+    <string name="batterymanage_switch_noti">Уведомления о потреблении питания приложениями</string>
+    <string name="batterymanage_switch_noti_summary">Проверка потребления питания фоновыми приложениями</string>
+    <string name="batterymanage_setting_title">Настройка </string>
+    <string name="quick_helper_callfilter">Блокировка нежелательных звонков</string>
+    <string name="quick_helper_desc_callfilter">Распознание и блокировка нежелательных звонков</string>
+    <string name="phone_share_dialog_content">Ваш телефон находится под защитой от кражи, но Ваши друзья, возможно, нет. Помочь друзьям!</string>
+    <string name="callfilter_share_dialog_content">Позовите Ваших друзей, чтобы вместе заблокировать досаждающие спам-звонки!</string>
+    <string name="intruder_share_dialog_content">Считаете, что наш продукт неплох? <Data><![CDATA[<font color="#FFF600">Поделитесь с друзьями!</font>]]></Data></string>
+    <string name="share_dialog_btn_query">Поделиться </string>
+    <string name="share_dialog_query_btn_cancel">Отмена </string>
+    <string name="phone_share_content">Привет, я пользуюсь функцией защиты от кражи Privacy Guard. Нужно только отправить сообщение, и я могу дистанционно управлять моим телефоном. Это действительно очень удобно, я хочу, чтобы ты тоже попробовал эту программу.</string>
+    <string name="callfilter_share_content">Привет, я пользуюсь функцией блокировки звонков Privacy Guard. Я заблокировал этих надоедливых торговых агентов, а самое главное – эта функция автоматически распознает входящие звонки, это очень удобно. Я хочу, чтобы ты тоже попробовал эту функцию.</string>
+    <string name="intruder_share_content">Привет, я пользуюсь функцией защиты от захватчиков Privacy Guard. Она помогла мне сфотографировать %1$s человек, которые подглядывали в мой телефон. Теперь я знаю, кто подглядывал в мой телефон. Попробуй и ты эту функцию!</string>
+    <string name="up_list_swifty_title">Повышение эффективности</string>
+
+    <string name="screen_protect_type_one">Быстрая зарядка</string>
+    <string name="screen_protect_type_two">Зарядка при постоянном токе</string>
+    <string name="screen_protect_type_three">Непрерывная зарядка малым током</string>
+
+    <string name="screen_protect_time">Оставшееся время подзарядки </string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> часов <Data><![CDATA[<font color="#0ad931">%2$s</font>]]> минут</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> минут</string>
+
+    <string name="screen_protect_unlock_text">Передвинуть для разблокировки</string>
+    <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы Privacy Guard требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить Privacy Guard</string>
+    <string name="recom_lft_txt">Нет, спасибо</string>
+    <string name="recom_rgt_txt">Попробовать сейчас</string>
 </resources>
