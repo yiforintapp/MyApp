@@ -170,7 +170,7 @@ public class RemainTimeHelper {
         }
     }
 
-    /* 用于保存校准数据 */
+    /* 用于保存校准数据  stone_debug */
     private void dumpToDisk(){
         File picDir = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath());
