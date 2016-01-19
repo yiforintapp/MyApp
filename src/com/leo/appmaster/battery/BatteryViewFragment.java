@@ -209,7 +209,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mHideTextView.setVisibility(View.GONE);
+                mHideTextView.setVisibility(View.INVISIBLE);
             }
 
             @Override

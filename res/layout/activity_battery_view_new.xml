@@ -232,7 +232,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/battery_icon_content"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <TextView
                     android:id="@+id/hide_tv_one"
