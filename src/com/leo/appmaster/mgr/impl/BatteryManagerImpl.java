@@ -185,7 +185,7 @@ public class BatteryManagerImpl extends BatteryManager {
             return;
         }
 
-        Toast.makeText(mContext, "用户插上充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(mContext, "用户插上充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
                 newState.level, 0);
         broadcastBatteryLevel(newState);
@@ -221,7 +221,7 @@ public class BatteryManagerImpl extends BatteryManager {
         if (!isSwitchOpen) {
             return;
         }
-        Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
         broadcastBatteryLevel(newState);
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
@@ -248,7 +248,7 @@ public class BatteryManagerImpl extends BatteryManager {
         if (!isSwitchOpen) {
             return;
         }
-        Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
         broadcastBatteryLevel(newState);
         int remainTime = getRemainTimeHelper(newState)
                 .getEstimatedTime(mPreviousState.level, newState.level,
@@ -277,7 +277,7 @@ public class BatteryManagerImpl extends BatteryManager {
         if (!isSwitchOpen) {
             return;
         }
-        Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
         broadcastBatteryLevel(newState);
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);

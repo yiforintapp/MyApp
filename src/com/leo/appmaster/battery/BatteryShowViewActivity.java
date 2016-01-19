@@ -1,6 +1,9 @@
 package com.leo.appmaster.battery;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,6 +45,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     private RelativeLayout mBatterViewBg; // 背景
 
+    private HomeWatcherReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,61 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         handleIntent();
         initAll();
         isActivityAlive = true;
+
+        registerHomeKeyReceiver();
+    }
+
+    private void registerHomeKeyReceiver() {
+        LeoLog.d("lisHome", "registerHomeKeyReceiver");
+        mReceiver = new HomeWatcherReceiver();
+        final IntentFilter homeFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+
+        registerReceiver(mReceiver, homeFilter);
+    }
+
+    private void unregisterHomeKeyReceiver() {
+        LeoLog.d("lisHome", "unregisterHomeKeyReceiver");
+        if (null != mReceiver) {
+            unregisterReceiver(mReceiver);
+        }
+    }
+
+    public class HomeWatcherReceiver extends BroadcastReceiver {
+        private static final String LOG_TAG = "HomeReceiver";
+        private static final String SYSTEM_DIALOG_REASON_KEY = "reason";
+        private static final String SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";
+        private static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
+        private static final String SYSTEM_DIALOG_REASON_LOCK = "lock";
+        private static final String SYSTEM_DIALOG_REASON_ASSIST = "assist";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            LeoLog.d("lisHome", "onReceive: action: " + action);
+            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
+                // android.intent.action.CLOSE_SYSTEM_DIALOGS
+                String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
+                LeoLog.d("lisHome", "reason: " + reason);
+
+                if (SYSTEM_DIALOG_REASON_HOME_KEY.equals(reason)) {
+                    // 短按Home键
+                    LeoLog.d("lisHome", "homekey");
+                    finish();
+
+                } else if (SYSTEM_DIALOG_REASON_RECENT_APPS.equals(reason)) {
+                    // 长按Home键 或者 activity切换键
+                    LeoLog.d("lisHome", "long press home key or activity switch");
+
+                } else if (SYSTEM_DIALOG_REASON_LOCK.equals(reason)) {
+                    // 锁屏
+                    LeoLog.d("lisHome", "lock");
+                } else if (SYSTEM_DIALOG_REASON_ASSIST.equals(reason)) {
+                    // samsung 长按Home键
+                    LeoLog.d("lisHome", "assist");
+                }
+
+            }
+        }
 
     }
 
@@ -180,6 +239,9 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         super.onDestroy();
         LeoLog.d(TAG, "onDestroy");
         isActivityAlive = false;
+        if (mReceiver != null) {
+            unregisterHomeKeyReceiver();
+        }
     }
 
     @Override
