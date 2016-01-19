@@ -7,10 +7,7 @@ import java.util.List;
 
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
@@ -25,7 +22,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,20 +30,17 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
-import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
-import com.leo.appmaster.eventbus.event.CommonEvent;
-import com.leo.appmaster.fragment.PretendAppBeautyFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.BatteryManager.BatteryState;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.ui.WaveView;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.Animator.AnimatorListener;
@@ -59,12 +52,9 @@ import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 
 public class BatteryMainActivity extends BaseFragmentActivity implements OnClickListener {
     private final String TAG = "BatterMainActivity";
-    private boolean DBG = true;
     private TextView mTvEmpty;
     private CommonToolbar mCtbMain;
-    private RelativeLayout mRlContent;
     private TextView mTvPercentValue;
-    private RelativeLayout mRlBottom;
     private BatteryAppGridView mGvApps;
     private ArrayList<BatteryComsuption> mListBatteryComsuptions;
     private RippleView mRvBoost;
@@ -78,7 +68,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private TextView mTvComplete;
     private RelativeLayout mRlTopAnimLayout;
     private RelativeLayout mRlWholeBattery;
-    private RelativeLayout mRlWholeShield;
     private ImageView mIvShield;
     private boolean mIsResultShowed = false;
     private WaveView mWvBattery;
@@ -107,7 +96,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     
     private void initUI() {
         mRlTopAnimLayout = (RelativeLayout) findViewById(R.id.rl_anim_layout);
-        mRlBottom = (RelativeLayout) findViewById(R.id.rl_bottom);
         mTvComplete = (TextView) findViewById(R.id.tv_boost_complete);
         mTvPercentValue = (TextView) findViewById(R.id.tv_percent_value);
         mTvEmpty = (TextView) findViewById(R.id.tv_empty);
@@ -133,7 +121,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mGvApps = (BatteryAppGridView) findViewById(R.id.gv_apps);
         mGvApps.setNumColumns(APPS_COLUMNS);
         mAdapter = new AppsAdapter();
-        mRlContent = (RelativeLayout) findViewById(R.id.rl_content);
         mRvBoost = (RippleView) findViewById(R.id.rv_accelerate);
         mRvBoost.setOnClickListener(this);
         mGvApps.setAdapter(mAdapter);
@@ -178,7 +165,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         super.onResume();
         mTvPercentValue.setText(mBtrManager.getBatteryLevel() + "");
         mWvBattery.setPercent(mBtrManager.getBatteryLevel());
-//        mWvBattery.setPercent(98);
         mBtrManager.updateBatteryPageState(true);
         LeoLog.i(TAG, "onResume");
 //        if (mFrgmResult != null && mFrgmResult.isVisible()) {
@@ -206,8 +192,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                     showEmpty();
                     mTvListTitle.setText(R.string.batterymanage_tip_nothing_to_boost);
                     mTvEmpty.setText(R.string.batterymanage_tip_nothing_to_boost);
-//                    showResultFragment();//
-                    startBatteryDismissAnim();
+                    if (!mIsResultShowed) {
+                        startBatteryDismissAnim();
+                        mIsResultShowed = true;
+                    }
                 }
             }, 1000);//TODO 假loading的持续时间
         }
@@ -290,16 +278,14 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             }
         });
         rotation.setFillAfter(false);  
-        rotation.setInterpolator(new AccelerateInterpolator());  
         mIvShield.startAnimation(rotation);  
     }
 
-    
-    
-    protected void startShortenTopLayoutAnim() {
+
+    private void startShortenTopLayoutAnim() {
         LeoLog.i("tempp", "start shorten anim");
         int height = mRlTopAnimLayout.getHeight();
-        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("sdafasdf", height, (int)(height * 0.7));
+        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("dfads", height, (int)(height * 0.7));
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
         anim.addUpdateListener(new AnimatorUpdateListener() {
             @Override
@@ -315,9 +301,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     protected void showResultFragment() {
-        if (mIsResultShowed) {
-            return;
-        }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
@@ -341,39 +324,13 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mIvShield.setVisibility(View.VISIBLE);
         float initialX = mIvShield.getX();
         float initialY = mIvShield.getY();
-        float initialW = mIvShield.getWidth();
-        float initialH = mIvShield.getHeight();
         PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, DipPixelUtil.dip2px(this, 15));
-        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("top", initialY, DipPixelUtil.dip2px(this, 0));
+//        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("top", initialY, DipPixelUtil.dip2px(this, 10));
         PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.66f);
         PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.66f);
-        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX, holderY, holderScaleX, holderScaleY);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX,  holderScaleX, holderScaleY);
         anim.setDuration(TRANSLATE_ANIM_DURATION);
         anim.start();
-//        int height = mRlTopAnimLayout.getHeight();
-//        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("height", height, (int)(height * 0.8));
-//        ObjectAnimator anim2 = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
-//        anim.addUpdateListener(new AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//                LayoutParams layoutParams = mRlTopAnimLayout.getLayoutParams();
-//                layoutParams.height = (Integer) animation.getAnimatedValue();
-//                LeoLog.i("tempp", "heigh = " + mRlTopAnimLayout.getHeight());
-//            }
-//        });
-//        anim.addUpdateListener(new AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//                LeoLog.i(TAG, "x :" + mIvShield.getX());
-//                LeoLog.i(TAG, "y :" + mIvShield.getY());
-//                LeoLog.i(TAG, "sx :" + mIvShield.getScaleX());
-//                LeoLog.i(TAG, "sy :" + mIvShield.getScaleX());
-//            }
-//        });
-//        AnimatorSet as = new AnimatorSet();
-//        as.playTogether(anim, anim2);
-//        as.setDuration(TRANSLATE_ANIM_DURATION);
-//        as.start();
     }
 
     private void prepareBoostAnimation() {
@@ -428,14 +385,14 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     }
 
-    private void startBoostAnimation2() {
-
-    }
 
     private void startBoostAnimation(final int remainCount) {
         if (remainCount <= 0) {
             // 杀死app动画完成
-            startBatteryDismissAnim();
+            if (!mIsResultShowed) {
+                startBatteryDismissAnim();
+                mIsResultShowed = true;
+            }
             return;
         }
 
@@ -485,6 +442,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
     }
 
+    
     private void startBatteryDismissAnim() {
         PropertyValuesHolder holderAlpha = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0.0f);
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlWholeBattery, holderAlpha);
