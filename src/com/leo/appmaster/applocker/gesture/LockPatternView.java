@@ -316,7 +316,11 @@ public class LockPatternView extends ViewGroup {
     }
 
     private Bitmap getBitmapFor(int resId) {
-        return BitmapFactory.decodeResource(getContext().getResources(), resId);
+        try {
+            return BitmapFactory.decodeResource(getContext().getResources(), resId);
+        } catch (Throwable t) {
+        }
+        return null;
     }
 
     /**
@@ -1372,7 +1376,9 @@ public class LockPatternView extends ViewGroup {
         mCircleMatrix.preScale(sx * 0.65f, sy * 0.65f);
         mCircleMatrix.preTranslate(-mBitmapWidth / 2, -mBitmapHeight / 2);
 
-        canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);
+        if(outerCircle != null) {
+            canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);
+        }
         if (innerCircle != null)
             canvas.drawBitmap(innerCircle, mCircleMatrix, mPaint);
     }

@@ -21,7 +21,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.CallLog;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -681,8 +680,10 @@ public class PrivacyContactManager {
             List<ContactBean> contacts = PrivacyContactManager.getInstance(context)
                     .getPrivateContacts();
             formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+            String contactNumber = null;
             for (ContactBean contactBean : contacts) {
-                if (contactBean.getContactNumber().contains(formateNumber)) {
+                contactNumber = contactBean.getContactNumber();
+                if (contactNumber != null && contactNumber.contains(formateNumber)) {
                     flagContact = contactBean;
                     break;
                 }
