@@ -600,7 +600,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             mTvHideText.setText(text2);
                             mTvHideTime.setText(Html.fromHtml(text));
                         } else {
-                            String text = mActivity.getString(R.string.screen_protect_charing_text_one);
+                            String text = mActivity.getString(R.string.screen_protect_charing_text_two);
                             mTvHideText.setText(text);
                             mTvHideTime.setVisibility(View.GONE);
                         }
@@ -627,7 +627,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mTvLeftTime.setText(text2);
                         mTvTime.setText(Html.fromHtml(text));
                     } else {
-                        String text = mActivity.getString(R.string.screen_protect_charing_text_one);
+                        String text = mActivity.getString(R.string.screen_protect_charing_text_two);
                         mTvLeftTime.setText(text);
                         mTvTime.setVisibility(View.GONE);
                     }
