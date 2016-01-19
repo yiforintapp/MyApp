@@ -20,7 +20,7 @@ public class WaveView extends View {
     private static final int WAVE_PAINT_COLOR = 0x8800aa00;  //TODO 两个波浪分别使用不同颜色
    
     // y = Asin(wx+b)+h  
-    private static final float STRETCH_FACTOR_A = 10;  //公式中的A值，波的高点和低点与水平中线的距离
+    private float mFactorA = 10;  //公式中的A值，波的高点和低点与水平中线的距离
     private static final int OFFSET_Y = 0;  
     // 第一条水波移动速度  
     private static final int TRANSLATE_X_SPEED_ONE = 9;  
@@ -53,7 +53,11 @@ public class WaveView extends View {
         float y;
     }
     /* draw bubbles - end */
-  
+    
+    public void setFactorA(float a) {
+        mFactorA = a;
+    }
+    
     public WaveView(Context context, AttributeSet attrs) {  
         super(context, attrs);  
         // 将dp转化为px，用于控制不同分辨率上移动速度基本一致  
@@ -106,8 +110,8 @@ public class WaveView extends View {
         	        canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint);
                     canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint);
         	    } else {
-        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * STRETCH_FACTOR_A) + mResetOneYPositions[i]) , i, mTotalHeight, mWavePaint);
-        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * STRETCH_FACTOR_A) + mResetTwoYPositions[i]) + 2 , i, mTotalHeight, mWavePaint);
+        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetOneYPositions[i]) , i, mTotalHeight, mWavePaint);
+        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetTwoYPositions[i]) + 2 , i, mTotalHeight, mWavePaint);
         	        
         	    }
         		// 绘制第一条水波纹  
@@ -160,7 +164,7 @@ public class WaveView extends View {
         mCycleFactorW = (float) (2 * Math.PI / mTotalWidth);  
         // 根据view总宽度得出所有对应的y值  
         for (int i = 0; i < mTotalWidth; i++) {  
-            mYPositions[i] = (float) (STRETCH_FACTOR_A * Math.sin(mCycleFactorW * i) + OFFSET_Y);  
+            mYPositions[i] = (float) (mFactorA * Math.sin(mCycleFactorW * i) + OFFSET_Y);  
         }  
     }
 
