@@ -179,6 +179,7 @@ public class LEONativeAd {
 
 				@Override
 				public void onAdLoadError(int code, String paramString) {
+					LeoLog.e(TAG, "loading max ad error");
 					mHandler.sendEmptyMessage(MSG_NATIVE_AD_LOAD_FAIL);
 				}
 
