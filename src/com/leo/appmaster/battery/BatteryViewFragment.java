@@ -340,7 +340,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mSettingView = findViewById(R.id.ct_option_2_rl);
         mSettingView.setOnClickListener(this);
         mArrowMoveContent = findViewById(R.id.move_arrow);
-        mArrowMoveContent.setOnClickListener(this);
+        mArrowMoveContent.setOnTouchListener(this);
+//        mArrowMoveContent.setOnClickListener(this);
         mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);
 
         if (newState != null) {
@@ -652,13 +653,52 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        if (view == mArrowMoveContent) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    staryY = (int) event.getRawY();
+
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    int newY = (int) event.getRawY();
+                    int moveY = newY - staryY;
+
+
+                    LeoLog.d("testBatteryView", "ACTION_DOWN");
+                    if (isExpand) {
+                        if (!mShowing && moveY > 0) {
+                            expandContent(false);
+                        }
+                    } else {
+                        if (!mShowing && moveY < 0) {
+                            expandContent(true);
+                        }
+                    }
+
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int upY = (int) event.getRawY();
+                    if (staryY == upY) {
+                        if (isExpand) {
+                            if (!mShowing) {
+                                expandContent(false);
+                            }
+                        } else {
+                            if (!mShowing) {
+                                expandContent(true);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
 //        if (view == mBossView) {
 //            switch (event.getAction()) {
-//                case MotionEvent.ACTION_DOWN:// 手指按下屏幕
+//                case MotionEvent.ACTION_DOWN:
 //                    LeoLog.d("testBatteryView", "ACTION_DOWN");
 //                    staryY = (int) event.getRawY();
 //                    break;
-//                case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
+//                case MotionEvent.ACTION_MOVE:
 //                    int newY = (int) event.getRawY();
 //                    int moveY = newY - staryY;
 //                    if (!isExpand) {
@@ -672,11 +712,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //                    }
 //
 //                    break;
-//                case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
+//                case MotionEvent.ACTION_UP:
 //
 //                    break;
 //            }
-//
 //        }
         return true;
     }
@@ -781,13 +820,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             Constants.ISWIPE_PACKAGE, mActivity);
                 }
                 break;
-            case R.id.move_arrow:
-                if (isExpand) {
-                    expandContent(false);
-                } else {
-                    expandContent(true);
-                }
-                break;
+//            case R.id.move_arrow:
+//                if (isExpand) {
+//                    if (!mShowing) {
+//                        expandContent(false);
+//                    }
+//                } else {
+//                    if (!mShowing) {
+//                        expandContent(true);
+//                    }
+//                }
+//                break;
         }
     }
 
