@@ -135,9 +135,9 @@ public class RemainTimeHelper {
             LeoLog.d(TAG, "preference remainTime = " + remainTime);
             return remainTime;
         } else {
-            int min = Math.min(0, l2-STEP);
+            int max = Math.max(0, l2 - STEP);
             int totalPeriod = 0;
-            for (int i=min;i<l2;i++) {
+            for (int i=max;i<l2;i++) {
                 if (i==l2-1) {
                     totalPeriod += periodInSecond;
                     continue;
@@ -152,7 +152,7 @@ public class RemainTimeHelper {
                 // 满足这个才有参考意义
                 updatePreferenceList(l1, periodInSecond);
             }
-            int remainTime = (mScale-l2)*totalPeriod/(l2-min);
+            int remainTime = (mScale-l2)*totalPeriod/(l2-max);
             LeoLog.d(TAG, "calculated remainTime = " + remainTime);
             return remainTime;
         }
