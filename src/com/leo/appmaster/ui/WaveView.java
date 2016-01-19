@@ -7,6 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DrawFilter;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Xfermode;
 import android.graphics.Paint.Style;
 import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
@@ -39,6 +42,7 @@ public class WaveView extends View {
     private int mXTwoOffset;  
   
     private Paint mWavePaint;  
+    private Paint mWavePaint2;
     private DrawFilter mDrawFilter;
 
     /* draw bubbles - begin */
@@ -76,12 +80,16 @@ public class WaveView extends View {
   
         // 初始绘制波纹的画笔  
         mWavePaint = new Paint();  
+        mWavePaint2 = new Paint();
         // 去除画笔锯齿  
         mWavePaint.setAntiAlias(true);  
+        mWavePaint2.setAntiAlias(true);  
         // 设置风格为实线  
         mWavePaint.setStyle(Style.FILL);  
+        mWavePaint2.setStyle(Style.FILL);  
         // 设置画笔颜色  
         mWavePaint.setColor(WAVE_PAINT_COLOR);  
+        mWavePaint2.setColor(WAVE_PAINT_COLOR);  
         mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);  
     }  
   
@@ -108,11 +116,10 @@ public class WaveView extends View {
         	if (mPercent != 0) {
         	    if (mPercent == 100) {
         	        canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint);
-                    canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint);
+                    canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint2);
         	    } else {
         	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetOneYPositions[i]) , i, mTotalHeight, mWavePaint);
-        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetTwoYPositions[i]) + 2 , i, mTotalHeight, mWavePaint);
-        	        
+        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetTwoYPositions[i]) + 2 , i, mTotalHeight, mWavePaint2);
         	    }
         		// 绘制第一条水波纹  
 //        		canvas.drawLine(i, mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 7) - (mPercent/100 * (mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 7))), i, mTotalHeight, mWavePaint);  
@@ -171,4 +178,8 @@ public class WaveView extends View {
     public void setWaveColor(int color) {
         mWavePaint.setColor(color);
     }  
+    
+    public void setWave2Color(int color) {
+        mWavePaint2.setColor(color);
+    }
 }

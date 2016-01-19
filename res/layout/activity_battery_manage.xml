@@ -8,7 +8,7 @@
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_battery"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="54dp"
         android:background="#1167f0" />
 
     <RelativeLayout
@@ -20,13 +20,14 @@
         <RelativeLayout
             android:id="@+id/rl_anim_layout"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="@dimen/batterymanage_toplayout_height"
             android:background="#1167f0" >
 
             <RelativeLayout
+                android:layout_marginTop="5dp"
                 android:id="@+id/rl_wholebattery"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="154dp"
+                android:layout_height="154dp"
                 android:layout_centerHorizontal="true" >
 
                 <com.leo.appmaster.ui.WaveView
@@ -59,11 +60,11 @@
                         android:textSize="43dp" />
 
                     <TextView
+                        android:includeFontPadding="false"
                         android:id="@+id/tv_percent"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:gravity="center_vertical|left"
-                        android:paddingLeft="2dp"
                         android:text="%"
                         android:textColor="@color/white"
                         android:textSize="14dp" />
@@ -81,8 +82,8 @@
 
             <ImageView
                 android:id="@+id/iv_shield"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="154dp"
+                android:layout_height="154dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/batterymanage_shield"
                 android:visibility="invisible" />

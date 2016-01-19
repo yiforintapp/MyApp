@@ -2,6 +2,7 @@
 package com.leo.appmaster.battery;
 
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +96,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
     
     private void initUI() {
+        if (mFrgmResult == null) {
+            mFrgmResult = new BatteryBoostResultFragment();
+        }
         mRlTopAnimLayout = (RelativeLayout) findViewById(R.id.rl_anim_layout);
         mTvComplete = (TextView) findViewById(R.id.tv_boost_complete);
         mTvPercentValue = (TextView) findViewById(R.id.tv_percent_value);
@@ -102,6 +106,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mRlWholeBattery = (RelativeLayout) findViewById(R.id.rl_wholebattery);
         mWvBattery = (WaveView) findViewById(R.id.wv_battery);
         mWvBattery.setWaveColor(0xff00ccff);
+//        mWvBattery.setWave2Color(0xff0091ff);
+        mWvBattery.setWave2Color(0xff00ccff);
         mIvShield= (ImageView) findViewById(R.id.iv_shield);
         mTvListTitle = (TextView) findViewById(R.id.tv_list_title);
         mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
@@ -165,6 +171,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         super.onResume();
         mTvPercentValue.setText(mBtrManager.getBatteryLevel() + "");
         mWvBattery.setPercent(mBtrManager.getBatteryLevel());
+        mWvBattery.setFactorA(15f);
 //        mWvBattery.setPercent(5);
         mBtrManager.updateBatteryPageState(true);
         LeoLog.i(TAG, "onResume");

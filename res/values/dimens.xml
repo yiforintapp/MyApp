@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+	<dimen name="batterymanage_toplayout_height">183dp</dimen>
 	<dimen name="home_left_list_item_height">60dp</dimen>
     <dimen name="setting_item_height">55dp</dimen>
     <dimen name="lock_icon_width">22dp</dimen>
@@ -15,7 +15,7 @@
     <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
     <dimen name="hide_picture_image_frame_left">6dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-            <dimen name="hide_video_checkbox_right">24dp</dimen>
+    <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">24dp</dimen>
     <dimen name="digital_item_width">55dp</dimen>
     <dimen name="digital_item_height">55dp</dimen>
