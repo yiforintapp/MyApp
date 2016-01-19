@@ -367,7 +367,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/FullScreenTheme"></activity>
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar"/>
 
         <activity
             android:name=".feedback.FeedbackActivity"
