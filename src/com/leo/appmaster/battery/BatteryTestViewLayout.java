@@ -44,6 +44,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
         mDetector = new GestureDetector(new GestureDetector.OnGestureListener() {
             @Override
             public boolean onDown(MotionEvent e) {
+                LeoLog.d("testBatteryView", "Big R onDown");
                 return false;
             }
 
@@ -59,6 +60,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                LeoLog.d("testBatteryView", "Big R onScroll");
                 if (e2.getY() < e1.getY()) {
                     scrollBottomListener.scrollTop();
                 } else {
@@ -74,6 +76,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
 
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                LeoLog.d("testBatteryView", "Big R onFling");
                 if (e2.getY() < e1.getY()) {
                     scrollBottomListener.scrollTop();
                 } else {

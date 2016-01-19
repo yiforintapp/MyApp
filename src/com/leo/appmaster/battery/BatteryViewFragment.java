@@ -54,7 +54,7 @@ import java.util.List;
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
     private static final String TAG = "BatteryViewFragment";
-
+    private static final int ANIMATION_TIME = 300;
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
     private static final int GREEN_ARROW_MOVE = 3;
@@ -204,7 +204,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         set.play(animMoveX).with(animMoveY);
         set.play(animMoveY).with(animScaleX);
         set.play(animScaleX).with(animScaleY);
-        set.setDuration(500);
+        set.setDuration(ANIMATION_TIME);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -240,7 +240,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         set.play(animMoveX).with(animMoveY);
         set.play(animMoveY).with(animScaleX);
         set.play(animScaleX).with(animScaleY);
-        set.setDuration(500);
+        set.setDuration(ANIMATION_TIME);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -254,21 +254,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 super.onAnimationEnd(animation);
                 mHideTextView.setVisibility(View.VISIBLE);
                 setTime(mRemainTime, true);
-
-//                if (newState.level == 100) {
-//                    mTvHideText.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
-//                    mTvHideTime.setVisibility(View.GONE);
-//                } else {
-//                    mTvHideTime.setVisibility(View.VISIBLE);
-//                    if (mBatteryText != null) {
-//                        mTvHideTime.setVisibility(View.VISIBLE);
-//                        mTvHideTime.setText(Html.fromHtml(mBatteryText));
-//                    } else {
-//                        mTvHideTime.setVisibility(View.GONE);
-//                        LeoLog.d("testBatteryView", "mBatteryText is Empty");
-//                    }
-//                }
-
             }
         });
         set.start();
@@ -297,7 +282,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
         set.play(animScaleY).with(animMoveX);
-        set.setDuration(500);
+        set.setDuration(ANIMATION_TIME);
         set.start();
     }
 
@@ -312,7 +297,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
         set.play(animScaleY).with(animMoveX);
-        set.setDuration(500);
+        set.setDuration(ANIMATION_TIME);
         set.start();
     }
 
@@ -336,9 +321,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mTvSmallRight = (TextView) findViewById(R.id.time_small_right);
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
-//        mTvBigTime = (TextView) findViewById(R.id.battery_num);
-//        mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
-//        mTvSmallRight = (TextView) findViewById(R.id.battery_num);
         mTvLeftTime = (TextView) findViewById(R.id.left_time);
         mTvTime = (TextView) findViewById(R.id.right_time);
 
@@ -346,7 +328,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mBossView.setOnTouchListener(this);
 
         mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
-//        mSlideView.setOnTouchListener(this);
         mSlideView.post(new Runnable() {
             @Override
             public void run() {
@@ -438,15 +419,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         newState = state;
         mRemainTime = remainTime;
         notifyUI(mChangeType);
-//        if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_IN)) {
-//            notifyUI(mChangeType, true);
-//        } else if (mChangeType.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
-//            notifyUI(mChangeType, false);
-//        } else if (mChangeType.equals(BatteryManagerImpl.UPDATE_UP)) {
-//            notifyUI(mChangeType, true);
-//        } else {
-//            notifyUI(mChangeType, false);
-//        }
     }
 
     public void notifyUI(String type) {
@@ -513,8 +485,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void setBottleWater() {
-//        int level = newState.level;
-        int level = 99;
+        int level = newState.level;
+//        int level = 99;
 //        if (level > 95) {
 //            level = 93;
 //        }
@@ -737,7 +709,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mBossView.getHeight() / 2, mSlideView.getTop());
-        animMoveY.setDuration(500);
+        animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -779,7 +751,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() / 2);
-        animMoveY.setDuration(500);
+        animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

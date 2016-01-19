@@ -109,7 +109,7 @@ public class SelfScrollView extends ScrollView {
 //                }
 
                 if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
-                        top == 0 && moveY > 120) {
+                        top == 0 && moveY > 50) {
 //                    if (scrollBottomListener != null) {
                     LeoLog.d("testBatteryView", "top : " + top);
                     mParent.getScrollBottomListener().scrollBottom();

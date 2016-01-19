@@ -298,7 +298,7 @@
     <RelativeLayout
         android:id="@+id/move_boss"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="300dp"
         android:layout_above="@id/slider"
         android:background="@color/transparent">
 
