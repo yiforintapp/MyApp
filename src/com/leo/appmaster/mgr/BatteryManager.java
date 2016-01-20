@@ -61,7 +61,8 @@ public abstract class BatteryManager extends Manager {
         }
 
         public String toString() {
-            return "status: " + status + "; level: " + level + "; plugged: " + plugged;
+            return "status: " + status + "; level: " + level +
+                    "; plugged: " + plugged + "; scale: " + scale;
         }
     }
 

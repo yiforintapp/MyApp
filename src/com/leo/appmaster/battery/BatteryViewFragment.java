@@ -902,7 +902,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             BatteryViewFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 LeoLog.d(TAG, "load done: " + imageUri);
-                // TODO fill advertise view here
                 fragment.initAdLayout(fragment.mRootView, mCampaign, loadedImage);
             }
         }
@@ -922,7 +921,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
         btnCTA.setText(campaign.getAdCall());
         ImageView preview = (ImageView) adView.findViewById(R.id.item_ad_preview);
-        preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        preview.setScaleType(ImageView.ScaleType.FIT_XY);
         preview.setImageBitmap(previewImage);
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);

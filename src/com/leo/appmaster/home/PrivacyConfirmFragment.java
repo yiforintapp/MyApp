@@ -688,7 +688,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             TextView btnCTA = (TextView) include.findViewById(R.id.item_btn_tv);
             btnCTA.setText(campaign.getAdCall());
             ImageView preview = (ImageView) include.findViewById(R.id.item_ad_preview);
-            preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            preview.setScaleType(ImageView.ScaleType.FIT_XY);
             preview.setImageBitmap(previewBitmap);
             TextView tvSummary = (TextView) include.findViewById(R.id.item_summary);
             tvSummary.setText(campaign.getAppDesc());

@@ -235,12 +235,12 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-
+            LeoLog.d("MobvistaEngine", "[WifiResultFragment] onLoadingStarted -> " + imageUri);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+            LeoLog.d("MobvistaEngine", "[WifiResultFragment] onLoadingFailed -> " + imageUri);
         }
 
         @Override
@@ -264,11 +264,13 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     private void loadAd(final View rootView) {
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         if (amp.getADWifiScan() == 1) {
+            LeoLog.d("MobvistaEngine", "Wifi result position start to load ad");
             MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, new MobvistaListener() {
 
                 @Override
                 public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
+                        LeoLog.d("MobvistaEngine", "Wifi result position ad data ready");
                         sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaign);
                         ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
                     }
@@ -295,7 +297,8 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         summary.setText(campaign.getAppDesc());
         Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
         btnCTA.setText(campaign.getAdCall());
-        preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        preview.setScaleType(ImageView.ScaleType.FIT_XY);
+        LeoLog.d("stone_ad_debug", "preview image size: " + previewImage.getWidth() + "x" + previewImage.getHeight());
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
         MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, adView);

@@ -396,7 +396,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         summary.setText(campaign.getAppDesc());
         Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
         btnCTA.setText(campaign.getAdCall());
-        preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        preview.setScaleType(ImageView.ScaleType.FIT_XY);
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
         MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
