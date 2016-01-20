@@ -41,6 +41,7 @@ public class WaveView extends View {
     private int mXOffsetSpeedTwo;  
     private int mXOneOffset;  
     private int mXTwoOffset;  
+    private long mPostDelayMs = 20;
   
     private Paint mWavePaint;  
     private Paint mWavePaint2;
@@ -147,8 +148,12 @@ public class WaveView extends View {
         if (mXTwoOffset > mTotalWidth) {  
             mXTwoOffset = 0;  
         }  
-        postInvalidateDelayed(12);  
+        postInvalidateDelayed(mPostDelayMs);  
     }  
+    
+    public void setPostInvalidateDelayMs(long ms) {
+        mPostDelayMs = ms;
+    }
   
     private void resetPositonY() {  
         // mXOneOffset代表当前第一条水波纹要移动的距离  
