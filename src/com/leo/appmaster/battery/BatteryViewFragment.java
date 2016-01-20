@@ -330,6 +330,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mSlideView.setScrollBottomListener(this);
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
+        mBottleWater.setWaveColor(0xff0ab522);
+        mBottleWater.setWave2Color(0xff0ab522);
+
         mThreeMoveView = findViewById(R.id.battery_icon_flag);
         mGreenArrow = (ImageView) findViewById(R.id.little_arrow);
         mTrickleContent = findViewById(R.id.trickle_content);
