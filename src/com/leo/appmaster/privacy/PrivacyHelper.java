@@ -30,6 +30,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.push.PushNotification;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.TimeUtil;
@@ -282,9 +283,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     }
 
     private void checkOrNotifyDecScore(String description, int securityScore) {
-        AppMasterApplication context = AppMasterApplication.getInstance();
-        AppMasterPreference pref = AppMasterPreference.getInstance(context);
-        if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+        if (!AppUtil.notifyAvailable()) {
             return;
         }
         long currentTs = System.currentTimeMillis();

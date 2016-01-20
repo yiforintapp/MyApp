@@ -52,6 +52,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -344,6 +345,9 @@ public class TaskDetectService extends Service {
     }
 
     public void checkMemory() {
+        if (!AppUtil.notifyAvailable()) {
+            return;
+        }
         if (mCleaner != null) {
             long mLastUsedMem = mCleaner.getUsedMem();
             long mTotalMem = mCleaner.getTotalMem();

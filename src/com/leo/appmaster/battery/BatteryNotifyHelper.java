@@ -17,10 +17,13 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -65,6 +68,9 @@ public class BatteryNotifyHelper {
     }
 
     private void notifyAppConsumption(List<BatteryComsuption> list) {
+        if (!AppUtil.notifyAvailable()) {
+            return;
+        }
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews view_custom;

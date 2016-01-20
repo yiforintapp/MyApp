@@ -11,6 +11,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.TimeUtil;
@@ -34,8 +35,7 @@ public class PushNotification {
     }
 
     public void showNotification(Intent intent, String title, String content, int iconId, int type) {
-        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
-        if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+        if (!AppUtil.notifyAvailable()) {
             return;
         }
         long lastShowDay = PreferenceTable.getInstance().getLong(NOTIFY_LAST_SHOW_DAY, 0);

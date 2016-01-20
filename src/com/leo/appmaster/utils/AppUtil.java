@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -406,6 +407,16 @@ public class AppUtil {
             return true;
         }
         return false;
+    }
+
+    public static boolean notifyAvailable() {
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+            return false;
+        }
+
+        return true;
     }
 
 }
