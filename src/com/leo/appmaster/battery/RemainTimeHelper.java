@@ -106,6 +106,7 @@ public class RemainTimeHelper {
             }
             mPreferenceList.add(pu);
         }
+        LeoLog.d(TAG, "mPreferenceList size = " + mPreferenceList.size());
     }
 
     private void updatePreferenceList(int level, int period) {
@@ -135,6 +136,7 @@ public class RemainTimeHelper {
             LeoLog.d(TAG, "preference remainTime = " + remainTime);
             return remainTime;
         } else {
+            /* 使用训练用的数据求和得到剩余时间
             int max = Math.max(0, l2 - STEP);
             int totalPeriod = 0;
             for (int i=max;i<l2;i++) {
@@ -148,11 +150,13 @@ public class RemainTimeHelper {
                     totalPeriod += mPreferenceList.get(i).second;
                 }
             }
+            */
+
             if (l2-l1==1) {
                 // 满足这个才有参考意义
                 updatePreferenceList(l1, periodInSecond);
             }
-            int remainTime = (mScale-l2)*totalPeriod/(l2-max);
+            int remainTime = getTimeFromPreference(l2); //(mScale-l2)*totalPeriod/(l2-max);
             LeoLog.d(TAG, "calculated remainTime = " + remainTime);
             return remainTime;
         }
