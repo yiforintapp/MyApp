@@ -118,7 +118,6 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         int currentTimes = preferenceTable.getInt(PrefConst.ENTER_CALL_FILTER_TIMES, 1);
         int limitTimes = preferenceTable.getInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10);
-        limitTimes = 1;
         if (currentTimes < limitTimes) {  // 小于限制次数
             preferenceTable.putInt(PrefConst.ENTER_CALL_FILTER_TIMES, currentTimes + 1);
             return;
