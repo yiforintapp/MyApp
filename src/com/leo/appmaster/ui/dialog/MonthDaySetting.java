@@ -19,6 +19,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class MonthDaySetting extends LEOBaseDialog {
     private Context mContext;
@@ -52,7 +53,21 @@ public class MonthDaySetting extends LEOBaseDialog {
         mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
 //        int monthUsedData = (int) (sp_notice_flow.getMonthGprsAll() / 1024 * 1024);
 //        first_ed.setText(sp_notice_flow.getItselfMonthTraffic()/1024/1024 + "");
-        first_ed.setText(sp_notice_flow.getItselfMonthTraffic() / 1024 + "");
+//        first_ed.setText(sp_notice_flow.getItselfMonthTraffic() / 1024 + "");
+        long monthTraffic = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getMonthUsed();
+        String useMb = ManagerFlowUtils.refreshTraffic_home_app(monthTraffic);
+        if (useMb != null && useMb.endsWith("KB")) {
+            useMb = "0";
+        } else if (useMb != null && useMb.endsWith("MB")) {
+            try {
+                useMb = useMb.substring(0, useMb.length() - 2);
+                useMb = String.valueOf((int)Math.rint(Double.parseDouble(useMb))); //四舍五入取整
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        first_ed.setText(useMb);
         second_ed.setText(((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
                 getMonthTotalTraffic() + "");
         Editable etext1 = first_ed.getText();
