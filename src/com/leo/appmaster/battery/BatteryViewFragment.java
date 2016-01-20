@@ -866,7 +866,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                         @Override
                         public void onMobvistaClick(Campaign campaign) {
-                            // TODO 埋点
+                            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
                             LeoLog.d(TAG, "Ad clicked");
                         }
                     });
@@ -929,7 +929,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
         MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, adView);
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_screen");
         adView.setVisibility(View.VISIBLE);
         mSlideView.post(new Runnable() {
             @Override

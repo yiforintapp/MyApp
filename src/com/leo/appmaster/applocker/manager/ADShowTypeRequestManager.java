@@ -443,9 +443,8 @@ public class ADShowTypeRequestManager {
             int value = forceClose?0:(response.getInt(AD_ON_SCREEN_SAVER));
             if (value != mSp.getADOnScreenSaver()) {
                 mSp.setADOnScreenSaver(value);
-                // TODO 修改打点字段
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull",
-                        (value == 1) ? "adv_scan_on" : "adv_scan_off");
+                        (value == 1) ? "adv_screen_on" : "adv_screen_off");
             }
         } catch (JSONException e) {
             e.printStackTrace();
