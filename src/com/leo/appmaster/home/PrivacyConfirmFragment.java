@@ -46,6 +46,7 @@ import com.leo.appmaster.privacycontact.MessageCallLogBean;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
@@ -687,8 +688,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             title.setText(campaign.getAppName());
             TextView btnCTA = (TextView) include.findViewById(R.id.item_btn_tv);
             btnCTA.setText(campaign.getAdCall());
-            ImageView preview = (ImageView) include.findViewById(R.id.item_ad_preview);
-            preview.setScaleType(ImageView.ScaleType.FIT_XY);
+            ResizableImageView preview = (ResizableImageView) include.findViewById(R.id.item_ad_preview);
             preview.setImageBitmap(previewBitmap);
             TextView tvSummary = (TextView) include.findViewById(R.id.item_summary);
             tvSummary.setText(campaign.getAppDesc());

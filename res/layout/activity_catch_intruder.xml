@@ -311,11 +311,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true">
 
-                <ImageView
+                <com.leo.appmaster.ui.ResizableImageView
                     android:id="@+id/item_ad_preview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"/>
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:id="@+id/item_header_ll"

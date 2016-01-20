@@ -51,11 +51,10 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true">
 
-                        <ImageView
+                        <com.leo.appmaster.ui.ResizableImageView
                             android:id="@+id/item_ad_preview"
                             android:background="@color/cool_red"
                             android:layout_width="match_parent"
-                            android:adjustViewBounds="true"
                             android:layout_height="wrap_content" />
 
                         <LinearLayout

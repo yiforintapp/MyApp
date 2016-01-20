@@ -37,6 +37,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
+    private boolean showWhenScreenOff;
     private ViewPager mViewPager;
     private BatteryFragmentHoler[] mFragmentHolders = new BatteryFragmentHoler[2];
 
@@ -63,15 +64,18 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         //设置当前窗体为全屏显示
         window.setFlags(flag, flag);
 
+        handleIntent();
+
         Window win = getWindow();
         win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        if (!showWhenScreenOff) {
+            win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                    | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        }
 
         setContentView(R.layout.activity_batter_show_view);
 
-        handleIntent();
         initAll();
         isActivityAlive = true;
 
@@ -222,6 +226,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                 intent.getExtras().get(BatteryManagerImpl.SEND_BUNDLE);
         mChangeType = intent.getStringExtra(BatteryManagerImpl.PROTECT_VIEW_TYPE);
         mRemainTime = intent.getIntExtra(BatteryManagerImpl.REMAIN_TIME, 0);
+        showWhenScreenOff = intent.getBooleanExtra(BatteryManagerImpl.SHOW_WHEN_SCREEN_OFF_FLAG, false);
     }
 
     public void onEventMainThread(BatteryViewEvent event) {

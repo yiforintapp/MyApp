@@ -48,6 +48,7 @@ public class BatteryManagerImpl extends BatteryManager {
     public static final String SEND_BUNDLE = "battery_bundle";
     public static final String PROTECT_VIEW_TYPE = "protect_view_type";
     public static final String REMAIN_TIME = "remain_time";
+    public static final String SHOW_WHEN_SCREEN_OFF_FLAG = "show_when_screen_off";
 
     public static final String SHOW_TYPE_IN = "type_1";
     public static final String SHOW_TYPE_OUT = "type_2";
@@ -150,10 +151,14 @@ public class BatteryManagerImpl extends BatteryManager {
             } else {
                 LeoLog.d(TAG, "action: " + action +
                         "; mPreviousState: " + mPreviousState.toString());
-                if (action.equals(Intent.ACTION_SCREEN_ON) &&
+                if (action.equals(Intent.ACTION_SCREEN_OFF) &&
                         mPreviousState.plugged != UNPLUGGED) {
                     LeoLog.d(TAG, "need to show charging screen");
-                    handlePluginEvent(mPreviousState);
+                    handlePluginEvent(mPreviousState, true);
+                }
+                if (action.equals(Intent.ACTION_SCREEN_ON) &&
+                        mPreviousState.plugged == UNPLUGGED) {
+                    // TODO 是否需要干掉屏保？
                 }
             }
         }
@@ -162,7 +167,7 @@ public class BatteryManagerImpl extends BatteryManager {
     /* 充电时间计算相关 */
     private void handleBatteryChange(BatteryState newState) {
         if (newState.plugged != UNPLUGGED && mPreviousState.plugged == UNPLUGGED) {
-            handlePluginEvent(newState);
+            handlePluginEvent(newState, false);
         } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
         } else if (newState.plugged != UNPLUGGED && newState.level != mPreviousState.level) {
@@ -179,7 +184,7 @@ public class BatteryManagerImpl extends BatteryManager {
      *
      * @param newState
      */
-    private void handlePluginEvent(BatteryState newState) {
+    private void handlePluginEvent(BatteryState newState, boolean whenScreenOff) {
         boolean isSwitchOpen = getScreenViewStatus();
         if (!isSwitchOpen) {
             return;
@@ -196,6 +201,7 @@ public class BatteryManagerImpl extends BatteryManager {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(PROTECT_VIEW_TYPE, SHOW_TYPE_IN);
             intent.putExtra(REMAIN_TIME, remainTime);
+            intent.putExtra(SHOW_WHEN_SCREEN_OFF_FLAG, whenScreenOff);
             Bundle bundle = new Bundle();
             bundle.putSerializable(SEND_BUNDLE, newState);
             intent.putExtras(bundle);
