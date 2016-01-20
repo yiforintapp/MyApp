@@ -65,7 +65,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     private void loadDone(boolean isFirstLoadDone) {
         if (this.isAdded()) {
             mProgressBar.setVisibility(View.GONE);
-            if (mFilterList.size() < 1) {
+            if (mFilterList == null || mFilterList.size() < 1) {
                 showEmpty();
             } else {
                 mClearAll.setBackgroundResource(R.drawable.green_radius_btn_shape);
@@ -254,7 +254,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
             CallFilterInfo info = mFilterList.get(i);
 
             boolean isNeedMarkItem = true;
-            if (mSysContacts.size() > 0) {
+            if (mSysContacts != null && mSysContacts.size() > 0) {
                 LeoLog.i("tempp", "checkIsSysContact(info.getNumber() =" + checkIsSysContact(info.getNumber()) + "info.getFilterType() =" + info.getFilterType());//TODO
                 isNeedMarkItem = !checkIsSysContact(info.getNumber()) && info.getFilterType() < 1;
             }
@@ -290,6 +290,9 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     }
 
     private boolean checkIsSysContact(String number) {
+        if (mSysContacts == null || mSysContacts.size() < 1 || TextUtils.isEmpty(number)) {
+            return false;
+        }
         String formatNumber = PrivacyContactUtils.formatePhoneNumber(number);
         for (int i = 0; i < mSysContacts.size(); i++) {
             String sysNumber = mSysContacts.get(i).getContactNumber();
@@ -305,6 +308,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
 
     /**
      * 标记摊款
+     *
      * @param i
      */
     private void showChoiseDialog(final int i) {
