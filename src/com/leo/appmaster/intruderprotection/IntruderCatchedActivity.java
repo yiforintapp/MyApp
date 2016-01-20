@@ -855,7 +855,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                             .concat(" ")
                             .concat(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
                 } else {
-                    shareString = getResources().getString(R.string.intruder_share_content)
+                    shareString = getResources().getString(R.string.intruder_share_content, mISManager.getCatchTimes())
                                     .concat(" ").concat(Constants.DEFAULT_SHARE_URL);
                 }
 
