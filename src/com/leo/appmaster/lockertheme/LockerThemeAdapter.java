@@ -52,16 +52,18 @@ public class LockerThemeAdapter extends BaseAdapter {
         options = new Options();
         // 主题使用565配置
         options.inPreferredConfig = Config.RGB_565;
-        commonOption = new DisplayImageOptions.Builder()
-                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-                .showImageOnLoading(R.drawable.online_theme_loading)
-                .showImageOnFail(R.drawable.online_theme_loading_failed)
-                .displayer(new FadeInBitmapDisplayer(500))
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .decodingOptions(options)
-                .build();
+        if (commonOption == null) {
+            commonOption = new DisplayImageOptions.Builder()
+                    .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                    .showImageOnLoading(R.drawable.online_theme_loading)
+                    .showImageOnFail(R.drawable.online_theme_loading_failed)
+                    .displayer(new FadeInBitmapDisplayer(500))
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .considerExifParams(true)
+                    .decodingOptions(options)
+                    .build();
+        }
     }
 
     @Override
@@ -164,33 +166,35 @@ public class LockerThemeAdapter extends BaseAdapter {
 
         } else {
             viewHolder.tag.setVisibility(View.INVISIBLE);
-            compatibleOption = new DisplayImageOptions.Builder()
-                    .showImageOnLoading(theme.themeImage)
-                    .showImageOnFail(theme.themeImage).cacheInMemory(true)
-                    .displayer(new FadeInBitmapDisplayer(500))
-                    .decodingOptions(options)
-                    .cacheOnDisk(true).considerExifParams(true).build();
-            if (Constants.THEME_PACKAGE_NIGHT.equals(theme.packageName)) {
-                ImageLoader.getInstance().displayImage(
-                        Constants.THEME_MOONNIGHT_URL, viewHolder.image,
-                        compatibleOption);
-            } else if (Constants.THEME_PACKAGE_CHRITMAS
-                    .equals(theme.packageName)) {
-                ImageLoader.getInstance().displayImage(
-                        Constants.THEME_CHRISTMAS_URL, viewHolder.image,
-                        compatibleOption);
-            } else if (Constants.THEME_PACKAGE_FRUIT.equals(theme.packageName)) {
-                ImageLoader.getInstance().displayImage(
-                        Constants.THEME_FRUIT_URL, viewHolder.image,
-                        compatibleOption);
-            } else if (Constants.THEME_PACKAGE_SPATIAL
-                    .equals(theme.packageName)) {
-                ImageLoader.getInstance().displayImage(
-                        Constants.THEME_SPATIAL_URL, viewHolder.image,
-                        compatibleOption);
-            } else {
-                viewHolder.image.setImageDrawable(theme.themeImage);
+            if (compatibleOption == null) {
+                compatibleOption = new DisplayImageOptions.Builder()
+                        .showImageOnLoading(theme.themeImage)
+                        .showImageOnFail(theme.themeImage).cacheInMemory(true)
+                        .displayer(new FadeInBitmapDisplayer(500))
+                        .decodingOptions(options)
+                        .cacheOnDisk(true).considerExifParams(true).build();
             }
+//            if (Constants.THEME_PACKAGE_NIGHT.equals(theme.packageName)) {
+//                ImageLoader.getInstance().displayImage(
+//                        Constants.THEME_MOONNIGHT_URL, viewHolder.image,
+//                        compatibleOption);
+//            } else if (Constants.THEME_PACKAGE_CHRITMAS
+//                    .equals(theme.packageName)) {
+//                ImageLoader.getInstance().displayImage(
+//                        Constants.THEME_CHRISTMAS_URL, viewHolder.image,
+//                        compatibleOption);
+//            } else if (Constants.THEME_PACKAGE_FRUIT.equals(theme.packageName)) {
+//                ImageLoader.getInstance().displayImage(
+//                        Constants.THEME_FRUIT_URL, viewHolder.image,
+//                        compatibleOption);
+//            } else if (Constants.THEME_PACKAGE_SPATIAL
+//                    .equals(theme.packageName)) {
+//                ImageLoader.getInstance().displayImage(
+//                        Constants.THEME_SPATIAL_URL, viewHolder.image,
+//                        compatibleOption);
+//            } else {
+            viewHolder.image.setImageDrawable(theme.themeImage);
+//            }
         }
 
         if (theme.curUsedTheme) {
