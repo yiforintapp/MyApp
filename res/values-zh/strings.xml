@@ -955,5 +955,14 @@
     <string name="oppo_rom_tip_txt">由於系統限制，隱私衛士需要開啟權限才能正常工作。開啟步驟“添加程序”-->“添加允許後台運行的應用”-->選擇添加隱私衛士</string>
     <string name="recom_lft_txt">不用了</string>
     <string name="recom_rgt_txt">我要試試</string>
-    <string name="batterymanage_boosted_number">對%1$d個項目進行了優化</string>	  
+    <string name="batterymanage_boosted_number">對%1$d個項目進行了優化</string>
+
+    <string name="screen_protect_type_pop_one">電量低於70%時快速進行充電</string>
+    <string name="screen_protect_type_pop_two">電量充足，穩定充電電流以保護電池</string>
+    <string name="screen_protect_type_pop_three">即將充滿，減小充電電流以延長電池壽命</string>
+
+    <string name="screen_protect_charing_text_one">請連接充電器</string>
+    <string name="screen_protect_charing_text_two">充電中</string>
+    <string name="screen_protect_charing_text_three">已充滿，請移除充電器</string>
+    <string name="screen_protect_charing_text_four">已充滿</string>
 </resources>

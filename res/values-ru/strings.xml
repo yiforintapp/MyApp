@@ -934,5 +934,14 @@
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы Privacy Guard требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить Privacy Guard</string>
     <string name="recom_lft_txt">Нет, спасибо</string>
     <string name="recom_rgt_txt">Попробовать сейчас</string>
-    <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>	 
+    <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>
+
+    <string name="screen_protect_type_pop_one">Начать быструю подзарядку, когда заряд менее 70%</string>
+    <string name="screen_protect_type_pop_two">Заряд полный, стабильный зарядный ток для защиты батареи</string>
+    <string name="screen_protect_type_pop_three">Заряд скоро будет полным, уменьшение зарядного тока для увеличения срока службы батареи</string>
+
+    <string name="screen_protect_charing_text_one">Подключите зарядное устройство</string>
+    <string name="screen_protect_charing_text_two">Идет подзарядка</string>
+    <string name="screen_protect_charing_text_three">Зарядка завершена, отключите зарядное устройство</string>
+    <string name="screen_protect_charing_text_four">Зарядка завершена</string>
 </resources>

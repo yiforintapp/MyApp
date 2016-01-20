@@ -981,13 +981,13 @@
     <string name="recom_rgt_txt">Try</string>
 
     <!--翻译遗漏，暂时用中文替代-->
-    <string name="screen_protect_type_pop_one">电量低于70%时快速进行充电</string>
-    <string name="screen_protect_type_pop_two">电量充足，稳定充电电流以保护电池</string>
-    <string name="screen_protect_type_pop_three">即将充满，减小充电电流以延长电池寿命</string>
+    <string name="screen_protect_type_pop_one">Conduct quick charging while the electriciy is lower than 70%</string>
+    <string name="screen_protect_type_pop_two">The electricity is sufficient, keep the charging current stable to protect the battery</string>
+    <string name="screen_protect_type_pop_three">The battery will be fully charged soon, reduce the charging current to prolong the battery life</string>
 
-    <string name="screen_protect_charing_text_one">请连接充电器</string>
-    <string name="screen_protect_charing_text_two">充电中</string>
-    <string name="screen_protect_charing_text_three">已充满，请移除充电器</string>
-    <string name="screen_protect_charing_text_four">已充满</string>
+    <string name="screen_protect_charing_text_one">Please connect the charger</string>
+    <string name="screen_protect_charing_text_two">Charging</string>
+    <string name="screen_protect_charing_text_three">Fully charged, please remove the charger</string>
+    <string name="screen_protect_charing_text_four">Fully charged</string>
 
 </resources>

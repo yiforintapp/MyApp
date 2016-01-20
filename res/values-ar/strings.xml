@@ -1039,4 +1039,13 @@
     <string name="oppo_rom_tip_txt">،الخصوصية حارس تشغيل بعد عادية الصلاحية تعمل النظام قيد بنسبة  اجازة بعد الخافية التطبيقات تشغيل ، البرنامج اختر اضافة اضافة التشغيل الخصوصية حارس خطوة ، اضافة</string>
     <string name="recom_lft_txt">لا داعى بذلك</string>
     <string name="recom_rgt_txt">أريد أن أحاول</string>
+
+    <string name="screen_protect_type_pop_one">يجرى الشحن سريعا عند كمية الكهرباء أقل 70%</string>
+    <string name="screen_protect_type_pop_two">كافة كمية الكهرباء ، تيار الشحن المستقر بحماية البطارية</string>
+    <string name="screen_protect_type_pop_three">تملآ  الشحن قريبا ، تخفيض تيار الشحن لتمديد عمر البطارية</string>
+
+    <string name="screen_protect_charing_text_one">صل شاحن الكهرباء</string>
+    <string name="screen_protect_charing_text_two">جارى شحن الكهرباء</string>
+    <string name="screen_protect_charing_text_three">قد تم الشحن ، اخرج شاحن الكهرباء</string>
+    <string name="screen_protect_charing_text_four">قد تم الشحن</string>
 </resources>

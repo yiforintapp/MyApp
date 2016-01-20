@@ -952,5 +952,14 @@
     <string name="oppo_rom_tip_txt">ด้วยข้อจำกัดของระบบมือถือ LEO Privacy Guard ต้องได้รับการมอบอำนาจก่อนใช้งาน ขั้นตอนการมอบคือ "เพิ่มแอพ" --> "เพิ่มแอพที่ทำงานอยู่เบื้องหลังได้" --> เลือกเพิ่ม LEO Privacy Guard</string>
     <string name="recom_lft_txt">ไม่ต้องแล้ว</string>
     <string name="recom_rgt_txt">ลองใช้ดู</string>
-    <string name="batterymanage_boosted_number">%1$dมีการปรับรายการ</string>	   
+    <string name="batterymanage_boosted_number">%1$dมีการปรับรายการ</string>
+
+    <string name="screen_protect_type_pop_one">ใช้โหมดการชาร์จแบบรวดเร็ว เมื่อแบตเตอรี่เหลือต่ำกว่า 70%</string>
+    <string name="screen_protect_type_pop_two">แบตเตอรี่เต็ม ควบคุมการประจุกระแสไฟฟ้าให้สม่ำเสมอ เพื่อรักษาแบตเตอรี่ให้อยู่ในสภาพการใช้งานที่ดี</string>
+    <string name="screen_protect_type_pop_three">ชาร์จไฟใกล้เต็ม ลดกระแสไฟฟ้าในการชาร์จ เพื่อยืดอายุการใช้งานของแบตเตอรี่</string>
+
+    <string name="screen_protect_charing_text_one">กรุณาเสียบสายชาร์จ</string>
+    <string name="screen_protect_charing_text_two">กำลังชาร์จ</string>
+    <string name="screen_protect_charing_text_three">ชาร์จเต็มแล้ว กรุณาถอดสายชาร์จออก</string>
+    <string name="screen_protect_charing_text_four">ชาร์จเต็มแล้ว</string>
 </resources>
