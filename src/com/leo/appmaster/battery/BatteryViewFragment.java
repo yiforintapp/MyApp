@@ -330,7 +330,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mSlideView.setScrollBottomListener(this);
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
-
+        mBottleWater.setPostInvalidateDelayMs(40);
         mBottleWater.setWaveColor(0xff0ab522);
         mBottleWater.setWave2Color(0xff0ab522);
 
@@ -445,7 +445,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (newState.plugged == 0) {
             mIvArrowMove.setVisibility(View.INVISIBLE);
+            mBottleWater.setIsNeedWave(false);
         } else {
+            mBottleWater.setIsNeedWave(true);
             if (isExpand) {
                 mIvArrowMove.setVisibility(View.VISIBLE);
                 mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
@@ -721,11 +723,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mShowing = false;
                 mScrollView.setScrollY(0);
                 mSlideView.setScrollable(true);
-
-                if(newState.plugged == 0){
-                    mBottleWater.setIsNeedWave(false);
-                }
-
             }
         });
         animMoveY.start();
@@ -796,7 +793,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             case R.id.item_btn_rv:
                 mLockManager.filterSelfOneMinites();
                 if (view == mSwiftyBtnLt) {
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage","screen_promote1");
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote1");
                     boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
 
                     if (installISwipe) {
@@ -808,7 +805,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 Constants.ISWIPE_PACKAGE, mActivity);
                     }
                 } else if (view == mExtraBtnLt) {
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage","screen_promote2");
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote2");
                     PreferenceTable preferenceTable = PreferenceTable.getInstance();
                     Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
                             PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
