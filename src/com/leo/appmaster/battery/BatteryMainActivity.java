@@ -68,6 +68,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private RippleView mRvBoost;
     private final int APPS_COLUMNS = 5;
     private AppsAdapter mAdapter;
+    private int mListAmount = 0;
     private ProgressBar mPbLoading;
     private RelativeLayout mRlEmpty;
     private RelativeLayout mRlLoadingOrEmpty;
@@ -80,6 +81,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private boolean mIsResultShowed = false;
     private WaveView mWvBattery;
     private BatteryBoostResultFragment mFrgmResult;
+    private TextView mTvBoostedNumber;
     private final int TOP_TRANSLUCENT_HEIGHT = DipPixelUtil.dip2px(this, 160);
     private final int TRANSLATE_ANIM_DURATION = 600;
     @Override
@@ -103,6 +105,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
     
     private void initUI() {
+        mTvBoostedNumber = (TextView) findViewById(R.id.tv_boost_complete_number);
         if (mFrgmResult == null) {
             mFrgmResult = new BatteryBoostResultFragment();
         }
@@ -214,6 +217,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                     mTvListTitle.setText(R.string.batterymanage_tip_nothing_to_boost);
                     mTvEmpty.setText(R.string.batterymanage_tip_nothing_to_boost);
                     if (!mIsResultShowed) {
+                        mListAmount = 0;
                         startBatteryDismissAnim();
                         SDKWrapper.addEvent(BatteryMainActivity.this, SDKWrapper.P1, "batterypage", "promote_redirect");
                         mIsResultShowed = true;
@@ -251,6 +255,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         if (mListBatteryComsuptions == null || mListBatteryComsuptions.size() == 0) {
             showEmpty();
         } else {
+            mListAmount = mListBatteryComsuptions.size();
             SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "backapps_" + mListBatteryComsuptions.size());
             hideLoadingOrEmpty();
         }
@@ -285,7 +290,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         final float centerY = mIvShield.getHeight() / 2.0f;  
   
         final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,  
-                centerX, centerY, 0.0f, true);  
+                centerX, DipPixelUtil.dip2px(this, 26), 0.0f, true);  
         rotation.setDuration(680);  
         rotation.setAnimationListener(new AnimationListener() {
             @Override
@@ -340,10 +345,20 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     protected void startShowCompleteAnim() {
         mTvComplete.setVisibility(View.VISIBLE);
+        mTvBoostedNumber.setVisibility(View.VISIBLE);
+        if (mListAmount != 0) {
+            mTvBoostedNumber.setText(String.format(getString(R.string.batterymanage_boosted_number), mListAmount));
+        } else {
+            mTvBoostedNumber.setText(getString(R.string.batterymanage_tip_nothing_to_boost));
+        }
+//        batterymanage_boosted_number
         PropertyValuesHolder alphaHolder = PropertyValuesHolder.ofFloat("alpha", 0.0f, 1.0f);
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mTvComplete, alphaHolder);
-        anim.setDuration(600);
-        anim.start();
+        ObjectAnimator anim2 = ObjectAnimator.ofPropertyValuesHolder(mTvBoostedNumber, alphaHolder);
+        AnimatorSet as = new AnimatorSet();
+        as.playTogether(anim, anim2);
+        as.setDuration(600);
+        as.start();
     }
 
     protected void startTranslateAnim() {

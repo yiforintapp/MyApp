@@ -934,4 +934,5 @@
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы Privacy Guard требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить Privacy Guard</string>
     <string name="recom_lft_txt">Нет, спасибо</string>
     <string name="recom_rgt_txt">Попробовать сейчас</string>
+    <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>	 
 </resources>

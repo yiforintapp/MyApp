@@ -94,12 +94,24 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="37dp"
                 android:layout_marginLeft="140dp"
                 android:layout_marginRight="30dp"
                 android:text="@string/batterymanage_boost_finished"
                 android:textColor="@color/c1"
-                android:textSize="@dimen/f1"
+                android:textSize="@dimen/f3"
+                android:visibility="invisible" />
+            <TextView
+                android:id="@+id/tv_boost_complete_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:layout_below="@id/tv_boost_complete"
+                android:layout_marginLeft="140dp"
+                android:layout_marginRight="30dp"
+                android:textColor="@color/scanning_sub_title"
+                android:textSize="14dp"
                 android:visibility="invisible" />
         </RelativeLayout>
 

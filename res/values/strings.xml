@@ -947,6 +947,7 @@
     <string name="batterymanage_label_old"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> applications are using power secretly</string>
     <string name="batterymanage_boost">Power consumption optimization</string>
     <string name="batterymanage_boost_finished">Optimization completed</string>
+    <string name="batterymanage_boosted_number">%1$s items are optimized</string>
     <string name="batterymanage_tip_loading">Checking power-consuming applications</string>
     <string name="batterymanage_tip_nothing_to_boost">There is no application for optimization</string>
     <string name="batterymanage_switch_screen">Charging screensaver</string>
