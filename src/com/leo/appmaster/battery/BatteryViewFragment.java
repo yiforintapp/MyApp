@@ -706,6 +706,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     }
                     break;
             }
+        } else if (view == mBossView) {
+            return false;   //TODO 取消遮盖popupwindow的点击，如果后续有影响，请取消
         }
         return true;
     }
@@ -829,6 +831,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_constant");
             } else {
                 view = mTrickleContent;
+                LeoLog.i("tempp", "3rd pop showed");
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_trickle");
             }
 

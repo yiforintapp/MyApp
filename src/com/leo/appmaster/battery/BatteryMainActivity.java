@@ -200,6 +200,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 //        }
         showLoading();
         if (mBtrManager.shouldEnableCleanFunction()) {
+//        if (true) {
             //不在上一次清理的两分钟内 可以重新load应用列表和清理加速
 //            mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
 //            mRvBoost.setEnabled(true);
@@ -394,8 +395,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         float height = 150.0f;
         View vv = mGvApps.getChildAt(0);
         if (vv != null) {
-            // 需要与layout中的vertical spacing保持一致！
-            height = vv.getHeight() + DipPixelUtil.dip2px(BatteryMainActivity.this, 10);
+            //TODO 需要与layout中的vertical spacing保持一致！
+            height = vv.getHeight() + DipPixelUtil.dip2px(BatteryMainActivity.this, 0);
+//            height = vv.getHeight() + mGvApps.getVerticalSpacing();
             LeoLog.d(TAG, "height = " + height);
         }
         TranslateAnimation ta = new TranslateAnimation(0.0f, 0.0f, height, 0.0f);
