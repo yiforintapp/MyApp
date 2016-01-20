@@ -35,7 +35,8 @@ public class WaveView extends View {
     private int mTotalWidth, mTotalHeight;  //整体宽高
     private float[] mYPositions;  
     private float[] mResetOneYPositions;  
-    private float[] mResetTwoYPositions;  
+    private float[] mResetTwoYPositions; 
+    private boolean mIsNeedWave = true;
     private int mXOffsetSpeedOne;  
     private int mXOffsetSpeedTwo;  
     private int mXOneOffset;  
@@ -60,6 +61,10 @@ public class WaveView extends View {
     
     public void setFactorA(float a) {
         mFactorA = a;
+    }
+    
+    public void setIsNeedWave (boolean isNeedWave) {
+        mIsNeedWave = isNeedWave;
     }
     
     public WaveView(Context context, AttributeSet attrs) {  
@@ -112,20 +117,23 @@ public class WaveView extends View {
         // 从canvas层面去除绘制时锯齿  
         canvas.setDrawFilter(mDrawFilter);  
         resetPositonY();  
-        for (int i = 0; i < mTotalWidth; i++) {  
-        	if (mPercent != 0) {
-        	    if (mPercent == 100) {
-        	        canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint);
-                    canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint2);
-        	    } else {
-        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetOneYPositions[i]) , i, mTotalHeight, mWavePaint);
-        	        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetTwoYPositions[i]) + 2 , i, mTotalHeight, mWavePaint2);
-        	    }
-        		// 绘制第一条水波纹  
-//        		canvas.drawLine(i, mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 7) - (mPercent/100 * (mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 7))), i, mTotalHeight, mWavePaint);  
-        	    // 绘制第二条水波纹
-//        		canvas.drawLine(i, mTotalHeight - mResetTwoYPositions[i] - (STRETCH_FACTOR_A + 8) - (mPercent/100 * (mTotalHeight - mResetOneYPositions[i] - (STRETCH_FACTOR_A + 8))), i, mTotalHeight, mWavePaint); 
-        	}
+        for (int i = 0; i < mTotalWidth; i++) { 
+            if (mIsNeedWave) {
+                if (mPercent != 0) {
+                    if (mPercent == 100) {
+                        canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint);
+                        canvas.drawLine(i, 0 , i, mTotalHeight, mWavePaint2);
+                    } else {
+                        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetOneYPositions[i]) , i, mTotalHeight, mWavePaint);
+                        canvas.drawLine(i, mTotalHeight - ((mPercent/100) * (mTotalHeight - 2 * mFactorA) + mResetTwoYPositions[i]) + 2 , i, mTotalHeight, mWavePaint2);
+                    }
+                }
+            } else {
+                if (mPercent != 0) {
+                    canvas.drawLine(i, mTotalHeight * (100 - mPercent) / 100 , i, mTotalHeight, mWavePaint);
+                    canvas.drawLine(i, mTotalHeight * (100 - mPercent) / 100, i, mTotalHeight, mWavePaint2);
+                }
+            }
         }  
   
         // 改变两条波纹的移动点  
