@@ -14,6 +14,7 @@ import android.os.SystemClock;
 import android.util.Pair;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -281,6 +282,11 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     }
 
     private void checkOrNotifyDecScore(String description, int securityScore) {
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+            return;
+        }
         long currentTs = System.currentTimeMillis();
 
         long lastDecTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_DECREASE_TIME, 0);

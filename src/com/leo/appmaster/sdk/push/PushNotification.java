@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -33,6 +34,10 @@ public class PushNotification {
     }
 
     public void showNotification(Intent intent, String title, String content, int iconId, int type) {
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+            return;
+        }
         long lastShowDay = PreferenceTable.getInstance().getLong(NOTIFY_LAST_SHOW_DAY, 0);
         long nowDay = System.currentTimeMillis();
         LeoLog.d("testTrafficNoti", "lastShowDay:" + lastShowDay + "--nowDay:" + nowDay);
