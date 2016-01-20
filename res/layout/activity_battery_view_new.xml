@@ -330,7 +330,6 @@
                 android:layout_below="@id/move_arrow"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:background="#7FFFFFFF"
                 android:fadingEdge="none"
                 android:fillViewport="true"
                 android:overScrollMode="never"
@@ -345,7 +344,7 @@
                     <!-- Advertise -->
                     <include
                         android:id="@+id/ad_content"
-                        layout="@layout/scan_ad_layout"
+                        layout="@layout/screen_saver_ad_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
