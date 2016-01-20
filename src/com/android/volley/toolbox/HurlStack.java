@@ -154,9 +154,14 @@ public class HurlStack implements HttpStack {
         }
         if (object.length() > 0) {
             String message = object.toString();
-            String cryptMsg = CryptoUtils.encrypt(message);
-            LeoLog.i("CptoMsg", cryptMsg);
-            connection.addRequestProperty("leo", cryptMsg);
+            String cryptMsg = null;
+            try {
+                cryptMsg = CryptoUtils.encrypt(message);
+                LeoLog.i("CptoMsg", cryptMsg);
+                connection.addRequestProperty("leo", cryptMsg);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

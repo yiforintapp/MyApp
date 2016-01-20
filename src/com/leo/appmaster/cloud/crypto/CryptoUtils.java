@@ -34,85 +34,46 @@ public class CryptoUtils {
 
     /**
      * 加密
+     *
      * @param message
      * @return
      */
-    public static String encrypt(String message) {
+    public static String encrypt(String message) throws Exception {
         if (TextUtils.isEmpty(message)) {
             return message;
         }
 
-        try {
-            initAesKeyIfNeeded();
-        } catch (RuntimeException e) {
-            return message;
-        }
-        try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(cipher.ENCRYPT_MODE, sAesKey, sAesIv);
+        initAesKeyIfNeeded();
 
-            byte[] msgByte = message.getBytes("UTF-8");
-            byte[] cryptoByte = cipher.doFinal(msgByte);
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(cipher.ENCRYPT_MODE, sAesKey, sAesIv);
 
-            return Base64.encodeToString(cryptoByte, Base64.NO_WRAP);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return message;
+        byte[] msgByte = message.getBytes("UTF-8");
+        byte[] cryptoByte = cipher.doFinal(msgByte);
+
+        return Base64.encodeToString(cryptoByte, Base64.NO_WRAP);
     }
 
     /**
      * 解密
+     *
      * @param message
      * @return
      */
-    public static String decrypt(String message) {
+    public static String decrypt(String message) throws Exception {
         if (TextUtils.isEmpty(message)) {
             return message;
         }
 
-        try {
-            initAesKeyIfNeeded();
-        } catch (RuntimeException e) {
-            return message;
-        }
-        try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, sAesKey, sAesIv);
+        initAesKeyIfNeeded();
 
-            byte[] msgByte = Base64.decode(message, Base64.NO_WRAP);
-            byte[] cryptoByte = cipher.doFinal(msgByte);
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, sAesKey, sAesIv);
 
-            return new String(cryptoByte, "UTF-8");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        byte[] msgByte = Base64.decode(message, Base64.NO_WRAP);
+        byte[] cryptoByte = cipher.doFinal(msgByte);
 
-        return message;
+        return new String(cryptoByte, "UTF-8");
     }
 
     public static byte[] encrypt(byte[] data) {
@@ -193,7 +154,7 @@ public class CryptoUtils {
         for (int i = 0; i < len; i += 2) {
             // Convert each character into a integer (base-16), then bit-shift into place
             data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
+                    + Character.digit(s.charAt(i + 1), 16));
         }
         return data;
     }
