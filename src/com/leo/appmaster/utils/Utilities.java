@@ -574,13 +574,10 @@ public final class Utilities {
             intent.putExtra(Constants.PG_TO_ISWIPE, Constants.ISWIPE_NO_FIRST_TIP);
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         try {
-            lockManager.filterSelfOneMinites();
-            lockManager.filterPackage(Constants.ISWIPE_PACKAGE, false);
             context.startActivity(intent);
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
