@@ -114,6 +114,7 @@ public class BatteryInfoProvider {
 		}
 
 		if (mStats == null) {
+			LeoLog.d(TAG, "mStats == null, get apps from getAppListCpuTime()");
 			return getAppListCpuTime();
 		}
 
@@ -132,7 +133,12 @@ public class BatteryInfoProvider {
 		final List<BatteryComsuption> list = new ArrayList<BatteryComsuption>();
 
 		Collections.sort(mUsageList);
+		LeoLog.d(TAG, "mUsageList size = " + mUsageList.size());
 		for (BatteryComsuption sipper : mUsageList) {
+			if (sipper.getDefaultPackageName() == null
+					|| sipper.getIcon() == null) {
+				continue;
+			}
 			if (sipper.getValue() < MIN_POWER_THRESHOLD)
 				continue;
 			final double percentOfTotal = ((sipper.getValue() / mTotalPower) * 100);
@@ -141,6 +147,8 @@ public class BatteryInfoProvider {
 				continue;
 			list.add(sipper);
 		}
+
+		LeoLog.d(TAG, "list size = " + list.size());
 
 		if (list.size() <= 1) {
 			return getAppListCpuTime();
