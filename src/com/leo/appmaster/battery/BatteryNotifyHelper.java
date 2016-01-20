@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
@@ -20,6 +21,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -73,13 +75,26 @@ public class BatteryNotifyHelper {
         };
 
         if (list != null) {
-            BitmapDrawable icon = null;
+            Drawable icon = null;
+            Bitmap bitmap = null;
             int finalSize = Math.min(MAX_ICON_ACCOUNT, list.size());
             for (int i = 0; i < finalSize; i++) {
-                icon = (BitmapDrawable) list.get(i).getIcon();
-                if (icon != null) {
-                    view_custom.setImageViewBitmap(imageViewIds[i], icon.getBitmap());
+                icon = list.get(i).getIcon();
+                bitmap = BitmapUtils.drawableToBitmap(icon);
+                if (bitmap != null) {
+                    view_custom.setImageViewBitmap(imageViewIds[i], bitmap);
                 }
+//                if (icon != null && icon instanceof BitmapDrawable) {
+//                    bdicon = (BitmapDrawable) icon;
+//                    if (bdicon != null) {
+//                        view_custom.setImageViewBitmap(imageViewIds[i], bdicon.getBitmap());
+//                    }
+//                } else {
+//                    bicon  = BitmapUtils.drawableToBitmap(icon);
+//                    if (bicon != null) {
+//                        view_custom.setImageViewBitmap(imageViewIds[i], bicon);
+//                    }
+//                }
             }
         }
 

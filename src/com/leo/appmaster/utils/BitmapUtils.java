@@ -86,6 +86,9 @@ public class BitmapUtils {
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable != null && drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
         // 取 drawable 的长宽
         int w = drawable.getIntrinsicWidth();
         int h = drawable.getIntrinsicHeight();
