@@ -43,6 +43,7 @@ import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.BatteryManager.BatteryState;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
@@ -123,6 +124,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mCtbMain.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                SDKWrapper.addEvent(BatteryMainActivity.this, SDKWrapper.P1,
+                        "batterypage", "setting");
                 Intent intent = new Intent(BatteryMainActivity.this, BatterySettingActivity.class);
                 startActivity(intent);
             }

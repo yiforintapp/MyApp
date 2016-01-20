@@ -11,6 +11,7 @@ import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.Utilities;
@@ -122,9 +123,13 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                 if (!isScreenViewOpen) {
                     checkBox.setImageResource(R.drawable.switch_on);
                     mBtrManager.setScreenViewStatus(true);
+                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
+                            "batterypage", "setting_scr_on");
                 } else {
                     checkBox.setImageResource(R.drawable.switch_off);
                     mBtrManager.setScreenViewStatus(false);
+                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
+                            "batterypage", "setting_scr_off");
                 }
                 break;
             case R.id.rv_item_noti:
@@ -132,9 +137,13 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                 if (!isBatteryNotiOpen) {
                     checkBoxTwo.setImageResource(R.drawable.switch_on);
                     mBtrManager.setBatteryNotiStatus(true);
+                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
+                            "batterypage", "setting_ntf_on");
                 } else {
                     checkBoxTwo.setImageResource(R.drawable.switch_off);
                     mBtrManager.setBatteryNotiStatus(false);
+                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
+                            "batterypage", "setting_ntf_off");
                 }
                 break;
         }
