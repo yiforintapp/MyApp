@@ -66,7 +66,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private BatteryAppGridView mGvApps;
     private ArrayList<BatteryComsuption> mListBatteryComsuptions;
     private RippleView mRvBoost;
-    private final int APPS_COLUMNS = 5;
+    private final int APPS_COLUMNS = 6;
     private AppsAdapter mAdapter;
     private int mListAmount = 0;
     private ProgressBar mPbLoading;

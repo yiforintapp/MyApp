@@ -138,12 +138,13 @@
 
             <com.leo.appmaster.battery.BatteryAppGridView
                 android:id="@+id/gv_apps"
+                android:padding="9dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:listSelector="@android:color/transparent" 
                 android:scrollbars="none"
-                android:verticalSpacing="10dp" >
+                android:verticalSpacing="0dp" >
             </com.leo.appmaster.battery.BatteryAppGridView>
 
             <RelativeLayout
