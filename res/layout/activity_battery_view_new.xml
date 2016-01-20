@@ -409,6 +409,13 @@
     </RelativeLayout>
     <!-- 滑动区域 -->
 
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_above="@id/slider"-->
+        <!--android:background="@drawable/bay_shadow" />-->
 
     <!-- 滑动解锁 -->
     <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"

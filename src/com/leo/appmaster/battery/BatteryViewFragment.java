@@ -179,7 +179,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void reLocateMoveContent() {
         LeoLog.d("testBatteryView", "slideview Y : " + mSlideView.getY());
         if (!isSetInitPlace) {
-            mSlideView.setY(mBossView.getHeight() / 2);
+            mSlideView.setY(mBossView.getHeight()  *3 / 8);
             isSetInitPlace = true;
         }
         mBossView.setVisibility(View.VISIBLE);
@@ -715,7 +715,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showMoveUp() {
 
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-                "y", mSlideView.getTop() + mBossView.getHeight() / 2, mSlideView.getTop());
+                "y", mSlideView.getTop() + mBossView.getHeight() *3 / 8, mSlideView.getTop());
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -732,7 +732,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void showMoveDown() {
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() / 2);
+                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() *3 / 8);
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
