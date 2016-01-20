@@ -18,6 +18,7 @@ import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackListFileFetchJob;
+import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -112,17 +113,51 @@ public class BlacklistTab extends BaseTable {
     public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
         LeoLog.d(TAG, "upgradeTable oldVer: " + oldVersion + " | newVer: " + newVersion);
         if (oldVersion <= 9 && newVersion == 10) {
+            List<BlackListInfo> oldList = null;
+            if (oldVersion == 9) {
+                // 数据迁移
+                oldList = getOldBlackList(db);
+                // 3.2版本需要先把拉取任务时间及状态重置一下
+                BlackListFileFetchJob.resetTimesAndCounts();
+            }
             db.execSQL("DROP TABLE IF EXISTS " + CallFilterConstants.TAB_SERVER_BLACK_LIST);
             db.execSQL("DROP TABLE IF EXISTS " + CallFilterConstants.TAB_BLACK_LIST);
 
             db.execSQL("DROP INDEX IF EXISTS phone_idx");
             createTable(db);
 
-            if (oldVersion == 9) {
-                // 3.2版本需要先把拉取任务时间及状态重置一下
-                BlackListFileFetchJob.resetTimesAndCounts();
+            LeoLog.d(TAG, "upgradeTable, oldList size is: " + (oldList == null ? 0 : oldList.size()));
+            if (oldList != null && oldList.size() > 0) {
+                addBlackListInner(oldList, db);
             }
         }
+    }
+
+    private List<BlackListInfo> getOldBlackList(SQLiteDatabase database) {
+        List<BlackListInfo> result = new ArrayList<BlackListInfo>();
+        String sortOrder = CallFilterConstants.COL_TIME + " " + CallFilterConstants.DESC;
+        StringBuilder sb = new StringBuilder();
+        sb.append("loc_hd = ? and ");
+        sb.append(CallFilterConstants.COL_BLACK_REMOVE_STATE + " = ? ");
+        String selects = sb.toString();
+        String[] selectArgs = new String[]{ "1", String.valueOf(CallFilterConstants.REMOVE_NO)};
+        Cursor cursor = null;
+        try {
+            cursor = database.query(CallFilterConstants.TAB_BLACK_LIST, null, selects, selectArgs, null, null, sortOrder);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                do {
+                    BlackListInfo info = readFromOldCursor(cursor);
+                    result.add(info);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            LeoLog.e(TAG, "getOldBlackList ex." + e.toString());
+        } finally {
+            IoUtils.closeSilently(cursor);
+        }
+
+        return result;
     }
 
     public void updateIntercept(List<BlackListInfo> listInfos) {
@@ -354,16 +389,7 @@ public class BlacklistTab extends BaseTable {
         }
     }
 
-    public void addBlackList(List<BlackListInfo> listInfos) {
-        if (listInfos == null || listInfos.isEmpty()) {
-            LeoLog.d(TAG, "addBlackList, listinfos is empty.");
-            return;
-        }
-        SQLiteDatabase database = getHelper().getWritableDatabase();
-        if (database == null) {
-            LeoLog.d(TAG, "addBlackList, database is null.");
-            return;
-        }
+    private void addBlackListInner(List<BlackListInfo> listInfos, SQLiteDatabase database) {
         ContentValues values = new ContentValues();
         String selection = null;
         String[] selectionArgs = null;
@@ -400,17 +426,29 @@ public class BlacklistTab extends BaseTable {
                     values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, CallFilterConstants.MK_BLACK_LIST);
 
                     long rowId = database.insert(CallFilterConstants.TAB_BLACK_LIST, null, values);
-                    LeoLog.d(TAG, "addBlackList, insert rowid: " + rowId);
+                    LeoLog.d(TAG, "addBlackListInner, insert rowid: " + rowId);
                 }
 
             }
             database.setTransactionSuccessful();
         } catch (Exception e) {
-            LeoLog.e(TAG, "addBlackList ex." + e.toString());
+            LeoLog.e(TAG, "addBlackListInner ex." + e.toString());
         } finally {
             database.endTransaction();
         }
+    }
 
+    public void addBlackList(List<BlackListInfo> listInfos) {
+        if (listInfos == null || listInfos.isEmpty()) {
+            LeoLog.d(TAG, "addBlackList, listinfos is empty.");
+            return;
+        }
+        SQLiteDatabase database = getHelper().getWritableDatabase();
+        if (database == null) {
+            LeoLog.d(TAG, "addBlackList, database is null.");
+            return;
+        }
+        addBlackListInner(listInfos, database);
     }
 
     public void addServerBlackList(List<BlackListInfo> listInfos) {
@@ -673,6 +711,43 @@ public class BlacklistTab extends BaseTable {
         info.uploadState = cursor.getInt(uploadIndex);
         info.removeState = cursor.getInt(removeIndex);
         info.filtUpState = cursor.getInt(filUpIndex);
+        info.markType = cursor.getInt(markTypeIndex);
+
+        return info;
+    }
+
+    private BlackListInfo readFromOldCursor(Cursor cursor) {
+        Resources res = AppMasterApplication.getInstance().getResources();
+        int iconSize = res.getDimensionPixelSize(R.dimen.contact_icon_scale_size);
+
+        int nameIndex = cursor.getColumnIndex("name");
+        int numberIndex = cursor.getColumnIndex("phone_number");
+        int iconIndex = cursor.getColumnIndex("icon");
+        int uploadIndex = cursor.getColumnIndex("upload_state");
+        int removeIndex = cursor.getColumnIndex("remove_state");
+        int markTypeIndex = cursor.getColumnIndex("marker_type");
+
+        BlackListInfo info = new BlackListInfo();
+        info.name = cursor.getString(nameIndex);
+        info.number = cursor.getString(numberIndex);
+        if (TextUtils.isEmpty(info.name)) {
+            info.name = info.number;
+        }
+        Bitmap icon = null;
+        byte[] iconByte = cursor.getBlob(iconIndex);
+        if (iconByte != null && iconByte.length > 0) {
+            try {
+                icon = PrivacyContactUtils.getBmp(iconByte);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            if (icon != null) {
+                icon = PrivacyContactUtils.getScaledContactIcon(icon, iconSize);
+                info.icon = icon;
+            }
+        }
+        info.uploadState = cursor.getInt(uploadIndex);
+        info.removeState = cursor.getInt(removeIndex);
         info.markType = cursor.getInt(markTypeIndex);
 
         return info;

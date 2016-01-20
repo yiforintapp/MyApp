@@ -17,7 +17,7 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class ScreenOnOffListener extends BroadcastListener {
 
-    public static final String TAG = "SCREEN ON OFF";
+    public static final String TAG = "ScreenOnOffListener";
     public static final long mTwoDay = 48 * 60 * 60 * 1000;
 
     public final void onEvent(String action) {
