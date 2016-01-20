@@ -15,6 +15,7 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -134,7 +135,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             switch (msg.what) {
                 case MOVE_UP:
                     if (mBossView.getVisibility() == View.VISIBLE) {
-                        mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
+                        if (newState.plugged == 0) {
+                            mIvArrowMove.setVisibility(View.INVISIBLE);
+                        } else {
+                            mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
+                        }
                         mSlideView.setScrollable(true);
                         mShowing = true;
                         showMoveUp();
@@ -143,7 +148,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     }
                     break;
                 case MOVE_DOWN:
-                    if (mBatteryManager.getIsCharing()) {
+                    if (newState.plugged != 0) {
                         mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
                         mSlideView.setScrollable(true);
                         mShowing = true;
@@ -411,6 +416,33 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
 
+//        int texta;
+//        if (newState.plugged != 0) {
+//            texta = 1;
+//        } else {
+//            texta = 0;
+//        }
+//
+//        int textb;
+//        if (isExpand) {
+//            textb = 1;
+//        } else {
+//            textb = 0;
+//        }
+//        Toast.makeText(mActivity, "level:" + newState.level + ",isCharing:" + texta + ",isExpand:" + textb
+//                , Toast.LENGTH_LONG).show();
+
+        if (newState.plugged == 0) {
+            mIvArrowMove.setVisibility(View.INVISIBLE);
+        } else {
+            if (isExpand) {
+                mIvArrowMove.setVisibility(View.VISIBLE);
+                mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
+            } else {
+                mIvArrowMove.setVisibility(View.VISIBLE);
+                mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
+            }
+        }
 
     }
 
@@ -463,10 +495,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void setBottleWater() {
         int level = newState.level;
-//        int level = 99;
-//        if (level > 95) {
-//            level = 93;
-//        }
         mBottleWater.setPercent(level);
     }
 
@@ -495,12 +523,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mHandler.sendEmptyMessage(GREEN_ARROW_MOVE);
 
     }
-
-    private void noTime() {
-        mTvLeftTime.setVisibility(View.GONE);
-        mTvTime.setVisibility(View.GONE);
-    }
-
 
     public void setTime(int second, boolean isExpandContent) {
         int h = 0;
@@ -531,30 +553,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         dString = String.valueOf(d);
         LeoLog.d("testBatteryView", "hString : " + hString + "dString : " + dString);
         boolean isCharing = newState.plugged != 0 ? true : false;
-
-//        if (hString.equals("0")) {
-//            if (!dString.equals("0")) {
-//                String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
-//                mTvLeftTime.setVisibility(View.VISIBLE);
-//                mTvTime.setVisibility(View.VISIBLE);
-//                mTvTime.setText(Html.fromHtml(text));
-//                mBatteryText = text;
-//            } else {
-//                if (newState.level == 100) {
-//                    mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_four));
-//                    mTvTime.setVisibility(View.GONE);
-//                } else {
-//                    mTvLeftTime.setText(mActivity.getString(R.string.screen_protect_charing_text_two));
-//                    mTvTime.setVisibility(View.GONE);
-//                }
-//            }
-//        } else {
-//            String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
-//            mTvLeftTime.setVisibility(View.VISIBLE);
-//            mTvTime.setVisibility(View.VISIBLE);
-//            mTvTime.setText(Html.fromHtml(text));
-//            mBatteryText = text;
-//        }
 
 
 //        int texta;
@@ -663,8 +661,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     int newY = (int) event.getRawY();
                     int moveY = newY - staryY;
 
-
-                    LeoLog.d("testBatteryView", "ACTION_DOWN");
                     if (isExpand) {
                         if (!mShowing && moveY > 0) {
                             expandContent(false);
@@ -692,31 +688,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     break;
             }
         }
-//        if (view == mBossView) {
-//            switch (event.getAction()) {
-//                case MotionEvent.ACTION_DOWN:
-//                    LeoLog.d("testBatteryView", "ACTION_DOWN");
-//                    staryY = (int) event.getRawY();
-//                    break;
-//                case MotionEvent.ACTION_MOVE:
-//                    int newY = (int) event.getRawY();
-//                    int moveY = newY - staryY;
-//                    if (!isExpand) {
-//                        if (moveY < -100 && !mShowing) {
-//                            expandContent(true);
-//                        }
-//                    } else {
-//                        if (moveY > 100 && !mShowing) {
-//                            expandContent(false);
-//                        }
-//                    }
-//
-//                    break;
-//                case MotionEvent.ACTION_UP:
-//
-//                    break;
-//            }
-//        }
         return true;
     }
 
@@ -820,17 +791,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             Constants.ISWIPE_PACKAGE, mActivity);
                 }
                 break;
-//            case R.id.move_arrow:
-//                if (isExpand) {
-//                    if (!mShowing) {
-//                        expandContent(false);
-//                    }
-//                } else {
-//                    if (!mShowing) {
-//                        expandContent(true);
-//                    }
-//                }
-//                break;
         }
     }
 
