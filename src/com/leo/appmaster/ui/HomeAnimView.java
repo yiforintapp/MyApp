@@ -1,5 +1,6 @@
 package com.leo.appmaster.ui;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -147,13 +148,17 @@ public class HomeAnimView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mShieldLayer.containsPointer(x, y)) {
+                    LeoLog.d(TAG, "ACTION_DOWN...click on shiled");
                     mClickDownOnShield = true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                LeoLog.d(TAG, "ACTION_UP...");
                 if (mClickDownOnShield && mShieldLayer.containsPointer(x, y)) {
+                    LeoLog.d(TAG, "ACTION_UP...click on shield.");
                     int securityScore = mPrivacyHelper.getSecurityScore();
                     if (securityScore >= mSecurityScore && !HomePrivacyFragment.mAnimatorPlaying) {
+                        LeoLog.d(TAG, "ACTION_UP...click on shield confirm.");
                         // 动画跑完了，才能进入深度扫描
                         HomeActivity activity = (HomeActivity) getContext();
                         activity.onShieldClick();

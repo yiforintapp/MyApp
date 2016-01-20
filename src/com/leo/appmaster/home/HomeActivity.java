@@ -327,6 +327,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onShieldClick() {
+        LeoLog.d(TAG, "onShieldClick....");
         int securityScore = mPrivacyHelper.getSecurityScore();
         if (securityScore == 100) {
             mShowContact = false;
@@ -338,7 +339,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mShowContact = true;
         }
         if (!mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
-            LeoLog.d(TAG, "zany, start dismiss tab.");
+            LeoLog.d(TAG, "onShieldClick, start dismiss tab.");
             mTabFragment.dismissTab();
             mPrivacyFragment.setShowColorProgress(false);
             mMoreFragment.setEnable(false);
@@ -365,22 +366,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, 0);
                     ft.addToBackStack(null);
                     ft.replace(R.id.pri_pro_content, mScanningFragment);
-                    boolean commited = false;
                     try {
                         ft.commitAllowingStateLoss();
-                        commited = true;
                         LeoLog.d(TAG, "zany, start scanning commit success.");
                     } catch (Exception e) {
                         LeoLog.e(TAG, "zany, start scanning commit ex.", e);
                     }
-//                    if (!commited) {
-//                        try {
-//                            ft.commitAllowingStateLoss();
-//                            LeoLog.d(TAG, "zany, start scanning commitAllowingStateLoss success.");
-//                        } catch (Exception e) {
-//                            LeoLog.e(TAG, "zany, start scanning commitAllowingStateLoss ex.", e);
-//                        }
-//                    }
                     mPrivacyFragment.onScanStart();
                     mCurrentFragment = mScanningFragment;
                 }
