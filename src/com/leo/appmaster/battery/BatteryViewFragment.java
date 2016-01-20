@@ -4,16 +4,22 @@ package com.leo.appmaster.battery;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -109,7 +115,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
-    private BatteryMenu mLeoPopMenu;
+    //    private BatteryMenu mLeoPopMenu;
     private View mBossView;
     private boolean isSetInitPlace = false;
 
@@ -168,7 +174,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     arrowMove();
                     break;
                 case DIMISS_POP:
-                    mLeoPopMenu.dimissPop();
+//                    mLeoPopMenu.dimissPop();
+                    long cancelTime = System.currentTimeMillis();
+                    if (cancelTime - showTime > 4000) {
+                        if (popupWindow != null && popupWindow.isShowing()) {
+                            popupWindow.dismiss();
+                        }
+                    }
                     break;
                 case LOAD_DONE_INIT_PLACE:
                     reLocateMoveContent();
@@ -180,7 +192,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void reLocateMoveContent() {
         LeoLog.d("testBatteryView", "slideview Y : " + mSlideView.getY());
         if (!isSetInitPlace) {
-            mSlideView.setY(mBossView.getHeight()  *3 / 8);
+            mSlideView.setY(mBossView.getHeight() * 3 / 8);
             isSetInitPlace = true;
         }
         mBossView.setVisibility(View.VISIBLE);
@@ -716,7 +728,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showMoveUp() {
 
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-                "y", mSlideView.getTop() + mBossView.getHeight() *3 / 8, mSlideView.getTop());
+                "y", mSlideView.getTop() + mBossView.getHeight() * 3 / 8, mSlideView.getTop());
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -733,7 +745,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void showMoveDown() {
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() *3 / 8);
+                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() * 3 / 8);
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -818,11 +830,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
+    private long showTime;
+
     private void showPop(int type) {
         if (!isExpand && !mShowing) {
-            initPopMenu();
-            mLeoPopMenu.setPopMenuItems(mActivity, getRightMenuItems(type), null);
-
+            String str = getRightMenuItems(type);
             View view;
             if (type == CHARING_TYPE_SPEED) {
                 view = mSpeedContent;
@@ -835,13 +847,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_trickle");
             }
 
-            mLeoPopMenu.showPopMenu(mActivity, view, null, null);
+            showPopUp(view, str);
+            showTime = System.currentTimeMillis();
             mHandler.sendEmptyMessageDelayed(DIMISS_POP, 5000);
         }
     }
 
-    private List<String> getRightMenuItems(int type) {
-        List<String> listItems = new ArrayList<String>();
+    private String getRightMenuItems(int type) {
         Context ctx = mActivity;
         String mStr;
         if (type == CHARING_TYPE_SPEED) {
@@ -851,16 +863,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else {
             mStr = ctx.getString(R.string.screen_protect_type_pop_three);
         }
-        listItems.add(mStr);
-        return listItems;
+        return mStr;
     }
 
-    public void initPopMenu() {
-        if (mLeoPopMenu != null) return;
-        mLeoPopMenu = new BatteryMenu();
-        mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
-        mLeoPopMenu.setListViewDivider(null);
-    }
+//    public void initPopMenu() {
+//        if (mLeoPopMenu != null) return;
+//        mLeoPopMenu = new BatteryMenu();
+//        mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
+//        mLeoPopMenu.setListViewDivider(null);
+//    }
 
     /* 广告相关 - 开始 */
     private boolean mShouldLoadAd = false;
@@ -1076,4 +1087,24 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         return options;
     }
+
+    private PopupWindow popupWindow;
+
+    private void showPopUp(View v, String str) {
+        View contentView = LayoutInflater.from(mActivity).inflate(
+                R.layout.popmenu_battery_list_item, null);
+        TextView text = (TextView) contentView.findViewById(R.id.menu_text);
+        text.setText(str);
+
+        popupWindow = new PopupWindow(contentView, DipPixelUtil.dip2px(mActivity, 180), DipPixelUtil.dip2px(mActivity, 50));
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
+
+        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1] - popupWindow.getHeight());
+    }
+
 }
