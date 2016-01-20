@@ -139,6 +139,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             switch (msg.what) {
                 case MOVE_UP:
                     if (mBossView.getVisibility() == View.VISIBLE) {
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_up");
                         if (newState.plugged == 0) {
                             mIvArrowMove.setVisibility(View.INVISIBLE);
                         } else {
@@ -153,6 +154,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     break;
                 case MOVE_DOWN:
                     if (newState.plugged != 0) {
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_down");
                         mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
                         mSlideView.setScrollable(true);
                         mShowing = true;
@@ -770,8 +772,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 bundle.putSerializable(BatteryManagerImpl.SEND_BUNDLE, newState);
                 dlIntent.putExtras(bundle);
                 startActivity(dlIntent);
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_setting");
                 mActivity.finish();
-
                 break;
             case R.id.speed_content:
                 showPop(CHARING_TYPE_SPEED);
@@ -785,6 +787,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             case R.id.item_btn_rv:
                 mLockManager.filterSelfOneMinites();
                 if (view == mSwiftyBtnLt) {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage","screen_promote1");
                     boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
 
                     if (installISwipe) {
@@ -796,6 +799,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 Constants.ISWIPE_PACKAGE, mActivity);
                     }
                 } else if (view == mExtraBtnLt) {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage","screen_promote2");
                     PreferenceTable preferenceTable = PreferenceTable.getInstance();
                     Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
                             PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
@@ -813,10 +817,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             View view;
             if (type == CHARING_TYPE_SPEED) {
                 view = mSpeedContent;
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_quick");
             } else if (type == CHARING_TYPE_CONTINUOUS) {
                 view = mContinuousContent;
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_constant");
             } else {
                 view = mTrickleContent;
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_trickle");
             }
 
             mLeoPopMenu.showPopMenu(mActivity, view, null, null);

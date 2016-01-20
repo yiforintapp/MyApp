@@ -23,7 +23,9 @@ import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
+import com.leo.appmaster.privacycontact.PrivacyCallLogListActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -74,6 +76,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         isActivityAlive = true;
 
         registerHomeKeyReceiver();
+
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage","screen");
     }
 
     private void registerHomeKeyReceiver() {
@@ -238,6 +242,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     protected void onDestroy() {
         super.onDestroy();
         LeoLog.d(TAG, "onDestroy");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "screen_back&home");
         isActivityAlive = false;
         if (mReceiver != null) {
             unregisterHomeKeyReceiver();
@@ -282,6 +287,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             mViewPager.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    SDKWrapper.addEvent(BatteryShowViewActivity.this, SDKWrapper.P1, "batterypage", "screen_unlock");
                     finish();
                 }
             }, 250);
