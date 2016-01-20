@@ -330,6 +330,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mSlideView.setScrollBottomListener(this);
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
+
         mBottleWater.setWaveColor(0xff0ab522);
         mBottleWater.setWave2Color(0xff0ab522);
 
@@ -720,6 +721,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mShowing = false;
                 mScrollView.setScrollY(0);
                 mSlideView.setScrollable(true);
+
+                if(newState.plugged == 0){
+                    mBottleWater.setIsNeedWave(false);
+                }
+
             }
         });
         animMoveY.start();
