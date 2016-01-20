@@ -971,8 +971,8 @@
     <string name="screen_protect_type_three">Trickle charging</string>
 
     <string name="screen_protect_time">Remaining charging time </string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>M</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>m</string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>m</string>
 
     <string name="screen_protect_unlock_text">Slide to unlock</string>
     <string name="oppo_rom_tip_txt">Due to system restriction, you need to enable the permission to have Privacy Guard work normally. You can do it by choosing Add program > Add applications running in background > Select and add Privacy Guard</string>
