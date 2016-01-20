@@ -39,6 +39,7 @@ import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
+import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.BatteryManager.BatteryState;
 import com.leo.appmaster.mgr.MgrContext;
@@ -142,6 +143,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     @Override
     public void onBackPressed() {
+        if (mIsResultShowed) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "promote_back");
+        }
             super.onBackPressed();
     }
 
@@ -169,6 +173,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
     
     public void showEmpty() {
+        mTvListTitle.setText(R.string.batterymanage_tip_nothing_to_boost);
         mPbLoading.setVisibility(View.GONE);
         mRlEmpty.setVisibility(View.VISIBLE);
         mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
@@ -210,6 +215,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                     mTvEmpty.setText(R.string.batterymanage_tip_nothing_to_boost);
                     if (!mIsResultShowed) {
                         startBatteryDismissAnim();
+                        SDKWrapper.addEvent(BatteryMainActivity.this, SDKWrapper.P1, "batterypage", "promote_redirect");
                         mIsResultShowed = true;
                     }
                 }
@@ -217,6 +223,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
     }
 
+    
     @Override
     protected void onPause() {
         super.onPause();
@@ -244,6 +251,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         if (mListBatteryComsuptions == null || mListBatteryComsuptions.size() == 0) {
             showEmpty();
         } else {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "backapps_" + mListBatteryComsuptions.size());
             hideLoadingOrEmpty();
         }
         mAdapter.notifyDataSetChanged();
@@ -254,6 +262,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     public void onClick(View v) {
          switch (v.getId()) {
             case R.id.rv_accelerate:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "savepower");
                 startBoost();
                 break;
             default:
@@ -317,6 +326,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     protected void showResultFragment() {
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "promote");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);

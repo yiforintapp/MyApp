@@ -21,6 +21,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
@@ -81,9 +82,15 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
     public void onClick(View v) {
         LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         if (mWifiBtn == v) {
+            if (mActivity != null) {
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_wifi");
+            }
             Intent intent = new Intent(mActivity, WifiSecurityActivity.class);
             startActivity(intent);
         } else if (mSwiftyBtnLt == v) {
+            if (mActivity != null) {
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_product");
+            }
             lockManager.filterSelfOneMinites();
             boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
             if (installISwipe) {
@@ -95,6 +102,9 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
                         Constants.ISWIPE_PACKAGE, mActivity);
             }
         } else if (mCallFilterBtn == v) {
+            if (mActivity != null) {
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_block");
+            }
             Intent intent = new Intent(mActivity, CallFilterMainActivity.class);
             startActivity(intent);
         }
