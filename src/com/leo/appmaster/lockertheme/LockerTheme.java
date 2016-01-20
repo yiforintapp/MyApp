@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -47,6 +48,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.ThemeChanageListener;
@@ -180,9 +182,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         loadData();
         initUI();
         handleIntent();
+        LeoLog.i("setHideThemeList_time", "getHideThemeList_time:" + SystemClock.elapsedRealtime());
         if (mNeedLoadTheme && mHideThemes.isEmpty()) {
-            showProgressDialog(getString(R.string.tips),
-                    getString(R.string.pull_to_refresh_refreshing_label) + "...", true, true);
+//            showProgressDialog(getString(R.string.tips),
+//                    getString(R.string.pull_to_refresh_refreshing_label) + "...", true, true);
+            if (mLocalThemeAdapter != null) {
+                loadTheme();
+            }
         }
 
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
@@ -199,7 +205,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
         createResultToHelpSetting();
         AppLoadEngine.getInstance(this).setThemeChanageListener(this);
-
     }
 
     private void addLocalAd() {
@@ -1088,8 +1093,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     mLocalThemeAdapter.notifyDataSetChanged();
                     if (mProgressDialog != null) {
                         mProgressDialog.dismiss();
+                        mProgressDialog = null;
                     }
-                    mProgressDialog = null;
                     if (mFromTheme != null && !mFromTheme.equals("")) {
                         tryHideThemeApk(mFromTheme);
                         for (int i = 0; i < mLocalThemes.size(); i++) {

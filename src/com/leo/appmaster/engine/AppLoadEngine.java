@@ -29,6 +29,7 @@ import android.net.TrafficStats;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -495,6 +496,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                 }
 
                 pre.setHideThemeList(themeList);
+                LeoLog.i("setHideThemeList_time","setHideThemeList_time:"+ SystemClock.elapsedRealtime());
                 if (mThemeListener != null) {
                     mThemeListener.loadTheme();
                 }
