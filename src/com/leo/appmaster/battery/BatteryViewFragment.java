@@ -67,6 +67,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static final int DIMISS_POP = 5;
     private static final int LOAD_DONE_INIT_PLACE = 6;
 
+    public static boolean mShowing = false;
+    public static boolean isExpand = false;
+
     private View mTimeContent;
     private View mBatteryIcon;
     private View mRemainTimeContent;
@@ -100,7 +103,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mArrowMoveContent;
     private ImageView mIvArrowMove;
 
-    public static boolean isExpand = false;
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
@@ -646,8 +648,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     }
 
-    public static boolean mShowing = false;
     private int staryY;
+    private boolean isMissionDone = false;
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
@@ -658,21 +660,27 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    int newY = (int) event.getRawY();
-                    int moveY = newY - staryY;
+                    if (!isMissionDone) {
+                        int newY = (int) event.getRawY();
+                        int moveY = newY - staryY;
 
-                    if (isExpand) {
-                        if (!mShowing && moveY > 0) {
-                            expandContent(false);
+                        if (isExpand) {
+                            if (!mShowing && moveY > 0) {
+                                isMissionDone = true;
+                                expandContent(false);
+                            }
+                        } else {
+                            if (!mShowing && moveY < 0) {
+                                isMissionDone = true;
+                                expandContent(true);
+                            }
                         }
-                    } else {
-                        if (!mShowing && moveY < 0) {
-                            expandContent(true);
-                        }
+
                     }
 
                     break;
                 case MotionEvent.ACTION_UP:
+                    isMissionDone = false;
                     int upY = (int) event.getRawY();
                     if (staryY == upY) {
                         if (isExpand) {
