@@ -831,7 +831,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_constant");
             } else {
                 view = mTrickleContent;
-                LeoLog.i("tempp", "3rd pop showed");
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_trickle");
             }
 

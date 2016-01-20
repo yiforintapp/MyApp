@@ -84,6 +84,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private TextView mTvBoostedNumber;
     private final int TOP_TRANSLUCENT_HEIGHT = DipPixelUtil.dip2px(this, 160);
     private final int TRANSLATE_ANIM_DURATION = 600;
+    private ImageView mIvLittleBattery;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +96,12 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     public void onEventMainThread(BatteryViewEvent event) {
         BatteryState state = event.state;
+//        state.p//0 没充电 其他都充电
+        if (state.plugged == 0) {
+            mIvLittleBattery.setImageResource(R.drawable.batterymanage_littlebattery_normal);
+        } else {
+            mIvLittleBattery.setImageResource(R.drawable.batterymanage_littlebattery);
+        }
         mTvPercentValue.setText(state.level + "");             
     }
     
@@ -109,6 +116,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         if (mFrgmResult == null) {
             mFrgmResult = new BatteryBoostResultFragment();
         }
+        mIvLittleBattery = (ImageView) findViewById(R.id.iv_littlebattery);
         mRlTopAnimLayout = (RelativeLayout) findViewById(R.id.rl_anim_layout);
         mTvComplete = (TextView) findViewById(R.id.tv_boost_complete);
         mTvPercentValue = (TextView) findViewById(R.id.tv_percent_value);
@@ -182,10 +190,17 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
     }
     
+    
+    
     @Override
     public void onResume() {
         super.onResume();
         mTvPercentValue.setText(mBtrManager.getBatteryLevel() + "");
+        if (mBtrManager.getIsCharing()) {
+            mIvLittleBattery.setImageResource(R.drawable.batterymanage_littlebattery);
+        } else {
+            mIvLittleBattery.setImageResource(R.drawable.batterymanage_littlebattery_normal);
+        }
         mWvBattery.setPercent(mBtrManager.getBatteryLevel());
         mWvBattery.setFactorA(15f);
 //        mWvBattery.setPercent(5);
