@@ -118,6 +118,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         int currentTimes = preferenceTable.getInt(PrefConst.ENTER_CALL_FILTER_TIMES, 1);
         int limitTimes = preferenceTable.getInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10);
+        limitTimes = 1;
         if (currentTimes < limitTimes) {  // 小于限制次数
             preferenceTable.putInt(PrefConst.ENTER_CALL_FILTER_TIMES, currentTimes + 1);
             return;
@@ -142,10 +143,20 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         mShareDialog.setContent(content);
         mShareDialog.setLeftBtnStr(cancelButton);
         mShareDialog.setRightBtnStr(shareButton);
+        mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "block", "block_noShare");
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+            }
+        });
         mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (mShareDialog != null) {
+                if (mShareDialog != null && mShareDialog.isShowing()) {
                     mShareDialog.dismiss();
                     mShareDialog = null;
                 }
@@ -159,6 +170,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
 
     /** 分享应用 */
     private void shareApps() {
+        SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "block", "block_share");
         mLockManager.filterSelfOneMinites();
         PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
         boolean isContentEmpty = TextUtils.isEmpty(

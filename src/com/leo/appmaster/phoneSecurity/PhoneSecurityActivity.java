@@ -1024,10 +1024,20 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
        mShareDialog.setContent(content);
        mShareDialog.setLeftBtnStr(cancelButton);
        mShareDialog.setRightBtnStr(shareButton);
+       mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialogInterface, int i) {
+               SDKWrapper.addEvent(PhoneSecurityActivity.this, SDKWrapper.P1, "theft", "theft_noShare");
+               if (mShareDialog != null && mShareDialog.isShowing()) {
+                   mShareDialog.dismiss();
+                   mShareDialog = null;
+               }
+           }
+       });
        mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
            @Override
            public void onClick(DialogInterface dialogInterface, int i) {
-               if (mShareDialog != null) {
+               if (mShareDialog != null && mShareDialog.isShowing()) {
                    mShareDialog.dismiss();
                    mShareDialog = null;
                }
@@ -1040,6 +1050,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
 
     /** 分享应用 */
     private void shareApps() {
+        SDKWrapper.addEvent(PhoneSecurityActivity.this, SDKWrapper.P1, "theft", "theft_share");
         mLockManager.filterSelfOneMinites();
         PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
         boolean isContentEmpty = TextUtils.isEmpty(

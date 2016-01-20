@@ -12,18 +12,18 @@
     android:paddingLeft="9dp"
     android:paddingRight="9dp"
     android:paddingTop="9dp"
-    android:visibility="gone">
+    android:visibility="invisible">
 
     <RelativeLayout
         android:id="@+id/preview_title_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         android:layout_centerHorizontal="true">
 
         <ImageView
             android:id="@+id/item_ad_preview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="160dp"
             android:adjustViewBounds="true"/>
 
         <ImageView

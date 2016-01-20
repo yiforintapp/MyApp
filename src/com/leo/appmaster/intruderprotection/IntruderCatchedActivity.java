@@ -843,6 +843,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 }
                 break;
             case R.id.share_layout:  // 分享
+                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                        "intruder", "share_cnts");
                 mLockManager.filterSelfOneMinites();
                 PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
                 boolean isContentEmpty = TextUtils.isEmpty(
@@ -858,7 +860,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     shareString = getResources().getString(R.string.intruder_share_content, mISManager.getCatchTimes())
                                     .concat(" ").concat(Constants.DEFAULT_SHARE_URL);
                 }
-
+                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                        "intruder", "intruder_share");
                 Utilities.toShareApp(shareString, getTitle().toString(), IntruderCatchedActivity.this);
 
                 break;
