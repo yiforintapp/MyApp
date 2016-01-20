@@ -286,8 +286,14 @@ public class DeskProxyActivity extends Activity {
     private void goToBlackListTab1(int type) {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, CallFilterMainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.putExtra("needMoveToTab2", false);
+        intent.putExtra("needToHomeWhenFinish", true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity(intent);
+//        Intent intent = new Intent(this, CallFilterMainActivity.class);
+////        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
     }
 
     private void gotoBackUp(int type) {
