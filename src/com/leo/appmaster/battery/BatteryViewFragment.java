@@ -103,6 +103,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mArrowMoveContent;
     private ImageView mIvArrowMove;
 
+    private View mFixBugContent;
+
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
@@ -348,8 +350,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mSettingView.setOnClickListener(this);
         mArrowMoveContent = findViewById(R.id.move_arrow);
         mArrowMoveContent.setOnTouchListener(this);
-//        mArrowMoveContent.setOnClickListener(this);
         mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);
+
+        mFixBugContent = findViewById(R.id.fix_bug_content);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -964,7 +967,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
 //        if (true) {
-
             View include = viewStub.inflate();
             mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
             mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
@@ -980,6 +982,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mSwiftyTitle.setText(preferenceTable.getString(
                         PrefConst.KEY_CHARGE_SWIFTY_TITLE));
             }
+            mFixBugContent.setVisibility(View.GONE);
             mSlideView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -1031,6 +1034,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mExtraTitle.setText(preferenceTable.getString(
                         PrefConst.KEY_CHARGE_EXTRA_TITLE));
             }
+            mFixBugContent.setVisibility(View.GONE);
             mSlideView.post(new Runnable() {
                 @Override
                 public void run() {
