@@ -2,6 +2,7 @@
 package com.leo.appmaster.appmanage.view;
 
 import java.util.ArrayList;
+
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -26,7 +27,9 @@ import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+
 import android.view.View.OnClickListener;
+
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class ManagerFlowFragment extends BaseFragment {
@@ -218,6 +221,18 @@ public class ManagerFlowFragment extends BaseFragment {
                 } else {
                     test.add(month + "/" + (i + 1));
                 }
+            } else if (language.equals("pt")) {
+                if (ManagerFlowUtils.getDayOfMonth() == i + 1) {
+                    String today = getActivity().getResources().getString(R.string.today);
+                    test.add("-   "+today+"   -");
+                    continue;
+                }
+                if (i < 9) {
+                    test.add("0" + (i + 1) + "/" + month);
+                } else {
+                    test.add((i + 1) + "/" + month);
+                }
+
             } else {
                 if (ManagerFlowUtils.getDayOfMonth() == i + 1) {
                     test.add("-   Today   -");
