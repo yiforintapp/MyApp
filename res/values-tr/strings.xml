@@ -964,4 +964,5 @@
     <string name="screen_protect_charing_text_four">Dolu</string>
     <string name="batterymanage_scaning">Tarama</string>
 	<string name="batterymanage_boosting">İşleme</string>
+	<string name="batterymanage_notif_process">optimize</string>
 </resources>

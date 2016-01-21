@@ -956,5 +956,6 @@
     <string name="batterymanage_boosted_number">对%1$d个项目进行了优化</string>
     <string name="batterymanage_scaning">扫描中</string>
     <string name="batterymanage_boosting">优化中</string>
+    <string name="batterymanage_notif_process">扫描中</string>
 
 </resources>

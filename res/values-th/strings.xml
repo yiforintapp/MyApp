@@ -964,4 +964,6 @@
     <string name="screen_protect_charing_text_four">ชาร์จเต็มแล้ว</string>
     <string name="batterymanage_scaning">การสแกน</string>
 	<string name="batterymanage_boosting">การประมวลผล</string>
+	<string name="batterymanage_notif_process">การประมวลผล</string>
+	
 </resources>

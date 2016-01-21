@@ -967,4 +967,5 @@
     <string name="screen_protect_charing_text_four">已充滿</string>
     <string name="batterymanage_scaning">掃描中</string>
 	<string name="batterymanage_boosting">處理中</string>
+	<string name="batterymanage_notif_process">掃描中</string>
 </resources>
