@@ -426,7 +426,11 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                         if (guidNotShown) {
                             cancelSplashSkipbtAndUrlbt();
                             if (!mIsShowGuide) {
-                                showNewFuncGuide();
+                                try {
+                                    showNewFuncGuide();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 /*如果走引导，去除分享按钮*/
                                 if (mSplaFacRt.getVisibility() == View.VISIBLE) {
                                     mSplaFacRt.setVisibility(View.GONE);
