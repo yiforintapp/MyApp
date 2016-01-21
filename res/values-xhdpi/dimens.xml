@@ -19,7 +19,7 @@
     <dimen name="digital_item_marginTop">6dp</dimen>
     <dimen name="digital_item_marginBottom">6dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
-    <dimen name="layout_passwd_marginTop">55dp</dimen>
+    <dimen name="layout_passwd_marginTop">35dp</dimen>
     <dimen name="layout_four_passwd_marginTop">4dp</dimen>
     <dimen name="circle_count_text_size">74dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>
