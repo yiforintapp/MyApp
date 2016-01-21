@@ -92,17 +92,6 @@ public class BatteryNotifyHelper {
                 if (bitmap != null) {
                     view_custom.setImageViewBitmap(imageViewIds[i], bitmap);
                 }
-//                if (icon != null && icon instanceof BitmapDrawable) {
-//                    bdicon = (BitmapDrawable) icon;
-//                    if (bdicon != null) {
-//                        view_custom.setImageViewBitmap(imageViewIds[i], bdicon.getBitmap());
-//                    }
-//                } else {
-//                    bicon  = BitmapUtils.drawableToBitmap(icon);
-//                    if (bicon != null) {
-//                        view_custom.setImageViewBitmap(imageViewIds[i], bicon);
-//                    }
-//                }
             }
         }
 
@@ -141,16 +130,21 @@ public class BatteryNotifyHelper {
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
-                        final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
-                        LeoLog.d(TAG, "apps count: " + list.size());
-                        if (list.size() > mManager.getAppThreshold()) {
-                            ThreadManager.executeOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    notifyAppConsumption(list);
+                        ThreadManager.executeOnAsyncThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
+                                LeoLog.d(TAG, "apps count: " + list.size());
+                                if (list.size() > mManager.getAppThreshold()) {
+                                    ThreadManager.executeOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            notifyAppConsumption(list);
+                                        }
+                                    });
                                 }
-                            });
-                        }
+                            }
+                        });
                     }
                 });
             }
