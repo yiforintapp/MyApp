@@ -143,7 +143,7 @@ public class BlacklistTab extends BaseTable {
         sb.append("loc_hd = ? and ");
         sb.append(CallFilterConstants.COL_BLACK_REMOVE_STATE + " = ? ");
         String selects = sb.toString();
-        String[] selectArgs = new String[]{ "1", String.valueOf(CallFilterConstants.REMOVE_NO)};
+        String[] selectArgs = new String[]{"1", String.valueOf(CallFilterConstants.REMOVE_NO)};
         Cursor cursor = null;
         try {
             cursor = database.query(CallFilterConstants.TAB_BLACK_LIST, null, selects, selectArgs, null, null, sortOrder);
@@ -411,6 +411,8 @@ public class BlacklistTab extends BaseTable {
                 values.put(CallFilterConstants.COL_BLACK_NUMBER, number);
                 if (!TextUtils.isEmpty(info.name)) {
                     values.put(CallFilterConstants.COL_BLACK_NAME, info.name);
+                } else {
+                    values.put(CallFilterConstants.COL_BLACK_NAME, "");
                 }
                 values.put(CallFilterConstants.COL_BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
                 values.put(CallFilterConstants.COL_TIME, System.currentTimeMillis());
