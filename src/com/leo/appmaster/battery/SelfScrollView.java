@@ -3,15 +3,12 @@ package com.leo.appmaster.battery;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ScrollView;
 
 import com.leo.appmaster.utils.LeoLog;
 
 
 public class SelfScrollView extends ScrollView {
-
-    private ScrollBottomListener scrollBottomListener;
 
     public SelfScrollView(Context context) {
         super(context);
@@ -39,20 +36,11 @@ public class SelfScrollView extends ScrollView {
 //            }
 //        }
     }
+
     private BatteryTestViewLayout mParent;
 
     public void setParent(BatteryTestViewLayout layout) {
         mParent = layout;
-    }
-
-    public void setScrollBottomListener(ScrollBottomListener scrollBottomListener) {
-        this.scrollBottomListener = scrollBottomListener;
-    }
-
-    public interface ScrollBottomListener {
-        public void scrollBottom();
-
-        public void scrollTop();
     }
 
 
@@ -72,52 +60,27 @@ public class SelfScrollView extends ScrollView {
             case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
                 int newY = (int) event.getRawY();
 
-
                 if (firstTab == 0) {
                     firstTab = (int) event.getRawY();
                 }
 
                 int moveY = newY - firstTab;
 
-                LeoLog.d("testBatteryView", "top : " + top);
-                LeoLog.d("testBatteryView", "oldTop : " + oldTop);
+//                LeoLog.d("testBatteryView", "top : " + top);
+//                LeoLog.d("testBatteryView", "oldTop : " + oldTop);
                 LeoLog.d("testBatteryView", "moveY : " + moveY);
 
-
 //                if (!BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing) {
-//                    if (scrollBottomListener != null &&
-//                            top > 0 && oldTop >= 0 && moveY < -50) {
-//                        scrollBottomListener.scrollTop();
+//                    if (top > 0 && oldTop >= 0 && moveY < -50) {
+//                        mParent.getScrollBottomListener().scrollTop();
 //                    }
 //                }
-                if (!BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing) {
-                    if (/*scrollBottomListener != null &&*/
-                            top > 0 && oldTop >= 0 && moveY < -50) {
-                        LeoLog.d("testBatteryView", "top : " + top);
-                        mParent.getScrollBottomListener().scrollTop();
-//                        scrollBottomListener.scrollTop();
-                    }
-                }
-
-
-
-//                if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
-//                        top == 0 && moveY > 120) {
-//                    if (scrollBottomListener != null) {
-//                        scrollBottomListener.scrollBottom();
-//                    }
-//                }
-
+//
+//
                 if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
                         top == 0 && moveY > 50) {
-//                    if (scrollBottomListener != null) {
-                    LeoLog.d("testBatteryView", "top : " + top);
                     mParent.getScrollBottomListener().scrollBottom();
-//                        scrollBottomListener.scrollBottom();
-//                    }
                 }
-
-
 
 
                 break;

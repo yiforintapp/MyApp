@@ -377,15 +377,6 @@
                         android:layout_marginTop="8dp" />
                     <!-- Advertise -->
 
-                    <View
-                        android:id="@+id/fix_bug_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@color/transparent" />
-
                     <!-- 推广位1 -->
                     <ViewStub
                         android:id="@+id/content_type_1"
