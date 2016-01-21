@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.telecom.Call;
@@ -421,6 +422,14 @@ public class BlacklistTab extends BaseTable {
                     values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, CallFilterConstants.MK_BLACK_LIST);
                 } else {
                     values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, info.markType);
+                }
+                //设置头像
+                if (info.icon != null) {
+                    Bitmap bmp = info.icon;
+                    byte[] icon = PrivacyContactUtils.formateImg(bmp);
+                    if (icon != null && icon.length > 0) {
+                        values.put(CallFilterConstants.COL_BLACK_ICON, icon);
+                    }
                 }
                 selection = CallFilterConstants.COL_BLACK_NUMBER;
                 if (number.length() >= PrivacyContactUtils.NUM_LEGH) {

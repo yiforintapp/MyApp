@@ -1318,37 +1318,6 @@ public class PrivacyContactUtils {
      */
     public static Bitmap getContactIconFromSystem(Context context, String number) {
         Bitmap contactIcon = null;
-//        String formateNumber = PrivacyContactUtils.simpleFromateNumber(number);
-//        Cursor cur = null;
-//        try {
-//            cur = context.getContentResolver().query(CONTACT_PHONE_URL, null,
-//                    Phone.NUMBER + " LIKE ? ",
-//                    new String[]{
-//                            "%" + formateNumber
-//                    }, null);
-//            if (cur != null) {
-//                while (cur.moveToNext()) {
-//                    Long contactid =
-//                            cur.getLong(cur.getColumnIndex(Phone.CONTACT_ID));
-//                    Long photoid =
-//                            cur.getLong(cur.getColumnIndex("photo_id"));
-//                    if (photoid > 0) {
-//                        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
-//                                contactid);
-//                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
-//                                context.getContentResolver(),
-//                                uri);
-//                        contactIcon = BitmapFactory.decodeStream(input);
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//
-//        } finally {
-//            if (!BuildProperties.isApiLevel14()) {
-//                IoUtils.closeSilently(cur);
-//            }
-//        }
         long contactId = getIdFroNum(number);
         Bitmap contactPhoto = null;
         ContentResolver conRe = context.getContentResolver();
