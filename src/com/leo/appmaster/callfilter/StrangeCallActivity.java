@@ -1,20 +1,16 @@
 
 package com.leo.appmaster.callfilter;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.provider.CallLog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,8 +25,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
@@ -40,8 +38,17 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.Utilities;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class StrangeCallActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private static final String TAG = "AddFromCallLogListActivity";
@@ -70,6 +77,8 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private AddFromCallHandler mAddFromCallHandler = new AddFromCallHandler();
     private RelativeLayout mRlBottomView;
     private boolean isCutProgress = false;
+
+    private LEOAlarmDialog mShareDialog;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -161,7 +170,85 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     @Override
     protected void onResume() {
         super.onResume();
+        Intent intent = getIntent();
+        boolean fromNotif = intent.getBooleanExtra("fromNotif", false); //是否从陌生人通知进入
+        if (fromNotif) {
+            showShareDialog();
+        }
+    }
 
+    private void showShareDialog() {
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        int currentTimes = preferenceTable.getInt(PrefConst.ENTER_CALL_FILTER_TIMES, 1);
+        int limitTimes = preferenceTable.getInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10);
+        if (currentTimes < limitTimes) {  // 小于限制次数
+            preferenceTable.putInt(PrefConst.ENTER_CALL_FILTER_TIMES, currentTimes + 1);
+            return;
+        }
+        if (preferenceTable.getBoolean(PrefConst.CALL_FILTER_SHOW, false)) {
+            return;
+        }
+        if (mShareDialog == null) {
+            mShareDialog = new LEOAlarmDialog(StrangeCallActivity.this);
+            mShareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mShareDialog != null) {
+                        mShareDialog = null;
+                    }
+                }
+            });
+        }
+        String content = getString(R.string.callfilter_share_dialog_content);
+        String shareButton = getString(R.string.share_dialog_btn_query);
+        String cancelButton = getString(R.string.share_dialog_query_btn_cancel);
+        mShareDialog.setContent(content);
+        mShareDialog.setLeftBtnStr(cancelButton);
+        mShareDialog.setRightBtnStr(shareButton);
+        mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SDKWrapper.addEvent(StrangeCallActivity.this, SDKWrapper.P1, "block", "block_noShare");
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+            }
+        });
+        mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+                shareApps();
+            }
+        });
+        mShareDialog.show();
+        preferenceTable.putBoolean(PrefConst.CALL_FILTER_SHOW, true);
+    }
+
+
+    /** 分享应用 */
+    private void shareApps() {
+        SDKWrapper.addEvent(StrangeCallActivity.this, SDKWrapper.P1, "block", "block_share");
+        mLockManager.filterSelfOneMinites();
+        PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
+        boolean isContentEmpty = TextUtils.isEmpty(
+                sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT));
+        boolean isUrlEmpty = TextUtils.isEmpty(
+                sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_URL));
+        String shareString;
+        if (!isContentEmpty && !isUrlEmpty) {
+            shareString = sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT)
+                    .concat(" ")
+                    .concat(sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_URL));
+        } else {
+            shareString = getResources().getString(R.string.callfilter_share_content)
+                    .concat(" ").concat(Constants.DEFAULT_SHARE_URL);
+        }
+        Utilities.toShareApp(shareString, getTitle().toString(), StrangeCallActivity.this);
     }
 
     @Override

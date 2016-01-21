@@ -266,6 +266,7 @@ public class DeskProxyActivity extends Activity {
     private void goToStrangerCall(int type) {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, StrangeCallActivity.class);
+        intent.putExtra("fromNotif", true);  //判断从通知进入页面
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         CallFilterHelper manager = CallFilterHelper.getInstance(this);
