@@ -953,7 +953,7 @@
     <string name="screen_protect_charing_text_two">充电中</string>
     <string name="screen_protect_charing_text_three">已充满，请移除充电器</string>
     <string name="screen_protect_charing_text_four">已充满</string>
-    <string name="batterymanage_boosted_number">对%1$d个项目进行了优化</string>
+    <string name="batterymanage_boosted_number">对%1$d个应用进行了优化</string>
     <string name="batterymanage_scaning">扫描中</string>
     <string name="batterymanage_boosting">优化中</string>
     <string name="batterymanage_notif_process">优化</string>
