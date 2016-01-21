@@ -939,20 +939,20 @@
 
 
     <!-- 3.3 start -->
-    <string name="batterymanage_result_ad_wifi_title">Check the security of the wifi you have connected</string>
+    <string name="batterymanage_result_ad_wifi_title">Check your WiFi security</string>
     <string name="batterymanage_result_ad_wifi_content">An unsecure wifi may threat your privacy security at any time</string>
     <string name="batterymanage_result_ad_callfilter_title">Disturbance interception</string>
     <string name="batterymanage_result_ad_callfilter_content">Identify and intercept those annoying crank calls</string>
     <string name="batterymanage_label">&#160;applications are using power secretly</string>
     <string name="batterymanage_label_old"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> applications are using power secretly</string>
-    <string name="batterymanage_boost">Power consumption optimization</string>
+    <string name="batterymanage_boost">Power optimization</string>
     <string name="batterymanage_boost_finished">Optimization completed</string>
     <string name="batterymanage_boosted_number">%1$s items are optimized</string>
     <string name="batterymanage_tip_loading">Checking power-consuming applications</string>
     <string name="batterymanage_tip_nothing_to_boost">There is no application for optimization</string>
     <string name="batterymanage_switch_screen">Charging screensaver</string>
     <string name="batterymanage_switch_screen_summary">Use the charging screensaver to speed up charging and prevent overcharging</string>
-    <string name="batterymanage_switch_noti">Notification about power consumption of applications</string>
+    <string name="batterymanage_switch_noti">Power consumption notification</string>
     <string name="batterymanage_switch_noti_summary">Checking the power consumption of background applications</string>
     <string name="batterymanage_setting_title">Setting</string>
     <string name="quick_helper_callfilter">Disturbance interception</string>
@@ -971,7 +971,7 @@
     <string name="screen_protect_type_two">Constant current charging</string>
     <string name="screen_protect_type_three">Trickle charging</string>
 
-    <string name="screen_protect_time">Remaining charging time </string>
+    <string name="screen_protect_time">Remaining time </string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>m</string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>m</string>
 
