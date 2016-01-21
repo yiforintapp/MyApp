@@ -18,6 +18,7 @@ import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackListFileFetchJob;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -79,7 +80,9 @@ public class BlacklistTab extends BaseTable {
         } catch (Exception e) {
             LeoLog.e(TAG, "initEncryptList ex. " + e.toString());
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
         LeoLog.d(TAG, "initEncryptList end..");
         if (!list.isEmpty()) {
@@ -154,7 +157,9 @@ public class BlacklistTab extends BaseTable {
         } catch (Exception e) {
             LeoLog.e(TAG, "getOldBlackList ex." + e.toString());
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
 
         return result;
@@ -508,7 +513,9 @@ public class BlacklistTab extends BaseTable {
         } catch (Exception e) {
             LeoLog.e(TAG, "getBlackListCount ex, " + e.toString());
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
 
         return 0;
@@ -544,7 +551,9 @@ public class BlacklistTab extends BaseTable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
 
         return null;
@@ -569,7 +578,9 @@ public class BlacklistTab extends BaseTable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
         return result;
     }
@@ -614,7 +625,9 @@ public class BlacklistTab extends BaseTable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
         return false;
     }
@@ -659,7 +672,9 @@ public class BlacklistTab extends BaseTable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
 
         return null;
