@@ -194,7 +194,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 "x", mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 5, mBatteryIcon.getLeft());
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop()
-                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 40), mBatteryIcon.getTop());
+                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 30), mBatteryIcon.getTop());
 
         ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mBatteryIcon,
                 "scaleX", 0.6f, 1f);
@@ -229,7 +229,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 "x", mBatteryIcon.getLeft(), mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 5);
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop(), mBatteryIcon.getTop()
-                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 40));
+                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 30));
 
         ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mBatteryIcon,
                 "scaleX", 1f, 0.6f);
@@ -260,15 +260,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void arrowMove() {
-        float stayY;
+//        float stayY;
         if (place == CHARING_TYPE_SPEED) {
-            stayY = mThreeMoveView.getHeight() - mIvSpeed.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
+            mGreenArrow.setBackgroundResource(R.drawable.bay_kedu1);
+//            stayY = mThreeMoveView.getHeight() - mIvSpeed.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
         } else if (place == CHARING_TYPE_CONTINUOUS) {
-            stayY = mThreeMoveView.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
+            mGreenArrow.setBackgroundResource(R.drawable.bay_kedu2);
+//            stayY = mThreeMoveView.getHeight() / 2 - DipPixelUtil.dip2px(mActivity, 2);
         } else {
-            stayY = mIvSpeed.getHeight() / 2;
+            mGreenArrow.setBackgroundResource(R.drawable.bay_kedu3);
+//            stayY = mIvSpeed.getHeight() / 2;
         }
-        mGreenArrow.setY(stayY);
+//        mGreenArrow.setY(stayY);
+
     }
 
     private void timeContentMoveBig() {
@@ -339,7 +343,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mBottleWater.setWave2Color(0xff0ab522);
 
         mThreeMoveView = findViewById(R.id.battery_icon_flag);
-        mGreenArrow = (ImageView) findViewById(R.id.little_arrow);
+        mGreenArrow = (ImageView) findViewById(R.id.little_ruler);
         mTrickleContent = findViewById(R.id.trickle_content);
         mTrickleContent.setOnClickListener(this);
         mIvTrickle = (ImageView) findViewById(R.id.iv_trickle);
