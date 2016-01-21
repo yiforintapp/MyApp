@@ -37,7 +37,8 @@ public class BatteryProtectSlideView extends View {
 
 
     private static final int MSG_REDRAW = 1;
-    private static final int DRAW_INTERVAL = 50;
+    private static final int DRAW_INTERVAL = 80;
+    private static final int DRAW_INTERVAL_All = 400;
     private static final int STEP_LENGTH = 5;
 
     private Paint mPaint;
@@ -78,8 +79,10 @@ public class BatteryProtectSlideView extends View {
                     mGradientIndex += STEP_LENGTH * mDensity;
                     if (mGradientIndex > mSlidableLength) {
                         mGradientIndex = 0;
+                        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL_All);
+                    }else{
+                        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
                     }
-                    mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
                     break;
             }
         }
@@ -132,7 +135,7 @@ public class BatteryProtectSlideView extends View {
         mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
 
         String iconArrow = context.getString(R.string.sliding_icon);
-        mText = iconArrow + mText;
+        mText = iconArrow + " " + mText;
     }
 
     @Override
