@@ -83,17 +83,16 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_below="@id/time_move_content"
-            android:paddingLeft="50dp"
-            android:paddingRight="10dp"
             android:layout_marginTop="@dimen/batteryscreen_battery_margintop"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingLeft="50dp"
+            android:paddingRight="10dp">
 
             <!-- 电池 -->
             <RelativeLayout
                 android:id="@+id/battery_icon_content"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.WaveView xmlns:wave="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/bottle_water"
@@ -178,14 +177,14 @@
                             android:background="@drawable/bay_trickle" />
 
                         <TextView
-                            android:gravity="center_vertical"
-                            android:includeFontPadding="false"
                             android:id="@+id/tv_trickle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="6dp"
                             android:layout_toRightOf="@id/iv_trickle"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
                             android:text="@string/screen_protect_type_three"
                             android:textColor="@color/c1"
                             android:textSize="13sp" />
@@ -205,14 +204,14 @@
                             android:background="@drawable/bay_continuous" />
 
                         <TextView
-                            android:gravity="center_vertical"
-                            android:includeFontPadding="false"
                             android:id="@+id/tv_continuous"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="6dp"
                             android:layout_toRightOf="@id/iv_continuous"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
                             android:text="@string/screen_protect_type_two"
                             android:textColor="@color/c1"
                             android:textSize="13sp" />
@@ -232,14 +231,14 @@
                             android:background="@drawable/bay_speed" />
 
                         <TextView
-                            android:gravity="center_vertical"
-                            android:includeFontPadding="false"
                             android:id="@+id/tv_speed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="6dp"
                             android:layout_toRightOf="@id/iv_speed"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
                             android:text="@string/screen_protect_type_one"
                             android:textColor="@color/c1"
                             android:textSize="13sp" />
@@ -409,24 +408,57 @@
     <!-- 滑动区域 -->
 
     <!--<RelativeLayout-->
+        <!--android:id="@+id/slider"-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="25dp"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:layout_above="@id/slider"-->
-        <!--android:background="@drawable/bay_shadow" />-->
+        <!--android:layout_height="70dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@color/transparent">-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_centerInParent="true">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/high_light"-->
+                <!--android:layout_width="70dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="@drawable/bay_movegaoguang" />-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/arrow_iv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="@drawable/bay_arrow_slide" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_toRightOf="@id/arrow_iv"-->
+                <!--android:text="滑动来解锁"-->
+                <!--android:textColor="#4dffffff"-->
+                <!--android:textSize="20sp" />-->
+
+
+        <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
     <!-- 滑动解锁 -->
     <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        slider:maskText=">> 滑动来解锁"
-        slider:maskTextMarginLeft="1dp"
-        slider:maskTextMarginTop="15dp"
-        slider:maskTextSize="20sp"
-        slider:slidableLength="208dp" />
+    android:id="@+id/slider"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_alignParentBottom="true"
+    slider:maskText=">> 滑动来解锁"
+    slider:maskTextMarginLeft="1dp"
+    slider:maskTextMarginTop="15dp"
+    slider:maskTextSize="20sp"
+    slider:slidableLength="208dp" />
     <!-- 滑动解锁 -->
 
 </RelativeLayout>

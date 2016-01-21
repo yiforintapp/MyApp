@@ -2,6 +2,8 @@ package com.leo.appmaster.battery;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -44,6 +46,10 @@ public class BatteryProtectSlideView extends View {
     private int mTextLeft;
     private int mTextTop;
 
+    private Bitmap mBitmap;
+    private int mBitmapWidth;
+    private int mBitmapHeight;
+
     private int mSlidableLength;
     private int mScreenHeight;
     private int mScreenWidth;
@@ -70,16 +76,14 @@ public class BatteryProtectSlideView extends View {
     public BatteryProtectSlideView(Context context, AttributeSet attrs) {
         super(context, attrs);
         ViewConfiguration configuration = ViewConfiguration.get(context);
-
-
         mDensity = getResources().getDisplayMetrics().density;
 
         TypedArray typeArray = context.obtainStyledAttributes(attrs, R.styleable.SlideView);
         mText = typeArray.getString(R.styleable.SlideView_maskText);
         mTextSize = typeArray.getDimensionPixelSize(R.styleable.SlideView_maskTextSize, R.dimen.mask_text_size);
 
-        mTextLeft = typeArray.getDimensionPixelSize(R.styleable.SlideView_maskTextMarginLeft, R.dimen.mask_text_margin_left);
-        mTextTop = typeArray.getDimensionPixelSize(R.styleable.SlideView_maskTextMarginTop, R.dimen.mask_text_margin_top);
+//        mTextLeft = typeArray.getDimensionPixelSize(R.styleable.SlideView_maskTextMarginLeft, R.dimen.mask_text_margin_left);
+//        mTextTop = typeArray.getDimensionPixelSize(R.styleable.SlideView_maskTextMarginTop, R.dimen.mask_text_margin_top);
         mSlidableLength = typeArray.getDimensionPixelSize(R.styleable.SlideView_slidableLength, R.dimen.slidable_length);
 
         typeArray.recycle();
@@ -94,14 +98,24 @@ public class BatteryProtectSlideView extends View {
         mScreenHeight = wm.getDefaultDisplay().getHeight();
         mScreenWidth = wm.getDefaultDisplay().getWidth();
 
-        mTextLeft = mScreenWidth / 2 - 200;
-        mTextTop = mScreenHeight - mScreenHeight / 8;
+//        mTextLeft = mScreenWidth / 2 - 200;
+//        mTextTop = mScreenHeight - mScreenHeight / 8;
 
         mGradientIndex = 0;
         mPaint = new Paint();
         mMatrix = new Matrix();
         mPaint.setTextSize(mTextSize);
         mPaint.setTextAlign(Paint.Align.CENTER);
+
+
+        //draw Bitmap
+        mBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.bay_arrow_slide);
+        mBitmapWidth = mBitmap.getWidth();
+        mBitmapHeight = mBitmap.getHeight();
+        LeoLog.d("testMesure", "mBitmapWidth : " + mBitmapWidth);
+        LeoLog.d("testMesure", "mBitmapHeight : " + mBitmapHeight);
+
+
         mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
     }
 
@@ -109,7 +123,6 @@ public class BatteryProtectSlideView extends View {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        LeoLog.d("testMesure", "f left : " + getLeft());
         LeoLog.d("testMesure", "f height : " + getHeight());
         LeoLog.d("testMesure", "f width : " + getWidth());
     }
@@ -119,9 +132,12 @@ public class BatteryProtectSlideView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mPaint.setShader(mGradient);
-        int centerX = getWidth()/2;
-        int baseline = getHeight()/2+mTextSize/2;
+        int centerX = getWidth() / 2;
+        int baseline = getHeight() / 2 + mTextSize / 2;
         canvas.drawText(mText, centerX, baseline, mPaint);
+
+//        canvas.drawBitmap(mBitmap, centerX - 150, getHeight() / 2, mPaint);
+
     }
 
 }

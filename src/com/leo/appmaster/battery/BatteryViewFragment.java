@@ -166,7 +166,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     arrowMove();
                     break;
                 case DIMISS_POP:
-//                    mLeoPopMenu.dimissPop();
                     long cancelTime = System.currentTimeMillis();
                     if (cancelTime - showTime > 4000) {
                         if (popupWindow != null && popupWindow.isShowing()) {
@@ -335,7 +334,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mSlideView.setScrollBottomListener(this);
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
-        mBottleWater.setPostInvalidateDelayMs(40);
+//        mBottleWater.setPostInvalidateDelayMs(40);
         mBottleWater.setWaveColor(0xff0ab522);
         mBottleWater.setWave2Color(0xff0ab522);
 
@@ -432,22 +431,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
 
-//        int texta;
-//        if (newState.plugged != 0) {
-//            texta = 1;
-//        } else {
-//            texta = 0;
-//        }
-//
-//        int textb;
-//        if (isExpand) {
-//            textb = 1;
-//        } else {
-//            textb = 0;
-//        }
-//        Toast.makeText(mActivity, "level:" + newState.level + ",isCharing:" + texta + ",isExpand:" + textb
-//                , Toast.LENGTH_LONG).show();
-
         if (newState.plugged == 0) {
             mIvArrowMove.setVisibility(View.INVISIBLE);
             mBottleWater.setIsNeedWave(false);
@@ -526,16 +509,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
             mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
             mIvSpeed.setBackgroundResource(R.drawable.bay_speed2);
+            mBottleWater.setPostInvalidateDelayMs(50);
         } else if (newState.level < 85) {
             place = CHARING_TYPE_CONTINUOUS;
             mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
             mIvContinuous.setBackgroundResource(R.drawable.bay_continuous2);
             mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
+            mBottleWater.setPostInvalidateDelayMs(70);
         } else {
             place = CHARING_TYPE_TRICKLE;
             mIvTrickle.setBackgroundResource(R.drawable.bay_trickle2);
             mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
             mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
+            mBottleWater.setPostInvalidateDelayMs(80);
         }
 
         mHandler.sendEmptyMessage(GREEN_ARROW_MOVE);
@@ -571,24 +557,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         dString = String.valueOf(d);
         LeoLog.d("testBatteryView", "hString : " + hString + "dString : " + dString);
         boolean isCharing = newState.plugged != 0 ? true : false;
-
-
-//        int texta;
-//        if (isCharing) {
-//            texta = 1;
-//        } else {
-//            texta = 0;
-//        }
-//
-//        int textb;
-//        if (isExpandContent) {
-//            textb = 1;
-//        } else {
-//            textb = 0;
-//        }
-//        Toast.makeText(mActivity, "level:" + newState.level +
-//                ",isCharing:" + texta + ",isExpand:" + textb + ",h:" + hString + ",d:" + dString
-//                , Toast.LENGTH_LONG).show();
 
         if (newState.level >= 100) {
             if (isExpandContent) {
