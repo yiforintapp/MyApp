@@ -46,6 +46,8 @@
                     android:layout_height="wrap_content"
                     android:text="理奥网络"
                     android:textColor="#333333"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:textSize="17dp" />
 
                 <LinearLayout
