@@ -50,7 +50,7 @@
                         android:layout_toRightOf="@id/app_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/clean_mem_notify_big_right"
+                        android:text="@string/batterymanage_label"
                         android:textColor="@color/black"
                         android:textSize="@dimen/noti_spe_content_small_text_size" />
                 </RelativeLayout>

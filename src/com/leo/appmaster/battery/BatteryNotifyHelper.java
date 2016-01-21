@@ -108,9 +108,6 @@ public class BatteryNotifyHelper {
 
         view_custom.setTextViewText(R.id.app_number, list.size()+"");
 
-        view_custom.setTextViewText(R.id.app_detail,
-                mContext.getApplicationContext().getString(R.string.batterymanage_label));
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setContent(view_custom)
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
