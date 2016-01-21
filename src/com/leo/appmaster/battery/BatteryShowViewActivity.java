@@ -1,5 +1,7 @@
 package com.leo.appmaster.battery;
 
+import java.util.List;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
@@ -23,13 +26,10 @@ import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
-import com.leo.appmaster.privacycontact.PrivacyCallLogListActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
-
-import java.util.List;
 
 
 public class BatteryShowViewActivity extends BaseFragmentActivity implements BatteryManager.BatteryStateListener, ViewPager.OnPageChangeListener {
@@ -49,6 +49,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private RelativeLayout mBatterViewBg; // 背景
 
     private HomeWatcherReceiver mReceiver;
+    
+    private boolean mFinish = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,11 +237,27 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             finish();
         }
     }
+    
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mFinish) {
+            TaskDetectService tds = TaskDetectService.getService();
+            if(tds != null) {
+                tds.callPretendAppLaunch();
+            }
+        }
+    }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 
     @Override
     public void finish() {
         super.finish();
+        mFinish = true;
         LeoLog.d(TAG, "onDestroy");
     }
 

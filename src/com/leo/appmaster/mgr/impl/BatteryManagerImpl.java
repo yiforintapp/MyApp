@@ -1,9 +1,11 @@
 package com.leo.appmaster.mgr.impl;
 
-import android.app.Activity;
-import android.app.ActivityManager;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,18 +13,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.view.View;
-import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.battery.BatteryNotifyHelper;
-import com.leo.appmaster.battery.BatteryProtectView;
-import com.leo.appmaster.battery.RemainTimeHelper;
 import com.leo.appmaster.battery.BatteryShowViewActivity;
-import com.leo.appmaster.callfilter.CallFilterInfo;
+import com.leo.appmaster.battery.RemainTimeHelper;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.BatteryComsuption;
@@ -30,19 +26,11 @@ import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-
-import java.io.Serializable;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by stone on 16/1/13.
@@ -199,8 +187,6 @@ public class BatteryManagerImpl extends BatteryManager {
         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
                 newState.level, 0);
         broadcastBatteryLevel(newState);
-        mLockManager.filterSelfOneMinites();
-        mLockManager.filterPackage(mContext.getPackageName(), 1000);
         if (!BatteryShowViewActivity.isActivityAlive) {
 
             final Intent intent = new Intent(mContext, BatteryShowViewActivity.class);
@@ -243,8 +229,6 @@ public class BatteryManagerImpl extends BatteryManager {
         }
 //        Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
         broadcastBatteryLevel(newState);
-        mLockManager.filterSelfOneMinites();
-        mLockManager.filterPackage(mContext.getPackageName(), 1000);
 
         if (BatteryShowViewActivity.isActivityAlive) {
             if (mListenerRef != null) {
@@ -274,8 +258,6 @@ public class BatteryManagerImpl extends BatteryManager {
                 .getEstimatedTime(mPreviousState.level, newState.level,
                         (newState.timestamp - mPreviousState.timestamp));
 
-        mLockManager.filterSelfOneMinites();
-        mLockManager.filterPackage(mContext.getPackageName(), 1000);
         if (BatteryShowViewActivity.isActivityAlive) {
             if (mListenerRef != null) {
                 BatteryStateListener listener = mListenerRef.get();
@@ -299,8 +281,6 @@ public class BatteryManagerImpl extends BatteryManager {
         }
 //        Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
         broadcastBatteryLevel(newState);
-        mLockManager.filterSelfOneMinites();
-        mLockManager.filterPackage(mContext.getPackageName(), 1000);
         if (BatteryShowViewActivity.isActivityAlive) {
             if (mListenerRef != null) {
                 BatteryStateListener listener = mListenerRef.get();

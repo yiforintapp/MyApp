@@ -45,6 +45,7 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.TaskDetectService;
+import com.leo.appmaster.battery.BatteryShowViewActivity;
 import com.leo.appmaster.bootstrap.CheckNewBootstrap;
 import com.leo.appmaster.db.InstalledAppTable;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -1689,7 +1690,8 @@ public class LockManagerImpl extends LockManager {
         if (list.contains(lastRunningPkg)
                 && !LockScreenActivity.class.getName().contains(lastRunningActivity)
                 && !WaitActivity.class.getName().contains(lastRunningActivity)
-                && !ProxyActivity.class.getName().contains(lastRunningActivity)) {
+                && !ProxyActivity.class.getName().contains(lastRunningActivity)
+                && !BatteryShowViewActivity.class.getName().contains(lastRunningActivity)) {
             LeoLog.d("Track Lock Screen",
                     "apply lockscreen form screen on => " + lastRunningPkg
                             + "/" + lastRunningActivity);
