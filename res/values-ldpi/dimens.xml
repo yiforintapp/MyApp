@@ -16,13 +16,13 @@
     <dimen name="hide_pictrue_image_frame_top">14dp</dimen>
     <dimen name="hide_video_checkbox_right">20dp</dimen>
     <dimen name="hide_video_checkbox_bottom">28dp</dimen>
-    <dimen name="digital_item_width">45dp</dimen>
-    <dimen name="digital_item_height">45dp</dimen>
+    <dimen name="digital_item_width">35dp</dimen>
+    <dimen name="digital_item_height">35dp</dimen>
     <dimen name="digital_item_marginTop">5dp</dimen>
     <dimen name="digital_item_marginBottom">5dp</dimen>
     <dimen name="lockPatternView_height">250dp</dimen>
 
-    <dimen name="layout_passwd_marginTop">20dp</dimen>
+    <dimen name="layout_passwd_marginTop">5dp</dimen>
     <dimen name="circle_count_text_size">74dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>
     <dimen name="circle_vertical_padding">8dp</dimen>
