@@ -1048,4 +1048,6 @@
     <string name="screen_protect_charing_text_two">جارى شحن الكهرباء</string>
     <string name="screen_protect_charing_text_three">قد تم الشحن ، اخرج شاحن الكهرباء</string>
     <string name="screen_protect_charing_text_four">قد تم الشحن</string>
+    <string name="batterymanage_scaning">مسح</string>
+	<string name="batterymanage_boosting">معالجة</string>
 </resources>

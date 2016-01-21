@@ -945,4 +945,6 @@
     <string name="screen_protect_charing_text_two">Идет подзарядка</string>
     <string name="screen_protect_charing_text_three">Зарядка завершена, отключите зарядное устройство</string>
     <string name="screen_protect_charing_text_four">Зарядка завершена</string>
+    <string name="batterymanage_scaning">сканирование</string>
+	<string name="batterymanage_boosting">обработка</string>
 </resources>

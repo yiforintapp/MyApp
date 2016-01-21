@@ -989,5 +989,7 @@
     <string name="screen_protect_charing_text_two">Charging</string>
     <string name="screen_protect_charing_text_three">Fully charged, please remove the charger</string>
     <string name="screen_protect_charing_text_four">Fully charged</string>
-
+	<string name="batterymanage_scaning">scanning</string>
+	<string name="batterymanage_boosting">Processing</string>
+    
 </resources>

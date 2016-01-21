@@ -106,6 +106,8 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_block");
             }
             Intent intent = new Intent(mActivity, CallFilterMainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("needToHomeWhenFinish", true);
             startActivity(intent);
         }
 

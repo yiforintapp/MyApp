@@ -962,4 +962,6 @@
     <string name="screen_protect_charing_text_two">Şarj ediliyor</string>
     <string name="screen_protect_charing_text_three">Şarj edildi. Şarj cihazını çıkarın.</string>
     <string name="screen_protect_charing_text_four">Dolu</string>
+    <string name="batterymanage_scaning">Tarama</string>
+	<string name="batterymanage_boosting">İşleme</string>
 </resources>

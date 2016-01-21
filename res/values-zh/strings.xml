@@ -965,4 +965,6 @@
     <string name="screen_protect_charing_text_two">充電中</string>
     <string name="screen_protect_charing_text_three">已充滿，請移除充電器</string>
     <string name="screen_protect_charing_text_four">已充滿</string>
+    <string name="batterymanage_scaning">掃描中</string>
+	<string name="batterymanage_boosting">處理中</string>
 </resources>

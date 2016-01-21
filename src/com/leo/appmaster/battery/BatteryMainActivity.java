@@ -206,34 +206,23 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
         mWvBattery.setPercent(mBtrManager.getBatteryLevel());
         mWvBattery.setFactorA(15f);
-//        mWvBattery.setPercent(5);
         mBtrManager.updateBatteryPageState(true);
-        LeoLog.i(TAG, "onResume");
-//        if (mFrgmResult != null && mFrgmResult.isVisible()) {
-//            FragmentManager fm = getSupportFragmentManager();
-//            FragmentTransaction transaction = fm.beginTransaction();  
-//            transaction.setCustomAnimations(R.anim.anim_down_to_up_long, R.anim.anim_up_to_down_long);
-//            transaction.remove(mFrgmResult);
-//            transaction.commit();
-//        }
         showLoading();
         if (mBtrManager.shouldEnableCleanFunction()) {
 //        if (true) {
             //不在上一次清理的两分钟内 可以重新load应用列表和清理加速
-//            mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
-//            mRvBoost.setEnabled(true);
             LeoLog.i(TAG, "set green and enable");
             loadData();
         } else {
             //在上一次清理的两分钟内 UI做特殊显示
             mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
             mRvBoost.setEnabled(false);
-//            mRvBoost.setVisibility(View.INVISIBLE)
             LeoLog.i(TAG, "set grey and disanable");
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     showEmpty();
+                    mTvBottomText.setText(R.string.batterymanage_boost);
                     mTvListTitle.setText(R.string.batterymanage_tip_nothing_to_boost);
                     mTvEmpty.setText(R.string.batterymanage_tip_nothing_to_boost);
                     if (!mIsResultShowed) {
@@ -275,10 +264,12 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     private void onDataLoaded() {
         mRvBoost.setEnabled(true);
+        mTvBottomText.setText(R.string.batterymanage_boost);
         mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_btn_shape));
         mAdapter.fillData(mListBatteryComsuptions);
         if (mListBatteryComsuptions == null || mListBatteryComsuptions.size() == 0) {
             showEmpty();
+            mRvBoost.setEnabled(false);
         } else {
             mListAmount = mListBatteryComsuptions.size();
             SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "backapps_" + mListBatteryComsuptions.size());
@@ -307,6 +298,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                 mBtrManager.killBatteryDrainApps();
             }
         });
+        mTvBottomText.setText(R.string.batterymanage_boosting);
+        mRvBoost.setEnabled(false);
+        mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
         prepareBoostAnimation();
     }
 
@@ -513,6 +507,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     
     private void startBatteryDismissAnim() {
+        mTvBottomText.setText(R.string.batterymanage_boosting);
+        mRvBoost.setEnabled(false);
+        mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
         PropertyValuesHolder holderAlpha = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0.0f);
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlWholeBattery, holderAlpha);
         anim.setDuration(400);
