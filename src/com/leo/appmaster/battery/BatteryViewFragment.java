@@ -4,7 +4,6 @@ package com.leo.appmaster.battery;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -14,14 +13,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -35,7 +31,6 @@ import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.BatteryMenu;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
@@ -55,9 +50,7 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
@@ -115,7 +108,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private BatteryManagerImpl.BatteryState newState;
     private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
     private int mRemainTime;
-    //    private BatteryMenu mLeoPopMenu;
     private View mBossView;
     private boolean isSetInitPlace = false;
 
@@ -866,12 +858,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         return mStr;
     }
 
-//    public void initPopMenu() {
-//        if (mLeoPopMenu != null) return;
-//        mLeoPopMenu = new BatteryMenu();
-//        mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
-//        mLeoPopMenu.setListViewDivider(null);
-//    }
 
     /* 广告相关 - 开始 */
     private boolean mShouldLoadAd = false;
