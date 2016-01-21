@@ -1,6 +1,7 @@
 package com.leo.appmaster.battery;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
+import android.graphics.Typeface;
 import android.graphics.Xfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
@@ -117,16 +119,20 @@ public class BatteryProtectSlideView extends View {
         mPaint.setTextSize(mTextSize);
         mPaint.setTextAlign(Paint.Align.CENTER);
 
+        mPaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "app_custom.ttf"));
+
 
         //draw Bitmap
-        mBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.bay_arrow_slide);
-        mBitmapWidth = mBitmap.getWidth();
-        mBitmapHeight = mBitmap.getHeight();
-        LeoLog.d("testMesure", "mBitmapWidth : " + mBitmapWidth);
-        LeoLog.d("testMesure", "mBitmapHeight : " + mBitmapHeight);
-
+//        mBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.bay_arrow_slide);
+//        mBitmapWidth = mBitmap.getWidth();
+//        mBitmapHeight = mBitmap.getHeight();
+//        LeoLog.d("testMesure", "mBitmapWidth : " + mBitmapWidth);
+//        LeoLog.d("testMesure", "mBitmapHeight : " + mBitmapHeight);
 
         mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
+
+        String iconArrow = context.getString(R.string.sliding_icon);
+        mText = iconArrow + mText;
     }
 
     @Override
@@ -147,7 +153,6 @@ public class BatteryProtectSlideView extends View {
         LeoLog.d("testMesure", "f width : " + getWidth());
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -155,17 +160,6 @@ public class BatteryProtectSlideView extends View {
         int centerX = getWidth() / 2;
         int baseline = getHeight() / 2 + mTextSize / 2;
         canvas.drawText(mText, centerX, baseline, mPaint);
-
-//        int l = centerX - 150;
-//        int t = getHeight() / 2;
-//        int r = l + mSlideRect.width();
-//        int b = t + mSlideRect.height();
-//
-//        mSlidePaint.setShader(mGradient);
-//        canvas.drawBitmap(mBitmap, centerX - 150, getHeight() / 2, mSlidePaint);
-//        mSlidePaint.setXfermode(FER_MODE);
-//        canvas.drawRect(l, t, r, b, mSlidePaint);
-//        mSlidePaint.setXfermode(null);
 
     }
 

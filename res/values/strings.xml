@@ -992,5 +992,8 @@
 	<string name="batterymanage_scaning">scanning</string>
 	<string name="batterymanage_boosting">Processing</string>
 	<string name="batterymanage_notif_process">optimize</string>
+
+    <!-- 屏保页面向下的剪头 -->
+    <string name="sliding_icon">&#xe61d;</string>
     
 </resources>
