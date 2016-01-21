@@ -372,7 +372,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
 
         if (mRootView != null) {
-            loadAd();
+            try {
+                loadAd();
+            } catch (Exception e) {
+                LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
+                if (e != null) {
+                    LeoLog.e(TAG, e.getLocalizedMessage());
+                }
+            }
         }
 
         try {
@@ -889,8 +896,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             LeoLog.d(TAG, "Ad preview image ready");
             BatteryViewFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
-                LeoLog.d(TAG, "load done: " + imageUri);
-                fragment.initAdLayout(fragment.mRootView, mCampaign, loadedImage);
+                try {
+                    LeoLog.d(TAG, "load done: " + imageUri);
+                    fragment.initAdLayout(fragment.mRootView, mCampaign, loadedImage);
+                } catch (Exception e) {
+                    LeoLog.e(TAG, "[Impression]Catch exception happen inside Mobvista: ");
+                    if (e != null) {
+                        LeoLog.e(TAG, e.getLocalizedMessage());
+                    }
+                    e.printStackTrace();
+                }
             }
         }
 
