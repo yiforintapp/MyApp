@@ -877,8 +877,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     dialog.cancel();
 
                 } else if (which == 1) {
-                    for (int i = 0; i < mLocalThemes.size(); i++) {
-                        mLocalThemes.get(i).curUsedTheme = false;
+                    if (mLocalThemes != null && mLocalThemes.size() > 0) {
+                        for (int i = 0; i < mLocalThemes.size(); i++) {
+                            mLocalThemes.get(i).curUsedTheme = false;
+                        }
                     }
                     List<String> packageNames = new ArrayList<String>();
                     for (ThemeItemInfo themeItemInfo : mLocalThemes) {
@@ -895,7 +897,26 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         lastSelectedItem.curUsedTheme = true;
                         lastSelectedItem.label = (String) LockerTheme.this
                                 .getResources().getText(R.string.localtheme);
+
+                        if (packageNames != null && packageNames.size() > 0) {
+                            for (int i = 0; i < packageNames.size(); i++) {
+                                if (mLocalThemes == null) {
+                                    break;
+                                }
+                                if (TextUtils.isEmpty(packageNames.get(i))) {
+                                    continue;
+                                }
+                                if (packageNames.get(i).contains(themeName)) {
+                                    mLocalThemes.get(i).curUsedTheme = true;
+                                    break;
+                                }
+
+                            }
+                        }
+
                         if (mLocalThemeAdapter != null) {
+                            mLocalThemeAdapter = new LockerThemeAdapter(LockerTheme.this, mLocalThemes);
+                            localThemeList.setAdapter(mLocalThemeAdapter);
                             mLocalThemeAdapter.notifyDataSetChanged();
                         }
 
@@ -1048,13 +1069,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 }
                 if (lastSelectedItem.packageName
                         .equals("com.leo.theme.default")) {
-//                    showAlarmDialog(lastSelectedItem.themeName, lastSelectedItem.themeLogo,
-//                            View.GONE);
-
-                    //TODO
                     showAlarmDialogWith2Button(lastSelectedItem.themeName, lastSelectedItem.themeLogo);
-
-
                 } else {
                     showAlarmDialog(lastSelectedItem.themeName, lastSelectedItem.themeLogo,
                             View.VISIBLE);
