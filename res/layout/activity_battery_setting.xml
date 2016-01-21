@@ -33,7 +33,7 @@
                 android:id="@+id/tv_title_screenview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
+                android:maxLines="2"
                 android:text="@string/batterymanage_switch_screen"
                 android:textColor="@color/c2"
                 android:textSize="16dp" />
@@ -85,7 +85,7 @@
                 android:id="@+id/tv_title_noti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
+                android:maxLines="2"
                 android:text="@string/batterymanage_switch_noti"
                 android:textColor="@color/c2"
                 android:textSize="16dp" />
