@@ -101,8 +101,6 @@ public class BatteryManagerImpl extends BatteryManager {
             LeoLog.d(TAG, "BatteryComsuption -> " + bc.getDefaultPackageName());
         }
 
-        // TODO - filter out system apps or background music apps
-
         List<ProcessAdj> processAdjList = ip.getProcessWithPS();
         ArrayList<String> pkgs = new ArrayList<String>();
         for (ProcessAdj processAdj : processAdjList) {
@@ -145,13 +143,17 @@ public class BatteryManagerImpl extends BatteryManager {
     public void onDestory() {
         super.onDestory();
         mContext.unregisterReceiver(mReceiver);
+        mReceiver = null;
     }
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (mPreviousState == null) {
+                // AM-3789
+                mPreviousState = new BatteryState(intent);
+            }
             String action = intent.getAction();
-            // TODO post event through LeoEventBus here
             if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
                 BatteryState bs = new BatteryState(intent);
                 handleBatteryChange(bs);
