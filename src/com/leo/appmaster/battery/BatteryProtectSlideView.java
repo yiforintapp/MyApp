@@ -9,8 +9,12 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
+import android.graphics.Xfermode;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -53,6 +57,12 @@ public class BatteryProtectSlideView extends View {
     private int mSlidableLength;
     private int mScreenHeight;
     private int mScreenWidth;
+
+    private BitmapDrawable mSlideArrow;
+    private Rect mSlideRect;
+    private Paint mSlidePaint;
+
+    private static final Xfermode FER_MODE = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
 
     private Handler mHandler = new Handler() {
 
@@ -119,6 +129,16 @@ public class BatteryProtectSlideView extends View {
         mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.bay_arrow_slide);
+        mSlideRect = new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+
+        mSlidePaint = new Paint();
+        mSlidePaint.setAntiAlias(true);
+    }
 
     @Override
     protected void onFinishInflate() {
@@ -136,7 +156,16 @@ public class BatteryProtectSlideView extends View {
         int baseline = getHeight() / 2 + mTextSize / 2;
         canvas.drawText(mText, centerX, baseline, mPaint);
 
-//        canvas.drawBitmap(mBitmap, centerX - 150, getHeight() / 2, mPaint);
+//        int l = centerX - 150;
+//        int t = getHeight() / 2;
+//        int r = l + mSlideRect.width();
+//        int b = t + mSlideRect.height();
+//
+//        mSlidePaint.setShader(mGradient);
+//        canvas.drawBitmap(mBitmap, centerX - 150, getHeight() / 2, mSlidePaint);
+//        mSlidePaint.setXfermode(FER_MODE);
+//        canvas.drawRect(l, t, r, b, mSlidePaint);
+//        mSlidePaint.setXfermode(null);
 
     }
 
