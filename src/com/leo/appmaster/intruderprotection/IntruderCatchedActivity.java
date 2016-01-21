@@ -860,8 +860,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     shareString = getResources().getString(R.string.intruder_share_content, mISManager.getCatchTimes())
                                     .concat(" ").concat(Constants.DEFAULT_SHARE_URL);
                 }
-                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
-                        "intruder", "intruder_share");
                 Utilities.toShareApp(shareString, getTitle().toString(), IntruderCatchedActivity.this);
 
                 break;
