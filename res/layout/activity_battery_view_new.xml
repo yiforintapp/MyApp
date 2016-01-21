@@ -31,7 +31,7 @@
         android:id="@+id/time_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp">
+        android:layout_marginTop="@dimen/batteryscreen_clock_margintop">
 
         <!-- 时间 -->
         <RelativeLayout
@@ -83,7 +83,9 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_below="@id/time_move_content"
-            android:layout_marginTop="40dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="@dimen/batteryscreen_battery_margintop"
             android:gravity="center_horizontal">
 
             <!-- 电池 -->
@@ -91,7 +93,7 @@
                 android:id="@+id/battery_icon_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
+                >
 
                 <com.leo.appmaster.ui.WaveView xmlns:wave="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/bottle_water"
@@ -176,6 +178,8 @@
                             android:background="@drawable/bay_trickle" />
 
                         <TextView
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
                             android:id="@+id/tv_trickle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -201,6 +205,8 @@
                             android:background="@drawable/bay_continuous" />
 
                         <TextView
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
                             android:id="@+id/tv_continuous"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -226,6 +232,8 @@
                             android:background="@drawable/bay_speed" />
 
                         <TextView
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
                             android:id="@+id/tv_speed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

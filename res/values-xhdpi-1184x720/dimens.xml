@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
+<dimen name="batteryscreen_clock_margintop">60dp</dimen>
+	<dimen name="batteryscreen_battery_margintop">35dp</dimen>
     <dimen name="splash_width">206dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
