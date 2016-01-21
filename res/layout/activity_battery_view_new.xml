@@ -94,38 +94,53 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.leo.appmaster.ui.WaveView xmlns:wave="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/bottle_water"
-                    android:layout_width="62dp"
-                    android:layout_height="95dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    wave:bubbleColor="@color/white"
-                    wave:bubbleNumber="7"
-                    wave:bubblePeriod="2000" />
+                <RelativeLayout
+                    android:layout_width="72dp"
+                    android:layout_height="111dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingTop="7dp">
+
+                    <com.leo.appmaster.ui.WaveView xmlns:wave="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/bottle_water"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        wave:bubbleColor="@color/white"
+                        wave:bubbleNumber="7"
+                        wave:bubblePeriod="2000" />
+
+                    <TextView
+                        android:id="@+id/battery_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:text="100%"
+                        android:textColor="@color/white"
+                        android:textSize="21sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/bay_gaoguang" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bay_di" />
+
+                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/battery_icon"
-                    android:layout_width="66dp"
-                    android:layout_height="100dp"
+                    android:layout_width="72dp"
+                    android:layout_height="111dp"
                     android:background="@drawable/battery_bg" />
-
-                <TextView
-                    android:id="@+id/battery_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:text="100%"
-                    android:textColor="@color/white"
-                    android:textSize="21sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/bay_gaoguang" />
             </RelativeLayout>
 
             <!-- 图标1 -->
