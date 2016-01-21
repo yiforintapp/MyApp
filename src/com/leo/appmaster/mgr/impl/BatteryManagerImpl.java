@@ -212,11 +212,15 @@ public class BatteryManagerImpl extends BatteryManager {
             Message msg = Message.obtain();
             msg.obj = intent;
 
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    mContext.startActivity(intent);
-                }
-            }, 500);
+            if (whenScreenOff) {
+                mContext.startActivity(intent);
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        mContext.startActivity(intent);
+                    }
+                }, 500);
+            }
 
         } else {
             if (mListenerRef != null) {
