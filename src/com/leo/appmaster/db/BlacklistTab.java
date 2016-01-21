@@ -416,6 +416,12 @@ public class BlacklistTab extends BaseTable {
                 }
                 values.put(CallFilterConstants.COL_BLACK_REMOVE_STATE, CallFilterConstants.REMOVE_NO);
                 values.put(CallFilterConstants.COL_TIME, System.currentTimeMillis());
+                //设置标记类型
+                if (info.markType < 1) {
+                    values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, CallFilterConstants.MK_BLACK_LIST);
+                } else {
+                    values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, info.markType);
+                }
                 selection = CallFilterConstants.COL_BLACK_NUMBER;
                 if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
                     selection += " LIKE ? ";
