@@ -900,7 +900,8 @@
     <string name="batterymanage_result_ad_wifi_content">Небезопасный wifi угрожает Вашей конфиденциальности</string>
     <string name="batterymanage_result_ad_callfilter_title">Блокировка нежелательных звонков</string>
     <string name="batterymanage_result_ad_callfilter_content">Распознавание и блокировка нежелательных звонков</string>
-    <string name="batterymanage_label"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> приложений тайком тратят питание</string>
+    <string name="batterymanage_label">&#160;приложений тайком тратят питание</string>
+    <string name="batterymanage_label_old"><Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> приложений тайком тратят питание</string>
     <string name="batterymanage_boost">Оптимизация энергосбережения</string>
     <string name="batterymanage_boost_finished">Оптимизация завершена</string>
     <string name="batterymanage_tip_loading">Идет проверка приложений, потребляющих питание</string>

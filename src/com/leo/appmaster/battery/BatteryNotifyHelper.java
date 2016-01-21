@@ -147,7 +147,6 @@ public class BatteryNotifyHelper {
                         final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
                         LeoLog.d(TAG, "apps count: " + list.size());
                         if (list.size() > mManager.getAppThreshold()) {
-//                        if (list.size() > 3) {
                             ThreadManager.executeOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

@@ -1004,7 +1004,7 @@
     <string name="batterymanage_result_ad_wifi_content"> غير السالم يخطر أمان خصوصيتكم فى أى وقت Wifi</string>
     <string name="batterymanage_result_ad_callfilter_title">حظر الإزعاج</string>
     <string name="batterymanage_result_ad_callfilter_content">تبيين هذه المكالمات المزعاجة لكم واعتراضها</string>
-    <string name="batterymanage_label"> سر في الكهرباء استهلاك جاري تطبيق </string>
+    <string name="batterymanage_label"> سر في الكهرباء استهلاك جاري تطبيق &#160;</string>
     <string name="batterymanage_label_old"> سر في الكهرباء استهلاك جاري تطبيق  <Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data></string>
     <string name="batterymanage_boost">تحسين توفير الكهرباء</string>
     <string name="batterymanage_boost_finished">تم التحسين</string>
