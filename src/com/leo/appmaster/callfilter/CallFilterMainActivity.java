@@ -44,6 +44,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     private BlackListFragment mBlackListFragment;
     private CallFilterFragment mCallFilterFragment;
     private boolean mNeedToHomeWhenFinish = false;
+    private String mIsFromPushNotif = "";
     private CallFilterFragmentHoler[] mFragmentHolders = new CallFilterFragmentHoler[2];
 
     private LEOAlarmDialog mShareDialog;
@@ -56,6 +57,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         CallFilterHelper.getInstance(this).setCurrFilterTab(BLACK_TAB);
         initUI();
         mNeedToHomeWhenFinish = getIntent().getBooleanExtra("needToHomeWhenFinish", false);
+        mIsFromPushNotif = getIntent().getStringExtra("from");
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "block_cnts");
     }
 
@@ -88,8 +90,9 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     public void finish() {
-        if (mNeedToHomeWhenFinish) {
+        if (mNeedToHomeWhenFinish || !TextUtils.isEmpty(mIsFromPushNotif)) {
             mNeedToHomeWhenFinish = false;
+            mIsFromPushNotif = "";
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             startActivity(intent);
@@ -102,6 +105,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     @Override
     protected void onNewIntent(Intent intent) {
         mNeedToHomeWhenFinish = intent.getBooleanExtra("needToHomeWhenFinish", false);
+        mIsFromPushNotif = getIntent().getStringExtra("from");
         LeoLog.i("CallFilterMainActivity", "new intent ! mNeedToHomeWhenFinish = " + mNeedToHomeWhenFinish);
         if (intent.getBooleanExtra("needMoveToTab2", false)) {
             mViewPager.setCurrentItem(1);
