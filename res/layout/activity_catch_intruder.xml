@@ -154,13 +154,20 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp">
 
+            <View
+                android:id="@+id/empty_view"
+                android:layout_width="77dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                />
+
             <TextView
                 android:id="@+id/share_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="68dp"
                 android:layout_marginRight="5dp"
                 android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/empty_view"
                 android:layout_toLeftOf="@+id/share_go"
                 android:maxLines="2"
                 android:ellipsize="end"
