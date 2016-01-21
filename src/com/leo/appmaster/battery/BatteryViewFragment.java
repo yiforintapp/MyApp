@@ -496,7 +496,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         public void run() {
             while (true) {
                 // update time every 10 second
-                SystemClock.sleep(10 * 1000);
+                SystemClock.sleep(30 * 1000);
                 final BatteryViewFragment fragment = mFragmentRef.get();
                 if (fragment == null) {
                     return;

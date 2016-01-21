@@ -8,11 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
+import android.view.View;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.battery.BatteryNotifyHelper;
 import com.leo.appmaster.battery.BatteryProtectView;
@@ -30,6 +34,7 @@ import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -55,6 +60,8 @@ public class BatteryManagerImpl extends BatteryManager {
     public static final String UPDATE_UP = "type_3";
     public static final String UPDATE_DONW = "type_4";
 
+    private static final int START_ACTIVITY = 1;
+
     // 两分钟内不能连续两次清理应用
     private static final int KILL_INTERVAL = 2 * 60 * 1000;
 
@@ -69,6 +76,7 @@ public class BatteryManagerImpl extends BatteryManager {
     private WeakReference<BatteryStateListener> mListenerRef;
 
     private BatteryState mPreviousState = new BatteryState();
+
 
     public BatteryManagerImpl() {
         IntentFilter filter = new IntentFilter();
@@ -151,14 +159,10 @@ public class BatteryManagerImpl extends BatteryManager {
             } else {
                 LeoLog.d(TAG, "action: " + action +
                         "; mPreviousState: " + mPreviousState.toString());
-                if (action.equals(Intent.ACTION_SCREEN_OFF) &&
+                if (action.equals(Intent.ACTION_SCREEN_ON) &&
                         mPreviousState.plugged != UNPLUGGED) {
                     LeoLog.d(TAG, "need to show charging screen");
-                    handlePluginEvent(mPreviousState, true);
-                }
-                if (action.equals(Intent.ACTION_SCREEN_ON) &&
-                        mPreviousState.plugged == UNPLUGGED) {
-                    // TODO 是否需要干掉屏保？
+                    handlePluginEvent(mPreviousState, false);
                 }
             }
         }
@@ -197,7 +201,8 @@ public class BatteryManagerImpl extends BatteryManager {
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(mContext.getPackageName(), 1000);
         if (!BatteryShowViewActivity.isActivityAlive) {
-            Intent intent = new Intent(mContext, BatteryShowViewActivity.class);
+
+            final Intent intent = new Intent(mContext, BatteryShowViewActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(PROTECT_VIEW_TYPE, SHOW_TYPE_IN);
             intent.putExtra(REMAIN_TIME, remainTime);
@@ -205,7 +210,15 @@ public class BatteryManagerImpl extends BatteryManager {
             Bundle bundle = new Bundle();
             bundle.putSerializable(SEND_BUNDLE, newState);
             intent.putExtras(bundle);
-            mContext.startActivity(intent);
+            Message msg = Message.obtain();
+            msg.obj = intent;
+
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    mContext.startActivity(intent);
+                }
+            }, 200);
+
         } else {
             if (mListenerRef != null) {
                 BatteryStateListener listener = mListenerRef.get();
