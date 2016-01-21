@@ -13,7 +13,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -1069,7 +1071,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         TextView text = (TextView) contentView.findViewById(R.id.menu_text);
         text.setText(str);
 
-        popupWindow = new PopupWindow(contentView, DipPixelUtil.dip2px(mActivity, 180), DipPixelUtil.dip2px(mActivity, 50));
+        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, DipPixelUtil.dip2px(mActivity, 50));
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
