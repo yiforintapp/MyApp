@@ -397,6 +397,21 @@ public class AppUtil {
         return pix;
     }
 
+    /**
+     * 检查是否安装了带有充电屏保的竞品
+     * @param context
+     * @return
+     */
+    public static boolean hasOtherScreenSaverInstalled(Context context) {
+        for (int i=0; i<Constants.SCREEN_SAVE_PKG_NAMES.length; i++) {
+            if (AppLoadEngine.getInstance(context)
+                    .isInstallApp(Constants.SCREEN_SAVE_PKG_NAMES[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean belongToLeoFamily(String pkgName) {
         if (pkgName.equals(Constants.LEO_FAMILY_PG)
                 || pkgName.equals(Constants.LEO_FAMILY_PL)

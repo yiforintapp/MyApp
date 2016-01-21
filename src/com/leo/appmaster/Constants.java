@@ -476,4 +476,16 @@ public class Constants {
 
     public static final String VIRTUAL_DESKTOP_PIC = "/virtual_desktop_pic"; // 虚化图片名
     public static final String DEFAULT_SHARE_URL = "http://www.leomaster.com.cn/m/privacy/"; // 默认分享链接
+
+    /***
+     * 带有充电屏保的竞品
+     */
+    public static final String[] SCREEN_SAVE_PKG_NAMES = {
+            "com.ijinshan.kbatterydoctor", // 金山电池医生
+            "com.cleanmaster.mguard", // CM 国际版
+            "com.cleanmaster.mguard_cn", // CM 中国版
+            "com.cleanmaster.security", // CM security
+            "com.qihoo.security",  // 360
+            "com.qihoo.security.lite",  // 360 Lite
+    };
 }

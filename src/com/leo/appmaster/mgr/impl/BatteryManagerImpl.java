@@ -31,6 +31,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.AppUtil;
 
 /**
  * Created by stone on 16/1/13.
@@ -148,11 +149,22 @@ public class BatteryManagerImpl extends BatteryManager {
             } else {
                 LeoLog.d(TAG, "action: " + action +
                         "; mPreviousState: " + mPreviousState.toString());
-                if (action.equals(Intent.ACTION_SCREEN_ON) &&
-                        mPreviousState.plugged != UNPLUGGED) {
-                    LeoLog.d(TAG, "need to show charging screen");
-                    handlePluginEvent(mPreviousState, false);
+                if (AppUtil.hasOtherScreenSaverInstalled(mContext)) {
+                    // 如果安装了其他竞品的屏保，我们在亮屏的时候再拉起屏保
+                    if (action.equals(Intent.ACTION_SCREEN_ON) &&
+                            mPreviousState.plugged != UNPLUGGED) {
+                        LeoLog.d(TAG, "show screen saver on ACTION_SCREEN_ON");
+                        handlePluginEvent(mPreviousState, false);
+                    }
+                } else {
+                    // 如果没有安装其他竞品的屏保，我们在灭屏的时候就可以拉起屏保
+                    if (action.equals(Intent.ACTION_SCREEN_OFF) &&
+                            mPreviousState.plugged != UNPLUGGED) {
+                        LeoLog.d(TAG, "show screen saver on ACTION_SCREEN_OFF");
+                        handlePluginEvent(mPreviousState, true);
+                    }
                 }
+
             }
         }
     };
