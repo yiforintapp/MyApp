@@ -40,7 +40,7 @@
             android:layout_below="@id/scan_title_tv"
             android:layout_marginTop="8dp"
             android:includeFontPadding="false"
-            android:text="@string/scanning_pattern"
+            android:text="@string/pri_pro_scanning"
             android:layout_marginRight="10dp"
             android:textColor="@color/scanning_sub_title"
             android:textSize="14dp" />
