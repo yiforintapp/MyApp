@@ -851,16 +851,19 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                         sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT));
                 boolean isUrlEmpty = TextUtils.isEmpty(
                         sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
-                String shareString;
+
+                StringBuilder shareBuilder = new StringBuilder();
                 if (!isContentEmpty && !isUrlEmpty) {
-                    shareString = sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT)
-                            .concat(" ")
-                            .concat(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
+                    shareBuilder.append(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT))
+                                .append(" ")
+                                .append(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
                 } else {
-                    shareString = getResources().getString(R.string.intruder_share_content, mISManager.getCatchTimes())
-                                    .concat(" ").concat(Constants.DEFAULT_SHARE_URL);
+                    shareBuilder.append(getResources().getString(
+                                R.string.intruder_share_content, mISManager.getCatchTimes()))
+                                .append(" ")
+                                .append(Constants.DEFAULT_SHARE_URL);
                 }
-                Utilities.toShareApp(shareString, getTitle().toString(), IntruderCatchedActivity.this);
+                Utilities.toShareApp(shareBuilder.toString(), getTitle().toString(), IntruderCatchedActivity.this);
 
                 break;
             case R.id.item_btn_rv:  // 点击swifty卡片

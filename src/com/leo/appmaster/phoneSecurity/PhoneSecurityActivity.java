@@ -1057,16 +1057,18 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_CONTENT));
         boolean isUrlEmpty = TextUtils.isEmpty(
                 sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_URL));
-        String shareString;
+
+        StringBuilder shareBuilder = new StringBuilder();
         if (!isContentEmpty && !isUrlEmpty) {
-            shareString = sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_CONTENT)
-                    .concat(" ")
-                    .concat(sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_URL));
+            shareBuilder.append(sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_CONTENT))
+                        .append(" ")
+                        .append(sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_URL));
         } else {
-            shareString = getResources().getString(R.string.phone_share_content)
-                    .concat(" ").concat(Constants.DEFAULT_SHARE_URL);
+            shareBuilder.append(getResources().getString(R.string.phone_share_content))
+                        .append(" ")
+                        .append(Constants.DEFAULT_SHARE_URL);
         }
-        Utilities.toShareApp(shareString, getTitle().toString(), PhoneSecurityActivity.this);
+        Utilities.toShareApp(shareBuilder.toString(), getTitle().toString(), PhoneSecurityActivity.this);
     }
 
 }
