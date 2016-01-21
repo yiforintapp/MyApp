@@ -294,7 +294,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/time_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop">
 
         <TextView
             android:id="@+id/left_time"
@@ -323,7 +323,7 @@
     <RelativeLayout
         android:id="@+id/move_boss"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/batteryscreen_bossview_height"
         android:layout_above="@id/slider"
         android:background="@color/transparent"
         android:visibility="invisible">
@@ -331,7 +331,7 @@
         <com.leo.appmaster.battery.BatteryTestViewLayout
             android:id="@+id/slide_content"
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="@dimen/batteryscreen_bossview_height">
 
             <RelativeLayout
                 android:id="@+id/move_arrow"
@@ -340,10 +340,10 @@
                 android:background="@color/transparent">
 
                 <ImageView
+                    android:layout_centerInParent="true"
                     android:id="@+id/iv_move_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:background="@drawable/bay_arrow_up" />
 
             </RelativeLayout>

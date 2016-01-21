@@ -85,6 +85,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private final int TOP_TRANSLUCENT_HEIGHT = DipPixelUtil.dip2px(this, 160);
     private final int TRANSLATE_ANIM_DURATION = 600;
     private ImageView mIvLittleBattery;
+    private TextView mTvBottomText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +113,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
     
     private void initUI() {
+        mTvBottomText = (TextView) findViewById(R.id.tv_bottomtext);
         mTvBoostedNumber = (TextView) findViewById(R.id.tv_boost_complete_number);
         if (mFrgmResult == null) {
             mFrgmResult = new BatteryBoostResultFragment();
@@ -168,6 +170,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     public void showLoading() {
+        mTvBottomText.setText(R.string.batterymanage_scaning);
         mRvBoost.setEnabled(false);
         mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
         mRlLoadingOrEmpty.setVisibility(View.VISIBLE);

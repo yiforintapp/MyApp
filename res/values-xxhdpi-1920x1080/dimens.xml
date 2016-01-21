@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="batteryscreen_bossview_height">300dp</dimen>
+    <dimen name="batteryscreen_remaintime_margintop">30dp</dimen>
 <dimen name="batteryscreen_battery_margintop">35dp</dimen>
 <dimen name="batteryscreen_clock_margintop">65dp</dimen>
     <dimen name="about_logo_width">124dp</dimen>
