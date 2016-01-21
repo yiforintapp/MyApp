@@ -17,13 +17,13 @@
     <RelativeLayout
         android:id="@+id/preview_title_layout"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="@dimen/scan_ad_preview_height"
         android:layout_centerHorizontal="true">
 
         <ImageView
             android:id="@+id/item_ad_preview"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="@dimen/scan_ad_preview_height"
             android:adjustViewBounds="true"/>
 
         <ImageView

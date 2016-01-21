@@ -401,4 +401,7 @@
     <dimen name="ad_view_height">254dp</dimen>
     <dimen name="ad_ll_margin_top">226dp</dimen>
 
+    <!-- 3.3 -->
+    <dimen name="scan_ad_preview_height">138dp</dimen>
+
 </resources>
