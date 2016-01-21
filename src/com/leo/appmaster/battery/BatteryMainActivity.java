@@ -225,6 +225,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             //在上一次清理的两分钟内 UI做特殊显示
             mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
             mRvBoost.setEnabled(false);
+//            mRvBoost.setVisibility(View.INVISIBLE)
             LeoLog.i(TAG, "set grey and disanable");
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
@@ -235,6 +236,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                     if (!mIsResultShowed) {
                         mListAmount = 0;
                         startBatteryDismissAnim();
+//                        disableBoostButton();
                         SDKWrapper.addEvent(BatteryMainActivity.this, SDKWrapper.P1, "batterypage", "promote_redirect");
                         mIsResultShowed = true;
                     }
@@ -243,6 +245,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
     }
 
+    private void disableBoostButton() {
+        mRvBoost.setEnabled(false);
+        mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
+    }
     
     @Override
     protected void onPause() {

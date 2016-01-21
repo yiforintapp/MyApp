@@ -332,6 +332,7 @@
             android:name=".battery.BatteryMainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
         <!-- Battery Manager UI end -->

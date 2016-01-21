@@ -21,7 +21,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.BatteryComsuption;
+import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
@@ -119,8 +121,10 @@ public class BatteryNotifyHelper {
                 .setAutoCancel(true);
 
         Intent intent = new Intent(mContext,
-                BatteryMainActivity.class);
+                DeskProxyActivity.class);
         intent.putExtra("for_sdk", "for_sdk");
+        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mElec);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(mContext, 0, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
@@ -143,6 +147,7 @@ public class BatteryNotifyHelper {
                         final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
                         LeoLog.d(TAG, "apps count: " + list.size());
                         if (list.size() > mManager.getAppThreshold()) {
+//                        if (list.size() > 3) {
                             ThreadManager.executeOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
