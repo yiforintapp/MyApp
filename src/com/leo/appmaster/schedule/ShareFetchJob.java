@@ -37,6 +37,7 @@ public class ShareFetchJob extends FetchScheduleJob {
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoLog.e("onFetchSuccess", response + "");
         if (response == null) {
             LeoLog.i(TAG, "response: " + response);
 
