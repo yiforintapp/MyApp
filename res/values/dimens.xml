@@ -22,7 +22,7 @@
     <dimen name="digital_item_marginTop">6dp</dimen>
     <dimen name="digital_item_marginBottom">6dp</dimen>
     <dimen name="lockPatternView_height">280dp</dimen>
-    <dimen name="layout_passwd_marginTop">69dp</dimen>
+    <dimen name="layout_passwd_marginTop">59dp</dimen>
     <dimen name="layout_four_passwd_marginTop">13dp</dimen>
     <dimen name="indicator_right_padding">10dp</dimen>
     <dimen name="indicator_internal_padding">4dp</dimen>

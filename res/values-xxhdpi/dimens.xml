@@ -20,7 +20,7 @@
     <dimen name="lockPatternView_height">330dp</dimen>
 
 
-    <dimen name="layout_passwd_marginTop">63dp</dimen>
+    <dimen name="layout_passwd_marginTop">53dp</dimen>
 
     <dimen name="layout_four_passwd_marginTop">21dp</dimen>
 

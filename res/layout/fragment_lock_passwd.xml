@@ -205,7 +205,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
-            android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_weight="1"
             android:gravity="center">
 
@@ -273,7 +272,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
-            android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_weight="1"
             android:gravity="center">
 
@@ -342,7 +340,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
-            android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_weight="1"
             android:gravity="center">
 
@@ -476,10 +473,10 @@
         android:id="@+id/camera_preview"
         android:layout_width="1px"
         android:layout_height="1px" />
-    
-        <SurfaceView 
+
+        <SurfaceView
         android:layout_width="1px"
-         android:layout_height="1px" 
+         android:layout_height="1px"
         />
 
 </RelativeLayout>
