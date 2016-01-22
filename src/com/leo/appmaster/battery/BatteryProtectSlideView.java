@@ -27,6 +27,10 @@ import android.view.WindowManager;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
 
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * @author Taolin
  * @date Dec 03, 2013
@@ -53,10 +57,6 @@ public class BatteryProtectSlideView extends View {
     private int mTextLeft;
     private int mTextTop;
 
-    private Bitmap mBitmap;
-    private int mBitmapWidth;
-    private int mBitmapHeight;
-
     private int mSlidableLength;
     private int mScreenHeight;
     private int mScreenWidth;
@@ -65,28 +65,31 @@ public class BatteryProtectSlideView extends View {
     private Rect mSlideRect;
     private Paint mSlidePaint;
 
+    private Timer mTimer;
+    private TimerTask mTimerTask;
+
     private static final Xfermode FER_MODE = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
 
-    private Handler mHandler = new Handler() {
-
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_REDRAW:
-                    mMatrix.setTranslate(mGradientIndex, 0);
-                    mGradient.setLocalMatrix(mMatrix);
-                    invalidate();
-                    mGradientIndex += STEP_LENGTH * mDensity;
-                    if (mGradientIndex > mSlidableLength) {
-                        mGradientIndex = 0;
-                        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL_All);
-                    }else{
-                        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
-                    }
-                    break;
-            }
-        }
-    };
+//    private Handler mHandler = new Handler() {
+//
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case MSG_REDRAW:
+//                    mMatrix.setTranslate(mGradientIndex, 0);
+//                    mGradient.setLocalMatrix(mMatrix);
+//                    invalidate();
+//                    mGradientIndex += STEP_LENGTH * mDensity;
+//                    if (mGradientIndex > mSlidableLength) {
+//                        mGradientIndex = 0;
+//                        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL_All);
+//                    } else {
+//                        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
+//                    }
+//                    break;
+//            }
+//        }
+//    };
 
     public BatteryProtectSlideView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -113,8 +116,6 @@ public class BatteryProtectSlideView extends View {
         mScreenHeight = wm.getDefaultDisplay().getHeight();
         mScreenWidth = wm.getDefaultDisplay().getWidth();
 
-//        mTextLeft = mScreenWidth / 2 - 200;
-//        mTextTop = mScreenHeight - mScreenHeight / 8;
 
         mGradientIndex = 0;
         mPaint = new Paint();
@@ -124,18 +125,19 @@ public class BatteryProtectSlideView extends View {
 
         mPaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "app_custom.ttf"));
 
-
-        //draw Bitmap
-//        mBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.bay_arrow_slide);
-//        mBitmapWidth = mBitmap.getWidth();
-//        mBitmapHeight = mBitmap.getHeight();
-//        LeoLog.d("testMesure", "mBitmapWidth : " + mBitmapWidth);
-//        LeoLog.d("testMesure", "mBitmapHeight : " + mBitmapHeight);
-
-        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
-
+//        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
         String iconArrow = context.getString(R.string.sliding_icon);
         mText = iconArrow + " " + mText;
+
+
+        mTimer = new Timer();
+        mTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                fillColor();
+            }
+        };
+        mTimer.schedule(mTimerTask, 0, 50);
     }
 
     @Override
@@ -166,4 +168,21 @@ public class BatteryProtectSlideView extends View {
 
     }
 
+    private void fillColor() {
+        mMatrix.setTranslate(mGradientIndex, 0);
+        mGradient.setLocalMatrix(mMatrix);
+        postInvalidate();
+//        invalidate();
+        mGradientIndex += STEP_LENGTH * mDensity;
+        if (mGradientIndex > mSlidableLength) {
+            mGradientIndex = 0;
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mTimer.cancel();
+        mTimerTask.cancel();
+    }
 }
