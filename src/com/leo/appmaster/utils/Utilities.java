@@ -34,8 +34,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.FolderItemInfo;
@@ -710,6 +708,9 @@ public final class Utilities {
      *  使用包名跳转Gp
      */
     private static void  gotoGpByPkg(String pkgName, Context context) {
+        if (TextUtils.isEmpty(pkgName)) { //包名为空不执行
+            return;
+        }
         if (AppUtil.appInstalled(context, Constants.GP_PKG_NAME)) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             StringBuffer url = new StringBuffer(Constants.FIRST_GP_STRING);

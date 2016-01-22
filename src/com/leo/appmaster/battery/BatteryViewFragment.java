@@ -13,7 +13,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -31,7 +30,6 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
@@ -782,22 +780,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mLockManager.filterSelfOneMinites();
                 if (view == mSwiftyBtnLt) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote1");
-                    boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
-
-                    if (installISwipe) {
-                        Utilities.startISwipIntent(mActivity);
-                    } else {
-                        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                        Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_SWIFTY_TYPE,
-                                PrefConst.KEY_CHARGE_SWIFTY_GP_URL, PrefConst.KEY_CHARGE_SWIFTY_URL,
-                                Constants.ISWIPE_PACKAGE, mActivity);
-                    }
+                    PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                    Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_SWIFTY_TYPE,
+                            PrefConst.KEY_CHARGE_SWIFTY_GP_URL, PrefConst.KEY_CHARGE_SWIFTY_URL,
+                    "", mActivity);
                 } else if (view == mExtraBtnLt) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote2");
                     PreferenceTable preferenceTable = PreferenceTable.getInstance();
                     Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
                             PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
-                            Constants.ISWIPE_PACKAGE, mActivity);
+                            "", mActivity);
                 }
                 break;
         }
