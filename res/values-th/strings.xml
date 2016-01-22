@@ -913,7 +913,7 @@
     <string name="ad_blk_fail">ล้มเหลว</string>
 
     <!--3.3-->
-    <string name="batterymanage_result_ad_wifi_title">ตรวจสอบความปลอดภัยของ wifi ที่เชื่อมต่ออยู่</string>
+    <string name="batterymanage_result_ad_wifi_title">ตรวจสอบความปลอดภัยของ wifi ที่</string>
     <string name="batterymanage_result_ad_wifi_content">wifi ที่อันตรายอาจกระทบความปลอดภัยของข้อมูลส่วนตัวของคุณได้ในทุกเวลา</string>
     <string name="batterymanage_result_ad_callfilter_title">ปิดกั้นการรบกวน</string>
     <string name="batterymanage_result_ad_callfilter_content">แยกแยะและปิดกั้นโทรศัพท์สายรบกวน</string>
