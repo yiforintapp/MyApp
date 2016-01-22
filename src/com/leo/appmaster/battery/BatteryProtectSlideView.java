@@ -161,7 +161,9 @@ public class BatteryProtectSlideView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mPaint.setShader(mGradient);
+        if (mPaint.getShader() == null) {
+            mPaint.setShader(mGradient);
+        }
         int centerX = getWidth() / 2;
         int baseline = getHeight() / 2 + mTextSize / 2;
         canvas.drawText(mText, centerX, baseline, mPaint);

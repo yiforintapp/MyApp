@@ -115,8 +115,10 @@ public class WaveView extends View {
     @Override  
     protected void onDraw(Canvas canvas) {  
         super.onDraw(canvas);  
-        // 从canvas层面去除绘制时锯齿  
-        canvas.setDrawFilter(mDrawFilter);  
+        // 从canvas层面去除绘制时锯齿
+        if (canvas.getDrawFilter() == null) {
+            canvas.setDrawFilter(mDrawFilter);
+        }
         resetPositonY();  
         for (int i = 0; i < mTotalWidth; i++) { 
             if (mIsNeedWave) {
