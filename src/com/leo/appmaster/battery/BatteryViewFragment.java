@@ -341,7 +341,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
 //        mBottleWater.setPostInvalidateDelayMs(40);
-        mBottleWater.setWaveColor(0xff0ab522);
+        mBottleWater.setWaveColor(0xff0ad931);
         mBottleWater.setWave2Color(0xff0ab522);
 
         mThreeMoveView = findViewById(R.id.battery_icon_flag);
