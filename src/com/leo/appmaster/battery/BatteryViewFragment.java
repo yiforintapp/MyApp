@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -60,6 +61,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
     private static final int GREEN_ARROW_MOVE = 3;
+    private static final int CHANGE_LINE_INT = 650;
+    private static final int MID_WIDTH = 550;
+    private static final int SHORT_WIDTH = 450;
 
     private static final int CHARING_TYPE_SPEED = 1;
     private static final int CHARING_TYPE_CONTINUOUS = 2;
@@ -473,7 +477,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mTvSmallLeft.setText((month + 1) + "/" + day);
 
         // 资源应该从周日 - 周六 这样的顺序
-        if (day_of_week >= 2 && day_of_week-2 < days.length) {
+        if (day_of_week >= 2 && day_of_week - 2 < days.length) {
             mTvSmallRight.setText(days[day_of_week - 2]);
         } else {
             mTvSmallRight.setText(days[6]);
@@ -1064,16 +1068,36 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         View contentView = LayoutInflater.from(mActivity).inflate(
                 R.layout.popmenu_battery_list_item, null);
         TextView text = (TextView) contentView.findViewById(R.id.menu_text);
+        float textWidth = getTextViewLength(text, str);
+        LeoLog.d("testPop", "width : " + textWidth);
         text.setText(str);
 
-        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, DipPixelUtil.dip2px(mActivity, 70));
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
+        int x;
+        int height = height = DipPixelUtil.dip2px(mActivity, 50);
+        if (textWidth > CHANGE_LINE_INT) {
+            x = location[0];
+            height = DipPixelUtil.dip2px(mActivity, 70);
+        } else if (textWidth > MID_WIDTH) {
+            x = location[0] - 80;
+        } else {
+            x = location[0] - 100;
+        }
+
+        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, height);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
 
-        int[] location = new int[2];
-        v.getLocationOnScreen(location);
-
-        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1] - popupWindow.getHeight());
+        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, x, location[1] - popupWindow.getHeight());
     }
+
+    public float getTextViewLength(TextView textView, String text) {
+        TextPaint paint = textView.getPaint();
+        // 得到使用该paint写上text的时候,像素为多少
+        float textLength = paint.measureText(text);
+        return textLength;
+    }
+
 }
