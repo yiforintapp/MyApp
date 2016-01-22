@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
@@ -85,6 +86,7 @@ public class AppMasterApplication extends Application {
         } catch (Exception e) {
         }
 
+//        Debug.startMethodTracing("Nexus6.trace");
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String lastVer = pref.getLastVersion();
         try {

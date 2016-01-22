@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.NinePatch;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -38,6 +39,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -365,7 +367,12 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
             AppMasterApplication.sCheckTs = false;
         }
 
-
+//        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Debug.stopMethodTracing();
+//            }
+//        }, 1000);
     }
 
     private void splashDelayShow() {
@@ -427,7 +434,10 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                             cancelSplashSkipbtAndUrlbt();
                             if (!mIsShowGuide) {
                                 try {
+                                    long start = SystemClock.elapsedRealtime();
+                                    LeoLog.i("TsCost", "showNewFuncGuide: start");
                                     showNewFuncGuide();
+                                    LeoLog.i("TsCost", "showNewFuncGuide: " + (SystemClock.elapsedRealtime() - start));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

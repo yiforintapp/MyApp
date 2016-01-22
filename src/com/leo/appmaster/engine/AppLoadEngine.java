@@ -248,7 +248,8 @@ public class AppLoadEngine extends BroadcastReceiver {
         return mRecommendLockNumlist;
     }
 
-    public void updateRecommendLockList(List<String> list, List<String> listnum) {
+    private void updateRecommendLockList(List<String> list, List<String> listnum) {
+        long start = SystemClock.elapsedRealtime();
         mRecommendLocklist = list;
         mRecommendLockNumlist = listnum;
         Collection<AppItemInfo> collection = mAppDetails.values();
@@ -261,9 +262,9 @@ public class AppLoadEngine extends BroadcastReceiver {
             appDetailInfo.topPos = locknum;
         }
 
-
         LockRecommentTable table = new LockRecommentTable();
         table.insertLockRecommentList(list, listnum);
+        LeoLog.d(TAG, "updateRecommendLockList, insert cost: " + (SystemClock.elapsedRealtime() - start));
 
     }
 
@@ -902,7 +903,7 @@ public class AppLoadEngine extends BroadcastReceiver {
      * Call from the handler for ACTION_PACKAGE_ADDED, ACTION_PACKAGE_REMOVED
      * and ACTION_PACKAGE_CHANGED.
      */
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, final Intent intent) {
         final String action = intent.getAction();
         /*
          * if (Intent.ACTION_PACKAGE_REMOVED.equals(action) ||
@@ -946,9 +947,14 @@ public class AppLoadEngine extends BroadcastReceiver {
             enqueuePackageUpdated(new PackageUpdatedTask(
                     AppChangeListener.TYPE_LOCAL_CHANGE, new String[]{}));
         } else if (ACTION_RECOMMEND_LIST_CHANGE.equals(action)) {
-            updateRecommendLockList(intent
-                            .getStringArrayListExtra(Intent.EXTRA_PACKAGES),
-                    intent.getStringArrayListExtra(LockRecommentFetchJob.EXTRA_NUM));
+            ThreadManager.executeOnFileThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateRecommendLockList(intent
+                                    .getStringArrayListExtra(Intent.EXTRA_PACKAGES),
+                            intent.getStringArrayListExtra(LockRecommentFetchJob.EXTRA_NUM));
+                }
+            });
         }
     }
 
