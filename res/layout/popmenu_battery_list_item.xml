@@ -14,7 +14,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="3"
-        android:maxWidth="220dp"
+        android:maxWidth="230dp"
         android:text="dfd"
         android:textColor="@color/white"
         android:textSize="12sp" />
