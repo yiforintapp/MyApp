@@ -321,13 +321,23 @@ public class CallFilterHelper {
                 LeoLog.i("testdata", "rinning info != null");
                 //本地黑名单，直接拦截
                 // 先静音处理
-                if (audioManager != null) {
-                    audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                try {
+                    if (audioManager != null) {
+                        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                    }
+                } catch (IllegalArgumentException e) {
+                    // AM - 3785
+                    e.printStackTrace();
                 }
                 endCallAndRecord(phoneNumber, iTelephony, cmp);
                   /*恢复正常铃声*/
-                if (audioManager != null) {
-                    audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                try {
+                    if (audioManager != null) {
+                        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    }
+                } catch (IllegalArgumentException e) {
+                    // AM - 3785
+                    e.printStackTrace();
                 }
             } else if (serInfo != null) {
                 /* 为服务器黑名单：弹窗提醒 */

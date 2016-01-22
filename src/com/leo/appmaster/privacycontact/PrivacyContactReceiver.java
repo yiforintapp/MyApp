@@ -187,7 +187,12 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                     if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
                         // 先静音处理
                         if (mAudioManager != null) {
-                            mAudioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                            try {
+                                mAudioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                            } catch (IllegalArgumentException e) {
+                                // AM-3785
+                                e.printStackTrace();
+                            }
                         }
 
                         if (mITelephony != null) {
@@ -203,7 +208,12 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                             }
 
                             /*恢复正常铃声*/
-                            mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                            try {
+                                mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                            } catch (IllegalArgumentException e) {
+                                // AM-3785
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

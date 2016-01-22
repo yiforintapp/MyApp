@@ -415,10 +415,17 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                 LeoLog.i(TAG, "执行警报指令");
                 AudioManager mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
                 //系统音乐音量
-                int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-                int currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
-                LeoLog.i(TAG, "最大音量：" + maxVolume + ",当前音量：" + currentVolume);
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+                if (mAudioManager != null) {
+                    try {
+                        int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                        int currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+                        LeoLog.i(TAG, "最大音量：" + maxVolume + ",当前音量：" + currentVolume);
+                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+                    } catch (IllegalArgumentException e) {
+                        // AM-3785
+                        e.printStackTrace();
+                    }
+                }
                 /*获取系统铃声*/
                 Uri sysSingUri = RingtoneManager.getActualDefaultRingtoneUri(mContext,
                         RingtoneManager.TYPE_RINGTONE);
@@ -448,10 +455,15 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                 LeoLog.i(TAG, "执行警报指令");
                 AudioManager mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
                 //系统音乐音量
-                int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-                int currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
-                LeoLog.i(TAG, "最大音量：" + maxVolume + ",当前音量：" + currentVolume);
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+                try {
+                    int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                    int currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+                    LeoLog.i(TAG, "最大音量：" + maxVolume + ",当前音量：" + currentVolume);
+                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+                } catch (IllegalArgumentException e) {
+                    // AM-3785
+                    e.printStackTrace();
+                }
                 /*获取系统铃声*/
                 Uri sysSingUri = RingtoneManager.getActualDefaultRingtoneUri(mContext,
                         RingtoneManager.TYPE_RINGTONE);
