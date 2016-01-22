@@ -28,11 +28,9 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
@@ -189,23 +187,12 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             case R.id.swifty_resulte_sure:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "swifty");
                 lockManager.filterSelfOneMinites();
-                boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
-                if (installISwipe) {
-                    Utilities.startISwipIntent(mActivity);
-                } else {
-                    Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, false);
-                }
+                Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, false);
                 break;
             case R.id.wifimaster_resulte_sure:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "master");
                 lockManager.filterSelfOneMinites();
-                boolean installWifiMaster = AppUtil.isInstallPkgName(
-                        mActivity, Constants.WIFIMASTER_PKG_NAME);
-                if (installWifiMaster) {
-                    Utilities.openAPPByPkgName(mActivity, Constants.WIFIMASTER_PKG_NAME);
-                } else {
-                    Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, false);
-                }
+                Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, false);
                 break;
             case R.id.fb_resulte_sure:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "FB");

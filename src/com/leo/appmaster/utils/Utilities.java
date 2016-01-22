@@ -590,26 +590,26 @@ public final class Utilities {
             if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
 
                 selectType(preferenceTable, PrefConst.KEY_SWIFTY_TYPE, PrefConst.KEY_SWIFTY_GP_URL,
-                           PrefConst.KEY_SWIFTY_URL, Constants.ISWIPE_PACKAGE, context);
+                           PrefConst.KEY_SWIFTY_URL, "", context);
 
             } else { //点击wifimaster
 
                 selectType(preferenceTable, PrefConst.KEY_PRI_WIFIMASTER_TYPE,
                         PrefConst.KEY_PRI_WIFIMASTER_GP_URL, PrefConst.KEY_PRI_WIFIMASTER_URL,
-                        Constants.WIFIMASTER_PKG_NAME, context);
+                        "", context);
             }
         } else {
             if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
 
                 selectType(preferenceTable, PrefConst.KEY_WIFI_SWIFTY_TYPE,
                         PrefConst.KEY_WIFI_SWIFTY_GP_URL, PrefConst.KEY_WIFI_SWIFTY_URL,
-                        Constants.ISWIPE_PACKAGE, context);
+                        "", context);
 
             } else { //点击wifimaster
 
                 selectType(preferenceTable, PrefConst.KEY_WIFI_WIFIMASTER_TYPE,
                         PrefConst.KEY_WIFI_WIFIMASTER_GP_URL, PrefConst.KEY_WIFI_WIFIMASTER_URL,
-                        Constants.WIFIMASTER_PKG_NAME, context);
+                        "", context);
             }
         }
     }

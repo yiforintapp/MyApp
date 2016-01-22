@@ -19,8 +19,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -117,12 +117,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private boolean isSetInitPlace = false;
 
     /**
-     * Swifty
+     * 第一个推广位
      */
     private TextView mSwiftyTitle;
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
     private RippleView mSwiftyBtnLt;
+    private RelativeLayout mSwiftyLayout;
 
     /**
      * 预留推广位
@@ -131,6 +132,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private ImageView mExtraImg;
     private TextView mExtraContent;
     private RippleView mExtraBtnLt;
+    private RelativeLayout mExtraLayout;
 
     private ImageLoader mImageLoader;
 
@@ -783,15 +785,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             case R.id.trickle_content:
                 showPop(CHARING_TYPE_TRICKLE);
                 break;
-            case R.id.item_btn_rv:
+            case R.id.parent_layout:
                 mLockManager.filterSelfOneMinites();
-                if (view == mSwiftyBtnLt) {
+                if (view == mSwiftyLayout) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote1");
                     PreferenceTable preferenceTable = PreferenceTable.getInstance();
                     Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_SWIFTY_TYPE,
                             PrefConst.KEY_CHARGE_SWIFTY_GP_URL, PrefConst.KEY_CHARGE_SWIFTY_URL,
-                    "", mActivity);
-                } else if (view == mExtraBtnLt) {
+                            "", mActivity);
+                } else if (view == mExtraLayout) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote2");
                     PreferenceTable preferenceTable = PreferenceTable.getInstance();
                     Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
@@ -970,14 +972,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
 //        if (false) {
             View include = viewStub.inflate();
-            mSwiftyTitle = (TextView) include.findViewById(R.id.item_title);
-            mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
-            mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
-            mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-            mSwiftyBtnLt.setOnClickListener(this);
+
+            mSwiftyImg = (ImageView) include.findViewById(R.id.card_img);
+            mSwiftyContent = (TextView) include.findViewById(R.id.card_content);
+            mSwiftyLayout = (RelativeLayout) include.findViewById(R.id.parent_layout);
+            mSwiftyLayout.setOnClickListener(this);
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
+            mSwiftyTitle = (TextView) include.findViewById(R.id.card_title);
             boolean isTitleEmpty = TextUtils.isEmpty(
                     preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TITLE));
             if (!isTitleEmpty) {
@@ -1022,11 +1025,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
 //        if (false) {
             View include = viewStub.inflate();
-            mExtraTitle = (TextView) include.findViewById(R.id.item_title);
-            mExtraImg = (ImageView) include.findViewById(R.id.swifty_img);
-            mExtraContent = (TextView) include.findViewById(R.id.swifty_content);
-            mExtraBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-            mExtraBtnLt.setOnClickListener(this);
+            mExtraTitle = (TextView) include.findViewById(R.id.card_title);
+            mExtraImg = (ImageView) include.findViewById(R.id.card_img);
+            mExtraContent = (TextView) include.findViewById(R.id.card_content);
+            mExtraLayout = (RelativeLayout) include.findViewById(R.id.parent_layout);
+            mExtraLayout.setOnClickListener(this);
             mExtraContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL);
             mImageLoader.displayImage(imgUrl, mExtraImg, getOptions(R.drawable.swifty_banner));

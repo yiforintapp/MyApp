@@ -400,7 +400,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
                         android:background="@color/white"
-                        android:layout="@layout/pri_confirm_swifty_bay_item" />
+                        android:layout="@layout/screen_saver_card_layout" />
 
                     <!-- 推广位2 -->
                     <ViewStub
@@ -412,7 +412,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
                         android:background="@color/white"
-                        android:layout="@layout/pri_confirm_swifty_bay_item" />
+                        android:layout="@layout/screen_saver_card_layout" />
 
 
                 </LinearLayout>

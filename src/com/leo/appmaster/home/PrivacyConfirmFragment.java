@@ -43,13 +43,11 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.MessageCallLogBean;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -1230,23 +1228,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mSwiftyBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "swifty");
             lockManager.filterSelfOneMinites();
-            boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
-            if (installISwipe) {
-                Utilities.startISwipIntent(mActivity);
-            } else {
-                Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, true);
-            }
+            Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_SWIFTY, true);
         } else if (mWifiMasteBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "master");
             lockManager.filterSelfOneMinites();
-            boolean installWifiMaster = AppUtil.isInstallPkgName(
-                    mActivity, Constants.WIFIMASTER_PKG_NAME);
-            if (installWifiMaster) {
-                Utilities.openAPPByPkgName(mActivity, Constants.WIFIMASTER_PKG_NAME);
-            } else {
-                Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, true);
-            }
-
+            Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, true);
         } else if (mGradeLayout == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();

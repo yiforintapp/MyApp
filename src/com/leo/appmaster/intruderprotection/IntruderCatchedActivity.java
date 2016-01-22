@@ -42,7 +42,6 @@ import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.ResizableImageView;
@@ -868,17 +867,10 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.item_btn_rv:  // 点击swifty卡片
                 mLockManager.filterSelfOneMinites();
-                boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(
-                        IntruderCatchedActivity.this);
-
-                if (installISwipe) {
-                    Utilities.startISwipIntent(IntruderCatchedActivity.this);
-                } else {
-                    PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                    Utilities.selectType(preferenceTable, PrefConst.KEY_INTRUDER_SWIFTY_TYPE,
-                            PrefConst.KEY_INTRUDER_SWIFTY_GP_URL, PrefConst.KEY_INTRUDER_SWIFTY_URL,
-                            Constants.ISWIPE_PACKAGE, IntruderCatchedActivity.this);
-                }
+                PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                Utilities.selectType(preferenceTable, PrefConst.KEY_INTRUDER_SWIFTY_TYPE,
+                        PrefConst.KEY_INTRUDER_SWIFTY_GP_URL, PrefConst.KEY_INTRUDER_SWIFTY_URL,
+                        "", IntruderCatchedActivity.this);
                 break;
         }
     }

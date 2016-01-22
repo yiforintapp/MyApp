@@ -14,13 +14,11 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.PrefConst;
@@ -92,15 +90,10 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_product");
             }
             lockManager.filterSelfOneMinites();
-            boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
-            if (installISwipe) {
-                Utilities.startISwipIntent(mActivity);
-            } else {
-                PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                Utilities.selectType(preferenceTable, PrefConst.KEY_CLEAN_SWIFTY_TYPE,
-                        PrefConst.KEY_CLEAN_SWIFTY_GP_URL, PrefConst.KEY_CLEAN_SWIFTY_URL,
-                        Constants.ISWIPE_PACKAGE, mActivity);
-            }
+            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+            Utilities.selectType(preferenceTable, PrefConst.KEY_CLEAN_SWIFTY_TYPE,
+                       PrefConst.KEY_CLEAN_SWIFTY_GP_URL, PrefConst.KEY_CLEAN_SWIFTY_URL,
+                       "", mActivity);
         } else if (mCallFilterBtn == v) {
             if (mActivity != null) {
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_block");
