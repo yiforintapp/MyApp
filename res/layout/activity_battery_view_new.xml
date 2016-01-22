@@ -466,7 +466,7 @@
     <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/batteryscreen_slidearea_height"
+    android:layout_height="@dimen/batteryscreen_slidearea_height"
         android:layout_alignParentBottom="true"
         slider:maskText="@string/screen_protect_unlock_text"
         slider:maskTextMarginLeft="1dp"
