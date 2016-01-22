@@ -160,9 +160,8 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
                         mPendingCallback = null;
                         mIsTimeOut = false;
                     }
-                }, 1000);
+                }, 0);
             }
-        LeoLog.i("poha", "init 耗时 = "+ (System.currentTimeMillis() - tbefore));
     }
 
     @Override
