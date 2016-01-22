@@ -1,10 +1,7 @@
 package com.leo.appmaster.battery;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -17,8 +14,6 @@ import android.graphics.Shader.TileMode;
 import android.graphics.Typeface;
 import android.graphics.Xfermode;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -27,7 +22,6 @@ import android.view.WindowManager;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
 
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,6 +38,7 @@ public class BatteryProtectSlideView extends View {
     private static final int DRAW_INTERVAL = 80;
     private static final int DRAW_INTERVAL_All = 400;
     private static final int STEP_LENGTH = 5;
+    private final int mPaddingSize;
 
     private Paint mPaint;
     private LinearGradient mGradient;
@@ -53,6 +48,7 @@ public class BatteryProtectSlideView extends View {
     private Matrix mMatrix;
 
     private String mText;
+    private Rect mTextRect;
     private int mTextSize;
     private int mTextLeft;
     private int mTextTop;
@@ -67,6 +63,8 @@ public class BatteryProtectSlideView extends View {
 
     private Timer mTimer;
     private TimerTask mTimerTask;
+
+    private String mIconText;
 
     private static final Xfermode FER_MODE = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
 
@@ -123,12 +121,17 @@ public class BatteryProtectSlideView extends View {
         mPaint.setTextSize(mTextSize);
         mPaint.setTextAlign(Paint.Align.CENTER);
 
-        mPaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "app_custom.ttf"));
+        mTextRect = new Rect();
+        mPaint.getTextBounds(mText, 0, mText.length(), mTextRect);
+
+        int iconSize = context.getResources().getDimensionPixelSize(R.dimen.mask_text_size_icon);
+        mPaddingSize = context.getResources().getDimensionPixelSize(R.dimen.mask_text_icon_pd);
+        mSlidePaint = new Paint();
+        mSlidePaint.setTextSize(iconSize);
+        mSlidePaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "app_custom.ttf"));
 
 //        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
-        String iconArrow = context.getString(R.string.sliding_icon);
-        mText = iconArrow + " " + mText;
-
+        mIconText = context.getString(R.string.sliding_icon);
 
         mTimer = new Timer();
         mTimerTask = new TimerTask() {
@@ -146,9 +149,6 @@ public class BatteryProtectSlideView extends View {
 
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.bay_arrow_slide);
         mSlideRect = new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-
-        mSlidePaint = new Paint();
-        mSlidePaint.setAntiAlias(true);
     }
 
     @Override
@@ -168,6 +168,11 @@ public class BatteryProtectSlideView extends View {
         int baseline = getHeight() / 2 + mTextSize / 2;
         canvas.drawText(mText, centerX, baseline, mPaint);
 
+        if (mSlidePaint.getShader() == null) {
+            mSlidePaint.setShader(mGradient);
+        }
+        int left = (getWidth() - mTextRect.width()) / 2 - mSlideRect.width() - mPaddingSize;
+        canvas.drawText(mIconText, left, baseline, mSlidePaint);
     }
 
     private void fillColor() {

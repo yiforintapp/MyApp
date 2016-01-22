@@ -370,7 +370,7 @@
 
     <dimen name="empty_page_text_m_top">10dp</dimen>
 
-    <dimen name="mask_text_size">20sp</dimen>
+
     <dimen name="mask_text_margin_left">100dp</dimen>
     <dimen name="mask_text_margin_top">60dp</dimen>
     <dimen name="slidable_length">210dp</dimen>
