@@ -368,6 +368,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.lockview" 
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar"/>
 
         <activity
