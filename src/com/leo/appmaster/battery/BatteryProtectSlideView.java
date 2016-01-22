@@ -39,6 +39,7 @@ public class BatteryProtectSlideView extends View {
     private static final int DRAW_INTERVAL_All = 400;
     private static final int STEP_LENGTH = 5;
     private final int mPaddingSize;
+    private final int mIconSize;
 
     private Paint mPaint;
     private LinearGradient mGradient;
@@ -124,10 +125,10 @@ public class BatteryProtectSlideView extends View {
         mTextRect = new Rect();
         mPaint.getTextBounds(mText, 0, mText.length(), mTextRect);
 
-        int iconSize = context.getResources().getDimensionPixelSize(R.dimen.mask_text_size_icon);
+        mIconSize = context.getResources().getDimensionPixelSize(R.dimen.mask_text_size_icon);
         mPaddingSize = context.getResources().getDimensionPixelSize(R.dimen.mask_text_icon_pd);
         mSlidePaint = new Paint();
-        mSlidePaint.setTextSize(iconSize);
+        mSlidePaint.setTextSize(mIconSize);
         mSlidePaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "app_custom.ttf"));
 
 //        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);
@@ -172,7 +173,8 @@ public class BatteryProtectSlideView extends View {
             mSlidePaint.setShader(mGradient);
         }
         int left = (getWidth() - mTextRect.width()) / 2 - mSlideRect.width() - mPaddingSize;
-        canvas.drawText(mIconText, left, baseline, mSlidePaint);
+        int base = baseline - (mTextSize - mIconSize);
+        canvas.drawText(mIconText, left, base, mSlidePaint);
     }
 
     private void fillColor() {
