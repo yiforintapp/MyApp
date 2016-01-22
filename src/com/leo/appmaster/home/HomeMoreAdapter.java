@@ -103,7 +103,7 @@ public class HomeMoreAdapter extends BaseAdapter {
         mDrawableArray = new SparseIntArray();
 
         List<int[]> arrayList = new ArrayList<int[]>();
-        arrayList.add(SWIFTY);
+//        arrayList.add(SWIFTY);
         arrayList.add(ARRAY_CONTACT_SINGLE);
         arrayList.add(ARRAY_MEDIA);
         arrayList.add(ARRAY_APP);
