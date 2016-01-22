@@ -17,13 +17,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -49,7 +52,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private RelativeLayout mBatterViewBg; // 背景
 
     private HomeWatcherReceiver mReceiver;
-    
+
     private boolean mFinish = false;
 
     @Override
@@ -83,7 +86,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
         registerHomeKeyReceiver();
 
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage","screen");
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "screen");
     }
 
     private void registerHomeKeyReceiver() {
@@ -237,13 +240,13 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             finish();
         }
     }
-    
+
     @Override
     protected void onStop() {
         super.onStop();
-        if(mFinish) {
+        if (mFinish) {
             TaskDetectService tds = TaskDetectService.getService();
-            if(tds != null) {
+            if (tds != null) {
                 tds.callPretendAppLaunch();
             }
         }
@@ -329,6 +332,13 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             if (drawable != null) {
                 mBatterViewBg.setBackgroundDrawable(drawable);
             }
+        }
+    }
+
+    public void onEvent(AppUnlockEvent event) {
+        LeoLog.d(TAG, "onEvent, result: " + event.mUnlockResult);
+        if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_CANCELED) {
+            this.finish();
         }
     }
 }
