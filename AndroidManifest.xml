@@ -227,10 +227,10 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:hardwareAccelerated="false"
-            android:taskAffinity="com.leo.appmaster.home"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:theme="@style/Theme.PageIndicatorDefaults"></activity>
+<!--             android:taskAffinity="com.leo.appmaster.home" -->
         <activity
             android:name=".callfilter.StrangeCallActivity"
             android:excludeFromRecents="true"
