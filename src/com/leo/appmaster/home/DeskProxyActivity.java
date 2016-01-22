@@ -65,6 +65,8 @@ public class DeskProxyActivity extends Activity {
     private Handler mHandler;
     private String mCbPath;
 
+    public static final String CALL_FILTER_PUSH = "from"; //是否从骚扰拦截push通知进入key
+
     private LockManager mLockManager;
 
     @Override
@@ -80,6 +82,10 @@ public class DeskProxyActivity extends Activity {
         if (type == StatusBarEventService.EVENT_EMPTY) {
             mDelayFinish = true;
             mHandler = new Handler();
+            String from = intent.getStringExtra(CALL_FILTER_PUSH);
+            if (from != null && from != "") {
+                gotoCallFilerActivity();
+            }
         } else {
             if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                 if (type == mFlow) {
@@ -272,6 +278,15 @@ public class DeskProxyActivity extends Activity {
         CallFilterHelper manager = CallFilterHelper.getInstance(this);
         manager.setLastClickedCallLogsId(manager.getLastShowedCallLogsBigestId());
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "notify_stranger_cnts");
+    }
+
+    /** 从骚扰拦截push通知进入骚扰拦截界面 */
+    private void gotoCallFilerActivity() {
+        mLockManager.filterPackage(this.getPackageName(), 1000);
+        Intent intent = new Intent(this, CallFilterMainActivity.class);
+        intent.putExtra(CALL_FILTER_PUSH, "push");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        startActivity(intent);
     }
 
     private void goToBlackList(int type) {
