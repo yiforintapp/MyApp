@@ -137,7 +137,7 @@ public class BatteryProtectSlideView extends View {
                 fillColor();
             }
         };
-        mTimer.schedule(mTimerTask, 0, 50);
+        mTimer.schedule(mTimerTask, 0, 100);
     }
 
     @Override

@@ -1071,7 +1071,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         TextView text = (TextView) contentView.findViewById(R.id.menu_text);
         text.setText(str);
 
-        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, DipPixelUtil.dip2px(mActivity, 50));
+        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, DipPixelUtil.dip2px(mActivity, 70));
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
