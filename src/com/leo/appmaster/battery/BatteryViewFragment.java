@@ -474,7 +474,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mTvSmallLeft.setText((month + 1) + "/" + day);
 
         // 资源应该从周日 - 周六 这样的顺序
-        if (day_of_week >= 2) {
+        if (day_of_week >= 2 && day_of_week-2 < days.length) {
             mTvSmallRight.setText(days[day_of_week - 2]);
         } else {
             mTvSmallRight.setText(days[6]);

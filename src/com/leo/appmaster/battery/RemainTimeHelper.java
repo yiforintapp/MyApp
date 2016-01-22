@@ -32,20 +32,7 @@ public class RemainTimeHelper {
     private static final String RT_PREFERENCE_KEY = "battery_charge_time_for_";
     private static final int MILLES_IN_SECOND = 1000;
 
-    // TODO 需要比较准确的初始化值
-    private static final int[] INITIAL_DATA = {
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-            100, 100, 100, 100, 100, 100, 100, 100, 100, 0
-    };
+    private static final int INITIAL_TIME_IN_SECOND = 100;
 
     private ArrayList<PeriodUnit> mPreferenceList;
     private HashMap<Integer, Integer> mCurrentMap;
@@ -95,13 +82,13 @@ public class RemainTimeHelper {
             String data = PreferenceTable.getInstance().getString(RT_PREFERENCE_KEY + i);
             if (data == null || data.length()<=0) {
                 pu.count = 1;
-                pu.second = INITIAL_DATA[i];
+                pu.second = INITIAL_TIME_IN_SECOND;
             } else {
                 pu = PeriodUnit.fromString(data);
             }
             if (pu == null) {
                 // 保存的记录损坏
-                pu = new PeriodUnit(INITIAL_DATA[i], 1);
+                pu = new PeriodUnit(INITIAL_TIME_IN_SECOND, 1);
                 PreferenceTable.getInstance().putString(RT_PREFERENCE_KEY + i, pu.toString());
             }
             mPreferenceList.add(pu);
@@ -117,7 +104,7 @@ public class RemainTimeHelper {
             PreferenceTable.getInstance().putString(RT_PREFERENCE_KEY+level, pu.toString());
 
             // debug
-            dumpToDisk();
+            // dumpToDisk();
         }
     }
 
@@ -174,7 +161,8 @@ public class RemainTimeHelper {
         }
     }
 
-    /* 用于保存校准数据  stone_debug */
+    /* 用于保存校准数据 */
+    /*
     private void dumpToDisk(){
         File picDir = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath());
@@ -203,5 +191,6 @@ public class RemainTimeHelper {
             IoUtils.closeSilently(writer);
         }
     }
+    */
 
 }
