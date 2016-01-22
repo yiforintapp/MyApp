@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="batteryscreen_bossview_height">290dp</dimen>
+    <dimen name="batteryscreen_bossview_height">360dp</dimen>
 <dimen name="batteryscreen_battery_margintop">35dp</dimen>
 <dimen name="batteryscreen_clock_margintop">65dp</dimen>
     <dimen name="ges_Pattern_m_top">40dp</dimen>

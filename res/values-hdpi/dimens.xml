@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="batteryscreen_slidearea_height">55dp</dimen>
-     <dimen name="batteryscreen_bossview_height">225dp</dimen>
+    <dimen name="batteryscreen_bossview_height">280dp</dimen>
     <dimen name="batteryscreen_remaintime_margintop">20dp</dimen>
     <dimen name="batteryscreen_battery_margintop">35dp</dimen>
-<dimen name="batteryscreen_clock_margintop">40dp</dimen>
-	<dimen name="home_left_list_item_height">50dp</dimen>
+    <dimen name="batteryscreen_clock_margintop">40dp</dimen>
+    <dimen name="home_left_list_item_height">50dp</dimen>
     <dimen name="splash_width">176dp</dimen>
     <dimen name="lock_pattern_button_width">60dp</dimen>
     <dimen name="gesture_setting_margintop">10dp</dimen>
@@ -195,7 +195,7 @@
     <!-- 83dp -->
     <dimen name="app_manager_flowactivity_small_icon_width_height">54dp</dimen>
     <!-- 54dp -->
-	<dimen name="kongbaiye_width_height">105dp</dimen>
+    <dimen name="kongbaiye_width_height">105dp</dimen>
     <dimen name="kongbaiye_width_width">135dp</dimen>
     <!-- 135dp -->
     <dimen name="kongbaiye_text_size">15dp</dimen>
