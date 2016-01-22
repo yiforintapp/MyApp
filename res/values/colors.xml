@@ -174,4 +174,7 @@
 
     <color name="contact_no_select">#cbcbcb</color>
     <color name="pp_img_load_bg">#4d000000</color>
+
+    <!--屏保也有弧度的推广卡片背景颜色-->
+    <color name="batter_card_bg">#7FFFFFFF</color>
 </resources>

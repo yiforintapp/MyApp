@@ -7,7 +7,7 @@
     android:layout_marginLeft="18dp"
     android:layout_marginRight="18dp"
     android:layout_marginTop="8dp"
-    android:background="#7FFFFFFF"
+    android:background="@drawable/batter_card_item_bg"
     android:paddingBottom="9dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
