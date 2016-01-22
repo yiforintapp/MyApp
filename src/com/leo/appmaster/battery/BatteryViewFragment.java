@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -700,6 +701,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mBossView.getHeight() * 9 / 16, mSlideView.getTop());
+//        Toast.makeText(getActivity(), android.os.Build.MODEL+ "mSlideView.getTop() + mBossView.getHeight() * 9 / 16 = " + mSlideView.getTop() + mBossView.getHeight() * 9 / 16 +
+//                 "mSlideView.getTop() = " + mSlideView.getTop(), 1).show();
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override

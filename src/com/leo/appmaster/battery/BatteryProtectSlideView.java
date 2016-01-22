@@ -98,7 +98,12 @@ public class BatteryProtectSlideView extends View {
         TypedArray typeArray = context.obtainStyledAttributes(attrs, R.styleable.SlideView);
         mText = typeArray.getString(R.styleable.SlideView_maskText);
         mTextSize = typeArray.getDimensionPixelSize(R.styleable.SlideView_maskTextSize, R.dimen.mask_text_size);
-
+        try {
+            if ("i-mobile I-STYLE 217".equals(android.os.Build.MODEL)) {
+                mTextSize = (int) (mTextSize * 0.85f);
+            }
+        } catch (Throwable e) {
+        }
 //        mTextLeft = typeArray.getDimensionPixelSize(R.styleable.SlideView_maskTextMarginLeft, R.dimen.mask_text_margin_left);
 //        mTextTop = typeArray.getDimensionPixelSize(R.styleable.SlideView_maskTextMarginTop, R.dimen.mask_text_margin_top);
         mSlidableLength = typeArray.getDimensionPixelSize(R.styleable.SlideView_slidableLength, R.dimen.slidable_length);
