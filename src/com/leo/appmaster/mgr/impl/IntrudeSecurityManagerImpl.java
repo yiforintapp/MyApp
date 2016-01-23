@@ -164,7 +164,7 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
         if (infos != null) {
             resultList.addAll(infos);
         }else{
-            return null;
+            return resultList;
         }
         // Collections.reverse(mInfosSorted);
         // "yyyyMMdd_HHmmss"
@@ -180,10 +180,10 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
                     date2 = sdf.parse(timeStamp2);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    return null;
+                    return resultList;
                 }
                 if (date1 == null || date2 == null)
-                    return null;
+                    return resultList;
                 if (date1.before(date2)) {
                     IntruderPhotoInfo temp = resultList.get(j);
                     resultList.set(j, resultList.get(j + 1));

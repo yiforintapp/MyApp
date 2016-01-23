@@ -136,6 +136,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
@@ -417,7 +418,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private File getPhotoSavePath() {
         File picDir = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath());
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(new Date());
         File dir = new File(picDir.getPath() + File.separator + "IntruderP");
         if (!dir.exists()) {
             dir.mkdirs();
