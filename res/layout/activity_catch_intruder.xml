@@ -169,7 +169,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/empty_view"
                 android:layout_toLeftOf="@+id/share_go"
-                android:maxLines="2"
+                android:maxLines="4"
                 android:ellipsize="end"
                 android:text="@string/intruder_share_dialog_content"
                 android:textSize="@dimen/f4"
