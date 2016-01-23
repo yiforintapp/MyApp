@@ -786,7 +786,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 showPop(CHARING_TYPE_TRICKLE);
                 break;
             case R.id.parent_layout:
-                mLockManager.filterSelfOneMinites();
                 if (view == mSwiftyLayout) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote1");
                     PreferenceTable preferenceTable = PreferenceTable.getInstance();
