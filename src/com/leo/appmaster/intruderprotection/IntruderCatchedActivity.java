@@ -853,9 +853,17 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
                 StringBuilder shareBuilder = new StringBuilder();
                 if (!isContentEmpty && !isUrlEmpty) {
-                    shareBuilder.append(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT))
+                    try {
+                        shareBuilder.append(String.format(sharePreferenceTable.getString(
+                                PrefConst.KEY_INTRUDER_SHARE_CONTENT),  mISManager.getCatchTimes()))
                                 .append(" ")
                                 .append(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
+                    } catch (Exception e) {
+                        shareBuilder.append(sharePreferenceTable.getString(
+                                PrefConst.KEY_INTRUDER_SHARE_CONTENT))
+                                .append(" ")
+                                .append(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
+                    }
                 } else {
                     shareBuilder.append(getResources().getString(
                                 R.string.intruder_share_content, mISManager.getCatchTimes()))
