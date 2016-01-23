@@ -915,7 +915,7 @@
     <string name="quick_helper_desc_callfilter">Распознание и блокировка нежелательных звонков</string>
     <string name="phone_share_dialog_content">Ваш телефон находится под защитой от кражи, но Ваши друзья, возможно, нет. Помочь друзьям!</string>
     <string name="callfilter_share_dialog_content">Позовите Ваших друзей, чтобы вместе заблокировать досаждающие спам-звонки!</string>
-    <string name="intruder_share_dialog_content">Считаете, что наш продукт неплох? <Data><![CDATA[<font color="#FFF600">Поделитесь с друзьями!</font>]]></Data></string>
+    <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">Поделитесь с друзьями!</font>]]></Data></string>
     <string name="share_dialog_btn_query">Поделиться </string>
     <string name="share_dialog_query_btn_cancel">Отмена </string>
     <string name="phone_share_content">Привет, я пользуюсь функцией защиты от кражи Privacy Guard. Нужно только отправить сообщение, и я могу дистанционно управлять моим телефоном. Это действительно очень удобно, я хочу, чтобы ты тоже попробовал эту программу.</string>

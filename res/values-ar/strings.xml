@@ -1019,7 +1019,7 @@
     <string name="quick_helper_desc_callfilter">تبيين هذه المكالمات المزعاجة واعتراضها</string>
     <string name="phone_share_dialog_content">جوالكم فى حالة الحماية من وظيفة وقاية من السرق ، لكن أصدقائكم ليسوا بذلك ، أرسع～ لتساعدهم </string>
     <string name="callfilter_share_dialog_content">～داع أصدقائكم معا لمنع المكالمات المزعاجة </string>
-    <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">～يشعر بأننا طيبون</font>]]></Data> ؟ شاطرها الى الأصديقاء </string>
+    <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">～يشعر بأننا طيبون</font>]]></Data></string>
     <string name="share_dialog_btn_query">مشاطرة</string>
     <string name="share_dialog_query_btn_cancel">الغاء</string>
     <string name="phone_share_content">أهلا ـ جارى أن استخدم وظيفة وقاية من السرق لحارس الخصوصية. باحتاج الى ارسال رسالة قصيرة ، يمكننى أن أتحكم فى جوالي ، ما أسهل ، أرغب فى أن تجرب هذا البرنامج .</string>

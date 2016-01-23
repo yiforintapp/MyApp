@@ -932,7 +932,7 @@
     <string name="quick_helper_desc_callfilter">แยกแยะและปิดกั้นโทรศัพท์สายรบกวน</string>
     <string name="phone_share_dialog_content">โทรศัพท์ของคุณอยู่ภายใต้การคุ้มครองเพื่อป้องกันขโมย แต่เพื่อนของคุณอาจยังไม่มี รีบไปช่วยพวกเขากัน</string>
     <string name="callfilter_share_dialog_content">ชวนเพื่อนของคุณมาปิดกั้นโทรศัพท์สายรบกวน</string>
-    <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">หากรู้สึกใช้งานได้ดี</font>]]></Data> กรุณาแชร์ให้เพื่อนใช้ด้วยกัน</string>
+    <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">หากรู้สึกใช้งานได้ดี</font>]]></Data></string>
     <string name="share_dialog_btn_query">แชร์</string>
     <string name="share_dialog_query_btn_cancel">ยกเลิก</string>
     <string name="phone_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นกันขโมยของ LEO Privacy Guard อยู่ เพียงแค่ส่งข้อความสั้น ก็สามารถควบคุมมือถือได้จากระยะไกล สะดวกต่อการใช้งาน ฉันอยากให้คุณลองใช้แอพนี้ด้วย</string>
