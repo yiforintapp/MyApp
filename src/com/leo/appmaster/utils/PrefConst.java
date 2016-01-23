@@ -70,6 +70,7 @@ public class PrefConst {
 
     // 入侵者防护不可用的情况下，分数时间已经增加
     public static final String KEY_INTRUDER_ADDED = "intruder_score_added";
+    public static final String KEY_USED_PICSIZE_INDEX = "used_picsize_index";
 
     //swifty卡片数据
     public static final String KEY_SWIFTY_CONTENT = "swifty_content";

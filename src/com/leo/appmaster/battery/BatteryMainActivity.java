@@ -2,7 +2,6 @@
 package com.leo.appmaster.battery;
 
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +20,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.GridLayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
@@ -34,12 +31,10 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
-import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.BatteryManager.BatteryState;
 import com.leo.appmaster.mgr.MgrContext;

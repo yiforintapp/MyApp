@@ -649,7 +649,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                                     ((LockScreenActivity) mActivity).takePicture(mCameraSurPreview,
                                             mPackageName);
                                 }
-                            }, 500);
+                            }, 1000);
                         }
                     }
                 }

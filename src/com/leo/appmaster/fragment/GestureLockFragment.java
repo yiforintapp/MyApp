@@ -350,7 +350,7 @@ public class GestureLockFragment extends LockFragment implements
                                     ((LockScreenActivity) mActivity).takePicture(mCameraSurPreview,
                                             mPackageName);
                                 }
-                            }, 500);
+                            }, 1000);
                         }
                     }
                 }
