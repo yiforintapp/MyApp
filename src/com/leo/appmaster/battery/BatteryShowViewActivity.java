@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -264,9 +265,14 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     protected void onStop() {
         super.onStop();
         if (mFinish) {
-            TaskDetectService tds = TaskDetectService.getService();
+            final TaskDetectService tds = TaskDetectService.getService();
             if (tds != null) {
-                tds.callPretendAppLaunch();
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tds.callPretendAppLaunch();
+                    }
+                }, 200);
             }
         }
     }
