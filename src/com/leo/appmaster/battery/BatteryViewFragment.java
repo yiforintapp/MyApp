@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import android.text.Html;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -1077,6 +1078,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         float textWidth = getTextViewLength(text, str);
         LeoLog.d("testPop", "width : " + textWidth);
         text.setText(str);
+        int size = (int) getResources().getDimension(R.dimen.popu_txt_size);
+        text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(AppMasterApplication.sScreenWidth, View.MeasureSpec.AT_MOST);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        text.measure(widthMeasureSpec, heightMeasureSpec);
 
         int[] location = new int[2];
         v.getLocationOnScreen(location);
@@ -1095,8 +1101,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, x, location[1] - popupWindow.getHeight());
+        LeoLog.d("testPop", "text_height : " + text.getMeasuredHeight());
+        int y = location[1] - text.getMeasuredHeight() - mSpeedContent.getHeight();
+        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, x, y);
     }
 
     public float getTextViewLength(TextView textView, String text) {

@@ -359,4 +359,5 @@
     <dimen name="mask_text_size">20dp</dimen>
     <dimen name="mask_text_size_icon">19dp</dimen>
     <dimen name="mask_text_icon_pd">5dp</dimen>
+    <dimen name="popu_txt_size">12dp</dimen>
 </resources>

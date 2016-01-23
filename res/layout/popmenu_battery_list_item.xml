@@ -13,9 +13,9 @@
         android:layout_centerVertical="true"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:maxLines="3"
+        android:maxLines="4"
         android:maxWidth="230dp"
         android:text="dfd"
         android:textColor="@color/white"
-        android:textSize="12sp" />
+        android:textSize="@dimen/popu_txt_size" />
 </RelativeLayout>
