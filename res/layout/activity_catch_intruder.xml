@@ -150,10 +150,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:background="@drawable/share_good_bg"
-                android:maxHeight="88dp"
-                android:minHeight="44dp"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp">
 
@@ -172,7 +170,7 @@
                     android:layout_toLeftOf="@+id/share_go"
                     android:layout_toRightOf="@+id/empty_view"
                     android:ellipsize="end"
-                    android:maxLines="4"
+                    android:maxLines="2"
                     android:text="@string/intruder_share_dialog_content"
                     android:textColor="@color/c1"
                     android:textSize="@dimen/f4" />
