@@ -72,7 +72,7 @@ public class BlacklistTab extends BaseTable {
                     try {
                         String decryptedNumber = CryptoUtils.decrypt(encryptedNumber);
                         list.add(decryptedNumber);
-                    } catch (Exception e) {
+                    } catch (Throwable e) {
                         LeoLog.e(TAG, "initEncryptList decrypte number ex, " + e.toString());
                         continue;
                     }
@@ -508,7 +508,7 @@ public class BlacklistTab extends BaseTable {
                 }
             }
             database.setTransactionSuccessful();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         } finally {
             database.endTransaction();

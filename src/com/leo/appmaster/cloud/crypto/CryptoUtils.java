@@ -38,7 +38,7 @@ public class CryptoUtils {
      * @param message
      * @return
      */
-    public static String encrypt(String message) throws Exception {
+    public static String encrypt(String message) throws Exception, Error {
         if (TextUtils.isEmpty(message)) {
             return message;
         }
@@ -60,7 +60,7 @@ public class CryptoUtils {
      * @param message
      * @return
      */
-    public static String decrypt(String message) throws Exception {
+    public static String decrypt(String message) throws Exception, Error {
         if (TextUtils.isEmpty(message)) {
             return message;
         }
@@ -111,7 +111,7 @@ public class CryptoUtils {
 
     public static CipherOutputStream newOutputStream(OutputStream os)
             throws NoSuchAlgorithmException, NoSuchPaddingException,
-            InvalidKeyException, InvalidAlgorithmParameterException, RuntimeException {
+            InvalidKeyException, InvalidAlgorithmParameterException, RuntimeException, UnsatisfiedLinkError {
         initAesKeyIfNeeded();
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.ENCRYPT_MODE, sAesKey, sAesIv);
@@ -120,14 +120,14 @@ public class CryptoUtils {
 
     public static CipherInputStream newInputStream(InputStream in)
             throws NoSuchAlgorithmException, NoSuchPaddingException,
-            InvalidKeyException, InvalidAlgorithmParameterException, RuntimeException {
+            InvalidKeyException, InvalidAlgorithmParameterException, RuntimeException, UnsatisfiedLinkError {
         initAesKeyIfNeeded();
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.DECRYPT_MODE, sAesKey, sAesIv);
         return new CipherInputStream(in, c);
     }
 
-    private static void initAesKeyIfNeeded() throws RuntimeException {
+    private static void initAesKeyIfNeeded() throws RuntimeException, UnsatisfiedLinkError {
         if (sAesKey != null && sAesIv != null) {
             return;
         }

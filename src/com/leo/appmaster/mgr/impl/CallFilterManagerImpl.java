@@ -856,7 +856,7 @@ public class CallFilterManagerImpl extends CallFilterManager {
         String encryptedNumber = null;
         try {
             encryptedNumber = CryptoUtils.encrypt(savedNumber);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LeoLog.e(TAG, "getSerBlackForNum, encrypt number ex." + e.toString());
             return null;
         }

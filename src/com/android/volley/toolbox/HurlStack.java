@@ -159,7 +159,7 @@ public class HurlStack implements HttpStack {
                 cryptMsg = CryptoUtils.encrypt(message);
                 LeoLog.i("CptoMsg", cryptMsg);
                 connection.addRequestProperty("leo", cryptMsg);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }

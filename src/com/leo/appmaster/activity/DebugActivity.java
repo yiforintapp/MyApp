@@ -54,7 +54,7 @@ public class DebugActivity extends Activity implements View.OnClickListener {
                 }
                 try {
                     text = CryptoUtils.decrypt(text);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
                 }
                 mDecryptMsgTv.setText(text);
