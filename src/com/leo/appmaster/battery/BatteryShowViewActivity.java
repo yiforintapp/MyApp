@@ -2,11 +2,13 @@ package com.leo.appmaster.battery;
 
 import java.util.List;
 
+import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +33,7 @@ import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -72,8 +75,12 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         handleIntent();
 
         Window win = getWindow();
-        win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        LeoLog.d(TAG, "isScreenLocked = " + hasSecureKeyguard(this));
+        // AM-3824 FLAG_DISMISS_KEYGUARD 对带上的系统keyguard没用
+        if (!hasSecureKeyguard(this)) {
+            win.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        }
         if (!showWhenScreenOff) {
             win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
@@ -87,6 +94,18 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         registerHomeKeyReceiver();
 
         SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "screen");
+    }
+
+    /* 是否设置了系统密码锁，无论当前锁是否已经显示 */
+    private static boolean hasSecureKeyguard(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            KeyguardManager mKeyguardManager = (KeyguardManager) context
+                    .getSystemService(context.KEYGUARD_SERVICE);
+            return mKeyguardManager.isKeyguardSecure();
+        } else {
+            // 在4.1以前的系统中，默认返回false让屏保带上FLAG_DISMISS_KEYGUARD
+            return false;
+        }
     }
 
     private void registerHomeKeyReceiver() {
