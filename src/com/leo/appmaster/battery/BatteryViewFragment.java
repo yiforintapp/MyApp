@@ -54,6 +54,7 @@ import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
@@ -480,7 +481,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         int day_of_week = c.get(Calendar.DAY_OF_WEEK);
         LeoLog.d(TAG, year + ":" + month + ":" + day + ":" + hour + ":" + minute + ":" + day_of_week);
 
-        mTvBigTime.setText(hour + ":" + String.format("%02d", minute));
+        mTvBigTime.setText(hour + ":" + String.format(Locale.ENGLISH, "%02d", minute));
         mTvSmallLeft.setText((month + 1) + "/" + day);
 
         // 资源应该从周日 - 周六 这样的顺序
