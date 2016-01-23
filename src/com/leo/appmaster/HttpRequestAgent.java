@@ -119,17 +119,18 @@ public class HttpRequestAgent {
      * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）"zh":中文简体，”zh_(地区)“：繁体中文
      */
     private String getPostLanguage() {
-        String requestLanguage = AppwallHttpUtil.getLanguage();
-//        String country = AppwallHttpUtil.getCountry();
-//        if ("zh".equalsIgnoreCase(language)) {
-//            if ("CN".equalsIgnoreCase(country)) {
-//                requestLanguage = language;
-//            } else {
-//                requestLanguage = language + "_" + country;
-//            }
-//        } else {
-//            requestLanguage = language;
-//        }
+        String requestLanguage;
+        String language = AppwallHttpUtil.getLanguage();
+        String country = AppwallHttpUtil.getCountry();
+        if ("zh".equalsIgnoreCase(language)) {
+            if ("CN".equalsIgnoreCase(country)) {
+                requestLanguage = language;
+            } else {
+                requestLanguage = language + "_" + country;
+            }
+        } else {
+            requestLanguage = language;
+        }
         // Log.d(Constants.RUN_TAG, "sys_language:" +requestLanguage);
         return requestLanguage;
     }
@@ -578,7 +579,7 @@ public class HttpRequestAgent {
         String object = "";
         String url = LeoUrls.URI_BLACK_LIST;
 //        String url = "http://192.168.1.205/app/config";
-        LeoLog.i("BlackConfigFetchJob", url);
+        LeoLog.i("BlackConfigFetchJob",url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);
@@ -643,11 +644,11 @@ public class HttpRequestAgent {
         final String unitName = "selfshare";
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Utilities.getURL("")).append("/")
-                .append(productId).append("/")
-                .append(unitName).append("/")
-                .append(country).append("/")
-                .append(language)
-                .append(".html");
+                  .append(productId).append("/")
+                  .append(unitName).append("/")
+                  .append(country).append("/")
+                  .append(language)
+                  .append(".html");
         String url = stringBuilder.toString();
         LeoLog.i("ShareFetchJob", "load url: " + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
