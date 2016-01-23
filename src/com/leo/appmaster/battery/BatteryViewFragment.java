@@ -1081,7 +1081,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         int[] location = new int[2];
         v.getLocationOnScreen(location);
         int x;
-        int height = height = DipPixelUtil.dip2px(mActivity, 50);
+        int height = DipPixelUtil.dip2px(mActivity, 50);
         if (textWidth > CHANGE_LINE_INT) {
             x = location[0];
             height = DipPixelUtil.dip2px(mActivity, 70);
@@ -1091,7 +1091,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             x = location[0] - 100;
         }
 
-        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, height);
+        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);//TODO 原本是用height，为啥？
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
