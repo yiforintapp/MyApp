@@ -1011,9 +1011,9 @@
     <string name="batterymanage_tip_loading">جارى اختبار التطبيق المستهلك الكهرباء</string>
     <string name="batterymanage_tip_nothing_to_boost"> app لا يوجد تحسين</string>
     <string name="batterymanage_switch_screen">حماية الشاشة عند لشحن</string>
-    <string name="batterymanage_switch_screen_summary">استخدام حماية الشاشة عند الشحن لتسريع الشحن ،ولوقاية من مفرط الشحن</string>
+    <string name="batterymanage_switch_screen_summary">ولوقاية من مفرط الشحن</string>
     <string name="batterymanage_switch_noti">اشعار استهلاك الكهرباء للتطبيق</string>
-    <string name="batterymanage_switch_noti_summary">اختبار حالة استهلاك الكهرباء للتطيبقات الخلفية</string>
+    <string name="batterymanage_switch_noti_summary">إعلام حالة استهلاك الكهرباء</string>
     <string name="batterymanage_setting_title">اعدادات</string>
     <string name="quick_helper_callfilter">حظر  الإزعاج</string>
     <string name="quick_helper_desc_callfilter">تبيين هذه المكالمات المزعاجة واعتراضها</string>
@@ -1041,8 +1041,8 @@
     <string name="recom_rgt_txt">أريد أن أحاول</string>
 
     <string name="screen_protect_type_pop_one">يجرى الشحن سريعا عند كمية الكهرباء أقل 70%</string>
-    <string name="screen_protect_type_pop_two">كافة كمية الكهرباء ، تيار الشحن المستقر بحماية البطارية</string>
-    <string name="screen_protect_type_pop_three">تملآ  الشحن قريبا ، تخفيض تيار الشحن لتمديد عمر البطارية</string>
+    <string name="screen_protect_type_pop_two"> تيار الشحن المستقر بحماية البطارية</string>
+    <string name="screen_protect_type_pop_three">تخفيض تيار الشحن لتمديد عمر البطارية</string>
 
     <string name="screen_protect_charing_text_one">صل شاحن الكهرباء</string>
     <string name="screen_protect_charing_text_two">جارى شحن الكهرباء</string>

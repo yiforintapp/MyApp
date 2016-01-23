@@ -924,9 +924,9 @@
     <string name="batterymanage_tip_loading">Güç harcayan app aranıyor</string>
     <string name="batterymanage_tip_nothing_to_boost">Düzenlenecek app bulunamadı</string>
     <string name="batterymanage_switch_screen">Şarj Ekran Koruyucu</string>
-    <string name="batterymanage_switch_screen_summary">Şarj ekran koruyucusunu kullanarak daha hızlı şarj edin</string>
+    <string name="batterymanage_switch_screen_summary">daha hızlı şarj edin</string>
     <string name="batterymanage_switch_noti">APP Güç Bildirisi</string>
-    <string name="batterymanage_switch_noti_summary">Test sonrası APP Güç Durumu</string>
+    <string name="batterymanage_switch_noti_summary">Bildirmek APP Güç Durumu</string>
     <string name="batterymanage_setting_title">Ayarlar</string>
     <string name="quick_helper_callfilter">Taciz Engelleme</string>
     <string name="quick_helper_desc_callfilter">Rahatsız eden numarayı tanı ve engelle</string>
@@ -955,8 +955,8 @@
     <string name="batterymanage_boosted_number">%1$d ürün optimize</string>
 
     <string name="screen_protect_type_pop_one">Güç %70\'in altında olduğunda hızlı şarj eder</string>
-    <string name="screen_protect_type_pop_two">Güç yeterli. Normal şarj ile bataryanız korunur.</string>
-    <string name="screen_protect_type_pop_three">Güç dolmak üzere. Bataryanızın ömrü için şarj azaltılıyor.</string>
+    <string name="screen_protect_type_pop_two">Normal şarj ile bataryanız korunur.</string>
+    <string name="screen_protect_type_pop_three">Bataryanızın ömrü için şarj azaltılıyor.</string>
 
     <string name="screen_protect_charing_text_one">Şarj cihazını takın.</string>
     <string name="screen_protect_charing_text_two">Şarj ediliyor</string>

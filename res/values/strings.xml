@@ -951,9 +951,9 @@
     <string name="batterymanage_tip_loading">Checking power-consuming applications</string>
     <string name="batterymanage_tip_nothing_to_boost">There is no application for optimization</string>
     <string name="batterymanage_switch_screen">Charging screensaver</string>
-    <string name="batterymanage_switch_screen_summary">Use the charging screensaver to speed up charging and prevent overcharging</string>
+    <string name="batterymanage_switch_screen_summary">Speed up charging and prevent overcharging</string>
     <string name="batterymanage_switch_noti">Power consumption notification</string>
-    <string name="batterymanage_switch_noti_summary">Checking the power consumption of background applications</string>
+    <string name="batterymanage_switch_noti_summary">Notify power consumption of apps</string>
     <string name="batterymanage_setting_title">Setting</string>
     <string name="quick_helper_callfilter">Disturbance interception</string>
     <string name="quick_helper_desc_callfilter">Identify and intercept those annoying crank calls</string>
@@ -982,8 +982,8 @@
 
     <!--翻译遗漏，暂时用中文替代-->
     <string name="screen_protect_type_pop_one">Conduct quick charging while the electriciy is lower than 70%</string>
-    <string name="screen_protect_type_pop_two">The electricity is sufficient, keep the charging current stable to protect the battery</string>
-    <string name="screen_protect_type_pop_three">The battery will be fully charged soon, reduce the charging current to prolong the battery life</string>
+    <string name="screen_protect_type_pop_two">Keep the charging current stable to protect the battery</string>
+    <string name="screen_protect_type_pop_three">Reduce the charging current to prolong the battery life</string>
 
     <string name="screen_protect_charing_text_one">Please connect the charger</string>
     <string name="screen_protect_charing_text_two">Charging</string>

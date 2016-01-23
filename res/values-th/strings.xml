@@ -924,9 +924,9 @@
     <string name="batterymanage_tip_loading">กำลังตรวจสอบแอพที่ใช้ไฟอยู่</string>
     <string name="batterymanage_tip_nothing_to_boost">ไม่มีแอพที่ต้องปรับปรุงแล้ว</string>
     <string name="batterymanage_switch_screen">ภาพพักหน้าจอขณะชาร์จ</string>
-    <string name="batterymanage_switch_screen_summary">ใช้ภาพพักหน้าจอเร่งการชาร์จไฟ ป้องกันโอเวอร์ชาร์จ</string>
+    <string name="batterymanage_switch_screen_summary">เร่งการชาร์จไฟ ป้องกันโอเวอร์ชาร์จ</string>
     <string name="batterymanage_switch_noti">แจ้งสภาพการใช้ไฟของแอพ</string>
-    <string name="batterymanage_switch_noti_summary">ตรวจสอบสภาพการใช้ไฟของแอพที่ทำงานอยู่เบื้องหลัง</string>
+    <string name="batterymanage_switch_noti_summary">แจ้งอบสภาพการใช้ไฟของแอพที่</string>
     <string name="batterymanage_setting_title">การตั้งค่า</string>
     <string name="quick_helper_callfilter">ปิดกั้นการรบกวน</string>
     <string name="quick_helper_desc_callfilter">แยกแยะและปิดกั้นโทรศัพท์สายรบกวน</string>
@@ -955,8 +955,8 @@
     <string name="batterymanage_boosted_number">%1$dมีการปรับรายการ</string>
 
     <string name="screen_protect_type_pop_one">ใช้โหมดการชาร์จแบบรวดเร็ว เมื่อแบตเตอรี่เหลือต่ำกว่า 70%</string>
-    <string name="screen_protect_type_pop_two">แบตเตอรี่เต็ม ควบคุมการประจุกระแสไฟฟ้าให้สม่ำเสมอ เพื่อรักษาแบตเตอรี่ให้อยู่ในสภาพการใช้งานที่ดี</string>
-    <string name="screen_protect_type_pop_three">ชาร์จไฟใกล้เต็ม ลดกระแสไฟฟ้าในการชาร์จ เพื่อยืดอายุการใช้งานของแบตเตอรี่</string>
+    <string name="screen_protect_type_pop_two">มีเสถียรภาพในปัจจุบัน เพื่อรักษาแบตเตอรี่ให้อยู่ในสภาพการที่ดี</string>
+    <string name="screen_protect_type_pop_three">ลดกระแสไฟฟ้ เพื่อยืดอายุการใช้งานของแบตเตอรี่</string>
 
     <string name="screen_protect_charing_text_one">กรุณาเสียบสายชาร์จ</string>
     <string name="screen_protect_charing_text_two">กำลังชาร์จ</string>
