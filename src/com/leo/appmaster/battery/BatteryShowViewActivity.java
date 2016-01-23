@@ -97,6 +97,12 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "screen");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LeoLog.d(TAG, "onResume");
+    }
+
     /* 是否设置了系统密码锁，无论当前锁是否已经显示 */
     private static boolean hasSecureKeyguard(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -264,6 +270,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     @Override
     protected void onStop() {
         super.onStop();
+        LeoLog.d(TAG, "onStop");
         if (mFinish) {
             final TaskDetectService tds = TaskDetectService.getService();
             if (tds != null) {
