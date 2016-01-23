@@ -6,6 +6,7 @@
     <dimen name="batteryscreen_battery_margintop">35dp</dimen>
 	<dimen name="batteryscreen_clock_margintop">60dp</dimen>
 	<dimen name="batterymanage_toplayout_height">183dp</dimen>
+	<dimen name="batterymanage_toplayout_ball">154dp</dimen>
 	<dimen name="home_left_list_item_height">60dp</dimen>
     <dimen name="setting_item_height">55dp</dimen>
     <dimen name="lock_icon_width">22dp</dimen>

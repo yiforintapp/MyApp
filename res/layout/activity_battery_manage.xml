@@ -26,8 +26,8 @@
             <RelativeLayout
                 android:layout_marginTop="5dp"
                 android:id="@+id/rl_wholebattery"
-                android:layout_width="154dp"
-                android:layout_height="154dp"
+                android:layout_width="@dimen/batterymanage_toplayout_ball"
+                android:layout_height="@dimen/batterymanage_toplayout_ball"
                 android:layout_centerHorizontal="true" >
 
                 <com.leo.appmaster.ui.WaveView
@@ -76,7 +76,7 @@
                     android:layout_height="13dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="38dp"
+                    android:layout_marginBottom="37dp"
                     android:src="@drawable/batterymanage_littlebattery_normal" />
             </RelativeLayout>
 
