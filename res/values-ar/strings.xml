@@ -1024,7 +1024,7 @@
     <string name="share_dialog_query_btn_cancel">الغاء</string>
     <string name="phone_share_content">أهلا ـ جارى أن استخدم وظيفة وقاية من السرق لحارس الخصوصية. باحتاج الى ارسال رسالة قصيرة ، يمكننى أن أتحكم فى جوالي ، ما أسهل ، أرغب فى أن تجرب هذا البرنامج .</string>
     <string name="callfilter_share_content">أهلا، جارى أن أستخدم وظيفة اعتراض المكالمة هاتفيا بحارس الخصوصية. وأمنع هؤلاء البائعين، المهم : يتبين المكالمات الواردة تلقائيا، بمجرد البسيط . أرغب فى أن تستخدمه معا .</string>
-    <string name="intruder_share_content"> قد.الغزاة من لوقاية الخصوصية حارس وظييفة أستخدم أن جاري  يتصفحوا أن هؤلاء عرفت الآن جوالي لتصفح شخص لتصوير ساعدني  بسرعة اجرب جوالي</string>
+    <string name="intruder_share_content"> قد.الغزاة من لوقاية الخصوصية حارس وظييفة أستخدم أن جاري %1$s يتصفحوا أن هؤلاء عرفت الآن جوالي لتصفح شخص لتصوير ساعدني  بسرعة اجرب جوالي</string>
     <string name="up_list_swifty_title">ترقية الفعالية</string>
 	<string name="batterymanage_boosted_number">%1$d هي الأمثل البنود</string>	    
     <string name="screen_protect_type_one">الشحن سريعا</string>
