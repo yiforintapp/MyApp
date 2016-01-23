@@ -219,6 +219,7 @@
                     android:id="@+id/tv_bottomtext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:text="@string/batterymanage_boost"
                     android:textColor="@color/white"
