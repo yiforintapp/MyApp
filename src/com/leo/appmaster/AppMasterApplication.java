@@ -115,7 +115,7 @@ public class AppMasterApplication extends Application {
             DisplayMetrics metrics = new DisplayMetrics();
             wm.getDefaultDisplay().getMetrics(metrics);
             sScreenWidth = metrics.widthPixels;
-            sScreenWidth = metrics.heightPixels;
+            sScreenHeight = metrics.heightPixels;
             LeoLog.d(TAG, "zany, width: " + sScreenWidth + " | height: " + sScreenHeight);
         } catch (Exception e) {
             e.printStackTrace();
