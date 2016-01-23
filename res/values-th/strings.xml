@@ -919,7 +919,7 @@
     <string name="batterymanage_result_ad_callfilter_content">แยกแยะและปิดกั้นโทรศัพท์สายรบกวน</string>
     <string name="batterymanage_label">&#160;แอพแอบใช้ไฟอยู่</string>
     <string name="batterymanage_label_old">มี <Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data> แอพแอบใช้ไฟอยู่</string>
-    <string name="batterymanage_boost">ปรับปรุงเพื่อประหยัดไฟ</string>
+    <string name="batterymanage_boost">การเพิ่มประสิทธิภาพ</string>
     <string name="batterymanage_boost_finished">ปรับปรุงเสร็จลุล่วง</string>
     <string name="batterymanage_tip_loading">กำลังตรวจสอบแอพที่ใช้ไฟอยู่</string>
     <string name="batterymanage_tip_nothing_to_boost">ไม่มีแอพที่ต้องปรับปรุงแล้ว</string>
