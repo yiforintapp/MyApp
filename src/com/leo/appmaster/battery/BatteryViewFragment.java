@@ -176,7 +176,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     long cancelTime = System.currentTimeMillis();
                     if (cancelTime - showTime > 4000) {
                         if (popupWindow != null && popupWindow.isShowing()) {
-                            popupWindow.dismiss();
+                            try {
+                                popupWindow.dismiss();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                     break;
