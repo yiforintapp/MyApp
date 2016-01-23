@@ -931,7 +931,7 @@
     <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
     <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
 
-    <string name="screen_protect_unlock_text">Передвинуть для разблокировки</string>
+    <string name="screen_protect_unlock_text">Разблокировки</string>
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы Privacy Guard требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить Privacy Guard</string>
     <string name="recom_lft_txt">Нет, спасибо</string>
     <string name="recom_rgt_txt">Попробовать сейчас</string>
