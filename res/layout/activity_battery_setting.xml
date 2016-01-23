@@ -86,7 +86,7 @@
                 android:id="@+id/tv_title_noti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
+                android:maxLines="2"
                 android:text="@string/batterymanage_switch_noti"
                 android:textColor="@color/c2"
                 android:textSize="16dp" />
@@ -99,7 +99,7 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:gravity="top"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:text="@string/batterymanage_switch_noti_summary"
                 android:textColor="@color/c4"
                 android:textSize="10dp" />
