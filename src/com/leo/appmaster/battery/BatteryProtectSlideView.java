@@ -126,6 +126,7 @@ public class BatteryProtectSlideView extends View {
         mMatrix = new Matrix();
         mPaint.setTextSize(mTextSize);
         mPaint.setTextAlign(Paint.Align.CENTER);
+        mPaint.setAntiAlias(true);
 
         mTextRect = new Rect();
         mPaint.getTextBounds(mText, 0, mText.length(), mTextRect);
@@ -134,6 +135,7 @@ public class BatteryProtectSlideView extends View {
         mPaddingSize = context.getResources().getDimensionPixelSize(R.dimen.mask_text_icon_pd);
         mSlidePaint = new Paint();
         mSlidePaint.setTextSize(mIconSize);
+        mSlidePaint.setAntiAlias(true);
         mSlidePaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "app_custom.ttf"));
 
 //        mHandler.sendEmptyMessageDelayed(MSG_REDRAW, DRAW_INTERVAL);

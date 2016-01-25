@@ -213,10 +213,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void batteryIconMoveBig() {
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
-                "x", mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 6, mBatteryIcon.getLeft());
+                "x", mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 5, mBatteryIcon.getLeft());
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop()
-                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 30), mBatteryIcon.getTop());
+                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 29), mBatteryIcon.getTop());
 
         ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mBatteryIcon,
                 "scaleX", 0.6f, 1f);
@@ -248,10 +248,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void batteryIconMoveSmall() {
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
-                "x", mBatteryIcon.getLeft(), mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 6);
+                "x", mBatteryIcon.getLeft(), mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 5);
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop(), mBatteryIcon.getTop()
-                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 30));
+                        - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 29));
 
         ObjectAnimator animScaleX = ObjectAnimator.ofFloat(mBatteryIcon,
                 "scaleX", 1f, 0.6f);
@@ -363,6 +363,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //        mBottleWater.setPostInvalidateDelayMs(40);
         mBottleWater.setWaveColor(0xff0ad931);
         mBottleWater.setWave2Color(0xff0ab522);
+        mBottleWater.setFactorA(DipPixelUtil.dip2px(mActivity, 3));
 
         mThreeMoveView = findViewById(R.id.battery_icon_flag);
         mGreenArrow = (ImageView) findViewById(R.id.little_ruler);
