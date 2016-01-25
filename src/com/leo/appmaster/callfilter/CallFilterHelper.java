@@ -384,10 +384,10 @@ public class CallFilterHelper {
             mLastLocInfo = null;
             mLastSerInfo = null;
             mLastFilterTips = null;
-            mPhoneNumber = "";
             if (info != null || isComingOut() || mHasIdle) {
                 //如果mHasIdle是true 是已经处理完挂断逻辑 也要返回，
                 CallFilterHelper.getInstance(mContext).setIsComingOut(false);
+                mPhoneNumber = "";
                 return;
             }
             mHasIdle = true;
@@ -401,6 +401,7 @@ public class CallFilterHelper {
             if (deltaTime < durationMax && (filterTip == null || CallFilterConstants.IS_TIP_DIA[0] == filterTip[0]) && mIsOffHook) {
                 if (mDialogTooShort != null && mDialogTooShort.isShowing()) {
                     mIsOffHook = false;
+                    mPhoneNumber = "";
                     return;
                 }
                 final int[] finalFilterTip = filterTip;
@@ -409,6 +410,7 @@ public class CallFilterHelper {
                     public void run() {
                         // 通话时间过短的提醒加入黑名单对话框
                         showTooShortDialogInActivity(finalFilterTip);
+                        mPhoneNumber = "";
                     }
                 });
                 mIsOffHook = false;
@@ -418,6 +420,7 @@ public class CallFilterHelper {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask marked");
                 if (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing()) {
                     mIsOffHook = false;
+                    mPhoneNumber = "";
                     return;
                 }
                 final int[] finalFilterTip1 = filterTip;
@@ -426,6 +429,7 @@ public class CallFilterHelper {
                     public void run() {
                         // 接听后挂断 询问是否家黑名单且展示标记人数
                         showAskDialogWithMarkInActivity(finalFilterTip1);
+                        mPhoneNumber = "";
                     }
                 });
                 mIsOffHook = false;
@@ -433,6 +437,7 @@ public class CallFilterHelper {
                 LeoLog.i(TAG, "idle : mIsOffHook =" + mIsOffHook + "ask add to blacklist");
                 if (mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) {
                     mIsOffHook = false;
+                    mPhoneNumber = "";
                     return;
                 }
                 final int[] finalFilterTip2 = filterTip;
@@ -441,6 +446,7 @@ public class CallFilterHelper {
                     public void run() {
                         // 接听后挂断 询问是否加入黑名单且展示加入黑名单人数
                         showAskDialogWithoutMarkInActivity(finalFilterTip2);
+                        mPhoneNumber = "";
                     }
                 });
                 mIsOffHook = false;
@@ -448,11 +454,13 @@ public class CallFilterHelper {
                     && CallFilterConstants.IS_TIP_DIA[1] == filterTip[0]) {
                 if ((mDialogAskAddWithSmr != null && mDialogAskAddWithSmr.isShowing()) || (mDialogAskAddWithSmrMark != null && mDialogAskAddWithSmrMark.isShowing())) {
                     mIsOffHook = false;
+                    mPhoneNumber = "";
                     return;
                 }
                 // 没有接听就直接挂断的
                 if (mDialogAskAdd != null && mDialogAskAdd.isShowing()) {
                     mIsOffHook = false;
+                    mPhoneNumber = "";
                     return;
                 }
                 final int[] finalFilterTip3 = filterTip;
@@ -460,9 +468,12 @@ public class CallFilterHelper {
                     @Override
                     public void run() {
                         showAskDialogWhenNoOffhookInActivity(finalFilterTip3);
+                        mPhoneNumber = "";
                     }
                 });
                 mIsOffHook = false;
+            } else {
+                mPhoneNumber = "";
             }
         } else if (TelephonyManager.EXTRA_STATE_OFFHOOK.equalsIgnoreCase(state)) {
             mLastOffHookTime = System.currentTimeMillis();
