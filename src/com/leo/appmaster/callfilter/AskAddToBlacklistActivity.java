@@ -168,6 +168,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                     default:
                         break;
                 }
+                LeoLog.i("asdfasdfasfdasdf",mPhoneNumber+":markType="+ info.markType);
                 infost.add(info);
                 boolean inerFlag = mCmp.addBlackList(infost, false);
                 if (!inerFlag) {

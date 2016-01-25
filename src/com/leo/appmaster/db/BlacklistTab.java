@@ -439,13 +439,14 @@ public class BlacklistTab extends BaseTable {
                     selection += " = ? ";
                     selectionArgs = new String[]{number};
                 }
+                LeoLog.i("asdfasdfasfdasdf","markType1="+ info.markType);
                 int rows = database.update(CallFilterConstants.TAB_BLACK_LIST, values, selection, selectionArgs);
                 if (rows <= 0) {
                     // 不存在这条记录，需要把所有状态都初始化一遍
 
                     values.put(CallFilterConstants.COL_BLACK_FIL_UP, CallFilterConstants.FIL_UP_NO);
                     values.put(CallFilterConstants.COL_BLACK_UPLOAD_STATE, CallFilterConstants.UPLOAD_NO);
-                    values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, CallFilterConstants.MK_BLACK_LIST);
+//                    values.put(CallFilterConstants.COL_BLACK_MARK_TYPE, CallFilterConstants.MK_BLACK_LIST);
 
                     long rowId = database.insert(CallFilterConstants.TAB_BLACK_LIST, null, values);
                     LeoLog.d(TAG, "addBlackListInner, insert rowid: " + rowId);
