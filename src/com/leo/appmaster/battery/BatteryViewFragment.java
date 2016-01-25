@@ -460,7 +460,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private BroadcastReceiver mPresentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            LeoLog.d("stone_test_browser", "action="+intent.getAction());
+            LeoLog.d("stone_test_browser", "action=" + intent.getAction());
             if (mClickRunnable != null) {
                 mClickRunnable.run();
                 mClickRunnable = null;
@@ -874,8 +874,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (mClickRunnable == null) {
             return;
         }
-        if (AppUtil.isDefaultBrowserChrome(mActivity) &&
-                AppUtil.isScreenLocked(mActivity)) {
+//        AppUtil.isDefaultBrowserChrome(mActivity) &&
+        if (AppUtil.isScreenLocked(mActivity)) {
             // 默认浏览器是chrome而且系统锁住了，让user_present receiver处理
 //            startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
 
