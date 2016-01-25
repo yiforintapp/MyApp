@@ -48,6 +48,10 @@
     <dimen name="lock_help_item_pager_lock_help_title_margintop">18dp</dimen>
     <dimen name="lock_help_item_pager_lock_help_content_margintop">20dp</dimen>
 
+    <!-- 3.3 AM-3850 -->
+    <dimen name="layout_passwd_marginTop">47dp</dimen>
+    <dimen name="layout_four_passwd_marginTop">18dp</dimen>
+
     <dimen name="help_icon_width_parent">50dp</dimen>
     <dimen name="locker_theme_guide_width">297dp</dimen>
     <dimen name="locker_theme_guide_guideImageIV_marginTop">35dp</dimen>
