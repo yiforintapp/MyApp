@@ -2,9 +2,6 @@
 package com.leo.appmaster.battery;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,6 +49,9 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BatteryMainActivity extends BaseFragmentActivity implements OnClickListener {
     private final String TAG = "BatterMainActivity";
