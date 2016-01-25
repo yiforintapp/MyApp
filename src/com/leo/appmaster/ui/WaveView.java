@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 
 public class WaveView extends View {  
@@ -23,12 +24,12 @@ public class WaveView extends View {
     private static final int WAVE_PAINT_COLOR = 0x8800aa00;  //TODO 两个波浪分别使用不同颜色
 
     // y = Asin(wx+b)+h  
-    private float mFactorA = 10;  //公式中的A值，波的高点和低点与水平中线的距离
+    private float mFactorA = DipPixelUtil.dip2px(mContext, 5);  //公式中的A值，波的高点和低点与水平中线的距离
     private static final int OFFSET_Y = 0;  
     // 第一条水波移动速度  
-    private static final int TRANSLATE_X_SPEED_ONE = 9;  
+    private final int TRANSLATE_X_SPEED_ONE = DipPixelUtil.dip2px(mContext, 5);
     // 第二条水波移动速度  
-    private static final int TRANSLATE_X_SPEED_TWO = 7;  
+    private final int TRANSLATE_X_SPEED_TWO = DipPixelUtil.dip2px(mContext, 3); 
     
     private float mCycleFactorW;  //完整波的周期
     private float mPercent = 50;	//波纹高度占满View的百分比

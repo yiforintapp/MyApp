@@ -172,7 +172,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
                     mPendingCallback = null;
                     mIsTimeOut = false;
                 }
-            }, 500);
+            }, 1000);
         }
     }
 
