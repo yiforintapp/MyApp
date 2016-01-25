@@ -97,6 +97,12 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         registerHomeKeyReceiver();
 
         SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "screen");
+
+        TaskDetectService tds = TaskDetectService.getService();
+        if (tds != null) {
+            tds.ignoreBatteryPage(true);
+        }
+
     }
 
     @Override
@@ -279,17 +285,18 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     protected void onStop() {
         super.onStop();
         LeoLog.d(TAG, "onStop");
-        if (mFinish) {
-            final TaskDetectService tds = TaskDetectService.getService();
-            if (tds != null) {
-                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        tds.callPretendAppLaunch();
-                    }
-                }, 200);
-            }
-        }
+//        if (mFinish) {
+//            final TaskDetectService tds = TaskDetectService.getService();
+//            if (tds != null) {
+//                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        LeoLog.d(TAG, "onStop, call pretend app launch.");
+//                        tds.callPretendAppLaunch();
+//                    }
+//                }, 200);
+//            }
+//        }
     }
 
     @Override
@@ -301,7 +308,14 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     public void finish() {
         super.finish();
         mFinish = true;
-        LeoLog.d(TAG, "onDestroy");
+        LeoLog.d(TAG, "finish");
+
+        final TaskDetectService tds = TaskDetectService.getService();
+        if (tds != null) {
+            LeoLog.d(TAG, "onStop, call pretend app launch.");
+            tds.callPretendAppLaunch();
+            tds.ignoreBatteryPage(false);
+        }
     }
 
     @Override

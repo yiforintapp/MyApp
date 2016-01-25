@@ -147,6 +147,14 @@ public class TaskDetectService extends Service {
         mLockHandler.handleAppLaunch(PRETEND_PACKAGE, PRETEND_PACKAGE, PRETEND_PACKAGE);
     }
 
+    /**
+     * 消忽略屏保页
+     * @param ignore
+     */
+    public void ignoreBatteryPage(boolean ignore) {
+        mLockHandler.ignoreBatteryPage(ignore);
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LeoLog.d(TAG, "onStartCommand...");

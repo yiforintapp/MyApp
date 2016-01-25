@@ -47,7 +47,7 @@ public class TaskChangeHandler {
     private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
     private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
 
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
 
     private Context mContext;
     private ActivityManager mAm;
@@ -58,6 +58,8 @@ public class TaskChangeHandler {
 
     // 解锁前检测到的真正有效的pkg
     private String mDetectedPkgBeforeScreeOff;
+    // 是否忽略锁屏屏保
+    private boolean mIgnoreBattery = true;
 
     public TaskChangeHandler(Context context) {
         mContext = context.getApplicationContext();
@@ -91,6 +93,10 @@ public class TaskChangeHandler {
             return;
 
         mDetectedPkgBeforeScreeOff = pkg;
+    }
+
+    public void ignoreBatteryPage(boolean ignoreBattery) {
+        mIgnoreBattery = ignoreBattery;
     }
 
     public void handleAppLaunch(String pkg, String activity, String baseActivity) {
@@ -147,9 +153,8 @@ public class TaskChangeHandler {
             boolean currentLockScreen = activity.contains(LOCKSCREENNAME);
             if (doubleCheck) {
                 if (mLastRunningPkg.isEmpty()
-                        || (isCurrentSelf
-                        && (activity.contains(DESKPROXYNAME)
-                        || activity.contains(BATTERYVIEW)
+                        || (isCurrentSelf && (activity.contains(DESKPROXYNAME)
+                        || (activity.contains(BATTERYVIEW) && mIgnoreBattery)
                         || activity.contains(DESKAD)
                         // || activity.contains(APPWALL)
                         || activity.contains(LAUNCHERBOOST)
@@ -172,7 +177,7 @@ public class TaskChangeHandler {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
                         && (activity.contains(DESKPROXYNAME)
-                        || activity.contains(BATTERYVIEW)
+                        || (activity.contains(BATTERYVIEW) && mIgnoreBattery)
                         || activity.contains(DESKAD)
                         // || activity.contains(APPWALL)
                         || activity.contains(LAUNCHERBOOST)
