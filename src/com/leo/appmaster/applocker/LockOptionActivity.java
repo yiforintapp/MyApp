@@ -28,8 +28,6 @@ import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
-import com.leo.appmaster.ui.dialog.LEOMessageDialog;
-import com.leo.appmaster.utils.LeoLog;
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -276,12 +274,12 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             Intent intent = null;
             ComponentName component = new ComponentName(this,
                     DeviceReceiver.class);
-            mLockManager.filterSelfOneMinites();
 //            if(false){
             if (isAdminActive()) {
                 DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
                 dpm.removeActiveAdmin(component);
             } else {
+                mLockManager.filterSelfOneMinites();
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);
