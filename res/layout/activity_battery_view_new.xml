@@ -47,7 +47,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="10:33"
                 android:textColor="@color/white"
-                android:textSize="55dp" />
+                android:textSize="60dp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
                     android:id="@+id/little_ruler"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="7dp"
                     android:background="@drawable/bay_kedu1" />
 
                 <!-- 右部分 -->
@@ -268,8 +268,9 @@
                 android:id="@+id/hide_tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/battery_icon_content"
                 android:visibility="invisible">
 
@@ -297,7 +298,6 @@
 
         </RelativeLayout>
         <!-- 电池 && 图标 -->
-
     </RelativeLayout>
 
 

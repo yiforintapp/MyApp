@@ -204,7 +204,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void batteryIconMoveBig() {
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
-                "x", mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 5, mBatteryIcon.getLeft());
+                "x", mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 6, mBatteryIcon.getLeft());
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop()
                         - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 30), mBatteryIcon.getTop());
@@ -239,7 +239,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void batteryIconMoveSmall() {
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mBatteryIcon,
-                "x", mBatteryIcon.getLeft(), mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 5);
+                "x", mBatteryIcon.getLeft(), mBatteryIcon.getLeft() + mBatteryIcon.getWidth() / 6);
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIcon,
                 "y", mBatteryIcon.getTop(), mBatteryIcon.getTop()
                         - mBatteryIcon.getHeight() - DipPixelUtil.dip2px(mActivity, 30));
@@ -294,7 +294,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
                 "scaleY", 0.8f, 1f);
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
-                "x", mTimeContent.getLeft() - mTimeContent.getWidth() * 5 / 8, mTimeContent.getLeft());
+                "x", mTimeContent.getLeft() - mTimeContent.getWidth() * 4 / 8, mTimeContent.getLeft());
 
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
@@ -309,7 +309,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
                 "scaleY", 1f, 0.8f);
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
-                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() * 5 / 8);
+                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() * 4 / 8);
 
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);

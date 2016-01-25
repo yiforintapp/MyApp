@@ -177,6 +177,7 @@ public class BatteryProtectSlideView extends View {
         if (mSlidePaint.getShader() == null) {
             mSlidePaint.setShader(mGradient);
         }
+
         int left = (getWidth() - mTextRect.width()) / 2 - mSlideRect.width() - mPaddingSize;
         int base = baseline - (mTextSize - mIconSize);
         canvas.drawText(mIconText, left, base, mSlidePaint);
