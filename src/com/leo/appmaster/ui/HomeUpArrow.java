@@ -131,6 +131,9 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
                     return;
                 }
 
+                if (mUpAnim == null) {
+                    return;
+                }
                 LeoLog.i(TAG, "alpha anim end.");
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
