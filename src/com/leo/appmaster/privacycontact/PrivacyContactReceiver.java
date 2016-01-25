@@ -4,12 +4,14 @@ package com.leo.appmaster.privacycontact;
 import java.text.SimpleDateFormat;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
@@ -23,6 +25,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.BuildProperties;
@@ -138,17 +141,32 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             final String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
             PrivacyContactManager.getInstance(mContext).testValue = true;
 
+
+//            KeyguardManager km= (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+//            KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
+//            //解锁
+//            kl.disableKeyguard();
+//            //获取电源管理器对象
+//            PowerManager pm=(PowerManager) context.getSystemService(Context.POWER_SERVICE);
+//            //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
+//            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
+//            //点亮屏幕
+//            wl.acquire();
+
+//            LeoEventBus.getDefaultBus().post(new BatteryViewEvent("a"));
+
+
             /**
              * 解决SamSungI855系统会重复接受两次广播问题，去重
              */
             boolean isSamI855 = BuildProperties.isSmsgIcrI855();
             if (isSamI855 && (!PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action))) {
-                LeoLog.d(TAG,"state:"+state);
+                LeoLog.d(TAG, "state:" + state);
                 synchronized (mByte) {
                     long lastTime = CallFilterHelper.getInstance(mContext).getCurrCallRecivTime();
                     long currTime = System.currentTimeMillis();
                     boolean isFlag = (currTime - lastTime) < CallFilterConstants.CALL_RECEIV_DURAT;
-                    LeoLog.d(TAG,"lastTime:"+lastTime+",currTime:"+currTime+",currTime-lastTime:"+(currTime-lastTime)+",isFlag:"+isFlag);
+                    LeoLog.d(TAG, "lastTime:" + lastTime + ",currTime:" + currTime + ",currTime-lastTime:" + (currTime - lastTime) + ",isFlag:" + isFlag);
                     if (isFlag) {
                         return;
                     }
