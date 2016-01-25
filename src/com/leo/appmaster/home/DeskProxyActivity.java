@@ -221,7 +221,7 @@ public class DeskProxyActivity extends Activity {
                         break;
                 }
             }
-            if(type != mBatteryProtect){
+            if (type != mBatteryProtect) {
                 finish();
             }
         }
@@ -231,13 +231,14 @@ public class DeskProxyActivity extends Activity {
         // stone - test
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_USER_PRESENT);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         this.registerReceiver(mPresentReceiver, intentFilter);
     }
 
     private BroadcastReceiver mPresentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            LeoLog.d("proxy", "action="+intent.getAction());
+            LeoLog.d("proxy", "action=" + intent.getAction());
             unregisterReceiver(this);
             finish();
         }
