@@ -131,13 +131,13 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
                     return;
                 }
 
-                if (mUpAnim == null) {
-                    return;
-                }
                 LeoLog.i(TAG, "alpha anim end.");
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if (mUpAnim == null) {
+                            return;
+                        }
                         startUpAnimation();
                     }
                 }, 400);
