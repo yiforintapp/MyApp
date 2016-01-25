@@ -1,15 +1,6 @@
 
 package com.leo.appmaster.lockertheme;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -48,7 +39,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.ThemeChanageListener;
@@ -73,6 +63,15 @@ import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.PackageChangedListener;
 import com.leo.imageloader.ImageLoader;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class LockerTheme extends BaseActivity implements OnClickListener, ThemeChanageListener,
         OnRefreshListener2<ListView> {
@@ -731,6 +730,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     protected void onResume() {
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "theme");
+        if (mLocalThemeAdapter != null) {
+            mLocalThemeAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
