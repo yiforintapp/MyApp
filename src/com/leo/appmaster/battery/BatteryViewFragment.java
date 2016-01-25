@@ -627,29 +627,34 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mTvHideTime.setVisibility(View.GONE);
                 }
             } else {
-                if (hString.equals("0")) {
-                    if (!dString.equals("0")) {
-                        String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
+                if (isCharing) {
+                    if (hString.equals("0")) {
+                        if (!dString.equals("0")) {
+                            String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
+                            String text2 = mActivity.getString(R.string.screen_protect_time);
+                            mTvLeftTime.setVisibility(View.VISIBLE);
+                            mTvTime.setVisibility(View.VISIBLE);
+                            mTvLeftTime.setText(text2);
+                            mTvTime.setText(Html.fromHtml(text));
+                        } else {
+                            String text = mActivity.getString(R.string.screen_protect_charing_text_two);
+                            mTvLeftTime.setText(text);
+                            mTvTime.setVisibility(View.GONE);
+                        }
+                    } else {
+                        String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
                         String text2 = mActivity.getString(R.string.screen_protect_time);
                         mTvLeftTime.setVisibility(View.VISIBLE);
                         mTvTime.setVisibility(View.VISIBLE);
                         mTvLeftTime.setText(text2);
                         mTvTime.setText(Html.fromHtml(text));
-                    } else {
-                        String text = mActivity.getString(R.string.screen_protect_charing_text_two);
-                        mTvLeftTime.setText(text);
-                        mTvTime.setVisibility(View.GONE);
                     }
                 } else {
-                    String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
-                    String text2 = mActivity.getString(R.string.screen_protect_time);
-                    mTvLeftTime.setVisibility(View.VISIBLE);
-                    mTvTime.setVisibility(View.VISIBLE);
-                    mTvLeftTime.setText(text2);
-                    mTvTime.setText(Html.fromHtml(text));
+                    String text = mActivity.getString(R.string.screen_protect_charing_text_one);
+                    mTvLeftTime.setText(text);
+                    mTvTime.setVisibility(View.GONE);
                 }
             }
-
 
         }
 
