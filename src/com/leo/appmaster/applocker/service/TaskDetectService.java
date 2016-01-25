@@ -136,6 +136,7 @@ public class TaskDetectService extends Service {
         // sendQuickPermissionOpenNotification(getApplicationContext());
         language = AppwallHttpUtil.getLanguage();
         super.onCreate();
+        LeoLog.d(TAG, "onCreate...");
     }
 
     private void startPhantomService() {
@@ -148,6 +149,7 @@ public class TaskDetectService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        LeoLog.d(TAG, "onStartCommand...");
         if (!mServiceStarted) {
             startDetect();
         }
@@ -256,6 +258,7 @@ public class TaskDetectService extends Service {
         sendBroadcast(new Intent("com.leo.appmaster.restart"));
         sService = null;
         super.onDestroy();
+        LeoLog.d(TAG, "onDestroy...");
     }
 
     private class FlowTask extends TimerTask {

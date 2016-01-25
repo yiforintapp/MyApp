@@ -284,13 +284,7 @@ public class BasicNetwork implements Network {
 				bytes.write(buffer, 0, count);
 			}
 			return bytes.toByteArray();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidAlgorithmParameterException e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
 			try {

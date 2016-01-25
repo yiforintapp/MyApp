@@ -287,13 +287,7 @@ public class HurlStack implements HttpStack {
                 if (request.isBodyNeedEncrypt()) {
                     try {
                         target = CryptoUtils.newOutputStream(target);
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchPaddingException e) {
-                        e.printStackTrace();
-                    } catch (InvalidKeyException e) {
-                        e.printStackTrace();
-                    } catch (InvalidAlgorithmParameterException e) {
+                    } catch (Throwable e) {
                         e.printStackTrace();
                     }
                 }

@@ -64,8 +64,9 @@ public class AppMasterApplication extends Application {
     static {
         try {
             System.loadLibrary("leo_service");
+            LeoLog.d(TAG, "load service lib succ.");
         } catch (Throwable e) {
-            e.printStackTrace();
+            LeoLog.e(TAG, "load service lib ex.", e);
         }
     }
 

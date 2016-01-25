@@ -228,7 +228,7 @@ public class BlackListFileFetchJob extends FetchScheduleJob {
                     // retry
                     retryCount++;
                     LeoLog.e(TAG, "requestBlackListFile connect timeout ex, retrycount: " + retryCount);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     LeoLog.e(TAG, "requestBlackListFile socket timeout ex, e: " + e.toString());
                     e.printStackTrace();
                     break;
