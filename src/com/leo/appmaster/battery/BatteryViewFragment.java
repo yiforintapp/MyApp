@@ -464,7 +464,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             String action = intent.getAction();
             LeoLog.d("stone_test_browser", "action="+action);
             if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-                mActivity.finish();
+                if (mClickRunnable != null) {
+                    mActivity.finish();
+                }
             } else if (action.equals(Intent.ACTION_USER_PRESENT)) {
                 if (mClickRunnable != null) {
                     mClickRunnable.run();
