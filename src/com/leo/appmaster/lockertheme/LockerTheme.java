@@ -542,6 +542,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         title.setToolbarTitle(R.string.lockerTheme);
         title.setToolbarColorResource(R.color.cb);
         title.setOptionMenuVisible(false);
+        title.setNavigationClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 //        title.setTitle(R.string.lockerTheme);
 //        title.setBackViewListener(this);
 
@@ -754,6 +760,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
     @Override
     public void onBackPressed() {
+        LeoLog.i("dfsdfsdfasdfas","mNeedLoadTheme = "+mNeedLoadTheme);
         if (mFromTheme != null && !mFromTheme.equals("")) {
             mLockManager.filterPackage(getPackageName(), 1000);
             Intent intent = null;
@@ -795,6 +802,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 startActivity(intent);
                 super.onBackPressed();
             }
+        } else if (mNeedLoadTheme) {
+//            Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
+//            mHomeIntent.addCategory(Intent.CATEGORY_HOME);
+//            mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                    | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//            startActivity(mHomeIntent);
+//            finish();
         } else {
             super.onBackPressed();
         }
