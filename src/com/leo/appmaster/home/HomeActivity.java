@@ -66,7 +66,6 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.schedule.PhoneSecurityFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -106,7 +105,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private PreferenceTable mPt = PreferenceTable.getInstance();
     public static int mHomeAdSwitchOpen = -1;
 
-    private IswipUpdateTipDialog mIswipDialog;
     private IntrudeSecurityManager mISManger;
     private boolean mShowIswipeFromNotfi;
 
@@ -275,10 +273,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            mWallAd.release();
 //            mWallAd = null;
 //        }
-        if (mIswipDialog != null) {
-            mIswipDialog.dismiss();
-            mIswipDialog = null;
-        }
 
         // 重置隐私等级减少的分数
         PrivacyHelper.getInstance(this).resetDecScore();
@@ -794,7 +788,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         // tryIsFromLockMore();
 
-        showIswipDialog();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
 
         ProcessDetectorCompat22.setForegroundScore();
@@ -819,72 +812,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mMenuList.setAdapter(mMenuAdapter);
         }
         mDrawerLayout.postInvalidate();
-    }
-
-    private void showIswipDialog() {
-        AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        boolean quickGestureFristTip = amp.getFristSlidingTip();
-        if (quickGestureFristTip && !ISwipUpdateRequestManager.isInstallIsiwpe(this)) {
-            showDownLoadISwipDialog(this, "homeactivity");
-        }
-        amp.setFristSlidingTip(false);
-    }
-
-    private void showDownLoadISwipDialog(Context context, String flag) {
-        if (mIswipDialog == null) {
-            mIswipDialog = new IswipUpdateTipDialog(context);
-        }
-        mIswipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (mIswipDialog != null) {
-                    mIswipDialog = null;
-                }
-            }
-        });
-
-        mIswipDialog.setLeftListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (mShowIswipeFromNotfi) {
-                    mShowIswipeFromNotfi = false;
-                    /* 对来自通知栏的统计 */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_statusbar_n");
-                } else {
-                    /* 非通知栏 */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_n");
-                }
-                /* 稍后再说 */
-                if (mIswipDialog != null) {
-                    mIswipDialog.dismiss();
-                }
-            }
-        });
-        mIswipDialog.setRightListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (mShowIswipeFromNotfi) {
-                    mShowIswipeFromNotfi = false;
-                    /* 对来自通知栏的统计 */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_statusbar_y");
-                } else {
-                    /* 非通知栏 */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_y");
-                }
-                /* 立即下载 */
-
-                if (mIswipDialog != null) {
-                    mIswipDialog.dismiss();
-                }
-                ISwipUpdateRequestManager.getInstance(HomeActivity.this).iSwipDownLoadHandler();
-            }
-        });
-        getIntent().removeExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
-        mIswipDialog.setFlag(flag);
-        mIswipDialog.show();
     }
 
     private void setMsgCenterUnread() {

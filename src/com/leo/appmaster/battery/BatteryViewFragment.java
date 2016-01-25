@@ -1076,7 +1076,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mSwiftyLayout.setOnClickListener(this);
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
+            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
             mSwiftyTitle = (TextView) include.findViewById(R.id.card_title);
             boolean isTitleEmpty = TextUtils.isEmpty(
                     preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TITLE));
@@ -1129,7 +1129,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mExtraLayout.setOnClickListener(this);
             mExtraContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mExtraImg, getOptions(R.drawable.swifty_banner));
+            mImageLoader.displayImage(imgUrl, mExtraImg, getOptions(R.drawable.online_theme_loading));
             boolean isTitleEmpty = TextUtils.isEmpty(
                     preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_TITLE));
             if (!isTitleEmpty) {

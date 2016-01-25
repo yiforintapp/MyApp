@@ -392,7 +392,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                     mSwiftyBtnLt.setOnClickListener(WifiResultFrangment.this);
                     mSwiftyContent.setText(mPt.getString(PrefConst.KEY_WIFI_SWIFTY_CONTENT));
                     String imgUrl = mPt.getString(PrefConst.KEY_WIFI_SWIFTY_IMG_URL);
-                    mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
+                    mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
                     boolean isTitleEmpty = TextUtils.isEmpty(
                             mPt.getString(PrefConst.KEY_WIFI_SWIFTY_TITLE));
                     if (!isTitleEmpty) {
@@ -465,7 +465,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                     mWifiMasterBtnLt.setOnClickListener(WifiResultFrangment.this);
                     mWifiMasterContent.setText(mPt.getString(PrefConst.KEY_WIFI_WIFIMASTER_CONTENT));
                     String imgUrl = mPt.getString(PrefConst.KEY_WIFI_WIFIMASTER_IMG_URL);
-                    mImageLoader.displayImage(imgUrl, mWifiMasterImg, getOptions(R.drawable.swifty_banner));
+                    mImageLoader.displayImage(imgUrl, mWifiMasterImg, getOptions(R.drawable.online_theme_loading));
                     boolean isTitleEmpty = TextUtils.isEmpty(
                             mPt.getString(PrefConst.KEY_WIFI_WIFIMASTER_TITLE));
                     if (!isTitleEmpty) {

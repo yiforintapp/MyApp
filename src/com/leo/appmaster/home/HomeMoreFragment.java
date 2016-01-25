@@ -1,7 +1,6 @@
 package com.leo.appmaster.home;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,11 +18,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.appmanage.BackUpActivity;
-import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.battery.BatteryMainActivity;
-import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
@@ -39,14 +36,11 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.HomeUpArrow;
 import com.leo.appmaster.ui.SlidingUpPanelLayout;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 /**
@@ -66,7 +60,6 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
     private View mUpClickView;
 
     private HomeMoreAdapter mAdapter;
-    private IswipUpdateTipDialog mAppManagerIswipDialog;
 
     public HomeMoreFragment() {
 
@@ -369,11 +362,6 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     startActivity(qhintent);
                     break;
                 case R.string.hp_helper_iswipe:
-                    // iswipe
-                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "home_swifty");
-                    boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(activity);
-                    // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
-                    startISwipHandlerForInstallIS(installISwipe);
                     break;
                 case R.string.home_tab_instruder:
                     // 手机防盗
@@ -406,60 +394,6 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
             }
         }
     }
-
-    private void startISwipHandlerForInstallIS(boolean flag) {
-        if (!flag) {
-            /* 下载ISwip对话框 */
-            showDownLoadISwipDialog(getActivity());
-            // ISwipUpdateRequestManager.getInstance(getActivity()).iSwipDownLoadHandler();
-
-        } else {
-            /* 启动ISwipe主页 */
-            Utilities.startISwipIntent(getActivity());
-        }
-    }
-
-    private void showDownLoadISwipDialog(Context context) {
-        LeoLog.i("HomeAppManagerFragment", "HomeAppManagerFragment中的Dialog");
-        if (mAppManagerIswipDialog == null) {
-            mAppManagerIswipDialog = new IswipUpdateTipDialog(context);
-        }
-        mAppManagerIswipDialog.setVisiblilyTitle(false);
-        String contentButtonText = context.getResources().getString(
-                R.string.first_open_quick_gesture_dialog_tip_cotent);
-        mAppManagerIswipDialog.setContentText(contentButtonText);
-        String leftButtonText = context.getResources().getString(
-                R.string.quick_first_tip_dialog_left_bt);
-        mAppManagerIswipDialog.setLeftButtonText(leftButtonText);
-        String rightButtonText = context.getResources().getString(
-                R.string.quick_first_tip_dialog_right_bt);
-        mAppManagerIswipDialog.setRightButtonText(rightButtonText);
-        mAppManagerIswipDialog.setLeftListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                /* 稍后再说 */
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "qs_iSwipe", "new_dia_n");
-                if (mAppManagerIswipDialog != null) {
-                    mAppManagerIswipDialog.dismiss();
-                }
-            }
-        });
-        mAppManagerIswipDialog.setRightListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                /* 立即下载 */
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "qs_iSwipe", "new_dia_y");
-                ISwipUpdateRequestManager.getInstance(getActivity()).iSwipDownLoadHandler();
-                if (mAppManagerIswipDialog != null) {
-                    mAppManagerIswipDialog.dismiss();
-                }
-            }
-        });
-        mAppManagerIswipDialog.show();
-    }
-
 
     @Override
     public void onDestroy() {

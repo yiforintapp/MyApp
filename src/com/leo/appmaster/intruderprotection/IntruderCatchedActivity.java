@@ -744,7 +744,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mSwiftyBtnLt.setOnClickListener(this);
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL);
-            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.swifty_banner));
+            mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
             boolean isTitleEmpty = TextUtils.isEmpty(
                     preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_TITLE));
             if (!isTitleEmpty) {
