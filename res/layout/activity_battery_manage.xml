@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
-                android:layout_marginTop="37dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginLeft="140dp"
                 android:layout_marginRight="30dp"
                 android:text="@string/batterymanage_boost_finished"

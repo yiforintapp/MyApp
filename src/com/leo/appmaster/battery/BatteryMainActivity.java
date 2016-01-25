@@ -381,8 +381,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         float initialY = mIvShield.getY();
         PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, DipPixelUtil.dip2px(this, 15));
 //        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("top", initialY, DipPixelUtil.dip2px(this, 10));
-        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.66f);
-        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.66f);
+        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.70f);
+        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.70f);
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX,  holderScaleX, holderScaleY);
         anim.setDuration(TRANSLATE_ANIM_DURATION);
         anim.start();
