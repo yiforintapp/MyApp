@@ -2,7 +2,10 @@
 package com.leo.appmaster.home;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -41,7 +44,6 @@ public class DeskProxyActivity extends Activity {
     public static final int mPicHide = 3;
     public static final int mVioHide = 4;
     public static final int mPrivateSms = 5;
-
     public static final int mFlow = 6;
     public static final int mElec = 7;
     public static final int mBackup = 8;
@@ -49,15 +51,13 @@ public class DeskProxyActivity extends Activity {
     public static final int mLockThem = 10;
     public static final int mHotApp = 11;
     public static final int mAd = 12;
-
     public static final int mWifi = 13;
     public static final int mQuickHelper = 14;
-
-    public static final int mFilterNoti =15;
-    public static final int mStrangerCallNoti =16;
-    public static final int mMissCallNoti =17;
-
+    public static final int mFilterNoti = 15;
+    public static final int mStrangerCallNoti = 16;
+    public static final int mMissCallNoti = 17;
     public static final int mCallfilter = 18;
+    public static final int mBatteryProtect = 19;
 
     private MobvistaAdWall wallAd;
 
@@ -126,6 +126,8 @@ public class DeskProxyActivity extends Activity {
                         LeoLog.d("testFromWhere", "mQuickHelper from push");
                     }
                     gotoQuickHelper(type);
+                } else if (type == mBatteryProtect) {
+                    gotoBatteryClick();
                 } else {
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -166,13 +168,9 @@ public class DeskProxyActivity extends Activity {
                         goToBlackListTab1(type);
                         break;
                     case mStrangerCallNoti:
-//                        SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-//                                "videoHide");
                         goToStrangerCall(type);
                         break;
                     case mFilterNoti:
-//                        SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-//                                "videoHide");
                         goToBlackList(type);
                         break;
                     case mPrivateSms:
@@ -218,11 +216,32 @@ public class DeskProxyActivity extends Activity {
                         }
                         gotoQuickHelper(type);
                         break;
+                    case mBatteryProtect:
+                        gotoBatteryClick();
+                        break;
                 }
             }
-            finish();
+            if(type != mBatteryProtect){
+                finish();
+            }
         }
     }
+
+    private void gotoBatteryClick() {
+        // stone - test
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT);
+        this.registerReceiver(mPresentReceiver, intentFilter);
+    }
+
+    private BroadcastReceiver mPresentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LeoLog.d("proxy", "action="+intent.getAction());
+            unregisterReceiver(this);
+            finish();
+        }
+    };
 
     private void gotoQuickHelper(int type) {
         mLockManager.filterPackage(this.getPackageName(), 1000);
@@ -280,12 +299,14 @@ public class DeskProxyActivity extends Activity {
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "notify_stranger_cnts");
     }
 
-    /** 从骚扰拦截push通知进入骚扰拦截界面 */
+    /**
+     * 从骚扰拦截push通知进入骚扰拦截界面
+     */
     private void gotoCallFilerActivity() {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, CallFilterMainActivity.class);
         intent.putExtra(CALL_FILTER_PUSH, "push");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -294,7 +315,7 @@ public class DeskProxyActivity extends Activity {
         Intent intent = new Intent(this, CallFilterMainActivity.class);
         intent.putExtra("needMoveToTab2", true);
         intent.putExtra("needToHomeWhenFinish", true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "notify_blacklist_cnts");
     }
@@ -304,7 +325,7 @@ public class DeskProxyActivity extends Activity {
         Intent intent = new Intent(this, CallFilterMainActivity.class);
 //        intent.putExtra("needMoveToTab2", false);
         intent.putExtra("needToHomeWhenFinish", true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 //        Intent intent = new Intent(this, CallFilterMainActivity.class);
 ////        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

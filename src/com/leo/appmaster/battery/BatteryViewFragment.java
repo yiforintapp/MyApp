@@ -31,8 +31,10 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -875,7 +877,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (AppUtil.isDefaultBrowserChrome(mActivity) &&
                 AppUtil.isScreenLocked(mActivity)) {
             // 默认浏览器是chrome而且系统锁住了，让user_present receiver处理
-            startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
+//            startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
+
+            Intent intent = new Intent(mActivity, DeskProxyActivity.class);
+            intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mBatteryProtect);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            mActivity.startActivity(intent);
+
+
         } else {
             // 没有锁或者默认浏览器不是chrome，直接跑
             mClickRunnable.run();

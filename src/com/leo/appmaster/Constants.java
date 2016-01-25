@@ -477,6 +477,7 @@ public class Constants {
     public static final String VIRTUAL_DESKTOP_PIC = "/virtual_desktop_pic"; // 虚化图片名
     public static final String DEFAULT_SHARE_URL = "http://www.leomaster.com.cn/m/privacy/"; // 默认分享链接
 
+
     /***
      * 带有充电屏保的竞品
      */
