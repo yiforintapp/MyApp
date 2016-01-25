@@ -221,7 +221,7 @@ public class BatteryManagerImpl extends BatteryManager {
                     public void run() {
                         mContext.startActivity(intent);
                     }
-                }, 500);
+                }, 200);
             }
 
         } else {
