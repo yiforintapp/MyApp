@@ -294,7 +294,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
                 "scaleY", 0.8f, 1f);
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
-                "x", mTimeContent.getLeft() - mTimeContent.getWidth() * 3 / 4, mTimeContent.getLeft());
+                "x", mTimeContent.getLeft() - mTimeContent.getWidth() * 5 / 8, mTimeContent.getLeft());
 
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
@@ -309,7 +309,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ObjectAnimator animScaleY = ObjectAnimator.ofFloat(mTimeContent,
                 "scaleY", 1f, 0.8f);
         ObjectAnimator animMoveX = ObjectAnimator.ofFloat(mTimeContent,
-                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() * 3 / 4);
+                "x", mTimeContent.getLeft(), mTimeContent.getLeft() - mTimeContent.getWidth() * 5 / 8);
 
         AnimatorSet set = new AnimatorSet();
         set.play(animScaleX).with(animScaleY);
