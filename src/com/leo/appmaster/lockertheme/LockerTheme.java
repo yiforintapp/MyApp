@@ -900,7 +900,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         lastSelectedItem.curUsedTheme = true;
                         lastSelectedItem.label = (String) LockerTheme.this
                                 .getResources().getText(R.string.localtheme);
-
+                        int number = 0;
                         if (packageNames != null && packageNames.size() > 0) {
                             for (int i = 0; i < packageNames.size(); i++) {
                                 if (mLocalThemes == null) {
@@ -911,6 +911,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                                 }
                                 if (packageNames.get(i).contains(themeName)) {
                                     mLocalThemes.get(i).curUsedTheme = true;
+                                    number = i;
                                     break;
                                 }
 
@@ -921,6 +922,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                             mLocalThemeAdapter = new LockerThemeAdapter(LockerTheme.this, mLocalThemes);
                             localThemeList.setAdapter(mLocalThemeAdapter);
                             mLocalThemeAdapter.notifyDataSetChanged();
+                            localThemeList.getRefreshableView().setSelection(number);
                         }
 
                         SDKWrapper.addEvent(LockerTheme.this, SDKWrapper.P1,
