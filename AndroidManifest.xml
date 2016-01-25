@@ -228,6 +228,7 @@
             android:exported="true"
             android:hardwareAccelerated="false"
             android:launchMode="singleTask"
+            android:taskAffinity="com.leo.appmaster.home"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults"></activity>
 <!--           	android:launchMode="singleTask" -->
