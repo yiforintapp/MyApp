@@ -126,7 +126,7 @@ public class HttpRequestAgent {
             if ("CN".equalsIgnoreCase(country)) {
                 requestLanguage = language;
             } else {
-                requestLanguage = language + "_" + country;
+                requestLanguage = language + "-" + country;
             }
         } else {
             requestLanguage = language;
