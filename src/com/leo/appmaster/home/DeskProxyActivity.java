@@ -324,7 +324,7 @@ public class DeskProxyActivity extends Activity {
     private void goToBlackListTab1(int type) {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, CallFilterMainActivity.class);
-//        intent.putExtra("needMoveToTab2", false);
+//        intent.putExtra("needMoveToTab2", true);
         intent.putExtra("needToHomeWhenFinish", true);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
