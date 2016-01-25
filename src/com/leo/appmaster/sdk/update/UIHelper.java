@@ -609,6 +609,9 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         if (!isActivityOnTop(mContext)) {
             LeoLog.d(TAG, "sendDownloadNotification in onProgress of UIHelper");
             sendDownloadNotification(mProgress);
+            if(listener != null) {
+                listener.onShowProgressOnStatusBar();
+            }
         } else {
             cancelDownloadNotification();
         }

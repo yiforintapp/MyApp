@@ -562,6 +562,11 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     ;
 
     @Override
+    public void onShowProgressOnStatusBar() {
+        finish();
+    }
+
+    @Override
     public void onProgress(int progress, int total) {
         // LeoLog.d(TAG, "onProgress call back, progress=" + progress +
         // "; total="
