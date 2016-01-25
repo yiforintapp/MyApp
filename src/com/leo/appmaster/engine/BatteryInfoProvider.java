@@ -318,6 +318,9 @@ public class BatteryInfoProvider {
 			if (AppUtil.belongToLeoFamily(processAdj.pkg)) {
 				return true;
 			}
+			if (processAdj.pkg.startsWith("com.android.providers")) {
+				return true;
+			}
 			// only check app stuff
 			if (processAdj.user.startsWith(APP_PREFIX_1) || processAdj.user.startsWith(APP_PREFIX_2)) {
 				return false;
@@ -373,18 +376,10 @@ public class BatteryInfoProvider {
 			line = matcher.replaceAll(",");
 		}
 
-		if (DBG) {
-			LeoLog.i(TAG, line);
-		}
-
 		String[] array = line.split(",");
 		if (array == null || array.length == 0) return null;
 
 		if (array.length <= INDEX_PROCESS_NAME) return null;
-
-		if (DBG) {
-			LeoLog.i(TAG, "array length: " + array.length);
-		}
 
 		ProcessAdj processAdj = new ProcessAdj();
 
@@ -422,10 +417,6 @@ public class BatteryInfoProvider {
 		processAdj.pid = processId;
 		processAdj.pkg = processName;
 		processAdj.ppid = ppid;
-
-		if (DBG) {
-			LeoLog.i(TAG, "inner: " + processAdj.toString());
-		}
 
 		return processAdj;
 	}
