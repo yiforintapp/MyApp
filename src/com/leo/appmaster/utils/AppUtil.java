@@ -17,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 import android.net.Uri;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -26,6 +27,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.imageloader.utils.L;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -410,6 +412,43 @@ public class AppUtil {
             }
         }
         return false;
+    }
+
+    /***
+     * 是否设置了系统密码锁，无论当前锁是否已经显示
+     * @param context
+     * @param defValue 对于4.0以及以下系统的默认值
+     * @return
+     */
+    public static boolean hasSecureKeyguard(Context context, boolean defValue) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            KeyguardManager keyguardManager = (KeyguardManager) context
+                    .getSystemService(context.KEYGUARD_SERVICE);
+            if (keyguardManager == null) {
+                return defValue;
+            }
+            return keyguardManager.isKeyguardSecure();
+        } else {
+            // 在4.1以前的系统中，默认返回false让屏保带上FLAG_DISMISS_KEYGUARD
+            return defValue;
+        }
+    }
+
+    public static String getDefaultBrowser(Context context) {
+        Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
+        browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+        ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(browserIntent,PackageManager.MATCH_DEFAULT_ONLY);
+
+        String packagetName = "";
+        if (resolveInfo != null) {
+            packagetName = resolveInfo.activityInfo.packageName;
+        }
+        LeoLog.d("stone_test_browser", "packagetName="+packagetName);
+        return packagetName;
+    }
+
+    public static boolean isDefaultBrowserChrome(Context context) {
+        return (AppUtil.getDefaultBrowser(context).equalsIgnoreCase(Constants.CHROME_PACKAGE_NAME));
     }
 
     public static boolean belongToLeoFamily(String pkgName) {

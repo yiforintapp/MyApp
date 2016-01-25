@@ -78,9 +78,10 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
         Window win = getWindow();
         win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        LeoLog.d(TAG, "isScreenLocked = " + hasSecureKeyguard(this));
+        boolean secureKeyguard = AppUtil.hasSecureKeyguard(this, false);
+        LeoLog.d(TAG, "isScreenLocked = " + secureKeyguard);
         // AM-3824 FLAG_DISMISS_KEYGUARD 对带上的系统keyguard没用
-        if (!hasSecureKeyguard(this)) {
+        if (!secureKeyguard) {
             win.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         }
         if (!showWhenScreenOff) {
@@ -102,18 +103,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     protected void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume");
-    }
-
-    /* 是否设置了系统密码锁，无论当前锁是否已经显示 */
-    private static boolean hasSecureKeyguard(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            KeyguardManager mKeyguardManager = (KeyguardManager) context
-                    .getSystemService(context.KEYGUARD_SERVICE);
-            return mKeyguardManager.isKeyguardSecure();
-        } else {
-            // 在4.1以前的系统中，默认返回false让屏保带上FLAG_DISMISS_KEYGUARD
-            return false;
-        }
     }
 
     private void registerHomeKeyReceiver() {

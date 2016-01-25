@@ -78,6 +78,8 @@ public class BatteryManagerImpl extends BatteryManager {
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 
         mNotifyHelper = new BatteryNotifyHelper(mContext, this);
+
+        AppUtil.getDefaultBrowser(mContext);
     }
 
     @Override

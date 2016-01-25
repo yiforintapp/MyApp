@@ -488,4 +488,6 @@ public class Constants {
             "com.qihoo.security",  // 360
             "com.qihoo.security.lite",  // 360 Lite
     };
+
+    public static final String CHROME_PACKAGE_NAME = "com.android.chrome";
 }

@@ -1,8 +1,10 @@
 
 package com.leo.appmaster.battery;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -37,6 +39,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -117,6 +120,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private int mRemainTime;
     private View mBossView;
     private boolean isSetInitPlace = false;
+
+    /*  */
+    private View mAdView = null;
+    private Runnable mClickRunnable = null;
 
     /**
      * 第一个推广位
@@ -406,12 +413,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         updateTime();
         new TimeThread(this).start();
+
+        // stone - test
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT);
+        mActivity.registerReceiver(mPresentReceiver, intentFilter);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         releaseAd();
+        mActivity.unregisterReceiver(mPresentReceiver);
     }
 
 
@@ -441,6 +454,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mRemainTime = remainTime;
         notifyUI(mChangeType);
     }
+
+    private BroadcastReceiver mPresentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LeoLog.d("stone_test_browser", "action="+intent.getAction());
+            if (mClickRunnable != null) {
+                mClickRunnable.run();
+                mClickRunnable = null;
+            }
+        }
+    };
 
     public void notifyUI(String type) {
 
@@ -796,21 +820,66 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             case R.id.trickle_content:
                 showPop(CHARING_TYPE_TRICKLE);
                 break;
+            case R.id.ad_content:
+                mClickRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        LeoLog.d("stone_test_browser", "fire touch event!");
+                        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
+                        MotionEvent eventDown = MotionEvent.obtain(SystemClock.elapsedRealtime(),
+                                SystemClock.elapsedRealtime(), MotionEvent.ACTION_DOWN,
+                                10.0f, 10.0f, 0);
+                        mAdView.dispatchTouchEvent(eventDown);
+                        MotionEvent eventUp = MotionEvent.obtain(SystemClock.elapsedRealtime(),
+                                SystemClock.elapsedRealtime(), MotionEvent.ACTION_UP,
+                                10.0f, 10.0f, 0);
+                        mAdView.dispatchTouchEvent(eventUp);
+                    }
+                };
+                handleRunnable();
+                break;
             case R.id.parent_layout:
                 if (view == mSwiftyLayout) {
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote1");
-                    PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                    Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_SWIFTY_TYPE,
-                            PrefConst.KEY_CHARGE_SWIFTY_GP_URL, PrefConst.KEY_CHARGE_SWIFTY_URL,
-                            "", mActivity);
+                    mClickRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote1");
+                            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                            Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_SWIFTY_TYPE,
+                                    PrefConst.KEY_CHARGE_SWIFTY_GP_URL, PrefConst.KEY_CHARGE_SWIFTY_URL,
+                                    "", mActivity);
+                        }
+                    };
+                    handleRunnable();
                 } else if (view == mExtraLayout) {
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote2");
-                    PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                    Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
-                            PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
-                            "", mActivity);
+                    mClickRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote2");
+                            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+                            Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
+                                    PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
+                                    "", mActivity);
+                        }
+                    };
+                    handleRunnable();
                 }
                 break;
+        }
+    }
+
+    private void handleRunnable() {
+        if (mClickRunnable == null) {
+            return;
+        }
+        if (AppUtil.isDefaultBrowserChrome(mActivity) &&
+                AppUtil.isScreenLocked(mActivity)) {
+            // 默认浏览器是chrome而且系统锁住了，让user_present receiver处理
+            startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
+        } else {
+            // 没有锁或者默认浏览器不是chrome，直接跑
+            mClickRunnable.run();
+            mClickRunnable = null;
         }
     }
 
@@ -942,7 +1011,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         preview.setImageBitmap(previewImage);
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
-        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, adView);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_screen");
         adView.setVisibility(View.VISIBLE);
         mSlideView.post(new Runnable() {
@@ -951,6 +1019,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mHandler.sendEmptyMessage(LOAD_DONE_INIT_PLACE);
             }
         });
+        mAdView = adView;
+        mAdView.setOnClickListener(this);
     }
     /* 广告相关 - 结束 */
 
