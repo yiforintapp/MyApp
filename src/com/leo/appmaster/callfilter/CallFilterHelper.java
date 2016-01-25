@@ -1,10 +1,6 @@
 
 package com.leo.appmaster.callfilter;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +32,10 @@ import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by runlee on 15-12-18.
@@ -250,7 +250,7 @@ public class CallFilterHelper {
         } else {
             mHasIdle = false; //只要不是挂断广播，先将标记置为false，此时未处理挂断逻辑（挂断广播总会在其他广播之后）
         }
-        
+
         if (PrivacyContactUtils.NEW_OUTGOING_CALL.equals(action)) {
             /* 通话类型：拨出 */
             setIsComingOut(true);
@@ -266,6 +266,7 @@ public class CallFilterHelper {
                 mLastLocInfo = null;
                 mLastSerInfo = null;
                 mLastFilterTips = null;
+                mPhoneNumber = "";
             }
             return;
         }
@@ -365,7 +366,7 @@ public class CallFilterHelper {
                                 mTipToast = CallFilterToast.makeText(mContext, phoneNumber, showValue, CallFilterToast.BLACK_LIST_TYPE, 0);
                                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "block", "calling_blacklist");
                             }
-                            if (mTipToast != null) {
+                            if (mTipToast != null && !TextUtils.isEmpty(phoneNumber)) {
                                 mTipToast.show();
                                 LeoLog.i("testdata", "mTipToast show!");
                             }
@@ -383,6 +384,7 @@ public class CallFilterHelper {
             mLastLocInfo = null;
             mLastSerInfo = null;
             mLastFilterTips = null;
+            mPhoneNumber = "";
             if (info != null || isComingOut() || mHasIdle) {
                 //如果mHasIdle是true 是已经处理完挂断逻辑 也要返回，
                 CallFilterHelper.getInstance(mContext).setIsComingOut(false);
@@ -470,6 +472,9 @@ public class CallFilterHelper {
     }
 
     private void showAskDialogWhenNoOffhookInActivity(int[] filterTip) {
+        if (TextUtils.isEmpty(mPhoneNumber)) {
+            return;
+        }
         Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WHEN_NO_OFFHOOK);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
@@ -481,6 +486,9 @@ public class CallFilterHelper {
     }
 
     private void showAskDialogWithoutMarkInActivity(int[] filterTip) {
+        if (TextUtils.isEmpty(mPhoneNumber)) {
+            return;
+        }
         Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WITHOUT_MARK);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
@@ -492,6 +500,9 @@ public class CallFilterHelper {
     }
 
     private void showAskDialogWithMarkInActivity(int[] filterTip) {
+        if (TextUtils.isEmpty(mPhoneNumber)) {
+            return;
+        }
         Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.CASE_ASK_WITH_MARK);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
@@ -503,6 +514,9 @@ public class CallFilterHelper {
     }
 
     private void showTooShortDialogInActivity(int[] filterTip) {
+        if (TextUtils.isEmpty(mPhoneNumber)) {
+            return;
+        }
         Intent intent = new Intent(mContext, AskAddToBlacklistActivity.class);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, AskAddToBlacklistActivity.TYPE_SHOW_TOO_SHORT);
         intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, mPhoneNumber);
@@ -659,6 +673,9 @@ public class CallFilterHelper {
 
     private synchronized void endCallAndRecord(final String phoneNumber, final ITelephony iTelephony,
                                                final CallFilterManager cmp) {
+        if (TextUtils.isEmpty(phoneNumber)) {
+            return;
+        }
         /* 为本地黑名单：拦截 */
         LeoLog.d("testdata", "endCallAndRecord enter.");
         try {
