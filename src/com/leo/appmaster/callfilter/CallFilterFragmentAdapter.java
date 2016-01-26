@@ -1,13 +1,11 @@
 package com.leo.appmaster.callfilter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -15,11 +13,8 @@ import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.dialog.LEOWithSingleCheckboxDialog;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +97,7 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
         holder.time.setText(getTime(time));
         holder.filternum.setText(filternum + "");
 
-        if (Utilities.isEmpty(numberName) || !checkIsSysContact(number, mSysContacts)) {
+        if (Utilities.isEmpty(numberName)/* || !checkIsSysContact(number, mSysContacts)*/) {
             if (filterType == 0) {
                 holder.title.setText(number);
                 holder.desc.setText(number);
