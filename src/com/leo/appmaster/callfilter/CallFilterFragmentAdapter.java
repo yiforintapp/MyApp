@@ -114,6 +114,15 @@ public class CallFilterFragmentAdapter extends BaseAdapter {
                 holder.desc.setText(number);
             }
         } else {
+            if (numberName.equals(number) && filterType != 0) {
+                if (filterType == CallFilterConstants.MK_CRANK) {
+                    numberName = mContext.getString(R.string.filter_number_type_saorao);
+                } else if (filterType == CallFilterConstants.MK_ADVERTISE) {
+                    numberName = mContext.getString(R.string.filter_number_type_ad);
+                } else {
+                    numberName = mContext.getString(R.string.filter_number_type_zhapian);
+                }
+            }
             holder.title.setText(numberName);
             holder.desc.setText(number);
         }
