@@ -490,17 +490,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
 
-        if (newState.plugged == 0) {
-            mIvArrowMove.setVisibility(View.INVISIBLE);
-            mBottleWater.setIsNeedWave(false);
-        } else {
-            mBottleWater.setIsNeedWave(true);
-            if (isExpand) {
-                mIvArrowMove.setVisibility(View.VISIBLE);
-                mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
+        if(newState != null && mIvArrowMove != null) {
+            if (newState.plugged == 0) {
+                mIvArrowMove.setVisibility(View.INVISIBLE);
+                mBottleWater.setIsNeedWave(false);
             } else {
-                mIvArrowMove.setVisibility(View.VISIBLE);
-                mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
+                mBottleWater.setIsNeedWave(true);
+                if (isExpand) {
+                    mIvArrowMove.setVisibility(View.VISIBLE);
+                    mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
+                } else {
+                    mIvArrowMove.setVisibility(View.VISIBLE);
+                    mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
+                }
             }
         }
 

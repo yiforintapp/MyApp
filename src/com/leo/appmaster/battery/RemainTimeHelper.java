@@ -1,21 +1,10 @@
 package com.leo.appmaster.battery;
 
-import android.os.Build;
-import android.os.Environment;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.imageloader.utils.IoUtils;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Created by stone on 16/1/15.
@@ -97,7 +86,7 @@ public class RemainTimeHelper {
     }
 
     private void updatePreferenceList(int level, int period) {
-        if (mPreferenceList.get(level).count <= MAX_ESTIMATE_COUNT) {
+        if (level > -1 && level < mPreferenceList.size() && mPreferenceList.get(level).count <= MAX_ESTIMATE_COUNT) {
             PeriodUnit pu = mPreferenceList.get(level);
             pu.second = (pu.second*pu.count+period)/(pu.count+1);
             pu.count += 1;
@@ -150,6 +139,9 @@ public class RemainTimeHelper {
     }
 
     private int getTimeFromPreference(int level) {
+        if (level < 0) {
+            return 0;
+        }
         if (level < mPreferenceList.size()) {
             int time = 0;
             for (int i=level;i<mPreferenceList.size();i++) {
