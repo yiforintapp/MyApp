@@ -1007,5 +1007,5 @@
     <string name="scan_done_pic">隐藏图片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张</string>
     <string name="scan_done_vid">隐藏视频<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
 
-
+    <string name="game_box_one">游戏加速</string>
 </resources>
