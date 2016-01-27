@@ -33,10 +33,13 @@ public class SDKWrapper {
      */
     public static void iniSDK(Context ctx) {
         try {
-            iniLeoSdk(ctx.getApplicationContext());
+            Context context = ctx.getApplicationContext();
+            iniLeoSdk(context);
             /* try initiate BaiduMTJ in AndroidManifest.xml */
             // iniBaidu(ctx);
             iniPushSDK(ctx);
+            
+            initNewSDK(context);
             
             // TalkingData
             TCAgent.LOG_ON = AppMasterConfig.LOGGABLE;
@@ -92,6 +95,17 @@ public class SDKWrapper {
             
         } );
    }
+    
+    private static void initNewSDK(Context ctx) {
+        com.leo.stat.StatService.setAppId("privacyguard");
+        try {
+            com.leo.stat.StatService.setMarketId(ctx.getString(R.string.channel_code));
+        } catch (Exception e) {
+            com.leo.stat.StatService.setMarketId("0000a");
+        }
+        com.leo.stat.StatService.setsDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
+        com.leo.stat.StatService.initialize(ctx);
+    }
 
     /**
      * add an event that we will push to log service
@@ -109,6 +123,8 @@ public class SDKWrapper {
         // baidu
         Context ctx = AppMasterApplication.getInstance();
         StatService.onEvent(ctx, id, description);
+        // leo
+        com.leo.stat.StatService.onEvent(ctx, id, description);
         // TalkingData
         TCAgent.onEvent(ctx, id, description);
     }
@@ -136,12 +152,14 @@ public class SDKWrapper {
         StatService.onResume(ctx);
 //        LeoAgent.onResume();
         TCAgent.onResume(ctx);
+        com.leo.stat.StatService.onResume(ctx);
     }
     
     public static void onPause(Activity ctx){
         StatService.onPause(ctx);
 //        LeoAgent.onPause();
         TCAgent.onPause(ctx);
+        com.leo.stat.StatService.onPause(ctx);
     }
 
     // private static void iniBaidu(Context ctx) {
