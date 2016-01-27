@@ -102,6 +102,10 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
                 for (PhotoItem videoItemBean : list) {
                     photos.add(videoItemBean.getPath());
                 }
+
+                HomeActivity mMianActivity = mActivity;
+                mMianActivity.saveHidePicNum(photos);
+
                 final int incScore = pdm.haveCheckedPic();
                 hideAllPicBackground(photos, incScore);
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {

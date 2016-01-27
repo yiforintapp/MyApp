@@ -136,6 +136,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private LEOAnimationDialog mMessageDialog;
 
     private String mAppScanText;
+    private int mLockAppNum = 0;
+    private int mHidePicNum = 0;
+    private int mHideVidNum = 0;
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
@@ -1331,6 +1334,37 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     public void resetToolbarColor() {
         mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
         mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+    }
+
+
+    public int getLockAppNum() {
+        return mLockAppNum;
+    }
+
+    public void saveLockAppNum(List<String> pkgList) {
+        if (pkgList != null && pkgList.size() > 0) {
+            mLockAppNum = pkgList.size();
+        }
+    }
+
+    public int getHidePicNum() {
+        return mHidePicNum;
+    }
+
+    public void saveHidePicNum(List<String> photos) {
+        if (photos != null && photos.size() > 0) {
+            mHidePicNum = photos.size();
+        }
+    }
+
+    public int getHideVidNum() {
+        return mHideVidNum;
+    }
+
+    public void saveHideVidNum(List<String> photos) {
+        if (photos != null && photos.size() > 0) {
+            mHideVidNum = photos.size();
+        }
     }
 
     class MenuAdapter extends BaseAdapter {

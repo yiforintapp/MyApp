@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -705,7 +706,42 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             if (viewStub == null) {
                 return;
             }
-            mResultInclude = viewStub.inflate();
+
+            int appnum = mActivity.getLockAppNum();
+            int picnum = mActivity.getHidePicNum();
+            int vidnum = mActivity.getHideVidNum();
+
+            LeoLog.d("testNum", "appnum : " + appnum + "picnum : " + picnum + "vidnum : " + vidnum);
+            if (appnum > 0 || picnum > 0 || vidnum > 0) {
+                mResultInclude = viewStub.inflate();
+                View appLayout = mResultInclude.findViewById(R.id.result_one);
+                if (appnum == 0) {
+                    appLayout.setVisibility(View.GONE);
+                } else {
+                    TextView tv_app = (TextView) mResultInclude.findViewById(R.id.tv_applock_item);
+                    String text = mActivity.getString(R.string.scan_done_app, appnum);
+                    tv_app.setText(Html.fromHtml(text));
+                }
+
+                View picLayout = mResultInclude.findViewById(R.id.result_two);
+                if (picnum == 0) {
+                    picLayout.setVisibility(View.GONE);
+                } else {
+                    TextView tv_pic = (TextView) mResultInclude.findViewById(R.id.tv_hidepic_item);
+                    String text = mActivity.getString(R.string.scan_done_pic, picnum);
+                    tv_pic.setText(Html.fromHtml(text));
+                }
+
+                View vidLayout = mResultInclude.findViewById(R.id.result_three);
+                if (vidnum == 0) {
+                    vidLayout.setVisibility(View.GONE);
+                } else {
+                    TextView tv_vid = (TextView) mResultInclude.findViewById(R.id.tv_hidevid_item);
+                    String text = mActivity.getString(R.string.scan_done_vid, vidnum);
+                    tv_vid.setText(Html.fromHtml(text));
+                }
+
+            }
         }
     }
 

@@ -173,6 +173,10 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
                 for (PhotoItem photoItem : list) {
                     photos.add(photoItem.getPath());
                 }
+
+                HomeActivity mMianActivity = mActivity;
+                mMianActivity.saveHidePicNum(photos);
+
                 final int incScore = pdm.haveCheckedPic();
                 hideAllPicBackground(photos, incScore);
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {

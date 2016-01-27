@@ -42,6 +42,8 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
 
     private String mAppString;
 
+    private HomeActivity mMianActivity;
+
     public static PrivacyNewAppFragment newInstance() {
         PrivacyNewAppFragment fragment = new PrivacyNewAppFragment();
         return fragment;
@@ -101,6 +103,9 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
                 for (AppItemInfo info : list) {
                     pkgList.add(info.packageName);
                 }
+
+                HomeActivity mMianActivity = mActivity;
+                mMianActivity.saveLockAppNum(pkgList);
 
                 LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                 int incScore = lm.lockAddedApp(pkgList);

@@ -125,6 +125,10 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
                 for (VideoItemBean videoItemBean : list) {
                     photos.add(videoItemBean.getPath());
                 }
+
+                HomeActivity mMianActivity = mActivity;
+                mMianActivity.saveHideVidNum(photos);
+
                 final int incScore = pdm.haveCheckedVid();
                 hideAllVidBackground(photos, incScore);
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
