@@ -989,11 +989,23 @@
     <string name="screen_protect_charing_text_two">Charging</string>
     <string name="screen_protect_charing_text_three">Fully charged, please remove the charger</string>
     <string name="screen_protect_charing_text_four">Fully charged</string>
-	<string name="batterymanage_scaning">scanning</string>
-	<string name="batterymanage_boosting">Processing</string>
-	<string name="batterymanage_notif_process">optimize</string>
+    <string name="batterymanage_scaning">scanning</string>
+    <string name="batterymanage_boosting">Processing</string>
+    <string name="batterymanage_notif_process">optimize</string>
 
     <!-- 屏保页面向下的剪头 -->
     <string name="sliding_icon">&#xe61d;</string>
-    
+
+    <!-- 3.3.1 -->
+    <string name="password_tip_question_one">我的幸运数字是多少？</string>
+    <string name="password_tip_question_two">我最喜欢的电影是哪部？</string>
+    <string name="password_tip_question_three">我最喜欢的食物是哪种？</string>
+    <string name="password_tip_question_four">你梦想的职业是？</string>
+
+    <string name="scan_result_title">处理结果</string>
+    <string name="scan_done_app">加锁应用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
+    <string name="scan_done_pic">隐藏图片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张</string>
+    <string name="scan_done_vid">隐藏视频<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
+
+
 </resources>
