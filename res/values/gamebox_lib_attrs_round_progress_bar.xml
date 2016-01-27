@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="gamebox_lib_RoundProgressBar">
+        <attr name="gamebox_lib_roundColor" format="color|reference" />
+        <attr name="gamebox_lib_roundProgressColor" format="color|reference" />
+        <attr name="gamebox_lib_roundWidth" format="dimension"></attr>
+        <attr name="gamebox_lib_textColor" format="color|reference" />
+        <attr name="gamebox_lib_textSize" format="dimension" />
+        <attr name="gamebox_lib_maxProgress" format="integer"></attr>
+        <attr name="gamebox_lib_progress" format="integer"></attr>
+        <attr name="gamebox_lib_textIsDisplayable" format="boolean"></attr>
+        <attr name="gamebox_lib_pointColor" format="color|reference"></attr>
+        <attr name="gamebox_lib_pointRadius" format="dimension"></attr>
+    </declare-styleable>
+</resources>

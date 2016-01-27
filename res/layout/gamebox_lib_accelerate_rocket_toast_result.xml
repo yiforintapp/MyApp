@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="326dp"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal"
+    android:visibility="gone">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:layout_gravity="top"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="49dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/gamebox_lib_ad_top_bg" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="left|top"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="34dp"
+        android:background="@mipmap/gamebox_lib_ad_bg" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="36dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/gamebox_lib_ad_top_line" />
+
+    <ImageView
+        android:layout_width="214dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="50dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/gamebox_lib_ad_bottom_line" />
+
+    <TextView
+        android:id="@+id/gamebox_lib_tv_accelerat_result"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="top|left"
+        android:layout_marginTop="49dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:textColor="#ffffff"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|top"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/gamebox_lib_ad_toast_rocket" />
+
+
+</FrameLayout>
+
+
+

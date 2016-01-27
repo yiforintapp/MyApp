@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/gamebox_lib_titlebar_title_height"
+    android:background="@color/gamebox_lib_main_color">
+
+    <Button
+        android:id="@+id/titlebar_icon"
+        android:layout_width="@dimen/gamebox_lib_titlebar_icon_width"
+        android:layout_height="@dimen/gamebox_lib_titlebar_icon_height"
+        android:background="@drawable/gamebox_lib_titlebar_icon_background" />
+
+    <TextView
+        android:id="@+id/titlebar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="title"
+        android:textColor="@color/gamebox_lib_white"
+        android:textSize="@dimen/gamebox_lib_titlebar_title_size" />
+
+    <TextView
+        android:id="@+id/titlebar_btn"
+        android:layout_width="@dimen/gamebox_lib_titlebar_icon_width"
+        android:layout_height="@dimen/gamebox_lib_titlebar_icon_height"
+        android:layout_alignParentRight="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/gamebox_lib_titlebar_title_size" />
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--所有资源必须以gamebox_lib_开头-->
+    <string name="gamebox_lib_app_name">GameBox</string>
+    <!-- applist-->
+    <string name="gamebox_lib_applist_title">जोड़ें|</string>
+    <string name="gamebox_lib_applist_to_add">जोड़ें|</string>
+    <string name="gamebox_lib_applist_remove">जोड़ने को  रद्द करें|</string>
+   <string name="gamebox_lib_applist_add_app_tip_pre">GameBox से खेल खोलें और गति में <xliff:g id="percent">%1$s</xliff:g> तक सुधार  हो सकता| </string>
+    <!-- box-->
+    <string name="gamebox_lib_home_box_app_add">जोड़ें|</string>
+    <string name="gamebox_lib_home_available_memory_title">उपलब्ध स्टोरेज|</string>
+    <string name="gamebox_lib_home_box_app_menu_remove">हटाएं</string>
+    <string name="gamebox_lib_home_box_app_default_guide_text">GameBox में खेल जोड़ें फिर स्टार्टअप गति में सुधार हो सकता|</string>
+    <string name="gamebox_lib_home_btn_boost">गेम बूस्ट |</string>
+    <string name="gamebox_lib_download_no_space">मोबाइल का स्टोरेज स्थान कम है| </string>
+    <!-- 下载时网络异常toast -->
+    <string name="gamebox_lib_download_network_error">नेटवर्क कनेक्टेड नहीं है</string>
+    <!-- 快捷方式相关-->
+    <string name="gamebox_lib_shortcut_label">GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title">GameBox में <xliff:g id="percent">%1$s</xliff:g> जोड़ा गया है|</string>
+    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_content">GameBox खेल के स्टार्टअप गति में सुधार कर सकता ह</string>
+    <string name="gamebox_lib_shortcut_notification_content_part">ै, अब देखें|</string>
+    <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>
+    <string name="gamebox_lib_shortcut_dlg_msg">खेल के स्टार्टअप गति में सुधार के लिए GameBox के डेस्कटॉप शॉर्टकट की स्थापना की सुझाव,अब करें ?</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_cancel">रद्द करें</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_ok">ठीक</string>
+    <string name="gamebox_lib_acceleration_toast_result">खेल बढ़ावा <xliff:g id="percent">%1$s</xliff:g> तक हुई</string>
+    <string name="gamebox_lib_acceleration_toast_default">सब से अच्छी स्थिति में पहुँच गया है</string>
+    <string name="gamebox_lib_accelerating">गेम बूस्ट हो रहा है|...</string>
+    <string name="gamebox_lib_home_app_manager_mem_clean">खेल बढ़ावा <xliff:g id="percent">%1$s</xliff:g> तक हुई</string>
+    <string name="gamebox_lib_home_app_manager_mem_clean_one">सब से अच्छी स्थिति में पहुँच गया है</string>
+    <string name="gamebox_lib_downloading_item_name">डाउनलोड में</string>
+    <string name="gamebox_lib_download_pause_item_name">विराम में</string>
+    <string name="gamebox_lib_download_finish_item_name">स्थापना</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/gamebox_lib_acceleration_toast_margin_left"
+        android:layout_marginRight="@dimen/gamebox_lib_acceleration_toast_margin_right"
+        android:paddingLeft="@dimen/gamebox_lib_acceleration_toast_padding_left"
+        android:paddingRight="@dimen/gamebox_lib_acceleration_toast_padding_right"
+        android:paddingTop="@dimen/gamebox_lib_acceleration_toast_padding_top"
+        android:paddingBottom="@dimen/gamebox_lib_acceleration_toast_padding_bottom"
+        android:gravity="center"
+        android:background="@drawable/gamebox_lib_acceleration_toast_background" >
+        <TextView
+            android:id="@+id/toast_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#f8fafd"
+            android:textSize="@dimen/gamebox_lib_acceleration_toast_text_size" />
+    </RelativeLayout>
+</RelativeLayout>

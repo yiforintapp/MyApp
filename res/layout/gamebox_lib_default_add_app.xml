@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.leo.game.box.ui.addapp.DefaultAddAppView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/gamebox_lib_default_add_app_image_width"
+        android:layout_height="@dimen/gamebox_lib_default_add_app_image_height"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/gamebox_lib_default_add_app_image_margin_top"
+        android:scaleType="fitXY"
+        android:src="@mipmap/gamebox_lib_default_add_app_image" />
+
+</com.leo.game.box.ui.addapp.DefaultAddAppView>

@@ -1,0 +1,37 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--所有资源必须以gamebox_lib_开头-->
+    <string name="gamebox_lib_app_name">GameBox</string>
+    <!-- applist-->
+    <string name="gamebox_lib_applist_title">Thêm vào</string>
+    <string name="gamebox_lib_applist_to_add">Thêm vào</string>
+    <string name="gamebox_lib_applist_remove">Hủy thêm vào</string>
+   <string name="gamebox_lib_applist_add_app_tip_pre">Khởi động trò chơi từ GameBox, có thể tăng tốc <xliff:g id="percent">%1$s</xliff:g></string>
+    <!-- box-->
+    <string name="gamebox_lib_home_box_app_add">Thêm vào</string>
+    <string name="gamebox_lib_home_available_memory_title">Bộ nhớ trong có thể dùng</string>
+    <string name="gamebox_lib_home_box_app_menu_remove">Xóa</string>
+    <string name="gamebox_lib_home_box_app_default_guide_text">Thêm trò chơi vào GameBox, có thể nâng tốc độ khởi động</string>
+    <string name="gamebox_lib_home_btn_boost">Tăng tốc</string>
+    <string name="gamebox_lib_download_no_space">Không gian bộ nhớ điện thoại không đủ</string>
+    <!-- 下载时网络异常toast -->
+    <string name="gamebox_lib_download_network_error">Mạng chưa kết nối</string>
+    <!-- 快捷方式相关-->
+    <string name="gamebox_lib_shortcut_label">GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title">Đã thêm <xliff:g id="percent">%1$s</xliff:g> đến GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_content">GameBox có thể nâng tốc độ khởi động trò chơi</string>
+    <string name="gamebox_lib_shortcut_notification_content_part">, lập tức kiểm tra</string>
+    <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>
+    <string name="gamebox_lib_shortcut_dlg_msg">Kiến nghị bạn tạo phím tắt màn hình chính GameBox, nâng tốc độ khởi động trò chơi. Xác nhận tạo?</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_cancel">Hủy</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_ok">Đồng ý</string>
+    <string name="gamebox_lib_acceleration_toast_result">Trò chơi đã tăng tốc <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_acceleration_toast_default">Đã đạt đến trạng thái tốt nhất</string>
+    <string name="gamebox_lib_accelerating">Đang tăng tốc…</string>
+    <string name="gamebox_lib_home_app_manager_mem_clean">Trò chơi đã tăng tốc <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_home_app_manager_mem_clean_one">Đã đạt đến trạng thái tốt nhất</string>
+    <string name="gamebox_lib_downloading_item_name">Đang tải xuống</string>
+    <string name="gamebox_lib_download_pause_item_name">Đang tạm dừng</string>
+    <string name="gamebox_lib_download_finish_item_name">lắp đặt</string>
+</resources>

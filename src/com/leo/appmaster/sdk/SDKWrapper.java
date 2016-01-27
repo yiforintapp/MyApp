@@ -2,6 +2,7 @@
 package com.leo.appmaster.sdk;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 
@@ -13,6 +14,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.game.box.GameBoxAgent;
+import com.leo.game.box.core.toolbox.ubc.IStatService;
+import com.leo.game.box.core.toolbox.ubc.UBC;
 import com.leo.push.IPushStatHelper;
 import com.leo.push.PushManager;
 import com.tendcloud.tenddata.TCAgent;
@@ -44,6 +48,9 @@ public class SDKWrapper {
             // TalkingData
             TCAgent.LOG_ON = AppMasterConfig.LOGGABLE;
             TCAgent.init(ctx);
+
+            // gamebox
+            initGameBoxSDK(ctx);
         } catch (Exception e) {
             
         }
@@ -87,13 +94,13 @@ public class SDKWrapper {
             PushManager.getInstance(ctx).startPush("0000a", R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
         }
         
-        PushManager.getInstance(ctx).registerStatHelper(new IPushStatHelper(){
+        PushManager.getInstance(ctx).registerStatHelper(new IPushStatHelper() {
             @Override
             public void onPushSDKEvent(String eventID, String description) {
                 SDKWrapper.addEvent(ctx, 0, eventID, description);
             }
-            
-        } );
+
+        });
    }
     
     private static void initNewSDK(Context ctx) {
@@ -106,6 +113,98 @@ public class SDKWrapper {
         com.leo.stat.StatService.setsDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
         com.leo.stat.StatService.initialize(ctx);
     }
+
+    /* 3.3.1 GameBox SDK begin */
+    private static void initGameBoxSDK(final Context context) {
+        GameBoxAgent.init(context,
+                context.getString(R.string.channel_code),
+                "appmaster", new IStatService() {
+                    @Override
+                    public void onResume(Context context) {
+
+                    }
+
+                    @Override
+                    public void onPause(Context context) {
+
+                    }
+
+                    @Override
+                    public void onResume(Fragment fragment) {
+
+                    }
+
+                    @Override
+                    public void onPause(Fragment fragment) {
+
+                    }
+
+                    @Override
+                    public void onPageStart(Context context, String s) {
+
+                    }
+
+                    @Override
+                    public void onPageEnd(Context context, String s) {
+
+                    }
+
+                    @Override
+                    public void onEvent(Context context, String s, String s1) {
+
+                    }
+
+                    @Override
+                    public void onEvent(Context context, String s, String s1, int i) {
+
+                    }
+
+                    @Override
+                    public void onEventStart(Context context, String s, String s1) {
+
+                    }
+
+                    @Override
+                    public void onEventEnd(Context context, String s, String s1) {
+
+                    }
+
+                    @Override
+                    public void onEventDuration(Context context, String s, String s1, int i) {
+
+                    }
+                });
+
+        GameBoxAgent.enableLog(AppMasterConfig.LOGGABLE);
+        LeoLog.d("stone_gamebox", "Box available = " + SDKWrapper.isGameBoxAvailable(context));
+    }
+
+    /***
+     * 判断游戏盒子是否可用
+     * @param context
+     * @return
+     */
+    public static boolean isGameBoxAvailable(Context context) {
+        return GameBoxAgent.isGameBoxAvaliable(context);
+    }
+
+    /***
+     * 启动GameBox主界面
+     * @param activity
+     */
+    public static void showGameBoxHome(Activity activity) {
+        GameBoxAgent.startGameBoxHome(activity);
+    }
+
+    /***
+     * 添加桌面Folder
+     * @param context
+     */
+    public static void createGameBoxIcons(Context context) {
+        GameBoxAgent.addGameFolder(context);
+    }
+
+    /* 3.3.1 GameBox SDK end */
 
     /**
      * add an event that we will push to log service

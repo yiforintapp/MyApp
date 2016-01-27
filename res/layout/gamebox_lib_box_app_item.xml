@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/box_app_container"
+    android:layout_width="@dimen/gamebox_lib_box_app_item_container_width"
+    android:layout_height="@dimen/gamebox_lib_box_app_item_container_hegiht">
+
+</FrameLayout>

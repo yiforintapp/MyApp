@@ -1,0 +1,37 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--所有资源必须以gamebox_lib_开头-->
+    <string name="gamebox_lib_app_name">GameBox</string>
+    <!-- applist-->
+    <string name="gamebox_lib_applist_title">Tambah</string>
+    <string name="gamebox_lib_applist_to_add">Tambah</string>
+    <string name="gamebox_lib_applist_remove">Batalkan tambahan </string>
+   <string name="gamebox_lib_applist_add_app_tip_pre">Dari GameBox mulai permainan, biar mempercepat <xliff:g id="percent">%1$s</xliff:g> </string>
+    <!-- box-->
+    <string name="gamebox_lib_home_box_app_add">Tambah</string>
+    <string name="gamebox_lib_home_available_memory_title">Memorie disponibilă</string>
+    <string name="gamebox_lib_home_box_app_menu_remove">Hapus</string>
+    <string name="gamebox_lib_home_box_app_default_guide_text">Akan Tambahkan permainan ke GameBox, biar mulai mempercepat kepesatannya</string>
+    <string name="gamebox_lib_home_btn_boost">Mempercepat </string>
+    <string name="gamebox_lib_download_no_space">Memori HP tidak cukup</string>
+    <!-- 下载时网络异常toast -->
+    <string name="gamebox_lib_download_network_error">Jaringan tidak tersambung</string>
+    <!-- 快捷方式相关-->
+    <string name="gamebox_lib_shortcut_label">GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> sudah tambah ke GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_content">GameBox bisa mempercepat kepesatan mulai permainan</string>
+    <string name="gamebox_lib_shortcut_notification_content_part">, coba lihat</string>
+    <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>
+    <string name="gamebox_lib_shortcut_dlg_msg">Usulkan anda ciptakan short-cut desktop GameBox, biar mempercepat kepesatan mulai permainan,benar ciptakan?</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_cancel">Batal</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_ok">OK</string>
+    <string name="gamebox_lib_acceleration_toast_result">Permainan sudah mempercepat <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_acceleration_toast_default">sudah sampai situasi terbaik</string>
+    <string name="gamebox_lib_accelerating">Dipercepatkan…</string>
+    <string name="gamebox_lib_home_app_manager_mem_clean">Permainan sudah mempercepat <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_home_app_manager_mem_clean_one">sudah sampai situasi terbaik</string>
+    <string name="gamebox_lib_downloading_item_name">Lagi download</string>
+    <string name="gamebox_lib_download_pause_item_name">Lagi tangguh</string>
+    <string name="gamebox_lib_download_finish_item_name">Install</string>
+</resources>

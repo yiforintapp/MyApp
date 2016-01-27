@@ -1,0 +1,37 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--所有资源必须以gamebox_lib_开头-->
+    <string name="gamebox_lib_app_name">GameBox</string>
+    <!-- applist-->
+    <string name="gamebox_lib_applist_title">Додати</string>
+    <string name="gamebox_lib_applist_to_add">Додати</string>
+    <string name="gamebox_lib_applist_remove">Скасування додавання</string>
+   <string name="gamebox_lib_applist_add_app_tip_pre">Запустіть гру з GameBox для прискорення  <xliff:g id="percent">%1$s</xliff:g></string>
+    <!-- box-->
+    <string name="gamebox_lib_home_box_app_add">Додати</string>
+    <string name="gamebox_lib_home_available_memory_title">доступна пам\'ять</string>
+    <string name="gamebox_lib_home_box_app_menu_remove">Видалити</string>
+    <string name="gamebox_lib_home_box_app_default_guide_text">Додайте гру в GameBox для прискорення швидкості запуску</string>
+    <string name="gamebox_lib_home_btn_boost">підтримка</string>
+    <string name="gamebox_lib_download_no_space">Недостатньо місця зберігання на мобільному телефоні</string>
+    <!-- 下载时网络异常toast -->
+    <string name="gamebox_lib_download_network_error">Мережу не під’єднано</string>
+    <!-- 快捷方式相关-->
+    <string name="gamebox_lib_shortcut_label">GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> було додано в GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_content">GameBox дозволяти збільшити швидкість іграшок при запуску</string>
+    <string name="gamebox_lib_shortcut_notification_content_part">, Подивіться зараз.</string>
+    <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>
+    <string name="gamebox_lib_shortcut_dlg_msg">Рекомендується створити ярлик GameBox на робочому столі для прискорення запуску ігор. Підтвердити створення?</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_cancel">Скасувати</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_ok">OK</string>
+    <string name="gamebox_lib_acceleration_toast_result">Гра була прискорена для <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_acceleration_toast_default">Досягнуто найвища точка</string>
+    <string name="gamebox_lib_accelerating">Прискорення в процесі…</string>
+    <string name="gamebox_lib_home_app_manager_mem_clean">Гра була прискорена для <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_home_app_manager_mem_clean_one">Досягнуто найвища точка</string>
+    <string name="gamebox_lib_downloading_item_name">Завантаження в процесі</string>
+    <string name="gamebox_lib_download_pause_item_name">На паузі</string>
+    <string name="gamebox_lib_download_finish_item_name">установить</string>
+</resources>

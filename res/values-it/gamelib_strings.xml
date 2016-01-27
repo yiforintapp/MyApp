@@ -1,0 +1,37 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--所有资源必须以gamebox_lib_开头-->
+    <string name="gamebox_lib_app_name">GameBox</string>
+    <!-- applist-->
+    <string name="gamebox_lib_applist_title">Aggiungere</string>
+    <string name="gamebox_lib_applist_to_add">Aggiungere</string>
+    <string name="gamebox_lib_applist_remove">Annulla aggiungere</string>
+   <string name="gamebox_lib_applist_add_app_tip_pre">Avviare il gioco da GameBox, aumentando <xliff:g id="percent">%1$s</xliff:g></string>
+    <!-- box-->
+    <string name="gamebox_lib_home_box_app_add">Aggiungere</string>
+    <string name="gamebox_lib_home_available_memory_title">Memoria disponibile</string>
+    <string name="gamebox_lib_home_box_app_menu_remove">Rimuovi</string>
+    <string name="gamebox_lib_home_box_app_default_guide_text">Aggiungere il gioco a GameBox, migliorando la velocità di avvio</string>
+    <string name="gamebox_lib_home_btn_boost">Accelera</string>
+    <string name="gamebox_lib_download_no_space">Lo spazio di archiviazione del cellulare è insufficiente</string>
+    <!-- 下载时网络异常toast -->
+    <string name="gamebox_lib_download_network_error">La rete non è connessa</string>
+    <!-- 快捷方式相关-->
+    <string name="gamebox_lib_shortcut_label">GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> è aggiunto a GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_content">GameBox può migliorare velocità avvio</string>
+    <string name="gamebox_lib_shortcut_notification_content_part">, vedere subito</string>
+    <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>
+    <string name="gamebox_lib_shortcut_dlg_msg">Suggeriamo di creare un collegamento desktop di GameBox per migliorare velocità avvio. Conferma?</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_cancel">Annulla</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_ok">OK</string>
+    <string name="gamebox_lib_acceleration_toast_result">Velocità aggiunta di <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_acceleration_toast_default">Raggiunto il migliore stato</string>
+    <string name="gamebox_lib_accelerating">Sta accelerando…</string>
+    <string name="gamebox_lib_home_app_manager_mem_clean">Velocità aggiunta di <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_home_app_manager_mem_clean_one">Raggiunto il migliore stato</string>
+    <string name="gamebox_lib_downloading_item_name">Scaricare</string>
+    <string name="gamebox_lib_download_pause_item_name">Pausa</string>
+    <string name="gamebox_lib_download_finish_item_name">Installare</string>
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2674f6">
+
+    <RelativeLayout
+        android:id="@+id/window_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/gamebox_lib_acceleration_view_margin_top" >
+        
+        <ImageView
+            android:id="@+id/hat"
+            android:layout_width="@dimen/gamebox_lib_acceleration_hat_width"
+            android:layout_height="@dimen/gamebox_lib_acceleration_hat_height"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/gamebox_lib_acceleration_hat"
+            android:scaleType="fitXY" />
+
+        <com.leo.game.box.ui.speedup.GameAccelerationView
+            android:id="@+id/clock"
+            android:layout_width="@dimen/gamebox_lib_acceleration_frame_width"
+            android:layout_height="@dimen/gamebox_lib_acceleration_frame_width"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/gamebox_lib_acceleration_clock_margin_top"
+            android:layout_below="@id/hat"/>
+
+        <ImageView
+            android:id="@+id/shadow"
+            android:layout_width="@dimen/gamebox_lib_acceleration_shadow_width"
+            android:layout_height="@dimen/gamebox_lib_acceleration_shadow_height"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/gamebox_lib_acceleration_shadow_margin_top"
+            android:layout_below="@id/clock"
+            android:src="@mipmap/gamebox_lib_acceleration_shadow"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/gamebox_lib_acceleration_text_margin_top"
+            android:layout_below="@id/shadow"
+            android:text="@string/gamebox_lib_accelerating"
+            android:textSize="@dimen/gamebox_lib_acceleration_text_size"
+            android:textColor="#ffffff"/>
+
+    </RelativeLayout>
+</RelativeLayout>

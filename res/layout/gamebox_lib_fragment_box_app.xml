@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gamebox_lib_box_app_container_background"
+    android:orientation="vertical"
+    android:paddingRight="6dp"
+    android:paddingLeft="15dp"
+    >
+
+    <com.leo.game.box.widget.ObservableScrollView
+        android:id="@+id/app_scrollview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarSize="3dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarThumbVertical="@drawable/gamebox_lib_box_app_scrollbar_thumbvertical"
+        android:scrollbarTrackVertical="@drawable/gamebox_lib_box_app_scrollbar_trackvertical">
+
+        <com.leo.game.box.widget.StaticGridView
+            android:id="@+id/app_gridview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@color/gamebox_lib_transparent"
+            android:columnWidth="69dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="4"
+            android:paddingBottom="@dimen/gamebox_lib_box_app_container_padding_bottom"
+            android:paddingRight="3dp"
+            android:paddingTop="@dimen/gamebox_lib_box_app_container_padding_top"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="12dp"></com.leo.game.box.widget.StaticGridView>
+    </com.leo.game.box.widget.ObservableScrollView>
+
+    <ViewStub
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/default_box_app_stub"
+        android:layout="@layout/gamebox_lib_default_box_app"/>
+
+</FrameLayout>

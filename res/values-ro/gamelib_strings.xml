@@ -1,0 +1,37 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--所有资源必须以gamebox_lib_开头-->
+    <string name="gamebox_lib_app_name">GameBox</string>
+    <!-- applist-->
+    <string name="gamebox_lib_applist_title">Adaugă</string>
+    <string name="gamebox_lib_applist_to_add">Adaugă</string>
+    <string name="gamebox_lib_applist_remove">Anulează adăugarea</string>
+   <string name="gamebox_lib_applist_add_app_tip_pre">Pornește jocul de la GameBox pentru a accelera pentru <xliff:g id="percent">%1$s</xliff:g></string>
+    <!-- box-->
+    <string name="gamebox_lib_home_box_app_add">Adaugă</string>
+    <string name="gamebox_lib_home_available_memory_title">Memorie disponibilă</string>
+    <string name="gamebox_lib_home_box_app_menu_remove">Eliminare</string>
+    <string name="gamebox_lib_home_box_app_default_guide_text">Adaugă jocul la GameBox pentru a accelera viteza de pornire</string>
+    <string name="gamebox_lib_home_btn_boost">Accelerare</string>
+    <string name="gamebox_lib_download_no_space">Spațiu de stocare insuficient pentru telefon mobil </string>
+    <!-- 下载时网络异常toast -->
+    <string name="gamebox_lib_download_network_error">Reţeaua nu este conectată</string>
+    <!-- 快捷方式相关-->
+    <string name="gamebox_lib_shortcut_label">GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> fost adăugat la GameBox</string>
+    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_content">GameBox poate accelera viteza de pornire a jocurilor</string>
+    <string name="gamebox_lib_shortcut_notification_content_part">, vezi acum</string>
+    <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>
+    <string name="gamebox_lib_shortcut_dlg_msg">Scurtătura de pe display GameBox este recomandată pentru a accelera viteza de pornire a jocurilor. Confirmi crearea?</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_cancel">Anulare</string>
+    <string name="gamebox_lib_shortcut_dlg_btn_ok">OK</string>
+    <string name="gamebox_lib_acceleration_toast_result">Jocul a fost accelerat pentru <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_acceleration_toast_default">Punctul maxim a fost atins</string>
+    <string name="gamebox_lib_accelerating">Accelerare în procesare…</string>
+    <string name="gamebox_lib_home_app_manager_mem_clean">Jocul a fost accelerat pentru <xliff:g id="percent">%1$s</xliff:g></string>
+    <string name="gamebox_lib_home_app_manager_mem_clean_one">Punctul maxim a fost atins</string>
+    <string name="gamebox_lib_downloading_item_name">Descărcare în progres</string>
+    <string name="gamebox_lib_download_pause_item_name">În pauză</string>
+    <string name="gamebox_lib_download_finish_item_name">Instalare</string>
+</resources>

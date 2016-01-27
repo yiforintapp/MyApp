@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="gamebox_lib_shortcut_dlg_btnstyle">
+        <item name="android:layout_width">@dimen/gamebox_lib_space_0dp</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingTop">@dimen/gamebox_lib_shortcut_dlg_btn_margin</item>
+        <item name="android:paddingBottom">@dimen/gamebox_lib_shortcut_dlg_btn_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/gamebox_lib_shortcut_dlg_btn_textsize</item>
+    </style>
+</resources>

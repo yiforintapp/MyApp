@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.leo.game.box.ui.home.box.DefaultBoxView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/gamebox_lib_box_app_container_padding_top"
+    android:background="@color/gamebox_lib_box_app_container_background"
+    android:orientation="vertical">
+
+    <com.leo.game.box.ui.home.box.PlusView
+        android:id="@+id/box_app_plus"
+        android:layout_width="@dimen/gamebox_lib_box_app_item_container_width"
+        android:layout_height="@dimen/gamebox_lib_box_app_item_container_hegiht"
+        android:layout_alignParentLeft="true"></com.leo.game.box.ui.home.box.PlusView>
+
+    <ImageView
+        android:id="@+id/box_app_plus_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/gamebox_lib_box_app_default_guide_image_margin_left"
+        android:layout_marginTop="@dimen/gamebox_lib_box_app_default_guide_image_margin_top"
+        android:src="@mipmap/gamebox_lib_box_app_plus_guide" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/box_app_plus_guide"
+        android:layout_marginLeft="@dimen/gamebox_lib_box_app_default_guide_text_margin_left"
+        android:layout_marginRight="@dimen/gamebox_lib_box_app_default_guide_text_margin_right"
+        android:layout_marginTop="@dimen/gamebox_lib_box_app_default_guide_text_margin_top"
+        android:gravity="center"
+        android:maxWidth="@dimen/gamebox_lib_box_app_default_guide_text_maxwidth"
+        android:text="@string/gamebox_lib_home_box_app_default_guide_text"
+        android:textColor="@color/gamebox_lib_box_app_default_guide_textcolor"
+        android:textSize="@dimen/gamebox_lib_box_app_default_guide_textsize" />
+
+</com.leo.game.box.ui.home.box.DefaultBoxView>

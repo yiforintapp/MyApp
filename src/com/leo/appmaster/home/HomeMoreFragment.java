@@ -362,6 +362,8 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     startActivity(qhintent);
                     break;
                 case R.string.hp_helper_iswipe:
+                    // TODO: change to GameBox String
+                    SDKWrapper.showGameBoxHome(getActivity());
                     break;
                 case R.string.home_tab_instruder:
                     // 手机防盗
