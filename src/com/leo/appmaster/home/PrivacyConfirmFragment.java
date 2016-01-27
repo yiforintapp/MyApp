@@ -194,6 +194,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private TextView mImpTv;
     private View mContactContainorDisable;
     private View mLostInclude;
+    private View mResultInclude;
     private View mIntruderInclude;
     private View mWIfiInclude;
     private View mContactInclude;
@@ -365,6 +366,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
                 initWifiLayout(mPanelView);
                 initLostLayout(mPanelView);
+                initScanResultLayout(mPanelView);
                 initIntruderLayout(mPanelView);
                 updateIntruderAndLost();
 
@@ -394,6 +396,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         }
 
     }
+
 
     private void updateBottomPanel() {
 //        ViewStub viewStub = (ViewStub) mRootView.findViewById(R.id.pri_pro_bottom_stub);
@@ -692,6 +695,17 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             tvSummary.setText(campaign.getAppDesc());
             include.setVisibility(View.VISIBLE);
             MobvistaEngine.getInstance(mActivity).registerView(unitId, include);
+        }
+    }
+
+    private void initScanResultLayout(View mPanelView) {
+        if (mPanelView != null) {
+            mResultInclude = mPanelView.findViewById(R.id.scan_result);
+            ViewStub viewStub = (ViewStub) mPanelView.findViewById(R.id.scan_result);
+            if (viewStub == null) {
+                return;
+            }
+            mResultInclude = viewStub.inflate();
         }
     }
 

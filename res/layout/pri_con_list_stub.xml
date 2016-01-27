@@ -29,13 +29,21 @@
         android:layout_marginTop="8dp"
         android:layout="@layout/pri_confirm_ad_item" />
 
+    <!-- 处理结果 -->
+    <ViewStub
+        android:id="@+id/scan_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout="@layout/pri_confirm_result_item" />
+
     <!-- 五星好评100分 -->
     <ViewStub
         android:id="@+id/grade_high_security_stub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout="@layout/pri_confirm_grade_item"/>
+        android:layout="@layout/pri_confirm_grade_item" />
 
     <!-- 手机防盗 -->
     <include
@@ -100,9 +108,9 @@
         android:layout="@layout/pri_confirm_swifty_item" />
 
     <!-- 跳转Facebook -->
-<!--    <include
-        android:id="@+id/fb_security"
-        layout="@layout/pri_confirm_fb_item" />-->
+    <!--    <include
+            android:id="@+id/fb_security"
+            layout="@layout/pri_confirm_fb_item" />-->
     <ViewStub
         android:id="@+id/fb_security_stub"
         android:layout_width="match_parent"

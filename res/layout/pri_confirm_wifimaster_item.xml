@@ -23,40 +23,37 @@
         android:id="@+id/wifimaster_img"
         android:layout_width="match_parent"
         android:layout_height="133dp"
-        android:scaleType="centerCrop"
         android:layout_below="@+id/item_header_ll"
         android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"
-        />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/wifimaster_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/c2"
-        android:textSize="14dp"
         android:layout_alignLeft="@+id/wifimaster_img"
         android:layout_alignRight="@+id/wifimaster_img"
         android:layout_below="@+id/wifimaster_img"
-        android:text="@string/pri_result_wifimaster_content"/>
-
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/pri_result_wifimaster_content"
+        android:textColor="@color/c2"
+        android:textSize="14dp" />
 
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/wifimaster_content"
-        >
+        android:orientation="vertical">
 
         <View
             android:id="@+id/item_btn_divider"
-            android:layout_marginLeft="19dp"
-            android:layout_marginRight="19dp"
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:layout_marginLeft="19dp"
+            android:layout_marginRight="19dp"
             android:background="@color/c4" />
 
         <com.leo.appmaster.ui.RippleView
@@ -72,7 +69,7 @@
                 style="@style/ItemBtnText"
                 android:drawablePadding="7dp"
                 android:drawableRight="@drawable/arrow_button_right"
-                android:text="@string/swifty_item_btn"/>
+                android:text="@string/swifty_item_btn" />
         </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 

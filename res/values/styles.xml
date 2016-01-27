@@ -60,11 +60,11 @@
         </item>
     </style>
 
-    <style name="toast_getscore">  
-        <item name="@android:windowEnterAnimation">@anim/anim_in</item>  
-        <item name="@android:windowExitAnimation">@anim/anim_out</item>  
-    </style>  
-    
+    <style name="toast_getscore">
+        <item name="@android:windowEnterAnimation">@anim/anim_in</item>
+        <item name="@android:windowExitAnimation">@anim/anim_out</item>
+    </style>
+
     <style name="Theme" parent="@style/activity_theme">
         <item name="android:alertDialogTheme">@style/SingleChoiceDialog</item>
     </style>
@@ -118,7 +118,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:background">@color/transparent</item>
-          <item name="android:layout_marginBottom">11dp</item>
+        <item name="android:layout_marginBottom">11dp</item>
     </style>
 
     <style name="dlg_wifi_title_txt">
@@ -200,7 +200,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_height">@dimen/dialog_btn_height</item>
     </style>
-    
+
     <style name="dlg_red_button_txt">
         <item name="android:textSize">16dp</item>
         <item name="android:background">@drawable/selector_dialog_red_button</item>
@@ -506,7 +506,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
+
     <style name="SecurityItemHeader" parent="ItemHeader">
         <item name="android:paddingLeft">19dp</item>
         <item name="android:paddingRight">19dp</item>
@@ -516,7 +516,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
     </style>
-    
+
     <style name="SecurityItemMiddle" parent="ItemMiddle">
         <item name="android:paddingLeft">19dp</item>
         <item name="android:paddingRight">19dp</item>
@@ -542,7 +542,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
-    
+
     <style name="ItemAdTitle" parent="ItemTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:textColor">@color/white</item>
@@ -570,15 +570,15 @@
     <style name="ItemLabelLost" parent="ItemLabel">
         <item name="android:background">@color/security_lost</item>
     </style>
-    
+
     <style name="ItemAdMarker">
         <item name="android:layout_width">20dp</item>
         <item name="android:layout_height">14dp</item>
         <item name="android:layout_marginLeft">6dp</item>
         <item name="android:layout_marginTop">6dp</item>
-		<item name="android:background">@drawable/ad_icon_result</item>
-	</style>
-	
+        <item name="android:background">@drawable/ad_icon_result</item>
+    </style>
+
     <style name="SecurityItemBtn">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">46dp</item>
@@ -604,4 +604,41 @@
         <item name="android:textSize">16dp</item>
         <item name="android:textColor">@color/cgn</item>
     </style>
+
+
+    <style name="ResultItemBtn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">46dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@color/cgn</item>
+    </style>
+
+    <style name="ItemResultBtnText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">11dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ResultItemIv">
+        <item name="android:layout_width">38dp</item>
+        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_marginLeft">19dp</item>
+    </style>
+
+    <style name="ResultItemTv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>
