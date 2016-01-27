@@ -145,7 +145,7 @@ public class PasswdProtectActivity extends BaseActivity implements
         });
 
         String[] entrys = getResources().getStringArray(
-                R.array.default_psw_protect_entrys);
+                R.array.default_psw_protect_entrys_new);
         mCategories = Arrays.asList(entrys);
         mSpinnerQuestions = findViewById(R.id.tv_spinner);
         mSpinnerQuestions.setOnClickListener(new OnClickListener() {

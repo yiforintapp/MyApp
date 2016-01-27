@@ -997,10 +997,12 @@
     <string name="sliding_icon">&#xe61d;</string>
 
     <!-- 3.3.1 -->
-    <string name="password_tip_question_one">我的幸运数字是多少？</string>
-    <string name="password_tip_question_two">我最喜欢的电影是哪部？</string>
-    <string name="password_tip_question_three">我最喜欢的食物是哪种？</string>
-    <string name="password_tip_question_four">你梦想的职业是？</string>
+    <string-array name="default_psw_protect_entrys_new">
+        <item>我的幸运数字是多少？</item>
+        <item>我最喜欢的电影是哪部？</item>
+        <item>我最喜欢的食物是哪种？</item>
+        <item>你梦想的职业是？</item>
+    </string-array>
 
     <string name="scan_result_title">处理结果</string>
     <string name="scan_done_app">加锁应用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
