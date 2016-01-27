@@ -29,9 +29,11 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -53,6 +55,7 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -199,6 +202,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private View mIntruderInclude;
     private View mWIfiInclude;
     private View mContactInclude;
+
+    private View mResultClickApp;
+    private View mResultClickPic;
+    private View mResultClickVid;
 
     // 初始化时的占位View，避免一开始显示空白页面
 //    private View mDisplayProxyView;
@@ -725,6 +732,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     TextView tv_app = (TextView) mResultInclude.findViewById(R.id.tv_applock_item);
                     String text = mActivity.getString(R.string.scan_done_app, appnum);
                     tv_app.setText(Html.fromHtml(text));
+                    mResultClickApp = mResultInclude.findViewById(R.id.item_btn_rv_one);
+                    mResultClickApp.setOnClickListener(this);
                 }
 
                 View picLayout = mResultInclude.findViewById(R.id.result_two);
@@ -734,6 +743,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     TextView tv_pic = (TextView) mResultInclude.findViewById(R.id.tv_hidepic_item);
                     String text = mActivity.getString(R.string.scan_done_pic, picnum);
                     tv_pic.setText(Html.fromHtml(text));
+                    mResultClickPic = mResultInclude.findViewById(R.id.item_btn_rv_two);
+                    mResultClickPic.setOnClickListener(this);
                 }
 
                 View vidLayout = mResultInclude.findViewById(R.id.result_three);
@@ -743,6 +754,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                     TextView tv_vid = (TextView) mResultInclude.findViewById(R.id.tv_hidevid_item);
                     String text = mActivity.getString(R.string.scan_done_vid, vidnum);
                     tv_vid.setText(Html.fromHtml(text));
+                    mResultClickVid = mResultInclude.findViewById(R.id.item_btn_rv_three);
+                    mResultClickVid.setOnClickListener(this);
                 }
 
             }
@@ -1295,8 +1308,29 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity, true, true);
+        } else if (mResultClickApp == v) {
+            resultToAppLock();
+        } else if (mResultClickPic == v) {
+            resultToPic();
+        } else if (mResultClickVid == v) {
+            resultToVid();
         }
 
+    }
+
+    private void resultToAppLock() {
+        Intent intent = new Intent(mActivity, AppLockListActivity.class);
+        mActivity.startActivity(intent);
+    }
+
+    private void resultToPic() {
+        Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
+        mActivity.startActivity(intent);
+    }
+
+    private void resultToVid() {
+        Intent intent = new Intent(mActivity, VideoHideMainActivity.class);
+        mActivity.startActivity(intent);
     }
 
     private void collapseContact() {
