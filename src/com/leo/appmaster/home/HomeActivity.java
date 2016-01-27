@@ -1367,6 +1367,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
+    public void clearAllNum() {
+        mLockAppNum = 0;
+        mHidePicNum = 0;
+        mHideVidNum = 0;
+    }
+
     class MenuAdapter extends BaseAdapter {
 
         List<MenuItem> items;

@@ -270,6 +270,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mAnimatorSet.cancel();
             mAnimatorSet = null;
         }
+
+        HomeActivity mMianActivity = mActivity;
+        mMianActivity.clearAllNum();
+
     }
 
     /**
