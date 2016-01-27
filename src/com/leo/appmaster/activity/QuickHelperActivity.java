@@ -43,14 +43,17 @@ public class QuickHelperActivity extends BaseActivity {
     private ListView mLvQuickHelperList;
     private LayoutInflater mInflater;
 
+    private static final int TOPMOST_CLASS_LAST_ONE_POSITION;
     private static final int FIRST_CLASS_LAST_ONE_POSITION;
     private static final int SECOND_CLASS_LAST_ONE_POSITION;
     private static final int THIRD_CLASS_LAST_ONE_POSITION;
 
+    private static final int TOPMOST_CLASS_FIRST_ONE_POSITION;
     private static final int FIRST_CLASS_FIRST_ONE_POSITION;
     private static final int SECOND_CLASS_FIRST_ONE_POSITION;
     private static final int THIRD_CLASS_FIRST_ONE_POSITION;
 
+    private static final int POSITION_GAME_BOOST;
     private static final int POSITION_CALL_FILTER;
     private static final int POSITION_BOOST;
     private static final int POSITION_IMAGE_HIDE;
@@ -119,6 +122,7 @@ public class QuickHelperActivity extends BaseActivity {
 //            POSITION_ELEC = 8;
 //            } else {
             mHelperResourceIDs = new int[]{
+                    R.drawable.ic_up_iswipe, /* TODO 更换为游戏加速图标 */
                     R.drawable.qh_image_icon, R.drawable.qh_video_icon,
                     R.drawable.qh_intruder_icon,R.drawable.qh_call_filter,
                     R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
@@ -130,6 +134,7 @@ public class QuickHelperActivity extends BaseActivity {
 
             mHelperNames = new int[]
             {
+                    R.string.game_box_one,
                     R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
                     R.string.quick_helper_intruder, R.string.quick_helper_callfilter, R.string.privacy_contacts,
                     R.string.quick_helper_wifi_safety,
@@ -140,6 +145,7 @@ public class QuickHelperActivity extends BaseActivity {
 
             mHelperDescs = new int[]
             {
+                    R.string.game_box_one, /* TODO 换成正确的描述 */
                     R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
                     R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_callfilter, R.string.quick_helper_desc_call,
                     R.string.quick_helper_desc_wifi,
@@ -148,26 +154,29 @@ public class QuickHelperActivity extends BaseActivity {
                     R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
             };
 
-            FIRST_CLASS_LAST_ONE_POSITION = 5;
-            SECOND_CLASS_LAST_ONE_POSITION = 10;
-            THIRD_CLASS_LAST_ONE_POSITION = 11;
+            TOPMOST_CLASS_LAST_ONE_POSITION = 0;
+            FIRST_CLASS_LAST_ONE_POSITION = 6;
+            SECOND_CLASS_LAST_ONE_POSITION = 11;
+            THIRD_CLASS_LAST_ONE_POSITION = 12;
 
-            FIRST_CLASS_FIRST_ONE_POSITION = 0;
-            SECOND_CLASS_FIRST_ONE_POSITION = 6;
-            THIRD_CLASS_FIRST_ONE_POSITION = 11;
+            TOPMOST_CLASS_FIRST_ONE_POSITION = 0;
+            FIRST_CLASS_FIRST_ONE_POSITION = 1;
+            SECOND_CLASS_FIRST_ONE_POSITION = 7;
+            THIRD_CLASS_FIRST_ONE_POSITION = 12;
 
-            POSITION_IMAGE_HIDE = 0;
-            POSITION_VIDEO_HIEDE = 1;
-            POSITION_INTRUDER = 2;
-            POSITION_CALL_FILTER = 3;
-            POSITION_SECRET_CALL = 4;
-            POSITION_WIFI = 5;
-            POSITION_APP_UNSTALL = 6;
-            POSITION_APP_BACKUP = 7;
-            POSITION_FLOW = 8;
-            POSITION_ELEC = 9;
-            POSITION_BOOST = 10;
-            POSITION_APPJOY = 11;
+            POSITION_GAME_BOOST = 0;
+            POSITION_IMAGE_HIDE = POSITION_GAME_BOOST + 1;
+            POSITION_VIDEO_HIEDE = POSITION_IMAGE_HIDE + 1;
+            POSITION_INTRUDER = POSITION_VIDEO_HIEDE + 1;
+            POSITION_CALL_FILTER = POSITION_INTRUDER + 1;
+            POSITION_SECRET_CALL = POSITION_CALL_FILTER + 1;
+            POSITION_WIFI = POSITION_SECRET_CALL + 1;
+            POSITION_APP_UNSTALL = POSITION_WIFI + 1;
+            POSITION_APP_BACKUP = POSITION_APP_UNSTALL + 1;
+            POSITION_FLOW = POSITION_APP_BACKUP + 1;
+            POSITION_ELEC = POSITION_FLOW + 1;
+            POSITION_BOOST = POSITION_ELEC + 1;
+            POSITION_APPJOY = POSITION_BOOST + 1;
 //        }
     }
 
@@ -198,10 +207,15 @@ public class QuickHelperActivity extends BaseActivity {
                 TextView tvName = (TextView) view.findViewById(R.id.tv_name);
                 TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc);
                 View line = view.findViewById(R.id.v_line);
-                if (position == FIRST_CLASS_LAST_ONE_POSITION || position == SECOND_CLASS_LAST_ONE_POSITION || position == THIRD_CLASS_LAST_ONE_POSITION) {
+                if (position == TOPMOST_CLASS_LAST_ONE_POSITION
+                        ||position == FIRST_CLASS_LAST_ONE_POSITION
+                        || position == SECOND_CLASS_LAST_ONE_POSITION
+                        || position == THIRD_CLASS_LAST_ONE_POSITION) {
                     line.setVisibility(View.GONE);
                 }
-                if (position == FIRST_CLASS_FIRST_ONE_POSITION) {
+                if (position == TOPMOST_CLASS_FIRST_ONE_POSITION) {
+                    tvClass.setText(R.string.up_list_swifty_title);
+                } else if (position == FIRST_CLASS_FIRST_ONE_POSITION) {
                     tvClass.setText(R.string.class_privacy_protection);
                 } else if (position == SECOND_CLASS_FIRST_ONE_POSITION) {
                     tvClass.setText(R.string.class_system_manage);
@@ -219,6 +233,9 @@ public class QuickHelperActivity extends BaseActivity {
                         Intent intent;
                         int id = (int) getItemId(position);
                         switch (id) {
+                            case R.drawable.ic_up_iswipe:
+                                SDKWrapper.createGameBoxIcons(QuickHelperActivity.this.getApplicationContext());
+                                break;
                             // 桌面加速 (免密码)
                             case R.drawable.qh_speedup_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,

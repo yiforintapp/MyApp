@@ -361,7 +361,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     Intent qhintent = new Intent(activity, QuickHelperActivity.class);
                     startActivity(qhintent);
                     break;
-                case R.string.hp_helper_iswipe:
+                case R.string.game_box_one:
                     // TODO: change to GameBox String
                     SDKWrapper.showGameBoxHome(getActivity());
                     break;

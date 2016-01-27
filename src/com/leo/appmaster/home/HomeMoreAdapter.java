@@ -30,7 +30,7 @@ public class HomeMoreAdapter extends BaseAdapter {
 
     private static final int[] SWIFTY = new int[]{
             R.string.up_list_swifty_title,
-            R.string.hp_helper_iswipe
+            R.string.game_box_one
     };
 
     private static final int[] ARRAY_MEDIA = new int[]{
@@ -110,7 +110,7 @@ public class HomeMoreAdapter extends BaseAdapter {
         arrayList.add(ARRAY_DEVICE);
         arrayList.add(ARRAY_HELPER);
 
-        mDrawableArray.put(R.string.hp_helper_iswipe, ID_RES_HELPER_ISWIPE);
+        mDrawableArray.put(R.string.game_box_one, ID_RES_HELPER_ISWIPE);
 //        mDrawableArray.put(R.string.home_tab_lost, ID_RES_PHONE_LOST);
         mDrawableArray.put(R.string.home_tab_instruder, ID_RES_PHONE_LOST);
         mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT);
