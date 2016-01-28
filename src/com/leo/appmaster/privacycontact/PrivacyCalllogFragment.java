@@ -48,6 +48,8 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -259,6 +261,9 @@ public class PrivacyCalllogFragment extends BaseFragment implements OnItemClickL
                     PrivacyContactManager.getInstance(mContext)
                             .setLastCall(privacyConatact);
                     Uri uri = Uri.parse("tel:" + number);
+
+                    mLockManager.filterPackage(Constants.PKG_CONTACTS, 1000);
+
                     // 跳到拨号界面
                     Intent intent = new Intent(Intent.ACTION_DIAL,
                             uri);

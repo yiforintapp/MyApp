@@ -418,6 +418,9 @@ public class PrivacyContactFragment extends BaseFragment {
                         formateNumber, mContext);
                 PrivacyContactManager.getInstance(mContext).setLastCall(
                         privacyConatact);
+
+                mLockManager.filterPackage(Constants.PKG_CONTACTS, 1000);
+
                 Uri uri = Uri.parse("tel:" + number);
                 // Intent intent = new Intent(Intent.ACTION_CALL, uri);
                 Intent intent = new Intent(Intent.ACTION_DIAL,
