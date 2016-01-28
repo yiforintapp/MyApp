@@ -124,7 +124,9 @@ public class SDKWrapper {
                         // leo
                         com.leo.stat.StatService.onResume(context);
                         // TalkingData
-                        TCAgent.onResume((Activity) context);
+                        if(context instanceof Activity) {
+                            TCAgent.onResume((Activity) context);
+                        }
                     }
 
                     @Override
@@ -133,7 +135,9 @@ public class SDKWrapper {
                         // leo
                         com.leo.stat.StatService.onPause(context);
                         // TalkingData
-                        TCAgent.onPause((Activity) context);
+                        if(context instanceof Activity) {
+                            TCAgent.onPause((Activity) context);
+                        }
                     }
 
                     @Override
@@ -168,6 +172,10 @@ public class SDKWrapper {
                     @Override
                     public void onEvent(Context context, String s, String s1, int i) {
                         StatService.onEvent(context, s, s1, i);
+                        // leo
+                        com.leo.stat.StatService.onEvent(context, s, s1, i);
+                        // TalkingData
+                        TCAgent.onEvent(context, s, s1);
                     }
 
                     @Override
