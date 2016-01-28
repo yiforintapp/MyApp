@@ -25,6 +25,7 @@ import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.BuildProperties;
@@ -73,6 +74,7 @@ public class BatteryNotifyHelper {
         if (!AppUtil.notifyAvailable()) {
             return;
         }
+        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "batterypage", "comsuption_ntf");
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews view_custom;
@@ -108,7 +110,6 @@ public class BatteryNotifyHelper {
 
         Intent intent = new Intent(mContext,
                 DeskProxyActivity.class);
-        intent.putExtra("for_sdk", "for_sdk");
         intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mElec);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent =

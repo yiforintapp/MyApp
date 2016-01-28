@@ -362,8 +362,8 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     startActivity(qhintent);
                     break;
                 case R.string.game_box_one:
-                    // TODO: change to GameBox String
                     SDKWrapper.showGameBoxHome(getActivity());
+                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "home_gameboost");
                     break;
                 case R.string.home_tab_instruder:
                     // 手机防盗

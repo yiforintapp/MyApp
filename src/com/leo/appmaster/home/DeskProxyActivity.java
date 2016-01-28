@@ -361,6 +361,9 @@ public class DeskProxyActivity extends Activity {
         if (getIntent().getBooleanExtra("from_quickhelper", false)) {
             SDKWrapper.addEvent(this, SDKWrapper.P1,
                     "assistant", "power_cnts");
+        } else {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "batterypage", "comsuption_ntf_cnts");
         }
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent dlIntent = new Intent(this, BatteryMainActivity.class);

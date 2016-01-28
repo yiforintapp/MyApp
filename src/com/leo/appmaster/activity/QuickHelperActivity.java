@@ -234,6 +234,8 @@ public class QuickHelperActivity extends BaseActivity {
                         int id = (int) getItemId(position);
                         switch (id) {
                             case R.drawable.ic_up_iswipe:
+                                SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
+                                        "assistant", "assistant_gameboost");
                                 SDKWrapper.createGameBoxIcons(QuickHelperActivity.this.getApplicationContext());
                                 break;
                             // 桌面加速 (免密码)
