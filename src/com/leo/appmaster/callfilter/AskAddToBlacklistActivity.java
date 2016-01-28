@@ -14,11 +14,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.CallFilterManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -350,6 +352,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         if (android.os.Build.VERSION.SDK_INT > 19) {
             try {
                 mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                 Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.startActivity(intent);

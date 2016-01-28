@@ -17,6 +17,7 @@ import android.text.Html;
 import android.text.Spanned;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
@@ -280,6 +281,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                 dpm.removeActiveAdmin(component);
             } else {
                 mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);

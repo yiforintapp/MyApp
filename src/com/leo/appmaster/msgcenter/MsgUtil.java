@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -37,6 +39,8 @@ public class MsgUtil {
             ComponentName cn = new ComponentName(Constants.PKG_FACEBOOK,
                     "com.facebook.katana.IntentUriHandler");
             intent.setComponent(cn);
+            LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
         }
         intent.setData(uri);
         intent.setAction(Intent.ACTION_VIEW);
@@ -67,6 +71,8 @@ public class MsgUtil {
         Intent intent = new Intent();
         if (hasGp) {
             intent.setPackage(Constants.PKG_GOOLEPLAY);
+            LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
         }
         intent.setData(uri);
         intent.setAction(Intent.ACTION_VIEW);
@@ -107,6 +113,10 @@ public class MsgUtil {
                             .append("&referrer=utm_source=PG_MSGCENTER");
 
                 intent.setData(Uri.parse(dataBuilder.toString()));
+
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
+
             } else {
                 // 无gp，直接使用浏览器打开下载链接
                 if (TextUtils.isEmpty(url)) {

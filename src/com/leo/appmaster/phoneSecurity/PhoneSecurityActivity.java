@@ -721,6 +721,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         ComponentName component = new ComponentName(this,
                 DeviceReceiver.class);
         mLockManager.filterSelfOneMinites();
+        mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
         intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                 component);

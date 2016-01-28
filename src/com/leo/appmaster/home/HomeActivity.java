@@ -1047,6 +1047,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     mLockManager.filterSelfOneMinites();
                     if (AppUtil.appInstalled(getApplicationContext(),
                             "com.google.android.apps.plus")) {
+                        mLockManager.filterPackage("com.google.android.apps.plus", 1000);
                         intentBeta = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri
                                 .parse("https://plus.google.com/u/0/communities/112552044334117834440");
@@ -1092,6 +1093,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     Intent intentLikeUs = null;
                     mLockManager.filterSelfOneMinites();
                     if (AppUtil.appInstalled(getApplicationContext(), "com.facebook.katana")) {
+                        mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
                         intentLikeUs = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri.parse("fb://page/1709302419294051");
                         intentLikeUs.setData(uri);

@@ -45,6 +45,7 @@ import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -216,6 +217,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                     if (mEventHandler != null) {
                         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
                     }
+                    mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
                     startActivity(shareIntent);
                     mIsToFacebk = true;
                     mSplaFacRt.setOnClickListener(null);

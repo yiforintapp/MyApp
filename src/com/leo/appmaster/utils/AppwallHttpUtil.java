@@ -28,6 +28,8 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 
 public class AppwallHttpUtil {
 	public static InputStream requestByPost(String path,
@@ -134,6 +136,8 @@ public class AppwallHttpUtil {
 				Uri.parse("market://details?id=" + packageGp));
 		intent.setPackage(Constants.GP_PACKAGE);
 	      try {
+			  LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+			  mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
 	          context.startActivity(intent);
 	        } catch (Exception e) {
 	        }

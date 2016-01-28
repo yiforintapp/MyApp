@@ -26,6 +26,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.imageloader.utils.L;
 
@@ -87,6 +89,8 @@ public class AppUtil {
                 Uri.parse("market://details?id=" + packageGp));
         intent.setPackage(Constants.GP_PACKAGE);
         try {
+            LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
             context.startActivity(intent);
         } catch (Exception e) {
         }

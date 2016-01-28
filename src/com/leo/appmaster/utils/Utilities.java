@@ -34,6 +34,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.FolderItemInfo;
@@ -421,7 +423,7 @@ public final class Utilities {
         }
         return false;
     }
-    
+
     public static void goFiveStar(Context context, boolean isFromCard, boolean isFromPrivacy) {
         String url = Constants.RATING_ADDRESS_BROWSER;
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
@@ -439,6 +441,10 @@ public final class Utilities {
         Intent intent = null;
         if (AppUtil.appInstalled(context,
                 "com.android.vending")) {
+
+            LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
+
             intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri
                     .parse(url);
@@ -464,7 +470,7 @@ public final class Utilities {
             }
         }
     }
-    
+
     private static void goGpBrowser(String url, Context context) {
         Intent intent;
         intent = new Intent(Intent.ACTION_VIEW);
@@ -474,11 +480,13 @@ public final class Utilities {
         try {
             context.startActivity(intent);
             LeoLog.i("goFiveStar", "intent: " + intent.toURI());
-        } catch (Exception e) {           
+        } catch (Exception e) {
         }
     }
 
-    /**  是否为红米Note2手机 */
+    /**
+     * 是否为红米Note2手机
+     */
     private static boolean isRedMiTwo() {
         if (Constants.RED_MI_TWO_NAME.equals(android.os.Build.MODEL)) {
             return true;
@@ -486,7 +494,9 @@ public final class Utilities {
         return false;
     }
 
-    /** 红米Note2 进入红米默认浏览器 */
+    /**
+     * 红米Note2 进入红米默认浏览器
+     */
     private static void goRedMiTwoBrowser(String url, Context context) {
         Intent intent;
         intent = new Intent(Intent.ACTION_VIEW);
@@ -530,6 +540,10 @@ public final class Utilities {
             intentLikeUs.setComponent(cn);
             intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
+
                 context.startActivity(intentLikeUs);
             } catch (Exception e) {
             }
@@ -545,7 +559,9 @@ public final class Utilities {
         }
     }
 
-    /** 通过包名打开已安装的wifimaster */
+    /**
+     * 通过包名打开已安装的wifimaster
+     */
     public static void openAPPByPkgName(Context context, String pkgName) {
         Intent intent = null;
         PackageManager pm = context.getPackageManager();
@@ -590,7 +606,7 @@ public final class Utilities {
             if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
 
                 selectType(preferenceTable, PrefConst.KEY_SWIFTY_TYPE, PrefConst.KEY_SWIFTY_GP_URL,
-                           PrefConst.KEY_SWIFTY_URL, "", context);
+                        PrefConst.KEY_SWIFTY_URL, "", context);
 
             } else { //点击wifimaster
 
@@ -616,7 +632,7 @@ public final class Utilities {
 
 
     public static void selectType(PreferenceTable preferenceTable, String type, String gpUrl,
-                                   String url, String pkgName, Context context) {
+                                  String url, String pkgName, Context context) {
 
         if (Constants.BROWSER_URL_TYPE.equals(
                 preferenceTable.getString(type))) { // 使用浏览器
@@ -642,20 +658,20 @@ public final class Utilities {
         }
     }
 
-    private static void gpType(PreferenceTable preferenceTable,String gpUrlKey,
+    private static void gpType(PreferenceTable preferenceTable, String gpUrlKey,
                                String urlKey, String pkgName, Context context) {
 
         String browserUrl;
         if (preferenceTable.getString(gpUrlKey) != null &&
                 preferenceTable.getString(gpUrlKey).length() > 0) {
-                String gpUrl = preferenceTable.getString(gpUrlKey);
+            String gpUrl = preferenceTable.getString(gpUrlKey);
 
             if (preferenceTable.getString(urlKey) != null &&
                     preferenceTable.getString(urlKey).length() > 0) {
 
-                 browserUrl = preferenceTable.getString(urlKey);
+                browserUrl = preferenceTable.getString(urlKey);
             } else {
-                 browserUrl = "";
+                browserUrl = "";
             }
             gotoGp(gpUrl, browserUrl, pkgName, context);
         } else {
@@ -675,6 +691,8 @@ public final class Utilities {
             intent.setPackage(Constants.GP_PKG_NAME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
                 context.startActivity(intent);
             } catch (Exception e) {
                 if (!"".equals(browserUrl)) {
@@ -705,9 +723,9 @@ public final class Utilities {
     }
 
     /**
-     *  使用包名跳转Gp
+     * 使用包名跳转Gp
      */
-    private static void  gotoGpByPkg(String pkgName, Context context) {
+    private static void gotoGpByPkg(String pkgName, Context context) {
         if (TextUtils.isEmpty(pkgName)) { //包名为空不执行
             return;
         }
@@ -720,9 +738,11 @@ public final class Utilities {
             intent.setPackage(Constants.GP_PKG_NAME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
                 context.startActivity(intent);
             } catch (Exception e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }
@@ -760,8 +780,8 @@ public final class Utilities {
         return DipPixelUtil.px2dip(context, v.getMeasuredHeight());
     }
 
-    public static void toShareApp(String shareString,String title, Context context) {
-        Intent intent=new Intent(Intent.ACTION_SEND);
+    public static void toShareApp(String shareString, String title, Context context) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
 //                intent.setType("image/*");  //新浪微博只能使用这种type
         intent.putExtra(Intent.EXTRA_TEXT, shareString);

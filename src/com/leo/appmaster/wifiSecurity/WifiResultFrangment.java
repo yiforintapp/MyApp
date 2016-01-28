@@ -176,6 +176,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 break;
             case R.id.wifi_resulte_other_wifi:
                 mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+                mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                 Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                 try {
                     startActivity(wifiIntent);
