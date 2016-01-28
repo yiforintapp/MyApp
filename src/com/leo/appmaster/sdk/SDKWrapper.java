@@ -24,14 +24,14 @@ import com.tendcloud.tenddata.TCAgent;
 public class SDKWrapper {
 
     private final static String TAG = "SDKWrapper";
-    
+
     // useless with LeoAnaSDK_v3
-    public static int P1  = 0;
+    public static int P1 = 0;
 
     /**
      * initial leo analytics and flurry SDK, this will changed in the future.
      * this should be called in application's onCreate method.
-     * 
+     *
      * @param ctx should be application context
      */
     public static void iniSDK(Context ctx) {
@@ -41,9 +41,9 @@ public class SDKWrapper {
             /* try initiate BaiduMTJ in AndroidManifest.xml */
             // iniBaidu(ctx);
             iniPushSDK(ctx);
-            
+
             initNewSDK(context);
-            
+
             // TalkingData
             TCAgent.LOG_ON = AppMasterConfig.LOGGABLE;
             TCAgent.init(ctx);
@@ -51,28 +51,28 @@ public class SDKWrapper {
             // gamebox - 放在统计SDK后面初始化
             initGameBoxSDK(ctx);
         } catch (Exception e) {
-            
+
         }
 
     }
-    
-    public static String getBestServerDomain(){
+
+    public static String getBestServerDomain() {
         return LeoAgent.getBestServerDomain();
     }
-    
-    public static void checkUpdate(){
+
+    public static void checkUpdate() {
         LeoAgent.checkUpdate();
     }
-    
-    public static String getEncodedDeviceInfo(){
+
+    public static String getEncodedDeviceInfo() {
         return LeoAgent.getEncodedDeviceInfo();
     }
-    
-    public static boolean isUpdateAvailable(){
+
+    public static boolean isUpdateAvailable() {
         return LeoAgent.isUpdateAvailable();
     }
-    
-    public static void checkForceUpdate(){
+
+    public static void checkForceUpdate() {
         LeoAgent.checkForceUpdate();
     }
 
@@ -86,13 +86,13 @@ public class SDKWrapper {
         } catch (NotFoundException e) {
             LeoLog.e(TAG, "failed to get ICON");
         }
-        
+
         try {
             PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code), R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
         } catch (NotFoundException e) {
             PushManager.getInstance(ctx).startPush("0000a", R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
         }
-        
+
         PushManager.getInstance(ctx).registerStatHelper(new IPushStatHelper() {
             @Override
             public void onPushSDKEvent(String eventID, String description) {
@@ -100,8 +100,8 @@ public class SDKWrapper {
             }
 
         });
-   }
-    
+    }
+
     private static void initNewSDK(Context ctx) {
         com.leo.stat.StatService.setAppId("privacyguard");
         try {
@@ -121,11 +121,19 @@ public class SDKWrapper {
                     @Override
                     public void onResume(Context context) {
                         StatService.onResume(context);
+                        // leo
+                        com.leo.stat.StatService.onResume(context);
+                        // TalkingData
+                        TCAgent.onResume((Activity) context);
                     }
 
                     @Override
                     public void onPause(Context context) {
                         StatService.onPause(context);
+                        // leo
+                        com.leo.stat.StatService.onPause(context);
+                        // TalkingData
+                        TCAgent.onPause((Activity) context);
                     }
 
                     @Override
@@ -151,6 +159,10 @@ public class SDKWrapper {
                     @Override
                     public void onEvent(Context context, String s, String s1) {
                         StatService.onEvent(context, s, s1);
+                        // leo
+                        com.leo.stat.StatService.onEvent(context, s, s1);
+                        // TalkingData
+                        TCAgent.onEvent(context, s, s1);
                     }
 
                     @Override
@@ -179,6 +191,7 @@ public class SDKWrapper {
 
     /***
      * 判断游戏盒子是否可用
+     *
      * @param context
      * @return
      */
@@ -189,6 +202,7 @@ public class SDKWrapper {
 
     /***
      * 启动GameBox主界面
+     *
      * @param activity
      */
     public static void showGameBoxHome(Activity activity) {
@@ -197,6 +211,7 @@ public class SDKWrapper {
 
     /***
      * 添加桌面Folder
+     *
      * @param context
      */
     public static void createGameBoxIcons(Context context) {
@@ -207,10 +222,10 @@ public class SDKWrapper {
 
     /**
      * add an event that we will push to log service
-     * 
-     * @param ctx activity context
-     * @param level log level for leoSDK, can be LeoStat.P0 ~ LeoStat.P4
-     * @param eventID event type of this event
+     *
+     * @param ctx              activity context
+     * @param level            log level for leoSDK, can be LeoStat.P0 ~ LeoStat.P4
+     * @param eventID          event type of this event
      * @param eventDescription detail of this event
      */
     public static void addEvent(Context context, int level, String id, String description) {
@@ -242,18 +257,18 @@ public class SDKWrapper {
         // TODO: change log level to ERROR when release
         LeoAgent.setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
         LeoAgent.initUpdateEngine(UIHelper.getInstance(ctx),
-                true,false);
+                true, false);
     }
-    
-    public static void onResume(Activity ctx){
+
+    public static void onResume(Activity ctx) {
         // 百度的SDK会引起内存泄露，但又不能使用context作为参数传进去。。。蛋疼~
         StatService.onResume(ctx);
 //        LeoAgent.onResume();
         TCAgent.onResume(ctx);
         com.leo.stat.StatService.onResume(ctx);
     }
-    
-    public static void onPause(Activity ctx){
+
+    public static void onPause(Activity ctx) {
         StatService.onPause(ctx);
 //        LeoAgent.onPause();
         TCAgent.onPause(ctx);
