@@ -349,6 +349,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         // LeoLog.d("ServiceTraffic", "关闭网络咯！！");
         if (android.os.Build.VERSION.SDK_INT > 19) {
             try {
+                mLockManager.filterSelfOneMinites();
                 Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.startActivity(intent);
