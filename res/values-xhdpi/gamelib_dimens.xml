@@ -72,7 +72,7 @@
     <dimen name="gamebox_lib_home_box_app_menu_remove_text_margin_top">12dp</dimen>
     <dimen name="gamebox_lib_home_box_app_menu_remove_textsize">14dp</dimen>
     <dimen name="gamebox_lib_home_box_app_menu_container_width">98dp</dimen>
-    <dimen name="gamebox_lib_home_box_app_menu_container_height">55dp</dimen>
+    <dimen name="gamebox_lib_home_box_app_menu_container_height">60dp</dimen>
     <dimen name="gamebox_lib_home_box_app_menu_container_bottom_width">16dp</dimen>
     <dimen name="gamebox_lib_home_box_app_menu_container_bottom_height">12dp</dimen>
     <!-- add app-->
