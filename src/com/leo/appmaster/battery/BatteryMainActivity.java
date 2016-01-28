@@ -37,6 +37,8 @@ import com.leo.appmaster.mgr.BatteryManager.BatteryState;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CircleView;
+import com.leo.appmaster.ui.CircleView.OnArroundFinishListener;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
@@ -81,6 +83,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private final int TRANSLATE_ANIM_DURATION = 600;
     private ImageView mIvLittleBattery;
     private TextView mTvBottomText;
+    private CircleView mCvFront;
+    private CircleView mCvBack;
+    private RelativeLayout mRlShield;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +113,11 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
     
     private void initUI() {
+        mRlShield = (RelativeLayout) findViewById(R.id.rl_shield);
+        mCvFront = (CircleView) findViewById(R.id.cv_front);
+        mCvFront.setShowWhich(CircleView.SHOW_FRONT);
+        mCvBack = (CircleView) findViewById(R.id.cv_back);
+        mCvBack.setShowWhich(CircleView.SHOW_BACK);
         mTvBottomText = (TextView) findViewById(R.id.tv_bottomtext);
         mTvBoostedNumber = (TextView) findViewById(R.id.tv_boost_complete_number);
         if (mFrgmResult == null) {
@@ -302,19 +312,30 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private void startFlipAnimation() {
         final float centerX = mIvShield.getWidth() / 2.0f;  
         final float centerY = mIvShield.getHeight() / 2.0f;  
-  
         final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,  
                 centerX, DipPixelUtil.dip2px(this, 26), 0.0f, true);  
         rotation.setDuration(680);  
         rotation.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                mCvFront.startAnim(90, 90, new OnArroundFinishListener() {
+                    @Override
+                    public void onArroundFinish() {
+                        mCvBack.startAnim(180, 180, new OnArroundFinishListener() {
+                            @Override
+                            public void onArroundFinish() {
+                                mCvFront.startAnim(0, 90, null, true, 300);
+                            }
+                        }, true, 300);
+                    }
+                }, true, 300);
             }
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
             @Override
             public void onAnimationEnd(Animation animation) {
+                mIvShield.setVisibility(View.VISIBLE);
                 startTranslateAnim();
                 startShortenTopLayoutAnim();
                 startShowCompleteAnim();
@@ -377,13 +398,13 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     protected void startTranslateAnim() {
         mIvShield.setVisibility(View.VISIBLE);
-        float initialX = mIvShield.getX();
-        float initialY = mIvShield.getY();
-        PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, DipPixelUtil.dip2px(this, 15));
+        float initialX = mRlShield.getX();
+        float initialY = mRlShield.getY();
+        PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, DipPixelUtil.dip2px(this, 0));
 //        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("top", initialY, DipPixelUtil.dip2px(this, 10));
-        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.70f);
-        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.70f);
-        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX,  holderScaleX, holderScaleY);
+        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.80f);
+        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.80f);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlShield, holderX,  holderScaleX, holderScaleY);
         anim.setDuration(TRANSLATE_ANIM_DURATION);
         anim.start();
     }

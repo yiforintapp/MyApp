@@ -80,13 +80,31 @@
                     android:src="@drawable/batterymanage_littlebattery_normal" />
             </RelativeLayout>
 
+            <RelativeLayout 
+                android:layout_width="184dp"
+                android:id="@+id/rl_shield"
+                android:layout_height="164dp"
+                android:layout_centerInParent="true"
+                android:visibility="visible">
+            <com.leo.appmaster.ui.CircleView 
+                android:id="@+id/cv_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
             <ImageView
                 android:id="@+id/iv_shield"
-                android:layout_width="154dp"
-                android:layout_height="154dp"
+                android:layout_margin="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:src="@drawable/batterymanage_shield"
                 android:visibility="invisible" />
+                <com.leo.appmaster.ui.CircleView 
+                android:id="@+id/cv_front"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_boost_complete"
