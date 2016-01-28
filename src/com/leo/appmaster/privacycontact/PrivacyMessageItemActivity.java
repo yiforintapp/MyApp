@@ -116,6 +116,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                         privacyConatact);
                 Uri uri = Uri.parse("tel:" + mPhoneNumber);
                 mLockManager.filterPackage(Constants.PKG_CONTACTS, 1000);
+                mLockManager.filterPackage(Constants.PKG_DIALER, 1000);
                 // Intent intent = new Intent(Intent.ACTION_CALL, uri);
                 Intent intent = new Intent(Intent.ACTION_DIAL,
                         uri);

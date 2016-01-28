@@ -210,6 +210,8 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 //                sb.append(Constants.SPL_SHARE_QR_NAME);
                 sb.append(Constants.SPLASH_NAME);
                 /*facebook分享闪屏*/
+                mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
+
                 Intent shareIntent = AppUtil.shareImageToApp(sb.toString());
                 shareIntent.setPackage(Constants.FACEBOOK_PKG_NAME);
                 shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -217,7 +219,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                     if (mEventHandler != null) {
                         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
                     }
-                    mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
                     startActivity(shareIntent);
                     mIsToFacebk = true;
                     mSplaFacRt.setOnClickListener(null);
@@ -766,6 +767,9 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                     if (clientIntent != null) {
                         try {
                             /* 存在客户端 */
+
+                            mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
+
                             Intent intent = Intent.parseUri(clientIntent, 0);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);

@@ -387,6 +387,8 @@ public class Constants {
     public static final String PKG_FACEBOOK = "com.facebook.katana";
     public static final String PKG_GOOLEPLAY = "com.android.vending";
     public static final String PKG_SETTINGS = "com.android.settings";
+
+    public static final String PKG_DIALER = "com.android.dialer";
     public static final String PKG_CONTACTS = "com.android.contacts";
 
 

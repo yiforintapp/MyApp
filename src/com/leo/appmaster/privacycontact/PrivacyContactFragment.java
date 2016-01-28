@@ -420,6 +420,7 @@ public class PrivacyContactFragment extends BaseFragment {
                         privacyConatact);
 
                 mLockManager.filterPackage(Constants.PKG_CONTACTS, 1000);
+                mLockManager.filterPackage(Constants.PKG_DIALER, 1000);
 
                 Uri uri = Uri.parse("tel:" + number);
                 // Intent intent = new Intent(Intent.ACTION_CALL, uri);

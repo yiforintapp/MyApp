@@ -263,6 +263,8 @@ public class PrivacyCalllogFragment extends BaseFragment implements OnItemClickL
                     Uri uri = Uri.parse("tel:" + number);
 
                     mLockManager.filterPackage(Constants.PKG_CONTACTS, 1000);
+                    mLockManager.filterPackage(Constants.PKG_DIALER, 1000);
+
 
                     // 跳到拨号界面
                     Intent intent = new Intent(Intent.ACTION_DIAL,
