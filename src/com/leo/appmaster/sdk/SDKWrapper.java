@@ -48,7 +48,7 @@ public class SDKWrapper {
             TCAgent.LOG_ON = AppMasterConfig.LOGGABLE;
             TCAgent.init(ctx);
 
-            // gamebox
+            // gamebox - 放在统计SDK后面初始化
             initGameBoxSDK(ctx);
         } catch (Exception e) {
             
@@ -88,7 +88,7 @@ public class SDKWrapper {
         }
         
         try {
-            PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code),R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
+            PushManager.getInstance(ctx).startPush(ctx.getString(R.string.channel_code), R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
         } catch (NotFoundException e) {
             PushManager.getInstance(ctx).startPush("0000a", R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
         }
@@ -120,62 +120,61 @@ public class SDKWrapper {
                 "appmaster", new IStatService() {
                     @Override
                     public void onResume(Context context) {
-
+                        StatService.onResume(context);
                     }
 
                     @Override
                     public void onPause(Context context) {
-
+                        StatService.onPause(context);
                     }
 
                     @Override
                     public void onResume(Fragment fragment) {
-
+                        StatService.onResume(fragment);
                     }
 
                     @Override
                     public void onPause(Fragment fragment) {
-
+                        StatService.onPause(fragment);
                     }
 
                     @Override
                     public void onPageStart(Context context, String s) {
-
+                        StatService.onPageStart(context, s);
                     }
 
                     @Override
                     public void onPageEnd(Context context, String s) {
-
+                        StatService.onPageEnd(context, s);
                     }
 
                     @Override
                     public void onEvent(Context context, String s, String s1) {
-
+                        StatService.onEvent(context, s, s1);
                     }
 
                     @Override
                     public void onEvent(Context context, String s, String s1, int i) {
-
+                        StatService.onEvent(context, s, s1, i);
                     }
 
                     @Override
                     public void onEventStart(Context context, String s, String s1) {
-
+                        StatService.onEventStart(context, s, s1);
                     }
 
                     @Override
                     public void onEventEnd(Context context, String s, String s1) {
-
+                        StatService.onEventEnd(context, s, s1);
                     }
 
                     @Override
                     public void onEventDuration(Context context, String s, String s1, int i) {
-
+                        StatService.onEventDuration(context, s, s1, i);
                     }
                 });
 
         GameBoxAgent.enableLog(AppMasterConfig.LOGGABLE);
-        LeoLog.d("stone_gamebox", "Box available = " + SDKWrapper.isGameBoxAvailable(context));
     }
 
     /***
@@ -184,6 +183,7 @@ public class SDKWrapper {
      * @return
      */
     public static boolean isGameBoxAvailable(Context context) {
+        LeoLog.d(TAG, "isGameBoxAvaliable = " + GameBoxAgent.isGameBoxAvaliable(context));
         return GameBoxAgent.isGameBoxAvaliable(context);
     }
 

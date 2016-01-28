@@ -189,6 +189,7 @@ public class QuickHelperActivity extends BaseActivity {
     }
 
     private void init() {
+        final boolean showGameBox = SDKWrapper.isGameBoxAvailable(this);
         mInflater = LayoutInflater.from(this);
         mCtb = (CommonToolbar) findViewById(R.id.ctb_quickhelper_title);
         mCtb.setToolbarTitle(R.string.hp_helper_shot);
@@ -199,6 +200,10 @@ public class QuickHelperActivity extends BaseActivity {
         mLvQuickHelperList.setAdapter(new BaseAdapter() {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
+                int realPosition = position;
+                if (!showGameBox) {
+                    realPosition += 1;
+                }
                 View view = mInflater.inflate(R.layout.item_quick_helper_list, null);
                 TextView tvClass = (TextView) view.findViewById(R.id.tv_class);
                 LinearLayout llClass = (LinearLayout) view.findViewById(R.id.ll_class);
@@ -207,31 +212,32 @@ public class QuickHelperActivity extends BaseActivity {
                 TextView tvName = (TextView) view.findViewById(R.id.tv_name);
                 TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc);
                 View line = view.findViewById(R.id.v_line);
-                if (position == TOPMOST_CLASS_LAST_ONE_POSITION
-                        ||position == FIRST_CLASS_LAST_ONE_POSITION
-                        || position == SECOND_CLASS_LAST_ONE_POSITION
-                        || position == THIRD_CLASS_LAST_ONE_POSITION) {
+                if (realPosition == TOPMOST_CLASS_LAST_ONE_POSITION
+                        ||realPosition == FIRST_CLASS_LAST_ONE_POSITION
+                        || realPosition == SECOND_CLASS_LAST_ONE_POSITION
+                        || realPosition == THIRD_CLASS_LAST_ONE_POSITION) {
                     line.setVisibility(View.GONE);
                 }
-                if (position == TOPMOST_CLASS_FIRST_ONE_POSITION) {
+                if (realPosition == TOPMOST_CLASS_FIRST_ONE_POSITION) {
                     tvClass.setText(R.string.up_list_swifty_title);
-                } else if (position == FIRST_CLASS_FIRST_ONE_POSITION) {
+                } else if (realPosition == FIRST_CLASS_FIRST_ONE_POSITION) {
                     tvClass.setText(R.string.class_privacy_protection);
-                } else if (position == SECOND_CLASS_FIRST_ONE_POSITION) {
+                } else if (realPosition == SECOND_CLASS_FIRST_ONE_POSITION) {
                     tvClass.setText(R.string.class_system_manage);
-                } else if (position == THIRD_CLASS_FIRST_ONE_POSITION) {
+                } else if (realPosition == THIRD_CLASS_FIRST_ONE_POSITION) {
                     tvClass.setText(R.string.class_happy_app);
                 } else {
                     llClass.setVisibility(View.GONE);
                 }
-                ivIcon.setBackgroundResource(mHelperResourceIDs[position]);
-                tvName.setText(getResources().getString(mHelperNames[position]));
-                tvDesc.setText(getResources().getString(mHelperDescs[position]));
+                ivIcon.setBackgroundResource(mHelperResourceIDs[realPosition]);
+                tvName.setText(getResources().getString(mHelperNames[realPosition]));
+                tvDesc.setText(getResources().getString(mHelperDescs[realPosition]));
+                final int finalRealPosition = realPosition;
                 rvAdd.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent;
-                        int id = (int) getItemId(position);
+                        int id = (int) getItemId(finalRealPosition);
                         switch (id) {
                             case R.drawable.ic_up_iswipe:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
@@ -387,7 +393,11 @@ public class QuickHelperActivity extends BaseActivity {
 
             @Override
             public int getCount() {
-                return mHelperResourceIDs.length;
+                if (showGameBox) {
+                    return mHelperResourceIDs.length;
+                } else {
+                    return mHelperResourceIDs.length-1;
+                }
             }
         });
     }

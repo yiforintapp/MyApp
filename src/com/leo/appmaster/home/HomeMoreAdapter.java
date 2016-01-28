@@ -14,6 +14,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class HomeMoreAdapter extends BaseAdapter {
 
     private static final int IDX_LABEL = 0;
 
-    private static final int[] SWIFTY = new int[]{
+    private static final int[] ARRAY_GAMEBOX = new int[]{
             R.string.up_list_swifty_title,
             R.string.game_box_one
     };
@@ -103,7 +104,9 @@ public class HomeMoreAdapter extends BaseAdapter {
         mDrawableArray = new SparseIntArray();
 
         List<int[]> arrayList = new ArrayList<int[]>();
-        arrayList.add(SWIFTY);
+        if (SDKWrapper.isGameBoxAvailable(mContext)) {
+            arrayList.add(ARRAY_GAMEBOX);
+        }
         arrayList.add(ARRAY_CONTACT_SINGLE);
         arrayList.add(ARRAY_MEDIA);
         arrayList.add(ARRAY_APP);
