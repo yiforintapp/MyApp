@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@mipmap/gamebox_lib_speed_bg_line"
+            android:src="@drawable/speed_bg_line"
             android:visibility="invisible" />
 
 
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/gamebox_lib_speed_smoke"
+            android:src="@drawable/speed_smoke"
             android:visibility="invisible" />
 
         <ImageView
@@ -42,7 +42,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="-140dp"
-            android:src="@mipmap/gamebox_lib_speed_rocket_fire"
+            android:src="@drawable/speed_rocket_fire"
             android:visibility="invisible" />
 
         <ImageView
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/gamebox_lib_speed_rocket" />
+            android:src="@drawable/speed_rocket" />
 
 
     </RelativeLayout>

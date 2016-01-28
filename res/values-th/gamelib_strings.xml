@@ -5,7 +5,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- applist-->
     <string name="gamebox_lib_applist_title">เพิ่ม</string>
     <string name="gamebox_lib_applist_to_add">เพิ่ม</string>
-    <string name="gamebox_lib_applist_remove">ยกเลิกการเพิ่ม</string>
+    <string name="gamebox_lib_applist_remove">ยกเลิก</string>
    <string name="gamebox_lib_applist_add_app_tip_pre">เปิดเกมใน GameBox สามารถเพิ่มความเร็วได้ <xliff:g id="percent">%1$s</xliff:g></string>
     <!-- box-->
     <string name="gamebox_lib_home_box_app_add">เพิ่ม</string>
@@ -18,8 +18,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="gamebox_lib_download_network_error">ไม่มีการเชื่อมต่อเครือข่าย</string>
     <!-- 快捷方式相关-->
     <string name="gamebox_lib_shortcut_label">GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g>ได้เพิ่มเข้าไปใน GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">[ %1$s ]</xliff:g> ได้เพิ่มเข้าไปใน GameBox</string>
     <string name="gamebox_lib_shortcut_notification_content">GameBox สามารถเพิ่มความเร็วในการเปิดเกมได้ </string>
     <string name="gamebox_lib_shortcut_notification_content_part">, เช็คดูทันที</string>
     <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>

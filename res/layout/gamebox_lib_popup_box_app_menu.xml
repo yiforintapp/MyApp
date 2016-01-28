@@ -4,28 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/app_menu_container"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/remove_app_txt"
+        android:layout_width="@dimen/gamebox_lib_home_box_app_menu_container_width"
         android:layout_height="@dimen/gamebox_lib_home_box_app_menu_container_height"
-        android:layout_alignParentTop="true">
-
-        <Button
-            android:layout_width="@dimen/gamebox_lib_home_box_app_menu_container_width"
-            android:layout_height="@dimen/gamebox_lib_home_box_app_menu_container_height"
-            android:background="@drawable/gamebox_lib_home_app_menu_container_background" />
-
-        <TextView
-            android:id="@+id/remove_app_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/gamebox_lib_home_box_app_menu_remove_text_margin_left"
-            android:layout_marginRight="@dimen/gamebox_lib_home_box_app_menu_remove_text_margin_right"
-            android:gravity="center"
-            android:text="@string/gamebox_lib_home_box_app_menu_remove"
-            android:textColor="@color/gamebox_lib_home_box_app_menu_remove_textcolor"
-            android:textSize="@dimen/gamebox_lib_home_box_app_menu_remove_textsize" />
-    </FrameLayout>
-
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/gamebox_lib_home_box_app_menu_remove_text_margin_left"
+        android:layout_marginRight="@dimen/gamebox_lib_home_box_app_menu_remove_text_margin_right"
+        android:background="@drawable/gamebox_lib_home_app_menu_container_background"
+        android:gravity="center"
+        android:text="@string/gamebox_lib_home_box_app_menu_remove"
+        android:textColor="@color/gamebox_lib_home_box_app_menu_remove_textcolor"
+        android:textSize="@dimen/gamebox_lib_home_box_app_menu_remove_textsize" />
 </RelativeLayout>

@@ -18,8 +18,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="gamebox_lib_download_network_error">네트워크가 연결되어 있지 않습니다.</string>
     <!-- 快捷方式相关-->
     <string name="gamebox_lib_shortcut_label">GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g>가 GameBox 에 추가됨</string>
-    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">[ %1$s ]</xliff:g> 가 GameBox 에 추가됨</string>
     <string name="gamebox_lib_shortcut_notification_content">GameBox 는 게임 기동 속도를 향상시켜 줍니다</string>
     <string name="gamebox_lib_shortcut_notification_content_part">, 바로 확인해 보세요</string>
     <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>

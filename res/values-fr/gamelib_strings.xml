@@ -5,7 +5,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- applist-->
     <string name="gamebox_lib_applist_title">Ajout</string>
     <string name="gamebox_lib_applist_to_add">Ajout</string>
-    <string name="gamebox_lib_applist_remove">Annuler l\'ajout</string>
+    <string name="gamebox_lib_applist_remove">Annuler</string>
    <string name="gamebox_lib_applist_add_app_tip_pre">Démarrer le jeu de GameBox permet d\'accélérer <xliff:g id="percent">%1$s</xliff:g></string>
     <!-- box-->
     <string name="gamebox_lib_home_box_app_add">Ajout</string>
@@ -18,8 +18,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="gamebox_lib_download_network_error">Le réseau n\'est pas connecté</string>
     <!-- 快捷方式相关-->
     <string name="gamebox_lib_shortcut_label">GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> est déjà ajouté à GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">[ %1$s ]</xliff:g> est déjà ajouté à GameBox</string>
     <string name="gamebox_lib_shortcut_notification_content">GameBox peut accélérer la vitesse de démarrage du jeu</string>
     <string name="gamebox_lib_shortcut_notification_content_part">, voir maintenant</string>
     <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>

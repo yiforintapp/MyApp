@@ -5,7 +5,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- applist-->
     <string name="gamebox_lib_applist_title">Adaugă</string>
     <string name="gamebox_lib_applist_to_add">Adaugă</string>
-    <string name="gamebox_lib_applist_remove">Anulează adăugarea</string>
+    <string name="gamebox_lib_applist_remove">Anulare</string>
    <string name="gamebox_lib_applist_add_app_tip_pre">Pornește jocul de la GameBox pentru a accelera pentru <xliff:g id="percent">%1$s</xliff:g></string>
     <!-- box-->
     <string name="gamebox_lib_home_box_app_add">Adaugă</string>
@@ -18,8 +18,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="gamebox_lib_download_network_error">Reţeaua nu este conectată</string>
     <!-- 快捷方式相关-->
     <string name="gamebox_lib_shortcut_label">GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> fost adăugat la GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">[ %1$s ]</xliff:g> fost adăugat la GameBox</string>
     <string name="gamebox_lib_shortcut_notification_content">GameBox poate accelera viteza de pornire a jocurilor</string>
     <string name="gamebox_lib_shortcut_notification_content_part">, vezi acum</string>
     <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>

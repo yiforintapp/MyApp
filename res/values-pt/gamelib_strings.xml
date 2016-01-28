@@ -5,7 +5,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- applist-->
     <string name="gamebox_lib_applist_title">Adicionar</string>
     <string name="gamebox_lib_applist_to_add">Adicionar</string>
-    <string name="gamebox_lib_applist_remove">Cancelar </string>
+    <string name="gamebox_lib_applist_remove">Cancelar</string>
    <string name="gamebox_lib_applist_add_app_tip_pre">É possível acelerar o <xliff:g id="percent">%1$s</xliff:g> a partir do inicialização do GameBox</string>
     <!-- box-->
     <string name="gamebox_lib_home_box_app_add">Adicionar</string>
@@ -18,8 +18,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="gamebox_lib_download_network_error">A rede não está ligada</string>
     <!-- 快捷方式相关-->
     <string name="gamebox_lib_shortcut_label">GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title">O <xliff:g id="percent">%1$s</xliff:g> é adicionado ao GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_title">O <xliff:g id="percent">[ %1$s ]</xliff:g> é adicionado ao GameBox</string>
     <string name="gamebox_lib_shortcut_notification_content">O GameBox acelera o início do jogo</string>
     <string name="gamebox_lib_shortcut_notification_content_part">, veja agora</string>
     <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>

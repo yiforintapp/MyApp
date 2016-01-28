@@ -41,6 +41,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/gamebox_lib_box_app_item_name_margin_top"
         android:gravity="center"
+        android:ellipsize="none"
         android:maxLines="2"
         android:textColor="@color/gamebox_lib_box_app_item_textcolor"
         android:textSize="@dimen/gamebox_lib_box_app_item_name_textsize" />

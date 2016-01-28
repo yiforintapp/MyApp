@@ -71,8 +71,8 @@
     <dimen name="gamebox_lib_home_box_app_menu_remove_text_margin_right">8dp</dimen>
     <dimen name="gamebox_lib_home_box_app_menu_remove_text_margin_top">12dp</dimen>
     <dimen name="gamebox_lib_home_box_app_menu_remove_textsize">14dp</dimen>
-    <dimen name="gamebox_lib_home_box_app_menu_container_width">78dp</dimen>
-    <dimen name="gamebox_lib_home_box_app_menu_container_height">48dp</dimen>
+    <dimen name="gamebox_lib_home_box_app_menu_container_width">98dp</dimen>
+    <dimen name="gamebox_lib_home_box_app_menu_container_height">55dp</dimen>
     <dimen name="gamebox_lib_home_box_app_menu_container_bottom_width">16dp</dimen>
     <dimen name="gamebox_lib_home_box_app_menu_container_bottom_height">12dp</dimen>
     <!-- add app-->
@@ -131,6 +131,7 @@
     <dimen name="gamebox_lib_shortcut_folder_icon_size">60dp</dimen>
     <dimen name="gamebox_lib_shortcut_folder_icon_padding">2dp</dimen>
     <dimen name="gamebox_lib_shortcut_folder_icon_spacing">4dp</dimen>
+    <dimen name="gamebox_lib_shortcut_folder_icon_default_spacing">2dp</dimen>
     <!-- dlg 相关-->
     <dimen name="gamebox_lib_shortcut_dlg_tip_textsize">18sp</dimen>
     <dimen name="gamebox_lib_shortcut_dlg_btn_textsize">16sp</dimen>

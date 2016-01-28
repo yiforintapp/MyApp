@@ -5,7 +5,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- applist-->
     <string name="gamebox_lib_applist_title">Menambah</string>
     <string name="gamebox_lib_applist_to_add">Menambah</string>
-    <string name="gamebox_lib_applist_remove">Batal menambah</string>
+    <string name="gamebox_lib_applist_remove">Batal</string>
    <string name="gamebox_lib_applist_add_app_tip_pre">Menghidupkan permainan pada GameBox boleh mencepatkan <xliff:g id="percent">%1$s</xliff:g></string>
     <!-- box-->
     <string name="gamebox_lib_home_box_app_add">Menambah</string>
@@ -18,8 +18,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="gamebox_lib_download_network_error">Rangkaian tidak bersambung</string>
     <!-- 快捷方式相关-->
     <string name="gamebox_lib_shortcut_label">GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> telah ditambah ke GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">[ %1$s ]</xliff:g> telah ditambah ke GameBox</string>
     <string name="gamebox_lib_shortcut_notification_content">GameBox boleh mencepatkan penghidupan permainan</string>
     <string name="gamebox_lib_shortcut_notification_content_part">, lihat segera</string>
     <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>

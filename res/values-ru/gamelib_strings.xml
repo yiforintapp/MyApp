@@ -5,7 +5,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- applist-->
     <string name="gamebox_lib_applist_title">Добавить</string>
     <string name="gamebox_lib_applist_to_add">Добавить</string>
-    <string name="gamebox_lib_applist_remove">Отменить добавление</string>
+    <string name="gamebox_lib_applist_remove">Отмена</string>
    <string name="gamebox_lib_applist_add_app_tip_pre"> При запуске игры из GameBox увеличивается скорость <xliff:g id="percent">%1$s</xliff:g></string>
     <!-- box-->
     <string name="gamebox_lib_home_box_app_add">Добавить</string>
@@ -18,8 +18,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="gamebox_lib_download_network_error">Нет подключения к сети</string>
     <!-- 快捷方式相关-->
     <string name="gamebox_lib_shortcut_label">GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> добавлено в GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">[ %1$s ]</xliff:g> добавлено в GameBox</string>
     <string name="gamebox_lib_shortcut_notification_content">GameBox может увеличить скорость запуска игры</string>
     <string name="gamebox_lib_shortcut_notification_content_part">, посмотреть сейчас</string>
     <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>

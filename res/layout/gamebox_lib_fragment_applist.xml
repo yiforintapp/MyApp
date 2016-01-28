@@ -17,8 +17,9 @@
     <ListView
         android:id="@+id/listview_app_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/titlebar"
+        android:footerDividersEnabled="true"
         android:paddingRight="14dp"
         android:paddingLeft="14dp"
         android:divider="@drawable/gamebox_lib_app_list_divider"

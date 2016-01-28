@@ -1,5 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="gamebox_lib_CustomTitleBar">
+        <attr name="gamebox_lib_titlebar_title" format="string" />
+        <attr name="gamebox_lib_titlebar_title_color" format="color|reference" />
+        <attr name="gamebox_lib_titlebar_icon" format="color|reference" />
+        <attr name="gamebox_lib_titlebar_btn_text" format="string" />
+        <attr name="gamebox_lib_titlebar_btn_icon" format="color|reference" />
+        <attr name="gamebox_lib_titlebar_backgroud" format="color|reference"></attr>
+    </declare-styleable>
+
     <declare-styleable name="gamebox_lib_RoundProgressBar">
         <attr name="gamebox_lib_roundColor" format="color|reference" />
         <attr name="gamebox_lib_roundProgressColor" format="color|reference" />

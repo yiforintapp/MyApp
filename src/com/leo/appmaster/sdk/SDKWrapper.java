@@ -16,7 +16,6 @@ import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.game.box.GameBoxAgent;
 import com.leo.game.box.core.toolbox.ubc.IStatService;
-import com.leo.game.box.core.toolbox.ubc.UBC;
 import com.leo.push.IPushStatHelper;
 import com.leo.push.PushManager;
 import com.tendcloud.tenddata.TCAgent;

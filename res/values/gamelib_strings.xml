@@ -5,7 +5,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- applist-->
     <string name="gamebox_lib_applist_title">Add</string>
     <string name="gamebox_lib_applist_to_add">Add</string>
-    <string name="gamebox_lib_applist_remove">Cancel adding</string>
+    <string name="gamebox_lib_applist_remove">Cancel</string>
    <string name="gamebox_lib_applist_add_app_tip_pre">Start the game from GameBox to boost it by <xliff:g id="percent">%1$s</xliff:g></string>
     <!-- box-->
     <string name="gamebox_lib_home_box_app_add">Add</string>
@@ -18,8 +18,7 @@ xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="gamebox_lib_download_network_error">The network is not connected</string>
     <!-- 快捷方式相关-->
     <string name="gamebox_lib_shortcut_label">GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">%1$s</xliff:g> has been added to GameBox</string>
-    <string name="gamebox_lib_shortcut_notification_title_gamename">[ %s ] </string>
+    <string name="gamebox_lib_shortcut_notification_title"><xliff:g id="percent">[ %1$s ]</xliff:g> has been added to GameBox</string>
     <string name="gamebox_lib_shortcut_notification_content">GameBox can be used to boost games</string>
     <string name="gamebox_lib_shortcut_notification_content_part">, view it now</string>
     <string name="gamebox_lib_shortcut_notification_content_arrow">>></string>

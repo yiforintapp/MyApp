@@ -22,8 +22,6 @@
     <color name="gamebox_lib_app_icon_filter_color_press">#80ffffff</color>
     <color name="gamebox_lib_app_icon_filter_color_click">#802674f6</color>
     <color name="gamebox_lib_box_app_container_background">#f0f3f7</color>
-    <color name="gamebox_lib_box_plus_background_normal">#00000000</color>
-    <color name="gamebox_lib_box_plus_background_press">#ebeff4</color>
     <!--titlebar-->
     <color name="gamebox_lib_titlebar_icon_background_press">#0e58d1</color>
     <!-- shortcut-->

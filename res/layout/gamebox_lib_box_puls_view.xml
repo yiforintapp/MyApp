@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/app_plus_container"
+    android:layout_width="@dimen/gamebox_lib_box_app_item_container_width"
+    android:layout_height="@dimen/gamebox_lib_box_app_item_container_hegiht"
     android:background="@android:color/transparent">
 
-    <FrameLayout
+
+    <ImageView
         android:id="@+id/image_container"
+        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/gamebox_lib_box_app_plus_image_container_width"
         android:layout_height="@dimen/gamebox_lib_box_app_plus_image_container_height"
-        android:layout_centerHorizontal="true">
+        android:background="@drawable/gamebox_lib_box_plus_background" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/gamebox_lib_box_plus_background" />
-
-        <ImageView
-            android:layout_width="@dimen/gamebox_lib_box_app_plus_width"
-            android:layout_height="@dimen/gamebox_lib_box_app_plus_height"
-            android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:src="@mipmap/gamebox_lib_box_app_plus"></ImageView>
-    </FrameLayout>
 
     <TextView
         android:id="@+id/name"
@@ -32,6 +22,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/gamebox_lib_box_app_plus_name_margin_top"
         android:maxLines="2"
+        android:ellipsize="end"
         android:text="@string/gamebox_lib_home_box_app_add"
         android:textColor="@color/gamebox_lib_box_app_item_textcolor"
         android:textSize="@dimen/gamebox_lib_box_app_item_name_textsize"></TextView>
