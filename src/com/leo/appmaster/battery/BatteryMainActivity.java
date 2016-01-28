@@ -38,6 +38,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CircleView;
+import com.leo.appmaster.ui.CircleView.OnAfterImageDismissListener;
 import com.leo.appmaster.ui.CircleView.OnArroundFinishListener;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
@@ -321,14 +322,25 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                 mCvFront.startAnim(90, 90, new OnArroundFinishListener() {
                     @Override
                     public void onArroundFinish() {
+                        mCvFront.startAnim(mCvBack.getTailDegree() - 1, 0, null, false, (long)(mCvBack.getTailDegree() / 180) * 300);
                         mCvBack.startAnim(180, 180, new OnArroundFinishListener() {
                             @Override
                             public void onArroundFinish() {
                                 mCvFront.startAnim(0, 90, null, true, 300);
+                                 mCvFront.startAfterImageDismissAnim(new OnAfterImageDismissListener() {
+                                 @Override
+                                    public void onAfterImageDismiss() {
+                                        mIvShield.setVisibility(View.VISIBLE);
+                                        startTranslateAnim();
+                                        startShortenTopLayoutAnim();
+                                        startShowCompleteAnim();
+                                        showResultFragment();
+                                    }
+                                });
                             }
-                        }, true, 300);
+                        }, true, 200);
                     }
-                }, true, 300);
+                }, true, 200);
             }
             @Override
             public void onAnimationRepeat(Animation animation) {
@@ -336,10 +348,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             @Override
             public void onAnimationEnd(Animation animation) {
                 mIvShield.setVisibility(View.VISIBLE);
-                startTranslateAnim();
-                startShortenTopLayoutAnim();
-                startShowCompleteAnim();
-                showResultFragment();
             }
         });
         rotation.setFillAfter(false);  
@@ -398,13 +406,12 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     protected void startTranslateAnim() {
         mIvShield.setVisibility(View.VISIBLE);
-        float initialX = mRlShield.getX();
-        float initialY = mRlShield.getY();
+        float initialX = mIvShield.getX();
         PropertyValuesHolder holderX = PropertyValuesHolder.ofFloat("x", initialX, DipPixelUtil.dip2px(this, 0));
 //        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("top", initialY, DipPixelUtil.dip2px(this, 10));
-        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.80f);
-        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.80f);
-        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlShield, holderX,  holderScaleX, holderScaleY);
+        PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.70f);
+        PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.70f);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX,  holderScaleX, holderScaleY);
         anim.setDuration(TRANSLATE_ANIM_DURATION);
         anim.start();
     }
