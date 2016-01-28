@@ -1002,6 +1002,10 @@
         <item>我最喜欢的电影是哪部？</item>
         <item>我最喜欢的食物是哪种？</item>
         <item>我梦想的职业是？</item>
+        <item>我母亲的姓名是？</item>
+        <item>我父亲的姓名是？</item>
+        <item>我最喜欢的老师名字？</item>
+        <item>我的身份证后六位？</item>
     </string-array>
 
     <string name="scan_result_title">处理结果</string>
