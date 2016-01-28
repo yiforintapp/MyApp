@@ -239,7 +239,7 @@ public class QuickHelperActivity extends BaseActivity {
                         Intent intent;
                         int id = (int) getItemId(finalRealPosition);
                         switch (id) {
-                            case R.drawable.ic_up_iswipe:
+                            case R.drawable.qh_gamebox_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_gameboost");
                                 SDKWrapper.createGameBoxIcons(QuickHelperActivity.this.getApplicationContext());
