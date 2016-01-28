@@ -122,7 +122,7 @@ public class QuickHelperActivity extends BaseActivity {
 //            POSITION_ELEC = 8;
 //            } else {
             mHelperResourceIDs = new int[]{
-                    R.drawable.ic_up_iswipe, /* TODO 更换为游戏加速图标 */
+                    R.drawable.qh_gamebox_icon,
                     R.drawable.qh_image_icon, R.drawable.qh_video_icon,
                     R.drawable.qh_intruder_icon,R.drawable.qh_call_filter,
                     R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
