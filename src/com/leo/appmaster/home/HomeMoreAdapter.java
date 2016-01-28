@@ -85,7 +85,7 @@ public class HomeMoreAdapter extends BaseAdapter {
     private static final int ID_RES_DEVICE_GPRS = R.drawable.ic_up_gprs;
     private static final int ID_RES_DEVICE_POWER = R.drawable.ic_up_power;
     private static final int ID_RES_HELPER_SHOT = R.drawable.ic_up_short;
-    private static final int ID_RES_HELPER_ISWIPE = R.drawable.ic_up_iswipe;
+    private static final int ID_RES_GAME_BOX = R.drawable.icon_list_gamebox;
 
     private SparseIntArray mStrArray;
     private List<Integer> mLabelArray;
@@ -110,7 +110,7 @@ public class HomeMoreAdapter extends BaseAdapter {
         arrayList.add(ARRAY_DEVICE);
         arrayList.add(ARRAY_HELPER);
 
-        mDrawableArray.put(R.string.game_box_one, ID_RES_HELPER_ISWIPE);
+        mDrawableArray.put(R.string.game_box_one, ID_RES_GAME_BOX);
 //        mDrawableArray.put(R.string.home_tab_lost, ID_RES_PHONE_LOST);
         mDrawableArray.put(R.string.home_tab_instruder, ID_RES_PHONE_LOST);
         mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT);
