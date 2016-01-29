@@ -2,15 +2,15 @@
 <com.leo.game.box.ui.home.box.DefaultBoxView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/gamebox_lib_box_app_container_padding_top"
     android:background="@color/gamebox_lib_box_app_container_background"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/gamebox_lib_box_app_container_padding_top">
+    android:orientation="vertical">
 
-    <include
+    <com.leo.game.box.ui.home.box.PlusView
         android:id="@+id/box_app_plus"
-        layout="@layout/gamebox_lib_box_puls_view"
         android:layout_width="@dimen/gamebox_lib_box_app_item_container_width"
-        android:layout_height="@dimen/gamebox_lib_box_app_item_container_hegiht"></include>
+        android:layout_height="@dimen/gamebox_lib_box_app_item_container_hegiht"
+        android:layout_alignParentLeft="true"></com.leo.game.box.ui.home.box.PlusView>
 
     <ImageView
         android:id="@+id/box_app_plus_guide"

@@ -16,4 +16,6 @@
     <dimen name="gamebox_lib_add_app_name_text_maxwidth">100dp</dimen>
     <!-- folder icon-->
     <dimen name="gamebox_lib_shortcut_folder_icon_size">42dp</dimen>
+    <dimen name="gamebox_lib_shortcut_folder_icon_padding">2dp</dimen>
+    <dimen name="gamebox_lib_shortcut_folder_icon_spacing">4dp</dimen>
 </resources>

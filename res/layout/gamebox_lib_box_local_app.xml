@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.leo.game.box.ui.home.box.LocalAppView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/gamebox_lib_box_app_item_container_width"
     android:layout_height="@dimen/gamebox_lib_box_app_item_container_hegiht"
-    android:id="@+id/container"
     android:background="@android:color/transparent"
     android:fitsSystemWindows="true">
 
@@ -26,4 +25,4 @@
         android:textColor="@color/gamebox_lib_box_app_item_textcolor"
         android:textSize="@dimen/gamebox_lib_box_app_item_name_textsize"></TextView>
 
-</com.leo.game.box.ui.home.box.LocalAppView>
+</RelativeLayout>

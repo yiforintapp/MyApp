@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarSize="3dp"
-        android:fitsSystemWindows="true"
         android:scrollbarStyle="outsideInset"
         android:scrollbarThumbVertical="@drawable/gamebox_lib_box_app_scrollbar_thumbvertical"
         android:scrollbarTrackVertical="@drawable/gamebox_lib_box_app_scrollbar_trackvertical">
@@ -24,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:cacheColorHint="@color/gamebox_lib_transparent"
+            android:columnWidth="69dp"
             android:gravity="center"
             android:horizontalSpacing="10dp"
             android:listSelector="@android:color/transparent"
@@ -33,7 +33,7 @@
             android:paddingTop="@dimen/gamebox_lib_box_app_container_padding_top"
             android:scrollbarAlwaysDrawVerticalTrack="true"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp"></com.leo.game.box.widget.StaticGridView>
+            android:verticalSpacing="12dp"></com.leo.game.box.widget.StaticGridView>
     </com.leo.game.box.widget.ObservableScrollView>
 
     <ViewStub
