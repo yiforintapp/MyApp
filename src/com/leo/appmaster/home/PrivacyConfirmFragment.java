@@ -248,6 +248,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "points", "points_sug_" + score);
+
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "result");
     }
 
     @Override
@@ -1356,10 +1358,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             Utilities.goFiveStar(mActivity, true, true);
         } else if (mBoxOne == v) {
             resultToAppLock();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "result_app_cnts");
         } else if (mBoxTwo == v) {
             resultToPic();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "result_pic_cnts");
         } else if (mBoxThree == v) {
             resultToVid();
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "result_vid_cnts");
         }
 
     }

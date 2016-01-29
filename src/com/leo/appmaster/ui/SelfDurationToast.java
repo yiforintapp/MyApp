@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.AnimationListenerAdapter;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
@@ -176,6 +177,15 @@ public class SelfDurationToast {
         mTextTwo = (TextView) view.findViewById(R.id.tv_clean_rocket_two);
         result.mNextView = view;
         result.mDuration = duration;
+
+
+        if (wifiState == 2) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "wifi_scan", "wifi_toast_unsafe");
+        } else {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "wifi_scan", "wifi_toast_safe");
+        }
 
         readyShow(wifiState);
 
