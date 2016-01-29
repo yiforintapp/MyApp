@@ -187,17 +187,11 @@
         android:background="@drawable/bottom_title"
         android:gravity="center">
 
-        <ImageView
-            android:id="@+id/small_icon_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/icon_title_handle" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/small_icon_result"
+            android:drawableLeft="@drawable/icon_title_handle"
+            android:drawablePadding="5dp"
             android:text="@string/scan_result_title"
             android:textColor="@color/white"
             android:textSize="14dp" />

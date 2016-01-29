@@ -743,9 +743,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             if (appnum == 0) {
                 item_one_num.setVisibility(View.GONE);
                 item_iv_one.setVisibility(View.VISIBLE);
-                LeoLog.d("testConfrim","appnum == 0");
+                LeoLog.d("testConfrim", "appnum == 0");
             } else {
-                LeoLog.d("testConfrim","appnum != 0");
+                LeoLog.d("testConfrim", "appnum != 0");
                 item_one_num.setVisibility(View.VISIBLE);
                 item_one_num.setText(appnum + "");
                 item_iv_one.setVisibility(View.GONE);
@@ -760,12 +760,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 item_iv_two.setVisibility(View.GONE);
             }
 
-            if (picnum == 0) {
+            if (vidnum == 0) {
                 item_three_num.setVisibility(View.GONE);
                 item_three_bottom.setVisibility(View.VISIBLE);
             } else {
                 item_three_num.setVisibility(View.VISIBLE);
-                item_three_num.setText(vidnum+"");
+                item_three_num.setText(vidnum + "");
                 item_three_bottom.setVisibility(View.GONE);
             }
 
