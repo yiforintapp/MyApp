@@ -997,25 +997,28 @@
     <string name="sliding_icon">&#xe61d;</string>
 
     <!-- 3.3.1 -->
+
     <string-array name="default_psw_protect_entrys_new">
-        <item>我的幸运数字是多少？</item>
-        <item>我最喜欢的电影是哪部？</item>
-        <item>我最喜欢的食物是哪种？</item>
-        <item>我梦想的职业是？</item>
-        <item>我母亲的姓名是？</item>
-        <item>我父亲的姓名是？</item>
-        <item>我最喜欢的老师名字？</item>
-        <item>我的身份证后六位？</item>
+        <item>What's my lucky number?</item>
+        <item>What's my favorite movie?</item>
+        <item>What's my favorite food?</item>
+        <item>What's my ideal profession?</item>
+        <item>What\'s my mother's name?</item>
+        <item>What\'s my father's name?</item>
+        <item>What\'s my favorite teacher's name?</item>
+        <item>What\'s the last 6 number of my ID card?</item>
     </string-array>
 
-    <string name="scan_result_title">处理结果</string>
-    <string name="scan_done_app">加锁应用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
-    <string name="scan_done_pic">隐藏图片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张</string>
-    <string name="scan_done_vid">隐藏视频<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
+    <string name="scan_result_title">Processing Result</string>
+    <string name="scan_done_app">Lock application</string>
+    <string name="scan_done_pic">Hide pictures</string>
+    <string name="scan_done_vid">Hide videos</string>
 
     <string name="scan_done_app_new">加锁应用</string>
     <string name="scan_done_pic_new">隐藏图片</string>
     <string name="scan_done_vid_new">隐藏视频</string>
 
     <string name="game_box_one">游戏加速</string>
+    <string name="game_box_one">Game accelerating</string>
+
 </resources>

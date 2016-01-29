@@ -1026,7 +1026,7 @@
     <string name="callfilter_share_content">أهلا، جارى أن أستخدم وظيفة اعتراض المكالمة هاتفيا بحارس الخصوصية. وأمنع هؤلاء البائعين، المهم : يتبين المكالمات الواردة تلقائيا، بمجرد البسيط . أرغب فى أن تستخدمه معا .</string>
     <string name="intruder_share_content"> قد.الغزاة من لوقاية الخصوصية حارس وظييفة أستخدم أن جاري %1$s يتصفحوا أن هؤلاء عرفت الآن جوالي لتصفح شخص لتصوير ساعدني  بسرعة اجرب جوالي</string>
     <string name="up_list_swifty_title">ترقية الفعالية</string>
-	<string name="batterymanage_boosted_number">%1$d هي الأمثل البنود</string>	    
+    <string name="batterymanage_boosted_number">%1$d هي الأمثل البنود</string>
     <string name="screen_protect_type_one">الشحن سريعا</string>
     <string name="screen_protect_type_two">الشحن بالتيار الثابت</string>
     <string name="screen_protect_type_three">الشحن بالتيار المتكسر</string>
@@ -1049,6 +1049,26 @@
     <string name="screen_protect_charing_text_three">قد تم الشحن ، اخرج شاحن الكهرباء</string>
     <string name="screen_protect_charing_text_four">قد تم الشحن</string>
     <string name="batterymanage_scaning">مسح</string>
-	<string name="batterymanage_boosting">معالجة</string>
-	<string name="batterymanage_notif_process">معالجة</string>
+    <string name="batterymanage_boosting">معالجة</string>
+    <string name="batterymanage_notif_process">معالجة</string>
+
+    <!--3.3.1-->
+    <string-array name="default_psw_protect_entrys_new">
+        <item>ما رقمي المحظوظ ؟</item>
+        <item>أي فيلم أحب إلىَ؟</item>
+        <item>أي طعام أحب إلىَ؟</item>
+        <item>أي مهنة أريد أن أحترفها؟</item>
+        <item>ما اسم أمي ؟</item>
+        <item>ما اسم أبي ؟</item>
+        <item>ما اسم أستاذي أحب اليِ؟</item>
+        <item>ما الارقام الستّة الاخيرة في بطاقة الهوية؟</item>
+    </string-array>
+
+    <string name="scan_result_title">نتائج المعالجة</string>
+    <string name="scan_done_app">تطبيق مقفول</string>
+    <string name="scan_done_pic"> اختباء الصور </string>
+    <string name="scan_done_vid">اختباء الفيديو</string>
+
+    <string name="game_box_one">تسريع اللعب</string>
+
 </resources>
