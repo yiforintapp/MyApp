@@ -478,6 +478,12 @@ public final class Utilities {
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
+            String [] data = getBrowserInfo(context, url); // 浏览器信息
+            int count = Integer.parseInt(data[0]);
+            if (count == 1) {
+                LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                lockManager.filterPackage(data[1], 1000);
+            }
             context.startActivity(intent);
             LeoLog.i("goFiveStar", "intent: " + intent.toURI());
         } catch (Exception e) {
@@ -505,6 +511,8 @@ public final class Utilities {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
         try {
+            LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            lockManager.filterPackage("com.android.browser", 1000);
             context.startActivity(intent);
             LeoLog.i("goFiveStar", "intent: " + intent.toURI());
         } catch (Exception e) {
@@ -553,6 +561,12 @@ public final class Utilities {
             intentLikeUs.setData(uri);
             intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                String [] data = getBrowserInfo(context, url); // 浏览器信息
+                int count = Integer.parseInt(data[0]);
+                if (count == 1) {
+                    LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                    lockManager.filterPackage(data[1], 1000);
+                }
                 context.startActivity(intentLikeUs);
             } catch (Exception e) {
             }
@@ -716,6 +730,12 @@ public final class Utilities {
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
+            String [] data = getBrowserInfo(context, url); // 浏览器信息
+            int count = Integer.parseInt(data[0]);
+            if (count == 1) {
+                LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                lockManager.filterPackage(data[1], 1000);
+            }
             context.startActivity(intent);
         } catch (Exception e) {
             gotoGpByPkg(pkgName, context);
@@ -723,15 +743,16 @@ public final class Utilities {
     }
 
     /** 获取浏览器个数和只有一个浏览器的包名 */
-    public static String[] getBrowserInfo(Context context) {
+    public static String[] getBrowserInfo(Context context, String url) {
         String default_browser = "android.intent.category.DEFAULT";
+
         String browsable = "android.intent.category.BROWSABLE";
         String view = "android.intent.action.VIEW";
 
         Intent intent = new Intent(view);
         intent.addCategory(default_browser);
         intent.addCategory(browsable);
-        Uri uri = Uri.parse("http://");
+        Uri uri = Uri.parse(url);
         intent.setDataAndType(uri, null);
 
         String[] data = new String[]{"0", ""};

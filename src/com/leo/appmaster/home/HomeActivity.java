@@ -1,8 +1,5 @@
 package com.leo.appmaster.home;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
@@ -86,6 +83,9 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.utils.IoUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener {
@@ -1081,6 +1081,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                                 .parse("https://plus.google.com/u/0/communities/112552044334117834440");
                         intentBeta = new Intent(Intent.ACTION_VIEW, uri);
                         try {
+                            String [] data = Utilities.getBrowserInfo(HomeActivity.this,
+                                    "https://plus.google.com/u/0/communities/112552044334117834440"); // 浏览器信息
+                            int count = Integer.parseInt(data[0]);
+                            if (count == 1) {
+                                mLockManager.filterPackage(data[1], 1000);
+                            }
                             startActivity(intentBeta);
                         } catch (Exception e) {
                         }
@@ -1112,6 +1118,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                         intentLikeUs.setData(uri);
                         intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         try {
+                            String [] data = Utilities.getBrowserInfo(HomeActivity.this,
+                                    "https://www.facebook.com/pages/App-Master/1709302419294051"); // 浏览器信息
+                            int count = Integer.parseInt(data[0]);
+                            if (count == 1) {
+                                mLockManager.filterPackage(data[1], 1000);
+                            }
                             startActivity(intentLikeUs);
                         } catch (Exception e) {
                         }
