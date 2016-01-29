@@ -3,19 +3,70 @@
     style="@style/ResultItemConfirmItem">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom_title" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"
         android:layout_marginTop="14dp"
-        android:background="@drawable/pri_pro_confirm_item">
+        android:background="@drawable/pri_pro_confirm_item"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:id="@+id/box_one"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bottom_result_app">
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/box_two"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/box_one"
+            android:background="@drawable/bottom_result_pic">
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/box_three"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/box_two"
+            android:background="@drawable/bottom_result_video">
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/small_icon_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_title_handle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/small_icon_result"
+            android:text="@string/scan_result_title"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
 
 </RelativeLayout>
