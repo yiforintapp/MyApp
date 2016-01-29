@@ -826,4 +826,30 @@ public final class Utilities {
         context.startActivity(Intent.createChooser(intent, title));
     }
 
+
+    public static String replaceOldString(String[] newStrings, String[] oldStrings, String question) {
+
+        if (question.equals(oldStrings[0])) {
+            question = newStrings[4];
+        } else if (question.equals(oldStrings[1])) {
+            question = newStrings[5];
+        } else if (question.equals(oldStrings[2])) {
+            question = newStrings[6];
+        } else {
+            question = newStrings[7];
+        }
+
+        return question;
+    }
+
+    public static boolean makeContrast(String[] oldStrings, String question) {
+        boolean isOldString = false;
+        for (int i = 0; i < oldStrings.length; i++) {
+            String string = oldStrings[i];
+            if (string.equals(question)) {
+                isOldString = true;
+            }
+        }
+        return isOldString;
+    }
 }

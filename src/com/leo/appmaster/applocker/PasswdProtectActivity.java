@@ -32,6 +32,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
+import com.leo.appmaster.utils.Utilities;
 
 public class PasswdProtectActivity extends BaseActivity implements
         OnClickListener {
@@ -118,7 +119,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                 onBackPressed();
                 // }
                 // }, 500);
-            
+
             }
         });
         mTtileBar.setOptionMenuVisible(true);
@@ -156,90 +157,34 @@ public class PasswdProtectActivity extends BaseActivity implements
                 }
                 mQuesDialog.setTitle(getResources().getString(R.string.input_qusetion));
                 int index = 0;
-                if(mSelectQues != null){
-                    for(int i = 0 ;i<mCategories.size() ;i++ ){
-                        if(mCategories.get(i).equals(mSelectQues)){
-                            index = i ;
+                if (mSelectQues != null) {
+                    for (int i = 0; i < mCategories.size(); i++) {
+                        if (mCategories.get(i).equals(mSelectQues)) {
+                            index = i;
                         }
                     }
-                }else{
-                    for(int i = 0 ;i<mCategories.size() ;i++ ){
-                        if(mCategories.get(i).equals(AppMasterPreference.getInstance(PasswdProtectActivity.this))){
+                } else {
+                    for (int i = 0; i < mCategories.size(); i++) {
+                        if (mCategories.get(i).equals(AppMasterPreference.getInstance(PasswdProtectActivity.this))) {
 //                              .getPpQuestion())){
-                            index = i ;
+                            index = i;
                         }
                     }
                 }
-                    mQuesDialog.setItemsWithDefaultStyle(mCategories, index);
-                    mQuesDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
+                mQuesDialog.setItemsWithDefaultStyle(mCategories, index);
+                mQuesDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
 
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-                            mQuestion.setText(mCategories.get(position));
-                          mQuestion.selectAll();
-                          mSelectQues = mCategories.get(position);
-                          mQuesDialog.dismiss();
-                        }
-                    });
-                    mQuesDialog.show();
-                }
-//            holder.name.setText(mCategories.get(position));
-//
-//            if (mSelectQues != null) {
-//                if (mCategories.get(position).equals(mSelectQues)) {
-//                    holder.selecte.setVisibility(View.VISIBLE);
-//                } else {
-//                    holder.selecte.setVisibility(View.GONE);
-//                }
-//            } else {
-//                if (mCategories.get(position)
-//                        .equals(AppMasterPreference.getInstance(PasswdProtectActivity.this)
-//                                .getPpQuestion())) {
-//                    holder.selecte.setVisibility(View.VISIBLE);
-//                } else {
-//                    holder.selecte.setVisibility(View.GONE);
-//                }
-//            }
-            
-            
-            
-            
-                
-//                if (mQuesDialog == null) {
-//                    
-//                    mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this, R.style.bt_dialog);
-//                    
-//                    mQuesDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                    mQuesDialog.setContentView(R.layout.dialog_common_list_select);
-//                    mQuesDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
-//                }
-//                mQuesList = (ListView) mQuesDialog.findViewById(R.id.item_list);
-//                mQuesList.setOnItemClickListener(new OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position,
-//                                            long id) {
-//                        mQuestion.setText(mCategories.get(position));
-//                        mQuestion.selectAll();
-//                        mSelectQues = mCategories.get(position);
-//                        mQuesDialog.dismiss();
-//                    }
-//                });
-//                View cancel = mQuesDialog.findViewById(R.id.dlg_bottom_btn);
-//                cancel.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        mQuesDialog.dismiss();
-//                    }
-//                });
-//
-//                TextView mTitle = (TextView) mQuesDialog.findViewById(R.id.dlg_title);
-//                mTitle.setText(getResources().getString(R.string.input_qusetion));
-//                ListAdapter adapter = new QuesListAdapter(PasswdProtectActivity.this);
-//                mQuesList.setAdapter(adapter);
-//
-//                mQuesDialog.show();
-//            }
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position,
+                                            long id) {
+                        mQuestion.setText(mCategories.get(position));
+                        mQuestion.selectAll();
+                        mSelectQues = mCategories.get(position);
+                        mQuesDialog.dismiss();
+                    }
+                });
+                mQuesDialog.show();
+            }
         });
 
         mLayoutQues = findViewById(R.id.layout_questions);
@@ -294,7 +239,16 @@ public class PasswdProtectActivity extends BaseActivity implements
 
         mScrollView = (ScrollView) findViewById(R.id.scroll);
         String question = AppMasterPreference.getInstance(this).getPpQuestion();
+
         if (!TextUtils.isEmpty(question)) {
+            //检验问题是否为旧版本的病句
+            String[] oldStrings = getResources().getStringArray(
+                    R.array.default_psw_protect_entrys);
+            boolean isOldString = Utilities.makeContrast(oldStrings, question);
+            if (isOldString) {
+                question = Utilities.replaceOldString(entrys, oldStrings, question);
+            }
+
             mQuestion.setText(question);
             mQuestion.selectAll();
         } else {
@@ -309,10 +263,34 @@ public class PasswdProtectActivity extends BaseActivity implements
                 Spannable spanText = (Spannable) astext;
                 Selection.setSelection(spanText, astext.length());
             }
-
         }
-
     }
+
+//    private String replaceOldString(String[] newStrings, String[] oldStrings, String question) {
+//
+//        if (question.equals(oldStrings[0])) {
+//            question = newStrings[4];
+//        } else if (question.equals(oldStrings[1])) {
+//            question = newStrings[5];
+//        } else if (question.equals(oldStrings[2])) {
+//            question = newStrings[6];
+//        } else {
+//            question = newStrings[7];
+//        }
+//
+//        return question;
+//    }
+//
+//    private boolean makeContrast(String[] oldStrings, String question) {
+//        boolean isOldString = false;
+//        for (int i = 0; i < oldStrings.length; i++) {
+//            String string = oldStrings[i];
+//            if (string.equals(question)) {
+//                isOldString = true;
+//            }
+//        }
+//        return isOldString;
+//    }
 
     private void hideIME() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

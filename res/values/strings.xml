@@ -359,12 +359,6 @@
     <!-- What's Hot -->
     <string name="hot_app_free">Free</string>
 
-    <string-array name="default_psw_protect_entrys">
-        <item>Who\'s my mom?</item>
-        <item>Who\'s my dad?</item>
-        <item>My favorite teacher?</item>
-        <item>Last 6 digits of ID card?</item>
-    </string-array>
 
     <string name="mode_save_hint">Save mode</string>
     <string name="mode_save_ask">Save changes of  <xliff:g id="mode">%1$s</xliff:g>?</string>
@@ -995,6 +989,13 @@
 
     <!-- 屏保页面向下的剪头 -->
     <string name="sliding_icon">&#xe61d;</string>
+
+    <string-array name="default_psw_protect_entrys">
+        <item>Who\'s my mom?</item>
+        <item>Who\'s my dad?</item>
+        <item>My favorite teacher?</item>
+        <item>Last 6 digits of ID card?</item>
+    </string-array>
 
     <!-- 3.3.1 -->
     <string-array name="default_psw_protect_entrys_new">

@@ -356,6 +356,17 @@
         <item>我的身份证后六位？</item>
     </string-array>
 
+    <string-array name="default_psw_protect_entrys_new">
+        <item>我的幸运数字是多少？</item>
+        <item>我最喜欢的电影是哪部？</item>
+        <item>我最喜欢的食物是哪种？</item>
+        <item>我梦想的职业是？</item>
+        <item>你老母叫咩？</item>
+        <item>你老豆叫咩？</item>
+        <item>我最喜欢的老师叫咩？</item>
+        <item>我的1234位？</item>
+    </string-array>
+
     <string name="mode_save_hint">保存情景模式</string>
     <string name="time_lock_save_hint">保存时间锁</string>
     <string name="location_lock_save_hint">保存位置锁</string>
@@ -814,7 +825,6 @@
     <string name="wifi_result_wifimaster_content">马上进行WiFi测速，选择最快的WiFi链接！</string>
     <string name="pri_result_wifimaster_btn">开启</string>
     <string name="video_guide_txt">点击编辑按钮，就可以勾选视频取消隐藏哦～</string>
-
     <!-- 3.2 -->
     <string name="call_filter_remove_from_blacklist_checkbox_title">您将会收到这个号码的来电，确认要移出黑名单吗？</string>
     <string name="call_filter_remove_from_blacklist_checkbox_text">是否同步将拦截记录恢复到通话记录</string>

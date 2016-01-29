@@ -114,6 +114,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -140,7 +141,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
-        OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */{
+        OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
 
     public static final String TAG = "LockScreenActivity";
 
@@ -184,8 +185,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
-	//private String[] mBannerAdids = {Constants.UNIT_ID_59};
-	private String[] mBannerAdids = {"12346_00001"};
+    //private String[] mBannerAdids = {Constants.UNIT_ID_59};
+    private String[] mBannerAdids = {"12346_00001"};
 
     private RelativeLayout mPretendLayout;
     private PretendFragment mPretendFragment;
@@ -219,7 +220,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private boolean mCanTakePhoto = true;
     //照片是否已经保存完毕，保存完毕后置为true，true才能进入抓拍结果界面，每次拍照置为false //暂时不用
     public static boolean mIsPicSaved = false;
-    
+
     public static boolean mHasTakePic = false;
     //
 //    public boolean mIs
@@ -239,8 +240,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         }
     };
-    
-    public void setCanTakePhoto(boolean flag){
+
+    public void setCanTakePhoto(boolean flag) {
         mCanTakePhoto = flag;
     }
 
@@ -319,35 +320,35 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             return;
         }
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-                "intruder", "intruder_package_"+packagename);
+                "intruder", "intruder_package_" + packagename);
         if (view != null && mCanTakePhoto) {
             view.takePicture(new PictureCallback() {
                 @Override
                 public void onPictureTaken(final byte[] data, Camera camera) {
                     LeoLog.i("poha", "has taken!!!");
                     mCanTakePhoto = false;
-                    LeoLog.i("poha", "pic taken!!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+mHasTakePic+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
+                    LeoLog.i("poha", "pic taken!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
                     mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
                             AppMasterApplication ama = AppMasterApplication.getInstance();
-                            Bitmap bitmapt = null; 
+                            Bitmap bitmapt = null;
                             try {
                                 bitmapt = BitmapUtils.bytes2BimapWithScale(data, LockScreenActivity.this);
                             } catch (Throwable e) {
                             }
                             //旋转原始bitmap到正确的方向
-                            
+
                             Matrix m = new Matrix();
                             int orientation = view.getCameraOrientation();
-                            m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
-                            bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth() , bitmapt.getHeight() , m, true);
-                            String timeStamp = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT) .format(new Date());
-                            
+                            m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2, (float) bitmapt.getHeight() / 2);
+                            bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth(), bitmapt.getHeight(), m, true);
+                            String timeStamp = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT).format(new Date());
+
                             //添加水印
-                            bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp,packagename, ama);
-                            
+                            bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp, packagename, ama);
+
                             //将bitmap压缩并保存
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             bitmapt.compress(Bitmap.CompressFormat.JPEG, 80, baos);
@@ -363,7 +364,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 fos.write(finalBytes);
                                 fos.close();
                                 // 隐藏图片
-                                finalPicPath = mPDManager.onHidePic(photoSavePath.getPath() , null);
+                                finalPicPath = mPDManager.onHidePic(photoSavePath.getPath(), null);
                                 FileOperationUtil.saveFileMediaEntry(finalPicPath, ama);
                                 FileOperationUtil.deleteImageMediaEntry(photoSavePath.getPath(), ama);
                                 mIsPicSaved = true;
@@ -373,15 +374,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 LeoLog.i("poha", "exception!!   ..." + e.toString());
                                 return;
                             }
-                            
-                            IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath,packagename, timeStamp);
+
+                            IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath, packagename, timeStamp);
                             mISManager.insertInfo(info);
                             mIsPicSaved = true;
                             mPt.putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
 //                            mPt.putBoolean(PrefConst.KEY_HAS_LATEAST, true);
-                            LeoLog.i("poha", "after insert, before judge!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
-                            if(mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false) && mIsPicSaved){
-                                mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
+                            LeoLog.i("poha", "after insert, before judge!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
+                            if (mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false) && mIsPicSaved) {
+                                mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false);
                                 Intent intent = new Intent(getApplicationContext(), IntruderCatchedActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("pkgname", mLockedPackage);
@@ -390,19 +391,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 startActivity(intent);
                                 mHasTakePic = false;
                                 mIsPicSaved = false;
-                                LeoLog.i("poha", "delay!! has enter catch !!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
+                                LeoLog.i("poha", "delay!! has enter catch !!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
                             }
                             bitmapt.recycle();
                         }
                     });
-                    if(mLockFragment != null) {
+                    if (mLockFragment != null) {
                         mLockFragment.removeCamera();
                     }
                 }
             });
         } else {
             LeoLog.i("poha", "view == null or can't take");
-            if(mLockFragment != null) {
+            if (mLockFragment != null) {
                 ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                     @Override
                     public void run() {
@@ -482,19 +483,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
-            PasswdLockFragment plf = (PasswdLockFragment)mLockFragment;
+            PasswdLockFragment plf = (PasswdLockFragment) mLockFragment;
             View icon = plf.getIconView();
-            if(icon != null) {
+            if (icon != null) {
                 icon.setAlpha(1.0f);
             }
             View hint = plf.getPasswdHint();
-            if(hint != null) {
+            if (hint != null) {
                 hint.setAlpha(1.0f);
             }
         } else {
-            GestureLockFragment glf = (GestureLockFragment)mLockFragment;
+            GestureLockFragment glf = (GestureLockFragment) mLockFragment;
             View icon = glf.getIconView();
-            if(icon != null) {
+            if (icon != null) {
                 icon.setAlpha(1.0f);
             }
         }
@@ -514,7 +515,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 startShakeRotateAnimation(true);
             }
         }
-        
+
         setMobvistaIcon();
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
@@ -728,15 +729,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //            mTtileBar.setTitle(R.string.app_name);
             setTiltleBarInfo(getPackageName());
         }
-        
-        if(mLockedPackage == null) {
+
+        if (mLockedPackage == null) {
             mLockedPackage = getPackageName();
         }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
             mLockedPackage = newLockedPkg;
-            if(mLockedPackage == null) {
+            if (mLockedPackage == null) {
                 mLockedPackage = getPackageName();
             }
             if (mPretendFragment != null) {
@@ -835,8 +836,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } else {
             mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         }
-        
-        if(mLockedPackage == null) {
+
+        if (mLockedPackage == null) {
             mLockedPackage = getPackageName();
         }
 
@@ -954,9 +955,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         mLockAppTitleView.setText(AppUtil.getAppLabel(getPackageManager(), pkg));
         Drawable iconDraw = AppUtil.getAppIconDrawble(pkg);
-        if(iconDraw != null) {
+        if (iconDraw != null) {
             int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
-            iconDraw.setBounds(0,0,w,w);
+            iconDraw.setBounds(0, 0, w, w);
             mLockAppTitleView.setCompoundDrawables(iconDraw, null, null, null);
             mLockAppTitleView.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
         }
@@ -1020,10 +1021,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 @Override
                 public void run() {
                     // 避免产生anr，放到子线程
-					LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(LEOAdManager.UNIT_ID_LOCK);
+                    LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(LEOAdManager.UNIT_ID_LOCK);
                 }
             });
-			
+
             for (String key : mAdBitmapMap.keySet()) {
                 Bitmap image = mAdBitmapMap.get(key);
                 image.recycle();
@@ -1033,10 +1034,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(mBannerContainer != null) {
+        if (mBannerContainer != null) {
             try {
                 mBannerContainer.setVisibility(View.GONE);
-            } catch(Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -1044,7 +1045,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        if(mLockFragment != null) {
+        if (mLockFragment != null) {
             mLockFragment.onActivityStop();
         }
     }
@@ -1149,7 +1150,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
         mMrlGift = (RippleView) findViewById(R.id.mr_gift);
         mMrlGift.setOnClickListener(this);
-        
+
         mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
         if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
             ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
@@ -1174,7 +1175,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 初始化广告UI */
     private void initAD() {
-        mBannerParent = (FrameLayout)findViewById(R.id.large_adbanner_parent);
+        mBannerParent = (FrameLayout) findViewById(R.id.large_adbanner_parent);
         mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
         mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
         mBannerContainer.setOffscreenPageLimit(2);
@@ -1203,77 +1204,77 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         for (int i = 0; i < mBannerAdids.length; i++) {
             final String unitId = mBannerAdids[i];
 
-			final LEOAdEngine leoAdEngine = LEOAdEngine.getInstance(this.getApplicationContext());
-			leoAdEngine.loadMobvista(LEOAdManager.UNIT_ID_LOCK, new LEOAdEngine.LeoListener() {
-				/**
-				 * 广告请求回调
-				 *
-				 * @param code     返回码，如ERR_PARAMS_NULL
-				 * @param campaign 请求成功的广告结构体，失败为null
-				 * @param msg      请求失败sdk返回的描述，成功为null
-				 */
-				@Override
-				public void onLeoAdLoadFinished(int code, LEONativeAdData campaign, String msg) {
-					if (campaign != null && campaign.getCode() == MaxSdk.ERR_OK && deleteRedundant(unitId, campaign)) {
-						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
-							@Override
-							public void onLoadingStarted(String imageUri, View view) {
+            final LEOAdEngine leoAdEngine = LEOAdEngine.getInstance(this.getApplicationContext());
+            leoAdEngine.loadMobvista(LEOAdManager.UNIT_ID_LOCK, new LEOAdEngine.LeoListener() {
+                /**
+                 * 广告请求回调
+                 *
+                 * @param code     返回码，如ERR_PARAMS_NULL
+                 * @param campaign 请求成功的广告结构体，失败为null
+                 * @param msg      请求失败sdk返回的描述，成功为null
+                 */
+                @Override
+                public void onLeoAdLoadFinished(int code, LEONativeAdData campaign, String msg) {
+                    if (campaign != null && campaign.getCode() == MaxSdk.ERR_OK && deleteRedundant(unitId, campaign)) {
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
+                            @Override
+                            public void onLoadingStarted(String imageUri, View view) {
                                 LeoLog.d("STONE_AD_DEBUG", "start to load preview for: " + imageUri);
-							}
+                            }
 
-							@Override
-							public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-								mAdMap.remove(unitId);
+                            @Override
+                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                                mAdMap.remove(unitId);
                                 LeoLog.d("STONE_AD_DEBUG", "onLoadingFailed for: " + imageUri);
-							}
+                            }
 
-							@Override
-							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                                 LeoLog.d("STONE_AD_DEBUG", "onLoadingComplete for: " + imageUri);
-								mAdBitmapMap.put(unitId, loadedImage);
-								mAdUnitIdList.add(unitId);
-								if (mAdapterCycle == null) {
-									mBannerContainer.setVisibility(View.INVISIBLE);
-									mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, leoAdEngine);
-									mBannerContainer.setAdapter(mAdapterCycle);
-									if ((int) (Math.random() * (10)+1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()){
-										mBannerContainer.setCurrentItem(1,false);
-										mAdapterCycle.setLasterSlectedPage(1);
-										showAdAnimaiton();
-										delayBannerHideAnim();
-										hideIconAndPswTips();
-									} else {
-										mBannerContainer.setVisibility(View.VISIBLE);
-										mBannerContainer.setCurrentItem(0,false);
-										mAdapterCycle.setLasterSlectedPage(0);
-									}
-								} else {
-									mAdapterCycle.addItem(unitId);
-								}
+                                mAdBitmapMap.put(unitId, loadedImage);
+                                mAdUnitIdList.add(unitId);
+                                if (mAdapterCycle == null) {
+                                    mBannerContainer.setVisibility(View.INVISIBLE);
+                                    mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, leoAdEngine);
+                                    mBannerContainer.setAdapter(mAdapterCycle);
+                                    if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
+                                        mBannerContainer.setCurrentItem(1, false);
+                                        mAdapterCycle.setLasterSlectedPage(1);
+                                        showAdAnimaiton();
+                                        delayBannerHideAnim();
+                                        hideIconAndPswTips();
+                                    } else {
+                                        mBannerContainer.setVisibility(View.VISIBLE);
+                                        mBannerContainer.setCurrentItem(0, false);
+                                        mAdapterCycle.setLasterSlectedPage(0);
+                                    }
+                                } else {
+                                    mAdapterCycle.addItem(unitId);
+                                }
 
-							}
+                            }
 
-							@Override
-							public void onLoadingCancelled(String imageUri, View view) {
-								mAdMap.remove(unitId);
-							}
-						});
+                            @Override
+                            public void onLoadingCancelled(String imageUri, View view) {
+                                mAdMap.remove(unitId);
+                            }
+                        });
 
-						
-					}
-				}
 
-				/**
-				 * 广告点击回调
-				 *
-				 * @param campaign
-				 */
-				@Override
-				public void onLeoAdClick(LEONativeAdData campaign) {
+                    }
+                }
 
-				}
-			});
-			
+                /**
+                 * 广告点击回调
+                 *
+                 * @param campaign
+                 */
+                @Override
+                public void onLeoAdClick(LEONativeAdData campaign) {
+
+                }
+            });
+
             /*MobvistaEngine.getInstance(this).loadMobvista(unitId, new MobvistaListener() {
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
@@ -1350,25 +1351,27 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAdMap.put(unitId, campaign);
         return true;
     }*/
-	/**
-	 * 去重添加
-	 * @param unitId
-	 * @param campaign
-	 * @return 是否添加新的数据
-	 */
-	private boolean deleteRedundant(String unitId, LEONativeAdData campaign) {
-		LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
-		for (String key : mAdMap.keySet()) {
-			LEONativeAdData data = mAdMap.get(key);
-			if (data.getAppName().equals(campaign.getAppName())
-					|| data.getImageUrl().equals(campaign.getImageUrl())
-					|| data.getAppDesc().equals(campaign.getAppDesc())) {
-				return false;
-			}
-		}
-		mAdMap.put(unitId, campaign);
-		return true;
-	}
+
+    /**
+     * 去重添加
+     *
+     * @param unitId
+     * @param campaign
+     * @return 是否添加新的数据
+     */
+    private boolean deleteRedundant(String unitId, LEONativeAdData campaign) {
+        LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
+        for (String key : mAdMap.keySet()) {
+            LEONativeAdData data = mAdMap.get(key);
+            if (data.getAppName().equals(campaign.getAppName())
+                    || data.getImageUrl().equals(campaign.getImageUrl())
+                    || data.getAppDesc().equals(campaign.getAppDesc())) {
+                return false;
+            }
+        }
+        mAdMap.put(unitId, campaign);
+        return true;
+    }
 
 
     /*private void resistViewAllAd(LinkedHashMap<String, Campaign> adMap) {
@@ -1382,9 +1385,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         final int itemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
         final int itemHeight = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
         int offset = (getWindowWidth() - itemWidth) / 2;
-        /*mBannerContainer*/animView.setX(getWindowWidth() - offset);
-        /*mBannerContainer*/animView.setScaleX(0.7f);
-        /*mBannerContainer*/animView.setScaleY(0.7f);
+        /*mBannerContainer*/
+        animView.setX(getWindowWidth() - offset);
+        /*mBannerContainer*/
+        animView.setScaleX(0.7f);
+        /*mBannerContainer*/
+        animView.setScaleY(0.7f);
 
         ObjectAnimator animatorTrans1 = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "translationX", getWindowWidth() - offset, -offset);
         animatorTrans1.setDuration(500);
@@ -1395,8 +1401,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         animatorScaleX.setDuration(500);
         animatorScaleY.setDuration(500);
 
-        /*mBannerContainer*/animView.setPivotX(0);
-        /*mBannerContainer*/animView.setPivotY(itemHeight / 2);
+        /*mBannerContainer*/
+        animView.setPivotX(0);
+        /*mBannerContainer*/
+        animView.setPivotY(itemHeight / 2);
         animatorScaleX.setInterpolator(new DecelerateInterpolator());
         animatorScaleY.setInterpolator(new DecelerateInterpolator());
 
@@ -1408,6 +1416,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 super.onAnimationStart(animation);
                 mBannerContainer.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void onAnimationEnd(Animator animation) {
             }
@@ -1423,13 +1432,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         //隐藏图标和密码提示
         int type = AppMasterPreference.getInstance(this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
-            ((PasswdLockFragment)mLockFragment).getIconView().setAlpha(0.0f);
-            ((PasswdLockFragment)mLockFragment).getPasswdHint().setAlpha(0.0f);
+            ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+            ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(0.0f);
         } else {
-            ((GestureLockFragment)mLockFragment).getIconView().setAlpha(0.0f);
+            ((GestureLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
         }
     }
-    
+
     private void delayBannerHideAnim() {
         mHandler.removeMessages(LARGE_BANNER_HIDE);
 
@@ -1437,13 +1446,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         msg.what = LARGE_BANNER_HIDE;
         mHandler.sendMessageDelayed(msg, 6000);
     }
-    
+
     private void bannerHideAnim() {
         if (mBannerContainer.getChildCount() >= 2) {
             mBannerContainer.setCurrentItem(0, true);
         }
     }
-    
+
     // handle pretend lock
     private void handlePretendLock() {
         FragmentManager fm = getSupportFragmentManager();
@@ -1556,7 +1565,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
              * notify LockManager
              */
             //解锁成功的时候 已经保存完照片了 ，直接进入抓拍界面
-            if (mIsPicSaved ) {
+            if (mIsPicSaved) {
                 LeoEventBus.getDefaultBus().post(new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_CANCELED));
                 mLockManager.filterPackage(getPackageName(), 1000);
                 Intent intent = new Intent(LockScreenActivity.this, IntruderCatchedActivity.class);
@@ -1568,8 +1577,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mHasTakePic = false;
                 finish();
                 return;
-            //解锁成功的时候 还没有保存完照片，将延迟标记置为true，让保存的操作执行完后自己去进入抓拍界面
-            }else{
+                //解锁成功的时候 还没有保存完照片，将延迟标记置为true，让保存的操作执行完后自己去进入抓拍界面
+            } else {
                 if (mHasTakePic) {
                     mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, true);
 //                    mHasTakePic = false;
@@ -1784,8 +1793,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mEtQuestion = mDialog.getFirstEditText();
         mEtAnwser = mDialog.getSecondEditText();
         mEtQuestion.setFocusable(false);
-        mEtQuestion.setText(AppMasterPreference.getInstance(this)
-                .getPpQuestion());
+
+        String question = AppMasterPreference.getInstance(this)
+                .getPpQuestion();
+
+        if (!Utilities.isEmpty(question)) {
+            String[] oldStrings = getResources().getStringArray(
+                    R.array.default_psw_protect_entrys);
+            boolean isOldString = Utilities.makeContrast(oldStrings, question);
+
+            String[] entrys = getResources().getStringArray(
+                    R.array.default_psw_protect_entrys_new);
+            if (isOldString) {
+                question = Utilities.replaceOldString(entrys, oldStrings, question);
+            }
+        }
+
+        mEtQuestion.setText(question);
         mDialog.show();
     }
 
@@ -1797,7 +1821,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         intent.addCategory(Intent.CATEGORY_HOME);
         try {
             startActivity(intent);
-        } catch (Exception e) {            
+        } catch (Exception e) {
         }
         /**
          * notify LockManager
@@ -2291,7 +2315,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private int getWindowWidth() {
 //        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
 //        return windowManager.getDefaultDisplay().getWidth();
-        
+
         DisplayMetrics display = getResources().getDisplayMetrics();
         int mScreenWidth = display.widthPixels;// 获取屏幕分辨率宽度
         return mScreenWidth;
@@ -2328,22 +2352,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 
     public class AdBannerAdapter extends PagerAdapter
-            implements ViewPager.OnPageChangeListener{
+            implements ViewPager.OnPageChangeListener {
         private Context mContext;
         private LayoutInflater mInflater; //
         private LinkedList<View> mViews; //
         private ArrayList<String> mList; //
         private ViewPager mViewPager; //页面
         private int lasterSlectedPage = -1; //上一次选择的页面
-		private LEOAdEngine mLeoAdEngine;
+        private LEOAdEngine mLeoAdEngine;
 
         public AdBannerAdapter(Context context, ViewPager viewPager,
-                            ArrayList<String> list, LEOAdEngine leoAdEngine) {
+                               ArrayList<String> list, LEOAdEngine leoAdEngine) {
             mContext = context;
             mInflater = LayoutInflater.from(context);
             mViewPager = viewPager;
             mList = list;
-			mLeoAdEngine = leoAdEngine;
+            mLeoAdEngine = leoAdEngine;
             mViewPager.setOnPageChangeListener(this);
             if (list != null) {
                 mViews = new LinkedList<View>();
@@ -2366,7 +2390,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         @Override
         public int getItemPosition(Object item) {
             for (int i = 0; i < mViews.size(); i++) {
-                if (((View)item).equals(mViews.get(i))) {
+                if (((View) item).equals(mViews.get(i))) {
                     return i;
                 }
             }
@@ -2395,23 +2419,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             return view;
         }
 
-        public void setLasterSlectedPage (int index) {
+        public void setLasterSlectedPage(int index) {
             lasterSlectedPage = index;
         }
 
         private void setItemViewContent(RelativeLayout view, String unitId) {
-			LEONativeAdData campaign = mAdMap.get(unitId);
+            LEONativeAdData campaign = mAdMap.get(unitId);
             if (campaign == null) {
                 return;
             }
-            ((ImageView)view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
-            ((TextView)view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
-            ((TextView)view.findViewById(R.id.ad_details)).setText(campaign.getAppDesc());
-            ((TextView)view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
+            ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
+            ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
+            ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getAppDesc());
+            ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             final View clickArea = view.findViewById(R.id.click_area);
-			if (mLeoAdEngine != null) {
-				mLeoAdEngine.registerView(LEOAdManager.UNIT_ID_LOCK, clickArea);
-			}
+            if (mLeoAdEngine != null) {
+                mLeoAdEngine.registerView(LEOAdManager.UNIT_ID_LOCK, clickArea);
+            }
             /*MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, clickArea, new MobvistaListener() { //这里这个回调只是用来 打个统计点而已
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
@@ -2427,7 +2451,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             leftArea.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    snapforClick((ViewGroup)v.getParent());
+                    snapforClick((ViewGroup) v.getParent());
                 }
             });
 
@@ -2444,7 +2468,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             try {
                 int index = ((Integer) v.getTag());
                 if (mViewPager.getCurrentItem() != index) {
-                    mViewPager.setCurrentItem(index,true);
+                    mViewPager.setCurrentItem(index, true);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
