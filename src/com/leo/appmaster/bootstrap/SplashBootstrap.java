@@ -1,20 +1,7 @@
 
 package com.leo.appmaster.bootstrap;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -23,15 +10,25 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.HttpRequestAgent;
+import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.SplashActivity;
-import com.leo.appmaster.HttpRequestAgent;
-import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 闪屏相关初始化
@@ -274,6 +271,8 @@ public class SplashBootstrap extends Bootstrap {
                         /* 指定需要跳转的客户端的链接 */
                         if (!Utilities.isEmpty(splashSkipToClient)) {
                             pref.setSplashSkipToClient(splashSkipToClient);
+                              /* 后台拉取成功更新缓存数据 */
+                            mIsEmptyForSplashUrl = false;
                         }
                     }
                     long successStrategy = pref.getThemeSuccessStrategy();
