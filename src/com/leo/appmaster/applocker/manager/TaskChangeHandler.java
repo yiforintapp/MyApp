@@ -137,6 +137,16 @@ public class TaskChangeHandler {
             return;
         }
 
+        if (!TextUtils.isEmpty(mLastRuningActivity) && mLastRuningActivity.contains(GAMEBOX)
+                && pkg.equals(myPackage) && !activity.contains(GAMEBOX)) {
+            // 解决gamebox回到pg没有锁的问题
+            mLastRunningPkg = pkg;
+            mLastRuningActivity = activity;
+            LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            lockManager.applyLock(LockManager.LOCK_MODE_FULL, pkg, false, null);
+            return;
+        }
+
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
         String checkPkg = amp.getDoubleCheck();
@@ -169,8 +179,7 @@ public class TaskChangeHandler {
                         // 如果锁屏前的pkg是联想的屏保，则不过滤掉webviewActivity
                         && !pkg.equals(mDetectedPkgBeforeScreeOff))
                         || (!unlocked && currentLockScreen))
-                        || (unlocked && isLastSelf && mLastRuningActivity.contains(LOCKSCREENNAME)))
-                {
+                        || (unlocked && isLastSelf && mLastRuningActivity.contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
                     mLastRuningActivity = activity;
                     return;
