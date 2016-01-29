@@ -963,6 +963,26 @@
     <string name="screen_protect_charing_text_three">Şarj edildi. Şarj cihazını çıkarın.</string>
     <string name="screen_protect_charing_text_four">Dolu</string>
     <string name="batterymanage_scaning">Tarama</string>
-	<string name="batterymanage_boosting">İşleme</string>
-	<string name="batterymanage_notif_process">optimize</string>
+    <string name="batterymanage_boosting">İşleme</string>
+    <string name="batterymanage_notif_process">optimize</string>
+
+    <!-- 3.3.1 !-->
+    <string-array name="default_psw_protect_entrys_new">
+        <item>Şanslı numaram nedir?</item>
+        <item>En sevdiğim film hangisidir?</item>
+        <item>En sevdiğim yemek nedir?</item>
+        <item>Hayalimdeki iş nedir?</item>
+        <item>Anam adI ne?</item>
+        <item>Babam adI ne?</item>
+        <item>En sevdiğim öğretmen adı ne?</item>
+        <item>Kimlik kartlarım altı sonra nedir?</item>
+    </string-array>
+
+    <string name="scan_result_title">Sonuç İşleniyor</string>
+    <string name="scan_done_app">uygulama kilitle</string>
+    <string name="scan_done_pic">fotoğraf gizle</string>
+    <string name="scan_done_vid">video gizle</string>
+
+    <string name="game_box_one">Oyun Hızlandırma</string>
+
 </resources>

@@ -946,6 +946,29 @@
     <string name="screen_protect_charing_text_three">Зарядка завершена, отключите зарядное устройство</string>
     <string name="screen_protect_charing_text_four">Зарядка завершена</string>
     <string name="batterymanage_scaning">сканирование</string>
-	<string name="batterymanage_boosting">обработка</string>
-	<string name="batterymanage_notif_process">обработка</string>
+    <string name="batterymanage_boosting">обработка</string>
+    <string name="batterymanage_notif_process">обработка</string>
+
+
+    <!-- 3.3.1 !-->
+
+    <string-array name="default_psw_protect_entrys_new">
+        <item>Что мое счастливое число?</item>
+        <item>Что мой самый любимый фильм?</item>
+        <item>Что мое самое любимое блюдо?</item>
+        <item>Что моя профессия моей мечты?</item>
+        <item>Как зовут мою  мать?</item>
+        <item>Как зовут мой отец ?</item>
+        <item>Кто мой самый любимый учитель?</item>
+        <item>Что последние шесть номер моего паспорта?</item>
+    </string-array>
+
+    <string name="scan_result_title">Результат процесса</string>
+    <string name="scan_done_app">Блокировать приложение</string>
+    <string name="scan_done_pic">Скрыть фото</string>
+    <string name="scan_done_vid">Скрыть фото</string>
+
+    <string name="game_box_one">Ускорение игры</string>
+
+
 </resources>

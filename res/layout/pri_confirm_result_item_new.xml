@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:text="@string/scan_done_app_new"
+                android:text="@string/scan_done_app"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:text="@string/scan_done_pic_new"
+                android:text="@string/scan_done_pic"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -138,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:text="@string/scan_done_vid_new"
+                android:text="@string/scan_done_vid"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 

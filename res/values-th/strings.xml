@@ -963,7 +963,27 @@
     <string name="screen_protect_charing_text_three">ชาร์จเต็มแล้ว กรุณาถอดสายชาร์จออก</string>
     <string name="screen_protect_charing_text_four">ชาร์จเต็มแล้ว</string>
     <string name="batterymanage_scaning">การสแกน</string>
-	<string name="batterymanage_boosting">การประมวลผล</string>
-	<string name="batterymanage_notif_process">การประมวลผล</string>
-	
+    <string name="batterymanage_boosting">การประมวลผล</string>
+    <string name="batterymanage_notif_process">การประมวลผล</string>
+
+    <!-- 3.3.1 !-->
+    <string-array name="default_psw_protect_entrys_new">
+        <item>เลขนำโชคของฉันคืออะไร</item>
+        <item>ภาพยนตร์เรื่องโปรดของฉันคือเรื่องไหน</item>
+        <item>อาหารจานโปรดของฉันคืออะไร</item>
+        <item>อาชีพในฝันของฉันคืออะไร</item>
+        <item>ชื่อคุณแม่?</item>
+        <item>ชื่อคุณพ่อ?</item>
+        <item>ชื่ออาจารย์?</item>
+        <item>6 ตัวสุดท้ายของ ID</item>
+    </string-array>
+
+    <string name="scan_result_title">ผลการดำเนินการ</string>
+    <string name="scan_done_app">แอพที่ล็อคไว้ </string>
+    <string name="scan_done_pic">รูปภาพที่ซ่อนไว้</string>
+    <string name="scan_done_vid">วีดีโอที่ซ่อนไว้</string>
+
+    <string name="game_box_one">เร่งความเร็วของเกม</string>
+
+
 </resources>

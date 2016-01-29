@@ -1014,11 +1014,6 @@
     <string name="scan_done_pic">Hide pictures</string>
     <string name="scan_done_vid">Hide videos</string>
 
-    <string name="scan_done_app_new">加锁应用</string>
-    <string name="scan_done_pic_new">隐藏图片</string>
-    <string name="scan_done_vid_new">隐藏视频</string>
-
-    <string name="game_box_one">游戏加速</string>
     <string name="game_box_one">Game accelerating</string>
 
 </resources>

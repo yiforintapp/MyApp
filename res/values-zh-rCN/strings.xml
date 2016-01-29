@@ -957,4 +957,24 @@
     <string name="batterymanage_boosting">优化中</string>
     <string name="batterymanage_notif_process">优化</string>
 
+
+    <!-- 3.3.1 -->
+    <string-array name="default_psw_protect_entrys_new">
+        <item>我的幸运数字是多少？</item>
+        <item>我最喜欢的电影是哪部？</item>
+        <item>我最喜欢的食物是哪种？</item>
+        <item>我梦想的职业是？</item>
+        <item>我母亲的姓名是？</item>
+        <item>我父亲的姓名是？</item>
+        <item>我最喜欢的老师名字？</item>
+        <item>我的身份证后六位？</item>
+    </string-array>
+
+    <string name="scan_result_title">处理结果</string>
+    <string name="scan_done_app">加锁应用</string>
+    <string name="scan_done_pic">隐藏图片</string>
+    <string name="scan_done_vid">隐藏视频</string>
+
+    <string name="game_box_one">游戏加速</string>
+
 </resources>

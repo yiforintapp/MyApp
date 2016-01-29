@@ -966,6 +966,26 @@
     <string name="screen_protect_charing_text_three">已充滿，請移除充電器</string>
     <string name="screen_protect_charing_text_four">已充滿</string>
     <string name="batterymanage_scaning">掃描中</string>
-	<string name="batterymanage_boosting">處理中</string>
-	<string name="batterymanage_notif_process">優化</string>
+    <string name="batterymanage_boosting">處理中</string>
+    <string name="batterymanage_notif_process">優化</string>
+
+    <!-- 3.3.1 !-->
+    <string-array name="default_psw_protect_entrys_new">
+        <item>我的幸運數字是多少？</item>
+        <item>我最喜歡的電影是哪部？</item>
+        <item>我最喜歡的食物是哪種？</item>
+        <item>妳夢想的職業是？</item>
+        <item>我母親的姓名是？</item>
+        <item>我父親的姓名是？</item>
+        <item>我最喜歡的老師名字？</item>
+        <item>我的身份證後六位？</item>
+    </string-array>
+
+    <string name="scan_result_title">處理結果</string>
+    <string name="scan_done_app">加鎖應用</string>
+    <string name="scan_done_pic">隱藏圖片</string>
+    <string name="scan_done_vid">隱藏視頻</string>
+
+    <string name="game_box_one">遊戲加速</string>
+
 </resources>
