@@ -37,7 +37,7 @@ public class ProxyStartService extends Service {
     private static final int INDEX_PID = 1;
     private static final int INDEX_PPID = 2;
     private static final int INDEX_PROCESS_NAME = 8;
-    private static final int NEW_THEME_MIN_VERCODE = 14;
+    public static final int NEW_THEME_MIN_VERCODE = 14;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -61,12 +61,12 @@ public class ProxyStartService extends Service {
      *
      * @return
      */
-    public static boolean isNewThemActive() {
+    public static List<AppItemInfo> isNewThemActive() {
         List<AppItemInfo> apps = getActiveThemeProc();
         if (apps == null || apps.size() < 1) {
-            return false;
+            return null;
         }
-        return true;
+        return apps;
     }
 
     /**

@@ -626,9 +626,36 @@ public class TaskDetectService extends Service {
         public void run() {
             LeoLog.d(TAG, "PG_StartThemeServerTask---- start theme server!!");
 
-            boolean isNewThemActive = ProxyStartService.isNewThemActive();
-            if (isNewThemActive) {
+            String currentTheme = AppMasterApplication.getSelectedTheme();
+            List<AppItemInfo> activeList = ProxyStartService.isNewThemActive();
+            if (activeList != null && activeList.size() > 0) {
+                for (AppItemInfo itemInfo : activeList) {
+                    if (currentTheme != null && currentTheme.equals(itemInfo.packageName)) {
+                        return;
+                    }
+                }
+
+                PackageInfo info = null;
+                try {
+                    info = getPackageManager().getPackageInfo(currentTheme, 0);
+                    int verCode = info.versionCode;
+
+                    if (verCode >= ProxyStartService.NEW_THEME_MIN_VERCODE) {
+                        Intent intent = new Intent("com.leo.appmaster.action.START_SERVER");
+                        intent.setPackage(currentTheme);
+                        try {
+                            startService(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return;
+
             }
 
             AppMasterApplication context = AppMasterApplication.getInstance();
