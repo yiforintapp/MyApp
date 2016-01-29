@@ -641,4 +641,13 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="ResultItemConfirmItem">
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>
