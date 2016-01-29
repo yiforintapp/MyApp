@@ -12,6 +12,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
 import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -388,8 +389,11 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
                     SDKWrapper.
                             addEvent(WifiSecurityActivity.this,
                                     SDKWrapper.P1, "wifi_scan", "wifi_none_other");
+
                     mLockManager.filterSelfOneMinites();
+                    mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                     Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
                         startActivity(intent);
                     } catch (Exception e) {

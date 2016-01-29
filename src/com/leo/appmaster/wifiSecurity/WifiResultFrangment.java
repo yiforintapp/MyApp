@@ -175,9 +175,10 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                         SDKWrapper.P1, "wifi_rst", "wifi_rst_safe_dataflow");
                 break;
             case R.id.wifi_resulte_other_wifi:
-                mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+                mLockManager.filterSelfOneMinites();
                 mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                 Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                wifiIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
                     startActivity(wifiIntent);
                 } catch (Exception e) {
