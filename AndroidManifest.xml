@@ -898,7 +898,7 @@
             android:theme="@style/activity_theme"></activity>
 
         <receiver android:name=".mgr.service.IpcSignatureReceiver"
-
+            android:permission="com.leo.appmaster.permission.IPC_RECEIVER_SIG"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.leo.appmaster.action.IPC_RECEIVER" />
