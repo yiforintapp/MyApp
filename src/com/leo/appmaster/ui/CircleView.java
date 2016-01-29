@@ -1,5 +1,6 @@
 package com.leo.appmaster.ui;
 
+import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.Animator.AnimatorListener;
@@ -28,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 
 public class CircleView extends View {
+    private int mDotWH;
 	private Paint mPaintNormal;
 	private int mTotalW;
 	private int mTotalH;
@@ -40,7 +42,7 @@ public class CircleView extends View {
 	private float mDegree = 80f;
 	private float mTailDegree =  180f;
 	private OnAfterImageDismissListener mListener2;
-
+	private Bitmap mBdMan;
     private Paint mPaintTail;
 	private RectF mRectF;
 	private Paint mPaintShader;
@@ -124,9 +126,9 @@ public class CircleView extends View {
         		double x = Math.cos(arcDegree) * (double)(FactorR);
             	double y = Math.sin(arcDegree) * (double)(FactorR);
             	if (mNeedCircleHead) {
-            	    canvas.drawCircle((float)(mCenterX + x), (float)(mCenterY + y), 5, mPaintNormal);
+//            	    canvas.drawCircle((float)(mCenterX + x), (float)(mCenterY + y), 5, mPaintNormal);
+            	    canvas.drawBitmap(mBdMan, (float)(mCenterX + x - (mDotWH / 2)), (float)(mCenterY + y - (mDotWH / 2)), mPaintNormal);
             	}
-            	
         	} 
 //        	if ((mWitchToShow == SHOW_FRONT && degree > 180) && (degree - 180) < mTail) {
 //        	    canvas.drawArc(mRectF, 180, - (mTail - (degree - 180)), false, mPaintTail);
@@ -166,14 +168,17 @@ public class CircleView extends View {
 	
 	private void init() {
 		mPaintNormal = new Paint();
-		mPaintNormal.setColor(0xffffffff);
+//		mPaintNormal.setColor(0xffffffff);
 		mPaintNormal.setStyle(Style.FILL_AND_STROKE);
-		int normalPaintWidth = DipPixelUtil.dip2px(mContext, 4);
+		int normalPaintWidth = DipPixelUtil.dip2px(mContext, 2);
 //		RadialGradient rg = new RadialGradient(normalPaintWidth / 2, normalPaintWidth / 2, normalPaintWidth / 2, 0xffffffff, 0x33ffffff, Shader.TileMode.REPEAT);
 //		RadialGradient rg = new RadialGradient(50, 50, 50, new int[] {0xffffffff, 0xbbffffff, 0x77ffffff, 0x22ffffff}, null, Shader.TileMode.REPEAT);
 //		mPaintNormal.setShader(rg);
 //		LinearGradient gradient = new LinearGradient(0, 0, (float) (Math.PI * 1 * FactorR), 100, 0xffffffff, 0x00ffffff, Shader.TileMode.MIRROR);  
 //        mPaintShader.setShader(gradient);  
+		mDotWH = DipPixelUtil.dip2px(mContext, 7);
+		mBdMan = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.arround_circle_head); 
+		mBdMan = Bitmap.createScaledBitmap(mBdMan, mDotWH, mDotWH, false);
 		mPaintNormal.setStrokeWidth(normalPaintWidth);
 		mPaintNormal.setAntiAlias(true);
 		mRotateMatrix = new Matrix();
@@ -181,12 +186,12 @@ public class CircleView extends View {
 		mPaintShader = new Paint();
 		mPaintShader.setColor(0xffffffff);
 		mPaintShader.setStyle(Style.STROKE);
-		mPaintShader.setStrokeWidth(DipPixelUtil.dip2px(mContext, 3));
+		mPaintShader.setStrokeWidth(DipPixelUtil.dip2px(mContext, 2));
 		mPaintShader.setAntiAlias(true);
 		mPaintTail = new Paint();
 		mPaintTail.setColor(Color.argb(mPaintAlpha, 0xff, 0xff, 0xff));
 		mPaintTail.setStyle(Style.STROKE);
-		mPaintTail.setStrokeWidth(10);
+		mPaintTail.setStrokeWidth(DipPixelUtil.dip2px(mContext, 2));
 	}
 	
 	public void startAnim(float from, float delta, final OnArroundFinishListener listener, boolean needCircleHead, long duration) {
