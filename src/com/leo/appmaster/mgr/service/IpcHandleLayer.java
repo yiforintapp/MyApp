@@ -22,6 +22,8 @@ class IpcHandleLayer {
         IpcHandler handler = null;
         if (IpcConst.IPC_ISWIPE.equals(request.command)) {
             handler = new ISwipeIpcHandler();
+        } else if (IpcConst.IPC_THEME.equals(request.command)) {
+            handler = new ThemeIpcHandler();
         }
 
         if (handler == null) return null;

@@ -97,7 +97,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
-    <permission android:name="com.leo.appmaster.permission.IPC_RECEIVER"
+    <permission android:name="com.leo.appmaster.permission.IPC_RECEIVER_SIG"
         android:protectionLevel="signature" />
 
     <!-- GameBox SDK begin -->
@@ -896,6 +896,15 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+
+        <receiver android:name=".mgr.service.IpcSignatureReceiver"
+
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.leo.appmaster.action.IPC_RECEIVER" />
+            </intent-filter>
+        </receiver>
+
 
 
         <!-- GameBox SDK的主界面 -->
