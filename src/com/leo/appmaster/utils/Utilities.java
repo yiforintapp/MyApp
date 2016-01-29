@@ -722,6 +722,43 @@ public final class Utilities {
         }
     }
 
+    /** 获取浏览器个数和只有一个浏览器的包名 */
+    public static String[] getBrowserInfo(Context context) {
+        String default_browser = "android.intent.category.DEFAULT";
+        String browsable = "android.intent.category.BROWSABLE";
+        String view = "android.intent.action.VIEW";
+
+        Intent intent = new Intent(view);
+        intent.addCategory(default_browser);
+        intent.addCategory(browsable);
+        Uri uri = Uri.parse("http://");
+        intent.setDataAndType(uri, null);
+
+        String[] data = new String[]{"0", ""};
+
+        try {
+            // 找出手机当前安装的所有浏览器程序
+            List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(
+                                                        intent, PackageManager.GET_INTENT_FILTERS);
+            if (resolveInfoList == null) {
+                return data;
+            }
+            int size = resolveInfoList.size();
+            if (size > 1) {
+                  data[0] = String.valueOf(resolveInfoList.size());
+                  return data;
+            } else if (size == 1) {
+                  data[0] = "1";
+                  data[1] = resolveInfoList.get(0).activityInfo.packageName;
+                  return  data;
+            } else {
+                return data;
+            }
+        } catch (Exception e) {
+            return data;
+        }
+    }
+
     /**
      * 使用包名跳转Gp
      */
