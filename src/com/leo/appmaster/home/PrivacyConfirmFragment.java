@@ -203,9 +203,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private View mWIfiInclude;
     private View mContactInclude;
 
-    private View mResultClickApp;
-    private View mResultClickPic;
-    private View mResultClickVid;
+    private View mBoxOne;
+    private View mBoxTwo;
+    private View mBoxThree;
 
     // 初始化时的占位View，避免一开始显示空白页面
 //    private View mDisplayProxyView;
@@ -713,52 +713,98 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private void initScanResultLayout(View mPanelView) {
         if (mPanelView != null) {
             mResultInclude = mPanelView.findViewById(R.id.scan_result);
-            ViewStub viewStub = (ViewStub) mPanelView.findViewById(R.id.scan_result);
-            if (viewStub == null) {
-                return;
-            }
+//            ViewStub viewStub = (ViewStub) mPanelView.findViewById(R.id.scan_result);
+//            if (viewStub == null) {
+//                return;
+//            }
 
             int appnum = mActivity.getLockAppNum();
             int picnum = mActivity.getHidePicNum();
             int vidnum = mActivity.getHideVidNum();
 
-            LeoLog.d("testNum", "appnum : " + appnum + "picnum : " + picnum + "vidnum : " + vidnum);
-            if (appnum > 0 || picnum > 0 || vidnum > 0) {
-                mResultInclude = viewStub.inflate();
-                View appLayout = mResultInclude.findViewById(R.id.result_one);
-                if (appnum == 0) {
-                    appLayout.setVisibility(View.GONE);
-                } else {
-                    TextView tv_app = (TextView) mResultInclude.findViewById(R.id.tv_applock_item);
-                    String text = mActivity.getString(R.string.scan_done_app, appnum);
-                    tv_app.setText(Html.fromHtml(text));
-                    mResultClickApp = mResultInclude.findViewById(R.id.item_btn_rv_one);
-                    mResultClickApp.setOnClickListener(this);
-                }
+//            mResultInclude = viewStub.inflate();
 
-                View picLayout = mResultInclude.findViewById(R.id.result_two);
-                if (picnum == 0) {
-                    picLayout.setVisibility(View.GONE);
-                } else {
-                    TextView tv_pic = (TextView) mResultInclude.findViewById(R.id.tv_hidepic_item);
-                    String text = mActivity.getString(R.string.scan_done_pic, picnum);
-                    tv_pic.setText(Html.fromHtml(text));
-                    mResultClickPic = mResultInclude.findViewById(R.id.item_btn_rv_two);
-                    mResultClickPic.setOnClickListener(this);
-                }
+            mBoxOne = mResultInclude.findViewById(R.id.box_one);
+            mBoxOne.setOnClickListener(this);
+            mBoxTwo = mResultInclude.findViewById(R.id.box_two);
+            mBoxTwo.setOnClickListener(this);
+            mBoxThree = mResultInclude.findViewById(R.id.box_three);
+            mBoxThree.setOnClickListener(this);
 
-                View vidLayout = mResultInclude.findViewById(R.id.result_three);
-                if (vidnum == 0) {
-                    vidLayout.setVisibility(View.GONE);
-                } else {
-                    TextView tv_vid = (TextView) mResultInclude.findViewById(R.id.tv_hidevid_item);
-                    String text = mActivity.getString(R.string.scan_done_vid, vidnum);
-                    tv_vid.setText(Html.fromHtml(text));
-                    mResultClickVid = mResultInclude.findViewById(R.id.item_btn_rv_three);
-                    mResultClickVid.setOnClickListener(this);
-                }
+            TextView item_one_num = (TextView) mResultInclude.findViewById(R.id.item_one_num);
+            ImageView item_iv_one = (ImageView) mResultInclude.findViewById(R.id.item_iv_one);
 
+            TextView item_two_num = (TextView) mResultInclude.findViewById(R.id.item_two_num);
+            ImageView item_iv_two = (ImageView) mResultInclude.findViewById(R.id.item_iv_two);
+
+            TextView item_three_num = (TextView) mResultInclude.findViewById(R.id.item_three_num);
+            ImageView item_three_bottom = (ImageView) mResultInclude.findViewById(R.id.item_iv_three);
+
+            if (appnum == 0) {
+                item_one_num.setVisibility(View.GONE);
+                item_iv_one.setVisibility(View.VISIBLE);
+                LeoLog.d("testConfrim","appnum == 0");
+            } else {
+                LeoLog.d("testConfrim","appnum != 0");
+                item_one_num.setVisibility(View.VISIBLE);
+                item_one_num.setText(appnum + "");
+                item_iv_one.setVisibility(View.GONE);
             }
+
+            if (picnum == 0) {
+                item_two_num.setVisibility(View.GONE);
+                item_iv_two.setVisibility(View.VISIBLE);
+            } else {
+                item_two_num.setVisibility(View.VISIBLE);
+                item_two_num.setText(picnum + "");
+                item_iv_two.setVisibility(View.GONE);
+            }
+
+            if (picnum == 0) {
+                item_three_num.setVisibility(View.GONE);
+                item_three_bottom.setVisibility(View.VISIBLE);
+            } else {
+                item_three_num.setVisibility(View.VISIBLE);
+                item_three_num.setText(vidnum+"");
+                item_three_bottom.setVisibility(View.GONE);
+            }
+
+//            LeoLog.d("testNum", "appnum : " + appnum + "picnum : " + picnum + "vidnum : " + vidnum);
+//            if (appnum > 0 || picnum > 0 || vidnum > 0) {
+//                mResultInclude = viewStub.inflate();
+//                View appLayout = mResultInclude.findViewById(R.id.result_one);
+//                if (appnum == 0) {
+//                    appLayout.setVisibility(View.GONE);
+//                } else {
+//                    TextView tv_app = (TextView) mResultInclude.findViewById(R.id.tv_applock_item);
+//                    String text = mActivity.getString(R.string.scan_done_app, appnum);
+//                    tv_app.setText(Html.fromHtml(text));
+//                    mResultClickApp = mResultInclude.findViewById(R.id.item_btn_rv_one);
+//                    mResultClickApp.setOnClickListener(this);
+//                }
+//
+//                View picLayout = mResultInclude.findViewById(R.id.result_two);
+//                if (picnum == 0) {
+//                    picLayout.setVisibility(View.GONE);
+//                } else {
+//                    TextView tv_pic = (TextView) mResultInclude.findViewById(R.id.tv_hidepic_item);
+//                    String text = mActivity.getString(R.string.scan_done_pic, picnum);
+//                    tv_pic.setText(Html.fromHtml(text));
+//                    mResultClickPic = mResultInclude.findViewById(R.id.item_btn_rv_two);
+//                    mResultClickPic.setOnClickListener(this);
+//                }
+//
+//                View vidLayout = mResultInclude.findViewById(R.id.result_three);
+//                if (vidnum == 0) {
+//                    vidLayout.setVisibility(View.GONE);
+//                } else {
+//                    TextView tv_vid = (TextView) mResultInclude.findViewById(R.id.tv_hidevid_item);
+//                    String text = mActivity.getString(R.string.scan_done_vid, vidnum);
+//                    tv_vid.setText(Html.fromHtml(text));
+//                    mResultClickVid = mResultInclude.findViewById(R.id.item_btn_rv_three);
+//                    mResultClickVid.setOnClickListener(this);
+//                }
+//            }
         }
     }
 
@@ -1308,11 +1354,11 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity, true, true);
-        } else if (mResultClickApp == v) {
+        } else if (mBoxOne == v) {
             resultToAppLock();
-        } else if (mResultClickPic == v) {
+        } else if (mBoxTwo == v) {
             resultToPic();
-        } else if (mResultClickVid == v) {
+        } else if (mBoxThree == v) {
             resultToVid();
         }
 

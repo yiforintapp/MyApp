@@ -30,12 +30,22 @@
         android:layout="@layout/pri_confirm_ad_item" />
 
     <!-- 处理结果 -->
-    <ViewStub
+    <!--<ViewStub-->
+    <!--android:id="@+id/scan_result"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:layout="@layout/pri_confirm_result_item_new" />-->
+
+
+    <!-- 处理结果 -->
+    <include
         android:id="@+id/scan_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout="@layout/pri_confirm_result_item" />
+        layout="@layout/pri_confirm_result_item_new" />
+
 
     <!-- 五星好评100分 -->
     <ViewStub
