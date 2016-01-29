@@ -999,13 +999,13 @@
     <!-- 3.3.1 -->
 
     <string-array name="default_psw_protect_entrys_new">
-        <item>What's my lucky number?</item>
-        <item>What's my favorite movie?</item>
-        <item>What's my favorite food?</item>
-        <item>What's my ideal profession?</item>
-        <item>What\'s my mother's name?</item>
-        <item>What\'s my father's name?</item>
-        <item>What\'s my favorite teacher's name?</item>
+        <item>What\'s my lucky number?</item>
+        <item>What\'s my favorite movie?</item>
+        <item>What\'s my favorite food?</item>
+        <item>What\'s my ideal profession?</item>
+        <item>What\'s my mother\'s name?</item>
+        <item>What\'s my father\'s name?</item>
+        <item>What\'s my favorite teacher\'s name?</item>
         <item>What\'s the last 6 number of my ID card?</item>
     </string-array>
 
