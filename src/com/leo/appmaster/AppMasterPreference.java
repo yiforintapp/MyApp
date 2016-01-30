@@ -1,14 +1,6 @@
 
 package com.leo.appmaster;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executor;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -20,6 +12,14 @@ import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.db.LockRecommentTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.utils.LeoLog;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
