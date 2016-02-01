@@ -100,27 +100,6 @@
     <permission android:name="com.leo.appmaster.permission.IPC_RECEIVER_SIG"
         android:protectionLevel="signature" />
 
-    <!-- GameBox SDK begin -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 操作外部存储设备文件 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <!-- 权限: 开机自启动 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- 权限: 添加快捷方式 -->
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.android.launcher2.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.android.launcher3.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.google.android.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
-    <!-- GameBox SDK end -->
-
     <application
         android:name=".AppMasterApplication"
         android:excludeFromRecents="true"
@@ -905,35 +884,6 @@
             </intent-filter>
         </receiver>
 
-
-
-        <!-- GameBox SDK的主界面 -->
-        <activity android:name="com.leo.game.box.ui.GameBoxActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:launchMode="singleInstance">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-
-        <!-- GameBox后台下载需要的Service -->
-        <service android:name="com.leo.game.box.core.GameBoxService" />
-        <!-- GameBox下载需要的Receiver -->
-        <receiver
-            android:name="com.leo.game.box.core.GameBoxReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

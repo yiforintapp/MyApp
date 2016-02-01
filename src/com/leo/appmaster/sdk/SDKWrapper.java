@@ -14,8 +14,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.game.box.GameBoxAgent;
-import com.leo.game.box.core.toolbox.ubc.IStatService;
 import com.leo.push.IPushStatHelper;
 import com.leo.push.PushManager;
 import com.tendcloud.tenddata.TCAgent;
@@ -49,7 +47,7 @@ public class SDKWrapper {
             TCAgent.init(ctx);
 
             // gamebox - 放在统计SDK后面初始化
-            initGameBoxSDK(ctx);
+            // initGameBoxSDK(ctx);
         } catch (Exception e) {
 
         }
@@ -114,6 +112,7 @@ public class SDKWrapper {
     }
 
     /* 3.3.1 GameBox SDK begin */
+    /*
     private static void initGameBoxSDK(final Context context) {
         GameBoxAgent.init(context,
                 context.getString(R.string.channel_code),
@@ -196,6 +195,7 @@ public class SDKWrapper {
 
         GameBoxAgent.enableLog(AppMasterConfig.LOGGABLE);
     }
+    */
 
     /***
      * 判断游戏盒子是否可用
@@ -204,8 +204,9 @@ public class SDKWrapper {
      * @return
      */
     public static boolean isGameBoxAvailable(Context context) {
-        LeoLog.d(TAG, "isGameBoxAvaliable = " + GameBoxAgent.isGameBoxAvaliable(context));
-        return GameBoxAgent.isGameBoxAvaliable(context);
+        /*LeoLog.d(TAG, "isGameBoxAvaliable = " + GameBoxAgent.isGameBoxAvaliable(context));
+        return GameBoxAgent.isGameBoxAvaliable(context);*/
+        return false;
     }
 
     /***
@@ -213,18 +214,22 @@ public class SDKWrapper {
      *
      * @param activity
      */
+    /*
     public static void showGameBoxHome(Activity activity) {
         GameBoxAgent.startGameBoxHome(activity);
     }
+    */
 
     /***
      * 添加桌面Folder
      *
      * @param context
      */
+    /*
     public static void createGameBoxIcons(Context context) {
         GameBoxAgent.addGameFolder(context);
     }
+    */
 
     /* 3.3.1 GameBox SDK end */
 

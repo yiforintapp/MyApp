@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:radius="@dimen/gamebox_lib_shortcut_dlg_radius"/>
-    <solid android:color="@color/gamebox_lib_btn_cancel_bg_default"/>
-    <stroke android:color="@color/gamebox_lib_btn_cancel_stroke" android:width="@dimen/gamebox_lib_shortcut_dlg_btn_cancel_stroke"/>
-</shape>

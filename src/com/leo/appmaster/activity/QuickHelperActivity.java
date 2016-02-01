@@ -239,11 +239,11 @@ public class QuickHelperActivity extends BaseActivity {
                         Intent intent;
                         int id = (int) getItemId(finalRealPosition);
                         switch (id) {
-                            case R.drawable.qh_gamebox_icon:
+                            /*case R.drawable.qh_gamebox_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_gameboost");
                                 SDKWrapper.createGameBoxIcons(QuickHelperActivity.this.getApplicationContext());
-                                break;
+                                break;*/
                             // 桌面加速 (免密码)
                             case R.drawable.qh_speedup_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,

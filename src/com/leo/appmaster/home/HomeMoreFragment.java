@@ -361,10 +361,10 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     Intent qhintent = new Intent(activity, QuickHelperActivity.class);
                     startActivity(qhintent);
                     break;
-                case R.string.game_box_one:
+                /*case R.string.game_box_one:
                     SDKWrapper.showGameBoxHome(getActivity());
                     SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "home_gameboost");
-                    break;
+                    break;*/
                 case R.string.home_tab_instruder:
                     // 手机防盗
                     LeoLog.i(TAG, "start i");
