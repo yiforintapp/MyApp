@@ -170,6 +170,7 @@ public class CircleView extends View {
 		mPaintNormal = new Paint();
 //		mPaintNormal.setColor(0xffffffff);
 		mPaintNormal.setStyle(Style.FILL_AND_STROKE);
+		mPaintNormal.setAntiAlias(true);
 		int normalPaintWidth = DipPixelUtil.dip2px(mContext, 2);
 //		RadialGradient rg = new RadialGradient(normalPaintWidth / 2, normalPaintWidth / 2, normalPaintWidth / 2, 0xffffffff, 0x33ffffff, Shader.TileMode.REPEAT);
 //		RadialGradient rg = new RadialGradient(50, 50, 50, new int[] {0xffffffff, 0xbbffffff, 0x77ffffff, 0x22ffffff}, null, Shader.TileMode.REPEAT);
@@ -186,10 +187,11 @@ public class CircleView extends View {
 		mPaintShader = new Paint();
 		mPaintShader.setColor(0xffffffff);
 		mPaintShader.setStyle(Style.STROKE);
-		mPaintShader.setStrokeWidth(DipPixelUtil.dip2px(mContext, 2));
 		mPaintShader.setAntiAlias(true);
+		mPaintShader.setStrokeWidth(DipPixelUtil.dip2px(mContext, 2));
 		mPaintTail = new Paint();
 		mPaintTail.setColor(Color.argb(mPaintAlpha, 0xff, 0xff, 0xff));
+		mPaintTail.setAntiAlias(true);
 		mPaintTail.setStyle(Style.STROKE);
 		mPaintTail.setStrokeWidth(DipPixelUtil.dip2px(mContext, 2));
 	}

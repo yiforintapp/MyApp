@@ -228,6 +228,9 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i("value", "lastVercode=" + lastVercode);
         LeoLog.i("value", "versionCode=" + versionCode);
         if (TextUtils.isEmpty(lastVercode)) {
+            //TODO
+            //新安装用户，去除应用备份，应用卸载及隐私联系人相关的功能
+            pref.setIsNeedCutBackupUninstallAndPrivacyContact(true);
             // first install
             // AM-2911: remove device administration at first install
             removeDeviceAdmin();

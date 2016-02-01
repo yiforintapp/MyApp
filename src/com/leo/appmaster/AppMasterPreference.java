@@ -58,6 +58,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_USE_LOCK_THEME_GUIDE = "use_lock_theme_guid";
     public static final String PREF_LAUNCH_OTHER_APP = "launch_other_app";
     public static final String PREF_PRETEND_TIPS = "pretend_tips";
+    public static final String PREF_NEED_CUT_BACKUP_UNINSTALL_AND_PRIVACYCONTRACT = "need_cut_backup_uninstall_and_privacycontract";
 
     public static final String PREF_UNLOCK_ALL_APP = "lock_setting_unlock_all";
     public static final String PREF_LOCK_SETTING = "lock_setting";
@@ -2853,6 +2854,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getIsADAtAppLockFragmentOpen() {
         return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 0);
+    }
+    
+    //是否需要屏蔽应用备份/应用卸载和隐私联系人相关功能
+    public boolean getIsNeedCutBackupUninstallAndPrivacyContact() {
+        return mPref.getBoolean(PREF_NEED_CUT_BACKUP_UNINSTALL_AND_PRIVACYCONTRACT, false);
+    }
+    
+    public void setIsNeedCutBackupUninstallAndPrivacyContact(boolean value) {
+        commitAsync(mPref.edit().putBoolean(PREF_NEED_CUT_BACKUP_UNINSTALL_AND_PRIVACYCONTRACT, value));
     }
 
     //主题界面出现广告的开关

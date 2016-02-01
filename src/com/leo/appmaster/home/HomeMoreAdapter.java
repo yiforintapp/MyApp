@@ -45,6 +45,11 @@ public class HomeMoreAdapter extends BaseAdapter {
             R.string.home_tab_instruder,
             R.string.privacy_contacts
     };
+    
+    private static final int[] ARRAY_CONTACT_SINGLE_WITHOUT_STH = new int[]{
+        R.string.class_privacy_protection,
+        R.string.home_tab_instruder,
+};
 
     private static final int[] ARRAY_CONTACT = new int[]{
             R.string.hp_contact_lable,
@@ -90,7 +95,7 @@ public class HomeMoreAdapter extends BaseAdapter {
 
     private SparseIntArray mStrArray;
     private List<Integer> mLabelArray;
-
+    private boolean mNeedCutSomeThing = false;
     private LayoutInflater mInflater;
 
     private Context mContext;
@@ -107,20 +112,29 @@ public class HomeMoreAdapter extends BaseAdapter {
         if (SDKWrapper.isGameBoxAvailable(mContext)) {
             arrayList.add(ARRAY_GAMEBOX);
         }
-        arrayList.add(ARRAY_CONTACT_SINGLE);
+        //REVIEW ME TODO
+        mNeedCutSomeThing = AppMasterPreference.getInstance(mContext).getIsNeedCutBackupUninstallAndPrivacyContact();
+        if (mNeedCutSomeThing) {
+            arrayList.add(ARRAY_CONTACT_SINGLE_WITHOUT_STH);
+        } else {
+            arrayList.add(ARRAY_APP);
+            arrayList.add(ARRAY_CONTACT_SINGLE);
+        }
         arrayList.add(ARRAY_MEDIA);
-        arrayList.add(ARRAY_APP);
         arrayList.add(ARRAY_DEVICE);
         arrayList.add(ARRAY_HELPER);
 
         mDrawableArray.put(R.string.game_box_one, ID_RES_GAME_BOX);
 //        mDrawableArray.put(R.string.home_tab_lost, ID_RES_PHONE_LOST);
         mDrawableArray.put(R.string.home_tab_instruder, ID_RES_PHONE_LOST);
-        mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT);
+      //REVIEW ME TODO
+        if (!mNeedCutSomeThing) {
+            mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT);
+            mDrawableArray.put(R.string.hp_app_manage_del, ID_RES_APP_DEL);
+            mDrawableArray.put(R.string.hp_app_manage_back, ID_RES_APP_BACK);
+        }
         mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);
         mDrawableArray.put(R.string.hp_hide_video, ID_RES_HIDE_VIDEO);
-        mDrawableArray.put(R.string.hp_app_manage_del, ID_RES_APP_DEL);
-        mDrawableArray.put(R.string.hp_app_manage_back, ID_RES_APP_BACK);
         mDrawableArray.put(R.string.hp_device_gprs, ID_RES_DEVICE_GPRS);
         mDrawableArray.put(R.string.hp_device_power, ID_RES_DEVICE_POWER);
         mDrawableArray.put(R.string.hp_helper_shot, ID_RES_HELPER_SHOT);
@@ -133,7 +147,13 @@ public class HomeMoreAdapter extends BaseAdapter {
             }
             mLabelArray.add(mStrArray.size() - array.length);
         }
-
+        
+//        if (AppMasterPreference.getInstance(mContext).getIsNeedCutBackupUninstallAndPrivacyContact()) {
+//            mStrArray.removeAt(1);
+//            mStrArray.removeAt(4);
+//            mStrArray.removeAt(5);
+//            mLabelArray.r
+//        }
     }
 
     @Override
