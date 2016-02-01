@@ -297,7 +297,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         LeoLog.d(TAG, "onNewState, type=" + ui_type + "; param=" + param);
 
         /* 3.3.1 规避version name一样还提示升级问题 */
-        if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE) {
+        if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE && !mManager.isFromUser()) {
             String currentVersionName = mContext.getString(R.string.version_name);
             String newVersionName = mManager.getVersion();
             if (currentVersionName.equalsIgnoreCase(newVersionName)) {
