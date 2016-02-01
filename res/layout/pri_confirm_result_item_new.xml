@@ -29,7 +29,7 @@
                 android:maxLines="2"
                 android:text="@string/scan_done_app"
                 android:textColor="@color/white"
-                android:textSize="12dp" />
+                android:textSize="11dp" />
 
             <TextView
                 android:id="@+id/item_one_num"
@@ -90,7 +90,7 @@
                 android:maxLines="2"
                 android:text="@string/scan_done_pic"
                 android:textColor="@color/white"
-                android:textSize="12dp" />
+                android:textSize="11dp" />
 
             <TextView
                 android:id="@+id/item_two_num"
@@ -151,7 +151,7 @@
                 android:maxLines="2"
                 android:text="@string/scan_done_vid"
                 android:textColor="@color/white"
-                android:textSize="12dp" />
+                android:textSize="11dp"/>
 
             <TextView
                 android:id="@+id/item_three_num"
