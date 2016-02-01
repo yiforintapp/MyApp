@@ -117,11 +117,9 @@ public class LEOAdEngine {
     private LEONativeAd createLEONative(String unitId) {
         String placementId = mUnitIdToPlacementIdMap.get(unitId);
         FBNativeAd fb = new FBNativeAd(mAppContext, placementId);
-		/*從max sdk得到的廣告對象*/
-		LeoAdNative leoAdNative = LeoAdFactory.newNativeController(
-				AppMasterApplication.getInstance(), unitId);
-		
-        return new LEONativeAd(fb, leoAdNative);
+        MaxNativeAd max = new MaxNativeAd(mAppContext, unitId);
+
+        return new LEONativeAd(fb, max);
     }
     
     private void loadSingleMobAd(String unitId, LEONativeAd nativeAd){
