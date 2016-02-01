@@ -375,4 +375,6 @@
     <dimen name="mask_text_margin_left">100dp</dimen>
     <dimen name="mask_text_margin_top">60dp</dimen>
     <dimen name="slidable_length">210dp</dimen>
+
+    <dimen name="question_passwd_width">195dp</dimen>
 </resources>

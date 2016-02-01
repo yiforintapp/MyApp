@@ -407,4 +407,5 @@
     <!-- 3.3 -->
     <dimen name="scan_ad_preview_height">138dp</dimen>
 
+    <dimen name="question_passwd_width">170dp</dimen>
 </resources>
