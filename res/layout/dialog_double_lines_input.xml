@@ -32,8 +32,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/passwd_question"
+                android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#333333" />
+                android:textColor="#333333"
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/et_first"
@@ -60,8 +62,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/passwd_anwser"
+                android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#333333" />
+                android:textColor="#333333"
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/et_second"
