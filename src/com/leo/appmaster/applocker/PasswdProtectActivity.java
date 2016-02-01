@@ -145,7 +145,7 @@ public class PasswdProtectActivity extends BaseActivity implements
             }
         });
 
-        String[] entrys = getResources().getStringArray(
+        final String[] entrys = getResources().getStringArray(
                 R.array.default_psw_protect_entrys_new);
         mCategories = Arrays.asList(entrys);
         mSpinnerQuestions = findViewById(R.id.tv_spinner);
@@ -165,8 +165,18 @@ public class PasswdProtectActivity extends BaseActivity implements
                     }
                 } else {
                     for (int i = 0; i < mCategories.size(); i++) {
-                        if (mCategories.get(i).equals(AppMasterPreference.getInstance(PasswdProtectActivity.this))) {
-//                              .getPpQuestion())){
+
+                        String question = AppMasterPreference.getInstance(PasswdProtectActivity.this)
+                                .getPpQuestion();
+                        //检验问题是否为旧版本的病句
+                        String[] oldStrings = getResources().getStringArray(
+                                R.array.default_psw_protect_entrys);
+                        boolean isOldString = Utilities.makeContrast(oldStrings, question);
+                        if (isOldString) {
+                            question = Utilities.replaceOldString(entrys, oldStrings, question);
+                        }
+
+                        if (mCategories.get(i).equals(question)) {
                             index = i;
                         }
                     }
