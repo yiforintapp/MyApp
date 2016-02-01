@@ -20,11 +20,13 @@ import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
@@ -32,6 +34,9 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 首页下方4个tab
@@ -225,9 +230,34 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     }
 
     private void startRcommendLock(int target) {
-        Intent intent = new Intent(getActivity(), RecommentAppLockListActivity.class);
-        intent.putExtra("target", target);
-        startActivity(intent);
+        LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        List<String> lockList = mLockManager.getCurLockList();
+        //include appmaster
+        int lockStringsNum = lockList.size() - 1;
+
+        ArrayList<AppItemInfo> localAppList = AppLoadEngine.getInstance(mActivity).getAllPkgInfo();
+        List<String> defaultLockList = AppLoadEngine.getInstance(mActivity).getRecommendLockList();
+
+        int mRecommandNum = 0;
+        for (int i = 0; i < localAppList.size(); i++) {
+            AppItemInfo info = localAppList.get(i);
+            String pckName = info.packageName;
+            for (int j = 0; j < defaultLockList.size(); j++) {
+                String recommandPckName = defaultLockList.get(j);
+                if (pckName.equals(recommandPckName)) {
+                    mRecommandNum++;
+                }
+            }
+        }
+
+        if (mRecommandNum > lockStringsNum) {
+            Intent intent = new Intent(getActivity(), RecommentAppLockListActivity.class);
+            intent.putExtra("target", target);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(getActivity(), AppLockListActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void checkNewTheme() {
