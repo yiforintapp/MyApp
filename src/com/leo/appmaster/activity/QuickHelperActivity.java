@@ -1,9 +1,14 @@
 
 package com.leo.appmaster.activity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,10 +38,20 @@ import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 public class QuickHelperActivity extends BaseActivity {
+    private List<Integer> mIndexCategoryStart;
+    private List<Integer> mIndexCategoryEnd;
+    private SparseIntArray mMapDrawableToName;
+    private SparseIntArray mMapDrawableToDesc;
+    private static Integer[] mDrawableBoost;
+    private static Integer[] mDrawablePrivacy;
+    private static Integer[] mDrawableSystemManage;
+    private static Integer[] mDrawableAppJoy;
+    
+    private List<Integer[]> mFinalDrawableArray;
+    private List<Integer> mFinalDrawableIds;
+    
     private static int[] mHelperResourceIDs;
-
     private static int[] mHelperNames;
-
     private static int[] mHelperDescs;
 
     private CommonToolbar mCtb;
@@ -69,6 +84,24 @@ public class QuickHelperActivity extends BaseActivity {
     private static final int POSITION_APPJOY;
 
     static {
+        mDrawableBoost = new Integer[] {
+                R.drawable.qh_gamebox_icon
+        };
+        
+        mDrawablePrivacy = new Integer[] {
+                R.drawable.qh_image_icon, R.drawable.qh_video_icon,
+                R.drawable.qh_intruder_icon, R.drawable.qh_call_filter, 
+                R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
+        };
+        mDrawableSystemManage = new Integer[] {
+                R.drawable.qh_uninstall_icon, R.drawable.qh_backup_icon,
+                R.drawable.qh_flow_icon, R.drawable.qh_battery_icon, 
+                R.drawable.qh_speedup_icon,
+        };
+        mDrawableAppJoy = new Integer[] {
+                R.drawable.qh_appjoy_icon
+        };
+        
 //        if (Build.VERSION.SDK_INT > 21) {    
 //            mHelperResourceIDs = new int[]{
 //                    R.drawable.qh_image_icon, R.drawable.qh_video_icon,
@@ -184,12 +217,65 @@ public class QuickHelperActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quickhelper);
+        putInOrder();
         SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1, "assistant", "assistant_enter");
         init();
     }
 
+    private void putInOrder() {
+        mMapDrawableToName = new SparseIntArray();
+        mMapDrawableToName.put(R.drawable.qh_gamebox_icon, R.string.game_box_one);
+        mMapDrawableToName.put(R.drawable.qh_image_icon, R.string.quick_helper_pic_hide);
+        mMapDrawableToName.put(R.drawable.qh_video_icon, R.string.quick_helper_video_hide);
+        mMapDrawableToName.put(R.drawable.qh_intruder_icon, R.string.quick_helper_intruder);
+        mMapDrawableToName.put(R.drawable.qh_call_filter, R.string.quick_helper_callfilter);
+        mMapDrawableToName.put(R.drawable.qh_privacy_contact, R.string.privacy_contacts);
+        mMapDrawableToName.put(R.drawable.qh_wifi_icon, R.string.quick_helper_wifi_safety);
+        mMapDrawableToName.put(R.drawable.qh_uninstall_icon, R.string.quick_helper_app_uninstall);
+        mMapDrawableToName.put(R.drawable.qh_backup_icon, R.string.quick_helper_app_backup);
+        mMapDrawableToName.put(R.drawable.qh_flow_icon, R.string.quick_helper_flow_manage);
+        mMapDrawableToName.put(R.drawable.qh_battery_icon, R.string.quick_helper_elec_manage);
+        mMapDrawableToName.put(R.drawable.qh_speedup_icon, R.string.accelerate);
+        mMapDrawableToName.put(R.drawable.qh_appjoy_icon, R.string.desk_ad_name);
+        
+        mMapDrawableToDesc = new SparseIntArray();
+        mMapDrawableToDesc.put(R.drawable.qh_gamebox_icon, R.string.game_box_one);
+        mMapDrawableToDesc.put(R.drawable.qh_image_icon, R.string.quick_helper_desc_pic_hide);
+        mMapDrawableToDesc.put(R.drawable.qh_video_icon, R.string.quick_helper_desc_video_hide);
+        mMapDrawableToDesc.put(R.drawable.qh_intruder_icon, R.string.quick_helper_desc_intruder);
+        mMapDrawableToDesc.put(R.drawable.qh_call_filter, R.string.quick_helper_desc_callfilter);
+        mMapDrawableToDesc.put(R.drawable.qh_privacy_contact, R.string.quick_helper_desc_call);
+        mMapDrawableToDesc.put(R.drawable.qh_wifi_icon, R.string.quick_helper_desc_wifi);
+        mMapDrawableToDesc.put(R.drawable.qh_uninstall_icon, R.string.quick_helper_desc_uninstall);
+        mMapDrawableToDesc.put(R.drawable.qh_backup_icon, R.string.quick_helper_desc_backup);
+        mMapDrawableToDesc.put(R.drawable.qh_flow_icon, R.string.quick_helper_desc_flow);
+        mMapDrawableToDesc.put(R.drawable.qh_battery_icon, R.string.quick_helper_desc_elec);
+        mMapDrawableToDesc.put(R.drawable.qh_speedup_icon, R.string.quick_helper_desc_boost);
+        mMapDrawableToDesc.put(R.drawable.qh_appjoy_icon, R.string.quick_helper_desc_appjoy);
+        
+        mFinalDrawableArray = new ArrayList<Integer[]>();
+        mFinalDrawableIds = new ArrayList<Integer>();
+        mFinalDrawableArray.add(mDrawableBoost);
+        mFinalDrawableArray.add(mDrawablePrivacy);
+        mFinalDrawableArray.add(mDrawableAppJoy);
+        mFinalDrawableArray.add(mDrawableSystemManage);
+        
+        mIndexCategoryStart = new ArrayList<Integer>();
+        mIndexCategoryEnd = new ArrayList<Integer>();
+        int accountBeforeCurrentI = 0;
+        for (int i = 0; i < mFinalDrawableArray.size(); i++) {
+            for (int j = 0; j < mFinalDrawableArray.get(i).length; j++) {
+                Integer[] integers = mFinalDrawableArray.get(i);
+                mFinalDrawableIds.add(integers[j]);
+            }
+            mIndexCategoryStart.add(accountBeforeCurrentI);
+            accountBeforeCurrentI += mFinalDrawableArray.get(i).length;
+            mIndexCategoryEnd.add(accountBeforeCurrentI - 1);
+        }
+    }
+
     private void init() {
-        final boolean showGameBox = SDKWrapper.isGameBoxAvailable(this);
+//        final boolean showGameBox = SDKWrapper.isGameBoxAvailable(this);
         mInflater = LayoutInflater.from(this);
         mCtb = (CommonToolbar) findViewById(R.id.ctb_quickhelper_title);
         mCtb.setToolbarTitle(R.string.hp_helper_shot);
@@ -200,10 +286,6 @@ public class QuickHelperActivity extends BaseActivity {
         mLvQuickHelperList.setAdapter(new BaseAdapter() {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
-                int realPosition = position;
-                if (!showGameBox) {
-                    realPosition += 1;
-                }
                 View view = mInflater.inflate(R.layout.item_quick_helper_list, null);
                 TextView tvClass = (TextView) view.findViewById(R.id.tv_class);
                 LinearLayout llClass = (LinearLayout) view.findViewById(R.id.ll_class);
@@ -212,32 +294,42 @@ public class QuickHelperActivity extends BaseActivity {
                 TextView tvName = (TextView) view.findViewById(R.id.tv_name);
                 TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc);
                 View line = view.findViewById(R.id.v_line);
-                if (realPosition == TOPMOST_CLASS_LAST_ONE_POSITION
-                        ||realPosition == FIRST_CLASS_LAST_ONE_POSITION
-                        || realPosition == SECOND_CLASS_LAST_ONE_POSITION
-                        || realPosition == THIRD_CLASS_LAST_ONE_POSITION) {
+                if (mIndexCategoryEnd.contains(position)) {
                     line.setVisibility(View.GONE);
                 }
-                if (realPosition == TOPMOST_CLASS_FIRST_ONE_POSITION) {
-                    tvClass.setText(R.string.up_list_swifty_title);
-                } else if (realPosition == FIRST_CLASS_FIRST_ONE_POSITION) {
-                    tvClass.setText(R.string.class_privacy_protection);
-                } else if (realPosition == SECOND_CLASS_FIRST_ONE_POSITION) {
-                    tvClass.setText(R.string.class_system_manage);
-                } else if (realPosition == THIRD_CLASS_FIRST_ONE_POSITION) {
-                    tvClass.setText(R.string.class_happy_app);
+                int drawableId = mFinalDrawableIds.get(position);
+                if (mIndexCategoryStart.contains(position)) {
+                    if (Arrays.asList(mDrawableBoost).contains(drawableId)) {
+                        tvClass.setText(R.string.up_list_swifty_title);
+                    } else if (Arrays.asList(mDrawablePrivacy).contains(drawableId)) {
+                        tvClass.setText(R.string.class_privacy_protection);
+                    } else if (Arrays.asList(mDrawableSystemManage).contains(drawableId)) {
+                        tvClass.setText(R.string.class_system_manage);
+                    } else if (Arrays.asList(mDrawableAppJoy).contains(drawableId)) {
+                        tvClass.setText(R.string.class_happy_app);
+                    } 
                 } else {
                     llClass.setVisibility(View.GONE);
                 }
-                ivIcon.setBackgroundResource(mHelperResourceIDs[realPosition]);
-                tvName.setText(getResources().getString(mHelperNames[realPosition]));
-                tvDesc.setText(getResources().getString(mHelperDescs[realPosition]));
-                final int finalRealPosition = realPosition;
+//                if (position == TOPMOST_CLASS_FIRST_ONE_POSITION) {
+//                    tvClass.setText(R.string.up_list_swifty_title);
+//                } else if (position == FIRST_CLASS_FIRST_ONE_POSITION) {
+//                    tvClass.setText(R.string.class_privacy_protection);
+//                } else if (position == SECOND_CLASS_FIRST_ONE_POSITION) {
+//                    tvClass.setText(R.string.class_system_manage);
+//                } else if (position == THIRD_CLASS_FIRST_ONE_POSITION) {
+//                    tvClass.setText(R.string.class_happy_app);
+//                } else {
+//                    llClass.setVisibility(View.GONE);
+//                }
+                ivIcon.setBackgroundResource(drawableId);
+                tvName.setText(getResources().getString(mMapDrawableToName.get(drawableId)));
+                tvDesc.setText(getResources().getString(mMapDrawableToDesc.get(drawableId)));
                 rvAdd.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent;
-                        int id = (int) getItemId(finalRealPosition);
+                        int id = (int) getItemId(position);
                         switch (id) {
                             /*case R.drawable.qh_gamebox_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
@@ -383,7 +475,7 @@ public class QuickHelperActivity extends BaseActivity {
 
             @Override
             public long getItemId(int position) {
-                return mHelperResourceIDs[position];
+                return mFinalDrawableIds.get(position);
             }
 
             @Override
@@ -393,11 +485,7 @@ public class QuickHelperActivity extends BaseActivity {
 
             @Override
             public int getCount() {
-                if (showGameBox) {
-                    return mHelperResourceIDs.length;
-                } else {
-                    return mHelperResourceIDs.length-1;
-                }
+                return mFinalDrawableIds.size();
             }
         });
     }
