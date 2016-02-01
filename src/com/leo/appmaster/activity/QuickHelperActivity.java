@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.UninstallActivity;
@@ -44,7 +45,9 @@ public class QuickHelperActivity extends BaseActivity {
     private SparseIntArray mMapDrawableToDesc;
     private static Integer[] mDrawableBoost;
     private static Integer[] mDrawablePrivacy;
+    private static Integer[] mDrawablePrivacy2;
     private static Integer[] mDrawableSystemManage;
+    private static Integer[] mDrawableSystemManage2;
     private static Integer[] mDrawableAppJoy;
     
     private List<Integer[]> mFinalDrawableArray;
@@ -58,159 +61,57 @@ public class QuickHelperActivity extends BaseActivity {
     private ListView mLvQuickHelperList;
     private LayoutInflater mInflater;
 
-    private static final int TOPMOST_CLASS_LAST_ONE_POSITION;
-    private static final int FIRST_CLASS_LAST_ONE_POSITION;
-    private static final int SECOND_CLASS_LAST_ONE_POSITION;
-    private static final int THIRD_CLASS_LAST_ONE_POSITION;
-
-    private static final int TOPMOST_CLASS_FIRST_ONE_POSITION;
-    private static final int FIRST_CLASS_FIRST_ONE_POSITION;
-    private static final int SECOND_CLASS_FIRST_ONE_POSITION;
-    private static final int THIRD_CLASS_FIRST_ONE_POSITION;
-
-    private static final int POSITION_GAME_BOOST;
-    private static final int POSITION_CALL_FILTER;
-    private static final int POSITION_BOOST;
-    private static final int POSITION_IMAGE_HIDE;
-    private static final int POSITION_VIDEO_HIEDE;
-    private static final int POSITION_APP_UNSTALL;
-    private static final int POSITION_APP_BACKUP;
-    private static final int POSITION_FLOW;
-    private static final int POSITION_ELEC;
-    private static final int POSITION_WIFI;
-    private static final int POSITION_INTRUDER;
-    private static final int POSITION_SECRET_CALL;
-//    private static final int POSITION_SECRET_MSG;
-    private static final int POSITION_APPJOY;
+//    private static final int TOPMOST_CLASS_LAST_ONE_POSITION;
+//    private static final int FIRST_CLASS_LAST_ONE_POSITION;
+//    private static final int SECOND_CLASS_LAST_ONE_POSITION;
+//    private static final int THIRD_CLASS_LAST_ONE_POSITION;
+//
+//    private static final int TOPMOST_CLASS_FIRST_ONE_POSITION;
+//    private static final int FIRST_CLASS_FIRST_ONE_POSITION;
+//    private static final int SECOND_CLASS_FIRST_ONE_POSITION;
+//    private static final int THIRD_CLASS_FIRST_ONE_POSITION;
+//
+//    private static final int POSITION_GAME_BOOST;
+//    private static final int POSITION_CALL_FILTER;
+//    private static final int POSITION_BOOST;
+//    private static final int POSITION_IMAGE_HIDE;
+//    private static final int POSITION_VIDEO_HIEDE;
+//    private static final int POSITION_APP_UNSTALL;
+//    private static final int POSITION_APP_BACKUP;
+//    private static final int POSITION_FLOW;
+//    private static final int POSITION_ELEC;
+//    private static final int POSITION_WIFI;
+//    private static final int POSITION_INTRUDER;
+//    private static final int POSITION_SECRET_CALL;
+////    private static final int POSITION_SECRET_MSG;
+//    private static final int POSITION_APPJOY;
 
     static {
         mDrawableBoost = new Integer[] {
                 R.drawable.qh_gamebox_icon
         };
-        
         mDrawablePrivacy = new Integer[] {
                 R.drawable.qh_image_icon, R.drawable.qh_video_icon,
                 R.drawable.qh_intruder_icon, R.drawable.qh_call_filter, 
                 R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
+        };
+        mDrawablePrivacy2 = new Integer[] {
+                R.drawable.qh_image_icon, R.drawable.qh_video_icon,
+                R.drawable.qh_intruder_icon, R.drawable.qh_call_filter, 
+                R.drawable.qh_wifi_icon,
         };
         mDrawableSystemManage = new Integer[] {
                 R.drawable.qh_uninstall_icon, R.drawable.qh_backup_icon,
                 R.drawable.qh_flow_icon, R.drawable.qh_battery_icon, 
                 R.drawable.qh_speedup_icon,
         };
+        mDrawableSystemManage2 = new Integer[] {
+                R.drawable.qh_flow_icon, R.drawable.qh_battery_icon, 
+                R.drawable.qh_speedup_icon,
+        };
         mDrawableAppJoy = new Integer[] {
                 R.drawable.qh_appjoy_icon
         };
-        
-//        if (Build.VERSION.SDK_INT > 21) {    
-//            mHelperResourceIDs = new int[]{
-//                    R.drawable.qh_image_icon, R.drawable.qh_video_icon,
-//                    R.drawable.qh_intruder_icon,R.drawable.ic_launcher,
-//                    R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
-//                    R.drawable.qh_uninstall_icon, R.drawable.qh_backup_icon,
-//                    R.drawable.qh_flow_icon,R.drawable.qh_battery_icon,
-//                    R.drawable.qh_speedup_icon,
-//                    R.drawable.qh_appjoy_icon
-//            };
-//            mHelperNames = new int[]
-//            {
-//                    R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
-//                    R.string.quick_helper_intruder, R.string.quick_helper_callfilter,
-//                    R.string.privacy_contacts,
-//                    R.string.quick_helper_wifi_safety,
-//                    R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
-//                    R.string.quick_helper_flow_manage,R.string.quick_helper_elec_manage,
-//                    R.string.accelerate, R.string.desk_ad_name
-//            };
-//
-//            mHelperDescs = new int[]
-//            {
-//                    R.string.app_name,
-//                    R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
-//                    R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_call,
-//                    R.string.quick_helper_desc_wifi,
-//                    R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
-//                    R.string.quick_helper_desc_flow,R.string.quick_helper_desc_elec,
-//                    R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
-//            };
-//
-//            FIRST_CLASS_LAST_ONE_POSITION = 4;
-//            SECOND_CLASS_LAST_ONE_POSITION = 8;
-//            THIRD_CLASS_LAST_ONE_POSITION = 9;
-//
-//            FIRST_CLASS_FIRST_ONE_POSITION = 0;
-//            SECOND_CLASS_FIRST_ONE_POSITION = 5;
-//            THIRD_CLASS_FIRST_ONE_POSITION = 9;
-//
-//            POSITION_IMAGE_HIDE = 0;
-//            POSITION_VIDEO_HIEDE = 1;
-//            POSITION_INTRUDER = 2;
-//            POSITION_SECRET_CALL = 3;
-//            POSITION_WIFI = 4;
-//            POSITION_APP_UNSTALL = 5;
-//            POSITION_APP_BACKUP = 6;
-//            POSITION_FLOW = 7;
-//            POSITION_BOOST = 9;
-//            POSITION_APPJOY = 10;
-//            POSITION_ELEC = 8;
-//            } else {
-            mHelperResourceIDs = new int[]{
-                    R.drawable.qh_gamebox_icon,
-                    R.drawable.qh_image_icon, R.drawable.qh_video_icon,
-                    R.drawable.qh_intruder_icon,R.drawable.qh_call_filter,
-                    R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
-                    R.drawable.qh_uninstall_icon, R.drawable.qh_backup_icon,
-                    R.drawable.qh_flow_icon,
-                    R.drawable.qh_battery_icon, R.drawable.qh_speedup_icon,
-                    R.drawable.qh_appjoy_icon
-            };
-
-            mHelperNames = new int[]
-            {
-                    R.string.game_box_one,
-                    R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
-                    R.string.quick_helper_intruder, R.string.quick_helper_callfilter, R.string.privacy_contacts,
-                    R.string.quick_helper_wifi_safety,
-                    R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
-                    R.string.quick_helper_flow_manage, R.string.quick_helper_elec_manage,
-                    R.string.accelerate, R.string.desk_ad_name
-            };
-
-            mHelperDescs = new int[]
-            {
-                    R.string.game_box_one, /* TODO 换成正确的描述 */
-                    R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
-                    R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_callfilter, R.string.quick_helper_desc_call,
-                    R.string.quick_helper_desc_wifi,
-                    R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
-                    R.string.quick_helper_desc_flow, R.string.quick_helper_desc_elec,
-                    R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
-            };
-
-            TOPMOST_CLASS_LAST_ONE_POSITION = 0;
-            FIRST_CLASS_LAST_ONE_POSITION = 6;
-            SECOND_CLASS_LAST_ONE_POSITION = 11;
-            THIRD_CLASS_LAST_ONE_POSITION = 12;
-
-            TOPMOST_CLASS_FIRST_ONE_POSITION = 0;
-            FIRST_CLASS_FIRST_ONE_POSITION = 1;
-            SECOND_CLASS_FIRST_ONE_POSITION = 7;
-            THIRD_CLASS_FIRST_ONE_POSITION = 12;
-
-            POSITION_GAME_BOOST = 0;
-            POSITION_IMAGE_HIDE = POSITION_GAME_BOOST + 1;
-            POSITION_VIDEO_HIEDE = POSITION_IMAGE_HIDE + 1;
-            POSITION_INTRUDER = POSITION_VIDEO_HIEDE + 1;
-            POSITION_CALL_FILTER = POSITION_INTRUDER + 1;
-            POSITION_SECRET_CALL = POSITION_CALL_FILTER + 1;
-            POSITION_WIFI = POSITION_SECRET_CALL + 1;
-            POSITION_APP_UNSTALL = POSITION_WIFI + 1;
-            POSITION_APP_BACKUP = POSITION_APP_UNSTALL + 1;
-            POSITION_FLOW = POSITION_APP_BACKUP + 1;
-            POSITION_ELEC = POSITION_FLOW + 1;
-            POSITION_BOOST = POSITION_ELEC + 1;
-            POSITION_APPJOY = POSITION_BOOST + 1;
-//        }
     }
 
     @Override
@@ -255,10 +156,15 @@ public class QuickHelperActivity extends BaseActivity {
         
         mFinalDrawableArray = new ArrayList<Integer[]>();
         mFinalDrawableIds = new ArrayList<Integer>();
-        mFinalDrawableArray.add(mDrawableBoost);
-        mFinalDrawableArray.add(mDrawablePrivacy);
+        if (AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact()) {
+            mFinalDrawableArray.add(mDrawablePrivacy2);
+            mFinalDrawableArray.add(mDrawableSystemManage2);
+        } else {
+            mFinalDrawableArray.add(mDrawablePrivacy);
+            mFinalDrawableArray.add(mDrawableSystemManage);
+        }
+//        mFinalDrawableArray.add(mDrawableBoost);
         mFinalDrawableArray.add(mDrawableAppJoy);
-        mFinalDrawableArray.add(mDrawableSystemManage);
         
         mIndexCategoryStart = new ArrayList<Integer>();
         mIndexCategoryEnd = new ArrayList<Integer>();
@@ -297,7 +203,7 @@ public class QuickHelperActivity extends BaseActivity {
                 if (mIndexCategoryEnd.contains(position)) {
                     line.setVisibility(View.GONE);
                 }
-                int drawableId = mFinalDrawableIds.get(position);
+                final int drawableId = mFinalDrawableIds.get(position);
                 if (mIndexCategoryStart.contains(position)) {
                     if (Arrays.asList(mDrawableBoost).contains(drawableId)) {
                         tvClass.setText(R.string.up_list_swifty_title);
@@ -328,7 +234,7 @@ public class QuickHelperActivity extends BaseActivity {
                 rvAdd.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent;
+                        Intent intent = null;
                         int id = (int) getItemId(position);
                         switch (id) {
                             /*case R.drawable.qh_gamebox_icon:
@@ -346,7 +252,7 @@ public class QuickHelperActivity extends BaseActivity {
                                     intent = new Intent(AppMasterApplication.getInstance(), HomeBoostActivity.class);
                                     intent.putExtra("from_quickhelper", true);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_BOOST]), mHelperResourceIDs[POSITION_BOOST], intent, QuickHelperActivity.this);
+//                                    QuickHelperUtils.createQuickHelper(getResources().getString(mMapDrawableToName.get(drawableId)), drawableId, intent, QuickHelperActivity.this);
 //                                }
                                 break;
                             // 图片隐藏
@@ -356,7 +262,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent = new Intent(AppMasterApplication.getInstance(), ImageHideMainActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_IMAGE_HIDE]), mHelperResourceIDs[POSITION_IMAGE_HIDE], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mMapDrawableToName.get(drawableId)), drawableId, intent, QuickHelperActivity.this);
                                 break;
                             // 视频隐藏
                             case R.drawable.qh_video_icon:
@@ -365,7 +271,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent = new Intent(AppMasterApplication.getInstance(), VideoHideMainActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_VIDEO_HIEDE]), mHelperResourceIDs[POSITION_VIDEO_HIEDE], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_VIDEO_HIEDE]), mHelperResourceIDs[POSITION_VIDEO_HIEDE], intent, QuickHelperActivity.this);
                                 break;
                             // 应用卸载
                             case R.drawable.qh_uninstall_icon:
@@ -374,7 +280,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent = new Intent(AppMasterApplication.getInstance(), UninstallActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APP_UNSTALL]), mHelperResourceIDs[POSITION_APP_UNSTALL], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APP_UNSTALL]), mHelperResourceIDs[POSITION_APP_UNSTALL], intent, QuickHelperActivity.this);
                                 break;
                             // 应用备份 (免密码)
                             case R.drawable.qh_backup_icon:
@@ -384,7 +290,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mBackup);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APP_BACKUP]), mHelperResourceIDs[POSITION_APP_BACKUP], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APP_BACKUP]), mHelperResourceIDs[POSITION_APP_BACKUP], intent, QuickHelperActivity.this);
                                 break;
                             // 流量管理 (免密码)
                             case R.drawable.qh_flow_icon:
@@ -394,7 +300,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mFlow);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_FLOW]), mHelperResourceIDs[POSITION_FLOW], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_FLOW]), mHelperResourceIDs[POSITION_FLOW], intent, QuickHelperActivity.this);
                                 break;
                             // 电量管理 (免密码)
                             case R.drawable.qh_battery_icon:
@@ -404,7 +310,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mElec);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_ELEC]), mHelperResourceIDs[POSITION_ELEC], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_ELEC]), mHelperResourceIDs[POSITION_ELEC], intent, QuickHelperActivity.this);
                                 break;
                              // 骚扰拦截 (免密码)
                             case R.drawable.qh_call_filter:
@@ -413,7 +319,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mCallfilter);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_CALL_FILTER]), mHelperResourceIDs[POSITION_CALL_FILTER], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_CALL_FILTER]), mHelperResourceIDs[POSITION_CALL_FILTER], intent, QuickHelperActivity.this);
                                 break;
                             // WIFI安全 (免密码)
                             case R.drawable.qh_wifi_icon:
@@ -423,7 +329,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mWifi);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_WIFI]), mHelperResourceIDs[POSITION_WIFI], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_WIFI]), mHelperResourceIDs[POSITION_WIFI], intent, QuickHelperActivity.this);
                                 break;
                             // 入侵者防护
                             case R.drawable.qh_intruder_icon:
@@ -432,7 +338,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent = new Intent(AppMasterApplication.getInstance(), IntruderprotectionActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_INTRUDER]), mHelperResourceIDs[POSITION_INTRUDER], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_INTRUDER]), mHelperResourceIDs[POSITION_INTRUDER], intent, QuickHelperActivity.this);
                                 break;
                             // 隐私通话
                             case R.drawable.qh_privacy_contact:
@@ -442,7 +348,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT, PrivacyContactUtils.TO_PRIVACY_CONTACT_FLAG);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_SECRET_CALL]), mHelperResourceIDs[POSITION_SECRET_CALL], intent, QuickHelperActivity.this);
+//                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_SECRET_CALL]), mHelperResourceIDs[POSITION_SECRET_CALL], intent, QuickHelperActivity.this);
                                 break;
 //                            // 隐私短信
 //                            case R.drawable.qh_sms_icon:
@@ -462,11 +368,11 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mAd);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APPJOY]), mHelperResourceIDs[POSITION_APPJOY], intent, QuickHelperActivity.this);
                                 break;
                             default:
                                 break;
                         }
+                        QuickHelperUtils.createQuickHelper(getResources().getString(mMapDrawableToName.get(drawableId)), drawableId, intent, QuickHelperActivity.this);
                         Toast.makeText(QuickHelperActivity.this, R.string.quick_help_add_toast, Toast.LENGTH_SHORT).show();
                     }
                 });
