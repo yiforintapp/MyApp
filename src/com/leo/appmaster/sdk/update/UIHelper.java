@@ -295,6 +295,17 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     @Override
     public void onNewState(int ui_type, int param) {
         LeoLog.d(TAG, "onNewState, type=" + ui_type + "; param=" + param);
+
+        /* 3.3.1 规避version name一样还提示升级问题 */
+        if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE) {
+            String currentVersionName = mContext.getString(R.string.version_name);
+            String newVersionName = mManager.getVersion();
+            if (currentVersionName.equalsIgnoreCase(newVersionName)) {
+                mManager.onCancelUpdate();
+                return;
+            }
+        }
+
         mUIType = ui_type;
         mUIParam = param;
         /* 恢复记录强制升级标志的默认值 */
