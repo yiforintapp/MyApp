@@ -2760,7 +2760,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getLockBannerADShowProbability() {
         if (mLargeADShowProbability < 0) {
-            mLargeADShowProbability = mPref.getInt(PREF_LARGE_AD_SHOW_PROBABILITY, 0);
+            mLargeADShowProbability = mPref.getInt(PREF_LARGE_AD_SHOW_PROBABILITY,
+                    AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:10);
+            /* 3.3.1 修改大图默认值为10 */
         }
         return mLargeADShowProbability;
     }
