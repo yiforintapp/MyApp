@@ -172,6 +172,11 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                         privacyConatact);
                 Uri uri = Uri.parse("tel:" + mCallLogNumber);
                 // Intent intent = new Intent(Intent.ACTION_CALL, uri);
+
+                mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(Constants.PKG_CONTACTS, 1000);
+                mLockManager.filterPackage(Constants.PKG_DIALER, 1000);
+
                 Intent intent = new Intent(Intent.ACTION_DIAL,
                         uri);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

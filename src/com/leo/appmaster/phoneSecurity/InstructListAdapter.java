@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.mgr.LockManager;
@@ -105,6 +106,7 @@ public class InstructListAdapter extends BaseAdapter {
                         ComponentName component = new ComponentName(mContext,
                                 DeviceReceiver.class);
                         mLockManager.filterSelfOneMinites();
+                        mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
                         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                                 component);

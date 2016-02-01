@@ -419,6 +419,7 @@ public class PrivacyContactFragment extends BaseFragment {
                 PrivacyContactManager.getInstance(mContext).setLastCall(
                         privacyConatact);
 
+                mLockManager.filterSelfOneMinites();
                 mLockManager.filterPackage(Constants.PKG_CONTACTS, 1000);
                 mLockManager.filterPackage(Constants.PKG_DIALER, 1000);
 
