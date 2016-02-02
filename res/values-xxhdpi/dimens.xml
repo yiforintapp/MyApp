@@ -377,4 +377,6 @@
     <dimen name="slidable_length">210dp</dimen>
 
     <dimen name="question_passwd_width">195dp</dimen>
+    <!-- 3.3.1 -->
+    <dimen name="home_more_empty_height">93dp</dimen>
 </resources>

@@ -360,4 +360,6 @@
     <dimen name="mask_text_size_icon">19dp</dimen>
     <dimen name="mask_text_icon_pd">5dp</dimen>
     <dimen name="popu_txt_size">12dp</dimen>
+    <!-- 3.3.1 -->
+    <dimen name="home_more_empty_height">93dp</dimen>
 </resources>

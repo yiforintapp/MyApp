@@ -193,4 +193,7 @@
     <dimen name="tab_red_tip_m_left">2dp</dimen>
     <!-- 3.3 -->
     <dimen name="scan_ad_preview_height">159dp</dimen>
+
+    <!-- 3.3.1 -->
+    <dimen name="home_more_empty_height">93dp</dimen>
 </resources>
