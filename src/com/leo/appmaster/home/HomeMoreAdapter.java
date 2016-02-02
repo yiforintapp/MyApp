@@ -117,8 +117,8 @@ public class HomeMoreAdapter extends BaseAdapter {
         if (mNeedCutSomeThing) {
             arrayList.add(ARRAY_CONTACT_SINGLE_WITHOUT_STH);
         } else {
-            arrayList.add(ARRAY_APP);
             arrayList.add(ARRAY_CONTACT_SINGLE);
+            arrayList.add(ARRAY_APP);
         }
         arrayList.add(ARRAY_MEDIA);
         arrayList.add(ARRAY_DEVICE);
