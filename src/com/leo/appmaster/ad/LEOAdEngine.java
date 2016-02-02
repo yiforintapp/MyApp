@@ -196,9 +196,11 @@ public class LEOAdEngine {
     private boolean shouldReloadAd(String unitId){
        LeoCompositeData adData = mLEOLoadedNatives.get(unitId);
 
+        LeoLog.d("STONE_AD_DEBUG", "adData.requestTimeMs = " + adData.requestTimeMs);
+        LeoLog.d("STONE_AD_DEBUG", "mPref.getAdFetchInterval() = " + mPref.getADFetchInterval());
         if(adData == null) return true;
         if(System.currentTimeMillis() - adData.requestTimeMs
-                > MILLIS_IN_MINUTE * mPref.getAdFetchInterval()) {
+                > MILLIS_IN_MINUTE * mPref.getADFetchInterval()) {
             return true;
         }
         

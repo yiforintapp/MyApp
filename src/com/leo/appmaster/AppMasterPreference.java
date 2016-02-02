@@ -302,10 +302,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // 3.3 耗电app数量阈值
     public static final String PREF_BATTERY_APP_NUM = "pref_battery_app_num";
 
-    // max ad
-	private static final String KEY_AD_FETCH_INTERVAL = "advertising_fetch_interval";
-	private static final int DEFAULT_FETCH_INTERVAL = 10; // 10 minutes
-
     //intruder
 //    public static final String KEY_SWITCH_FOR_INTRUDER_PROTECTION = "switch_for_intruder_protection";
 //    public static final String KEY_TIMES_OF_CATCH_INTRUDER = "times_of_catch_intruder";
@@ -3189,13 +3185,4 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             }
         });
     }
-
-	public void setAdFetchInterval(int interval) {
-		mPref.edit().putInt(KEY_AD_FETCH_INTERVAL, interval).apply();
-	}
-
-	public int getAdFetchInterval() {
-		return mPref.getInt(KEY_AD_FETCH_INTERVAL, DEFAULT_FETCH_INTERVAL);
-	}
-
 }

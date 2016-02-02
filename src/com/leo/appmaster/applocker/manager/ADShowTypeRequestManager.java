@@ -134,8 +134,12 @@ public class ADShowTypeRequestManager {
         } else {
             LeoLog.i(TAG, "Global user, use normal switchers");
         }
+        int interval = getJSIntValue(response, AD_FETCH_INTERVAL,
+                AppMasterPreference.DEFAULT_FETCH_INTERAL);
+        LeoLog.d("poha", "请求成功，广告刷新时间：" + interval);
         mSp.setADFetchInterval(getJSIntValue(response, AD_FETCH_INTERVAL,
                 AppMasterPreference.DEFAULT_FETCH_INTERAL));
+
         return forceClose;
     }
     
