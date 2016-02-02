@@ -50,8 +50,8 @@
                     android:layout_height="30dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:ems="10"
-                    android:maxLength="40"
+                    android:ems="20"
+                    android:maxLength="70"
                     android:singleLine="true"
                     android:paddingLeft="12dp"
                     android:textSize="14dp" >

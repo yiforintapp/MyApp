@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -199,6 +200,8 @@ public class PasswdProtectActivity extends BaseActivity implements
 
         mLayoutQues = findViewById(R.id.layout_questions);
         mQuestion = (EditText) findViewById(R.id.et_question);
+//        mQuestion.setHorizontalScrollBarEnabled(true);
+//        mQuestion.setMovementMethod(new ScrollingMovementMethod()); 
         mQuestion.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean isFucus) {

@@ -116,11 +116,13 @@ public class HomeMoreAdapter extends BaseAdapter {
         mNeedCutSomeThing = AppMasterPreference.getInstance(mContext).getIsNeedCutBackupUninstallAndPrivacyContact();
         if (mNeedCutSomeThing) {
             arrayList.add(ARRAY_CONTACT_SINGLE_WITHOUT_STH);
+            arrayList.add(ARRAY_MEDIA);
+
         } else {
             arrayList.add(ARRAY_CONTACT_SINGLE);
+            arrayList.add(ARRAY_MEDIA);
             arrayList.add(ARRAY_APP);
         }
-        arrayList.add(ARRAY_MEDIA);
         arrayList.add(ARRAY_DEVICE);
         arrayList.add(ARRAY_HELPER);
 
