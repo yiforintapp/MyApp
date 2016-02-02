@@ -67,8 +67,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
     private final static int[] sCategoryIds = {
             R.string.home_tab_wifi, R.string.home_tab_lost,
-            R.string.home_tab_instruder, R.string.privacy_scan, R.string.category_lock, R.string.pravicy_protect,
-            R.string.app_manager, R.string.hp_device_power, R.string.call_filter_name, R.string.category_other,
+            R.string.home_tab_instruder, R.string.privacy_scan, R.string.category_lock, R.string.hp_hide_video,
+            R.string.hp_hide_img, R.string.hp_device_power, R.string.call_filter_name, R.string.category_other,
     };
 
     private final ArrayList<String> mCategories = new ArrayList<String>();
