@@ -36,6 +36,7 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.extra.AppPermissionInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -168,7 +169,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private int normalTypeHeight = 0;
     private int shortTypeHeight = 0;
     private int adTypeHeight = 0;
-
+    private boolean mIsNeedContractVisible = true;
     private boolean mIsExit;
     private boolean mIsInsAvaliable = true;
 
@@ -183,7 +184,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         mActivity = (HomeActivity) activity;
         mPrivacyHelper = PrivacyHelper.getInstance(activity);
     }
@@ -192,6 +192,10 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (AppMasterPreference.getInstance(mActivity).getIsNeedCutBackupUninstallAndPrivacyContact()) {
+            mIsNeedContractVisible = false;
+        }
+        
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -381,6 +385,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewContactImg = (ImageView) view.findViewById(R.id.scan_new_contact_img);
         mNewContactLoading = (LoadingView) view.findViewById(R.id.scan_new_contact_loading);
         mNewContactLayout = (LinearLayout) view.findViewById(R.id.scan_new_contact_layout);
+        if (AppMasterPreference.getInstance(mActivity).getIsNeedCutBackupUninstallAndPrivacyContact()) {
+            viewStub.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -1134,14 +1141,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
 
     public void startAnimator(final View layout) {
-
         layout.post(new Runnable() {
             @Override
             public void run() {
                 startRealAnimator(layout);
             }
         });
-
     }
 
     private List<View> lists = new ArrayList<View>();
@@ -1149,7 +1154,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void startRealAnimator(final View layout) {
         LeoLog.d("testLayout", "item come :" + i);
-        layout.setVisibility(View.VISIBLE);
+        if (layout == mNewContactLayout && !mIsNeedContractVisible) {
+            layout.setVisibility(View.GONE);
+        } else {
+            layout.setVisibility(View.VISIBLE);
+        }
         int layoutHeight;
         if (layout == mNewAppLayout) {
             layoutHeight = shortTypeHeight;

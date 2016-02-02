@@ -206,7 +206,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private View mIntruderInclude;
     private View mWIfiInclude;
     private View mContactInclude;
-
+    private boolean mIsNeedContractVisible = true;
     private View mBoxOne;
     private View mBoxTwo;
     private View mBoxThree;
@@ -233,6 +233,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity = (HomeActivity) activity;
+        if (AppMasterPreference.getInstance(mActivity).getIsNeedCutBackupUninstallAndPrivacyContact()) {
+            mIsNeedContractVisible = false;
+        }
     }
 
     @Override
@@ -505,7 +508,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             return;
         }
         mContactInclude = viewStub.inflate();
-        if (mContactList == null || mContactList.isEmpty() || !mShowContact) {
+        if (mContactList == null || mContactList.isEmpty() || !mShowContact ||!mIsNeedContractVisible) {
             mContactInclude.setVisibility(View.GONE);
             return;
         }

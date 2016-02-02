@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppDeleteAdapter;
@@ -38,8 +39,11 @@ public class UninstallActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        if (AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact()) {
+//            finish();
+//        }
         setContentView(R.layout.activity_uninstall);
-
+        
         if (getIntent().getBooleanExtra("from_quickhelper", false)) {
             SDKWrapper.addEvent(this, SDKWrapper.P1,
                     "assistant", "uninstall_cnts");

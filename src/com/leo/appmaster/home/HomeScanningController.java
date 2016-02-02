@@ -74,7 +74,6 @@ public class HomeScanningController {
 
     public void startScanning() {
         LeoLog.d(TAG, "startScanning...");
-
         mFragment.startAnimator(mNewContactLayout);
         mActivity.scanningFromPercent(FIRST_IN_TIME, 0, START_TIME);
     }

@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.view.BackUpFragment;
@@ -43,6 +44,9 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        if (AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact()) {
+//            finish();
+//        }
         setContentView(R.layout.activity_delete_backup_restore);
         handleIntent();
         initUI();
