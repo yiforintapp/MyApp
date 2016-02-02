@@ -44,7 +44,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/input_box_line"
-                android:ems="10"
+                android:ems="20"
                 android:enabled="false"
                 android:textColor="#666666"
                 android:textSize="14dp"></EditText>
