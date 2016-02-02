@@ -1010,9 +1010,9 @@
     </string-array>
 
     <string name="scan_result_title">Processing Result</string>
-    <string name="scan_done_app">Lock application</string>
-    <string name="scan_done_pic">Hide pictures</string>
-    <string name="scan_done_vid">Hide videos</string>
+    <string name="scan_done_app">Locked applications</string>
+    <string name="scan_done_pic">Hiden pictures</string>
+    <string name="scan_done_vid">Hiden videos</string>
 
     <string name="game_box_one">Game accelerating</string>
 
