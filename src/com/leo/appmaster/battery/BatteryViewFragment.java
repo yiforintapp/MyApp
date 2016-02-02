@@ -60,6 +60,8 @@ import com.mobvista.sdk.m.core.entity.Campaign;
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
@@ -126,6 +128,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     /*  */
     private View mAdView = null;
     private Runnable mClickRunnable = null;
+
+    /* 用于更新时间 */
+    private Timer mUpdateTimer;
+    private UpdateTimeTask mUpdateTask;
 
     /**
      * 第一个推广位
@@ -335,7 +341,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     @Override
     protected void onInitUI() {
-        LeoLog.d("testBatteryView", "INIT UI");
+        LeoLog.d(TAG, "INIT UI");
         mImageLoader = ImageLoader.getInstance();
 
         mTimeContent = findViewById(R.id.time_move_content);
@@ -414,10 +420,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             e.printStackTrace();
         }
 
-        updateTime();
-        new TimeThread(this).start();
-
-        // stone - test
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_USER_PRESENT);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -431,11 +433,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mActivity.unregisterReceiver(mPresentReceiver);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        scheduleUpdateTimer();
+    }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
+    public void onStop() {
+        super.onStop();
+        if (mUpdateTimer != null) {
+            mUpdateTimer.cancel();
+        }
+        if (mUpdateTask != null) {
+            mUpdateTask.cancel();
+        }
     }
 
     @Override
@@ -444,6 +456,35 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         isExpand = false;
         mShowing = false;
         mIsExtraLayout = false;
+    }
+
+    static class UpdateTimeTask extends TimerTask {
+        WeakReference<BatteryViewFragment> mFragmentRef;
+        public UpdateTimeTask (BatteryViewFragment fragment) {
+            mFragmentRef = new WeakReference<BatteryViewFragment>(fragment);
+        }
+
+        @Override
+        public void run() {
+            final BatteryViewFragment fragment = mFragmentRef.get();
+            if (fragment != null) {
+                ThreadManager.executeOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment.updateTime();
+                    }
+                });
+            }
+        }
+    }
+    private void scheduleUpdateTimer() {
+        if (mUpdateTimer == null) {
+            mUpdateTimer = new Timer();
+        }
+        if (mUpdateTask == null) {
+            mUpdateTask = new UpdateTimeTask(this);
+        }
+        mUpdateTimer.schedule(mUpdateTask, 0, 10*1000);
     }
 
     public void initCreate(String type, BatteryManager.BatteryState state, int remainTime) {
@@ -527,32 +568,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else {
             mTvSmallRight.setText(days[6]);
         }
-    }
 
-    static class TimeThread extends Thread {
-        WeakReference<BatteryViewFragment> mFragmentRef;
-
-        public TimeThread(BatteryViewFragment fragment) {
-            mFragmentRef = new WeakReference<BatteryViewFragment>(fragment);
-        }
-
-        @Override
-        public void run() {
-            while (true) {
-                // update time every 10 second
-                SystemClock.sleep(30 * 1000);
-                final BatteryViewFragment fragment = mFragmentRef.get();
-                if (fragment == null) {
-                    return;
-                }
-                ThreadManager.executeOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        fragment.updateTime();
-                    }
-                });
-            }
-        }
+        LeoLog.d(TAG, "updateTime@"+hour+":"+minute);
     }
 
     private void setBottleWater() {
