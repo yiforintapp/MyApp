@@ -508,7 +508,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             return;
         }
         mContactInclude = viewStub.inflate();
-        if (mContactList == null || mContactList.isEmpty() || !mShowContact ||!mIsNeedContractVisible) {
+        if (mContactList == null || mContactList.isEmpty() || !mShowContact || !mIsNeedContractVisible) {
             mContactInclude.setVisibility(View.GONE);
             return;
         }
@@ -1378,6 +1378,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private void resultToAppLock() {
         Intent intent = new Intent(mActivity, AppLockListActivity.class);
+        intent.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
         mActivity.startActivity(intent);
     }
 

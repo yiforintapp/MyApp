@@ -468,7 +468,7 @@ public class Constants {
 
     /**
      * LEO产品白名单
-     * */
+     */
     public static final String LEO_FAMILY_PG = "com.leo.appmaster";
     public static final String LEO_FAMILY_PL = "com.leo.privacylock";
     public static final String LEO_FAMILY_SWIFTY = "com.leo.iswipe";
@@ -481,6 +481,9 @@ public class Constants {
 
     public static final String VIRTUAL_DESKTOP_PIC = "/virtual_desktop_pic"; // 虚化图片名
     public static final String DEFAULT_SHARE_URL = "http://www.leomaster.com.cn/m/privacy/"; // 默认分享链接
+
+
+    public static final String FROM_CONFIRM_FRAGMENT = "is_from_confirm";
 
 
     /***

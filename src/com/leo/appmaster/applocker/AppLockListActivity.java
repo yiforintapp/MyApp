@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -97,6 +98,7 @@ public class AppLockListActivity extends BaseActivity implements
     private ProgressBar mProgressBar;
     private ArrayList<AppInfo> mResaultList;
     private ImageView mAutoImage;
+    private boolean isFromConfrim = false;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -154,6 +156,8 @@ public class AppLockListActivity extends BaseActivity implements
                 /*应用锁，白名单引导，push掉起显示*/
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(false);
             }
+
+            isFromConfrim = intent.getBooleanExtra(Constants.FROM_CONFIRM_FRAGMENT, false);
         }
     }
 
@@ -233,15 +237,17 @@ public class AppLockListActivity extends BaseActivity implements
      * 进入应用锁列表，引导提示
      */
     private void inLockListGuideTip() {
-        if (!isGuideEnough()) {
-            int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
-            guideCount = guideCount + 1;
-            PreferenceTable.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
-        }
-        boolean isGuideEnough = isGuideEnough();
-        if (!isGuideEnough) {
-            if (mWhiteMode != -1 || needAppGuide()) {
-                openHelp(true, false);
+        if (!isFromConfrim) {
+            if (!isGuideEnough()) {
+                int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+                guideCount = guideCount + 1;
+                PreferenceTable.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
+            }
+            boolean isGuideEnough = isGuideEnough();
+            if (!isGuideEnough) {
+                if (mWhiteMode != -1 || needAppGuide()) {
+                    openHelp(true, false);
+                }
             }
         }
     }
