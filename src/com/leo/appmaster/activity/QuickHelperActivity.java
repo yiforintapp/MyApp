@@ -188,7 +188,7 @@ public class QuickHelperActivity extends BaseActivity {
         mCtb.setOptionMenuVisible(false);
         mLvQuickHelperList = (ListView) findViewById(R.id.lv_quickhelperlist);
         View header = mInflater.inflate(R.layout.headerview_quickhelper, null);
-        mLvQuickHelperList.addHeaderView(header);
+        mLvQuickHelperList.addHeaderView(header, null, false);
         mLvQuickHelperList.setAdapter(new BaseAdapter() {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
