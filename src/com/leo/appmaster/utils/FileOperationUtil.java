@@ -669,6 +669,15 @@ public class FileOperationUtil {
                     LeoLog.d("getPhotoAlbum", "path is : " + path);
                     String dir = cursor.getString(3);
                     String dir_path = getDirPathFromFilepath(path);
+
+
+//                    LeoLog.d("testMainPic", "path is : " + path);
+//                    long ADD_TIME = cursor.getLong(cursor
+//                            .getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
+//                    long MODYFY_TIME = cursor.getLong(cursor
+//                            .getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
+//                    LeoLog.d("testMainPic", "path is : " + path + "   ADD_TIME : " + ADD_TIME + "  MODYFY_TIME : " + MODYFY_TIME);
+
                     if (dir.contains("videoCache")) {
                         LeoLog.d(TAG, "Image Path：" + path);
                     }
@@ -689,6 +698,7 @@ public class FileOperationUtil {
                         pa.setDirPath(dir_path);
                         pa.getBitList().add(new PhotoItem(path));
                         countMap.put(dir_path, pa);
+                        LeoLog.d("testMainPic", "add dir_path is : " + dir_path);
                     } else {
                         if (mSuffix != null && mSuffix.equals(PrivacyDataManagerImpl.CHECK_APART)) {
                             picNumFromDir = pa.getBitList().size();
@@ -740,6 +750,7 @@ public class FileOperationUtil {
 
         Iterable<String> it = countMap.keySet();
         for (String key : it) {
+            LeoLog.d("testMainPic", "key is : " + key);
             aibumList.add(countMap.get(key));
         }
         Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);

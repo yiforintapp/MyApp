@@ -153,6 +153,14 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     LeoLog.d("testPicLoadTime", "hide album path : " + path);
                     String dirName = FileOperationUtil.getDirNameFromFilepath(path);
                     String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
+
+//                    long ADD_TIME = cursor.getLong(cursor
+//                            .getColumnIndex(MediaStore.MediaColumns.DATE_ADDED));
+//                    long MODYFY_TIME = cursor.getLong(cursor
+//                            .getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED));
+//                    LeoLog.d("testMainPic", "path is : " + path + "   ADD_TIME : " + ADD_TIME + "  MODYFY_TIME : " + MODYFY_TIME);
+
+
                     if (!countMap.containsKey(dirPath)) {
                         pa = new PhotoAibum();
                         pa.setName(dirName);
