@@ -478,7 +478,7 @@ public final class Utilities {
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            String [] data = getBrowserInfo(context, url); // 浏览器信息
+            String[] data = getBrowserInfo(context, url); // 浏览器信息
             int count = Integer.parseInt(data[0]);
             if (count == 1) {
                 LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
@@ -561,7 +561,7 @@ public final class Utilities {
             intentLikeUs.setData(uri);
             intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                String [] data = getBrowserInfo(context, url); // 浏览器信息
+                String[] data = getBrowserInfo(context, url); // 浏览器信息
                 int count = Integer.parseInt(data[0]);
                 if (count == 1) {
                     LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
@@ -730,7 +730,7 @@ public final class Utilities {
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            String [] data = getBrowserInfo(context, url); // 浏览器信息
+            String[] data = getBrowserInfo(context, url); // 浏览器信息
             int count = Integer.parseInt(data[0]);
             if (count == 1) {
                 LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
@@ -742,7 +742,9 @@ public final class Utilities {
         }
     }
 
-    /** 获取浏览器个数和只有一个浏览器的包名 */
+    /**
+     * 获取浏览器个数和只有一个浏览器的包名
+     */
     public static String[] getBrowserInfo(Context context, String url) {
         String default_browser = "android.intent.category.DEFAULT";
 
@@ -760,18 +762,25 @@ public final class Utilities {
         try {
             // 找出手机当前安装的所有浏览器程序
             List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(
-                                                        intent, PackageManager.GET_INTENT_FILTERS);
+                    intent, PackageManager.GET_INTENT_FILTERS);
+
+
+            LeoLog.i("getBrowserInfo", "能跳转的浏览器个数： " + resolveInfoList.size());
+            for (int i = 0; i < resolveInfoList.size(); i++) {
+                LeoLog.i("getBrowserInfo", resolveInfoList.get(i).activityInfo.packageName);
+            }
+
             if (resolveInfoList == null) {
                 return data;
             }
             int size = resolveInfoList.size();
             if (size > 1) {
-                  data[0] = String.valueOf(resolveInfoList.size());
-                  return data;
+                data[0] = String.valueOf(resolveInfoList.size());
+                return data;
             } else if (size == 1) {
-                  data[0] = "1";
-                  data[1] = resolveInfoList.get(0).activityInfo.packageName;
-                  return  data;
+                data[0] = "1";
+                data[1] = resolveInfoList.get(0).activityInfo.packageName;
+                return data;
             } else {
                 return data;
             }
