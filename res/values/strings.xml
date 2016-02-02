@@ -119,7 +119,7 @@
     <string name="input_again">Please enter again</string>
     <string name="reset_digital_passwd">Reset your passcode</string>
     <!-- 版权 -->
-    <string name="about_copy">Copyright © 2015 LEOMASTER. All Rights Reserved</string>
+    <string name="about_copy">Copyright © 2016 LEOMASTER. All Rights Reserved</string>
     <!-- AppWall -->
     <string name="app_wall_network">Network Error. Please try again later.</string>
     <string name="app_wall_click">Try again</string>
