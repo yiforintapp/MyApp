@@ -300,7 +300,9 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE && !mManager.isFromUser()) {
             String currentVersionName = mContext.getString(R.string.version_name);
             String newVersionName = mManager.getVersion();
+            LeoLog.d(TAG, "currentVersionName=" + currentVersionName + "; newVersionName=" + newVersionName);
             if (currentVersionName.equalsIgnoreCase(newVersionName)) {
+                LeoLog.d(TAG, "ignore this auto-check update");
                 mManager.onCancelUpdate();
                 return;
             }
