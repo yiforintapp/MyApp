@@ -131,21 +131,17 @@ public class BatteryNotifyHelper {
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
-                        ThreadManager.executeOnAsyncThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
-                                LeoLog.d(TAG, "apps count: " + list.size());
-                                if (list.size() > mManager.getAppThreshold()) {
-                                    ThreadManager.executeOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            notifyAppConsumption(list);
-                                        }
-                                    });
+                        final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
+                        LeoLog.d(TAG, "apps count: " + list.size()
+                                + "/" + mManager.getAppThreshold());
+                        if (list.size() > mManager.getAppThreshold()) {
+                            ThreadManager.executeOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    notifyAppConsumption(list);
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 });
             }
