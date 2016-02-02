@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="15dp"
             android:orientation="horizontal">
@@ -46,7 +46,6 @@
                 android:background="@drawable/input_box_line"
                 android:ems="10"
                 android:enabled="false"
-                android:singleLine="true"
                 android:textColor="#666666"
                 android:textSize="14dp"></EditText>
         </LinearLayout>
