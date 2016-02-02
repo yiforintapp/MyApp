@@ -444,9 +444,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         super.onStop();
         if (mUpdateTimer != null) {
             mUpdateTimer.cancel();
+            mUpdateTimer = null;
         }
         if (mUpdateTask != null) {
             mUpdateTask.cancel();
+            mUpdateTask = null;
         }
     }
 
