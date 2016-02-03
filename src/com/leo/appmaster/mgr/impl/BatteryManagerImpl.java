@@ -46,6 +46,9 @@ public class BatteryManagerImpl extends BatteryManager {
     // 两分钟内不能连续两次清理应用
     private static final int KILL_INTERVAL = 2 * 60 * 1000;
 
+    /* 3.3.1 */
+    private static final int MAX_BUBBLE_SHOW_TIME = 3;
+
     private AppMasterPreference mSp;
     private boolean mPageOnForeground = false;
     private long mLastKillTime = 0;
@@ -356,6 +359,22 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public Boolean getIsCharing() {
         return (mPreviousState.plugged != UNPLUGGED);
+    }
+
+    @Override
+    public boolean shouldShowBubble() {
+        return (mSp.getScreenSaveBubbleCount()<MAX_BUBBLE_SHOW_TIME);
+    }
+
+    @Override
+    public void markShowBubble() {
+        int count = mSp.getScreenSaveBubbleCount();
+        mSp.setScreenSaveBubbleCount(count+1);
+    }
+
+    @Override
+    public void markSettingClick() {
+        mSp.setScreenSaveBubbleCount(MAX_BUBBLE_SHOW_TIME);
     }
 
     /* 外发电量通知 */

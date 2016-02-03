@@ -301,6 +301,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_AD_ON_SCREEN_SAVER = "pref_ad_on_screen_saver";
     // 3.3 耗电app数量阈值
     public static final String PREF_BATTERY_APP_NUM = "pref_battery_app_num";
+    /* 3.3.1 气泡出现次数 */
+    public static final String PREF_SCREEN_SAVE_BUBBLE_COUNT = "pref_screen_save_bubble_count";
 
     //intruder
 //    public static final String KEY_SWITCH_FOR_INTRUDER_PROTECTION = "switch_for_intruder_protection";
@@ -417,6 +419,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private long mFilterTime = -1;
     // 3.3 耗电app数量阈值
     private int mAppThreshold = -1;
+    // 3.3.1 充电屏保气泡出现次数
+    private int mScreenSaveBubbleCount = -1;
     
     private Executor mSerialExecutor;
     private HashMap<String, Object> mValues;
@@ -3124,7 +3128,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsLockAppWallOpen() {
-        return mPref.getInt(PREF_AD_LOCK_WALL, AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
+        return mPref.getInt(PREF_AD_LOCK_WALL, AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : 1);
     }
 
     public boolean getAdvanceProtectOpenSuccessDialogTip() {
@@ -3168,6 +3172,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             mAppThreshold = mPref.getInt(PREF_BATTERY_APP_NUM, DEFAULT_APP_NUM_THRESHOLD);
         }
         return mAppThreshold;
+    }
+
+    /* 3.3.1 气泡出现次数 */
+    public int getScreenSaveBubbleCount () {
+        if (mScreenSaveBubbleCount < 0) {
+            mScreenSaveBubbleCount = mPref.getInt(PREF_SCREEN_SAVE_BUBBLE_COUNT, 0);
+        }
+        return mScreenSaveBubbleCount;
+    }
+
+    public void setScreenSaveBubbleCount (int count) {
+        mScreenSaveBubbleCount = count;
+        commitAsync(mPref.edit().putInt(PREF_SCREEN_SAVE_BUBBLE_COUNT, count));
     }
 
     public long getAdSubmarineClickTime() {

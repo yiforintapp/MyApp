@@ -173,4 +173,22 @@ public abstract class BatteryManager extends Manager {
     public abstract int getBatteryLevel();
 
     public abstract Boolean getIsCharing();
+
+    /* 3.3.1 充电屏保气泡通知相关 */
+
+    /**
+     * 查询是否需要显示气泡提示
+     * @return true需要显示，false不显示
+     */
+    public abstract boolean shouldShowBubble();
+
+    /***
+     * 显示气泡的时候调用此接口
+     */
+    public abstract void markShowBubble();
+
+    /***
+     * 用户点击了屏保上的设置按钮时调用此接口
+     */
+    public abstract void markSettingClick();
 }
