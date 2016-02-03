@@ -190,6 +190,12 @@ public class PasswdProtectActivity extends BaseActivity implements
                                             long id) {
                         mQuestion.setText(mCategories.get(position));
                         mQuestion.selectAll();
+                        mQuestion.setSelection(0);
+//                        CharSequence text = mQuestion.getText();
+//                        if (text instanceof Spannable) {
+//                             Spannable spanText = (Spannable)text;
+//                             Selection.setSelection(spanText, 0);
+//                         }
                         mSelectQues = mCategories.get(position);
                         mQuesDialog.dismiss();
                     }
@@ -268,6 +274,13 @@ public class PasswdProtectActivity extends BaseActivity implements
             mQuestion.setText(mCategories.get(0));
             mQuestion.selectAll();
         }
+        mQuestion.setSelection(0);
+//        CharSequence text = mQuestion.getText();
+//        if (text instanceof Spannable) {
+//             Spannable spanText = (Spannable)text;
+//             Selection.setSelection(spanText, 0);
+//         }
+        
         String answer = AppMasterPreference.getInstance(this).getPpAnwser();
         if (question != null) {
             mAnwser.setText(answer);
