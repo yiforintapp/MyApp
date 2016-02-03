@@ -987,5 +987,10 @@
     <string name="scan_done_vid">隱藏視頻</string>
 
     <string name="game_box_one">遊戲加速</string>
+    
+    <string name="batteryview_pop_setting">充電設置</string>
+    <string name="close_batteryview_confirm_content">您的充電速度將降低20%，確認關閉嗎？</string>
+    <string name="close_batteryview_confirm_sure">確認關閉</string>
+    <string name="close_batteryview_confirm_cancel">我再想想</string>
 
 </resources>
