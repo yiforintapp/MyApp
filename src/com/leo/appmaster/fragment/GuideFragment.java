@@ -20,6 +20,7 @@ import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.ObjectAnimator;
 
@@ -43,6 +44,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private TextView mVideoText;
     private TextView mPicText;
     private TextView mBatteryText;
+    private ObjectAnimator mBatteryGuideAnim;
 
     /*引导类型*/
     public enum GUIDE_TYPE {
@@ -192,6 +194,12 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 mHomeGuideRt.clearAnimation();
                 mHomeGuideAnim = null;
             }
+            if (mBatteryGuideAnim != null) {
+                if (mBatteryGuideAnim.isRunning()) {
+                    mBatteryGuideAnim.cancel();
+                }
+                mBatteryGuideAnim = null;
+            }
         }
     }
 
@@ -230,14 +238,33 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 showHomeGuideAnim(mVideoGuideRt, HOME_GUIDE_TRANSLA_VALUE1, tranY);
             }
         } else if (GUIDE_TYPE.BATTERY_GUIDE == type) {
-            if (mVideoGuideRt != null) {
+            if (mBatteryGuideRt != null) {
                 mBatteryGuideRt.setVisibility(View.VISIBLE);
-                mBatteryText.setText(R.string.video_guide_txt);
+                mBatteryText.setText(R.string.batteryview_pop_setting);
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
-                showHomeGuideAnim(mBatteryGuideRt, HOME_GUIDE_TRANSLA_VALUE1, tranY);
+                showBatteryGudeAnim(mBatteryGuideRt, mBatteryGuideRt.getTop(), tranY);
             }
         }
 
+    }
+
+    private void showBatteryGudeAnim(RelativeLayout view, int top, float tranY) {
+        if (view != null) {
+            view.clearAnimation();
+            if (mBatteryGuideAnim != null) {
+                if (mBatteryGuideAnim.isRunning()) {
+                    mBatteryGuideAnim.cancel();
+                }
+                mBatteryGuideAnim = null;
+            }
+            mBatteryGuideAnim = ObjectAnimator.ofFloat(mBatteryGuideRt, ANIME_PROPERTY_NAME, top, tranY);
+            mBatteryGuideAnim.setFloatValues();
+            mBatteryGuideAnim.setRepeatCount(HOME_GUIDE_REPEAT_COUNT);
+            mBatteryGuideAnim.setRepeatMode(ObjectAnimator.REVERSE);
+            mBatteryGuideAnim.setDuration(HOME_GUIDE_ANIM_TIME);
+
+            mBatteryGuideAnim.start();
+        }
     }
 
     @Override

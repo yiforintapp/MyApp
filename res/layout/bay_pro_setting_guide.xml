@@ -20,6 +20,13 @@
             android:layout_marginRight="6dp"
             android:background="@drawable/guide_tip_bg_edit">
 
+            <ImageView
+                android:id="@+id/bay_edit_guide_tip_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/tips_icon" />
+
             <TextView
                 android:id="@+id/bay_edit_guide_text_tip"
                 android:layout_width="wrap_content"
@@ -27,8 +34,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/bay_edit_guide_tip_icon"
                 android:maxLines="4"
-                android:text="@string/pic_video_guide_txt"
                 android:textColor="#ffffff"
                 android:textSize="14dp" />
 

@@ -327,9 +327,9 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     }
 
     private void cancelGuide() {
-        if (mGuideFragment != null) {
-            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
-        }
+//        if (mGuideFragment != null) {
+//            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
+//        }
     }
 
     @Override
@@ -358,6 +358,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         if (mReceiver != null) {
             unregisterHomeKeyReceiver();
         }
+
+        mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.BATTERY_GUIDE);
     }
 
     @Override
