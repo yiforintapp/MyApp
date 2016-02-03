@@ -1,5 +1,7 @@
 package com.leo.appmaster.battery;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +15,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.Utilities;
 
 public class BatterySettingActivity extends BaseActivity implements View.OnClickListener {
@@ -23,6 +26,7 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
     private RippleView rpBtnTwo;
     private String mFromWhere;
     private BatteryManager.BatteryState newState;
+    private LEOAlarmDialog mConfirmCloseDialog;
     private int mRemainTime;
     //    private boolean mNotiStatusWhenSwitch = false;
     private BatteryManager mBtrManager;
@@ -125,10 +129,23 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                     SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
                             "batterypage", "setting_scr_on");
                 } else {
-                    checkBox.setImageResource(R.drawable.switch_off);
-                    mBtrManager.setScreenViewStatus(false);
-                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
-                            "batterypage", "setting_scr_off");
+                    if (mConfirmCloseDialog == null) {
+                        mConfirmCloseDialog = new LEOAlarmDialog(this);
+                    }
+                    mConfirmCloseDialog.setContent(getString(R.string.close_batteryview_confirm_content));
+                    mConfirmCloseDialog.setRightBtnStr(getString(R.string.close_batteryview_confirm_sure));
+                    mConfirmCloseDialog.setLeftBtnStr(getString(R.string.close_batteryview_confirm_cancel));
+                    mConfirmCloseDialog.setRightBtnListener(new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            checkBox.setImageResource(R.drawable.switch_off);
+                            mBtrManager.setScreenViewStatus(false);
+                            SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
+                                    "batterypage", "setting_scr_off");
+                            mConfirmCloseDialog.dismiss();
+                        }
+                    });
+                    mConfirmCloseDialog.show();
                 }
                 break;
             case R.id.rv_item_noti:
