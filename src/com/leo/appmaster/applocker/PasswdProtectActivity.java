@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -22,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.Utilities;
 
 public class PasswdProtectActivity extends BaseActivity implements
@@ -200,6 +203,12 @@ public class PasswdProtectActivity extends BaseActivity implements
                         mQuesDialog.dismiss();
                     }
                 });
+                try {
+                    ListView itemsListView = mQuesDialog.getItemsListView();
+                    LayoutParams layoutParams = itemsListView.getLayoutParams();
+                    layoutParams.height = DipPixelUtil.dip2px(PasswdProtectActivity.this, 300);
+                } catch (Throwable e) {
+                }
                 mQuesDialog.show();
             }
         });

@@ -268,7 +268,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 }, 200);
 
                 mRootView = view;
-                ThreadManager.executeOnAsyncThread(new Runnable() {
+//                ThreadManager.executeOnSubThread(runnable)
+                ThreadManager.executeOnSubThread(new Runnable() {
                     @Override
                     public void run() {
                         LeoLog.d("AfterPrivacyScan", "onMobvistaFinished: start");
