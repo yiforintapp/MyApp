@@ -37,9 +37,10 @@ import com.leo.appmaster.mgr.BatteryManager.BatteryState;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CircleArroundView;
+import com.leo.appmaster.ui.CircleArroundView.OnArroundFinishListener;
 import com.leo.appmaster.ui.CircleView;
 import com.leo.appmaster.ui.CircleView.OnAfterImageDismissListener;
-import com.leo.appmaster.ui.CircleView.OnArroundFinishListener;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
@@ -86,6 +87,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private TextView mTvBottomText;
     private CircleView mCvFront;
     private CircleView mCvBack;
+    private CircleArroundView mCavMain;
     private RelativeLayout mRlShield;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,10 +117,11 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     
     private void initUI() {
         mRlShield = (RelativeLayout) findViewById(R.id.rl_shield);
-        mCvFront = (CircleView) findViewById(R.id.cv_front);
-        mCvFront.setShowWhich(CircleView.SHOW_FRONT);
-        mCvBack = (CircleView) findViewById(R.id.cv_back);
-        mCvBack.setShowWhich(CircleView.SHOW_BACK);
+//        mCvFront = (CircleView) findViewById(R.id.cv_front);
+//        mCvBack = (CircleView) findViewById(R.id.cv_back);
+        mCavMain = (CircleArroundView) findViewById(R.id.cav_batterymain);
+//        mCvFront.setShowWhich(CircleView.SHOW_FRONT);
+//        mCvBack.setShowWhich(CircleView.SHOW_BACK);
         mTvBottomText = (TextView) findViewById(R.id.tv_bottomtext);
         mTvBoostedNumber = (TextView) findViewById(R.id.tv_boost_complete_number);
         if (mFrgmResult == null) {
@@ -319,28 +322,38 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         rotation.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                mCvFront.startAnim(90, 90, new OnArroundFinishListener() {
+//                mCvFront.startAnim(90, 90, new OnArroundFinishListener() {
+//                    @Override
+//                    public void onArroundFinish() {
+//                        mCvFront.startAnim(mCvBack.getTailDegree() - 1, 0, null, false, (long)(mCvBack.getTailDegree() / 180) * 300);
+//                        mCvBack.startAnim(180, 180, new OnArroundFinishListener() {
+//                            @Override
+//                            public void onArroundFinish() {
+//                                mCvFront.startAnim(0, 90, null, true, 300);
+//                                 mCvFront.startAfterImageDismissAnim(new OnAfterImageDismissListener() {
+//                                 @Override
+//                                    public void onAfterImageDismiss() {
+//                                        mIvShield.setVisibility(View.VISIBLE);
+//                                        startTranslateAnim();
+//                                        startShortenTopLayoutAnim();
+//                                        startShowCompleteAnim();
+//                                        showResultFragment();
+//                                    }
+//                                });
+//                            }
+//                        }, true, 200);
+//                    }
+//                }, true, 200);
+                mCavMain.startAnim(0f, -360f, 680l, new OnArroundFinishListener() {
                     @Override
                     public void onArroundFinish() {
-                        mCvFront.startAnim(mCvBack.getTailDegree() - 1, 0, null, false, (long)(mCvBack.getTailDegree() / 180) * 300);
-                        mCvBack.startAnim(180, 180, new OnArroundFinishListener() {
-                            @Override
-                            public void onArroundFinish() {
-                                mCvFront.startAnim(0, 90, null, true, 300);
-                                 mCvFront.startAfterImageDismissAnim(new OnAfterImageDismissListener() {
-                                 @Override
-                                    public void onAfterImageDismiss() {
-                                        mIvShield.setVisibility(View.VISIBLE);
-                                        startTranslateAnim();
-                                        startShortenTopLayoutAnim();
-                                        startShowCompleteAnim();
-                                        showResultFragment();
-                                    }
-                                });
-                            }
-                        }, true, 200);
+                        mIvShield.setVisibility(View.VISIBLE);
+                      startTranslateAnim();
+                      startShortenTopLayoutAnim();
+                      startShowCompleteAnim();
+                      showResultFragment();
                     }
-                }, true, 200);
+                });
             }
             @Override
             public void onAnimationRepeat(Animation animation) {

@@ -87,10 +87,10 @@
                 android:layout_centerInParent="true"
                 android:visibility="visible" >
 
-                <com.leo.appmaster.ui.CircleView
+               <!--  <com.leo.appmaster.ui.CircleView
                     android:id="@+id/cv_back"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent" /> -->
 
                 <ImageView
                     android:id="@+id/iv_shield"
@@ -99,11 +99,17 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/batterymanage_shield"
                     android:visibility="invisible" />
+                
+                <com.leo.appmaster.ui.CircleArroundView 
+                    android:id="@+id/cav_batterymain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
 
-                <com.leo.appmaster.ui.CircleView
+               <!--  <com.leo.appmaster.ui.CircleView
                     android:id="@+id/cv_front"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent" /> -->
             </RelativeLayout>
 
             <TextView
