@@ -112,7 +112,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
     private RippleView mSwiftyBtnLt;
-
+    private final String TAG = "IntruderCatchedActivity";
+    
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
 
@@ -327,7 +328,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     if (code == MobvistaEngine.ERR_OK) {
                         LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
                         sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                        mImageLoader.loadImage(campaign.getImageUrl(), sAdImageListener);
                     }
                 }
 
@@ -357,7 +358,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-
+            
         }
 
         @Override
@@ -505,6 +506,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
      * 查询完数据库后执行的操作
      */
     private void onQueryFinished() {
+        LeoLog.i(TAG, "onQueryFinished");
         // 排序数据库的结果，按照时间排序
         sortInfos();
         final PackageManager pm = getPackageManager();
@@ -513,23 +515,26 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             // 如果记录有效，显示第一张大图
             mRlNewest.setVisibility(View.VISIBLE);
             mRlNopic.setVisibility(View.INVISIBLE);
-            ThreadManager.getUiThreadHandler().post(new Runnable() {
-                @Override
-                public void run() {
+//            ThreadManager.getUiThreadHandler().post(new Runnable() {
+//                @Override
+//                public void run() {
                     mImageLoader.loadImage("file:///" + mInfosSorted.get(0).getFilePath(),
                             new ImageLoadingListener() {
                                 @Override
                                 public void onLoadingStarted(String imageUri, View view) {
+                                    LeoLog.i(TAG, "onLoadingStarted");
                                 }
 
                                 @Override
                                 public void onLoadingFailed(String imageUri, View view,
                                                             FailReason failReason) {
+                                    LeoLog.i(TAG, "onLoadingFailed");
                                 }
 
                                 @Override
                                 public void onLoadingComplete(final String imageUri, View view,
                                                               Bitmap loadedImage) {
+                                    LeoLog.i(TAG, "onLoadingComplete");
                                     mIvNewestPhoto.setImageBitmap(loadedImage);
                                     mIvNewestPhoto.setOnClickListener(new OnClickListener() {
                                         @Override
@@ -558,8 +563,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                                 public void onLoadingCancelled(String imageUri, View view) {
                                 }
                             });
-                }
-            });
+//                }
+//            });
             // XX想偷看XXX的文案
             updateFirstPhotoTips();
         } else {

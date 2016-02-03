@@ -1071,4 +1071,9 @@
 
     <string name="game_box_one">تسريع اللعب</string>
 
+    <string name="batteryview_pop_setting"> اعداداة الشحن</string>
+    <string name="close_batteryview_confirm_content">ستخفض سرعة الشحن عشرين بالمائة ،تغلقها؟</string>
+    <string name="close_batteryview_confirm_sure">موافق</string>
+    <string name="close_batteryview_confirm_cancel">الغاء</string>
+    
 </resources>

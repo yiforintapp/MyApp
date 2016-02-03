@@ -1016,9 +1016,9 @@
 
     <string name="game_box_one">Game accelerating</string>
     
-    <string name="batteryview_pop_setting">充电设置</string>
-    <string name="close_batteryview_confirm_content">您的充电速度将降低20%，确认关闭吗？</string>
-    <string name="close_batteryview_confirm_sure">确认关闭</string>
-    <string name="close_batteryview_confirm_cancel">我再想想</string>
+    <string name="batteryview_pop_setting">Charging Settings</string>
+    <string name="close_batteryview_confirm_content">The charging rate will reduce 20%,confirm to close?</string>
+    <string name="close_batteryview_confirm_sure">OK</string>
+    <string name="close_batteryview_confirm_cancel">Cancel</string>
 
 </resources>

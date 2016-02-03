@@ -970,5 +970,9 @@
 
     <string name="game_box_one">Ускорение игры</string>
 
+    <string name="batteryview_pop_setting">Настройка  зарядки</string>
+    <string name="close_batteryview_confirm_content">Если закроете, ваша скорость зарядки будет уменьшить на 20%, еще хотите закрыть?</string>
+    <string name="close_batteryview_confirm_sure">Да</string>
+    <string name="close_batteryview_confirm_cancel">Нет</string>
 
 </resources>
