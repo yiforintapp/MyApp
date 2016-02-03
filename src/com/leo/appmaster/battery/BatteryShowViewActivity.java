@@ -1,6 +1,8 @@
 package com.leo.appmaster.battery;
 
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
@@ -22,7 +24,6 @@ import android.widget.RelativeLayout;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -30,17 +31,20 @@ import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PropertyInfoUtil;
+import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+import com.leo.imageloader.utils.L;
 
 
 public class BatteryShowViewActivity extends BaseFragmentActivity implements BatteryManager.BatteryStateListener, ViewPager.OnPageChangeListener {
     private final String TAG = "testBatteryView";
+    public final static int ADD_LOCK = 1;
     private BatteryManager.BatteryState newState;
     private String mChangeType = BatteryManager.SHOW_TYPE_IN;
     private int mRemainTime;
@@ -58,6 +62,20 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private HomeWatcherReceiver mReceiver;
 
     private boolean mFinish = false;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case ADD_LOCK:
+                    final TaskDetectService tds = TaskDetectService.getService();
+                    if (tds != null) {
+                        LeoLog.d(TAG, "onStop, call pretend app launch.");
+                        tds.callPretendAppLaunch();
+                        tds.ignoreBatteryPage(false);
+                    }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -309,12 +327,15 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         mFinish = true;
         LeoLog.d(TAG, "finish");
 
-        final TaskDetectService tds = TaskDetectService.getService();
-        if (tds != null) {
-            LeoLog.d(TAG, "onStop, call pretend app launch.");
-            tds.callPretendAppLaunch();
-            tds.ignoreBatteryPage(false);
+        if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
+            LeoLog.d("isOnHome","yes");
+            mHandler.sendEmptyMessage(ADD_LOCK);
+        } else {
+            LeoLog.d("isOnHome","no");
+            mHandler.sendEmptyMessageDelayed(ADD_LOCK, 100);
         }
+
+
     }
 
     @Override
