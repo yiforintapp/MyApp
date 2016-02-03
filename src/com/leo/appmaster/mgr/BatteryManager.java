@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.SystemClock;
 
 import com.leo.appmaster.engine.BatteryComsuption;
-import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 
 import java.io.Serializable;
 import java.util.List;

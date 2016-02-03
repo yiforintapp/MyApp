@@ -9,16 +9,16 @@ package com.leo.appmaster.sdk;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
-import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 
 public class BaseFragmentActivity extends FragmentActivity {
     protected LockManager mLockManager;
     private ActivityLifeCircle mLifeCircle;
     protected WifiSecurityManager mWifiManager;
-    protected BatteryManagerImpl mBatteryManager;
+    protected BatteryManager mBatteryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         }
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
-        mBatteryManager = (BatteryManagerImpl) MgrContext.getManager(MgrContext.MGR_BATTERY);
+        mBatteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
 
         mLifeCircle = new ActivityLifeCircle(this);
         mLifeCircle.onCreate();

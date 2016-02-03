@@ -32,7 +32,6 @@ import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.mgr.BatteryManager;
-import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;

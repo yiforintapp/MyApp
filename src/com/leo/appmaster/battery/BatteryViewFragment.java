@@ -36,7 +36,6 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.BatteryManager;
-import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
@@ -119,8 +118,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private ImageView mIvArrowMove;
 
 
-    private BatteryManagerImpl.BatteryState newState;
-    private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
+    private BatteryManager.BatteryState newState;
+    private String mChangeType = BatteryManager.SHOW_TYPE_IN;
     private int mRemainTime;
     private View mBossView;
     private boolean isSetInitPlace = false;
@@ -526,7 +525,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         setBottleWater();
         setTime(mRemainTime, isExpand);
 
-        if (type.equals(BatteryManagerImpl.SHOW_TYPE_OUT)) {
+        if (type.equals(BatteryManager.SHOW_TYPE_OUT)) {
             if (!isExpand) {
 //                mSlideView.setScrollable(true);
                 expandContent(true);
@@ -835,9 +834,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 Intent dlIntent = new Intent(mActivity, BatterySettingActivity.class);
                 dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 dlIntent.putExtra(Constants.BATTERY_FROM, Constants.FROM_BATTERY_PROTECT);
-                dlIntent.putExtra(BatteryManagerImpl.REMAIN_TIME, mRemainTime);
+                dlIntent.putExtra(BatteryManager.REMAIN_TIME, mRemainTime);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(BatteryManagerImpl.SEND_BUNDLE, newState);
+                bundle.putSerializable(BatteryManager.SEND_BUNDLE, newState);
                 dlIntent.putExtras(bundle);
                 startActivity(dlIntent);
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_setting");

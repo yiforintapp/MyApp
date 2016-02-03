@@ -9,7 +9,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -23,7 +22,7 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
     private RippleView rpBtn;
     private RippleView rpBtnTwo;
     private String mFromWhere;
-    private BatteryManagerImpl.BatteryState newState;
+    private BatteryManager.BatteryState newState;
     private int mRemainTime;
     //    private boolean mNotiStatusWhenSwitch = false;
     private BatteryManager mBtrManager;
@@ -42,9 +41,9 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
         Intent intent = getIntent();
         mFromWhere = intent.getStringExtra(Constants.BATTERY_FROM);
         if (!Utilities.isEmpty(mFromWhere) && mFromWhere.equals(Constants.FROM_BATTERY_PROTECT)) {
-            mRemainTime = intent.getIntExtra(BatteryManagerImpl.REMAIN_TIME, 0);
-            newState = (BatteryManagerImpl.BatteryState)
-                    intent.getExtras().get(BatteryManagerImpl.SEND_BUNDLE);
+            mRemainTime = intent.getIntExtra(BatteryManager.REMAIN_TIME, 0);
+            newState = (BatteryManager.BatteryState)
+                    intent.getExtras().get(BatteryManager.SEND_BUNDLE);
         }
     }
 
@@ -95,10 +94,10 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                 && isScreenViewOpen && isCharing) {
             Intent intent = new Intent(this, BatteryShowViewActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(BatteryManagerImpl.PROTECT_VIEW_TYPE, BatteryManagerImpl.SHOW_TYPE_IN);
-            intent.putExtra(BatteryManagerImpl.REMAIN_TIME, mRemainTime);
+            intent.putExtra(BatteryManager.PROTECT_VIEW_TYPE, BatteryManager.SHOW_TYPE_IN);
+            intent.putExtra(BatteryManager.REMAIN_TIME, mRemainTime);
             Bundle bundle = new Bundle();
-            bundle.putSerializable(BatteryManagerImpl.SEND_BUNDLE, newState);
+            bundle.putSerializable(BatteryManager.SEND_BUNDLE, newState);
             intent.putExtras(bundle);
             startActivity(intent);
         }

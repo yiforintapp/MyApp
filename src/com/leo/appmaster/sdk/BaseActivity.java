@@ -10,18 +10,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
-import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
 
 public class BaseActivity extends Activity {
     protected LockManager mLockManager;
     protected WifiSecurityManager mWifiManager;
     protected CallFilterManager mCallManger;
     private ActivityLifeCircle mLifeCircle;
-    protected BatteryManagerImpl mBatteryManager;
+    protected BatteryManager mBatteryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class BaseActivity extends Activity {
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         mCallManger = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        mBatteryManager = (BatteryManagerImpl) MgrContext.getManager(MgrContext.MGR_BATTERY);
+        mBatteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
 
         mLifeCircle = new ActivityLifeCircle(this);
         mLifeCircle.onCreate();
