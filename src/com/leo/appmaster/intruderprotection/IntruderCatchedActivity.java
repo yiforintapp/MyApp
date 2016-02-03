@@ -515,54 +515,92 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             // 如果记录有效，显示第一张大图
             mRlNewest.setVisibility(View.VISIBLE);
             mRlNopic.setVisibility(View.INVISIBLE);
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.RGB_565;
+                    final Bitmap bitmap = BitmapFactory.decodeFile(mInfosSorted.get(0).getFilePath(), options);
+                    runOnUiThread(new Runnable() {
+                        
+                        @Override
+                        public void run() {
+                            mIvNewestPhoto.setImageBitmap(bitmap);
+                            mIvNewestPhoto.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // 点击后进入大图浏览
+                                    startGallery(0);
+                                }
+                            });
+                            // 大图上面的遮盖蒙层，图标和时间
+                            mLlMainMask.setVisibility(View.VISIBLE);
+                            ImageView mainIcon = (ImageView) mLlMainMask
+                                    .findViewById(R.id.iv_appicon);
+                            Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
+                                    .get(0).getFromAppPackage());
+                            if (applicationIcon != null) {
+                                mainIcon.setImageDrawable(applicationIcon);
+                            }
+                            TextView mainTimestamp = (TextView) mLlMainMask
+                                    .findViewById(R.id.tv_timestamp);
+                            String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(0)
+                                    .getTimeStamp());
+                            mainTimestamp.setText(timeStampToAMPM);
+                        }
+                    });
+                }
+            });
+            
+            
 //            ThreadManager.getUiThreadHandler().post(new Runnable() {
 //                @Override
 //                public void run() {
-                    mImageLoader.loadImage("file:///" + mInfosSorted.get(0).getFilePath(),
-                            new ImageLoadingListener() {
-                                @Override
-                                public void onLoadingStarted(String imageUri, View view) {
-                                    LeoLog.i(TAG, "onLoadingStarted");
-                                }
-
-                                @Override
-                                public void onLoadingFailed(String imageUri, View view,
-                                                            FailReason failReason) {
-                                    LeoLog.i(TAG, "onLoadingFailed");
-                                }
-
-                                @Override
-                                public void onLoadingComplete(final String imageUri, View view,
-                                                              Bitmap loadedImage) {
-                                    LeoLog.i(TAG, "onLoadingComplete");
-                                    mIvNewestPhoto.setImageBitmap(loadedImage);
-                                    mIvNewestPhoto.setOnClickListener(new OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            // 点击后进入大图浏览
-                                            startGallery(0);
-                                        }
-                                    });
-                                    // 大图上面的遮盖蒙层，图标和时间
-                                    mLlMainMask.setVisibility(View.VISIBLE);
-                                    ImageView mainIcon = (ImageView) mLlMainMask
-                                            .findViewById(R.id.iv_appicon);
-                                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
-                                            .get(0).getFromAppPackage());
-                                    if (applicationIcon != null) {
-                                        mainIcon.setImageDrawable(applicationIcon);
-                                    }
-                                    TextView mainTimestamp = (TextView) mLlMainMask
-                                            .findViewById(R.id.tv_timestamp);
-                                    String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(0)
-                                            .getTimeStamp());
-                                    mainTimestamp.setText(timeStampToAMPM);
-                                }
-
-                                @Override
-                                public void onLoadingCancelled(String imageUri, View view) {
-                                }
-                            });
+//                    mImageLoader.loadImage("file:///" + mInfosSorted.get(0).getFilePath(),
+//                            new ImageLoadingListener() {
+//                                @Override
+//                                public void onLoadingStarted(String imageUri, View view) {
+//                                    LeoLog.i(TAG, "onLoadingStarted");
+//                                }
+//
+//                                @Override
+//                                public void onLoadingFailed(String imageUri, View view,
+//                                                            FailReason failReason) {
+//                                    LeoLog.i(TAG, "onLoadingFailed");
+//                                }
+//
+//                                @Override
+//                                public void onLoadingComplete(final String imageUri, View view,
+//                                                              Bitmap loadedImage) {
+//                                    LeoLog.i(TAG, "onLoadingComplete");
+//                                    mIvNewestPhoto.setImageBitmap(loadedImage);
+//                                    mIvNewestPhoto.setOnClickListener(new OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            // 点击后进入大图浏览
+//                                            startGallery(0);
+//                                        }
+//                                    });
+//                                    // 大图上面的遮盖蒙层，图标和时间
+//                                    mLlMainMask.setVisibility(View.VISIBLE);
+//                                    ImageView mainIcon = (ImageView) mLlMainMask
+//                                            .findViewById(R.id.iv_appicon);
+//                                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
+//                                            .get(0).getFromAppPackage());
+//                                    if (applicationIcon != null) {
+//                                        mainIcon.setImageDrawable(applicationIcon);
+//                                    }
+//                                    TextView mainTimestamp = (TextView) mLlMainMask
+//                                            .findViewById(R.id.tv_timestamp);
+//                                    String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(0)
+//                                            .getTimeStamp());
+//                                    mainTimestamp.setText(timeStampToAMPM);
+//                                }
+//
+//                                @Override
+//                                public void onLoadingCancelled(String imageUri, View view) {
+//                                }
+//                            });
 //                }
 //            });
             // XX想偷看XXX的文案

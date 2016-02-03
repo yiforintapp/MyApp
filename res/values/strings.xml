@@ -87,7 +87,7 @@
     <string name="passwd_protect">Security Question</string>
     <string name="change_passwd">Change Password</string>
     <string name="passwd_notify">Password Prompt</string>
-    <string name="question_charsize_tip">Maximum of 40 characters.Please re-enter.</string>
+    <string name="question_charsize_tip">Maximum of 60 characters.Please re-enter.</string>
     <string name="anwser_charsize_tip">Maximum of 40 characters.Please re-enter.</string>
     <string name="query_delete">Delete backup file of %1$s? It can\'t be restored after the deletion.</string>
     <string name="backuped_count">%1$d apps backed up successfully. Backup path:%2$s</string>

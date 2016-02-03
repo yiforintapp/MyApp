@@ -99,7 +99,7 @@
     <string name="change_passwd">เปลี่ยนรหัสผ่าน</string>
     <string name="passwd_notify">การแจ้งเตือน</string>
     <string name="new_install_lock_remind">คุณได้ติดตั้ง %1$s ตั้งค่าการล็อค?</string>
-    <string name="question_charsize_tip">จำกัด 40 ตัวอักษร</string>
+    <string name="question_charsize_tip">จำกัด 60 ตัวอักษร</string>
     <string name="anwser_charsize_tip">จำกัด 40 ตัวอักษร</string>
     <string name="query_delete">ลบไฟล์สำรองข้อมูลของ%1$s? ไม่สามารถเรียกคืนหลังจากลบ</string>
     <string name="backuped_count">%1$d สำรองข้อมูลแอพแล้ว พื้นที่จัดเก็บ:%2$s</string>

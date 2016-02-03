@@ -98,7 +98,7 @@
     <string name="change_passwd">Parolayı Değiştir</string>
     <string name="passwd_notify">Parola İpucu</string>
     <string name="new_install_lock_remind"> %1$s yüklediniz.kilitlenmeyi tavsiye edilir</string>
-    <string name="question_charsize_tip">Maksimum 40 karakter.</string>
+    <string name="question_charsize_tip">Maksimum 60 karakter.</string>
     <string name="anwser_charsize_tip">Maksimum 40 karakter.</string>
     <string name="query_delete"> %1$s dosyasının yedeği silinmesini onaylandı</string>
     <string name="backuped_count">başarıyla yedeklendi. Yedekleme yolu:%2$s</string>

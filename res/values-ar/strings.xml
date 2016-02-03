@@ -131,7 +131,7 @@
 
     <!--  -->
 
-    <string name="question_charsize_tip">لا تجاوز 40 حرف، أعد</string>
+    <string name="question_charsize_tip">لا تجاوز 60 حرف، أعد</string>
     <string name="anwser_charsize_tip">لا تجاوز 40 حرف، أعد</string>
 
     <!-- TODO -->

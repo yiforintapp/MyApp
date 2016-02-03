@@ -100,7 +100,7 @@
     <string name="change_passwd">更改密碼</string>
     <string name="passwd_notify">密碼提示</string>
     <string name="new_install_lock_remind">檢測到您安裝了%1$s，建議加鎖</string>
-    <string name="question_charsize_tip">密保問題不能超過40個字元，請重新輸入</string>
+    <string name="question_charsize_tip">密保問題不能超過60個字元，請重新輸入</string>
     <string name="anwser_charsize_tip">密保答案不能超過40個字元，請重新輸入</string>
     <string name="query_delete">是否删除%1$s的備份檔案，删除後不可恢復！</string>
     <string name="backuped_count">成功備份%1$d個檔案。存放位置：%2$s</string>

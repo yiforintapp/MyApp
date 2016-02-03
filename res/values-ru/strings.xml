@@ -97,7 +97,7 @@
     <string name="change_passwd">изменить пароль</string>
     <string name="passwd_notify">чаевые пароли</string>
     <string name="new_install_lock_remind">обнаружено монтаж %1$s,рекомендуем блокировать</string>
-    <string name="question_charsize_tip">вопрос не больше 40 символов</string>
+    <string name="question_charsize_tip">вопрос не больше 60 символов</string>
     <string name="anwser_charsize_tip">Ответ не больше 40 символов</string>
     <string name="query_delete">Удалить документ бэкапа %1$s,после удаления не может восстановить</string>
     <string name="backuped_count">успешно бэкап %1$d документы.Место вложения:%2$s</string>

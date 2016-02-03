@@ -93,7 +93,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                             Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    if (qusetion.length() > 40) {
+                    if (qusetion.length() > 60) {
                         Toast.makeText(PasswdProtectActivity.this, R.string.question_charsize_tip,
                                 Toast.LENGTH_SHORT).show();
                         return;
