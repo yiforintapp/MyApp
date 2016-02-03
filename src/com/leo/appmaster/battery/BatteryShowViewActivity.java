@@ -39,6 +39,7 @@ import com.leo.appmaster.utils.PrefConst;
 public class BatteryShowViewActivity extends BaseFragmentActivity implements BatteryManager.BatteryStateListener, ViewPager.OnPageChangeListener {
     private final String TAG = "testBatteryView";
     public final static int ADD_LOCK = 1;
+    public final static int CANCEL_POP = 2;
     private BatteryManager.BatteryState newState;
     private String mChangeType = BatteryManager.SHOW_TYPE_IN;
     private int mRemainTime;
@@ -68,6 +69,12 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                         tds.callPretendAppLaunch();
                         tds.ignoreBatteryPage(false);
                     }
+                    break;
+                case CANCEL_POP:
+                    if (isShowGuide) {
+                        cancelGuide();
+                    }
+                    break;
             }
         }
     };
@@ -202,11 +209,13 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         }
 
 
-//        if(mBatteryManager.shouldShowBubble()){
-        mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.battery_guide);
-        mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.BATTERY_GUIDE);
-        isShowGuide = true;
-//        }
+        if (mBatteryManager.shouldShowBubble()) {
+            mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.battery_guide);
+            mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.BATTERY_GUIDE);
+            isShowGuide = true;
+            mBatteryManager.markShowBubble();
+            mHandler.sendEmptyMessageDelayed(CANCEL_POP, 3000);
+        }
     }
 
     private void initFragment() {
@@ -320,16 +329,16 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     @Override
     public void onBackPressed() {
-        if(isShowGuide){
+        if (isShowGuide) {
             cancelGuide();
         }
         finish();
     }
 
     private void cancelGuide() {
-//        if (mGuideFragment != null) {
-//            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
-//        }
+        if (mGuideFragment != null) {
+            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
+        }
     }
 
     @Override
@@ -358,8 +367,9 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         if (mReceiver != null) {
             unregisterHomeKeyReceiver();
         }
-
-        mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.BATTERY_GUIDE);
+        if (isShowGuide) {
+            cancelGuide();
+        }
     }
 
     @Override
