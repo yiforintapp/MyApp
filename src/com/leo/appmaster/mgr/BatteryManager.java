@@ -21,6 +21,16 @@ public abstract class BatteryManager extends Manager {
     protected static final int DEFAULT_VOLTAGE = 0;
     protected static final boolean DEFAULT_PRESENT = false;
 
+    public static final String SEND_BUNDLE = "battery_bundle";
+    public static final String PROTECT_VIEW_TYPE = "protect_view_type";
+    public static final String REMAIN_TIME = "remain_time";
+    public static final String SHOW_WHEN_SCREEN_OFF_FLAG = "show_when_screen_off";
+
+    public static final String SHOW_TYPE_IN = "type_1";
+    public static final String SHOW_TYPE_OUT = "type_2";
+    public static final String UPDATE_UP = "type_3";
+    public static final String UPDATE_DONW = "type_4";
+
     public enum EventType {
         SHOW_TYPE_IN, SHOW_TYPE_OUT, BAT_EVENT_CHARGING, BAT_EVENT_CONSUMING
     }

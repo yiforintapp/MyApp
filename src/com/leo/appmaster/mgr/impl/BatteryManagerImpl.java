@@ -39,15 +39,7 @@ import com.leo.appmaster.utils.AppUtil;
 public class BatteryManagerImpl extends BatteryManager {
     private PreferenceTable mPt = PreferenceTable.getInstance();
     private static final String TAG = MgrContext.MGR_BATTERY;
-    public static final String SEND_BUNDLE = "battery_bundle";
-    public static final String PROTECT_VIEW_TYPE = "protect_view_type";
-    public static final String REMAIN_TIME = "remain_time";
-    public static final String SHOW_WHEN_SCREEN_OFF_FLAG = "show_when_screen_off";
 
-    public static final String SHOW_TYPE_IN = "type_1";
-    public static final String SHOW_TYPE_OUT = "type_2";
-    public static final String UPDATE_UP = "type_3";
-    public static final String UPDATE_DONW = "type_4";
 
     private static final int START_ACTIVITY = 1;
 

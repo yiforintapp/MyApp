@@ -42,8 +42,8 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class BatteryShowViewActivity extends BaseFragmentActivity implements BatteryManager.BatteryStateListener, ViewPager.OnPageChangeListener {
     private final String TAG = "testBatteryView";
-    private BatteryManagerImpl.BatteryState newState;
-    private String mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
+    private BatteryManager.BatteryState newState;
+    private String mChangeType = BatteryManager.SHOW_TYPE_IN;
     private int mRemainTime;
     private boolean showWhenScreenOff;
     private ViewPager mViewPager;
@@ -249,11 +249,11 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     private void handleIntent() {
         Intent intent = getIntent();
-        newState = (BatteryManagerImpl.BatteryState)
-                intent.getExtras().get(BatteryManagerImpl.SEND_BUNDLE);
-        mChangeType = intent.getStringExtra(BatteryManagerImpl.PROTECT_VIEW_TYPE);
-        mRemainTime = intent.getIntExtra(BatteryManagerImpl.REMAIN_TIME, 0);
-        showWhenScreenOff = intent.getBooleanExtra(BatteryManagerImpl.SHOW_WHEN_SCREEN_OFF_FLAG, false);
+        newState = (BatteryManager.BatteryState)
+                intent.getExtras().get(BatteryManager.SEND_BUNDLE);
+        mChangeType = intent.getStringExtra(BatteryManager.PROTECT_VIEW_TYPE);
+        mRemainTime = intent.getIntExtra(BatteryManager.REMAIN_TIME, 0);
+        showWhenScreenOff = intent.getBooleanExtra(BatteryManager.SHOW_WHEN_SCREEN_OFF_FLAG, false);
     }
 
     public void onEventMainThread(BatteryViewEvent event) {
@@ -333,16 +333,16 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     public void onStateChange(BatteryManager.EventType type, BatteryManager.BatteryState state, int remainTime) {
         if (type.equals(BatteryManager.EventType.BAT_EVENT_CHARGING)) {
             //3
-            mChangeType = BatteryManagerImpl.UPDATE_UP;
+            mChangeType = BatteryManager.UPDATE_UP;
         } else if (type.equals(BatteryManager.EventType.BAT_EVENT_CONSUMING)) {
             //4
-            mChangeType = BatteryManagerImpl.UPDATE_DONW;
+            mChangeType = BatteryManager.UPDATE_DONW;
         } else if (type.equals(BatteryManager.EventType.SHOW_TYPE_OUT)) {
             //2
-            mChangeType = BatteryManagerImpl.SHOW_TYPE_OUT;
+            mChangeType = BatteryManager.SHOW_TYPE_OUT;
         } else {
             //1
-            mChangeType = BatteryManagerImpl.SHOW_TYPE_IN;
+            mChangeType = BatteryManager.SHOW_TYPE_IN;
         }
         newState = state;
         mRemainTime = remainTime;
