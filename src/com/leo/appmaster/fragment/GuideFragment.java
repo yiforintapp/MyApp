@@ -38,13 +38,15 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout mHomeGuideRt;
     private RelativeLayout mPicVideoGuideRt;
     private RelativeLayout mVideoGuideRt;
+    private RelativeLayout mBatteryGuideRt;
     private ObjectAnimator mHomeGuideAnim;
     private TextView mVideoText;
     private TextView mPicText;
+    private TextView mBatteryText;
 
     /*引导类型*/
     public enum GUIDE_TYPE {
-        HOME_MORE_GUIDE, PIC_GUIDE, VIDEO_GUIDE
+        HOME_MORE_GUIDE, PIC_GUIDE, VIDEO_GUIDE, BATTERY_GUIDE
     }
 
     public static GuideFragment newInstance() {
@@ -112,8 +114,10 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             initHomeMoreGuide(mRootView);
             initPicVidEditGuide(mRootView);
             initVideoEditGuide(mRootView);
+            initBatteryGuide(mRootView);
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -159,6 +163,18 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         mVideoGuideRt = (RelativeLayout) inCloude.findViewById(R.id.video_edit_rt);
         mVideoGuideRt.setOnClickListener(this);
         mVideoText = (TextView) inCloude.findViewById(R.id.video_guide_text_tip);
+    }
+
+    /*屏幕保护进入设置引导*/
+    private void initBatteryGuide(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.battery_protect_guide);
+        if (viewStub == null) {
+            return;
+        }
+        View inCloude = viewStub.inflate();
+        mBatteryGuideRt = (RelativeLayout) inCloude.findViewById(R.id.bay_edit_rt);
+        mBatteryGuideRt.setOnClickListener(this);
+        mBatteryText = (TextView) inCloude.findViewById(R.id.bay_edit_guide_text_tip);
     }
 
     public void setEnable(boolean enable, GUIDE_TYPE type) {
@@ -213,7 +229,15 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
                 showHomeGuideAnim(mVideoGuideRt, HOME_GUIDE_TRANSLA_VALUE1, tranY);
             }
+        } else if (GUIDE_TYPE.BATTERY_GUIDE == type) {
+            if (mVideoGuideRt != null) {
+                mBatteryGuideRt.setVisibility(View.VISIBLE);
+                mBatteryText.setText(R.string.video_guide_txt);
+                float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
+                showHomeGuideAnim(mBatteryGuideRt, HOME_GUIDE_TRANSLA_VALUE1, tranY);
+            }
         }
+
     }
 
     @Override
@@ -240,6 +264,9 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 preTab.putBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, true);
 
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_bub_cnts");
+                break;
+            case R.id.bay_edit_rt:
+                mRootView.setVisibility(View.GONE);
                 break;
             default:
                 break;

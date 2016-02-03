@@ -1,18 +1,13 @@
 package com.leo.appmaster.battery;
 
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
-import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -31,15 +26,14 @@ import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PropertyInfoUtil;
-import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
-import com.leo.imageloader.utils.L;
+import com.leo.appmaster.utils.PrefConst;
 
 
 public class BatteryShowViewActivity extends BaseFragmentActivity implements BatteryManager.BatteryStateListener, ViewPager.OnPageChangeListener {
@@ -56,10 +50,11 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private BatteryViewFragment batteryFragment;
 
     public static Boolean isActivityAlive = false;
-
     private RelativeLayout mBatterViewBg; // 背景
-
     private HomeWatcherReceiver mReceiver;
+
+    private GuideFragment mGuideFragment;
+    private boolean isShowGuide = false;
 
     private boolean mFinish = false;
 
@@ -205,6 +200,13 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         if (batteryFragment != null) {
             batteryFragment.initCreate(mChangeType, newState, mRemainTime);
         }
+
+
+//        if(mBatteryManager.shouldShowBubble()){
+        mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.battery_guide);
+        mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.BATTERY_GUIDE);
+        isShowGuide = true;
+//        }
     }
 
     private void initFragment() {
@@ -318,7 +320,16 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     @Override
     public void onBackPressed() {
+        if(isShowGuide){
+            cancelGuide();
+        }
         finish();
+    }
+
+    private void cancelGuide() {
+        if (mGuideFragment != null) {
+            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
+        }
     }
 
     @Override
@@ -328,10 +339,10 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         LeoLog.d(TAG, "finish");
 
         if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
-            LeoLog.d("isOnHome","yes");
+            LeoLog.d("isOnHome", "yes");
             mHandler.sendEmptyMessage(ADD_LOCK);
         } else {
-            LeoLog.d("isOnHome","no");
+            LeoLog.d("isOnHome", "no");
             mHandler.sendEmptyMessageDelayed(ADD_LOCK, 100);
         }
 
