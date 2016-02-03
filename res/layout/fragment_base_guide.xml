@@ -22,5 +22,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout="@layout/video_edit_bt_guide" />
+    <!--屏幕保护进入设置引导-->
+    <ViewStub
+        android:id="@+id/battery_protect_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/bay_pro_setting_guide" />
 
 </FrameLayout>
