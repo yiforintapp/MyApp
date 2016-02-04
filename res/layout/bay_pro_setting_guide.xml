@@ -19,7 +19,7 @@
             android:layout_marginLeft="@dimen/home_guide_marg"
             android:layout_marginRight="14dp"
             android:paddingRight="7dp"
-            android:background="@drawable/power_tips_bg">
+            android:background="@drawable/power_tips_bg_new">
 
             <ImageView
                 android:id="@+id/bay_edit_guide_tip_icon"
