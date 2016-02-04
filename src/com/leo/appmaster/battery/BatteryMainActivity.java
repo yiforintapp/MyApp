@@ -108,11 +108,12 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
         mTvPercentValue.setText(state.level + "");             
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
+        LeoLog.d(TAG, "onDestroy()");
     }
     
     private void initUI() {
@@ -206,6 +207,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     
     @Override
     public void onResume() {
+        mNeedToShowResult = false;
         super.onResume();
         mTvPercentValue.setText(mBtrManager.getBatteryLevel() + "");
         if (mBtrManager.getIsCharing()) {
@@ -250,9 +252,13 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mRvBoost.setEnabled(false);
         mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
     }
-    
+
     @Override
     protected void onPause() {
+        LeoLog.d(TAG, "onPause()");
+        if (mNeedToShowResult) {
+            showResultFragment();
+        }
         super.onPause();
         mBtrManager.updateBatteryPageState(false);
     }
@@ -318,32 +324,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         final float centerY = mIvShield.getHeight() / 2.0f;  
         final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,  
                 centerX, DipPixelUtil.dip2px(this, 26), 0.0f, true);  
-        rotation.setDuration(680);  
+        rotation.setDuration(680); // stone_debug
         rotation.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-//                mCvFront.startAnim(90, 90, new OnArroundFinishListener() {
-//                    @Override
-//                    public void onArroundFinish() {
-//                        mCvFront.startAnim(mCvBack.getTailDegree() - 1, 0, null, false, (long)(mCvBack.getTailDegree() / 180) * 300);
-//                        mCvBack.startAnim(180, 180, new OnArroundFinishListener() {
-//                            @Override
-//                            public void onArroundFinish() {
-//                                mCvFront.startAnim(0, 90, null, true, 300);
-//                                 mCvFront.startAfterImageDismissAnim(new OnAfterImageDismissListener() {
-//                                 @Override
-//                                    public void onAfterImageDismiss() {
-//                                        mIvShield.setVisibility(View.VISIBLE);
-//                                        startTranslateAnim();
-//                                        startShortenTopLayoutAnim();
-//                                        startShowCompleteAnim();
-//                                        showResultFragment();
-//                                    }
-//                                });
-//                            }
-//                        }, true, 200);
-//                    }
-//                }, true, 200);
                 mCavMain.startAnim(0f, -360f, 680l, new OnArroundFinishListener() {
                     @Override
                     public void onArroundFinish() {
@@ -367,11 +351,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mIvShield.startAnimation(rotation);  
     }
 
-
     private void startShortenTopLayoutAnim() {
         LeoLog.i("tempp", "start shorten anim");
         int height = mRlTopAnimLayout.getHeight();
-        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("dfads", height, (int)(height * 0.7));
+        PropertyValuesHolder holderShorten = PropertyValuesHolder.ofInt("dfads", height, (int) (height * 0.7));
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlTopAnimLayout, holderShorten);
         anim.addUpdateListener(new AnimatorUpdateListener() {
             @Override
@@ -386,7 +369,15 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         anim.start();
     }
 
-    protected void showResultFragment() {
+    /* AM-3879: fragment在activity onDestory之后不能commit修改，
+    所以需要showResultFragment在onStop的时候预先调用 */
+    private boolean hasResultShowed = false;
+    protected synchronized void showResultFragment() {
+        LeoLog.d(TAG, "showResultFragment() hasResultShowed = " + hasResultShowed);
+        if (hasResultShowed) {
+            return;
+        }
+
         SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "promote");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -397,6 +388,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         transaction.replace(R.id.rl_result_layout, mFrgmResult);
         transaction.commit();
         mIsResultShowed = true;
+        hasResultShowed = true;
     }
 
     protected void startShowCompleteAnim() {
@@ -541,8 +533,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
     }
 
-    
+    private boolean mNeedToShowResult = false;
     private void startBatteryDismissAnim() {
+        mNeedToShowResult = true;
         mTvBottomText.setText(R.string.batterymanage_boosting);
         mRvBoost.setEnabled(false);
         mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
