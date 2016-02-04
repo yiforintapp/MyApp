@@ -85,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_lock_password_layout_passwd_height"
         android:layout_below="@id/tv_passwd_hint"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/pas_four_icon_m_top"
         android:gravity="center"
         android:orientation="horizontal">
 <!--         android:layout_marginTop="@dimen/layout_passwd_marginTop" -->
