@@ -40,6 +40,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private final String TAG = "testBatteryView";
     public final static int ADD_LOCK = 1;
     public final static int CANCEL_POP = 2;
+    public final static int POP_SHOW_TIME = 5000;
     private BatteryManager.BatteryState newState;
     private String mChangeType = BatteryManager.SHOW_TYPE_IN;
     private int mRemainTime;
@@ -214,7 +215,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.BATTERY_GUIDE);
             isShowGuide = true;
             mBatteryManager.markShowBubble();
-            mHandler.sendEmptyMessageDelayed(CANCEL_POP, 3000);
+            mHandler.sendEmptyMessageDelayed(CANCEL_POP, POP_SHOW_TIME);
         }
     }
 
