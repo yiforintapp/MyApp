@@ -209,6 +209,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                     layoutParams.height = DipPixelUtil.dip2px(PasswdProtectActivity.this, 300);
                 } catch (Throwable e) {
                 }
+                hideIME();
                 mQuesDialog.show();
             }
         });
