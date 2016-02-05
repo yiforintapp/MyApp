@@ -210,7 +210,12 @@ public class PasswdProtectActivity extends BaseActivity implements
                 } catch (Throwable e) {
                 }
                 hideIME();
-                mQuesDialog.show();
+                mLayoutQues.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mQuesDialog.show();
+                    }
+                }, 300);
             }
         });
 
