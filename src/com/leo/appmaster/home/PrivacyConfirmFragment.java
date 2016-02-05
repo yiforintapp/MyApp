@@ -749,32 +749,32 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             TextView item_three_num = (TextView) mResultInclude.findViewById(R.id.item_three_num);
             ImageView item_three_bottom = (ImageView) mResultInclude.findViewById(R.id.item_iv_three);
 
-            if (appnum == 0) {
+            if (appnum < 0) {
                 item_one_num.setVisibility(View.GONE);
                 item_iv_one.setVisibility(View.VISIBLE);
                 LeoLog.d("testConfrim", "appnum == 0");
             } else {
                 LeoLog.d("testConfrim", "appnum != 0");
                 item_one_num.setVisibility(View.VISIBLE);
-                item_one_num.setText(appnum + "");
+                item_one_num.setText("+" + appnum);
                 item_iv_one.setVisibility(View.GONE);
             }
 
-            if (picnum == 0) {
+            if (picnum < 0) {
                 item_two_num.setVisibility(View.GONE);
                 item_iv_two.setVisibility(View.VISIBLE);
             } else {
                 item_two_num.setVisibility(View.VISIBLE);
-                item_two_num.setText(picnum + "");
+                item_two_num.setText("+"+picnum);
                 item_iv_two.setVisibility(View.GONE);
             }
 
-            if (vidnum == 0) {
+            if (vidnum < 0) {
                 item_three_num.setVisibility(View.GONE);
                 item_three_bottom.setVisibility(View.VISIBLE);
             } else {
                 item_three_num.setVisibility(View.VISIBLE);
-                item_three_num.setText(vidnum + "");
+                item_three_num.setText("+"+vidnum);
                 item_three_bottom.setVisibility(View.GONE);
             }
 
