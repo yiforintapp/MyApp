@@ -1970,6 +1970,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         sLockFilterFlag = true;
         Intent intent = new Intent(LockScreenActivity.this,
                 LockerTheme.class);
+        intent.putExtra("fromLock",true);
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                 "theme_enter", "unlock");
         AppMasterPreference amp =

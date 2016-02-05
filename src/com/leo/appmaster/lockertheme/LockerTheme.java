@@ -97,6 +97,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     private ThemeItemClickListener itemListener;
     public ThemeItemInfo lastSelectedItem;
 
+    private boolean isFromLock = false;
+
     private int number = 0;
     private String mFrom;
     private boolean mGuideFlag;
@@ -293,6 +295,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         if (current != 10001) {
             mHelpSettingCurrent = current;
         }
+
+        isFromLock = intent.getBooleanExtra("fromLock", false);
     }
 
     protected void onPackageEvent(Intent intent) {
@@ -787,6 +791,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 //                    | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 //            startActivity(mHomeIntent);
 //            finish();
+        } else if (isFromLock) {
+            mLockManager.applyLock(LockManager.LOCK_MODE_FULL, this.getPackageName(), false, null);
+            super.onBackPressed();
         } else {
             super.onBackPressed();
         }
