@@ -13,7 +13,7 @@
     <com.leo.appmaster.ui.RippleView
         android:id="@+id/content_item_all"
         android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:layout_height="78dp"
         android:layout_below="@id/wifi_setting_title_bar"
         android:layout_marginTop="20dp"
         app:rippleAlpha="1"
