@@ -392,6 +392,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             viewStub.setVisibility(View.GONE);
             if (mWifiScanBottomLine != null) {
                 mWifiScanBottomLine.setVisibility(View.INVISIBLE);
+                mNowHeight = DipPixelUtil.dip2px(mActivity, 14);
             }
         }
     }
