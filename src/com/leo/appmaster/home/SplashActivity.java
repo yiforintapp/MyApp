@@ -82,7 +82,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     private ImageView mSplashIcon;
     private ImageView mSplashName;
     private boolean mIsEmptyForSplashUrl;
-
     private ImageView mSkipToPgButton;
     private boolean mShowSplashFlag;
     private TextView mSkipText;
