@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -175,7 +176,14 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         }
         View inCloude = viewStub.inflate();
         mBatteryGuideRt = (RelativeLayout) inCloude.findViewById(R.id.bay_edit_rt);
-        mBatteryGuideRt.setOnClickListener(this);
+        // mBatteryGuideRt.setOnClickListener(this);
+        mBatteryGuideRt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mRootView.setVisibility(View.GONE);
+                return false;
+            }
+        });
         mBatteryText = (TextView) inCloude.findViewById(R.id.bay_edit_guide_text_tip);
     }
 
