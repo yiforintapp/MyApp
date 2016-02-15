@@ -31,6 +31,7 @@
             android:src="@drawable/wifi_scan" />
 
         <View
+            android:id="@+id/scan_new_wifi_bottom_line"
             android:layout_width="1px"
             android:layout_height="match_parent"
             android:layout_below="@+id/scan_new_wifi_icon"

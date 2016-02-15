@@ -36,7 +36,6 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.extra.AppPermissionInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -172,6 +171,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private boolean mIsNeedContractVisible = true;
     private boolean mIsExit;
     private boolean mIsInsAvaliable = true;
+
+    private View mWifiScanBottomLine;
 
     private Handler mHandler = new Handler() {
 
@@ -375,6 +376,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewWifiImg = (ImageView) view.findViewById(R.id.scan_new_wifi_img);
         mNewWifiLoading = (LoadingView) view.findViewById(R.id.scan_new_wifi_loading);
         mNewWifiLayout = (LinearLayout) view.findViewById(R.id.scan_new_wifi_layout);
+        mWifiScanBottomLine = (View) view.findViewById(R.id.scan_new_wifi_bottom_line);
     }
 
     private void initContactLayout(View parent) {
@@ -388,6 +390,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         mNewContactLayout = (LinearLayout) view.findViewById(R.id.scan_new_contact_layout);
         if (AppMasterPreference.getInstance(mActivity).getIsNeedCutBackupUninstallAndPrivacyContact()) {
             viewStub.setVisibility(View.GONE);
+            if (mWifiScanBottomLine != null) {
+                mWifiScanBottomLine.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

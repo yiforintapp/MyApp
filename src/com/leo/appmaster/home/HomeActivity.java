@@ -560,7 +560,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mCurrentFragment = fragment;
         }
         ft.addToBackStack(null);
-        IoUtils.commitSafely(ft);
+        try {
+            ft.commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        IoUtils.commitSafely(ft);
     }
 
     private void initUI() {
