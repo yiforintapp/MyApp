@@ -439,20 +439,19 @@ public final class Utilities {
             }
         }
         Intent intent = null;
-        if (AppUtil.appInstalled(context,
-                "com.android.vending")) {
+        if (AppUtil.appInstalled(context, Constants.PKG_GOOLEPLAY)) {
 
             LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
 
             intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri
                     .parse(url);
             intent.setData(uri);
-            intent.setPackage("com.android.vending");
+            intent.setPackage(Constants.PKG_GOOLEPLAY);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 context.startActivity(intent);
+                mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, Constants.TIME_FILTER_TARGET);
                 LeoLog.i("goFiveStar", "intent: " + intent.toURI());
             } catch (Exception e) {
                 if (isRedMiTwo()) {

@@ -387,6 +387,7 @@ public class Constants {
     public static final String PKG_FACEBOOK = "com.facebook.katana";
     public static final String PKG_GOOLEPLAY = "com.android.vending";
     public static final String PKG_SETTINGS = "com.android.settings";
+    public static final String PKG_GPLUS = "com.google.android.apps.plus";
 
     public static final String PKG_DIALER = "com.android.dialer";
     public static final String PKG_CONTACTS = "com.android.contacts";
@@ -500,5 +501,5 @@ public class Constants {
 
     public static final String CHROME_PACKAGE_NAME = "com.android.chrome";
 
-    public static final int TIME_FILTER_TARGET = 1000;
+    public static final int TIME_FILTER_TARGET = 5000;
 }
