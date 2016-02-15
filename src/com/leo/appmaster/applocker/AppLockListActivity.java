@@ -9,9 +9,11 @@ import java.util.List;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -639,9 +641,13 @@ public class AppLockListActivity extends BaseActivity implements
                 ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
                 if (!usageStats.checkAvailable()) {
                     Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    String filterTarget = getfilterTarget(intent);
                     try {
                         startActivity(intent);
                         mLockManager.filterSelfOneMinites();
+                        if (!TextUtils.isEmpty(filterTarget)) {
+                            mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
+                        }
                     } catch (Exception e) {
                     }
                 }
@@ -656,9 +662,13 @@ public class AppLockListActivity extends BaseActivity implements
                     ComponentName autoCn = new ComponentName("com.huawei.systemmanager",
                             "com.huawei.systemmanager.optimize.bootstart.BootStartActivity");
                     autoIntent.setComponent(autoCn);
+                    String filterTarget = getfilterTarget(autoIntent);
                     try {
                         startActivity(autoIntent);
                         mLockManager.filterSelfOneMinites();
+                        if (!TextUtils.isEmpty(filterTarget)) {
+                            mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
+                        }
                     } catch (Exception e) {
                     }
                 } else {
@@ -718,6 +728,25 @@ public class AppLockListActivity extends BaseActivity implements
                 enterLockTheme();
                 break;
         }
+    }
+
+    private String getfilterTarget(Intent intent) {
+        if (intent == null) {
+            return null;
+        }
+
+        List<ResolveInfo> resolveInfos = getPackageManager().queryIntentActivities(intent, 0);
+        String filterTarget = null;
+        if (resolveInfos != null && resolveInfos.size() == 1) {
+            for (ResolveInfo resolveInfo : resolveInfos) {
+                String pkgName = resolveInfo.activityInfo.applicationInfo.packageName;
+                if (!TextUtils.isEmpty(pkgName)) {
+                    filterTarget = pkgName;
+                }
+            }
+        }
+
+        return filterTarget;
     }
 
     private void openHelp(boolean open, boolean anim) {

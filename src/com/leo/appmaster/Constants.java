@@ -499,4 +499,6 @@ public class Constants {
     };
 
     public static final String CHROME_PACKAGE_NAME = "com.android.chrome";
+
+    public static final int TIME_FILTER_TARGET = 1000;
 }

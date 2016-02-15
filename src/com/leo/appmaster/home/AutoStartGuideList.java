@@ -11,6 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.PreferenceTable;
@@ -136,6 +137,7 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 mContext.startActivity(intent);
                 sLockManager.filterSelfOneMinites();
+                sLockManager.filterPackage("com.miui.securitycenter", Constants.TIME_FILTER_TARGET);
                 LeoLog.i(TAG, "跳转小米4成功！");
             } catch (Exception e) {
                 LeoLog.i(TAG, "跳转小米4失败！");
@@ -161,6 +163,7 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 mContext.startActivity(intent);
                 sLockManager.filterSelfOneMinites();
+                sLockManager.filterPackage("com.android.settings", Constants.TIME_FILTER_TARGET);
                 LeoLog.i(TAG, "跳转红米成功！");
             } catch (Exception e) {
                 LeoLog.i(TAG, "跳转红米失败！");
@@ -186,6 +189,7 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 mContext.startActivity(intent);
                 sLockManager.filterSelfOneMinites();
+                sLockManager.filterPackage("com.huawei.systemmanager", Constants.TIME_FILTER_TARGET);
                 LeoLog.e(TAG, "跳转huawei成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转huawei失败！");
@@ -212,6 +216,7 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 mContext.startActivity(intent);
                 sLockManager.filterSelfOneMinites();
+                sLockManager.filterPackage("com.lenovo.security", Constants.TIME_FILTER_TARGET);
                 LeoLog.e(TAG, "跳转Lenovo成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转Lenovo失败！");
@@ -233,6 +238,7 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 mContext.startActivity(intent);
                 sLockManager.filterSelfOneMinites();
+                sLockManager.filterPackage("com.letv.android.letvsafe", Constants.TIME_FILTER_TARGET);
                 Log.e(TAG, "跳转Letv成功！");
             } catch (Exception e) {
                 Log.e(TAG, "跳转Letv失败！");
@@ -255,6 +261,7 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 mContext.startActivity(intent);
                 sLockManager.filterSelfOneMinites();
+                sLockManager.filterPackage("com.huawei.android.hwpowermanager", Constants.TIME_FILTER_TARGET);
                 LeoLog.e(TAG, "跳转huaweiP6成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转huaweiP6失败！");
@@ -277,6 +284,7 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 mContext.startActivity(intent);
                 sLockManager.filterSelfOneMinites();
+                sLockManager.filterPackage("com.oppo.purebackground", Constants.TIME_FILTER_TARGET);
                 LeoLog.e(TAG, "skip oppo rom sucess！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "skip oppo rom fail！");
@@ -299,6 +307,7 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 mContext.startActivity(intent);
                 sLockManager.filterSelfOneMinites();
+                sLockManager.filterPackage("com.aurora.secure", Constants.TIME_FILTER_TARGET);
                 LeoLog.e(TAG, "跳转inui成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转inui失败！");
@@ -519,6 +528,7 @@ public class AutoStartGuideList extends WhiteList {
             LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             manager.filterSelfOneMinites();
             context.startActivity(intent);
+            sLockManager.filterPackage("com.samsung.android.sm", Constants.TIME_FILTER_TARGET);
             LeoLog.e(TAG, "跳转samsung成功！");
         } catch (Exception e) {
             e.printStackTrace();
