@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -104,6 +105,11 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
             bundle.putSerializable(BatteryManager.SEND_BUNDLE, newState);
             intent.putExtras(bundle);
             startActivity(intent);
+
+            TaskDetectService tds = TaskDetectService.getService();
+            if (tds != null) {
+                tds.ignoreBatteryPage(true);
+            }
         }
         finish();
     }

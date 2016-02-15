@@ -118,10 +118,11 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
         SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "screen");
 
-        TaskDetectService tds = TaskDetectService.getService();
-        if (tds != null) {
-            tds.ignoreBatteryPage(true);
-        }
+//        AM-3884移动到启动BatteryShowViewActivity的地方调用
+//        TaskDetectService tds = TaskDetectService.getService();
+//        if (tds != null) {
+//            tds.ignoreBatteryPage(true);
+//        }
 
     }
 
@@ -353,9 +354,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             mHandler.sendEmptyMessage(ADD_LOCK);
         } else {
             LeoLog.d("isOnHome", "no");
-            mHandler.sendEmptyMessageDelayed(ADD_LOCK, 100);
+            mHandler.sendEmptyMessageDelayed(ADD_LOCK, 1000);
         }
-
 
     }
 

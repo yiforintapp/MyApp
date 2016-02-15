@@ -16,6 +16,7 @@ import android.os.SystemClock;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
+import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.battery.BatteryNotifyHelper;
 import com.leo.appmaster.battery.BatteryShowViewActivity;
 import com.leo.appmaster.battery.RemainTimeHelper;
@@ -218,6 +219,10 @@ public class BatteryManagerImpl extends BatteryManager {
                         mContext.startActivity(intent);
                     }
                 }, 200);
+            }
+            TaskDetectService tds = TaskDetectService.getService();
+            if (tds != null) {
+                tds.ignoreBatteryPage(true);
             }
 
         } else {
