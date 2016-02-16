@@ -13,8 +13,10 @@
     <com.leo.appmaster.ui.RippleView
         android:id="@+id/content_item_all"
         android:layout_width="match_parent"
-        android:layout_height="78dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/wifi_setting_title_bar"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:layout_marginTop="20dp"
         app:rippleAlpha="1"
         app:rippleColor="@color/home_tab_pressed"
@@ -57,6 +59,15 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="26dp" />
 
-        <View style="@style/priAppItem" />
+
     </com.leo.appmaster.ui.RippleView>
+
+    <!--<View style="@style/priAppItem" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@color/c5"
+        android:layout_alignBottom="@+id/content_item_all"/>
 </RelativeLayout>
