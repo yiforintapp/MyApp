@@ -221,6 +221,9 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
                     mStickyHeight = height;
                     mVideoList.addHeaderView(getEmptyHeader());
                     mVideoList.setAdapter(mAdaper);
+                    if (mAdaper != null) {
+                        mAdaper.setList(mDataList);
+                    }
                 }
             }
         });

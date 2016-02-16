@@ -90,7 +90,7 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
                 + mAdapter.getSelectData().size());
         mActivity.onProcessClick(this);
-        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_VID, true);
+        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
         mFinishNotified = false;
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
