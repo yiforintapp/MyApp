@@ -300,11 +300,14 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     }
 
     protected void onPackageEvent(Intent intent) {
+        String action = intent.getAction();
+        LeoLog.d(TAG, "onPackageEvent, action: " + action);
+        boolean replace = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false);
         if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
             final String packageName = intent.getData()
                     .getSchemeSpecificPart();
             if (packageName != null
-                    && packageName.startsWith("com.leo.theme")) {
+                    && packageName.startsWith("com.leo.theme") && !replace) {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -338,7 +341,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 }, 1000);
             }
         }
-        if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
+        if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED) && !replace) {
             final String packageName = intent.getData()
                     .getSchemeSpecificPart();
             if (packageName != null
