@@ -496,8 +496,28 @@ public class AppLoadEngine extends BroadcastReceiver {
                     }
                 }
 
+                 /*
+                  *	bug AM-3864
+                  *	隐藏主题图标后上面的查询安装应用方式不能查询到已安装的隐藏主题
+                  *	只是用来查询安装的主题
+                  */
+                if (mPm != null) {
+                    List<ApplicationInfo> themeApp = mPm.getInstalledApplications(0);
+                    if (themeApp != null && themeApp.size() > 0) {
+                        for (ApplicationInfo info : themeApp) {
+                            if (themeList != null) {
+                                String packageName = info.packageName;
+                                if (!themeList.contains(packageName) && isThemeApk(packageName)) {
+                                    LeoLog.d(TAG, "loadLocalTheme --- packageName=" + packageName);
+                                    themeList.add(packageName);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 pre.setHideThemeList(themeList);
-                LeoLog.i("setHideThemeList_time","setHideThemeList_time:"+ SystemClock.elapsedRealtime());
+                LeoLog.i("setHideThemeList_time", "setHideThemeList_time:" + SystemClock.elapsedRealtime());
                 if (mThemeListener != null) {
                     mThemeListener.loadTheme();
                 }
