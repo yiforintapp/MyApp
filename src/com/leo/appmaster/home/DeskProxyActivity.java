@@ -65,6 +65,8 @@ public class DeskProxyActivity extends Activity {
     private Handler mHandler;
     private String mCbPath;
 
+    private boolean mHasRegistered = false;
+
     public static final String CALL_FILTER_PUSH = "from"; //是否从骚扰拦截push通知进入key
 
     private LockManager mLockManager;
@@ -228,18 +230,17 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoBatteryClick() {
-        // stone - test
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_USER_PRESENT);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         this.registerReceiver(mPresentReceiver, intentFilter);
+        mHasRegistered = true;
     }
 
     private BroadcastReceiver mPresentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             LeoLog.d("proxy", "action=" + intent.getAction());
-            unregisterReceiver(this);
             finish();
         }
     };
@@ -257,6 +258,10 @@ public class DeskProxyActivity extends Activity {
         if (wallAd != null) {
             wallAd.release();
             wallAd = null;
+        }
+        if (mHasRegistered) {
+            unregisterReceiver(mPresentReceiver);
+            mHasRegistered = false;
         }
     }
 
