@@ -323,7 +323,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         final float centerY = mIvShield.getHeight() / 2.0f;  
         final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,  
                 centerX, DipPixelUtil.dip2px(this, 26), 0.0f, true);  
-        rotation.setDuration(680); // stone_debug
+        rotation.setDuration(680);
         rotation.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {

@@ -925,6 +925,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (AppUtil.isScreenLocked(mActivity)) {
             // 默认浏览器是chrome而且系统锁住了，让user_present receiver处理
             if (samsungLolipopDevice()) {
+                mLockManager.filterPackage(mActivity.getPackageName(), 2000);
                 LeoLog.d(TAG, "Samsung 5.x device, launch specific activity");
                 Intent intent = new Intent(mActivity, EmptyForJumpActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
