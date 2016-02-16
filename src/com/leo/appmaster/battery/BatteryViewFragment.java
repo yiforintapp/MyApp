@@ -829,7 +829,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ct_option_2_rl:
-                mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+                mLockManager.filterPackage(mActivity.getPackageName(), 5000);
                 mBatteryManager.markSettingClick();
 
                 Intent dlIntent = new Intent(mActivity, BatterySettingActivity.class);
