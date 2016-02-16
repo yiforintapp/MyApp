@@ -148,7 +148,20 @@ public class BatteryManagerImpl extends BatteryManager {
             } else {
                 LeoLog.d(TAG, "action: " + action +
                         "; mPreviousState: " + mPreviousState.toString());
-                if (AppUtil.hasOtherScreenSaverInstalled(mContext)) {
+
+                /* AM-3891: 使用static变量的方式控制是否弹出屏保，当activity在后台的时候判断会出错。
+                 * 调整策略：当手机灭屏时通知已在的屏保finish，亮屏时再拉起屏保。 */
+                if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+                    LeoEventBus.getDefaultBus().post(new BatteryViewEvent("finish_activity"));
+                }
+
+                if (action.equals(Intent.ACTION_SCREEN_ON) &&
+                        mPreviousState.plugged != UNPLUGGED) {
+                    LeoLog.d(TAG, "show screen saver on ACTION_SCREEN_ON");
+                    handlePluginEvent(mPreviousState, false);
+                }
+
+                /*if (AppUtil.hasOtherScreenSaverInstalled(mContext)) {
                     // 如果安装了其他竞品的屏保，我们在亮屏的时候再拉起屏保
                     if (action.equals(Intent.ACTION_SCREEN_ON) &&
                             mPreviousState.plugged != UNPLUGGED) {
@@ -162,7 +175,7 @@ public class BatteryManagerImpl extends BatteryManager {
                         LeoLog.d(TAG, "show screen saver on ACTION_SCREEN_OFF");
                         handlePluginEvent(mPreviousState, true);
                     }
-                }
+                }*/
 
             }
         }
@@ -211,7 +224,7 @@ public class BatteryManagerImpl extends BatteryManager {
             Message msg = Message.obtain();
             msg.obj = intent;
 
-            if (whenScreenOff) {
+            if (!AppUtil.hasOtherScreenSaverInstalled(mContext)) {
                 mContext.startActivity(intent);
             } else {
                 new Handler().postDelayed(new Runnable() {

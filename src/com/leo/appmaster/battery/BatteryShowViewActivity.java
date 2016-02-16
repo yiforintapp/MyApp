@@ -129,7 +129,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     @Override
     protected void onResume() {
         super.onResume();
-        LeoLog.d(TAG, "onResume");
+        LeoLog.d(TAG, "onResume -> " + this);
     }
 
     private void registerHomeKeyReceiver() {
@@ -289,6 +289,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     public void onEventMainThread(BatteryViewEvent event) {
         LeoLog.d("testBatteryEvent", "getEvent : " + event.eventMsg);
         if (("finish_activity").equals(event.eventMsg)) {
+            BatteryShowViewActivity.isActivityAlive = false;
             finish();
         }
 
@@ -362,7 +363,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LeoLog.d(TAG, "onDestroy");
+        LeoLog.d(TAG, "onDestroy -> " + this);
+        LeoEventBus.getDefaultBus().unregister(this);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "screen_back&home");
         isActivityAlive = false;
         if (mReceiver != null) {
