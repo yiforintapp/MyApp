@@ -451,6 +451,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                             }
                         }
                     } else {
+                        LeoLog.d(TAG, "teststart, handleMessage--else...");
                         startHome();
                     }
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, "screen_cli", "none");
@@ -588,6 +589,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 
     private void enterHome() {
         AppMasterPreference.getInstance(SplashActivity.this).setGuidePageFirstUse(false);
+        mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         startHome();
         String currentVersionName = SplashActivity.this
                 .getString(R.string.version_name);
@@ -671,6 +673,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         enterAppButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                LeoLog.d(TAG, "teststart, enterAppButton--click...");
                 enterHome();
             }
         });
