@@ -1007,37 +1007,40 @@ public class LockPatternView extends ViewGroup {
     }
 
     private void handleActionDown(MotionEvent event) {
-        resetPattern();
+        try {
+            resetPattern();
 
-        final float x = event.getX();
-        final float y = event.getY();
-        final Cell hitCell = detectAndAddHit(x, y);
-        if (hitCell != null) {
-            mPatternInProgress = true;
-            mPatternDisplayMode = DisplayMode.Correct;
-            notifyPatternStarted();
-        } else {
-            mPatternInProgress = false;
-            notifyPatternCleared();
-        }
-        if (hitCell != null) {
-            final float startX = getCenterXForColumn(hitCell.column);
-            final float startY = getCenterYForRow(hitCell.row);
-
-            final float widthOffset = mSquareWidth / 2f;
-            final float heightOffset = mSquareHeight / 2f;
-
-            invalidate((int) (startX - widthOffset),
-                    (int) (startY - heightOffset),
-                    (int) (startX + widthOffset), (int) (startY + heightOffset));
-        }
-        mInProgressX = x;
-        mInProgressY = y;
-        if (PROFILE_DRAWING) {
-            if (!mDrawingProfilingStarted) {
-                Debug.startMethodTracing("LockPatternDrawing");
-                mDrawingProfilingStarted = true;
+            final float x = event.getX();
+            final float y = event.getY();
+            final Cell hitCell = detectAndAddHit(x, y);
+            if (hitCell != null) {
+                mPatternInProgress = true;
+                mPatternDisplayMode = DisplayMode.Correct;
+                notifyPatternStarted();
+            } else {
+                mPatternInProgress = false;
+                notifyPatternCleared();
             }
+            if (hitCell != null) {
+                final float startX = getCenterXForColumn(hitCell.column);
+                final float startY = getCenterYForRow(hitCell.row);
+
+                final float widthOffset = mSquareWidth / 2f;
+                final float heightOffset = mSquareHeight / 2f;
+
+                invalidate((int) (startX - widthOffset),
+                        (int) (startY - heightOffset),
+                        (int) (startX + widthOffset), (int) (startY + heightOffset));
+            }
+            mInProgressX = x;
+            mInProgressY = y;
+            if (PROFILE_DRAWING) {
+                if (!mDrawingProfilingStarted) {
+                    Debug.startMethodTracing("LockPatternDrawing");
+                    mDrawingProfilingStarted = true;
+                }
+            }
+        } catch (Exception e) {
         }
     }
 

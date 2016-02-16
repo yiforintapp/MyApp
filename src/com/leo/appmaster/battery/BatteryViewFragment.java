@@ -526,14 +526,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         setBottleWater();
         setTime(mRemainTime, isExpand);
 
-        if (type.equals(BatteryManager.SHOW_TYPE_OUT)) {
+        if (BatteryManager.SHOW_TYPE_OUT.equals(type)) {
             if (!isExpand) {
 //                mSlideView.setScrollable(true);
                 expandContent(true);
             }
         }
 
-        if(newState != null && mIvArrowMove != null) {
+        if(newState != null && mIvArrowMove != null && mBottleWater != null) {
             if (newState.plugged == 0) {
                 mIvArrowMove.setVisibility(View.INVISIBLE);
                 mBottleWater.setIsNeedWave(false);
@@ -575,37 +575,41 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void setBottleWater() {
-        int level = newState.level;
-        mBottleWater.setPercent(level);
+        if(newState != null && mBottleWater != null) {
+            int level = newState.level;
+            mBottleWater.setPercent(level);
+        }
     }
 
     private int place = 0;
 
     private void setBatteryPercent() {
-        mTvLevel.setText(newState.level + "%");
+        if(mTvLevel != null && newState != null) {
+            mTvLevel.setText(newState.level + "%");
 
-        if (newState.level < 70) {
-            place = CHARING_TYPE_SPEED;
-            mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
-            mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
-            mIvSpeed.setBackgroundResource(R.drawable.bay_speed2);
-            mBottleWater.setPostInvalidateDelayMs(50);
-        } else if (newState.level < 85) {
-            place = CHARING_TYPE_CONTINUOUS;
-            mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
-            mIvContinuous.setBackgroundResource(R.drawable.bay_continuous2);
-            mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
-            mBottleWater.setPostInvalidateDelayMs(70);
-        } else {
-            place = CHARING_TYPE_TRICKLE;
-            mIvTrickle.setBackgroundResource(R.drawable.bay_trickle2);
-            mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
-            mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
-            mBottleWater.setPostInvalidateDelayMs(80);
+            if (newState.level < 70) {
+                place = CHARING_TYPE_SPEED;
+                mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
+                mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
+                mIvSpeed.setBackgroundResource(R.drawable.bay_speed2);
+                mBottleWater.setPostInvalidateDelayMs(50);
+            } else if (newState.level < 85) {
+                place = CHARING_TYPE_CONTINUOUS;
+                mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
+                mIvContinuous.setBackgroundResource(R.drawable.bay_continuous2);
+                mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
+                mBottleWater.setPostInvalidateDelayMs(70);
+            } else {
+                place = CHARING_TYPE_TRICKLE;
+                mIvTrickle.setBackgroundResource(R.drawable.bay_trickle2);
+                mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
+                mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
+                mBottleWater.setPostInvalidateDelayMs(80);
+            }
+
+            mHandler.sendEmptyMessage(GREEN_ARROW_MOVE);
+
         }
-
-        mHandler.sendEmptyMessage(GREEN_ARROW_MOVE);
-
     }
 
     public void setTime(int second, boolean isExpandContent) {
@@ -828,6 +832,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     @Override
     public void onClick(View view) {
+        if(mActivity == null) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.ct_option_2_rl:
                 mLockManager.filterPackage(mActivity.getPackageName(), 5000);
@@ -840,7 +847,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(BatteryManager.SEND_BUNDLE, newState);
                 dlIntent.putExtras(bundle);
-                startActivity(dlIntent);
+                mActivity.startActivity(dlIntent);
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_setting");
                 mActivity.finish();
                 break;

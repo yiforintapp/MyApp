@@ -260,7 +260,10 @@ public class DeskProxyActivity extends Activity {
             wallAd = null;
         }
         if (mHasRegistered) {
-            unregisterReceiver(mPresentReceiver);
+            try {
+                unregisterReceiver(mPresentReceiver);
+            } catch(Exception e) {
+            }
             mHasRegistered = false;
         }
     }

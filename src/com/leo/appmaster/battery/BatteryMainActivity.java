@@ -2,6 +2,9 @@
 package com.leo.appmaster.battery;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,7 +43,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CircleArroundView;
 import com.leo.appmaster.ui.CircleArroundView.OnArroundFinishListener;
 import com.leo.appmaster.ui.CircleView;
-import com.leo.appmaster.ui.CircleView.OnAfterImageDismissListener;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
@@ -53,9 +55,6 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BatteryMainActivity extends BaseFragmentActivity implements OnClickListener {
     private final String TAG = "BatterMainActivity";
@@ -497,6 +496,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         // LeoLog.d(TAG, "startIndex="+startIndex+"; count="+count);
         for (int i=0 ; i<count ; i++) {
             final View vv = mGvApps.getChildAt(i);   //mGvApps.getChildAt(i+startIndex);
+            if(vv == null) {
+                continue;
+            }
             // LeoLog.d(TAG, "index="+(i+startIndex));
             final boolean isLastIcon = (i == count-1);
             vv.animate().setDuration(iconDisappearTime)
