@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
@@ -900,20 +901,33 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
+    /* AM-3889: 三星5.x的手机从系统锁之外跳转有问题，需要特殊处理 */
+    private boolean samsungLolipopDevice() {
+        LeoLog.d(TAG, "MANUFACTURER: " + Build.MANUFACTURER);
+        LeoLog.d(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
+        return (Build.MANUFACTURER.equalsIgnoreCase("samsung")
+        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+        && Build.VERSION.SDK_INT < 23 /*Marshmallow*/);
+    }
+
     private void handleRunnable() {
         if (mClickRunnable == null) {
             return;
         }
-//        AppUtil.isDefaultBrowserChrome(mActivity) &&
+
         if (AppUtil.isScreenLocked(mActivity)) {
             // 默认浏览器是chrome而且系统锁住了，让user_present receiver处理
-//            startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
-
-            Intent intent = new Intent(mActivity, DeskProxyActivity.class);
-            intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mBatteryProtect);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            mActivity.startActivity(intent);
-
+            if (samsungLolipopDevice()) {
+                LeoLog.d(TAG, "Samsung 5.x device, launch specific activity");
+                Intent intent = new Intent(mActivity, EmptyForJumpActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mActivity.startActivity(intent);
+            } else {
+                Intent intent = new Intent(mActivity, DeskProxyActivity.class);
+                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mBatteryProtect);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mActivity.startActivity(intent);
+            }
 
         } else {
             // 没有锁或者默认浏览器不是chrome，直接跑
