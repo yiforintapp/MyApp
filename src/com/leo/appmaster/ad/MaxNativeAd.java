@@ -50,6 +50,7 @@ public class MaxNativeAd extends BaseNativeAd {
             @Override
             public void onAdLoaded(Campaign campaign) {
 				isFinish = true;
+                adLoadHandler.removeCallbacks(onAdFailed);
                 if(mListener != null){
                     /* 先判断数据是否可用 */
                     if (!isCampaignAvailable(campaign)) {
@@ -70,6 +71,7 @@ public class MaxNativeAd extends BaseNativeAd {
             @Override
             public void onAdLoadError(int i, String s) {
 				isFinish = true;
+                adLoadHandler.removeCallbacks(onAdFailed);
                 if (mListener != null) {
                     mListener.onLoadFailed();
                 }

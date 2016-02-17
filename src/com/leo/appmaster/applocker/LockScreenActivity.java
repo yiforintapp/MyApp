@@ -1016,6 +1016,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().unregister(this);
         mLockFragment.setShowText(false);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mLockFragment != null) {
+            mLockFragment.onActivityStop();
+        }
+
+        /* AM-3907 规避多次添加广告 */
         try {
             ThreadManager.executeOnNetworkThread(new Runnable() {
                 @Override
@@ -1039,14 +1049,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mBannerContainer.setVisibility(View.GONE);
             } catch (Exception e) {
             }
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mLockFragment != null) {
-            mLockFragment.onActivityStop();
         }
     }
 
@@ -1249,6 +1251,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                         mAdapterCycle.setLasterSlectedPage(0);
                                     }
                                 } else {
+                                    /* AM-3907 规避多次添加广告 */
+                                    if (mAdapterCycle.getCount() == mBannerAdids.length) {
+                                        return;
+                                    }
                                     mAdapterCycle.addItem(unitId);
                                 }
 

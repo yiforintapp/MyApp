@@ -20,7 +20,7 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
     private final static int CHECK_RESULT_OK = 1;
     private final static int CHECK_RESULT_FAILED = 2;
     
-    private final static String TAG = "STONE_AD_DEBUG";
+    private final static String TAG = "FACEBOOK_AD_DEBUG";
     private final static String FACEBOOK_URL = "http://www.facebook.com";
     
     private Handler mPushToMain = new Handler() {
