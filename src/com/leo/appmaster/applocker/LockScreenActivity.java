@@ -1283,7 +1283,25 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                  */
                 @Override
                 public void onLeoAdClick(LEONativeAdData campaign) {
+                    // 干掉旧广告？ - onResume()的时候会重新拉取
+                    try {
+                        for (String key : mAdBitmapMap.keySet()) {
+                            Bitmap image = mAdBitmapMap.get(key);
+                            image.recycle();
+                        }
+                        mAdBitmapMap.clear();
 
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (mBannerContainer != null) {
+                        try {
+                            mBannerContainer.setVisibility(View.GONE);
+                        } catch (Exception e) {
+                        }
+                    }
+                    // 重新拉取
+                    // loadAD();
                 }
             });
 
