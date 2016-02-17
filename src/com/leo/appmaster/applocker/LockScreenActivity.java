@@ -1233,8 +1233,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             @Override
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                                 LeoLog.d("STONE_AD_DEBUG", "onLoadingComplete for: " + imageUri);
+                                synchronized (mAdUnitIdList) {
+                                    /* AM-3907 规避多次添加广告 - 在多线程的情况下可能会有问题 */
+                                    if (mAdUnitIdList.size() == mBannerAdids.length) {
+                                        return;
+                                    }
+                                    mAdUnitIdList.add(unitId);
+                                }
                                 mAdBitmapMap.put(unitId, loadedImage);
-                                mAdUnitIdList.add(unitId);
                                 if (mAdapterCycle == null) {
                                     mBannerContainer.setVisibility(View.INVISIBLE);
                                     mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, leoAdEngine);
