@@ -26,6 +26,16 @@ public class MaxNativeAd extends BaseNativeAd {
                 AppMasterApplication.getInstance(), unitId);
     }
 
+    private boolean isCampaignAvailable (Campaign campaign) {
+        if (campaign.getClickUrl()==null || campaign.getClickUrl().length()<=0) {
+            return false;
+        }
+        if (campaign.getPreviewUrl()==null || campaign.getPreviewUrl().length()<=0) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void loadAd() {
         LeoLog.d(TAG, "MaxSDK start to load");
@@ -34,6 +44,10 @@ public class MaxNativeAd extends BaseNativeAd {
             @Override
             public void onAdLoaded(Campaign campaign) {
                 if(mListener != null){
+                    /* 先判断数据是否可用 */
+                    if (!isCampaignAvailable(campaign)) {
+                        mListener.onLoadFailed();
+                    }
                     LeoLog.d(TAG, "MaxSDK onAdLoaded -> " + campaign.getTitle());
                     mCampaign = campaign;
                     LEONativeAdData data = new LEONativeAdData();
