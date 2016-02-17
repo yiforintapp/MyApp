@@ -199,4 +199,7 @@
     <dimen name="sec_nub_size">14dp</dimen>
     <dimen name="sec_suc_instr_tip_tp">9dp</dimen>
 
+    <!-- 3.3.1 -->
+    <dimen name="home_more_empty_height">115dp</dimen>
+
 </resources>
