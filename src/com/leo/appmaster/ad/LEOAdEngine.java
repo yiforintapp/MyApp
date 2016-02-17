@@ -4,11 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.leoadlib.LeoAdFactory;
-import com.leo.leoadlib.LeoAdNative;
 import com.leo.leoadlib.MaxSdk;
 
 import java.util.HashMap;
@@ -214,7 +211,7 @@ public class LEOAdEngine {
 //            } catch (Throwable e) {
 //            }
 //        }
-		mLeoLoadingNatives.remove(unitId);
+		//mLeoLoadingNatives.remove(unitId);
         mLeoListeners.remove(unitId);
 //        removeMobAdData(unitId);
     }

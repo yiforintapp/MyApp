@@ -1,6 +1,7 @@
 package com.leo.appmaster.ad;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.View;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -19,6 +20,10 @@ public class MaxNativeAd extends BaseNativeAd {
     private LeoAdNative maxAd;
     private Campaign mCampaign;
     private Context mContext;
+	
+	private boolean isFinish = false;
+	
+	private Handler adLoadHandler = new Handler();
 
     public MaxNativeAd (Context context, String unitId) {
         mContext = context;
@@ -40,9 +45,11 @@ public class MaxNativeAd extends BaseNativeAd {
     public void loadAd() {
         LeoLog.d(TAG, "MaxSDK start to load");
         mCampaign = null;
+		isFinish = false;
         maxAd.loadAd(null, new AdListener() {
             @Override
             public void onAdLoaded(Campaign campaign) {
+				isFinish = true;
                 if(mListener != null){
                     /* 先判断数据是否可用 */
                     if (!isCampaignAvailable(campaign)) {
@@ -62,6 +69,7 @@ public class MaxNativeAd extends BaseNativeAd {
 
             @Override
             public void onAdLoadError(int i, String s) {
+				isFinish = true;
                 if (mListener != null) {
                     mListener.onLoadFailed();
                 }
@@ -74,6 +82,11 @@ public class MaxNativeAd extends BaseNativeAd {
                 }
             }
         });
+		LeoLog.d(TAG, "增加超时 开始" );
+		//每次都先去掉 onAdFailded runnable 对象
+		adLoadHandler.removeCallbacks(onAdFailed);
+		//增加超时判断 如果超过25秒，默认广告采集失败
+		adLoadHandler.postDelayed(onAdFailed, 25 * 1000);
     }
 
     @Override
@@ -108,4 +121,14 @@ public class MaxNativeAd extends BaseNativeAd {
     protected boolean readyToShow() {
         return (mCampaign!=null);
     }
+	
+	private Runnable onAdFailed = new Runnable() {
+		@Override
+		public void run() {
+			LeoLog.d(TAG, "增加超时 25秒到了" );
+			if (!isFinish && mListener != null) {
+				mListener.onLoadFailed();
+			}
+		}
+	};
 }
