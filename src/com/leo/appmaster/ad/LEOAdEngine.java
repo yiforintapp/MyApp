@@ -284,7 +284,8 @@ public class LEOAdEngine {
         @Override
         public void onAdClicked() {
             LEONativeAdData data = null;
-            LeoCompositeData m = mLEOLoadedNatives.get(mUnitId);
+            /* Max SDK先把这个已经点击过的缓存清理掉 */
+            LeoCompositeData m = mLEOLoadedNatives.remove(mUnitId);
             if (m != null) {
                 data = m.campaign;
             }
