@@ -23,7 +23,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetector;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.AutoStartGuideList;
 import com.leo.appmaster.model.AppInfo;
@@ -33,7 +32,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.utils.PrefConst;
 
 /**
  * Created by qili on 15-10-11.
@@ -395,7 +393,9 @@ public class RecommentAppLockListActivity extends BaseActivity implements
                 .getInstance(this);
         List<String> list = new ArrayList<String>();
         for (AppInfo info : mLockList) {
-            list.add(0, info.packageName);
+            if(info != null) {
+                list.add(0, info.packageName);
+            }
         }
         pref.setRecommentTipList(list);
 

@@ -22,12 +22,13 @@ public class NetWorkUtil {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = null;
+        boolean connect = false;
         try {
             info = cm == null ? null : cm.getActiveNetworkInfo();
+            connect = info != null && info.isConnected();
         } catch (Exception e) {
-            e.printStackTrace();
         }
-        return info != null && info.isConnected();
+        return connect;
     }
 
     /**

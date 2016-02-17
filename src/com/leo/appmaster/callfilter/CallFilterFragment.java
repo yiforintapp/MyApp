@@ -198,7 +198,7 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clear_all:
-                if (mFilterList.size() > 0) {
+                if (mFilterList != null && mFilterList.size() > 0) {
                     clearAll();
                 }
                 break;
