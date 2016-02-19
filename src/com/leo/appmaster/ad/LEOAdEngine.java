@@ -297,7 +297,9 @@ public class LEOAdEngine {
             }
             // 点击之后，重新load此位置的广告
             LeoLog.i(TAG, "reload the clicked Ad");
-			loadSingleMobAd(mUnitId, m.nativeAd);
+            if(m != null) {
+                loadSingleMobAd(mUnitId, m.nativeAd);
+            }
         }
 
     }
