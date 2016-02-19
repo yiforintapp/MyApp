@@ -85,5 +85,13 @@ public class BaseFragmentActivity extends FragmentActivity {
         } catch (Exception e) {
         }
     }
+    
+    @Override
+    protected void onPostResume() {
+        try {
+            super.onPostResume();
+        } catch (Exception e) {
+        }
+    }
 
 }
