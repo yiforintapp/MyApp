@@ -379,16 +379,21 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <!-- Advertise -->
-                    <include
-                        android:id="@+id/ad_content"
-                        layout="@layout/screen_saver_ad_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="8dp" />
-                    <!-- Advertise -->
+                    <com.leo.appmaster.ui.AdWrapperLayout
+                        android:id="@+id/ad_wrapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <!-- Advertise -->
+                        <include
+                            android:id="@+id/ad_content"
+                            layout="@layout/screen_saver_ad_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="8dp" />
+                        <!-- Advertise -->
+                    </com.leo.appmaster.ui.AdWrapperLayout>
 
                     <!-- 推广位1 -->
                     <ViewStub

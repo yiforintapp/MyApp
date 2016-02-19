@@ -38,6 +38,7 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.AdWrapperLayout;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
@@ -127,6 +128,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     /*  */
     private View mAdView = null;
+    private AdWrapperLayout mAdWrapper = null;
     private Runnable mClickRunnable = null;
 
     /* 用于更新时间 */
@@ -863,12 +865,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             case R.id.trickle_content:
                 showPop(CHARING_TYPE_TRICKLE);
                 break;
-            case R.id.ad_content:
+            case R.id.ad_wrapper:
                 mClickRunnable = new Runnable() {
                     @Override
                     public void run() {
                         LeoLog.d("stone_test_browser", "fire touch event!");
-                        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
                         MotionEvent eventDown = MotionEvent.obtain(SystemClock.elapsedRealtime(),
                                 SystemClock.elapsedRealtime(), MotionEvent.ACTION_DOWN,
                                 10.0f, 10.0f, 0);
@@ -879,6 +880,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mAdView.dispatchTouchEvent(eventUp);
                     }
                 };
+                if (mAdWrapper != null) {
+                    mAdWrapper.setNeedIntercept(false);
+                }
                 handleRunnable();
                 break;
             case R.id.parent_layout:
@@ -1065,6 +1069,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
         View adView = rootView.findViewById(R.id.ad_content);
+        mAdWrapper = (AdWrapperLayout) rootView.findViewById(R.id.ad_wrapper);
+        mAdWrapper.setNeedIntercept(true);
+
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
         TextView tvDesc = (TextView) adView.findViewById(R.id.item_description);
@@ -1084,7 +1091,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         });
         mAdView = adView;
-        mAdView.setOnClickListener(this);
+
+        // make the count correct
+        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
+
+        mAdWrapper.setOnClickListener(this);
     }
     /* 广告相关 - 结束 */
 
