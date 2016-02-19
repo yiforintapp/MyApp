@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -288,7 +287,7 @@ public class QuickHelperActivity extends BaseActivity {
                                         "assistant", "assistant_backup");
                                 intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mBackup);
+                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_BACKUP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APP_BACKUP]), mHelperResourceIDs[POSITION_APP_BACKUP], intent, QuickHelperActivity.this);
                                 break;
@@ -298,7 +297,7 @@ public class QuickHelperActivity extends BaseActivity {
                                         "assistant", "assistant_dataflow");
                                 intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mFlow);
+                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_FLOW);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_FLOW]), mHelperResourceIDs[POSITION_FLOW], intent, QuickHelperActivity.this);
                                 break;
@@ -308,7 +307,7 @@ public class QuickHelperActivity extends BaseActivity {
                                         "assistant", "assistant_power");
                                 intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mElec);
+                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_ELEC);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_ELEC]), mHelperResourceIDs[POSITION_ELEC], intent, QuickHelperActivity.this);
                                 break;
@@ -317,7 +316,7 @@ public class QuickHelperActivity extends BaseActivity {
 //                             SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1, "assistant", "assistant_wifi");
                                 intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mCallfilter);
+                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_CALL_FILTER);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_CALL_FILTER]), mHelperResourceIDs[POSITION_CALL_FILTER], intent, QuickHelperActivity.this);
                                 break;
@@ -327,7 +326,7 @@ public class QuickHelperActivity extends BaseActivity {
                                         "assistant", "assistant_wifi");
                                 intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mWifi);
+                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_WIFI);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_WIFI]), mHelperResourceIDs[POSITION_WIFI], intent, QuickHelperActivity.this);
                                 break;
@@ -366,7 +365,7 @@ public class QuickHelperActivity extends BaseActivity {
                                         "assistant", "assistant_appjoy");
                                 intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mAd);
+                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_AD);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 break;
                             default:

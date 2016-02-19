@@ -27,10 +27,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -1002,7 +1000,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 if (!isInstall && !iswipeInstalled && !plInstalled) {
                     Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                     appWallShortIntent.putExtra("from_quickhelper", true);
-                    appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mAd);
+                    appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_AD);
                     appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Intent appWallShortcut = new Intent(
                             "com.android.launcher.action.INSTALL_SHORTCUT");

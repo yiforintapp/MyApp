@@ -106,7 +106,7 @@ public class BatteryNotifyHelper {
 
         Intent intent = new Intent(mContext,
                 DeskProxyActivity.class);
-        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mElec);
+        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_ELEC);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(mContext, 0, intent,

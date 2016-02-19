@@ -42,25 +42,25 @@ import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class DeskProxyActivity extends Activity {
     private static final String TAG = "DeskProxyActivity";
-    public static final int mAppLockType = 1;
-    public static final int mAppWeiZhuang = 2;
-    public static final int mPicHide = 3;
-    public static final int mVioHide = 4;
-    public static final int mPrivateSms = 5;
-    public static final int mFlow = 6;
-    public static final int mElec = 7;
-    public static final int mBackup = 8;
+    public static final int IDX_APP_LOCK = 1;
+    public static final int IDX_APP_COVER = 2;
+    public static final int IDX_PIC_HIDE = 3;
+    public static final int IDX_VID_HIDE = 4;
+    public static final int IDX_PRIVACY_SMS = 5;
+    public static final int IDX_FLOW = 6;
+    public static final int IDX_ELEC = 7;
+    public static final int IDX_BACKUP = 8;
     public static final int mQuickGues = 9;
-    public static final int mLockThem = 10;
-    public static final int mHotApp = 11;
-    public static final int mAd = 12;
-    public static final int mWifi = 13;
-    public static final int mQuickHelper = 14;
-    public static final int mFilterNoti = 15;
-    public static final int mStrangerCallNoti = 16;
+    public static final int IDX_LOCK_THEME = 10;
+    public static final int IDX_HOT_APP = 11;
+    public static final int IDX_AD = 12;
+    public static final int IDX_WIFI = 13;
+    public static final int IDX_QUICK_HELPER = 14;
+    public static final int IDX_FILTER_NOTI = 15;
+    public static final int IDX_STRANGER_CALL_NOTI = 16;
     public static final int mMissCallNoti = 17;
-    public static final int mCallfilter = 18;
-    public static final int mBatteryProtect = 19;
+    public static final int IDX_CALL_FILTER = 18;
+    public static final int IDX_BATTERY_PROTECT = 19;
 
     private static final int IDX_HOME = 9999;
 
@@ -110,31 +110,36 @@ public class DeskProxyActivity extends Activity {
             fromWhere = intent.getStringExtra(Constants.FROM_WHERE);
             mCbPath = intent.getStringExtra("cb_download_path");
         }
+
+        handleAction(type, fromWhere);
+    }
+
+    private void handleAction(int type, String fromWhere) {
         if (type == StatusBarEventService.EVENT_EMPTY) {
             mDelayFinish = true;
             mHandler = new Handler();
-            String from = intent.getStringExtra(CALL_FILTER_PUSH);
+            String from = getIntent().getStringExtra(CALL_FILTER_PUSH);
             if (from != null && from != "") {
                 gotoCallFilerActivity();
             }
         } else {
             if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-                if (type == mFlow) {
+                if (type == IDX_FLOW) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
                     goToFlow(type);
-                } else if (type == mStrangerCallNoti) {
+                } else if (type == IDX_STRANGER_CALL_NOTI) {
                     goToStrangerCall(type);
-                } else if (type == mCallfilter) {
+                } else if (type == IDX_CALL_FILTER) {
                     goToBlackListTab1(type);
-                } else if (type == mFilterNoti) {
+                } else if (type == IDX_FILTER_NOTI) {
                     goToBlackList(type);
-                } else if (type == mElec) {
+                } else if (type == IDX_ELEC) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
                     gotoEle(type);
-                } else if (type == mBackup) {
+                } else if (type == IDX_BACKUP) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
                     gotoBackUp(type);
-                } else if (type == mWifi) {
+                } else if (type == IDX_WIFI) {
                     if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh",
                                 "push_wifi_cnts");
@@ -143,21 +148,21 @@ public class DeskProxyActivity extends Activity {
                     gotoWifi(type);
                 } else if (type == mQuickGues) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
-                } else if (type == mLockThem) {
+                } else if (type == IDX_LOCK_THEME) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
                     gotoLockThem(type);
-                } else if (type == mHotApp) {
+                } else if (type == IDX_HOT_APP) {
                     gotoHotApp(type);
-                } else if (type == mAd) {
+                } else if (type == IDX_AD) {
                     gotoAd(type);
-                } else if (type == mQuickHelper) {
+                } else if (type == IDX_QUICK_HELPER) {
                     if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh",
                                 "push_assistant_cnts");
                         LeoLog.d("testFromWhere", "mQuickHelper from push");
                     }
                     gotoQuickHelper(type);
-                } else if (type == mBatteryProtect) {
+                } else if (type == IDX_BATTERY_PROTECT) {
                     gotoBatteryClick();
                 } else {
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
@@ -169,15 +174,15 @@ public class DeskProxyActivity extends Activity {
                 }
             } else {
                 switch (type) {
-                    case mAppLockType:
+                    case IDX_APP_LOCK:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "appLock");
                         goToAppLock(type);
                         break;
-                    case mAppWeiZhuang:
+                    case IDX_APP_COVER:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "appDisguise");
                         goToAppWeiZhuang(type);
                         break;
-                    case mWifi:
+                    case IDX_WIFI:
                         if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
                             SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh",
                                     "push_wifi_cnts");
@@ -185,41 +190,41 @@ public class DeskProxyActivity extends Activity {
                         }
                         gotoWifi(type);
                         break;
-                    case mPicHide:
+                    case IDX_PIC_HIDE:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "picHide");
                         goToHidePic(type);
                         break;
-                    case mVioHide:
+                    case IDX_VID_HIDE:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "videoHide");
                         goToHideVio(type);
                         break;
-                    case mCallfilter:
+                    case IDX_CALL_FILTER:
                         goToBlackListTab1(type);
                         break;
-                    case mStrangerCallNoti:
+                    case IDX_STRANGER_CALL_NOTI:
                         goToStrangerCall(type);
                         break;
-                    case mFilterNoti:
+                    case IDX_FILTER_NOTI:
                         goToBlackList(type);
                         break;
-                    case mPrivateSms:
+                    case IDX_PRIVACY_SMS:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "privaceSms");
                         goToPrivateSms(type);
                         break;
-                    case mFlow:
+                    case IDX_FLOW:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "dataUsage");
                         goToFlow(type);
                         break;
-                    case mElec:
+                    case IDX_ELEC:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "battery");
                         gotoEle(type);
                         break;
-                    case mBackup:
+                    case IDX_BACKUP:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "backUp");
                         gotoBackUp(type);
@@ -228,18 +233,18 @@ public class DeskProxyActivity extends Activity {
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "quickGesture");
                         break;
-                    case mLockThem:
+                    case IDX_LOCK_THEME:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "lockThem");
                         gotoLockThem(type);
                         break;
-                    case mHotApp:
+                    case IDX_HOT_APP:
                         gotoHotApp(type);
                         break;
-                    case mAd:
+                    case IDX_AD:
                         gotoAd(type);
                         break;
-                    case mQuickHelper:
+                    case IDX_QUICK_HELPER:
                         if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
                             SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh",
                                     "push_assistant_cnts");
@@ -247,12 +252,12 @@ public class DeskProxyActivity extends Activity {
                         }
                         gotoQuickHelper(type);
                         break;
-                    case mBatteryProtect:
+                    case IDX_BATTERY_PROTECT:
                         gotoBatteryClick();
                         break;
                 }
             }
-            if (type != mBatteryProtect) {
+            if (type != IDX_BATTERY_PROTECT) {
                 finish();
             }
         }

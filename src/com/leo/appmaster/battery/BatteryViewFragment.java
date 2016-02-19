@@ -939,7 +939,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mActivity.startActivity(intent);
             } else {
                 Intent intent = new Intent(mActivity, DeskProxyActivity.class);
-                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mBatteryProtect);
+                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_BATTERY_PROTECT);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mActivity.startActivity(intent);
             }
