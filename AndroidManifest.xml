@@ -606,7 +606,14 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.proxy"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="privacyguard" android:host="com.leo.appmaster" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".applocker.FamilyModeProxyActivity"
             android:excludeFromRecents="true"

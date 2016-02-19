@@ -502,4 +502,8 @@ public class Constants {
     public static final String CHROME_PACKAGE_NAME = "com.android.chrome";
 
     public static final int TIME_FILTER_TARGET = 5000;
+
+    // deep link相关
+    public static final String DP_SCHEMA = "privacyguard";
+    public static final String DP_HOST = "com.leo.appmaster";
 }

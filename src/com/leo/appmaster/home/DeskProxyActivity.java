@@ -6,8 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -39,6 +41,7 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class DeskProxyActivity extends Activity {
+    private static final String TAG = "DeskProxyActivity";
     public static final int mAppLockType = 1;
     public static final int mAppWeiZhuang = 2;
     public static final int mPicHide = 3;
@@ -59,6 +62,8 @@ public class DeskProxyActivity extends Activity {
     public static final int mCallfilter = 18;
     public static final int mBatteryProtect = 19;
 
+    private static final int IDX_HOME = 9999;
+
     private MobvistaAdWall wallAd;
 
     private boolean mDelayFinish = false;
@@ -77,10 +82,34 @@ public class DeskProxyActivity extends Activity {
         LeoLog.i("proxy", "entered!");
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         Intent intent = getIntent();
-        int type = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-                StatusBarEventService.EVENT_EMPTY);
-        String fromWhere = intent.getStringExtra(Constants.FROM_WHERE);
-        mCbPath = intent.getStringExtra("cb_download_path");
+        Uri uri = intent.getData();
+
+        String fromWhere = null;
+        int type = 0;
+        if (uri != null) {
+            String schema = uri.getScheme();
+            String host = uri.getHost();
+            String path = uri.getPath();
+            LeoLog.d(TAG, "onCreate, uri: " + uri);
+            if (!Constants.DP_SCHEMA.equals(schema) || !Constants.DP_HOST.equals(host) || TextUtils.isEmpty(path)) {
+                finish();
+                return;
+            }
+
+            try {
+                path = path.substring(1);
+                type = Integer.parseInt(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+                finish();
+                return;
+            }
+        } else {
+            type = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                    StatusBarEventService.EVENT_EMPTY);
+            fromWhere = intent.getStringExtra(Constants.FROM_WHERE);
+            mCbPath = intent.getStringExtra("cb_download_path");
+        }
         if (type == StatusBarEventService.EVENT_EMPTY) {
             mDelayFinish = true;
             mHandler = new Handler();
