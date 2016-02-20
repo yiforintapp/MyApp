@@ -105,6 +105,10 @@ public class PrivacyContactManager {
     }
 
     public ArrayList<ContactBean> getPrivateContacts() {
+        if(mContacts == null) {
+            mContactLoaded = false;
+            mContacts = new ArrayList<ContactBean>();
+        }
         loadPrivateContacts();
         return (ArrayList<ContactBean>) mContacts.clone();
     }
