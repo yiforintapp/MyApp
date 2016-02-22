@@ -50,7 +50,6 @@ public class DeskProxyActivity extends Activity {
     public static final int IDX_FLOW = 6;
     public static final int IDX_ELEC = 7;
     public static final int IDX_BACKUP = 8;
-    public static final int mQuickGues = 9;
     public static final int IDX_LOCK_THEME = 10;
     public static final int IDX_HOT_APP = 11;
     public static final int IDX_AD = 12;
@@ -146,8 +145,6 @@ public class DeskProxyActivity extends Activity {
                         LeoLog.d("testFromWhere", "Wifi from push");
                     }
                     gotoWifi(type);
-                } else if (type == mQuickGues) {
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
                 } else if (type == IDX_LOCK_THEME) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
                     gotoLockThem(type);
@@ -228,10 +225,6 @@ public class DeskProxyActivity extends Activity {
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "backUp");
                         gotoBackUp(type);
-                        break;
-                    case mQuickGues:
-                        SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                                "quickGesture");
                         break;
                     case IDX_LOCK_THEME:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
