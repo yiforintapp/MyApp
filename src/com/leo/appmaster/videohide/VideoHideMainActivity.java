@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -19,19 +20,26 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -42,6 +50,8 @@ import com.leo.imageloader.core.ImageScaleType;
 public class VideoHideMainActivity extends BaseActivity implements OnItemClickListener {
     public final static int INIT_UI_DONE = 26;
     public final static int LOAD_DATA_DONE = 27;
+    private static final String TAG = "VideoHideMainActivity";
+    private static final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
     private GridView mGridView;
     private CommonToolbar mTtileBar;
     private RippleView mRvAdd;
@@ -54,12 +64,14 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     public static String URL_CB = "http://m.coobrowser.com/";
     public static String SECOND_CATALOG;
     public static String LAST_CATALOG;
+    private LEOAlarmDialog mDialogAskCreateShotcut;
     public static final String DEFAULT_PATH =
             "xxx/xxx/Coolbrowser/Download/";
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
     private AppMasterPreference mSpSaveDir;
     private ProgressBar loadingBar;
+    private PreferenceTable mPt;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -111,9 +123,39 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         setContentView(R.layout.activity_video_hide_main);
         initImageLoder();
         initUI();
-
+        mPt = PreferenceTable.getInstance();
         getDirFromSp();
         handleIntent();
+    }
+    
+    @Override
+    public void onBackPressed() {
+
+        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
+            mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID, true);
+            if (mDialogAskCreateShotcut == null) {
+                mDialogAskCreateShotcut = new LEOAlarmDialog(this);
+            }
+            mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_videohide));
+            mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
+            mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
+            mDialogAskCreateShotcut.setRightBtnListener(new DialogInterface.OnClickListener() {
+                
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent();
+                    intent = new Intent(AppMasterApplication.getInstance(), VideoHideMainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_video_hide), R.drawable.qh_video_icon, intent, VideoHideMainActivity.this);
+                    Toast.makeText(VideoHideMainActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();
+                    mDialogAskCreateShotcut.dismiss();
+                }
+            });
+            mDialogAskCreateShotcut.show();
+        } else {
+            super.onBackPressed();
+        }
+    
     }
 
     private void getDirFromSp() {
