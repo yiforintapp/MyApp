@@ -32,6 +32,16 @@ public class PrefConst {
     public static final String KEY_AD_TYPE_IN_INTRUDER_VIEW = "ad_type_in_intruder_view";
     public static final String KEY_IS_DELAY_TO_SHOW_CATCH = "is_delay_to_show_catch";
     public static final String KEY_ORIENTATION_OF_CAMERA_FACING_FRONT = "orientation_of_camera_facing_front";
+    
+    //提醒添加快捷方式相关
+    public static final String KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC = "accumulative_total_enter_hide_pic";
+    public static final String KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO = "accumulative_total_enter_hide_video";
+    public static final String KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER = "accumulative_total_enter_callfilter";
+    public static final String KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY = "accumulative_total_enter_wifi_security";
+    public static final String KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC = "has_ask_create_shotcut_hide_pic";
+    public static final String KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID = "has_ask_create_shotcut_hide_vid";
+    public static final String KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER = "has_ask_create_shotcut_callfilter";
+    public static final String KEY_HAS_ASK_CREATE_SHOTCUT_WIFI_SECURITY= "has_ask_create_shotcut_wifi_security";
 
     public static final String KEY_HOME_NEED_CHANGE_TO_CHRISMAS_THEME = "need_home_change_to_chrismas_theme";
     public static final String KEY_LOCK_NEED_CHANGE_TO_CHRISMAS_THEME = "need_lock_change_to_chrismas_theme";

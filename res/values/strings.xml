@@ -1021,4 +1021,10 @@
     <string name="close_batteryview_confirm_sure">OK</string>
     <string name="close_batteryview_confirm_cancel">Cancel</string>
 
+    <!-- 3.3.2 -->
+    <string name="ask_create_shortcut_button_right">创建</string>
+    <string name="ask_create_shortcut_content_imagehide">想要更方便地浏览隐藏的图片？在桌面创建一个快捷方式吧！</string>
+    <string name="ask_create_shortcut_content_videohide">想要更方便地浏览隐藏的视频？在桌面创建一个快捷方式吧！</string>
+    <string name="ask_create_shortcut_content_callfilter">添加桌面快捷方式，更便利地管理黑名单和拦截记录。</string>
+    <string name="ask_create_shortcut_content_wifi_security">担心网络安全？创建桌面快捷方式随时扫检测wifi安全！</string>
 </resources>
