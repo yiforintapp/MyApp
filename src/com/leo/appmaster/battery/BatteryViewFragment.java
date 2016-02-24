@@ -79,6 +79,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mTimeContent;
     private View mBatteryIcon;
     private View mRemainTimeContent;
+    private View mRemainContent;
     private BatteryTestViewLayout mSlideView;
 
     private TextView mTvLevel;
@@ -164,6 +165,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mShowing = true;
                         showMoveUp();
                         mRemainTimeContent.setVisibility(View.INVISIBLE);
+                        mRemainContent.setVisibility(View.INVISIBLE);
 //                        timeContentMoveSmall();
 //                        batteryIconMoveSmall();
                     }
@@ -176,6 +178,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mShowing = true;
                         showMoveDown();
                         mRemainTimeContent.setVisibility(View.VISIBLE);
+                        mRemainContent.setVisibility(View.VISIBLE);
 //                        timeContentMoveBig();
 //                        batteryIconMoveBig();
                     }
@@ -320,6 +323,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //        mTimeContent = findViewById(R.id.time_move_content);
 //        mBatteryIcon = findViewById(R.id.infos_content);
         mRemainTimeContent = findViewById(R.id.remain_time);
+        mRemainContent = findViewById(R.id.use_time_content);
 
         mTvBigTime = (TextView) findViewById(R.id.time_big);
         mTvSmallLeft = (TextView) findViewById(R.id.time_small);

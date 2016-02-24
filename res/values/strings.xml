@@ -1027,4 +1027,10 @@
     <string name="ask_create_shortcut_content_videohide">想要更方便地浏览隐藏的视频？在桌面创建一个快捷方式吧！</string>
     <string name="ask_create_shortcut_content_callfilter">添加桌面快捷方式，更便利地管理黑名单和拦截记录。</string>
     <string name="ask_create_shortcut_content_wifi_security">担心网络安全？创建桌面快捷方式随时扫检测wifi安全！</string>
+
+    <string name="battery_protect_view_title">用电情况</string>
+    <string name="battery_protect_view_time_title">可用时间:</string>
+    <string name="battery_protect_view_remain_one_title">3G通话</string>
+    <string name="battery_protect_view_remain_two_title">WiFi上网</string>
+    <string name="battery_protect_view_remain_three_title">播放视频</string>
 </resources>

@@ -189,12 +189,134 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/screen_protect_time"
+            android:text="@string/battery_protect_view_title"
             android:textColor="@color/white"
             android:textSize="12sp" />
 
     </RelativeLayout>
     <!-- 剩余时间 -->
+
+    <!-- 可用时间 -->
+    <RelativeLayout
+        android:id="@+id/use_time_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/remain_time"
+        android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop">
+
+        <TextView
+            android:id="@+id/use_time_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:text="@string/battery_protect_view_time_title"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:id="@+id/three_remain_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/use_time_title"
+            android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:id="@+id/remain_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_remain_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/battery_protect_view_remain_one_title"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_remain_one_fill"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tv_remain_one"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="11h"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/remain_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/remain_one">
+
+                <TextView
+                    android:id="@+id/tv_remain_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/battery_protect_view_remain_two_title"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_remain_two_fill"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tv_remain_two"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="11h"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/remain_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/remain_two">
+
+                <TextView
+                    android:id="@+id/tv_remain_three"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/battery_protect_view_remain_three_title"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_remain_three_fill"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tv_remain_three"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="11h"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <!-- 可用时间 -->
 
 
     <!-- 滑动区域 -->
@@ -290,20 +412,6 @@
         </com.leo.appmaster.battery.BatteryTestViewLayout>
     </RelativeLayout>
     <!-- 滑动区域 -->
-
-
-    <!-- 滑动解锁 -->
-    <!--<com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/slider"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/batteryscreen_slidearea_height"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--slider:maskText="@string/screen_protect_unlock_text"-->
-        <!--slider:maskTextMarginLeft="1dp"-->
-        <!--slider:maskTextMarginTop="15dp"-->
-        <!--slider:maskTextSize="20sp"-->
-        <!--slider:slidableLength="208dp" />-->
-    <!-- 滑动解锁 -->
 
     <RelativeLayout
         android:id="@+id/slider"
