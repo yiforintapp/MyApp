@@ -231,6 +231,7 @@ public class InitCoreBootstrap extends Bootstrap {
             //TODO
             //新安装用户，去除应用备份，应用卸载及隐私联系人相关的功能
             pref.setIsNeedCutBackupUninstallAndPrivacyContact(true);
+            pref.setIsOldUser(false);
             // first install
             // AM-2911: remove device administration at first install
             removeDeviceAdmin();
@@ -263,6 +264,7 @@ public class InitCoreBootstrap extends Bootstrap {
                 updateShowGuidePage(lastCode < 46 || (currentGuideVersion > lastGuideVersion && currentGuideVersion > 1));
                 pref.setLastGuideVersion(currentGuideVersion);
                 pref.setIsUpdateQuickGestureUser(true);
+                pref.setIsOldUser(false);
                 // 每次升级都重新刷新googleplay提示规则
                 uninitGooglePlayScorTip();
                 recoveryUpdateTipDefaultData();

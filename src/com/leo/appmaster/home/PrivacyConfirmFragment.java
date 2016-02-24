@@ -5,12 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +33,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
-import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -45,7 +43,6 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
@@ -210,6 +207,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private View mBoxOne;
     private View mBoxTwo;
     private View mBoxThree;
+
+    private RelativeLayout mBottomLayout;
 
     // 初始化时的占位View，避免一开始显示空白页面
 //    private View mDisplayProxyView;
@@ -423,6 +422,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 //        ViewStub viewStub = (ViewStub) mRootView.findViewById(R.id.pri_pro_bottom_stub);
 //        View view = viewStub.inflate();
         View view = mRootView;
+
+        mBottomLayout = (RelativeLayout) view.findViewById(R.id.bottom_layout);
+        SharedPreferences prefernece = PreferenceManager
+                .getDefaultSharedPreferences(mActivity);
+        boolean installed = prefernece.getBoolean("shortcut", false);
+        if (AppMasterPreference.getInstance(mActivity).getIsOldUser()) {
+            mBottomLayout.setVisibility(View.VISIBLE);
+        } else {
+            mBottomLayout.setVisibility(View.GONE);
+        }
         mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
         mProcessBtn.setRippleOverlay(true);
         mProcessClick = view.findViewById(R.id.pp_process_rv_click);
@@ -1387,7 +1396,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mActivity.startActivity(intent);
         PreferenceTable table = PreferenceTable.getInstance();
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
-        table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
+        table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count + 1);
     }
 
     private void resultToVid() {
@@ -1395,7 +1404,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mActivity.startActivity(intent);
         PreferenceTable table = PreferenceTable.getInstance();
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
-        table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count+1);
+        table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count + 1);
     }
 
     private void collapseContact() {

@@ -88,6 +88,20 @@ public class ShareFetchJob extends FetchScheduleJob {
                 setCallFilterShareEmpty(preferenceTable);
             }
 
+            boolean isBlackListShareNull = object.isNull(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE); // 判断key是否存在
+            if (!isBlackListShareNull) { // 加入黑名单弹窗分享
+                JSONObject blackList = object.getJSONObject(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE);
+                setValue(blackList, "content",
+                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT, preferenceTable);
+                setValue(blackList, "url",
+                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL, preferenceTable);
+                setValue(blackList, "dialogcontent",
+                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT, preferenceTable);
+
+            } else {
+                setBlackListShareEmpty(preferenceTable);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -113,4 +127,10 @@ public class ShareFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_CALL_FILTER_SHARE_URL, "");
     }
 
+    /** 加入黑名单弹窗分享 */
+    private void setBlackListShareEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT, "");
+        preferenceTable.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL, "");
+        preferenceTable.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT, "");
+    }
 }

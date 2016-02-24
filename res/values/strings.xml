@@ -1033,4 +1033,6 @@
     <string name="battery_protect_view_remain_one_title">3G通话</string>
     <string name="battery_protect_view_remain_two_title">WiFi上网</string>
     <string name="battery_protect_view_remain_three_title">播放视频</string>
+
+   <string name="pri_pro_wifi_not_scan">当前连接wifi未检测</string>
 </resources>

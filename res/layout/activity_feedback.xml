@@ -224,6 +224,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/feedback_tell_us_contact_type_1"
                 android:textColor="@color/c4"
+                android:autoLink="email"
                 android:textSize="@dimen/f4" />
 
             <TextView

@@ -285,4 +285,10 @@ public class PrefConst {
     //是否上传了该用户的视频信息
     public static final String KEY_REPORT_VIDEO_SIZE = "REPORT_VIDEO_SIZE";
 
+  // 3.3.2加入黑名单弹窗分享
+    public static final String KEY_ADD_TO_BLACKLIST_SHARE = "blacklist";
+    public static final String KEY_ADD_TO_BLACKLIST_SHARE_CONTENT = "blacklist_content";
+    public static final String KEY_ADD_TO_BLACKLIST_SHARE_URL = "blacklist_url";
+    public static final String KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT = "blacklist_dialog_content";
+
 }
