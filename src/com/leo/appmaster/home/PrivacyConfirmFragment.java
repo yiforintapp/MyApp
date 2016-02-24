@@ -5,11 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -22,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -209,6 +208,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private View mBoxThree;
 
     private RelativeLayout mBottomLayout;
+    private ScrollView mScrollView;
 
     // 初始化时的占位View，避免一开始显示空白页面
 //    private View mDisplayProxyView;
@@ -423,15 +423,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 //        View view = viewStub.inflate();
         View view = mRootView;
 
-        mBottomLayout = (RelativeLayout) view.findViewById(R.id.bottom_layout);
-        SharedPreferences prefernece = PreferenceManager
-                .getDefaultSharedPreferences(mActivity);
-        boolean installed = prefernece.getBoolean("shortcut", false);
-        if (AppMasterPreference.getInstance(mActivity).getIsOldUser()) {
-            mBottomLayout.setVisibility(View.VISIBLE);
-        } else {
-            mBottomLayout.setVisibility(View.GONE);
-        }
         mProcessBtn = (MaterialRippleLayout) view.findViewById(R.id.pp_process_rv);
         mProcessBtn.setRippleOverlay(true);
         mProcessClick = view.findViewById(R.id.pp_process_rv_click);
@@ -442,6 +433,15 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mIgnoreBtn.setVisibility(View.GONE);
         mProcessTv.setText(R.string.pri_pro_complete);
         mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
+
+        mBottomLayout = (RelativeLayout) view.findViewById(R.id.bottom_layout);
+        mScrollView = (ScrollView) view.findViewById(R.id.pri_confirm_sv);
+        if (AppMasterPreference.getInstance(mActivity).getIsOldUser()) {
+            mBottomLayout.setVisibility(View.VISIBLE);
+        } else {
+            mBottomLayout.setVisibility(View.GONE);
+            mScrollView.setPadding(0, 0, 0, 0);
+        }
     }
 
     private void updateIntruderAndLost() {
@@ -502,7 +502,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             } else {
                 mWifiFixedLt.setVisibility(View.GONE);
                 mWifiMiddleLt.setVisibility(View.VISIBLE);
-                mWifiSubSummary.setText(R.string.pri_pro_wifi_warn);
+                mWifiSubSummary.setText(R.string.pri_pro_wifi_not_scan);
                 mWifiFixedSummaryLt.setVisibility(View.GONE);
                 mWifiBtnLt.setVisibility(View.VISIBLE);
                 mWifiBtnDiv.setVisibility(View.VISIBLE);
