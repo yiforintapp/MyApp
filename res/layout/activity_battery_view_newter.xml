@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.appmaster.battery.BatteryBackground xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent">
@@ -427,4 +427,4 @@
             android:background="@drawable/backup_delete_btn" />
     </RelativeLayout>
 
-</RelativeLayout>
+</com.leo.appmaster.battery.BatteryBackground>
