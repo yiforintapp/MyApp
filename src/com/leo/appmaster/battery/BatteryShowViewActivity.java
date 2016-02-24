@@ -426,6 +426,10 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     }
 
+    public void onFinishActivity() {
+        mViewPager.setCurrentItem(0);
+    }
+
     public void onEventMainThread(VirtualEvent event) {
         if (event.mIsVirtual && mBatterViewBg != null) {
             Drawable drawable = BitmapUtils.getFinalDrawable(BatteryShowViewActivity.this);

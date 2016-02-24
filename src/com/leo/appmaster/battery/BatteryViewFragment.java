@@ -70,16 +70,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static final int ANIMATION_TIME = 300;
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
-    private static final int GREEN_ARROW_MOVE = 3;
-    private static final int CHANGE_LINE_INT = 650;
-    private static final int MID_WIDTH = 550;
-    private static final int SHORT_WIDTH = 450;
-
-    private static final int CHARING_TYPE_SPEED = 1;
-    private static final int CHARING_TYPE_CONTINUOUS = 2;
-    private static final int CHARING_TYPE_TRICKLE = 3;
-
-    private static final int DIMISS_POP = 5;
     private static final int LOAD_DONE_INIT_PLACE = 6;
 
     public static boolean mShowing = false;
@@ -96,11 +86,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvSmallLeft;
     private TextView mTvSmallRight;
     private TextView mTvLeftTime;
-//    private TextView mTvTime;
+    //    private TextView mTvTime;
     private SelfScrollView mScrollView;
 
     private WaveView mBottleWater;
-//    private View mThreeMoveView;
+    //    private View mThreeMoveView;
 //    private ImageView mGreenArrow;
 //    private ImageView mIvTrickle;
 //    private View mTrickleContent;
@@ -112,13 +102,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //    private View mSpeedContent;
 //    private TextView mTvSpeed;
 //    private View mHideTextView;
-//    private TextView mTvHideTime;
-//    private TextView mTvHideText;
+    private TextView mTvHideTime;
+    private TextView mTvHideText;
 
     private View mSettingView;
     private View mArrowMoveContent;
     private ImageView mIvArrowMove;
 
+    private ImageView mIvCancel;
 
     private BatteryManager.BatteryState newState;
     private String mChangeType = BatteryManager.SHOW_TYPE_IN;
@@ -150,7 +141,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mExtraTitle;
     private ImageView mExtraImg;
     private TextView mExtraContent;
-    private RippleView mExtraBtnLt;
     private RelativeLayout mExtraLayout;
 
     private ImageLoader mImageLoader;
@@ -173,6 +163,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //                        mSlideView.setScrollable(true);
                         mShowing = true;
                         showMoveUp();
+                        mRemainTimeContent.setVisibility(View.INVISIBLE);
 //                        timeContentMoveSmall();
 //                        batteryIconMoveSmall();
                     }
@@ -184,24 +175,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //                        mSlideView.setScrollable(true);
                         mShowing = true;
                         showMoveDown();
+                        mRemainTimeContent.setVisibility(View.VISIBLE);
 //                        timeContentMoveBig();
 //                        batteryIconMoveBig();
                     }
-                    break;
-                case GREEN_ARROW_MOVE:
-//                    arrowMove();
-                    break;
-                case DIMISS_POP:
-//                    long cancelTime = System.currentTimeMillis();
-//                    if (cancelTime - showTime > 4000) {
-//                        if (popupWindow != null && popupWindow.isShowing()) {
-//                            try {
-//                                popupWindow.dismiss();
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
                     break;
                 case LOAD_DONE_INIT_PLACE:
                     reLocateMoveContent();
@@ -332,7 +309,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     @Override
     protected int layoutResourceId() {
-//        return R.layout.activity_battery_view_new;
         return R.layout.activity_battery_view_newter;
     }
 
@@ -341,8 +317,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         LeoLog.d(TAG, "INIT UI");
         mImageLoader = ImageLoader.getInstance();
 
-        mTimeContent = findViewById(R.id.time_move_content);
-        mBatteryIcon = findViewById(R.id.infos_content);
+//        mTimeContent = findViewById(R.id.time_move_content);
+//        mBatteryIcon = findViewById(R.id.infos_content);
         mRemainTimeContent = findViewById(R.id.remain_time);
 
         mTvBigTime = (TextView) findViewById(R.id.time_big);
@@ -351,7 +327,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
         mTvLeftTime = (TextView) findViewById(R.id.left_time);
-//        mTvTime = (TextView) findViewById(R.id.right_time);
 
         mBossView = findViewById(R.id.move_boss);
         mBossView.setOnTouchListener(this);
@@ -383,8 +358,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //        mIvSpeed = (ImageView) findViewById(R.id.iv_speed);
 //        mTvSpeed = (TextView) findViewById(R.id.tv_speed);
 //        mHideTextView = findViewById(R.id.hide_tv_content);
-//        mTvHideTime = (TextView) findViewById(R.id.hide_tv_one);
-//        mTvHideText = (TextView) findViewById(R.id.hide_tv_two);
+        mTvHideTime = (TextView) findViewById(R.id.hide_tv_one);
+        mTvHideText = (TextView) findViewById(R.id.hide_tv_two);
 
         mSettingView = findViewById(R.id.ct_option_2_rl);
         mSettingView.setOnClickListener(this);
@@ -392,6 +367,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mArrowMoveContent.setOnTouchListener(this);
         mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);
 
+        mIvCancel = (ImageView) findViewById(R.id.iv_cancle);
+        mIvCancel.setOnClickListener(this);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -580,34 +557,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    private int place = 0;
 
     private void setBatteryPercent() {
         if (mTvLevel != null && newState != null) {
             mTvLevel.setText(newState.level + "%");
 
             if (newState.level < 70) {
-                place = CHARING_TYPE_SPEED;
-//                mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
-//                mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
-//                mIvSpeed.setBackgroundResource(R.drawable.bay_speed2);
                 mBottleWater.setPostInvalidateDelayMs(50);
             } else if (newState.level < 85) {
-                place = CHARING_TYPE_CONTINUOUS;
-//                mIvTrickle.setBackgroundResource(R.drawable.bay_trickle);
-//                mIvContinuous.setBackgroundResource(R.drawable.bay_continuous2);
-//                mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
                 mBottleWater.setPostInvalidateDelayMs(70);
             } else {
-                place = CHARING_TYPE_TRICKLE;
-//                mIvTrickle.setBackgroundResource(R.drawable.bay_trickle2);
-//                mIvContinuous.setBackgroundResource(R.drawable.bay_continuous);
-//                mIvSpeed.setBackgroundResource(R.drawable.bay_speed);
                 mBottleWater.setPostInvalidateDelayMs(80);
             }
-
-            mHandler.sendEmptyMessage(GREEN_ARROW_MOVE);
-
         }
     }
 
@@ -645,77 +606,36 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isCharing = newState.plugged != 0 ? true : false;
 
         if (newState.level >= 100) {
-            if (isExpandContent) {
-                String text = mActivity.getString(R.string.screen_protect_charing_text_four);
-//                mTvHideText.setText(text);
-//                mTvHideTime.setVisibility(View.GONE);
-            } else {
-                String text;
-                if (isCharing) {
-                    text = mActivity.getString(R.string.screen_protect_charing_text_three);
-                } else {
-                    text = mActivity.getString(R.string.screen_protect_charing_text_four);
-                }
-                mTvLeftTime.setText(text);
-//                mTvTime.setVisibility(View.GONE);
-            }
+            String text = mActivity.getString(R.string.screen_protect_charing_text_four);
+            mTvHideText.setText(text);
+            mTvHideTime.setVisibility(View.GONE);
         } else {
-            if (isExpandContent) {
-                if (isCharing) {
-                    if (hString.equals("0")) {
-                        if (!dString.equals("0")) {
-                            String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
-                            String text2 = mActivity.getString(R.string.screen_protect_time);
-//                            mTvHideText.setVisibility(View.VISIBLE);
-//                            mTvHideTime.setVisibility(View.VISIBLE);
-//                            mTvHideText.setText(text2);
-//                            mTvHideTime.setText(Html.fromHtml(text));
-                        } else {
-                            String text = mActivity.getString(R.string.screen_protect_charing_text_two);
-//                            mTvHideText.setText(text);
-//                            mTvHideTime.setVisibility(View.GONE);
-                        }
-                    } else {
-                        String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
+            if (isCharing) {
+                if (hString.equals("0")) {
+                    if (!dString.equals("0")) {
+                        String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
                         String text2 = mActivity.getString(R.string.screen_protect_time);
-//                        mTvHideText.setVisibility(View.VISIBLE);
-//                        mTvHideTime.setVisibility(View.VISIBLE);
-//                        mTvHideText.setText(text2);
-//                        mTvHideTime.setText(Html.fromHtml(text));
+                        mTvHideText.setVisibility(View.VISIBLE);
+                        mTvHideTime.setVisibility(View.VISIBLE);
+                        mTvHideText.setText(text2);
+                        mTvHideTime.setText(Html.fromHtml(text));
+                    } else {
+                        String text = mActivity.getString(R.string.screen_protect_charing_text_two);
+                        mTvHideText.setText(text);
+                        mTvHideTime.setVisibility(View.GONE);
                     }
                 } else {
-                    String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
-//                    mTvHideText.setText(text2);
-//                    mTvHideTime.setVisibility(View.GONE);
+                    String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
+                    String text2 = mActivity.getString(R.string.screen_protect_time);
+                    mTvHideText.setVisibility(View.VISIBLE);
+                    mTvHideTime.setVisibility(View.VISIBLE);
+                    mTvHideText.setText(text2);
+                    mTvHideTime.setText(Html.fromHtml(text));
                 }
             } else {
-                if (isCharing) {
-                    if (hString.equals("0")) {
-                        if (!dString.equals("0")) {
-                            String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
-                            String text2 = mActivity.getString(R.string.screen_protect_time);
-                            mTvLeftTime.setVisibility(View.VISIBLE);
-//                            mTvTime.setVisibility(View.VISIBLE);
-                            mTvLeftTime.setText(text2);
-//                            mTvTime.setText(Html.fromHtml(text));
-                        } else {
-                            String text = mActivity.getString(R.string.screen_protect_charing_text_two);
-                            mTvLeftTime.setText(text);
-//                            mTvTime.setVisibility(View.GONE);
-                        }
-                    } else {
-                        String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
-                        String text2 = mActivity.getString(R.string.screen_protect_time);
-                        mTvLeftTime.setVisibility(View.VISIBLE);
-//                        mTvTime.setVisibility(View.VISIBLE);
-                        mTvLeftTime.setText(text2);
-//                        mTvTime.setText(Html.fromHtml(text));
-                    }
-                } else {
-                    String text = mActivity.getString(R.string.screen_protect_charing_text_one);
-                    mTvLeftTime.setText(text);
-//                    mTvTime.setVisibility(View.GONE);
-                }
+                String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
+                mTvHideText.setText(text2);
+                mTvHideTime.setVisibility(View.GONE);
             }
 
         }
@@ -853,15 +773,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_setting");
                 mActivity.finish();
                 break;
-            case R.id.speed_content:
-                showPop(CHARING_TYPE_SPEED);
-                break;
-            case R.id.continuous_content:
-                showPop(CHARING_TYPE_CONTINUOUS);
-                break;
-            case R.id.trickle_content:
-                showPop(CHARING_TYPE_TRICKLE);
-                break;
+//            case R.id.speed_content:
+//                showPop(CHARING_TYPE_SPEED);
+//                break;
+//            case R.id.continuous_content:
+//                showPop(CHARING_TYPE_CONTINUOUS);
+//                break;
+//            case R.id.trickle_content:
+//                showPop(CHARING_TYPE_TRICKLE);
+//                break;
             case R.id.ad_wrapper:
                 mClickRunnable = new Runnable() {
                     @Override
@@ -909,6 +829,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     handleRunnable();
                 }
                 break;
+            case R.id.iv_cancle:
+                BatteryShowViewActivity activity = (BatteryShowViewActivity) mActivity;
+                activity.onFinishActivity();
+                break;
         }
     }
 
@@ -948,41 +872,41 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    private long showTime;
+//    private long showTime;
+//
+//    private void showPop(int type) {
+//        if (!isExpand && !mShowing) {
+//            String str = getRightMenuItems(type);
+//            View view;
+//            if (type == CHARING_TYPE_SPEED) {
+////                view = mSpeedContent;
+//                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_quick");
+//            } else if (type == CHARING_TYPE_CONTINUOUS) {
+////                view = mContinuousContent;
+//                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_constant");
+//            } else {
+////                view = mTrickleContent;
+//                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_trickle");
+//            }
+//
+////            showPopUp(view, str);
+//            showTime = System.currentTimeMillis();
+//            mHandler.sendEmptyMessageDelayed(DIMISS_POP, 5000);
+//        }
+//    }
 
-    private void showPop(int type) {
-        if (!isExpand && !mShowing) {
-            String str = getRightMenuItems(type);
-            View view;
-            if (type == CHARING_TYPE_SPEED) {
-//                view = mSpeedContent;
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_quick");
-            } else if (type == CHARING_TYPE_CONTINUOUS) {
-//                view = mContinuousContent;
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_constant");
-            } else {
-//                view = mTrickleContent;
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_trickle");
-            }
-
-//            showPopUp(view, str);
-            showTime = System.currentTimeMillis();
-            mHandler.sendEmptyMessageDelayed(DIMISS_POP, 5000);
-        }
-    }
-
-    private String getRightMenuItems(int type) {
-        Context ctx = mActivity;
-        String mStr;
-        if (type == CHARING_TYPE_SPEED) {
-            mStr = ctx.getString(R.string.screen_protect_type_pop_one);
-        } else if (type == CHARING_TYPE_CONTINUOUS) {
-            mStr = ctx.getString(R.string.screen_protect_type_pop_two);
-        } else {
-            mStr = ctx.getString(R.string.screen_protect_type_pop_three);
-        }
-        return mStr;
-    }
+//    private String getRightMenuItems(int type) {
+//        Context ctx = mActivity;
+//        String mStr;
+//        if (type == CHARING_TYPE_SPEED) {
+//            mStr = ctx.getString(R.string.screen_protect_type_pop_one);
+//        } else if (type == CHARING_TYPE_CONTINUOUS) {
+//            mStr = ctx.getString(R.string.screen_protect_type_pop_two);
+//        } else {
+//            mStr = ctx.getString(R.string.screen_protect_type_pop_three);
+//        }
+//        return mStr;
+//    }
 
 
     /* 广告相关 - 开始 */
@@ -1253,11 +1177,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, x, y);
 //    }
 
-    public float getTextViewLength(TextView textView, String text) {
-        TextPaint paint = textView.getPaint();
-        // 得到使用该paint写上text的时候,像素为多少
-        float textLength = paint.measureText(text);
-        return textLength;
-    }
+//    public float getTextViewLength(TextView textView, String text) {
+//        TextPaint paint = textView.getPaint();
+//        // 得到使用该paint写上text的时候,像素为多少
+//        float textLength = paint.measureText(text);
+//        return textLength;
+//    }
 
 }

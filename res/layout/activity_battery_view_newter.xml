@@ -146,8 +146,7 @@
                 android:id="@+id/hide_tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="3dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/battery_icon_content">
 
@@ -192,7 +191,7 @@
             android:layout_centerVertical="true"
             android:text="@string/screen_protect_time"
             android:textColor="@color/white"
-            android:textSize="14dp" />
+            android:textSize="12sp" />
 
     </RelativeLayout>
     <!-- 剩余时间 -->
@@ -294,16 +293,30 @@
 
 
     <!-- 滑动解锁 -->
-    <com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"
+    <!--<com.leo.appmaster.battery.BatteryProtectSlideView xmlns:slider="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/slider"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/batteryscreen_slidearea_height"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--slider:maskText="@string/screen_protect_unlock_text"-->
+        <!--slider:maskTextMarginLeft="1dp"-->
+        <!--slider:maskTextMarginTop="15dp"-->
+        <!--slider:maskTextSize="20sp"-->
+        <!--slider:slidableLength="208dp" />-->
+    <!-- 滑动解锁 -->
+
+    <RelativeLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/batteryscreen_slidearea_height"
-        android:layout_alignParentBottom="true"
-        slider:maskText="@string/screen_protect_unlock_text"
-        slider:maskTextMarginLeft="1dp"
-        slider:maskTextMarginTop="15dp"
-        slider:maskTextSize="20sp"
-        slider:slidableLength="208dp" />
-    <!-- 滑动解锁 -->
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/iv_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/backup_delete_btn" />
+    </RelativeLayout>
 
 </RelativeLayout>
