@@ -652,9 +652,18 @@ public final class Utilities {
 
             browserType(preferenceTable, url, pkgName, context);
 
-        } else {  // 使用gp
+        } else if (Constants.GP_URL_TYPE.equals(
+                preferenceTable.getString(type))) {  // 使用gp
 
             gpType(preferenceTable, gpUrl, url, pkgName, context);
+        } else {
+            try {
+                // "#Intent;component=com.leo.appmaster/.callfilter.CallFilterMainActivity;S.from=push;end"
+                Intent intent = Intent.parseUri(url, 0);
+                context.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

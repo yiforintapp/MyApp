@@ -432,6 +432,7 @@ public class Constants {
      * Swifty使用浏览器
      */
     public static final String BROWSER_URL_TYPE = "1";
+    public static final String GP_URL_TYPE = "2";
     /**
      * 判断手机是否为红米Note2
      */
