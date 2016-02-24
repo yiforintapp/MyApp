@@ -282,5 +282,7 @@ public class PrefConst {
     public static final String CALL_FILTER_SHOW = "call_filter_show";
     // 当前已经进入骚扰拦截的次数
     public static final String ENTER_CALL_FILTER_TIMES = "enter_call_filter_times";
+    //是否上传了该用户的视频信息
+    public static final String KEY_REPORT_VIDEO_SIZE = "REPORT_VIDEO_SIZE";
 
 }

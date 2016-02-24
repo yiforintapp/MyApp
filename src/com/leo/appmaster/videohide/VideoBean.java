@@ -13,7 +13,8 @@ public class VideoBean implements Serializable {
     private Date mLastModifyDate;
     private List<VideoItemBean> bitList = new ArrayList<VideoItemBean>();
     private String path;
-
+    //视频大小：单位,Byte
+    private long size;
     
     public VideoBean(String name, int count, String dirPath,
 			Date mLastModifyDate, List<VideoItemBean> bitList, String path) {
@@ -65,7 +66,12 @@ public class VideoBean implements Serializable {
 	public void setmLastModifyDate(Date mLastModifyDate) {
 		this.mLastModifyDate = mLastModifyDate;
 	}
- 
-    
 
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
 }
