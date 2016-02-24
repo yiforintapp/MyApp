@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * Created by Run on 2016/2/24.
@@ -29,16 +30,28 @@ public class CollectVideoUtils {
     private static final String IN = "IN";
     //印尼语
     private static final String ID = "ID";
+    //印度时间GMT
+    private static final String INDIA_GMT = "GMT+05:30";
 
     public static void getAllVideoData() {
 
-        //条件1：用户人群限制
-        String countryId = Locale.getDefault().getCountry();
-        LeoLog.d("getAllVideo", "country id:" + countryId);
-        boolean isIndUs = countryId.equalsIgnoreCase(IN) || countryId.equalsIgnoreCase(ID);
+        //条件1：用户人群限制,通过手机本地语言
+//        String countryId = Locale.getDefault().getCountry();
+//        LeoLog.d("getAllVideo", "country id:" + countryId);
+//        boolean isIndUs = countryId.equalsIgnoreCase(IN) || countryId.equalsIgnoreCase(ID);
+//        if (!isIndUs) {
+//            return;
+//        }
+
+        //条件1：用户人群限制,通过时区
+        TimeZone tz = TimeZone.getDefault();
+        String s = tz.getDisplayName(false, TimeZone.SHORT);
+        LeoLog.d("getAllVideo", "TimeZone:" + s);
+        boolean isIndUs = s.equals(INDIA_GMT);
         if (!isIndUs) {
             return;
         }
+
         //条件2：每个用户只上传一次
         PreferenceTable pt = PreferenceTable.getInstance();
         boolean isReport = pt.getBoolean(PrefConst.KEY_REPORT_VIDEO_SIZE, false);
