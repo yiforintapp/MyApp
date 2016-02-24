@@ -13,11 +13,16 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.home.DeskProxyActivity;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -27,6 +32,7 @@ import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.utils.Utilities;
 
 import java.util.List;
@@ -40,14 +46,15 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
     private CommonToolbar mTitleBar;
-
     private BlackListFragment mBlackListFragment;
     private CallFilterFragment mCallFilterFragment;
     private boolean mNeedToHomeWhenFinish = false;
     private String mIsFromPushNotif = "";
     private CallFilterFragmentHoler[] mFragmentHolders = new CallFilterFragmentHoler[2];
-
     private LEOAlarmDialog mShareDialog;
+    private PreferenceTable mPt;
+    private LEOAlarmDialog mDialogAskCreateShotcut;
+    private static final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,37 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         mNeedToHomeWhenFinish = getIntent().getBooleanExtra("needToHomeWhenFinish", false);
         mIsFromPushNotif = getIntent().getStringExtra("from");
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "block_cnts");
+        mPt = PreferenceTable.getInstance();
+    }
+    
+    @Override
+    public void onBackPressed() {
+        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
+            mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, true);
+            if (mDialogAskCreateShotcut == null) {
+                mDialogAskCreateShotcut = new LEOAlarmDialog(this);
+            }
+            mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_callfilter));
+            mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
+            mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
+            mDialogAskCreateShotcut.setRightBtnListener(new DialogInterface.OnClickListener() {
+                
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent();
+                    intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_CALL_FILTER);
+                    intent.putExtra("from_quickhelper", true);
+                    QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_callfilter), R.drawable.qh_call_filter, intent, CallFilterMainActivity.this);
+                    Toast.makeText(CallFilterMainActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();
+                    mDialogAskCreateShotcut.dismiss();
+                }
+            });
+            mDialogAskCreateShotcut.show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void initUI() {

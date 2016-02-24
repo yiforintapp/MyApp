@@ -1332,6 +1332,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             ChangeContactColor();
         } else if (mWifiBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "wifi_scan");
+            PreferenceTable table = PreferenceTable.getInstance();
+            int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
+            table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count+1);
             Intent intent = new Intent(mActivity, WifiSecurityActivity.class);
             startActivity(intent);
         } else if (mIntruderBtnLt == v) {
@@ -1392,19 +1395,19 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void resultToPic() {
-        Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
-        mActivity.startActivity(intent);
         PreferenceTable table = PreferenceTable.getInstance();
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
-        table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count + 1);
+        table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
+        Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
+        mActivity.startActivity(intent);
     }
 
     private void resultToVid() {
-        Intent intent = new Intent(mActivity, VideoHideMainActivity.class);
-        mActivity.startActivity(intent);
         PreferenceTable table = PreferenceTable.getInstance();
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
-        table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count + 1);
+        table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count+1);
+        Intent intent = new Intent(mActivity, VideoHideMainActivity.class);
+        mActivity.startActivity(intent);
     }
 
     private void collapseContact() {

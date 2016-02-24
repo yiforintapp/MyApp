@@ -102,6 +102,9 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //            intent.putExtra("needToHomeWhenFinish", true);
             startActivity(intent);
+            PreferenceTable table = PreferenceTable.getInstance();
+            int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
+            table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
         }
 
     }

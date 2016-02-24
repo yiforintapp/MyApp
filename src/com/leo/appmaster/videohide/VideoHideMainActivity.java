@@ -145,6 +145,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent();
                     intent = new Intent(AppMasterApplication.getInstance(), VideoHideMainActivity.class);
+                    intent.putExtra("from_quickhelper", true);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_video_hide), R.drawable.qh_video_icon, intent, VideoHideMainActivity.this);
                     Toast.makeText(VideoHideMainActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();

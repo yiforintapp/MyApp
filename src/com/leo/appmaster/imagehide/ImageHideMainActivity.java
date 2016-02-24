@@ -92,6 +92,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent();
                     intent = new Intent(AppMasterApplication.getInstance(), ImageHideMainActivity.class);
+                    intent.putExtra("from_quickhelper", true);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_pic_hide), R.drawable.qh_image_icon, intent, ImageHideMainActivity.this);
                     Toast.makeText(ImageHideMainActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();

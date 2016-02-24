@@ -1,25 +1,35 @@
 package com.leo.appmaster.wifiSecurity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.callfilter.CallFilterMainActivity;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
+import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.PropertyInfoUtil;
+import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -53,7 +63,10 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private boolean isSafe;
     private int mScanAnimCount = 0;
     private boolean mIsJudgeAsLowMemory = false;
-
+    private PreferenceTable mPt;
+    private LEOAlarmDialog mDialogAskCreateShotcut;
+    private static final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
+    
     //开始首页动画
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -76,6 +89,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         LeoEventBus.getDefaultBus().register(this);
         mIsJudgeAsLowMemory = PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this) <= Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY;
         SDKWrapper.addEvent(this, SDKWrapper.P1, "wifi_scan", "wifi_scan_cnts");
+        mPt = PreferenceTable.getInstance();
         handlerIntent();
         initUi();
         isCheckWifiAlready(false);
@@ -160,11 +174,38 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
 
     @Override
     public void onBackPressed() {
-        if (isScanIng) {
-            wifiFragment.dismissTab(BACK_PRESS);
-            return;
+        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_WIFI_SECURITY, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
+            mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_WIFI_SECURITY, true);
+            if (mDialogAskCreateShotcut == null) {
+                mDialogAskCreateShotcut = new LEOAlarmDialog(this);
+            }
+            mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_wifi_security));
+            mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
+            mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
+            mDialogAskCreateShotcut.setRightBtnListener(new DialogInterface.OnClickListener() {
+                
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent();
+                    intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_WIFI);
+                    intent.putExtra("from_quickhelper", true);
+                    QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_wifi_safety), R.drawable.qh_wifi_icon, intent, WifiSecurityActivity.this);
+                    Toast.makeText(WifiSecurityActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();
+                    mDialogAskCreateShotcut.dismiss();
+                }
+            });
+            mDialogAskCreateShotcut.show();
+        } else {
+            if (isScanIng) {
+                wifiFragment.dismissTab(BACK_PRESS);
+                return;
+            }
+            super.onBackPressed();
         }
-        super.onBackPressed();
+    
+        
     }
 
     public void setScanState(boolean scanState) {

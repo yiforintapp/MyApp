@@ -305,22 +305,20 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
             switch (itemId) {
                 case R.string.hp_hide_img:
                     SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidpic");
-                    intent = new Intent(activity, ImageHideMainActivity.class);
-                    activity.startActivity(intent);
-                    table = PreferenceTable.getInstance();
                     int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
                     table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
                     table.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+                    intent = new Intent(activity, ImageHideMainActivity.class);
+                    activity.startActivity(intent);
                     // 隐藏图片
                     break;
                 case R.string.hp_hide_video:
                     SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidvideo");
-                    intent = new Intent(activity, VideoHideMainActivity.class);
-                    activity.startActivity(intent);
-                    table = PreferenceTable.getInstance();
                     int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
                     table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2+1);
                     table.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+                    intent = new Intent(activity, VideoHideMainActivity.class);
+                    activity.startActivity(intent);
                     // 隐藏视频
                     break;
                 case R.string.privacy_contacts:
