@@ -4,8 +4,9 @@
     <dimen name="batteryscreen_bossview_height">330dp</dimen>
     <dimen name="batteryscreen_remaintime_margintop">30dp</dimen>
     <dimen name="batteryscreen_battery_margintop">50dp</dimen>
-<dimen name="batteryscreen_clock_margintop">55dp</dimen>
-	<dimen name="home_left_list_item_height">50dp</dimen>
+    <dimen name="batteryscreen_clock_margintop">55dp</dimen>
+    <dimen name="batteryscreen_clock_margintop_bay">55dp</dimen>
+    <dimen name="home_left_list_item_height">50dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
@@ -15,7 +16,7 @@
     <dimen name="hide_pictrue_imge_frame_width">142dp</dimen>
     <dimen name="hide_picture_image_frame_left">10dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-            <dimen name="hide_video_checkbox_right">24dp</dimen>
+    <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">24dp</dimen>
     <dimen name="digital_item_width">52dp</dimen>
     <dimen name="digital_item_height">52dp</dimen>
@@ -86,23 +87,35 @@
     <dimen name="activity_privacy_contact_item_paddingTop">10dp</dimen>
     <dimen name="activity_privacy_contact_item_paddingLeft">16dp</dimen>
     <dimen name="activity_privacy_message_item_circle">40dp</dimen>
-    <dimen name="activity_privacy_message_item_message_content_receive_item_layout_marginLeft">43dp</dimen>
-    <dimen name="activity_privacy_message_item_message_content_receive_item_layout_marginRight">14dp</dimen>
+    <dimen name="activity_privacy_message_item_message_content_receive_item_layout_marginLeft">
+        43dp
+    </dimen>
+    <dimen name="activity_privacy_message_item_message_content_receive_item_layout_marginRight">
+        14dp
+    </dimen>
     <dimen name="activity_privacy_message_item_message_send_edit_text_height">42dp</dimen>
     <dimen name="activity_privacy_message_item_message_send_edit_text_layout_marginLeft">6dp</dimen>
     <dimen name="activity_privacy_message_item_message_send_edit_parent_height">54dp</dimen>
-    <dimen name="activity_privacy_message_item_message_content_send_item_layout_paddingLeft">14dp</dimen>
-    <dimen name="activity_privacy_message_item_message_content_send_item_layout_paddingRight">53dp</dimen>
+    <dimen name="activity_privacy_message_item_message_content_send_item_layout_paddingLeft">14dp
+    </dimen>
+    <dimen name="activity_privacy_message_item_message_content_send_item_layout_paddingRight">53dp
+    </dimen>
     <dimen name="acticity_privacy_message_item_list_contactLV_layout_marginBottom">54dp</dimen>
     <dimen name="acticity_privacy_message_item_list_contactLV_edit_text_layout_width">244dp</dimen>
-    <dimen name="acticity_privacy_message_item_list_contactLV_send_message_bt_margin_left">16dp</dimen>
-    <dimen name="acticity_privacy_message_item_list_contactLV_send_message_bt_margin_right">16dp</dimen>
+    <dimen name="acticity_privacy_message_item_list_contactLV_send_message_bt_margin_left">16dp
+    </dimen>
+    <dimen name="acticity_privacy_message_item_list_contactLV_send_message_bt_margin_right">16dp
+    </dimen>
     <dimen name="acticity_privacy_message_item_list_contactLV_send_message_bt_width">40dp</dimen>
     <dimen name="acticity_privacy_message_item_list_contactLV_send_message_bt_height">40dp</dimen>
     <dimen name="privacy_call_log_item_calllog_item_sendmessage_layout_width">38dp</dimen>
     <dimen name="privacy_call_log_item_calllog_item_sendmessage_layout_height">38dp</dimen>
-    <dimen name="privacy_call_log_item_calllog_item_scalllog_item_sendmessage_layout_marginRight">62dp</dimen>
-    <dimen name="privacy_call_log_item_calllog_item_scalllog_item_calllog_item_call_layout_marginRight">14dp</dimen>
+    <dimen name="privacy_call_log_item_calllog_item_scalllog_item_sendmessage_layout_marginRight">
+        62dp
+    </dimen>
+    <dimen name="privacy_call_log_item_calllog_item_scalllog_item_calllog_item_call_layout_marginRight">
+        14dp
+    </dimen>
     <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_marginLeft">12dp</dimen>
     <dimen name="privacy_call_log_item_calllog_list_call_log_itemCB_layout_marginRight">12dp</dimen>
     <dimen name="privacy_call_log_item_calllog_list_message_itemLT_layout_height">72dp</dimen>
@@ -133,52 +146,89 @@
     <dimen name="text_icon_margin">13dp</dimen>
 
     <!-- HomeAppManagerFragment -->
-    <dimen name="app_manager_padding">10dp</dimen> <!-- 14 -->
-    <dimen name="app_manager_four_icon_total_height">70dp</dimen> <!-- 62 -->
-    <dimen name="app_manager_headview_fourtext_margin_top">8dp</dimen> <!-- 6 -->
-    <dimen name="app_manager_lv_item_icon_width_height">48dp</dimen> <!-- 42 -->
-    <dimen name="app_manager_lv_item_icon_margin_left">12dp</dimen> <!-- 10 -->
-    <dimen name="app_manager_lv_item_text_width">150dp</dimen> <!-- 130 -->
+    <dimen name="app_manager_padding">10dp</dimen>
+    <!-- 14 -->
+    <dimen name="app_manager_four_icon_total_height">70dp</dimen>
+    <!-- 62 -->
+    <dimen name="app_manager_headview_fourtext_margin_top">8dp</dimen>
+    <!-- 6 -->
+    <dimen name="app_manager_lv_item_icon_width_height">48dp</dimen>
+    <!-- 42 -->
+    <dimen name="app_manager_lv_item_icon_margin_left">12dp</dimen>
+    <!-- 10 -->
+    <dimen name="app_manager_lv_item_text_width">150dp</dimen>
+    <!-- 130 -->
     <dimen name="app_manager_lv_item_text_width_move_short">135dp</dimen>
-    <dimen name="app_manager_lv_item_delete_button_w_h">24dp</dimen> <!-- 30 -->
-    <dimen name="app_manager_headview_three_text_margin_top">8dp</dimen> <!-- 8dp -->
-    <dimen name="app_manager_headview_two_text_margin_top">5dp</dimen> <!-- 3 -->
+    <dimen name="app_manager_lv_item_delete_button_w_h">24dp</dimen>
+    <!-- 30 -->
+    <dimen name="app_manager_headview_three_text_margin_top">8dp</dimen>
+    <!-- 8dp -->
+    <dimen name="app_manager_headview_two_text_margin_top">5dp</dimen>
+    <!-- 3 -->
 
 
     <!-- BackupActivity -->
-    <dimen name="app_manager_backup_head_back">56dp</dimen> <!-- 50 -->
-    <dimen name="app_manager_backup_list_margin_bottom">60dp</dimen> <!-- 58 -->
-    <dimen name="app_manager_backup_check_margin_left">20dp</dimen> <!-- 14 -->
-    <dimen name="app_manager_backup_item_text_width">175dp</dimen> <!-- 130 -->
-    <dimen name="app_manager_backup_item_checkbox_width_height">18dp</dimen> <!-- 16 -->
-    <dimen name="app_manager_restore_one_text_height">120dp</dimen> <!-- 105 -->
-    <dimen name="app_manager_restore_two_text_height">100dp</dimen> <!-- 85 -->
+    <dimen name="app_manager_backup_head_back">56dp</dimen>
+    <!-- 50 -->
+    <dimen name="app_manager_backup_list_margin_bottom">60dp</dimen>
+    <!-- 58 -->
+    <dimen name="app_manager_backup_check_margin_left">20dp</dimen>
+    <!-- 14 -->
+    <dimen name="app_manager_backup_item_text_width">175dp</dimen>
+    <!-- 130 -->
+    <dimen name="app_manager_backup_item_checkbox_width_height">18dp</dimen>
+    <!-- 16 -->
+    <dimen name="app_manager_restore_one_text_height">120dp</dimen>
+    <!-- 105 -->
+    <dimen name="app_manager_restore_two_text_height">100dp</dimen>
+    <!-- 85 -->
     <!-- EleActivity -->
-    <dimen name="app_manager_eleactivity_stop_button_margin_right">19dp</dimen> <!-- 16 -->
-    <dimen name="app_manager_eleactivity_progressbar_width">174dp</dimen> <!-- 160 -->
-    <dimen name="app_manager_eleactivity_progressbar_margin_top">13dp</dimen> <!-- 12 -->
+    <dimen name="app_manager_eleactivity_stop_button_margin_right">19dp</dimen>
+    <!-- 16 -->
+    <dimen name="app_manager_eleactivity_progressbar_width">174dp</dimen>
+    <!-- 160 -->
+    <dimen name="app_manager_eleactivity_progressbar_margin_top">13dp</dimen>
+    <!-- 12 -->
     <!-- FlowActivity -->
-    <dimen name="app_manager_flowactivity_usage_logo_width_height">112dp</dimen> <!-- 100 -->
-    <dimen name="app_manager_flowactivity_usage_two_text_margin_top">7dp</dimen> <!-- 5 -->
-    <dimen name="app_manager_flowactivity_usage_set_flow_button_height">42dp</dimen> <!-- 40 -->
-    <dimen name="app_manager_flowactivity_usage_set_flow_button_width">280dp</dimen> <!-- 250dp -->
-    <dimen name="app_manager_flowactivity_usage_lineview_height">190dp</dimen> <!-- 180dp -->
-    <dimen name="app_manager_flowactivity_usage_bottom_text_margin_bottom">20dp</dimen> <!-- 18dp -->
-    <dimen name="app_manager_flowactivity_usage_list_textname_width">185dp</dimen> <!-- 170dp -->
-    <dimen name="app_manager_flowactivity_small_icon_width_height">56dp</dimen> <!-- 54dp -->
+    <dimen name="app_manager_flowactivity_usage_logo_width_height">112dp</dimen>
+    <!-- 100 -->
+    <dimen name="app_manager_flowactivity_usage_two_text_margin_top">7dp</dimen>
+    <!-- 5 -->
+    <dimen name="app_manager_flowactivity_usage_set_flow_button_height">42dp</dimen>
+    <!-- 40 -->
+    <dimen name="app_manager_flowactivity_usage_set_flow_button_width">280dp</dimen>
+    <!-- 250dp -->
+    <dimen name="app_manager_flowactivity_usage_lineview_height">190dp</dimen>
+    <!-- 180dp -->
+    <dimen name="app_manager_flowactivity_usage_bottom_text_margin_bottom">20dp</dimen>
+    <!-- 18dp -->
+    <dimen name="app_manager_flowactivity_usage_list_textname_width">185dp</dimen>
+    <!-- 170dp -->
+    <dimen name="app_manager_flowactivity_small_icon_width_height">56dp</dimen>
+    <!-- 54dp -->
     <!-- HotAppActivity -->
-    <dimen name="app_manager_hotactivity_error_text_width">130dp</dimen> <!-- 115dp -->
-    <dimen name="app_manager_hotactivity_error_text_height">33dp</dimen> <!-- 30dp -->
-    <dimen name="app_manager_hotactivity_list_item_height">104dp</dimen> <!-- 92dp -->
-    <dimen name="app_manager_hotactivity_list_item_text_name_width">100dp</dimen> <!-- 85dp -->
-    <dimen name="app_manager_hotactivity_list_item_text_des_width">240dp</dimen> <!-- 200dp -->
-    <dimen name="app_manager_hotactivity_list_item_download_button_width">63dp</dimen> <!-- 56dp -->
-    <dimen name="app_manager_hotactivity_list_item_download_button_height">30dp</dimen> <!-- 26dp -->
-    <dimen name="app_manager_home_logo_width_height">88dp</dimen> <!-- 83dp -->
+    <dimen name="app_manager_hotactivity_error_text_width">130dp</dimen>
+    <!-- 115dp -->
+    <dimen name="app_manager_hotactivity_error_text_height">33dp</dimen>
+    <!-- 30dp -->
+    <dimen name="app_manager_hotactivity_list_item_height">104dp</dimen>
+    <!-- 92dp -->
+    <dimen name="app_manager_hotactivity_list_item_text_name_width">100dp</dimen>
+    <!-- 85dp -->
+    <dimen name="app_manager_hotactivity_list_item_text_des_width">240dp</dimen>
+    <!-- 200dp -->
+    <dimen name="app_manager_hotactivity_list_item_download_button_width">63dp</dimen>
+    <!-- 56dp -->
+    <dimen name="app_manager_hotactivity_list_item_download_button_height">30dp</dimen>
+    <!-- 26dp -->
+    <dimen name="app_manager_home_logo_width_height">88dp</dimen>
+    <!-- 83dp -->
 
-	<dimen name="kongbaiye_width_width">150dp</dimen>
-    <dimen name="kongbaiye_width_height">116dp</dimen> <!-- 135dp -->
-    <dimen name="kongbaiye_text_size">18dp</dimen> <!-- 15dp -->
+    <dimen name="kongbaiye_width_width">150dp</dimen>
+    <dimen name="kongbaiye_width_height">116dp</dimen>
+    <!-- 135dp -->
+    <dimen name="kongbaiye_text_size">18dp</dimen>
+    <!-- 15dp -->
 
 
     <!-- guide pages begin -->
@@ -194,7 +244,8 @@
     <dimen name="guide_go_button_bottom">21dp</dimen>
     <!-- guide pages end -->
 
-    <dimen name="app_manager_hotapp_rep_tip_margin">8dp</dimen> <!-- 2 -->
+    <dimen name="app_manager_hotapp_rep_tip_margin">8dp</dimen>
+    <!-- 2 -->
 
     <dimen name="mode_name_max_width">220dp</dimen>
     <dimen name="time_lock_name_max_width">200dp</dimen>
@@ -227,20 +278,20 @@
     <!-- quick gesutre end -->
 
     <dimen name="dialog_btn_height">48dp</dimen>
-    
+
     <!-- 2.5 start -->
     <dimen name="lock_setting_title_margintop">22dp</dimen>
     <!-- 2.5 end -->
-    
+
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">70dp</dimen>
-     <dimen name="webview_title_width">252dp</dimen>
-     <dimen name="guide_skip_margin">10dp</dimen>
-     <dimen name="privacy_auto_add_btn_margin_top">50dp</dimen>
-     <dimen name="app_manager_flow_chart_margin_top">10dp</dimen>
-      <dimen name="app_manager_lineview_margin_top">8dp</dimen> 
+    <dimen name="webview_title_width">252dp</dimen>
+    <dimen name="guide_skip_margin">10dp</dimen>
+    <dimen name="privacy_auto_add_btn_margin_top">50dp</dimen>
+    <dimen name="app_manager_flow_chart_margin_top">10dp</dimen>
+    <dimen name="app_manager_lineview_margin_top">8dp</dimen>
     <!-- 2.6 end -->
- <!-- 2.7 start -->
+    <!-- 2.7 start -->
     <integer name="home_page_tab_text_size">15</integer>
     <!-- 2.7 end -->
 

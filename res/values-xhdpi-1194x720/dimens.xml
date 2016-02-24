@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="batteryscreen_bossview_height">360dp</dimen>
-<dimen name="batteryscreen_battery_margintop">35dp</dimen>
-<dimen name="batteryscreen_clock_margintop">60dp</dimen>
+    <dimen name="batteryscreen_battery_margintop">35dp</dimen>
+    <dimen name="batteryscreen_clock_margintop">60dp</dimen>
+    <dimen name="batteryscreen_clock_margintop_bay">55dp</dimen>
     <dimen name="splash_width">206dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
@@ -12,7 +13,7 @@
     <dimen name="hide_album_image_frame_top">18dp</dimen>
     <dimen name="hide_pictrue_imge_frame_width">142dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-            <dimen name="hide_video_checkbox_right">24dp</dimen>
+    <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">24dp</dimen>
     <dimen name="digital_item_width">60dp</dimen>
     <dimen name="digital_item_height">60dp</dimen>

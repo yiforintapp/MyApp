@@ -4,6 +4,7 @@
     <dimen name="batteryscreen_bossview_height">380dp</dimen>
     <dimen name="batteryscreen_battery_margintop">35dp</dimen>
     <dimen name="batteryscreen_clock_margintop">65dp</dimen>
+    <dimen name="batteryscreen_clock_margintop_bay">60dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>

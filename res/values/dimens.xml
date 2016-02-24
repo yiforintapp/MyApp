@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="batteryscreen_slidearea_height">70dp</dimen>
-     <dimen name="batteryscreen_remaintime_margintop">20dp</dimen>
+     <dimen name="batteryscreen_remaintime_margintop">10dp</dimen>
     <dimen name="batteryscreen_bossview_height">300dp</dimen>
     <dimen name="batteryscreen_battery_margintop">35dp</dimen>
 	<dimen name="batteryscreen_clock_margintop">60dp</dimen>
+    <dimen name="batteryscreen_clock_margintop_bay">55dp</dimen>
 	<dimen name="batterymanage_toplayout_height">183dp</dimen>
 	<dimen name="batterymanage_toplayout_ball">154dp</dimen>
 	<dimen name="home_left_list_item_height">60dp</dimen>
