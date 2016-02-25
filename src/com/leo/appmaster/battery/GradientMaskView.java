@@ -34,8 +34,8 @@ public class GradientMaskView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        int mid = (int) ((getTop() + getBottom()) / 2f + 0.5);
-        int midToBottom = getBottom() - mid;
+        int mid = (int) ((BatteryBackground.sTop + BatteryBackground.sBottom) / 2f + 0.5);
+        int midToBottom = BatteryBackground.sBottom - mid;
 
         int marginBottom = getContext().getResources().getDimensionPixelSize(
                 R.dimen.batteryscreen_slidearea_height);
@@ -54,19 +54,19 @@ public class GradientMaskView extends View {
         int midColorG = Color.green(midColor);
         int midColorB = Color.blue(midColor);
 
-        float ratio = (midToBottom - marginBottom) / midToBottom;
+        float ratio = ((float)(midToBottom - marginBottom)) / (float)midToBottom;
         int r = (int) (midColorR + (bottomColorR - midColorR) * ratio);
         int g = (int) (midColorG + (bottomColorG - midColorG) * ratio);
         int b = (int) (midColorB + (bottomColorB - midColorB) * ratio);
         int toColor = Color.argb(255, r, g, b);
 
-        ratio = (midToBottom - marginBottom - MASK_LEN) / midToBottom;
+        ratio = (float)(midToBottom - marginBottom - MASK_LEN) / (float)midToBottom;
         r = (int) (midColorR + (bottomColorR - midColorR) * ratio);
         g = (int) (midColorG + (bottomColorG - midColorG) * ratio);
         b = (int) (midColorB + (bottomColorB - midColorB) * ratio);
         int fromColor = Color.argb(0, r, g, b);
         // from->to 从下往上
-        mMaskRect = new Rect(getLeft(), maskTop, getRight(), maskBottom);
+        mMaskRect = new Rect(0, maskTop, getRight() - getLeft(), maskBottom);
         mMaskShader = new LinearGradient(getLeft(), maskTop, getLeft(), maskBottom, fromColor, toColor, Shader.TileMode.REPEAT);
     }
 

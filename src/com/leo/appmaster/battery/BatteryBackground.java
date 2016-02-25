@@ -19,6 +19,9 @@ public class BatteryBackground extends RelativeLayout {
     public static final int COLOR_MID = Color.parseColor("#4644a1");
     public static final int COLOR_BOTTOM = Color.parseColor("#487dcc");
 
+    public static int sTop;
+    public static int sBottom;
+
     private Paint mTopPaint;
 
     private LinearGradient mBgShader;
@@ -49,6 +52,9 @@ public class BatteryBackground extends RelativeLayout {
 
         mBgShader = new LinearGradient(getLeft(), getTop(), getLeft(), getBottom(),
                 new int[] {COLOR_TOP, COLOR_MID, COLOR_BOTTOM}, new float[] {0f, 0.5f, 1f}, Shader.TileMode.REPEAT);
+
+        sTop = getTop();
+        sBottom = getBottom();
     }
 
     @Override
