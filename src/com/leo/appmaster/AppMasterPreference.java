@@ -303,6 +303,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_BATTERY_APP_NUM = "pref_battery_app_num";
     /* 3.3.1 气泡出现次数 */
     public static final String PREF_SCREEN_SAVE_BUBBLE_COUNT = "pref_screen_save_bubble_count";
+	
+	
+	/* 3.3.2 外部广告sdk源*/
+	public static final int AD_SDK_SOURCE_USE_3TH = 1;
+	/* 3.3.2 max广告sdk源 */
+	public static final int GETAD_SDK_SOURCE_USE_MAX = 2;
+	/* 3.3.2 LockScreen  广告位1 使用广告sdk源 */
+	public static final String AD_IN_LOCK_SCREEN_POS_1_SDK_SOURCE = "ad_in_lock_screen_pos_1_sdk_source";
+	/* 3.3.2 LockScreen  广告位2 使用广告sdk源 */
+	public static final String AD_IN_LOCK_SCREEN_POS_2_SDK_SOURCE = "ad_in_lock_screen_pos_2_sdk_source";
+	/* 3.3.2 LockScreen  广告位3 使用广告sdk源 */
+	public static final String AD_IN_LOCK_SCREEN_POS_3_SDK_SOURCE = "ad_in_lock_screen_pos_3_sdk_source";
 
     //intruder
 //    public static final String KEY_SWITCH_FOR_INTRUDER_PROTECTION = "switch_for_intruder_protection";
@@ -3202,5 +3214,53 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             }
         });
     }
+
+	/**
+	 * v:3.3.2
+	 * 锁屏广告大图1的配置
+	 */
+	public void setLockBannerAd1Config(int sdk) {
+		commitAsync(mPref.edit().putInt(AD_IN_LOCK_SCREEN_POS_1_SDK_SOURCE, sdk));
+	}
+
+	/**
+	 * 返回锁屏广告大图1的配置
+	 * @return 0 广告关闭，1外部第三方sdk广告源
+	 */
+	public int getLockBannerAd1Config() {
+		return mPref.getInt(AD_IN_LOCK_SCREEN_POS_1_SDK_SOURCE, AD_SDK_SOURCE_USE_3TH);
+	}
+	
+	/**
+	 * v:3.3.2
+	 * 锁屏广告大图2的配置
+	 */
+	public void setLockBannerAd2Config(int sdk) {
+		commitAsync(mPref.edit().putInt(AD_IN_LOCK_SCREEN_POS_2_SDK_SOURCE, sdk));
+	}
+
+	/**
+	 * 返回锁屏广告大图2的配置
+	 * @return 0 广告关闭，1外部第三方sdk广告源
+	 */
+	public int getLockBannerAd2Config() {
+		return mPref.getInt(AD_IN_LOCK_SCREEN_POS_2_SDK_SOURCE, AD_SDK_SOURCE_USE_3TH);
+	}
+
+	/**
+	 * v:3.3.2
+	 * 锁屏广告大图3的配置
+	 */
+	public void setLockBannerAd3Config(int sdk) {
+		commitAsync(mPref.edit().putInt(AD_IN_LOCK_SCREEN_POS_3_SDK_SOURCE, sdk));
+	}
+
+	/**
+	 * 返回锁屏广告大图3的配置
+	 * @return 0 广告关闭，1外部第三方sdk广告源
+	 */
+	public int getLockBannerAd3Config() {
+		return mPref.getInt(AD_IN_LOCK_SCREEN_POS_3_SDK_SOURCE, AD_SDK_SOURCE_USE_3TH);
+	}
 
 }

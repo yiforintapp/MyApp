@@ -1,6 +1,8 @@
 package com.leo.appmaster.ad;
 
 public class LEONativeAdData {
+	
+	protected String unitId;
 	/*服務器返回的狀態代碼*/
 	protected int code;
 	/*服務器返回的狀態msg*/
@@ -12,7 +14,8 @@ public class LEONativeAdData {
     protected String mTitleForButton;
     /* 广告描述 */
     protected String mDescription;
-    /* 图标 */
+
+	/* 图标 */
     protected String mIconURL;
     /* 预览图，大图 */
     protected String mPreviewURL;
@@ -44,4 +47,9 @@ public class LEONativeAdData {
 	public String getMsg() {
 		return msg;
 	}
+
+	public String getUnitId() {
+		return unitId;
+	}
+	
 }

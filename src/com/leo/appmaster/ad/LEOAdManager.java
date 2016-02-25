@@ -35,10 +35,17 @@ public class LEOAdManager {
 	private Context mContext;
 
 	private LEONativeAd adLock;
-    
+    /*LOCK pic 1*/
 	public final static String UNIT_ID_LOCK = Constants.UNIT_ID_59;
+	/* LOCK pic 2 */
+	public final static String UNIT_ID_LOCK_1 = Constants.UNIT_ID_178;
+	/* LOCK PIC 3*/
+	public final static String UNIT_ID_LOCK_2 = Constants.UNIT_ID_179;
+	
 
 	public final static String PLACEMENTID_LOCK = Constants.PLACEMENT_ID_59;
+	public final static String PLACEMENTID_LOCK_1 = Constants.PLACEMENT_ID_178;
+	public final static String PLACEMENTID_LOCK_2 = Constants.PLACEMENT_ID_179;
 	//Leo Max 对应广告位id
 	public static final String UNIT_ID_001 = "201512230001";
 

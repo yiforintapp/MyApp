@@ -107,6 +107,10 @@ public class LEOAdEngine {
 
         mUnitIdToPlacementIdMap = new HashMap<String, String>();
         mUnitIdToPlacementIdMap.put(LEOAdManager.UNIT_ID_LOCK, LEOAdManager.PLACEMENTID_LOCK);
+		mUnitIdToPlacementIdMap.put(LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.PLACEMENTID_LOCK_1);
+		mUnitIdToPlacementIdMap.put(LEOAdManager.UNIT_ID_LOCK_2, LEOAdManager.PLACEMENTID_LOCK_2);
+		
+		
         LeoLog.i(TAG, "LEOAdEngine() called done");
     }
     
@@ -243,7 +247,7 @@ public class LEOAdEngine {
         }
 
         @Override
-        public void onAdLoaded(LEONativeAdData adData) {
+        public synchronized void onAdLoaded(LEONativeAdData adData) {
 			if (adData == null) {
 				return;
 			}
@@ -255,9 +259,10 @@ public class LEOAdEngine {
 				LeoLog.i(TAG, "onAdLoaded ["+mUnitId+"] iconURL: " + adData.getIconUrl());
 			} catch (Exception e) {
 			}
+			adData.unitId = mUnitId;
 			LeoCompositeData mobvista = new LeoCompositeData();
-            // 将load成功的 MobvistaAdNative 对象移动到 LeoCompositeData 中
-            mobvista.nativeAd = mLeoLoadingNatives.remove(mUnitId);
+			// 将load成功的 MobvistaAdNative 对象移动到 LeoCompositeData 中
+			mobvista.nativeAd = mLeoLoadingNatives.remove(mUnitId);
             mobvista.campaign = adData;
             mobvista.requestTimeMs = System.currentTimeMillis();
             mLEOLoadedNatives.put(mUnitId, mobvista);
