@@ -53,6 +53,7 @@ public final class Utilities {
     private static final int MAX_ICON = 4;
     public static int mCurrentCreenChangeStatus = 1;
     public final static String PKG_SYSTEM_UI = "com.android.systemui";
+    public final static String APP_URL_KEY = "#Intent;component="; // 应用功能推广标识
 
     public static Drawable getFolderScalePicture(Context context,
                                                  List<AppItemInfo> folderList, int type) {
@@ -650,20 +651,22 @@ public final class Utilities {
         if (Constants.BROWSER_URL_TYPE.equals(
                 preferenceTable.getString(type))) { // 使用浏览器
 
-            browserType(preferenceTable, url, pkgName, context);
+            if (url.indexOf(APP_URL_KEY) != -1) {
+                try {
+                    // "#Intent;component=com.leo.appmaster/.wifiSecurity.WifiSecurityActivity;end"
+                    Intent intent = Intent.parseUri(url, 0);  // 跳转应用内功能
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                browserType(preferenceTable, url, pkgName, context);
+            }
 
         } else if (Constants.GP_URL_TYPE.equals(
                 preferenceTable.getString(type))) {  // 使用gp
 
             gpType(preferenceTable, gpUrl, url, pkgName, context);
-        } else {
-            try {
-                // "#Intent;component=com.leo.appmaster/.callfilter.CallFilterMainActivity;S.from=push;end"
-                Intent intent = Intent.parseUri(url, 0);
-                context.startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
