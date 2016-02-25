@@ -20,6 +20,7 @@ import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.battery.BatteryNotifyHelper;
 import com.leo.appmaster.battery.BatteryShowViewActivity;
 import com.leo.appmaster.battery.RemainTimeHelper;
+import com.leo.appmaster.battery.RemainingTimeEstimator;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.BatteryComsuption;
@@ -57,6 +58,9 @@ public class BatteryManagerImpl extends BatteryManager {
     private RemainTimeHelper mRemainTimeHelper;
     private BatteryNotifyHelper mNotifyHelper;
 
+    /* 3.3.2 剩余可用时间计算 */
+    private RemainingTimeEstimator mTimeEstimator;
+
     private LockManager mLockManager;
     private WeakReference<BatteryStateListener> mListenerRef;
 
@@ -77,6 +81,7 @@ public class BatteryManagerImpl extends BatteryManager {
         mNotifyHelper = new BatteryNotifyHelper(mContext, this);
 
         AppUtil.getDefaultBrowser(mContext);
+        mTimeEstimator = new RemainingTimeEstimator(mContext);
     }
 
     @Override
