@@ -19,6 +19,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -548,14 +549,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryShowNoPermissionTip() {
-        if (getApplicationInfo().targetSdkVersion >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
-        }
-//        if (!state.checkAvailable()) {
-        if (true) {   
-            mRlNoPermission.setVisibility(View.VISIBLE);
-        } else {
-            mRlNoPermission.setVisibility(View.GONE);
+            if (!state.checkAvailable()) {
+//        if (true) {   
+                mRlNoPermission.setVisibility(View.VISIBLE);
+            } else {
+                mRlNoPermission.setVisibility(View.GONE);
+            }
         }
     }
 
