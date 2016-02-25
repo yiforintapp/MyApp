@@ -630,6 +630,27 @@ public class HttpRequestAgent {
     }
 
     /**
+     * 请求5.1及以上未开启应用使用情况权限的引导开启文案
+     */
+    public void requestAppUsageStateGuideString(Listener<JSONObject> listener, ErrorListener errorListener) {
+        String body = "";
+        Context context = AppMasterApplication.getInstance();
+        String language = getPostLanguage();
+        String country = Utilities.getCountryID(context);
+        final String productId = "appmaster";
+        final String unitName = "selfshare";//TODO
+        StringBuilder sb = new StringBuilder();
+        sb.append(Utilities.getURL("")).append("/")
+        .append(productId).append("/")
+        .append(unitName).append("/")
+        .append(country).append("/")
+        .append(language)
+        .append(".html");
+        String url = sb.toString();
+        
+    }
+    
+    /**
      * 加载自分享数据
      *
      * @param listener
