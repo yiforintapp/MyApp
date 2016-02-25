@@ -46,6 +46,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -270,6 +271,9 @@ public class InitCoreBootstrap extends Bootstrap {
                 // 每次升级都重新刷新googleplay提示规则
                 uninitGooglePlayScorTip();
                 recoveryUpdateTipDefaultData();
+                if (lastCode <= Utilities.LESS_THIRTY_VERSION_CODE) {
+                    preferenceTable.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
+                }
             }
         }
         pref.setLastVersion(String.valueOf(versionCode));

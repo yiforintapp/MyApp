@@ -54,6 +54,7 @@ public final class Utilities {
     public static int mCurrentCreenChangeStatus = 1;
     public final static String PKG_SYSTEM_UI = "com.android.systemui";
     public final static String APP_URL_KEY = "#Intent;component="; // 应用功能推广标识
+    public final static int LESS_THIRTY_VERSION_CODE= 45; // 2.9版本的versionCode
 
     public static Drawable getFolderScalePicture(Context context,
                                                  List<AppItemInfo> folderList, int type) {
