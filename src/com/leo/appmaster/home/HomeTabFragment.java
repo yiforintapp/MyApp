@@ -25,6 +25,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
@@ -33,6 +34,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.utils.CollectVideoUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
@@ -362,6 +364,19 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                        cm.addFilterFroParse(lits);
 //                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
 //                    }
+//                    ThreadManager.executeOnAsyncThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            LostSecurityManager lm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+//                            try {
+//                                lm.getLocation();
+//                                CollectVideoUtils.getAllVideoData();
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
+
                     break;
             }
         }

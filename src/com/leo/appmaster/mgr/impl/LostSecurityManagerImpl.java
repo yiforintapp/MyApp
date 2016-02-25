@@ -18,6 +18,10 @@ import android.telecom.Log;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -43,6 +47,7 @@ import com.leo.appmaster.utils.Utilities;
 
 import org.apache.http.client.utils.URLEncodedUtils;
 
+import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,12 +58,15 @@ import java.util.TimerTask;
 public class LostSecurityManagerImpl extends LostSecurityManager {
     public static final Boolean DBG = false;
     public static final String TAG = "LostSecurityManagerImpl";
-
+    private static final long WAIT_TIME_OUT = 10000;
     private static boolean mIsLocation;
     private static boolean mIsOnkey;
     private static boolean mIsFormate;
     private static boolean mIsLock;
     private static boolean mIsAlert;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLocation;
+    private LostSecurityManagerImpl mLostImpl;
 
     @Override
     public void onDestory() {
@@ -177,28 +185,90 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public Location getLocation() {
-        /*可根据设备状况动态选择location provider*/
-        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(mContext);
-        LocationManager locationManager = psm.getLocationManager();
-        if (locationManager == null) {
-            locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-            psm.setLocationManager(locationManager);
-        }
         Location location = null;
-        String provider = PhoneSecurityUtils.getLocateProvider(locationManager);
-        LeoLog.i(TAG, "provider=" + provider);
-        if (locationManager.isProviderEnabled(provider)) {
-            for (int i = 0; i < 3; i++) {
-                location = locationManager.getLastKnownLocation(provider);
-                if (location != null) {
-                    break;
+        LeoLog.d(TAG, "start get location google play service");
+        //Google play service
+        try {
+            mLostImpl = this;
+            mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(Bundle bundle) {
+                            LeoLog.d(TAG, "google play onConnected,GoogleApiClient is null:" + (mGoogleApiClient == null));
+                            synchronized (mLostImpl) {
+                                mLostImpl.notify();
+                            }
+                            if (mGoogleApiClient != null) {
+                                mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                                if (mLocation != null) {
+                                    LeoLog.d(TAG, "google_api,latitude:" + mLocation.getLatitude() + ";google_api,longitude:" + mLocation.getLongitude());
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+
+                        }
+                    })
+                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(ConnectionResult connectionResult) {
+                            LeoLog.d(TAG, "googley play service location fail...");
+                            synchronized (mLostImpl) {
+                                mLostImpl.notify();
+                            }
+                        }
+                    })
+                    .addApi(LocationServices.API)
+                    .build();
+            mGoogleApiClient.connect();
+        } catch (Error e) {
+
+        }
+        synchronized (mLostImpl) {
+            try {
+                mLostImpl.wait(WAIT_TIME_OUT);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (mLocation == null) {
+            /*可根据设备状况动态选择location provider*/
+            PhoneSecurityManager psm = PhoneSecurityManager.getInstance(mContext);
+            LocationManager locationManager = psm.getLocationManager();
+            if (locationManager == null) {
+                locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+                psm.setLocationManager(locationManager);
+            }
+
+            String provider = PhoneSecurityUtils.getLocateProvider(locationManager);
+            LeoLog.i(TAG, "provider=" + provider);
+            if (locationManager.isProviderEnabled(provider)) {
+                for (int i = 0; i < 3; i++) {
+                    location = locationManager.getLastKnownLocation(provider);
+                    if (location != null) {
+                        break;
+                    }
                 }
             }
         }
+
+        location = mLocation;
+        if (mGoogleApiClient != null) {
+            LeoLog.i(TAG, "mGoogleApiClient.isConnected():" + mGoogleApiClient.isConnected());
+            //初始化GoogleApiClient
+            if (mGoogleApiClient.isConnected()) {
+                LeoLog.i(TAG, "GoogleApiClient connected,excute disconnect... ");
+                mGoogleApiClient.disconnect();
+                mGoogleApiClient = null;
+            }
+        }
+        mLocation = null;
+        mLostImpl = null;
         if (location == null) {
-            LeoLog.i(TAG, "location为空");
-        } else {
-            LeoLog.i(TAG, "location不为空");
+            LeoLog.i(TAG, "location is null ");
         }
         return location;
     }

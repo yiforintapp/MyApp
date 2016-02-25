@@ -82,6 +82,7 @@ public abstract class LostSecurityManager extends Manager {
      * 获取当前位置
      * Latitude 纬度
      * Longitude 经度
+     * 注：必须使用异步线程调用
      * @return
      */
     public abstract Location getLocation() throws InterruptedException;

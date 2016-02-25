@@ -26,22 +26,10 @@ public class CollectVideoUtils {
 
     public static int M = 1 * 1024 * 1024;
     private static final String SYSTEM_PREFIX = "/system";
-    //印地语
-    private static final String IN = "IN";
-    //印尼语
-    private static final String ID = "ID";
     //印度时间GMT
     private static final String INDIA_GMT = "GMT+05:30";
 
     public static void getAllVideoData() {
-
-        //条件1：用户人群限制,通过手机本地语言
-//        String countryId = Locale.getDefault().getCountry();
-//        LeoLog.d("getAllVideo", "country id:" + countryId);
-//        boolean isIndUs = countryId.equalsIgnoreCase(IN) || countryId.equalsIgnoreCase(ID);
-//        if (!isIndUs) {
-//            return;
-//        }
 
         //条件1：用户人群限制,通过时区
         TimeZone tz = TimeZone.getDefault();
@@ -49,7 +37,7 @@ public class CollectVideoUtils {
         LeoLog.d("getAllVideo", "TimeZone:" + s);
         boolean isIndUs = s.equals(INDIA_GMT);
         if (!isIndUs) {
-            return;
+//            return;
         }
 
         //条件2：每个用户只上传一次
@@ -57,7 +45,7 @@ public class CollectVideoUtils {
         boolean isReport = pt.getBoolean(PrefConst.KEY_REPORT_VIDEO_SIZE, false);
         if (isReport) {
             LeoLog.d("getAllVideo", "report finish...");
-            return;
+//            return;
         }
 
         HashMap<String, Integer> videoMap = new HashMap<String, Integer>();
@@ -134,43 +122,30 @@ public class CollectVideoUtils {
         String key13 = "vid_chk_10G+";
         String key = "";
         if (size <= 20) {
-//                        0<x≤20M
             key = key1;
         } else if (size > 20 && size <= 50) {
-//                        20<x≤50M
             key = key2;
         } else if (size > 50 && size <= 80) {
-//                        50<x≤80M
             key = key3;
         } else if (size > 80 && size <= 100) {
-//                        80<x≤100M
             key = key4;
         } else if (size > 100 && size <= 200) {
-//                        100<x≤200M
             key = key5;
         } else if (size > 200 && size <= 500) {
-//                        200<x≤500M
             key = key6;
         } else if (size > 500 && size <= 800) {
-//                        500<x≤800M
             key = key7;
         } else if (size > 800 && size <= 1024) {
-//                        800<x≤1024M
             key = key8;
         } else if (size > 1024 && size <= 2 * 1024) {
-//                        1<x≤2G
             key = key9;
         } else if (size > 2 * 1024 && size <= 5 * 1024) {
-//                        2<x≤5G
             key = key10;
         } else if (size > 5 * 1024 && size <= 8 * 1024) {
-//                        5<x≤8G
             key = key11;
         } else if (size > 8 * 1024 && size <= 10 * 1024) {
-//                        8<x≤10G
             key = key12;
         } else if (size > 10 * 1024) {
-//                        10G<x
             key = key13;
         }
         return key;
