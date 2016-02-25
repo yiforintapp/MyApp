@@ -1028,6 +1028,7 @@
     <string name="ask_create_shortcut_content_callfilter">添加桌面快捷方式，更便利地管理黑名单和拦截记录。</string>
     <string name="ask_create_shortcut_content_wifi_security">担心网络安全？创建桌面快捷方式随时扫检测wifi安全！</string>
     <string name="grant_permission_guide">为Privacy Guard开启权限。保证应用锁正常工作</string>
+    <string name="grant_permission_default_tip">开启权限以修复应用锁出现的问题</string>
     
     <string name="battery_protect_view_title">用电情况</string>
     <string name="battery_protect_view_time_title">可用时间</string>

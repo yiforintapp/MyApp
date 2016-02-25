@@ -642,7 +642,7 @@ public class HttpRequestAgent {
         String language = getPostLanguage();
         String country = Utilities.getCountryID(context);
         String productId = "appmaster";
-        String unitName = "guidecopy";//TODO
+        String unitName = "copy";//TODO
         String versionCodeString = "";
         try {
             int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
@@ -660,6 +660,7 @@ public class HttpRequestAgent {
         .append(channelCode)
         .append(".html");
         String url = sb.toString();
+        url = "http://api.leomaster.com/appmaster/copy/cn/en/3.0/0001a.html";//TODO
         LeoLog.i("LockPermissionTipStringFetchJob", "request url: " + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, body, listener,
                 errorListener);

@@ -221,6 +221,9 @@ public class PrefConst {
      */
     public static final String KEY_FIL_NOTI_STATE = "FIL_NOTI_STATE";
 
+    //5.1版本及以上 引导开启查看应用使用情况权限的文案
+    public static final String KEY_APP_USAGE_STATE_GUIDE_STRING = "app_usage_state_guide_string";
+    
     //  手机防盗分享
     public static final String KEY_PHONE_SHARE = "phonesecurity";
     public static final String KEY_PHONE_SHARE_CONTENT = "phone_security_content";
