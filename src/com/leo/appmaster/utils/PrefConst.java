@@ -295,4 +295,15 @@ public class PrefConst {
     public static final String KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT = "blacklist_dialog_content";
 
     public static final String KEY_IS_OLD_USER = "is_old_user";
+    // 应用内是否显示充电屏保
+    public static final String KEY_SHOW_INSIDE_APP = "ss_inside_app";
+    // 是否显示屏保广告的忽略按钮
+    public static final String KEY_SHOW_IGNORE_COC = "ss_ingore_coc";
+    // 再次显示屏保广告的时间间隔
+    public static final String KEY_SHOW_IGNORE_COC_TS = "ss_ignore_ts";
+    // 显示屏保省电动画的时间间隔
+    public static final String KEY_SHOW_BOOST_TS = "ss_boost_ts";
+    // 显示屏保省电动画的内存阀值
+    public static final String KEY_SHOW_BOOST_MEM = "ss_boost_mem";
+
 }

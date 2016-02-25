@@ -72,6 +72,32 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
                 preferenceTable.putInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10); // 获取不到默认10次
             }
 
+            // 应用内是否展示充电屏保，默认不显示
+            boolean hasData = !resp.isNull(PrefConst.KEY_SHOW_INSIDE_APP);
+            boolean showInsideApp = false;
+            if (hasData) {
+                int data = resp.getInt(PrefConst.KEY_SHOW_INSIDE_APP);
+                showInsideApp = data == 1;
+            }
+            preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, showInsideApp);
+
+            // 是否显示屏保的忽略按钮
+            hasData = !resp.isNull(PrefConst.KEY_SHOW_IGNORE_COC);
+            boolean showIgnore = false;
+            if (hasData) {
+                int data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC);
+                showIgnore = data == 1;
+            }
+            preferenceTable.putBoolean(PrefConst.KEY_SHOW_IGNORE_COC, showIgnore);
+
+            // 忽略屏保的忽略按钮后再次显示的时间间隔
+            hasData = !resp.isNull(PrefConst.KEY_SHOW_IGNORE_COC_TS);
+            int data = 24; // 默认24小时
+            if (hasData) {
+                data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC_TS);
+            }
+            preferenceTable.putInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, data);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
