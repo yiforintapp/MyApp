@@ -97,14 +97,12 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
         } else if (mCallFilterBtn == v) {
             if (mActivity != null) {
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_block");
+                PreferenceTable table = PreferenceTable.getInstance();
+                int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
+                table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
+                Intent intent = new Intent(mActivity, CallFilterMainActivity.class);
+                startActivity(intent);
             }
-            Intent intent = new Intent(mActivity, CallFilterMainActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.putExtra("needToHomeWhenFinish", true);
-            startActivity(intent);
-            PreferenceTable table = PreferenceTable.getInstance();
-            int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
-            table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
         }
 
     }

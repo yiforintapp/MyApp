@@ -548,7 +548,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryShowNoPermissionTip() {
-        ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
+        if (getApplicationInfo().targetSdkVersion >= 21) {
+            ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
+        }
 //        if (!state.checkAvailable()) {
         if (true) {   
             mRlNoPermission.setVisibility(View.VISIBLE);
