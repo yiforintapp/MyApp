@@ -189,7 +189,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/battery_protect_view_title"
+            android:text="@string/battery_protect_view_time_title"
             android:textColor="@color/white"
             android:textSize="12sp" />
 
@@ -204,22 +204,22 @@
         android:layout_below="@id/remain_time"
         android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop">
 
-        <TextView
-            android:id="@+id/use_time_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:text="@string/battery_protect_view_time_title"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+        <!--<TextView-->
+        <!--android:id="@+id/use_time_title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="35dp"-->
+        <!--android:text="@string/battery_protect_view_time_title"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="16sp" />-->
 
         <RelativeLayout
             android:id="@+id/three_remain_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/use_time_title"
-            android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop"
             android:gravity="center">
+            <!--android:layout_below="@id/use_time_title"-->
+            <!--android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop"-->
 
             <RelativeLayout
                 android:id="@+id/remain_one"
@@ -227,26 +227,26 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_remain_one"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/battery_protect_view_remain_one_title"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <TextView
                     android:id="@+id/tv_remain_one_fill"
                     android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/tv_remain_one"
+                    android:layout_height="70dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="15dp"
                     android:background="@color/white"
                     android:gravity="center"
                     android:text="11h"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_remain_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_remain_one_fill"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/battery_protect_view_remain_one_title"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -254,30 +254,30 @@
                 android:id="@+id/remain_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="40dp"
                 android:layout_toRightOf="@id/remain_one">
-
-                <TextView
-                    android:id="@+id/tv_remain_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/battery_protect_view_remain_two_title"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_remain_two_fill"
                     android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/tv_remain_two"
+                    android:layout_height="70dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="15dp"
                     android:background="@color/white"
                     android:gravity="center"
                     android:text="11h"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_remain_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_remain_two_fill"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/battery_protect_view_remain_two_title"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -285,32 +285,51 @@
                 android:id="@+id/remain_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="40dp"
                 android:layout_toRightOf="@id/remain_two">
 
+                <RelativeLayout
+                    android:id="@+id/tv_remain_three_fill"
+                    android:layout_width="60dp"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white"
+                    android:padding="2dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#e0000000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="11h"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/default_user_avatar" />
+                
                 <TextView
                     android:id="@+id/tv_remain_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_remain_three_fill"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
                     android:text="@string/battery_protect_view_remain_three_title"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_remain_three_fill"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/tv_remain_three"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:text="11h"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
+                    android:textSize="12sp" />
             </RelativeLayout>
+
+
         </RelativeLayout>
 
         <!-- 推荐使用 -->
@@ -348,12 +367,19 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <ImageView
+                    <com.leo.appmaster.privacycontact.CircleImageView
                         android:id="@+id/iv_show_one"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/privacy_contact_icon_size"
+                        android:layout_height="@dimen/privacy_contact_icon_size"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/backup_delete_btn" />
+                        android:src="@drawable/default_user_avatar" />
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/iv_show_one"-->
+                    <!--android:layout_width="45dp"-->
+                    <!--android:layout_height="45dp"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:background="@drawable/backup_delete_btn" />-->
 
                     <TextView
                         android:id="@+id/tv_show_one"
@@ -373,12 +399,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <ImageView
+                    <com.leo.appmaster.privacycontact.CircleImageView
                         android:id="@+id/iv_show_two"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/privacy_contact_icon_size"
+                        android:layout_height="@dimen/privacy_contact_icon_size"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/backup_delete_btn" />
+                        android:src="@drawable/default_user_avatar" />
+                    <!--<ImageView-->
+                    <!--android:id="@+id/iv_show_two"-->
+                    <!--android:layout_width="45dp"-->
+                    <!--android:layout_height="45dp"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:background="@drawable/backup_delete_btn" />-->
 
                     <TextView
                         android:id="@+id/tv_show_two"
@@ -398,12 +430,19 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <ImageView
+                    <com.leo.appmaster.privacycontact.CircleImageView
                         android:id="@+id/iv_show_three"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/privacy_contact_icon_size"
+                        android:layout_height="@dimen/privacy_contact_icon_size"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/backup_delete_btn" />
+                        android:src="@drawable/default_user_avatar" />
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/iv_show_three"-->
+                    <!--android:layout_width="45dp"-->
+                    <!--android:layout_height="45dp"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:background="@drawable/backup_delete_btn" />-->
 
                     <TextView
                         android:id="@+id/tv_show_three"
@@ -423,12 +462,19 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <ImageView
+                    <com.leo.appmaster.privacycontact.CircleImageView
                         android:id="@+id/iv_show_four"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="@dimen/privacy_contact_icon_size"
+                        android:layout_height="@dimen/privacy_contact_icon_size"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/backup_delete_btn" />
+                        android:src="@drawable/default_user_avatar" />
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/iv_show_four"-->
+                    <!--android:layout_width="45dp"-->
+                    <!--android:layout_height="45dp"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:background="@drawable/backup_delete_btn" />-->
 
                     <TextView
                         android:id="@+id/tv_show_four"

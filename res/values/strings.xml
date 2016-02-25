@@ -1030,7 +1030,7 @@
     <string name="grant_permission_guide">为Privacy Guard开启权限。保证应用锁正常工作</string>
     
     <string name="battery_protect_view_title">用电情况</string>
-    <string name="battery_protect_view_time_title">可用时间:</string>
+    <string name="battery_protect_view_time_title">可用时间</string>
     <string name="battery_protect_view_remain_one_title">3G通话</string>
     <string name="battery_protect_view_remain_two_title">WiFi上网</string>
     <string name="battery_protect_view_remain_three_title">播放视频</string>
