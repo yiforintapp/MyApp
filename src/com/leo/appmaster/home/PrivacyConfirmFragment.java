@@ -436,7 +436,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         mBottomLayout = (RelativeLayout) view.findViewById(R.id.bottom_layout);
         mScrollView = (ScrollView) view.findViewById(R.id.pri_confirm_sv);
-        if (AppMasterPreference.getInstance(mActivity).getIsOldUser()) {
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        if (preferenceTable.getBoolean(PrefConst.KEY_IS_OLD_USER, true)) {
             mBottomLayout.setVisibility(View.VISIBLE);
         } else {
             mBottomLayout.setVisibility(View.GONE);

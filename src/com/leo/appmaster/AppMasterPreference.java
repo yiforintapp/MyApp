@@ -422,9 +422,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // 3.3.1 充电屏保气泡出现次数
     private int mScreenSaveBubbleCount = -1;
 
-    // 3.3.2 是否为老用户
-    private static final String PREF_IS_OLD_USER = "is_old_user";
-    
     private Executor mSerialExecutor;
     private HashMap<String, Object> mValues;
 
@@ -3206,13 +3203,4 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         });
     }
 
-    /**  设置是否为老用户 */
-    public void setIsOldUser(boolean flag) {
-        commitAsync(mPref.edit().putBoolean(PREF_IS_OLD_USER,
-                flag));
-    }
-
-    public boolean getIsOldUser() {
-        return mPref.getBoolean(PREF_IS_OLD_USER, true);
-    }
 }

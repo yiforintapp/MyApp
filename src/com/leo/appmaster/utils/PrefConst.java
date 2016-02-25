@@ -291,4 +291,5 @@ public class PrefConst {
     public static final String KEY_ADD_TO_BLACKLIST_SHARE_URL = "blacklist_url";
     public static final String KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT = "blacklist_dialog_content";
 
+    public static final String KEY_IS_OLD_USER = "is_old_user";
 }

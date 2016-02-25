@@ -33,6 +33,7 @@ import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.db.AppMasterDBHelper;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.mgr.LockManager;
@@ -44,6 +45,7 @@ import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -223,6 +225,7 @@ public class InitCoreBootstrap extends Bootstrap {
     private void checkUpdateFinish() {
         judgeLockAlert();
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
         String lastVercode = pref.getLastVersion();
         int versionCode = PhoneInfo.getVersionCode(mApp);
         LeoLog.i("value", "lastVercode=" + lastVercode);
@@ -231,7 +234,7 @@ public class InitCoreBootstrap extends Bootstrap {
             //TODO
             //新安装用户，去除应用备份，应用卸载及隐私联系人相关的功能
             pref.setIsNeedCutBackupUninstallAndPrivacyContact(true);
-            pref.setIsOldUser(false);
+            preferenceTable.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
             // first install
             // AM-2911: remove device administration at first install
             removeDeviceAdmin();
