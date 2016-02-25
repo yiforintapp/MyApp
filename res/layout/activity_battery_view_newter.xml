@@ -482,8 +482,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/move_arrow"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="@dimen/battery_screen_ad_margin"
+                android:layout_marginRight="@dimen/battery_screen_ad_margin"
                 android:fadingEdge="none"
                 android:fillViewport="true"
                 android:overScrollMode="never"
@@ -555,5 +555,13 @@
             android:layout_centerInParent="true"
             android:background="@drawable/backup_delete_btn" />
     </RelativeLayout>
+
+    <!-- 渐变遮罩 -->
+    <com.leo.appmaster.battery.GradientMaskView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/slider"
+        android:layout_marginLeft="@dimen/battery_screen_ad_margin"
+        android:layout_marginRight="@dimen/battery_screen_ad_margin" />
 
 </com.leo.appmaster.battery.BatteryBackground>

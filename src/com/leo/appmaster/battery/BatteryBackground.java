@@ -15,9 +15,9 @@ import android.widget.RelativeLayout;
  * Created by Jasper on 2016/2/24.
  */
 public class BatteryBackground extends RelativeLayout {
-    private static final int COLOR_TOP = Color.parseColor("#221970");
-    private static final int COLOR_MID = Color.parseColor("#4644a1");
-    private static final int COLOR_BOTTOM = Color.parseColor("#487dcc");
+    public static final int COLOR_TOP = Color.parseColor("#221970");
+    public static final int COLOR_MID = Color.parseColor("#4644a1");
+    public static final int COLOR_BOTTOM = Color.parseColor("#487dcc");
 
     private Paint mTopPaint;
 
@@ -48,7 +48,7 @@ public class BatteryBackground extends RelativeLayout {
         super.onSizeChanged(w, h, oldw, oldh);
 
         mBgShader = new LinearGradient(getLeft(), getTop(), getLeft(), getBottom(),
-                new int[] {COLOR_TOP, COLOR_MID, COLOR_BOTTOM}, null, Shader.TileMode.REPEAT);
+                new int[] {COLOR_TOP, COLOR_MID, COLOR_BOTTOM}, new float[] {0f, 0.5f, 1f}, Shader.TileMode.REPEAT);
     }
 
     @Override

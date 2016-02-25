@@ -366,4 +366,7 @@
 
 
     <dimen name="toolbar_height_re_less">46dp</dimen>
+
+    <!-- 3.3.2-->
+    <dimen name="battery_screen_ad_margin">20dp</dimen>
 </resources>
