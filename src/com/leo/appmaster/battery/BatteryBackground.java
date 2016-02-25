@@ -59,7 +59,9 @@ public class BatteryBackground extends RelativeLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        mTopPaint.setShader(mBgShader);
+        if (mTopPaint.getShader() == null) {
+            mTopPaint.setShader(mBgShader);
+        }
         canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), mTopPaint);
     }
 }
