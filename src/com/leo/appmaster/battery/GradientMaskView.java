@@ -23,6 +23,8 @@ public class GradientMaskView extends View {
     private Shader mMaskShader;
     private Paint mPaint;
 
+    private boolean mShowMask = true;
+
     public GradientMaskView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -72,12 +74,23 @@ public class GradientMaskView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        super.onDraw(canvas);
-
+        if (!mShowMask) {
+            return;
+        }
         if (mPaint.getShader() == null) {
             mPaint.setShader(mMaskShader);
         }
 
         canvas.drawRect(mMaskRect, mPaint);
+    }
+
+    public void showMask() {
+        mShowMask = true;
+        invalidate();
+    }
+
+    public void hideMask() {
+        mShowMask = false;
+        invalidate();
     }
 }
