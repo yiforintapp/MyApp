@@ -403,8 +403,19 @@ public class BatteryManagerImpl extends BatteryManager {
     /* 外发电量通知 */
     private void broadcastBatteryLevel(BatteryState state) {
         LeoLog.d(TAG, "broadcast battery event for audience");
+        int callTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_CALL,
+                state.level, state.scale);
+        int internetTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_INTERNET,
+                state.level, state.scale);
+        int videoTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_VIDEO,
+                state.level, state.scale);
+
+        LeoLog.d(TAG, "callTime = " + callTime + "; internetTime = " + internetTime
+                        + "; videoTime = " + videoTime);
+
         LeoEventBus.getDefaultBus().postSticky(
-                new BatteryViewEvent(EventId.EVENT_BATTERY_CHANGE_ID, state));
+                new BatteryViewEvent(EventId.EVENT_BATTERY_CHANGE_ID, state,
+                        new int[]{callTime, internetTime, videoTime}));
     }
 
     /* 剩余充电时间计算相关 */

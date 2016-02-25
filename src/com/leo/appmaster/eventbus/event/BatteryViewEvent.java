@@ -7,17 +7,16 @@ public class BatteryViewEvent extends BaseEvent {
 
     public String eventMsg;
     public BatteryManager.BatteryState state;
-    public int remainTime;
+    public int remainTimes[];
 
-    public BatteryViewEvent(int mEventId, BatteryManager.BatteryState state) {
+    public BatteryViewEvent(int mEventId, BatteryManager.BatteryState state, int[] times) {
         super(mEventId, "battery state change");
 
         this.state = state;
+        this.remainTimes = times;
     }
-
 
     public BatteryViewEvent(String mEventMsg) {
         this.eventMsg = mEventMsg;
     }
-
 }

@@ -19,6 +19,9 @@ public class RemainingTimeEstimator {
     public static final int SCENE_VIDEO = 2;
     public static final int SCENE_COUNT = SCENE_VIDEO + 1;
 
+    public static final int MIN_UNIFY_LEVEL = 1;
+    public static final int MAX_UNIFY_LEVEL = 100;
+
     private int capacity; // mAh - 没有统一的API获取电量，参考意义不大
     private int processorNumber;
     private double screenSize; // in inches
@@ -27,6 +30,48 @@ public class RemainingTimeEstimator {
     private static final int REFERENT_CAPACITY = 2460;
     private static final int REFERENT_PROCESSOR_NUMBER = 4;
     private static final double REFERENT_SCREEN_SIZE = 4.33f;
+    /* 100->99, 99->98, 98->97, .... 1->0 的时间值 */
+    private static final int[][] REFERENT_TIMES = {
+        /* 通话时间 */
+        {
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+            267, 267, 267, 267, 267, 267, 267, 267, 267, 267,
+        },
+        /* 上网时间 */
+        {
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+            285, 285, 285, 285, 285, 285, 285, 285, 285, 285,
+        },
+        /* 视频播放时间 */
+        {
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+            279, 279, 279, 279, 279, 279, 279, 279, 279, 279,
+        }
+    };
 
     public RemainingTimeEstimator(Context context) {
         capacity = (int) getDeviceBatteryCapacity();
@@ -40,12 +85,23 @@ public class RemainingTimeEstimator {
      * @param level 当前电池电量百分比
      * @return 以秒为单位返回电池可用时间
      */
-    public int getRemainingTime (int scene, int level) {
+    public int getRemainingTime (int scene, int level, int scale) {
         if (scene < 0 || scene >= SCENE_COUNT) {
             scene = SCENE_INTERNET;
         }
-
-        return 0;
+        // 有效值 100 ~ 1
+        int unifyLevel = level*(MAX_UNIFY_LEVEL-MIN_UNIFY_LEVEL)/scale;
+        if (unifyLevel < MIN_UNIFY_LEVEL) {
+            unifyLevel = MIN_UNIFY_LEVEL;
+        }
+        if (unifyLevel > MAX_UNIFY_LEVEL) {
+            unifyLevel = MAX_UNIFY_LEVEL;
+        }
+        int time = 0;
+        for (int i=MAX_UNIFY_LEVEL-unifyLevel;i<REFERENT_TIMES[scene].length;i++) {
+            time += REFERENT_TIMES[scene][i];
+        }
+        return time;
     }
 
     /* private methods */
