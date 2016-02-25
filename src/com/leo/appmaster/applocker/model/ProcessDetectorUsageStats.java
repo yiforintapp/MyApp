@@ -30,38 +30,43 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
 
     private static final int WAIT_TIMEOUT = 200;
 
-    private UsageStatsManager mStatsManager;
+    private Object mStatsManager;
 
     public ProcessDetectorUsageStats() {
         AppMasterApplication context = AppMasterApplication.getInstance();
-        mStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+        try {
+            mStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public boolean checkAvailable() {
+        if (mStatsManager == null) {
+            return false;
+        }
         Calendar calendar = Calendar.getInstance();
         long endTime = calendar.getTimeInMillis();
         calendar.add(Calendar.YEAR, -1);
         long startTime = calendar.getTimeInMillis();
 
-        List<UsageStats> list = mStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
+        UsageStatsManager statsManager = (UsageStatsManager) mStatsManager;
+        List<UsageStats> list = statsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
                 startTime, endTime);
         return list != null && list.size() > 0;
     }
 
     @Override
     public ProcessAdj getForegroundProcess() {
-//        Calendar calendar = Calendar.getInstance();
-//        long endTime = calendar.getTimeInMillis();
-//        calendar.add(Calendar.YEAR, -2);
-//        long startTime = calendar.getTimeInMillis();
-//
-//        List<UsageStats> stats = mStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY,
-//                startTime, endTime);
+        if (mStatsManager == null) {
+            return null;
+        }
+        UsageStatsManager statsManager = (UsageStatsManager) mStatsManager;
         long currentTs = System.currentTimeMillis();
         long startTs = currentTs - Constants.TIME_ONE_DAY;
         startTs = startTs < 0 ? 0 : startTs;
-        List<UsageStats> stats = mStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTs, currentTs);
+        List<UsageStats> stats = statsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTs, currentTs);
 
         ProcessAdj processAdj = null;
         if (stats != null) {
