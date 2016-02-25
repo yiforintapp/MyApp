@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.os.SystemClock;
 import android.text.Html;
 import android.text.TextPaint;
@@ -71,6 +72,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static final int MOVE_UP = 1;
     private static final int MOVE_DOWN = 2;
     private static final int LOAD_DONE_INIT_PLACE = 6;
+    private static final int RECOMMAND_TYPE_ONE = 1;
+    private static final int RECOMMAND_TYPE_TWO = 2;
+    private static final int RECOMMAND_TYPE_THREE = 3;
+
+    private static final int AD_TYPE_MSG = 1;
+    private static final int SWTIFY_TYPE_MSG = 2;
+    private static final int EXTRA_TYPE_MSG = 3;
+
 
     public static boolean mShowing = false;
     public static boolean isExpand = false;
@@ -89,28 +98,22 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvLeftTime;
     //    private TextView mTvTime;
     private SelfScrollView mScrollView;
-
     private WaveView mBottleWater;
-    //    private View mThreeMoveView;
-//    private ImageView mGreenArrow;
-//    private ImageView mIvTrickle;
-//    private View mTrickleContent;
-//    private TextView mTvTrickle;
-//    private ImageView mIvContinuous;
-//    private View mContinuousContent;
-//    private TextView mTvContinuous;
-//    private ImageView mIvSpeed;
-//    private View mSpeedContent;
-//    private TextView mTvSpeed;
-//    private View mHideTextView;
     private TextView mTvHideTime;
     private TextView mTvHideText;
-
     private View mSettingView;
     private View mArrowMoveContent;
     private ImageView mIvArrowMove;
-
     private ImageView mIvCancel;
+    private View mShowOne;
+    private View mShowTwo;
+    private View mShowThree;
+    private TextView mTvShowOne;
+    private TextView mTvShowTwo;
+    private TextView mTvShowThree;
+    private View mRecommandView;
+
+    private int mCurrentClickType;
 
     private BatteryManager.BatteryState newState;
     private String mChangeType = BatteryManager.SHOW_TYPE_IN;
@@ -184,16 +187,46 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     }
                     break;
                 case LOAD_DONE_INIT_PLACE:
-                    reLocateMoveContent();
+                    int type = (Integer) msg.obj;
+                    reLocateMoveContent(type);
                     break;
             }
         }
     };
 
-    private void reLocateMoveContent() {
-        LeoLog.d("testBatteryView", "slideview Y : " + mSlideView.getY());
+    private int mMoveDisdance;
+
+    private void reLocateMoveContent(int type) {
+        LeoLog.d("locationP", "slideview Y : " + mSlideView.getY());
+
+        int contentHeight = mBossView.getHeight();
+        int arrowHeight = mArrowMoveContent.getHeight();
+
+
+        mMoveDisdance = contentHeight * 9 / 16;
+        LeoLog.d("locationP", "mBossView.getHeight() : " + mBossView.getHeight());
+
+        if (type == AD_TYPE_MSG) {
+            if (mAdWrapper != null && mAdWrapper.getHeight() > 0) {
+                mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight;
+                LeoLog.d("locationP", "mAdWrapper.getHeight() : " + mAdWrapper.getHeight());
+            }
+        } else if (type == SWTIFY_TYPE_MSG) {
+            if (mSwiftyView != null && mSwiftyView.getHeight() > 0) {
+                mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight;
+                LeoLog.d("locationP", "mSwiftyView.getHeight() : " + mSwiftyView.getHeight());
+            }
+        } else if (type == EXTRA_TYPE_MSG) {
+            if (mExtraView != null && mExtraView.getHeight() > 0) {
+                mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight;
+                LeoLog.d("locationP", "mExtraView.getHeight() : " + mExtraView.getHeight());
+            }
+        }
+
         if (!isSetInitPlace) {
-            mSlideView.setY(mBossView.getHeight() * 9 / 16);
+            mSlideView.setY(mMoveDisdance);
+            LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
+//            mSlideView.setY(mBossView.getHeight() - mAdWrapper.getHeight());
             isSetInitPlace = true;
         }
         mBossView.setVisibility(View.VISIBLE);
@@ -347,21 +380,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mBottleWater.setWave2Color(0xff0ab522);
         mBottleWater.setFactorA(DipPixelUtil.dip2px(mActivity, 3));
 
-//        mThreeMoveView = findViewById(R.id.battery_icon_flag);
-//        mGreenArrow = (ImageView) findViewById(R.id.little_ruler);
-//        mTrickleContent = findViewById(R.id.trickle_content);
-//        mTrickleContent.setOnClickListener(this);
-//        mIvTrickle = (ImageView) findViewById(R.id.iv_trickle);
-//        mTvTrickle = (TextView) findViewById(R.id.tv_trickle);
-//        mContinuousContent = findViewById(R.id.continuous_content);
-//        mContinuousContent.setOnClickListener(this);
-//        mIvContinuous = (ImageView) findViewById(R.id.iv_continuous);
-//        mTvContinuous = (TextView) findViewById(R.id.tv_continuous);
-//        mSpeedContent = findViewById(R.id.speed_content);
-//        mSpeedContent.setOnClickListener(this);
-//        mIvSpeed = (ImageView) findViewById(R.id.iv_speed);
-//        mTvSpeed = (TextView) findViewById(R.id.tv_speed);
-//        mHideTextView = findViewById(R.id.hide_tv_content);
         mTvHideTime = (TextView) findViewById(R.id.hide_tv_one);
         mTvHideText = (TextView) findViewById(R.id.hide_tv_two);
 
@@ -373,6 +391,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mIvCancel = (ImageView) findViewById(R.id.iv_cancle);
         mIvCancel.setOnClickListener(this);
+
+        mShowOne = findViewById(R.id.remain_one);
+        mShowOne.setOnClickListener(this);
+        mShowTwo = findViewById(R.id.remain_two);
+        mShowTwo.setOnClickListener(this);
+        mShowThree = findViewById(R.id.remain_three);
+        mShowThree.setOnClickListener(this);
+
+        mRecommandView = findViewById(R.id.three_show_content);
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -702,10 +729,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void showMoveUp() {
 
+//        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+//                "y", mSlideView.getTop() + mBossView.getHeight() * 9 / 16, mSlideView.getTop());
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-                "y", mSlideView.getTop() + mBossView.getHeight() * 9 / 16, mSlideView.getTop());
-//        Toast.makeText(getActivity(), android.os.Build.MODEL+ "mSlideView.getTop() + mBossView.getHeight() * 9 / 16 = " + mSlideView.getTop() + mBossView.getHeight() * 9 / 16 +
-//                 "mSlideView.getTop() = " + mSlideView.getTop(), 1).show();
+                "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop());
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -721,8 +748,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveDown() {
+//        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+//                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() * 9 / 16);
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() * 9 / 16);
+                "y", mSlideView.getTop(), mSlideView.getTop() + mMoveDisdance);
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -837,7 +866,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 BatteryShowViewActivity activity = (BatteryShowViewActivity) mActivity;
                 activity.onFinishActivity();
                 break;
+            case R.id.remain_one:
+                showRecommandContent(RECOMMAND_TYPE_ONE);
+                break;
+            case R.id.remain_two:
+                showRecommandContent(RECOMMAND_TYPE_TWO);
+                break;
+            case R.id.remain_three:
+                showRecommandContent(RECOMMAND_TYPE_THREE);
+                break;
         }
+    }
+
+    private void showRecommandContent(int recommandTypeThree) {
+        mCurrentClickType = recommandTypeThree;
+        mRecommandView.setVisibility(View.VISIBLE);
     }
 
     /* AM-3889: 三星5.x的手机从系统锁之外跳转有问题，需要特殊处理 */
@@ -1012,7 +1055,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mSlideView.post(new Runnable() {
             @Override
             public void run() {
-                mHandler.sendEmptyMessage(LOAD_DONE_INIT_PLACE);
+                Message msg = Message.obtain();
+                msg.what = LOAD_DONE_INIT_PLACE;
+                msg.obj = AD_TYPE_MSG;
+                mHandler.sendMessage(msg);
             }
         });
         mAdView = adView;
@@ -1023,6 +1069,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mAdWrapper.setOnClickListener(this);
     }
     /* 广告相关 - 结束 */
+
+    private View mSwiftyView;
 
     private void initSwiftyLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.content_type_1);
@@ -1050,17 +1098,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (false) {
-            View include = viewStub.inflate();
+//        if (true) {
+            mSwiftyView = viewStub.inflate();
 
-            mSwiftyImg = (ImageView) include.findViewById(R.id.card_img);
-            mSwiftyContent = (TextView) include.findViewById(R.id.card_content);
-            mSwiftyLayout = (RelativeLayout) include.findViewById(R.id.parent_layout);
+            mSwiftyImg = (ImageView) mSwiftyView.findViewById(R.id.card_img);
+            mSwiftyContent = (TextView) mSwiftyView.findViewById(R.id.card_content);
+            mSwiftyLayout = (RelativeLayout) mSwiftyView.findViewById(R.id.parent_layout);
             mSwiftyLayout.setOnClickListener(this);
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
-            mSwiftyTitle = (TextView) include.findViewById(R.id.card_title);
+            mSwiftyTitle = (TextView) mSwiftyView.findViewById(R.id.card_title);
             boolean isTitleEmpty = TextUtils.isEmpty(
                     preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TITLE));
             if (!isTitleEmpty) {
@@ -1071,11 +1119,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mSlideView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mHandler.sendEmptyMessage(LOAD_DONE_INIT_PLACE);
+                    Message msg = Message.obtain();
+                    msg.what = LOAD_DONE_INIT_PLACE;
+                    msg.obj = SWTIFY_TYPE_MSG;
+                    mHandler.sendMessage(msg);
                 }
             });
         }
     }
+
+    private View mExtraView;
 
     private void initExtraLayout(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.content_type_2);
@@ -1103,12 +1156,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (false) {
-            View include = viewStub.inflate();
-            mExtraTitle = (TextView) include.findViewById(R.id.card_title);
-            mExtraImg = (ImageView) include.findViewById(R.id.card_img);
-            mExtraContent = (TextView) include.findViewById(R.id.card_content);
-            mExtraLayout = (RelativeLayout) include.findViewById(R.id.parent_layout);
+//        if (true) {
+            mExtraView = viewStub.inflate();
+            mExtraTitle = (TextView) mExtraView.findViewById(R.id.card_title);
+            mExtraImg = (ImageView) mExtraView.findViewById(R.id.card_img);
+            mExtraContent = (TextView) mExtraView.findViewById(R.id.card_content);
+            mExtraLayout = (RelativeLayout) mExtraView.findViewById(R.id.parent_layout);
             mExtraLayout.setOnClickListener(this);
             mExtraContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
             String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL);
@@ -1123,7 +1176,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mSlideView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mHandler.sendEmptyMessage(LOAD_DONE_INIT_PLACE);
+                    Message msg = Message.obtain();
+                    msg.what = LOAD_DONE_INIT_PLACE;
+                    msg.obj = EXTRA_TYPE_MSG;
+                    mHandler.sendMessage(msg);
                 }
             });
         }

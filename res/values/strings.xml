@@ -1015,7 +1015,7 @@
     <string name="scan_done_vid">Hiden videos</string>
 
     <string name="game_box_one">Game accelerating</string>
-    
+
     <string name="batteryview_pop_setting">Charging Settings</string>
     <string name="close_batteryview_confirm_content">The charging rate will reduce 20%,confirm to close?</string>
     <string name="close_batteryview_confirm_sure">OK</string>
@@ -1034,5 +1034,7 @@
     <string name="battery_protect_view_remain_two_title">WiFi上网</string>
     <string name="battery_protect_view_remain_three_title">播放视频</string>
 
-   <string name="pri_pro_wifi_not_scan">当前连接wifi未检测</string>
+    <string name="pri_pro_wifi_not_scan">当前连接wifi未检测</string>
+    <string name="battery_protect_view_show_title">推荐使用:</string>
+
 </resources>
