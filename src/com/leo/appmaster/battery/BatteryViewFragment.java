@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -914,8 +916,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (isSlideContentShow) {
             mMoveDisdance = mMoveDisdance - mRecommandViewHeight - 20;
             mSlideView.setY(mMoveDisdance);
-        } else {
-
         }
     }
 
@@ -924,8 +924,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (isSlideContentShow) {
             mMoveDisdance = mMoveDisdance + mRecommandViewHeight + 20;
             mSlideView.setY(mMoveDisdance);
-        } else {
-
         }
     }
 
@@ -1097,6 +1095,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_screen");
+
+//        ImageView ignoreBtn = (ImageView) adView.findViewById(R.id.iv_ignore);
+//        ignoreBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(mActivity, "!!!!!!!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
         adView.setVisibility(View.VISIBLE);
         mAdWrapper.postDelayed(new Runnable() {
             @Override

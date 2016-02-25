@@ -23,7 +23,7 @@
         <com.leo.appmaster.ui.ResizableImageView
             android:id="@+id/item_ad_preview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:layout_width="28dp"
@@ -31,6 +31,16 @@
             android:layout_alignRight="@id/item_ad_preview"
             android:layout_alignTop="@id/item_ad_preview"
             android:src="@drawable/ad_after_scan_maker" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_ignore"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignRight="@id/item_ad_preview"-->
+            <!--android:layout_alignTop="@id/item_ad_preview"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:src="@drawable/ic_toolbar_more" />-->
 
         <LinearLayout
             android:id="@+id/item_header_ll"
@@ -44,36 +54,35 @@
                 android:id="@+id/ad_icon"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:layout_marginLeft="8dp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="0" />
 
             <LinearLayout
-                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="18dp"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/item_title"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textColor="@color/c2"
+                    android:layout_height="wrap_content"
                     android:lines="1"
-                    android:textStyle="bold"
+                    android:textColor="@color/c2"
                     android:textSize="@dimen/f5a"
-                     />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/item_description"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:lines="1"
-                    android:textSize="@dimen/f6"
-                    android:textColor="@color/c3" />
+                    android:textColor="@color/c3"
+                    android:textSize="@dimen/f6" />
 
             </LinearLayout>
 
