@@ -651,10 +651,13 @@ public final class Utilities {
         if (Constants.BROWSER_URL_TYPE.equals(
                 preferenceTable.getString(type))) { // 使用浏览器
 
-            if (url.indexOf(APP_URL_KEY) != -1) {
+            String browserUrl = preferenceTable.getString(url);
+            if (!TextUtils.isEmpty(browserUrl) && browserUrl.indexOf(APP_URL_KEY) != -1) {
                 try {
                     // "#Intent;component=com.leo.appmaster/.wifiSecurity.WifiSecurityActivity;end"
-                    Intent intent = Intent.parseUri(url, 0);  // 跳转应用内功能
+                    Intent intent = Intent.parseUri(browserUrl, 0);  // 跳转应用内功能
+                    LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                    mLockManager.filterPackage(context.getPackageName(), 1000);
                     context.startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
