@@ -271,7 +271,7 @@ public class InitCoreBootstrap extends Bootstrap {
                 // 每次升级都重新刷新googleplay提示规则
                 uninitGooglePlayScorTip();
                 recoveryUpdateTipDefaultData();
-                if (lastCode <= Utilities.LESS_THIRTY_VERSION_CODE) {
+                if (lastCode < Utilities.LESS_THIRTY_VERSION_CODE) {
                     preferenceTable.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
                 }
             }
