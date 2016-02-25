@@ -112,8 +112,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvShowTwo;
     private TextView mTvShowThree;
     private View mRecommandView;
+    private int mRecommandViewHeight;
 
-    private int mCurrentClickType;
+    private int mCurrentClickType = 0;
 
     private BatteryManager.BatteryState newState;
     private String mChangeType = BatteryManager.SHOW_TYPE_IN;
@@ -199,34 +200,42 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void reLocateMoveContent(int type) {
         LeoLog.d("locationP", "slideview Y : " + mSlideView.getY());
 
-        int contentHeight = mBossView.getHeight();
-        int arrowHeight = mArrowMoveContent.getHeight();
+        final int contentHeight = mBossView.getHeight();
+        final int arrowHeight = mArrowMoveContent.getHeight();
 
 
         mMoveDisdance = contentHeight * 9 / 16;
         LeoLog.d("locationP", "mBossView.getHeight() : " + mBossView.getHeight());
 
         if (type == AD_TYPE_MSG) {
-            if (mAdWrapper != null && mAdWrapper.getHeight() > 0) {
+            if (mAdWrapper != null) {
                 mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight;
                 LeoLog.d("locationP", "mAdWrapper.getHeight() : " + mAdWrapper.getHeight());
+                setYplace();
             }
         } else if (type == SWTIFY_TYPE_MSG) {
-            if (mSwiftyView != null && mSwiftyView.getHeight() > 0) {
+            if (mSwiftyView != null) {
                 mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight;
                 LeoLog.d("locationP", "mSwiftyView.getHeight() : " + mSwiftyView.getHeight());
+                setYplace();
             }
         } else if (type == EXTRA_TYPE_MSG) {
             if (mExtraView != null && mExtraView.getHeight() > 0) {
                 mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight;
                 LeoLog.d("locationP", "mExtraView.getHeight() : " + mExtraView.getHeight());
+                setYplace();
             }
         }
+    }
 
+    private void setYplace() {
         if (!isSetInitPlace) {
+            boolean isExpandContentShow = mRecommandView.getVisibility() == 0;
+            if (isExpandContentShow) {
+                mMoveDisdance = mMoveDisdance + mRecommandViewHeight + 20;
+            }
             mSlideView.setY(mMoveDisdance);
             LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
-//            mSlideView.setY(mBossView.getHeight() - mAdWrapper.getHeight());
             isSetInitPlace = true;
         }
         mBossView.setVisibility(View.VISIBLE);
@@ -400,6 +409,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShowThree.setOnClickListener(this);
 
         mRecommandView = findViewById(R.id.three_show_content);
+        mRecommandView.post(new Runnable() {
+            @Override
+            public void run() {
+                mRecommandViewHeight = mRecommandView.getHeight();
+            }
+        });
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime);
@@ -879,8 +894,39 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showRecommandContent(int recommandTypeThree) {
-        mCurrentClickType = recommandTypeThree;
-        mRecommandView.setVisibility(View.VISIBLE);
+        if (mCurrentClickType == recommandTypeThree) {
+            mCurrentClickType = 0;
+            mRecommandView.setVisibility(View.INVISIBLE);
+            makeSlideContentUp();
+        } else {
+            mRecommandView.setVisibility(View.VISIBLE);
+            if (mCurrentClickType == 0) {
+                makeSlideContentDown();
+            } else {
+                //TODO 展示内容替换
+            }
+            mCurrentClickType = recommandTypeThree;
+        }
+    }
+
+    private void makeSlideContentUp() {
+        boolean isSlideContentShow = mBossView.getVisibility() == 0;
+        if (isSlideContentShow) {
+            mMoveDisdance = mMoveDisdance - mRecommandViewHeight - 20;
+            mSlideView.setY(mMoveDisdance);
+        } else {
+
+        }
+    }
+
+    private void makeSlideContentDown() {
+        boolean isSlideContentShow = mBossView.getVisibility() == 0;
+        if (isSlideContentShow) {
+            mMoveDisdance = mMoveDisdance + mRecommandViewHeight + 20;
+            mSlideView.setY(mMoveDisdance);
+        } else {
+
+        }
     }
 
     /* AM-3889: 三星5.x的手机从系统锁之外跳转有问题，需要特殊处理 */
@@ -1052,7 +1098,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_screen");
         adView.setVisibility(View.VISIBLE);
-        mSlideView.post(new Runnable() {
+        mAdWrapper.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Message msg = Message.obtain();
@@ -1060,7 +1106,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 msg.obj = AD_TYPE_MSG;
                 mHandler.sendMessage(msg);
             }
-        });
+        }, 300);
         mAdView = adView;
 
         // make the count correct
@@ -1116,7 +1162,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         PrefConst.KEY_CHARGE_SWIFTY_TITLE));
             }
             mIsExtraLayout = true;
-            mSlideView.post(new Runnable() {
+            mSwiftyView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Message msg = Message.obtain();
@@ -1124,7 +1170,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     msg.obj = SWTIFY_TYPE_MSG;
                     mHandler.sendMessage(msg);
                 }
-            });
+            }, 300);
         }
     }
 
@@ -1173,7 +1219,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         PrefConst.KEY_CHARGE_EXTRA_TITLE));
             }
             mIsExtraLayout = true;
-            mSlideView.post(new Runnable() {
+            mExtraView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Message msg = Message.obtain();
@@ -1181,7 +1227,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     msg.obj = EXTRA_TYPE_MSG;
                     mHandler.sendMessage(msg);
                 }
-            });
+            }, 300);
         }
 
     }
