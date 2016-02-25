@@ -37,15 +37,15 @@ public class CollectVideoUtils {
         LeoLog.d("getAllVideo", "TimeZone:" + s);
         boolean isIndUs = s.equals(INDIA_GMT);
         if (!isIndUs) {
-//            return;
+            return;
         }
 
         //条件2：每个用户只上传一次
         PreferenceTable pt = PreferenceTable.getInstance();
         boolean isReport = pt.getBoolean(PrefConst.KEY_REPORT_VIDEO_SIZE, false);
         if (isReport) {
-            LeoLog.d("getAllVideo", "report finish...");
-//            return;
+            LeoLog.d("getAllVideo", "-----------report finish...");
+            return;
         }
 
         HashMap<String, Integer> videoMap = new HashMap<String, Integer>();
@@ -96,10 +96,10 @@ public class CollectVideoUtils {
                     sb.append(";");
                     LeoLog.d("getAllVideo", "key:" + key + ",value:" + value);
                 }
-                LeoLog.d("getAllVideo", "video collect data:" + sb.toString());
                 if (!TextUtils.isEmpty(sb.toString())) {
                     SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1, "handled", sb.toString());
                     pt.putBoolean(PrefConst.KEY_REPORT_VIDEO_SIZE, true);
+                    LeoLog.d("getAllVideo", "-----------video collect data:" + sb.toString());
                 }
             }
         }

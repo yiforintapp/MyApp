@@ -3,9 +3,7 @@ package com.leo.appmaster.mgr.impl;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationRequest;
 import android.media.AudioManager;
@@ -13,15 +11,11 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.telecom.Log;
 import android.telephony.TelephonyManager;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -67,6 +61,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private LostSecurityManagerImpl mLostImpl;
+    private LocationRequest myLocationRequest;
 
     @Override
     public void onDestory() {
@@ -204,6 +199,10 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                                     LeoLog.d(TAG, "google_api,latitude:" + mLocation.getLatitude() + ";google_api,longitude:" + mLocation.getLongitude());
                                 }
                             }
+//                            if (mLocation == null) {
+//                                createLocationRequest();
+//                                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, myLocationRequest, new Lco, mContext.getMainLooper());
+//                            }
                         }
 
                         @Override
@@ -692,4 +691,11 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     public boolean getIsExistSim() {
         return SimDetecter.isSimReady(mContext);
     }
+
+    protected void createLocationRequest() {
+        myLocationRequest = new LocationRequest();
+        myLocationRequest.setInterval(10000);
+        myLocationRequest.setFastestInterval(5000);
+    }
+
 }
