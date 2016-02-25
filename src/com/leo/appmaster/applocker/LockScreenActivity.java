@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
@@ -66,6 +67,7 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -169,6 +171,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LEOAlarmDialog mTipDialog;
     private EditText mEtQuestion, mEtAnwser;
     private RippleView mMrlGift;
+    private RelativeLayout mRlNoPermission;
     private String mLockTitle;
     // private ImageView mThemeView;
     private ImageView mAdIcon, mAdIconRedTip;
@@ -479,7 +482,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.d(TAG, "onResume...");
         mCanTakePhoto = true;
         whichTypeShow();
-
+        tryShowNoPermissionTip();
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
@@ -542,6 +545,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
+    }
+
+    private void tryShowNoPermissionTip() {
+        ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
+//        if (!state.checkAvailable()) {
+        if (true) {   
+            mRlNoPermission.setVisibility(View.VISIBLE);
+        } else {
+            mRlNoPermission.setVisibility(View.GONE);
+        }
     }
 
     private void whichTypeShow() {
@@ -1077,7 +1090,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
-
+        mRlNoPermission = (RelativeLayout) findViewById(R.id.rl_nopermission_tip);
+        mRlNoPermission.setOnClickListener(this);
         mADAnimalEntry = (ImageView) findViewById(R.id.iv_AD_entry);
         if (!NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
             mADAnimalEntry.setVisibility(View.GONE);
@@ -1861,9 +1875,47 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         super.onBackPressed();
     }
 
+    private String getfilterTarget(Intent intent) {
+        if (intent == null) {
+            return null;
+        }
+        List<ResolveInfo> resolveInfos = getPackageManager().queryIntentActivities(intent, 0);
+        String filterTarget = null;
+        if (resolveInfos != null && resolveInfos.size() == 1) {
+            for (ResolveInfo resolveInfo : resolveInfos) {
+                String pkgName = resolveInfo.activityInfo.applicationInfo.packageName;
+                if (!TextUtils.isEmpty(pkgName)) {
+                    filterTarget = pkgName;
+                }
+            }
+        }
+        return filterTarget;
+    }
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.rl_nopermission_tip:
+                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                String filterTarget = getfilterTarget(intent);
+                try {
+                    startActivity(intent);
+                    mLockManager.filterSelfOneMinites();
+                    if (!TextUtils.isEmpty(filterTarget)) {
+                        mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
+                    }
+                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                        
+                        @Override
+                        public void run() {
+                            Intent i = new Intent(LockScreenActivity.this, GrantPermissionGuideActivity.class);
+                            startActivity(i);
+                        }
+                    }, 500);
+                } catch (Exception e) {
+                }
+                
+                break;
             case R.id.tv_option_image_content:
                 if (mLeoPopMenu == null) {
                     mLeoPopMenu = new LeoHomePopMenu();

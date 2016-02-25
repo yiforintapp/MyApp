@@ -429,8 +429,12 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@color/translucent_background</item>
         <item name="android:windowIsTranslucent">true</item>
-
-
+    </style>
+    
+     <style name="translucent_more_light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/translucent_background_more_light</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="HomePullItem">

@@ -146,6 +146,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
         <activity
+            android:name=".applocker.GrantPermissionGuideActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/translucent_more_light"></activity>
+        <!-- android:theme="@style/translucent" -->
+        <activity
             android:name=".applocker.LockScreenActivity"
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
@@ -201,6 +208,7 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+        
         <activity
             android:name=".callfilter.CallFilterSettingActivity"
             android:excludeFromRecents="true"

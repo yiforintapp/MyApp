@@ -58,6 +58,7 @@
     <color name="webview_pro">#28b1ff</color>
     <color name="cool_red">#ff2a00</color>
     <color name="translucent_background">#b2000000</color>
+    <color name="translucent_background_more_light">#52000000</color>
 
     <!-- msg center -->
     <color name="mc_title">#414141</color>
