@@ -632,22 +632,43 @@ public class HttpRequestAgent {
     /**
      * 请求5.1及以上未开启应用使用情况权限的引导开启文案
      */
+    
+//    api.leomaster.com/appmaster/guidecopy/cn/en/2.5/0001a.html
+//
+//    appmaster是产品编号，cn是国家，en是语言，2.5是版本，0001a是渠道
     public void requestAppUsageStateGuideString(Listener<JSONObject> listener, ErrorListener errorListener) {
         String body = "";
         Context context = AppMasterApplication.getInstance();
         String language = getPostLanguage();
         String country = Utilities.getCountryID(context);
-        final String productId = "appmaster";
-        final String unitName = "selfshare";//TODO
+        String productId = "appmaster";
+        String unitName = "guidecopy";//TODO
+        String versionCodeString = "";
+        try {
+            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+            versionCodeString = String.valueOf(versionCode);
+        } catch (NameNotFoundException e) {
+        }
+        String channelCode = mContext.getString(R.string.channel_code);
         StringBuilder sb = new StringBuilder();
         sb.append(Utilities.getURL("")).append("/")
         .append(productId).append("/")
         .append(unitName).append("/")
         .append(country).append("/")
-        .append(language)
+        .append(language).append("/")
+        .append(versionCodeString).append("/")
+        .append(channelCode)
         .append(".html");
         String url = sb.toString();
-        
+        LeoLog.i("LockPermissionTipStringFetchJob", "request url: " + url);
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, body, listener,
+                errorListener);
+        request.setShouldCache(true);
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
+        mRequestQueue.add(request);
     }
     
     /**

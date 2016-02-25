@@ -57,7 +57,8 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             "com.leo.appmaster.schedule.PhoneSecurityFetchJob",
             "com.leo.appmaster.schedule.CardFetchJob",
             "com.leo.appmaster.schedule.BlackConfigFetchJob",
-            "com.leo.appmaster.schedule.ShareFetchJob"
+            "com.leo.appmaster.schedule.ShareFetchJob",
+            "com.leo.appmaster.schedule.LockPermissionTipStringFetchJob"
     };
 
     public static void startFetchJobs() {
