@@ -234,7 +234,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (!isSetInitPlace) {
             boolean isExpandContentShow = mRecommandView.getVisibility() == 0;
             if (isExpandContentShow) {
-                mMoveDisdance = mMoveDisdance + mRecommandViewHeight + 20;
+                mRecommandView.setVisibility(View.INVISIBLE);
+//                mMoveDisdance = mMoveDisdance + mRecommandViewHeight + 20;
             }
             mSlideView.setY(mMoveDisdance);
             LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);

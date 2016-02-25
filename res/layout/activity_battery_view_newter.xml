@@ -323,7 +323,6 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop"
             android:background="@drawable/batter_card_item_bg"
-            android:visibility="invisible"
             android:paddingBottom="10dp">
 
             <TextView
