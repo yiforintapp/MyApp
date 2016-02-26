@@ -32,6 +32,14 @@
             android:layout_alignTop="@id/item_ad_preview"
             android:src="@drawable/ad_after_scan_maker" />
 
+        <Button
+            android:id="@+id/ignore_button"
+            android:layout_width="22dp"
+            android:layout_height="27dp"
+            android:layout_alignRight="@id/item_ad_preview"
+            android:layout_alignTop="@id/item_ad_preview"
+            android:background="@drawable/icon_ad_memu"/>
+
         <!--<ImageView-->
             <!--android:id="@+id/iv_ignore"-->
             <!--android:layout_width="wrap_content"-->
