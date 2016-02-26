@@ -1,9 +1,11 @@
 package com.leo.appmaster.ad;
 
 import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.utils.LeoLog;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 /**
@@ -11,9 +13,11 @@ import com.mobvista.sdk.m.core.entity.Campaign;
  */
 public class ADEngineWrapper {
 
+    private static final String TAG = "ADEngineWrapper";
+
     /* 两个可选的广告来源 */
-    public static final int SOURCE_MOB = 0;
-    public static final int SOURCE_MAX = 1;
+    public static final int SOURCE_MOB = 1;
+    public static final int SOURCE_MAX = 2;
 
     private Context mContext;
 
@@ -35,21 +39,34 @@ public class ADEngineWrapper {
         public void onWrappedAdClick(WrappedCampaign campaign);
     }
 
-    public ADEngineWrapper (Context context) {
+    private static ADEngineWrapper sInstance;
+    private ADEngineWrapper (Context context) {
         mContext =  context;
         mMaxEngine = LEOAdEngine.getInstance(context);
         mMobEngine = MobvistaEngine.getInstance(context);
     }
 
+    public static ADEngineWrapper getInstance (Context context) {
+        if (sInstance == null) {
+            sInstance = new ADEngineWrapper(context);
+        }
+        return sInstance;
+    }
+
     /***
      * 请求广告数据
      */
-    public void loadAd (int source, String unitId, final WrappedAdListener listener) {
+    public void loadAd (final int source, String unitId, final WrappedAdListener listener) {
         if (source == SOURCE_MAX) {
             mMaxEngine.loadMobvista(unitId, new LEOAdEngine.LeoListener() {
                 @Override
                 public void onLeoAdLoadFinished(int code, LEONativeAdData campaign, String msg) {
-                    listener.onWrappedAdLoadFinished(code, WrappedCampaign.fromMaxSDK(campaign), msg);
+                    LeoLog.d(TAG, "source = " + source + "; code = " + code);
+                    WrappedCampaign wrappedCampaign = null;
+                    if (code == LEOAdEngine.ERR_OK) {
+                        wrappedCampaign = WrappedCampaign.fromMaxSDK(campaign);
+                    }
+                    listener.onWrappedAdLoadFinished(code, wrappedCampaign, msg);
                 }
 
                 @Override
@@ -61,7 +78,12 @@ public class ADEngineWrapper {
             mMobEngine.loadMobvista(unitId, new MobvistaEngine.MobvistaListener() {
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                    listener.onWrappedAdLoadFinished(code, WrappedCampaign.fromMabVistaSDK(campaign), msg);
+                    LeoLog.d(TAG, "source = " + source + "; code = " + code);
+                    WrappedCampaign wrappedCampaign = null;
+                    if (code == MobvistaEngine.ERR_OK) {
+                        wrappedCampaign = WrappedCampaign.fromMabVistaSDK(campaign);
+                    }
+                    listener.onWrappedAdLoadFinished(code, wrappedCampaign, msg);
                 }
 
                 @Override

@@ -15,7 +15,7 @@ public class WrappedCampaign {
 
     private WrappedCampaign () {}
 
-    public String getTitle() {
+    public String getAppName() {
         return mTitle;
     }
 
@@ -27,11 +27,11 @@ public class WrappedCampaign {
         return mIconUrl;
     }
 
-    public String getPreviewUrl() {
+    public String getImageUrl() {
         return mPreviewUrl;
     }
 
-    public String getCTA() {
+    public String getAdCall() {
         return mCta;
     }
 

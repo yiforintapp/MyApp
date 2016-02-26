@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.leoadlib.MaxSdk;
 
@@ -109,7 +110,15 @@ public class LEOAdEngine {
         mUnitIdToPlacementIdMap.put(LEOAdManager.UNIT_ID_LOCK, LEOAdManager.PLACEMENTID_LOCK);
 		mUnitIdToPlacementIdMap.put(LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.PLACEMENTID_LOCK_1);
 		mUnitIdToPlacementIdMap.put(LEOAdManager.UNIT_ID_LOCK_2, LEOAdManager.PLACEMENTID_LOCK_2);
-		
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_58, Constants.PLACEMENT_ID_58);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_60, Constants.PLACEMENT_ID_60);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_61, Constants.PLACEMENT_ID_61);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_62, Constants.PLACEMENT_ID_62);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_63, Constants.PLACEMENT_ID_63);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_67, Constants.PLACEMENT_ID_67);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_243, Constants.PLACEMENT_ID_243);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_244, Constants.PLACEMENT_ID_244);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_CHARGING, Constants.PLACEMENT_ID_CHARGING);
 		
         LeoLog.i(TAG, "LEOAdEngine() called done");
     }
@@ -166,6 +175,7 @@ public class LEOAdEngine {
      */
     public void registerView(String unitId, View view) {
         LeoCompositeData adObject = mLEOLoadedNatives.get(unitId);
+        LeoLog.i(TAG, "registerView["+unitId+"] adObject="+adObject+"; view="+view);
         if(adObject == null){
             return;
         }
@@ -174,7 +184,6 @@ public class LEOAdEngine {
             LeoLog.i(TAG, "havnt register activity before.");
             return;
         }
-        LeoLog.i(TAG, "registerView");
         adNative.bindAdWithView(view);
     }
     
@@ -194,11 +203,11 @@ public class LEOAdEngine {
     }
     
     private boolean shouldReloadAd(String unitId){
-       LeoCompositeData adData = mLEOLoadedNatives.get(unitId);
+        LeoCompositeData adData = mLEOLoadedNatives.get(unitId);
+        if(adData == null) return true;
 
         LeoLog.d("STONE_AD_DEBUG", "adData.requestTimeMs = " + adData.requestTimeMs);
         LeoLog.d("STONE_AD_DEBUG", "mPref.getAdFetchInterval() = " + mPref.getADFetchInterval());
-        if(adData == null) return true;
         if(System.currentTimeMillis() - adData.requestTimeMs
                 > MILLIS_IN_MINUTE * mPref.getADFetchInterval()) {
             return true;

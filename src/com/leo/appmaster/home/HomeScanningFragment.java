@@ -26,6 +26,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ad.ADEngineWrapper;
+import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -82,6 +84,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     // 3.2 advertise
     private static final String AD_AFTER_SCAN = Constants.UNIT_ID_243;
+    private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
     private boolean mAdLoaded;
     private View mRootView;
     private View mAdLayout;
@@ -440,36 +443,31 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     /* 3.2 advertise begin */
     private void loadAd() {
         mAdLoaded = false;
+        // TODO: 从SP里面去读实际的开关值
+        mAdSource = ADEngineWrapper.SOURCE_MOB;
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         LeoLog.d("AfterPrivacyScan", "" + amp.getADAfterScan());
         if (amp.getADAfterScan() == 1) {
-//            ThreadManager.executeOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-                    MobvistaEngine.getInstance(mActivity).loadMobvista(AD_AFTER_SCAN,
-                            new MobvistaEngine.MobvistaListener() {
-
+            /* 3.3.2 封装Max与Mob SDK */
+            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, AD_AFTER_SCAN,
+                    new ADEngineWrapper.WrappedAdListener() {
                         @Override
-                        public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
+                        public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
                             if (code == MobvistaEngine.ERR_OK) {
-                                LeoLog.d("AfterPrivacyScan", "onMobvistaFinished: " + campaign.getAppName());
+                                LeoLog.d("AfterPrivacyScan", "Ad data loaded: " + campaign.getAppName());
                                 sAdImageListener = new AdPreviewLoaderListener(HomeScanningFragment.this, campaign);
                                 ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
                             }
                         }
 
                         @Override
-                        public void onMobvistaClick(Campaign campaign) {
+                        public void onWrappedAdClick(WrappedCampaign campaign) {
                             LeoLog.d("AfterPrivacyScan", "onMobvistaClick");
                             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_cli", "adv_cnts_scan");
                             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                             lm.filterSelfOneMinites();
                         }
                     });
-//                }
-//            });
-
-
         }
     }
 
@@ -478,14 +476,16 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mAdLayout.setVisibility(View.GONE);
             mAdLayout.setScaleY(0.0f);
         }
-        MobvistaEngine.getInstance(mActivity).release(AD_AFTER_SCAN);
+        /* 3.3.2 封装Max与Mob SDK */
+        ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, AD_AFTER_SCAN);
     }
 
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
         WeakReference<HomeScanningFragment> mFragment;
-        Campaign mCampaign;
+        /* 3.3.2 封装Max与Mob SDK */
+        WrappedCampaign mCampaign;
 
-        public AdPreviewLoaderListener(HomeScanningFragment fragment, final Campaign campaign) {
+        public AdPreviewLoaderListener(HomeScanningFragment fragment, final WrappedCampaign campaign) {
             mFragment = new WeakReference<HomeScanningFragment>(fragment);
             mCampaign = campaign;
         }
@@ -524,7 +524,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private static AdPreviewLoaderListener sAdImageListener;
 
-    private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
+    private void initAdLayout(View rootView, WrappedCampaign campaign, Bitmap previewImage) {
         View adView = rootView.findViewById(R.id.ad_content);
 //        mAdLayout = adView;
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
@@ -536,7 +536,8 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         preview.setImageBitmap(previewImage);
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
-        MobvistaEngine.getInstance(mActivity).registerView(AD_AFTER_SCAN, adView);
+        /* 3.3.2 封装Max与Mob SDK */
+        ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, adView, AD_AFTER_SCAN);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
     }
     /* 3.2 advertise end */
