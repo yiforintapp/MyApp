@@ -1200,11 +1200,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mAdWrapper = (AdWrapperLayout) rootView.findViewById(R.id.ad_wrapper);
         mAdWrapper.setNeedIntercept(true);
 
-        Button ignoreBtn = (Button) adView.findViewById(R.id.ignore_button);
+        Button ignoreBtn = (Button) rootView.findViewById(R.id.ignore_button);
         ignoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO 用户点击了ignore右上角的菜单
+                LeoLog.d("stone_test_ignore", "ignore!");
             }
         });
 
