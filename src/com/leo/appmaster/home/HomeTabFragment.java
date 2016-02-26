@@ -12,24 +12,19 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.callfilter.BlackListInfo;
-import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
-import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
@@ -37,7 +32,6 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
@@ -347,26 +341,26 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         callFilter.putExtra("needMoveToTab2", true);
                     }
                     startActivity(callFilter);
-                    if (/*DBG*/true) {
-                        int[] pix = AppUtil.getScreenPix(getActivity());
-                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-                        CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-                        pm.setFilterUserNumber(50000);
-                        pm.setFilterTipFroUser(3000);
-                        pm.setSerBlackTipNum(3000);
-                        pm.setSerMarkTipNum(50);
-                        BlackListInfo info = new BlackListInfo();
-                        List<BlackListInfo> lits = new ArrayList<BlackListInfo>();
-                        info.number = "13027964843";
-                        info.blackNum = 2258;
-                        info.markType = 2;
-                        info.markNum = 50000;
-                        CallFilterHelper cm = CallFilterHelper.getInstance(AppMasterApplication.getInstance());
-                        lits.add(info);
-//                        cm.addFilterFroParse(lits);
-                        BlacklistTab.getInstance().addServerBlackList(lits);
-                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-                    }
+//                    if (/*DBG*/true) {
+//                        int[] pix = AppUtil.getScreenPix(getActivity());
+//                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
+//                        CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//                        pm.setFilterUserNumber(50000);
+//                        pm.setFilterTipFroUser(3000);
+//                        pm.setSerBlackTipNum(3000);
+//                        pm.setSerMarkTipNum(50);
+//                        BlackListInfo info = new BlackListInfo();
+//                        List<BlackListInfo> lits = new ArrayList<BlackListInfo>();
+//                        info.number = "13027964843";
+//                        info.blackNum = 2258;
+//                        info.markType = 2;
+//                        info.markNum = 50000;
+//                        CallFilterHelper cm = CallFilterHelper.getInstance(AppMasterApplication.getInstance());
+//                        lits.add(info);
+////                        cm.addFilterFroParse(lits);
+//                        BlacklistTab.getInstance().addServerBlackList(lits);
+//                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
+//                    }
 //                    ThreadManager.executeOnAsyncThread(new Runnable() {
 //                        @Override
 //                        public void run() {
