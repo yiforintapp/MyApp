@@ -32,7 +32,7 @@ public class MobvistaProxyActivity extends Activity implements MobvistaListener 
     }
 
     @Override
-    public void onMobvistaClick(Campaign campaign) {
+    public void onMobvistaClick(Campaign campaign, String unitID) {
         // TODO Auto-generated method stub
         
     }

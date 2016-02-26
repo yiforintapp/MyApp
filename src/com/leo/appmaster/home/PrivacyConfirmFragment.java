@@ -357,7 +357,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                                 }
 
                                 @Override
-                                public void onMobvistaClick(Campaign campaign) {
+                                public void onMobvistaClick(Campaign campaign, String unitID) {
                                     LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                                     lm.filterSelfOneMinites();
 

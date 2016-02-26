@@ -1135,7 +1135,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         }
 
                         @Override
-                        public void onMobvistaClick(Campaign campaign) {
+                        public void onMobvistaClick(Campaign campaign, String unitID) {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
                             LeoLog.d(TAG, "Ad clicked");
                         }

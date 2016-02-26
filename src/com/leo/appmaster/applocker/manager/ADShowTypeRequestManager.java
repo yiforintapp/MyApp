@@ -54,11 +54,14 @@ public class ADShowTypeRequestManager {
     /*3.0  锁屏大图广告 */
     private static final String AD_LARGE_BANNER_PROBABILITY = "q";
 	/* 3.3.2 锁屏大图1广告 */
-	private static final String AD_LOCK_SCREEN_POS_1 = "q_1";
-	/* 3.3.2 锁屏大图2广告 */
-	private static final String AD_LOCK_SCREEN_POS_2 = "q_2";
-	/* 3.3.2 锁屏大图3广告 */
-	private static final String AD_LOCK_SCREEN_POS_3 = "q_3";
+	private static final String AD_LOCK_SCREEN = "q_1";
+	/* 3.3.2 桌面加速广告 */
+	private static final String AD_ACCELERATION = "p_1";
+	/* 3.3.2 入侵者防护广告 */
+	private static final String AD_INVADER = "v_1";
+	/* 3.3.2 充电锁屏广告 */
+	private static final String AD_CHARGING = "w_1";
+	
     /* 3.0广告开关 */
     private static final String AD_WIFI_SCAN = "r";
     /* 3.1 国内渠道广告总开关 */
@@ -221,34 +224,25 @@ public class ADShowTypeRequestManager {
 //        mSp.setADShowType(forceClose ? CLOSE_LOCK_AD_SHOW : adtype);
     }
 	
-	private void updateLargeAD1UseSdkInLockScreenConfig(JSONObject response, boolean forceClose) {
+	private void updateAdSdkSourceConfig(JSONObject response, boolean forceClose) {
 		try {
-			LeoLog.d("poha", "请求成功， 解锁大屏大图1的解析");
-			int value = forceClose ? 0 : (response.getInt(AD_LOCK_SCREEN_POS_1));
-			mSp.setLockBannerAd1Config(value);
+			LeoLog.d("poha", "请求成功， 广告sdk源的解析开始");
+			int value = forceClose ? 0 : (response.getInt(AD_LOCK_SCREEN));
+			mSp.setLockBannerAdConfig(value);
+			
+			value = forceClose ? 0 : (response.getInt(AD_ACCELERATION));
+			mSp.setAccelerationAdConfig(value);
+			
+			value = forceClose ? 0 : (response.getInt(AD_INVADER));
+			mSp.setInvaderAdConfig(value);
+			
+			value = forceClose ? 0 : (response.getInt(AD_CHARGING));
+			mSp.setChargingAdConfig(value);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void updateLargeAD2UseSdkInLockScreenConfig(JSONObject response, boolean forceClose) {
-		try {
-			LeoLog.d("poha", "请求成功， 解锁大屏大图2的解析");
-			int value = forceClose ? 0 : (response.getInt(AD_LOCK_SCREEN_POS_2));
-			mSp.setLockBannerAd2Config(value);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	private void updateLargeAD3UseSdkInLockScreenConfig(JSONObject response, boolean forceClose) {
-		try {
-			LeoLog.d("poha", "请求成功， 解锁大屏大图3的解析");
-			int value = forceClose ? 0 : (response.getInt(AD_LOCK_SCREEN_POS_3));
-			mSp.setLockBannerAd3Config(value);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
 
     private void updateLargeADInLockScreenConfig(JSONObject response, boolean forceClose) {
         try {
@@ -552,12 +546,8 @@ public class ADShowTypeRequestManager {
                     updateADInLockScreenConfig(response, forceClose);  
                     // 锁屏界面的大图广告配置
                     updateLargeADInLockScreenConfig(response, forceClose);
-					// 锁屏界面的大图1广告sdk配置
-					updateLargeAD1UseSdkInLockScreenConfig(response, forceClose);
-					// 锁屏界面的大图2广告sdk配置
-					updateLargeAD2UseSdkInLockScreenConfig(response, forceClose);
-					// 锁屏界面的大图3广告sdk配置
-					updateLargeAD3UseSdkInLockScreenConfig(response, forceClose);
+					// 广告sdk配置
+					updateAdSdkSourceConfig(response, forceClose);
                     // UFO动画的特有配置
                     updateUFOADConfig(response, forceClose);
                     // 桌面加速中的广告配置

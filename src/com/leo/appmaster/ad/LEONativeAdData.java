@@ -2,7 +2,6 @@ package com.leo.appmaster.ad;
 
 public class LEONativeAdData {
 	
-	protected String unitId;
 	/*服務器返回的狀態代碼*/
 	protected int code;
 	/*服務器返回的狀態msg*/
@@ -46,10 +45,6 @@ public class LEONativeAdData {
 
 	public String getMsg() {
 		return msg;
-	}
-
-	public String getUnitId() {
-		return unitId;
 	}
 	
 }

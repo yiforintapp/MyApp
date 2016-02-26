@@ -1252,7 +1252,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                  */
                 @Override
                 public void onLeoAdLoadFinished(int code, final LEONativeAdData campaign, String msg) {
-                    if (campaign != null && campaign.getCode() == MaxSdk.ERR_OK && deleteRedundant(campaign.getUnitId(), campaign)) {
+                    if (campaign != null && campaign.getCode() == MaxSdk.ERR_OK && deleteRedundant(unitId, campaign)) {
 						/* 开始load 广告大图 */
                         ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
                             @Override
@@ -1262,7 +1262,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                             @Override
                             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                                mAdMap.remove(campaign.getUnitId());
+                                mAdMap.remove(unitId);
                                 LeoLog.d("STONE_AD_DEBUG", "onLoadingFailed for: " + imageUri);
                             }
 
@@ -1276,22 +1276,20 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                     }*/
                                 //}
 								
-								if (campaign.getUnitId().equals(mBannerAdids[0])) {
-									mAdUnitIdList.add(0, campaign.getUnitId());
+								if (unitId.equals(mBannerAdids[0])) {
+									mAdUnitIdList.add(0, unitId);
 								} else {
-									mAdUnitIdList.add(campaign.getUnitId());
+									mAdUnitIdList.add(unitId);
 								}
-								mAdBitmapMap.put(campaign.getUnitId(), loadedImage);
+								mAdBitmapMap.put(unitId, loadedImage);
 
 								/*校验此广告是否用第一个id来申请的*/
-								if (campaign != null && campaign.getUnitId() != null
-										&& campaign.getUnitId().equals(mBannerAdids[0])) {
+								if (unitId.equals(mBannerAdids[0])) {
 									/*如果是则将其他两个广告显示开光打开*/
 									otherAdSwitcher = true;
 								}
 								/* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 */
-								if (campaign != null && campaign.getUnitId() != null
-										&& (campaign.getUnitId().equals(mBannerAdids[1]) || campaign.getUnitId().equals(mBannerAdids[2]))) {
+								if (!unitId.equals(mBannerAdids[0])) {
 									/*如果广告开关没有被打开，则直接退出*/
 									if (!otherAdSwitcher) {
 										return ;
@@ -1317,14 +1315,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                     /*if (mAdapterCycle.getCount() == mBannerAdids.length) {
                                         return;
                                     }*/
-                                    mAdapterCycle.addItem(campaign.getUnitId());
+                                    mAdapterCycle.addItem(unitId);
                                 }
 
                             }
 
                             @Override
                             public void onLoadingCancelled(String imageUri, View view) {
-                                mAdMap.remove(campaign.getUnitId());
+                                mAdMap.remove(unitId);
                             }
                         });
 
@@ -1338,7 +1336,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                  * @param campaign
                  */
                 @Override
-                public void onLeoAdClick(LEONativeAdData campaign) {
+                public void onLeoAdClick(LEONativeAdData campaign, String unitID) {
+					if (unitID != null && unitID.equals(mBannerAdids[0])) {
+						otherAdSwitcher = false;
+					}
+					
                     // 干掉旧广告？ - onResume()的时候会重新拉取
                     try {
                         for (String key : mAdBitmapMap.keySet()) {
@@ -2577,14 +2579,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
 			
 			//debug
-			if (campaign.getUnitId().equals(mBannerAdids[0])) {
+			if (unitId.equals(mBannerAdids[0])) {
 				view.setBackgroundColor(Color.CYAN);
 			}
 			//debug
 			
             ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
             ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
-            ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getUnitId() + campaign.getAppDesc());
+            ((TextView) view.findViewById(R.id.ad_details)).setText(unitId + campaign.getAppDesc());
             ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             final View clickArea = view.findViewById(R.id.click_area);
             if (mLeoAdEngine != null) {

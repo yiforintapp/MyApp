@@ -266,7 +266,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                 }
 
                 @Override
-                public void onMobvistaClick(Campaign campaign) {
+                public void onMobvistaClick(Campaign campaign, String unitID) {
                     LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                     lm.filterSelfOneMinites();
 

@@ -108,7 +108,7 @@ public class HomeBoostActivity extends Activity {
             }
 
             @Override
-            public void onMobvistaClick(Campaign campaign) {
+            public void onMobvistaClick(Campaign campaign, String unitID) {
                 HomeBoostActivity.this.finish();
              
                 SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1, "ad_cli",
