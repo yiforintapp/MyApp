@@ -313,7 +313,7 @@ public class PhoneSecurityManager {
             });
             mgr.executeLockLocateposition(null, false);
         } else if (SecurityInstructSet.ALERT.equals(body)) {
-            /*防盗警报灰进入死循环，因此该除需要先删除短信和上报数据在执行*/
+            /*防盗警报会进入死循环，因此该除需要先删除短信和上报数据在执行*/
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {

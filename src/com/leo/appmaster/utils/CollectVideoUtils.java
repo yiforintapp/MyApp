@@ -97,7 +97,7 @@ public class CollectVideoUtils {
                     LeoLog.d("getAllVideo", "key:" + key + ",value:" + value);
                 }
                 if (!TextUtils.isEmpty(sb.toString())) {
-                    SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1, "handled", sb.toString());
+                    SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1, "vidups", sb.toString());
                     pt.putBoolean(PrefConst.KEY_REPORT_VIDEO_SIZE, true);
                     LeoLog.d("getAllVideo", "-----------video collect data:" + sb.toString());
                 }
@@ -107,19 +107,19 @@ public class CollectVideoUtils {
     }
 
     private static String getKey(long size) {
-        String key1 = "vid_chk_0~20M";
-        String key2 = "vid_chk_20~50M";
-        String key3 = "vid_chk_50~80M";
-        String key4 = "vid_chk_80~100M";
-        String key5 = "vid_chk_100~200M";
-        String key6 = "vid_chk_200~500M";
-        String key7 = "vid_chk_500~800M";
-        String key8 = "vid_chk_800~1024M";
-        String key9 = "vid_chk_1~2G";
-        String key10 = "vid_chk_2~5G";
-        String key11 = "vid_chk_5~8G";
-        String key12 = "vid_chk_8~10G";
-        String key13 = "vid_chk_10G+";
+        String key1 = "v1";
+        String key2 = "v2";
+        String key3 = "v3";
+        String key4 = "v4";
+        String key5 = "v5";
+        String key6 = "v6";
+        String key7 = "v7";
+        String key8 = "v8";
+        String key9 = "v9";
+        String key10 = "v10";
+        String key11 = "v11";
+        String key12 = "v12";
+        String key13 = "v13";
         String key = "";
         if (size <= 20) {
             key = key1;

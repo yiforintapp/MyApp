@@ -22,7 +22,6 @@ import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.LostSecurityManager;
@@ -370,13 +369,14 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                            LostSecurityManager lm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
 //                            try {
 //                                lm.getLocation();
-//                                CollectVideoUtils.getAllVideoData();
+//
 //                            } catch (InterruptedException e) {
 //                                e.printStackTrace();
 //                            }
 //                        }
 //                    });
-
+//
+//                    CollectVideoUtils.getAllVideoData();
                     break;
             }
         }

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.leo.appmaster.R;
@@ -61,7 +62,6 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private LostSecurityManagerImpl mLostImpl;
-    private LocationRequest myLocationRequest;
 
     @Override
     public void onDestory() {
@@ -181,58 +181,71 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     @Override
     public Location getLocation() {
         Location location = null;
+        boolean isGoogleAva = false;
         LeoLog.d(TAG, "start get location google play service");
+        mLostImpl = this;
+        int gpCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
         //Google play service
-        try {
-            mLostImpl = this;
-            mGoogleApiClient = new GoogleApiClient.Builder(mContext)
-                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                        @Override
-                        public void onConnected(Bundle bundle) {
-                            LeoLog.d(TAG, "google play onConnected,GoogleApiClient is null:" + (mGoogleApiClient == null));
-                            synchronized (mLostImpl) {
-                                mLostImpl.notify();
-                            }
-                            if (mGoogleApiClient != null) {
-                                mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                                if (mLocation != null) {
-                                    LeoLog.d(TAG, "google_api,latitude:" + mLocation.getLatitude() + ";google_api,longitude:" + mLocation.getLongitude());
+        switch (gpCode) {
+            case ConnectionResult.SUCCESS:
+                LeoLog.d(TAG, "googley play service can connect ...");
+                isGoogleAva = true;
+                break;
+            default:
+                LeoLog.d(TAG, "googley play service no can connect ...");
+                break;
+        }
+        if (isGoogleAva) {
+            try {
+                mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                            @Override
+                            public void onConnected(Bundle bundle) {
+                                LeoLog.d(TAG, "google play onConnected,GoogleApiClient is null:" + (mGoogleApiClient == null));
+                                if (mGoogleApiClient != null) {
+                                    mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                                    if (mLocation != null) {
+                                        LeoLog.d(TAG, "google_api,latitude:" + mLocation.getLatitude() + ";google_api,longitude:" + mLocation.getLongitude());
+                                    } else {
+                                        LeoLog.d(TAG, "google_api get location null!");
+                                    }
+                                }
+                                synchronized (mLostImpl) {
+                                    mLostImpl.notify();
                                 }
                             }
-//                            if (mLocation == null) {
-//                                createLocationRequest();
-//                                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, myLocationRequest, new Lco, mContext.getMainLooper());
-//                            }
-                        }
 
-                        @Override
-                        public void onConnectionSuspended(int i) {
+                            @Override
+                            public void onConnectionSuspended(int i) {
 
-                        }
-                    })
-                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                        @Override
-                        public void onConnectionFailed(ConnectionResult connectionResult) {
-                            LeoLog.d(TAG, "googley play service location fail...");
-                            synchronized (mLostImpl) {
-                                mLostImpl.notify();
                             }
-                        }
-                    })
-                    .addApi(LocationServices.API)
-                    .build();
-            mGoogleApiClient.connect();
-        } catch (Error e) {
+                        })
+                        .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                            @Override
+                            public void onConnectionFailed(ConnectionResult connectionResult) {
+                                LeoLog.d(TAG, "googley play service location fail...");
+                                synchronized (mLostImpl) {
+                                    mLostImpl.notify();
+                                }
+                            }
+                        })
+                        .addApi(LocationServices.API)
+                        .build();
+                mGoogleApiClient.connect();
 
-        }
-        synchronized (mLostImpl) {
-            try {
-                mLostImpl.wait(WAIT_TIME_OUT);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
 
+            synchronized (mLostImpl) {
+                try {
+                    mLostImpl.wait(WAIT_TIME_OUT);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            location = mLocation;
+        }
         if (mLocation == null) {
             /*可根据设备状况动态选择location provider*/
             PhoneSecurityManager psm = PhoneSecurityManager.getInstance(mContext);
@@ -253,14 +266,18 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                 }
             }
         }
-
-        location = mLocation;
         if (mGoogleApiClient != null) {
             LeoLog.i(TAG, "mGoogleApiClient.isConnected():" + mGoogleApiClient.isConnected());
             //初始化GoogleApiClient
             if (mGoogleApiClient.isConnected()) {
                 LeoLog.i(TAG, "GoogleApiClient connected,excute disconnect... ");
                 mGoogleApiClient.disconnect();
+                try {
+                    mGoogleApiClient.unregisterConnectionCallbacks(null);
+                    mGoogleApiClient.unregisterConnectionFailedListener(null);
+                } catch (Exception e) {
+                } catch (Error e1) {
+                }
                 mGoogleApiClient = null;
             }
         }
@@ -268,6 +285,8 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         mLostImpl = null;
         if (location == null) {
             LeoLog.i(TAG, "location is null ");
+        } else {
+            LeoLog.d(TAG, "location manager,latitude:" + location.getLatitude() + ";location manager,,longitude:" + location.getLongitude());
         }
         return location;
     }
@@ -692,10 +711,5 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         return SimDetecter.isSimReady(mContext);
     }
 
-    protected void createLocationRequest() {
-        myLocationRequest = new LocationRequest();
-        myLocationRequest.setInterval(10000);
-        myLocationRequest.setFastestInterval(5000);
-    }
 
 }
