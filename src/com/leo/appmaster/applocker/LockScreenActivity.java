@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -50,6 +51,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +89,7 @@ import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
+import com.leo.appmaster.intruderprotection.ShowToast;
 import com.leo.appmaster.intruderprotection.WaterMarkUtils;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -99,6 +102,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.ui.BaseSelfDurationToast;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoCircleView;
 import com.leo.appmaster.ui.LeoHomePopMenu;
@@ -179,6 +183,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private View switch_bottom_content;
     private ImageView mADAnimalEntry;
     private PreferenceTable mPt;
+    private BaseSelfDurationToast mPermissionGuideToast;
     /**
      * 大banner
      */
@@ -485,6 +490,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mCanTakePhoto = true;
         whichTypeShow();
         tryShowNoPermissionTip();
+        tryHidePermissionGuideToast();
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
@@ -547,6 +553,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
+    }
+
+    private void tryHidePermissionGuideToast() {
+        if (mPermissionGuideToast != null) {
+            mPermissionGuideToast.hide();
+        }
     }
 
     private void tryShowNoPermissionTip() {
@@ -1940,8 +1952,24 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         
                         @Override
                         public void run() {
-                            Intent i = new Intent(LockScreenActivity.this, GrantPermissionGuideActivity.class);
-                            startActivity(i);
+                            if (mPermissionGuideToast == null) {
+                                mPermissionGuideToast = new BaseSelfDurationToast(LockScreenActivity.this);
+
+                            }
+                            mPermissionGuideToast.setDuration(1000 * 5);
+                            mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
+                            mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, 0);
+                            final View view = View.inflate(LockScreenActivity.this, R.layout.toast_get_score,null);
+                            final RelativeLayout rlScore = (RelativeLayout) view.findViewById(R.id.rl_score);
+                            rlScore.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mPermissionGuideToast.hide();
+                                }
+                            });
+
+                            mPermissionGuideToast.setView(view);
+                            mPermissionGuideToast.show();
                         }
                     }, 500);
                 } catch (Exception e) {
@@ -2293,7 +2321,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         Toast toast = new Toast(this);
         toast.setView(mTipView);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(1000);
+        toast.setDuration(Toast.LENGTH_LONG);
         toast.show();
     }
 

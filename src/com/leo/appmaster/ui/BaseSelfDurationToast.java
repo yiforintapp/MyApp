@@ -185,7 +185,6 @@ public class BaseSelfDurationToast {
          params.height = WindowManager.LayoutParams.WRAP_CONTENT;
          params.width = WindowManager.LayoutParams.WRAP_CONTENT;
          params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                  | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
          params.format = PixelFormat.TRANSLUCENT;
 //         params.windowAnimations = android.R.style.Animation_Toast;
@@ -196,7 +195,10 @@ public class BaseSelfDurationToast {
          mWM = (WindowManager) context.getApplicationContext()
                  .getSystemService(Context.WINDOW_SERVICE);
     }
-    
+
+    public void setWindowAnimations(int styleId) {
+        mParams.windowAnimations = styleId;
+    }
     
     private void handleShow() {
  

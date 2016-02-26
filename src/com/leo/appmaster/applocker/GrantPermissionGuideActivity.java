@@ -1,6 +1,7 @@
 package com.leo.appmaster.applocker;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -20,13 +21,14 @@ public class GrantPermissionGuideActivity extends BaseActivity {
     
     private void initUI() {
         mRlRoot = (RelativeLayout) findViewById(R.id.rl_root);
-        mRlRoot.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                GrantPermissionGuideActivity.this.finish();
-            }
-        });
+
+//        mRlRoot.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                GrantPermissionGuideActivity.this.finish();
+//            }
+//        });
     }
 
     @Override
@@ -38,5 +40,10 @@ public class GrantPermissionGuideActivity extends BaseActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 }
