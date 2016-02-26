@@ -25,6 +25,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
@@ -34,6 +35,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
@@ -230,6 +232,7 @@ public class QuickHelperActivity extends BaseActivity {
                 ivIcon.setBackgroundResource(drawableId);
                 tvName.setText(getResources().getString(mMapDrawableToName.get(drawableId)));
                 tvDesc.setText(getResources().getString(mMapDrawableToDesc.get(drawableId)));
+                final PreferenceTable table = PreferenceTable.getInstance();
                 rvAdd.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -262,6 +265,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mMapDrawableToName.get(drawableId)), drawableId, intent, QuickHelperActivity.this);
+                                table.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, true);
                                 break;
                             // 视频隐藏
                             case R.drawable.qh_video_icon:
@@ -270,6 +274,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent = new Intent(AppMasterApplication.getInstance(), VideoHideMainActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                table.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID, true);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_VIDEO_HIEDE]), mHelperResourceIDs[POSITION_VIDEO_HIEDE], intent, QuickHelperActivity.this);
                                 break;
                             // 应用卸载
@@ -319,6 +324,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_CALL_FILTER);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_CALL_FILTER]), mHelperResourceIDs[POSITION_CALL_FILTER], intent, QuickHelperActivity.this);
+                                table.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, true);
                                 break;
                             // WIFI安全 (免密码)
                             case R.drawable.qh_wifi_icon:
@@ -329,6 +335,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_WIFI);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_WIFI]), mHelperResourceIDs[POSITION_WIFI], intent, QuickHelperActivity.this);
+                                table.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_WIFI_SECURITY, true);
                                 break;
                             // 入侵者防护
                             case R.drawable.qh_intruder_icon:

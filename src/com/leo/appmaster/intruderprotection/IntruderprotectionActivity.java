@@ -798,7 +798,7 @@ public class IntruderprotectionActivity extends BaseActivity {
                     mImanager.switchIntruderMode(true);
                     if (mIsFromScan) {
 //                    if (true) {
-                        UpdateScoreHelper.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE,
+                        ShowToast.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE,
                                 IntruderprotectionActivity.this);
                         mIsFromScan = false;
                     } else {

@@ -82,9 +82,12 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
         if (mWifiBtn == v) {
             if (mActivity != null) {
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_wifi");
+                PreferenceTable table = PreferenceTable.getInstance();
+                int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
+                table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2+1);
+                Intent intent = new Intent(mActivity, WifiSecurityActivity.class);
+                startActivity(intent);
             }
-            Intent intent = new Intent(mActivity, WifiSecurityActivity.class);
-            startActivity(intent);
         } else if (mSwiftyBtnLt == v) {
             if (mActivity != null) {
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_product");

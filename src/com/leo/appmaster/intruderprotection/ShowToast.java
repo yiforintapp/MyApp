@@ -48,7 +48,6 @@ public class ShowToast {
         
         toast.setView(view);
         toast.show();
-
     }
 
 }

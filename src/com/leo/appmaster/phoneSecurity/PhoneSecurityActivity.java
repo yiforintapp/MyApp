@@ -29,7 +29,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
-import com.leo.appmaster.intruderprotection.UpdateScoreHelper;
+import com.leo.appmaster.intruderprotection.ShowToast;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
@@ -793,7 +793,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
         boolean isFromScanTmp = psm.getIsFromScan();
         if (isFromScanTmp) {
-            UpdateScoreHelper.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE, this);
+            ShowToast.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE, this);
         }
     }
 
