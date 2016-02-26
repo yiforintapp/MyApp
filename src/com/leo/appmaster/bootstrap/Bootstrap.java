@@ -92,7 +92,7 @@ public abstract class Bootstrap {
         try {
             doStrap();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         long cost = SystemClock.elapsedRealtime() - start;
         if (!(this instanceof BootstrapGroup)) {

@@ -19,6 +19,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.schedule.FetchScheduleJob;
+import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.CollectVideoUtils;
@@ -71,6 +72,7 @@ public class InitAsyncBootstrap extends Bootstrap {
         MgrContext.getManager(MgrContext.MGR_BATTERY);
 
         BlacklistTab.getInstance().initEncryptList();
+        ScreenRecommentJob.initialize();
 
         collectVideosData();
 
