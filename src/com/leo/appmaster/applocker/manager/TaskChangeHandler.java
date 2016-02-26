@@ -29,7 +29,6 @@ public class TaskChangeHandler {
     public static final String PROXYNAME = "ProxyActivity";
     public static final String DESKPROXYNAME = "DeskProxyActivity";
     public static final String BATTERYVIEW = "BatteryShowViewActivity";
-    public static final String GAMEBOX = "GameBoxActivity";
     public static final String WAITNAME = "WaitActivity";
     public static final String WEBVIEW = "WebViewActivity";
     public static final String UPDATE = "UpdateActivity";
@@ -137,16 +136,6 @@ public class TaskChangeHandler {
             return;
         }
 
-        if (!TextUtils.isEmpty(mLastRuningActivity) && mLastRuningActivity.contains(GAMEBOX)
-                && pkg.equals(myPackage) && !activity.contains(GAMEBOX)) {
-            // 解决gamebox回到pg没有锁的问题
-            mLastRunningPkg = pkg;
-            mLastRuningActivity = activity;
-            LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            lockManager.applyLock(LockManager.LOCK_MODE_FULL, pkg, false, null);
-            return;
-        }
-
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
         String checkPkg = amp.getDoubleCheck();
@@ -166,7 +155,6 @@ public class TaskChangeHandler {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf && (activity.contains(DESKPROXYNAME)
                         || (activity.contains(BATTERYVIEW) && mIgnoreBattery)
-                        || activity.contains(GAMEBOX)
                         || activity.contains(DESKAD)
                         // || activity.contains(APPWALL)
                         || activity.contains(LAUNCHERBOOST)
@@ -189,7 +177,6 @@ public class TaskChangeHandler {
                         || (isCurrentSelf
                         && (activity.contains(DESKPROXYNAME)
                         || (activity.contains(BATTERYVIEW) && mIgnoreBattery)
-                        || activity.contains(GAMEBOX)
                         || activity.contains(DESKAD)
                         // || activity.contains(APPWALL)
                         || activity.contains(LAUNCHERBOOST)
