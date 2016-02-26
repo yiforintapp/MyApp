@@ -632,21 +632,50 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.leo.appmaster.ui.AdWrapperLayout
-                        android:id="@+id/ad_wrapper"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <!-- Advertise -->
-                        <include
-                            android:id="@+id/ad_content"
-                            layout="@layout/screen_saver_ad_layout"
-                            android:layout_width="match_parent"
+
+                        <!-- 为了满足广告SDK展示和点击的统计正确，只能用这样的布局 -->
+                        <com.leo.appmaster.ui.AdWrapperLayout
+                            android:id="@+id/ad_wrapper"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <!-- Advertise -->
+                            <include
+                                android:id="@+id/ad_content"
+                                layout="@layout/screen_saver_ad_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginTop="8dp" />
+                            <!-- Advertise -->
+                        </com.leo.appmaster.ui.AdWrapperLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp"
-                            android:layout_marginTop="8dp" />
-                        <!-- Advertise -->
-                    </com.leo.appmaster.ui.AdWrapperLayout>
+                            android:orientation="horizontal"
+                            android:layout_alignRight="@id/ad_wrapper"
+                            android:layout_alignTop="@id/ad_wrapper"
+                            android:paddingBottom="8dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="8dp">
+
+                            <!-- 调试完成后改回22x27 -->
+                            <Button
+                                android:id="@+id/ignore_button"
+                                android:layout_width="44dp"
+                                android:layout_height="54dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/icon_ad_memu"/>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
 
                     <!-- 推广位1 -->
                     <ViewStub

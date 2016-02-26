@@ -8,7 +8,7 @@
     android:layout_marginRight="18dp"
     android:layout_marginTop="8dp"
     android:background="@drawable/batter_card_item_bg"
-    android:paddingBottom="9dp"
+    android:paddingBottom="8dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     android:paddingTop="8dp"
@@ -31,14 +31,6 @@
             android:layout_alignLeft="@id/item_ad_preview"
             android:layout_alignTop="@id/item_ad_preview"
             android:src="@drawable/ad_after_scan_maker" />
-
-        <Button
-            android:id="@+id/ignore_button"
-            android:layout_width="22dp"
-            android:layout_height="27dp"
-            android:layout_alignRight="@id/item_ad_preview"
-            android:layout_alignTop="@id/item_ad_preview"
-            android:background="@drawable/icon_ad_memu"/>
 
         <!--<ImageView-->
             <!--android:id="@+id/iv_ignore"-->

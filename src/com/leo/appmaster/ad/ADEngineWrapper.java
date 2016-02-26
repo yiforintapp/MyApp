@@ -1,7 +1,6 @@
 package com.leo.appmaster.ad;
 
 import android.content.Context;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -70,7 +69,7 @@ public class ADEngineWrapper {
                 }
 
                 @Override
-                public void onLeoAdClick(LEONativeAdData campaign) {
+                public void onLeoAdClick(LEONativeAdData campaign, String unitID) {
                     listener.onWrappedAdClick(WrappedCampaign.fromMaxSDK(campaign));
                 }
             });
@@ -87,7 +86,7 @@ public class ADEngineWrapper {
                 }
 
                 @Override
-                public void onMobvistaClick(Campaign campaign) {
+                public void onMobvistaClick(Campaign campaign, String unitID) {
                     listener.onWrappedAdClick(WrappedCampaign.fromMabVistaSDK(campaign));
                 }
             });

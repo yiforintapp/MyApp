@@ -306,4 +306,7 @@ public class PrefConst {
     // 显示屏保省电动画的内存阀值
     public static final String KEY_SHOW_BOOST_MEM = "ss_boost_mem";
 
+    // 屏保页面推荐列表
+    public static final String KEY_SS_RECOMMEND_LIST = "ss_recommend_list";
+
 }

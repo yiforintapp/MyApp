@@ -1,0 +1,37 @@
+call---{"pkg":"com.whatsapp","icon":"","name":"WhatsApp Messenger","url":"http://www.leomaster.com"}
+call---{"pkg":"com.facebook.orca","icon":"","name":"Messenger","url":"http://www.leomaster.com"}
+call---{"pkg":"com.skype.raider","icon":"","name":"Skype","url":"http://www.leomaster.com"}
+call---{"pkg":"com.bsb.hike","icon":"","name":"Hike Messenger","url":"http://www.leomaster.com"}
+call---{"pkg":"com.bbm","icon":"","name":"BBM","url":"http://www.leomaster.com"}
+call---{"pkg":"com.icq.mobile.client","icon":"","name":"ICQ","url":"http://www.leomaster.com"}
+call---{"pkg":"jp.naver.line.android","icon":"","name":"LINE","url":"http://www.leomaster.com"}
+call---{"pkg":"com.jb.gosms","icon":"","name":"GO SMS Pro","url":"http://www.leomaster.com"}
+call---{"pkg":"com.tencent.mm","icon":"","name":"WeChat","url":"http://www.leomaster.com"}
+net---{"pkg":"","icon":"","name":"Google","url":"www.google.com"}
+net---{"pkg":"","icon":"","name":"Amazon","url":"www.amazon.com"}
+net---{"pkg":"","icon":"","name":"Yahoo","url":"www.yahoo.com"}
+video---{"pkg":"com.instagram.android","icon":"","name":"Instagram","url":""}
+video---{"pkg":"com.facebook.katana","icon":"","name":"Facebook","url":"www.facebook.com"}
+video---{"pkg":"com.snapchat.android","icon":"","name":"Snapchat","url":""}
+video---{"pkg":"com.twitter.android","icon":"","name":"Twitter","url":"www.twitter.com"}
+video---{"pkg":"com.mico","icon":"","name":"Mico","url":""}
+video---{"pkg":"com.badoo.mobile","icon":"","name":"Badoo","url":""}
+video---{"pkg":"com.facebook.lite","icon":"","name":"Facebook Lite","url":""}
+video---{"pkg":"com.rovio.angrybirds","icon":"","name":"Angry Birds","url":""}
+video---{"pkg":"com.imangi.templerun","icon":"","name":"Temple Run","url":""}
+video---{"pkg":"com.pinterest","icon":"","name":"Pinterest","url":""}
+video---{"pkg":"com.nfo.me.android","icon":"","name":"Me","url":""}
+video---{"pkg":"com.king.candycrushsaga","icon":"","name":"Candy Crush Saga","url":""}
+video---{"pkg":"com.nextwave.realcarrom","icon":"","name":"Real Carrom","url":""}
+video---{"pkg":"com.imangi.templerun2","icon":"","name":"Temple Run 2","url":""}
+video---{"pkg":"com.google.android.talk","icon":"","name":"Hangouts","url":""}
+video---{"pkg":"com.kiloo.subwaysurf","icon":"","name":"Subway Surfers","url":""}
+video---{"pkg":"com.outfit7.mytalkingtomfree","icon":"","name":"My Talking Tom","url":""}
+video---{"pkg":"com.cmplay.tiles2","icon":"","name":"Piano Tiles 2","url":""}
+video---{"pkg":"com.supercell.clashofclans","icon":"","name":"Clash of Clans","url":""}
+video---{"pkg":"me.pou.app","icon":"","name":"Pou","url":""}
+video---{"pkg":"com.ea.games.r3_row","icon":"","name":"Real Racing 3","url":""}
+video---{"pkg":"com.skgames.trafficrider","icon":"","name":"Traffic Rider","url":""}
+video---{"pkg":"com.miniclip.eightballpool","icon":"","name":"8 Ball Pool","url":""}
+video---{"pkg":"com.google.android.youtube","icon":"","name":"YouTube","url":""}
+video---{"pkg":"com.mobilemotion.dubsmash","icon":"","name":"Dubsmash","url":"www.youtube.com"}

@@ -1,21 +1,19 @@
 package com.leo.appmaster.callfilter;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -25,12 +23,17 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.showTrafficTip;
-import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.MultiChoicesWitchSummaryDialog;
+import com.leo.appmaster.ui.showTrafficTip;
+import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class AskAddToBlacklistActivity extends BaseActivity {
@@ -55,6 +58,8 @@ public class AskAddToBlacklistActivity extends BaseActivity {
     public static final int CASE_ASK_WITH_MARK = 3;
     public static final int CASE_ASK_WHEN_TOO_SHORT = 4;
     public static final int CASE_ALERT_FLOW = 5;
+
+    private LEOAlarmDialog mShareDialog;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +186,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogTooShort.dismiss();
                 AskAddToBlacklistActivity.this.finish();
+                showShareDialog();
             }
         });
         mDialogTooShort.show();
@@ -247,6 +253,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 mDialogAskAddWithSmrMark.dismiss();
                 SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_mark&block");
                 AskAddToBlacklistActivity.this.finish();
+                showShareDialog();
             }
         });
         mDialogAskAddWithSmrMark.show();
@@ -299,7 +306,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmr.dismiss();
                 AskAddToBlacklistActivity.this.finish();
-                
+                showShareDialog();
             }
         });
         mDialogAskAddWithSmr.show();
@@ -335,6 +342,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 mDialogAskAdd.dismiss();
                 SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block");
                 AskAddToBlacklistActivity.this.finish();
+                showShareDialog();
             }
         });
         mDialogAskAdd.show();
@@ -408,5 +416,87 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         Method method = ownerClass.getMethod(methodName, argsClass);
 
         return method.invoke(mConnectivityManager, value);
+    }
+
+    private  void showShareDialog() {
+
+        if (mShareDialog == null) {
+            mShareDialog = new LEOAlarmDialog(this);
+            mShareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mShareDialog != null) {
+                        mShareDialog = null;
+                    }
+                }
+            });
+        }
+        String title = getString(R.string.addto_blacklist_share_dialog_title);
+        final PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
+        boolean isDialogContentEmpty = TextUtils.isEmpty(
+                sharePreferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT));
+        String content = "";
+        if (!isDialogContentEmpty) {
+            content = sharePreferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT);
+        } else {
+            content = getString(R.string.addto_blacklist_share_dialog_content);
+        }
+        String shareButton = getString(R.string.share_dialog_btn_query);
+        String cancelButton = getString(R.string.share_dialog_query_btn_cancel);
+        mShareDialog.setTitle(title);
+        mShareDialog.setContent(content);
+        mShareDialog.setLeftBtnStr(cancelButton);
+        mShareDialog.setRightBtnStr(shareButton);
+        mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+            }
+        });
+        mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+                shareApps(sharePreferenceTable);
+            }
+        });
+        if (mShareDialog.getWindow() != null) {
+            mShareDialog.getWindow().setWindowAnimations(R.style.dialogAnim);
+        }
+        mShareDialog.show();
+    }
+
+
+    /** 分享应用 */
+    private  void shareApps(PreferenceTable preferenceTable) {
+        LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mLockManager.filterSelfOneMinites();
+        boolean isContentEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT));
+        boolean isUrlEmpty = TextUtils.isEmpty(
+                preferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL));
+
+        StringBuilder shareBuilder = new StringBuilder();
+        if (!isContentEmpty && !isUrlEmpty) {
+            try {
+                shareBuilder.append(String.format(preferenceTable.getString(
+                                PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT),
+                        "13027964843", preferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL)));
+
+            } catch (Exception e) {
+                shareBuilder.append(getResources().getString(
+                        R.string.addto_blacklist_share_content, "13027964843", Constants.DEFAULT_SHARE_URL));
+            }
+        } else {
+            shareBuilder.append(getResources().getString(
+                    R.string.addto_blacklist_share_content, "13027964843", Constants.DEFAULT_SHARE_URL));
+        }
+        Utilities.toShareApp(shareBuilder.toString(), getTitle().toString(), this);
     }
 }

@@ -299,7 +299,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             }
 
             @Override
-            public void onMobvistaClick(Campaign campaign) {
+            public void onMobvistaClick(Campaign campaign, String unitID) {
                 UFOActivity.this.finish();
                 SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_alAP");
                 SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli", "draw_gp");

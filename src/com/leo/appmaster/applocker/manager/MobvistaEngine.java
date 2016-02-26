@@ -1,17 +1,12 @@
 package com.leo.appmaster.applocker.manager;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
@@ -21,6 +16,9 @@ import com.mobvista.sdk.m.core.MobvistaAd;
 import com.mobvista.sdk.m.core.MobvistaAdNative;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 import com.mobvista.sdk.m.core.entity.Campaign;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 广告相关引擎
@@ -106,8 +104,9 @@ public class MobvistaEngine {
          * 广告点击回调
          *
          * @param campaign
+		 * @param unitID
          */
-        public void onMobvistaClick(Campaign campaign);
+        public void onMobvistaClick(Campaign campaign, String unitID);
     }
 
     public static synchronized MobvistaEngine getInstance(Context ctx) {
@@ -481,7 +480,7 @@ public class MobvistaEngine {
             // 响应之后，干掉listener
             MobvistaListener listener = mMobvistaListeners.get(mUnitId);
             if (listener != null) {
-                listener.onMobvistaClick(campaign == null ? data : campaign);
+                listener.onMobvistaClick(campaign == null ? data : campaign, mUnitId);
             }
             // 点击之后，重新load此位置的广告
             LeoLog.i(TAG, "reload the clicked Ad");

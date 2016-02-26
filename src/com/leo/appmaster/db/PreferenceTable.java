@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
 /**
@@ -81,7 +82,7 @@ public class PreferenceTable extends BaseTable {
                     do {
                         String key = cursor.getString(cursor.getColumnIndex(COL_KEY));
                         String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
-
+                        LeoLog.d(TABLE_NAME, "[" + key + " : " + value + "]");
                         mValues.put(key, value);
                     } while (cursor.moveToNext());
                 }

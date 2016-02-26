@@ -308,13 +308,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	/* 3.3.2 外部广告sdk源*/
 	public static final int AD_SDK_SOURCE_USE_3TH = 1;
 	/* 3.3.2 max广告sdk源 */
-	public static final int GETAD_SDK_SOURCE_USE_MAX = 2;
+	public static final int AD_SDK_SOURCE_USE_MAX = 2;
 	/* 3.3.2 LockScreen  广告位1 使用广告sdk源 */
-	public static final String AD_IN_LOCK_SCREEN_POS_1_SDK_SOURCE = "ad_in_lock_screen_pos_1_sdk_source";
-	/* 3.3.2 LockScreen  广告位2 使用广告sdk源 */
-	public static final String AD_IN_LOCK_SCREEN_POS_2_SDK_SOURCE = "ad_in_lock_screen_pos_2_sdk_source";
-	/* 3.3.2 LockScreen  广告位3 使用广告sdk源 */
-	public static final String AD_IN_LOCK_SCREEN_POS_3_SDK_SOURCE = "ad_in_lock_screen_pos_3_sdk_source";
+	public static final String AD_IN_LOCK_SCREEN_SDK_SOURCE = "ad_in_lock_screen_sdk_source";
+	/* 3.3.2 acceleration 桌面加速 广告位 使用广告sdk源 */
+	public static final String AD_IN_ACCELERATION_SDK_SOURCE = "ad_in_acceleration_sdk_source";
+	/* 3.3.2 invader 入侵者 广告位 使用广告sdk源 */
+	public static final String AD_IN_INVADER_SDK_SOURCE = "ad_in_invader_sdk_source";
+	/* 3.3.2 charging 充电 广告位 使用广告sdk 源 */
+	public static final String AD_CHARGING_SDK_SOURCE = "ad_charging_sdk_source";
 
     //intruder
 //    public static final String KEY_SWITCH_FOR_INTRUDER_PROTECTION = "switch_for_intruder_protection";
@@ -3219,48 +3221,75 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * v:3.3.2
 	 * 锁屏广告大图1的配置
 	 */
-	public void setLockBannerAd1Config(int sdk) {
-		commitAsync(mPref.edit().putInt(AD_IN_LOCK_SCREEN_POS_1_SDK_SOURCE, sdk));
+	public void setLockBannerAdConfig(int sdk) {
+		commitAsync(mPref.edit().putInt(AD_IN_LOCK_SCREEN_SDK_SOURCE, sdk));
 	}
 
 	/**
-	 * 返回锁屏广告大图1的配置
-	 * @return 0 广告关闭，1外部第三方sdk广告源
+	 * v:3.3.2
+	 * 返回锁屏广告大图的配置
+	 * @return 0 广告关闭，1外部第三方sdk广告源, 2为max
 	 */
-	public int getLockBannerAd1Config() {
-		return mPref.getInt(AD_IN_LOCK_SCREEN_POS_1_SDK_SOURCE, AD_SDK_SOURCE_USE_3TH);
+	public int getLockBannerAdConfig() {
+		return mPref.getInt(AD_IN_LOCK_SCREEN_SDK_SOURCE, 
+				AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : AD_SDK_SOURCE_USE_3TH);
 	}
 	
-	/**
-	 * v:3.3.2
-	 * 锁屏广告大图2的配置
-	 */
-	public void setLockBannerAd2Config(int sdk) {
-		commitAsync(mPref.edit().putInt(AD_IN_LOCK_SCREEN_POS_2_SDK_SOURCE, sdk));
-	}
+
 
 	/**
-	 * 返回锁屏广告大图2的配置
-	 * @return 0 广告关闭，1外部第三方sdk广告源
+	 * v:3.3.2
+	 * 充电界面广告位的广告源配置
 	 */
-	public int getLockBannerAd2Config() {
-		return mPref.getInt(AD_IN_LOCK_SCREEN_POS_2_SDK_SOURCE, AD_SDK_SOURCE_USE_3TH);
+	public void setChargingAdConfig(int sdk) {
+		commitAsync(mPref.edit().putInt(AD_CHARGING_SDK_SOURCE, sdk));	
 	}
 
 	/**
 	 * v:3.3.2
-	 * 锁屏广告大图3的配置
+	 * 返回充电界面广告位的配置
+	 * @return 0 广告关闭，1外部第三方sdk广告源, 2为max
 	 */
-	public void setLockBannerAd3Config(int sdk) {
-		commitAsync(mPref.edit().putInt(AD_IN_LOCK_SCREEN_POS_3_SDK_SOURCE, sdk));
+	public int getChargingAdConfig() {
+		return mPref.getInt(AD_CHARGING_SDK_SOURCE, 
+				AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : AD_SDK_SOURCE_USE_3TH);
 	}
 
 	/**
-	 * 返回锁屏广告大图3的配置
-	 * @return 0 广告关闭，1外部第三方sdk广告源
+	 * v:3.3.2
+	 * 入侵者界面广告位的广告源配置
+	 * @param sdk
 	 */
-	public int getLockBannerAd3Config() {
-		return mPref.getInt(AD_IN_LOCK_SCREEN_POS_3_SDK_SOURCE, AD_SDK_SOURCE_USE_3TH);
+	public void setInvaderAdConfig(int sdk) {
+		commitAsync(mPref.edit().putInt(AD_IN_INVADER_SDK_SOURCE, sdk));
 	}
 
+	/**
+	 * V:3.3.2
+	 * 返回入侵者界面广告位的广告源配置
+	 * @return 0 广告关闭，1外部第三方sdk广告源，2为max
+	 */
+	public int getInvaderAdConfig() {
+		return mPref.getInt(AD_IN_INVADER_SDK_SOURCE, 
+				AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : AD_SDK_SOURCE_USE_3TH);
+	}
+
+	/**
+	 * v:3.3.2
+	 * 设置加速广告界面，广告源配置
+	 * @param sdk
+	 */
+	public void setAccelerationAdConfig(int sdk) {
+		commitAsync(mPref.edit().putInt(AD_IN_ACCELERATION_SDK_SOURCE, sdk));
+	}
+
+	/**
+	 * v:3.3.2
+	 * 返回加速广告的广告源配置
+	 * @return 0 广告关闭，1外部第三方sdk广告源，2为max
+	 */
+	public int getAccelerationAdConfig() {
+		return mPref.getInt(AD_IN_ACCELERATION_SDK_SOURCE, 
+				AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : AD_SDK_SOURCE_USE_3TH);
+	}
 }

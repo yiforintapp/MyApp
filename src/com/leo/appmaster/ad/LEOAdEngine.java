@@ -84,8 +84,9 @@ public class LEOAdEngine {
         /**
          * 广告点击回调
          * @param campaign
+		 * @param unitID
          */
-        public void onLeoAdClick(LEONativeAdData campaign);
+        public void onLeoAdClick(LEONativeAdData campaign, String unitID);
     }
     
     public static synchronized LEOAdEngine getInstance(Context ctx) {
@@ -269,7 +270,6 @@ public class LEOAdEngine {
 				LeoLog.i(TAG, "onAdLoaded ["+mUnitId+"] iconURL: " + adData.getIconUrl());
 			} catch (Exception e) {
 			}
-			adData.unitId = mUnitId;
 			LeoCompositeData mobvista = new LeoCompositeData();
 			// 将load成功的 MobvistaAdNative 对象移动到 LeoCompositeData 中
 			mobvista.nativeAd = mLeoLoadingNatives.remove(mUnitId);
@@ -308,7 +308,7 @@ public class LEOAdEngine {
             // 响应之后，干掉listener
             LeoListener listener = mLeoListeners.get(mUnitId);
             if (listener != null) {
-                listener.onLeoAdClick(data);
+                listener.onLeoAdClick(data, mUnitId);
             }
             // 点击之后，重新load此位置的广告
             LeoLog.i(TAG, "reload the clicked Ad");

@@ -82,6 +82,9 @@ public class CallFIlterUIHelper {
         } else {
             dialog.setNowItemPosition(0);
         }
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(R.style.dialogExitAnim);
+        }
         return dialog;
     }
 
@@ -178,6 +181,9 @@ public class CallFIlterUIHelper {
         dialog.setContent(summaryF);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setDialogIconVisibility(false);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(R.style.dialogExitAnim);
+        }
         return dialog;
     }
 

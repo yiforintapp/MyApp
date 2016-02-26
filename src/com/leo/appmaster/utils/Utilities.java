@@ -897,4 +897,52 @@ public final class Utilities {
         }
         return isOldString;
     }
+
+    /**
+     * 获取邮件应用个数和只有一个邮件应用的包名
+     */
+    public static String[] getEmailInfo(Context context, String url) {
+        String default_browser = "android.intent.category.DEFAULT";
+
+//        String browsable = "android.intent.category.BROWSABLE";
+        String view = "android.intent.action.VIEW";
+        Intent intent = new Intent(view);
+        intent.addCategory(default_browser);
+//        intent.addCategory(browsable);
+        Uri uri = Uri.parse("mailto:".concat(url));
+        intent.setDataAndType(uri, null);
+
+        String[] data = new String[]{"0", ""};
+
+        try {
+            // 找出手机当前安装的所有浏览器程序
+            List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(
+                    intent, PackageManager.GET_INTENT_FILTERS);
+
+
+            LeoLog.i("getBrowserInfo", "能跳转的email应用个数： " + resolveInfoList.size());
+            for (int i = 0; i < resolveInfoList.size(); i++) {
+                LeoLog.i("getBrowserInfo", resolveInfoList.get(i).activityInfo.packageName + ";"
+                        + context.getPackageManager().getApplicationLabel(
+                        resolveInfoList.get(i).activityInfo.applicationInfo).toString());
+            }
+
+            if (resolveInfoList == null) {
+                return data;
+            }
+            int size = resolveInfoList.size();
+            if (size > 1) {
+                data[0] = String.valueOf(resolveInfoList.size());
+                return data;
+            } else if (size == 1) {
+                data[0] = "1";
+                data[1] = resolveInfoList.get(0).activityInfo.packageName;
+                return data;
+            } else {
+                return data;
+            }
+        } catch (Exception e) {
+            return data;
+        }
+    }
 }

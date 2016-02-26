@@ -1,18 +1,20 @@
 package com.leo.appmaster.feedback;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -27,10 +29,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.MenuFaqBrowserActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -42,6 +45,9 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FeedbackActivity extends BaseActivity implements OnClickListener,
         OnFocusChangeListener {
@@ -64,6 +70,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private LEOChoiceDialog mCategoryDialog;
     private ListView mCategoryListView;
     private LEOMessageDialog mMessageDialog;
+
+    private TextView mToEmailTextView;
 
     private final static int[] sCategoryIds = {
             R.string.home_tab_wifi, R.string.home_tab_lost,
@@ -183,6 +191,14 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         };
         mEditEmail.addTextChangedListener(textWatcher);
         mEditContent.addTextChangedListener(textWatcher);
+
+        mToEmailTextView = (TextView) findViewById(R.id.feedback_call_us_contact_type_1);
+//        mToEmailTextView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        SpannableString content = new SpannableString(mToEmailTextView.getText().toString());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        content.setSpan(new ForegroundColorSpan(Color.BLUE), 0, content.length(), 0);
+        mToEmailTextView.setText(content);
+        mToEmailTextView.setOnClickListener(this);
 
         mProblemView = findViewById(R.id.normal_problem);
         mProblemView.setOnClickListener(this);
@@ -319,6 +335,24 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
 
             MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
+        } else if (v == mToEmailTextView) {
+            LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            Intent data=new Intent(Intent.ACTION_SENDTO);
+            data.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            data.setData(Uri.parse("mailto:".concat(mToEmailTextView.getText().toString())));
+//            data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
+//            data.putExtra(Intent.EXTRA_TEXT, "这是内容");
+            try {
+                String[] datas = Utilities.getEmailInfo(FeedbackActivity.this,
+                        mToEmailTextView.getText().toString()); // 浏览器信息
+                int count = Integer.parseInt(datas[0]);
+                if (count == 1) {
+                    mLockManager.filterPackage(datas[1], 1000);
+                }
+                mLockManager.filterSelfOneMinites();
+                startActivity(data);
+            } catch (Exception e) {
+            }
         }
     }
 

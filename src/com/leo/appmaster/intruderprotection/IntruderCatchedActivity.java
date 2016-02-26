@@ -333,7 +333,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 }
 
                 @Override
-                public void onMobvistaClick(Campaign campaign) {
+                public void onMobvistaClick(Campaign campaign, String unitID) {
                     LeoLog.d("IntruderAd", "onMobvistaClick");
                     SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
                             "ad_cli", "adv_cnts_capture");

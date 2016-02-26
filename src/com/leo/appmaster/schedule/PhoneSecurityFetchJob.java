@@ -74,30 +74,41 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
 
             // 应用内是否展示充电屏保，默认不显示
             boolean hasData = !resp.isNull(PrefConst.KEY_SHOW_INSIDE_APP);
-            boolean showInsideApp = false;
             if (hasData) {
                 int data = resp.getInt(PrefConst.KEY_SHOW_INSIDE_APP);
-                showInsideApp = data == 1;
+                boolean showInsideApp = data == 1;
+                preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, showInsideApp);
             }
-            preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, showInsideApp);
 
             // 是否显示屏保的忽略按钮
             hasData = !resp.isNull(PrefConst.KEY_SHOW_IGNORE_COC);
-            boolean showIgnore = false;
             if (hasData) {
                 int data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC);
-                showIgnore = data == 1;
+                boolean showIgnore = data == 1;
+                preferenceTable.putBoolean(PrefConst.KEY_SHOW_IGNORE_COC, showIgnore);
             }
-            preferenceTable.putBoolean(PrefConst.KEY_SHOW_IGNORE_COC, showIgnore);
 
             // 忽略屏保的忽略按钮后再次显示的时间间隔
             hasData = !resp.isNull(PrefConst.KEY_SHOW_IGNORE_COC_TS);
-            int data = 24; // 默认24小时
             if (hasData) {
+                int data = 24; // 默认24小时
                 data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC_TS);
+                preferenceTable.putInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, data);
             }
-            preferenceTable.putInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, data);
 
+            // 屏保省电动画的时间间隔
+            hasData = !resp.isNull(PrefConst.KEY_SHOW_BOOST_TS);
+            if (hasData) {
+                int bootData = resp.getInt(PrefConst.KEY_SHOW_BOOST_TS);
+                preferenceTable.putInt(PrefConst.KEY_SHOW_BOOST_TS, bootData);
+            }
+
+            // 屏保省电动画的内存阀值
+            hasData = !resp.isNull(PrefConst.KEY_SHOW_BOOST_MEM);
+            if (hasData) {
+                double bootData = resp.getDouble(PrefConst.KEY_SHOW_BOOST_MEM);
+                preferenceTable.putDouble(PrefConst.KEY_SHOW_BOOST_MEM, bootData);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
