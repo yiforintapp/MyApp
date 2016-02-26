@@ -690,7 +690,7 @@ public class HttpRequestAgent {
                   .append(productId).append("/")
                   .append(unitName).append("/")
                   .append(country).append("/")
-                  .append(language)
+                  .append("en") //暂时用en，发布改回language
                   .append(".html");
         String url = stringBuilder.toString();
         LeoLog.i("ShareFetchJob", "load url: " + url);

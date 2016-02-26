@@ -215,24 +215,38 @@
                 android:textColor="@color/c2"
                 android:textSize="@dimen/f3" />
 
-            <TextView
-                android:id="@+id/feedback_call_us_contact_type_1"
+            <LinearLayout
+                android:id="@+id/email_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/feedback_call_us_contact_type_title"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/feedback_tell_us_contact_type_1"
-                android:autoLink="email"
-                android:textColor="@color/c4"
-                android:textSize="@dimen/f4" />
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/feedback_call_us_contact_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedback_tell_us_email_title"
+                    android:textColor="@color/c4"
+                    android:textSize="@dimen/f4" />
+
+                <TextView
+                    android:id="@+id/feedback_call_us_contact_type_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedback_tell_us_email_url"
+                    android:textColor="@color/c4"
+                    android:textSize="@dimen/f4" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/feedback_call_us_contact_type_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/feedback_call_us_contact_type_1"
+                android:layout_below="@id/email_layout"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"

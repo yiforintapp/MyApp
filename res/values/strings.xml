@@ -1039,4 +1039,11 @@
     <string name="pri_pro_wifi_not_scan">当前连接wifi未检测</string>
     <string name="battery_protect_view_show_title">推荐使用</string>
 
+    <string name="feedback_tell_us_email_title">Email:</string>
+    <string name="feedback_tell_us_email_url">support@leomaster.com</string>
+
+    <string name="addto_blacklist_share_dialog_title">添加成功！</string>
+    <string name="addto_blacklist_share_dialog_content">分享给好友，让隐私卫士帮他们识别骚扰电话！</string>
+    <string name="addto_blacklist_share_content">%1$s是骚扰电话，快其加入黑名单！木有来电拦截？点这里：%2$s</string>
+
 </resources>
