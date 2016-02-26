@@ -146,7 +146,9 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogTooShort.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                AskAddToBlacklistActivity.this.finish();
+                if (mShareDialog == null) {
+                    AskAddToBlacklistActivity.this.finish();
+                }
             }
         });
         String summaryF = String.format(getResources().getString(R.string.call_filter_ask_add_to_blacklist), (int) (Math.ceil(durationMax / 1000)));
@@ -185,7 +187,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogTooShort.dismiss();
-                AskAddToBlacklistActivity.this.finish();
+//                AskAddToBlacklistActivity.this.finish();
                 showShareDialog();
             }
         });
@@ -197,7 +199,9 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogAskAddWithSmrMark.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                AskAddToBlacklistActivity.this.finish();
+                if (mShareDialog == null) {
+                    AskAddToBlacklistActivity.this.finish();
+                }
             }
         });
         String summaryS = this.getResources().getString(R.string.call_filter_confirm_ask_mark_summary);
@@ -252,7 +256,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmrMark.dismiss();
                 SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_mark&block");
-                AskAddToBlacklistActivity.this.finish();
+//                AskAddToBlacklistActivity.this.finish();
                 showShareDialog();
             }
         });
@@ -265,7 +269,9 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogAskAddWithSmr.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                AskAddToBlacklistActivity.this.finish();
+                if (mShareDialog == null) {
+                    AskAddToBlacklistActivity.this.finish();
+                }
             }
         });
         String summaryS = this.getResources().getString(R.string.call_filter_confirm_add_to_blacklist_summary);
@@ -305,7 +311,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 notiUpdateBlackList();
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmr.dismiss();
-                AskAddToBlacklistActivity.this.finish();
+//                AskAddToBlacklistActivity.this.finish();
                 showShareDialog();
             }
         });
@@ -317,7 +323,9 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogAskAdd.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                AskAddToBlacklistActivity.this.finish();
+                if (mShareDialog == null) {
+                    AskAddToBlacklistActivity.this.finish();
+                }
             }
         });
         mDialogAskAdd.setRightBtnListener(new OnClickListener() {
@@ -341,7 +349,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                 mDialogAskAdd.dismiss();
                 SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block");
-                AskAddToBlacklistActivity.this.finish();
+//                AskAddToBlacklistActivity.this.finish();
                 showShareDialog();
             }
         });
@@ -428,6 +436,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                     if (mShareDialog != null) {
                         mShareDialog = null;
                     }
+                    AskAddToBlacklistActivity.this.finish();
                 }
             });
         }
@@ -487,15 +496,15 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             try {
                 shareBuilder.append(String.format(preferenceTable.getString(
                                 PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT),
-                        "13027964843", preferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL)));
+                        mPhoneNumber, preferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL)));
 
             } catch (Exception e) {
                 shareBuilder.append(getResources().getString(
-                        R.string.addto_blacklist_share_content, "13027964843", Constants.DEFAULT_SHARE_URL));
+                        R.string.addto_blacklist_share_content, mPhoneNumber, Constants.DEFAULT_SHARE_URL));
             }
         } else {
             shareBuilder.append(getResources().getString(
-                    R.string.addto_blacklist_share_content, "13027964843", Constants.DEFAULT_SHARE_URL));
+                    R.string.addto_blacklist_share_content, mPhoneNumber, Constants.DEFAULT_SHARE_URL));
         }
         Utilities.toShareApp(shareBuilder.toString(), getTitle().toString(), this);
     }

@@ -193,13 +193,15 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         mEditContent.addTextChangedListener(textWatcher);
 
         mToEmailTextView = (TextView) findViewById(R.id.feedback_call_us_contact_type_1);
-//        mToEmailTextView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        SpannableString content = new SpannableString(mToEmailTextView.getText().toString());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        content.setSpan(new ForegroundColorSpan(Color.BLUE), 0, content.length(), 0);
-        mToEmailTextView.setText(content);
-        mToEmailTextView.setOnClickListener(this);
-
+        try {
+            SpannableString content = new SpannableString(mToEmailTextView.getText().toString());
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            content.setSpan(new ForegroundColorSpan(Color.BLUE), 0, content.length(), 0);
+            mToEmailTextView.setText(content);
+            mToEmailTextView.setOnClickListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mProblemView = findViewById(R.id.normal_problem);
         mProblemView.setOnClickListener(this);
     }

@@ -51,6 +51,7 @@ import com.leo.appmaster.activity.AboutActivity;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.callfilter.AskAddToBlacklistActivity;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -198,6 +199,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         openAdvanceProtectDialogHandler();
 //        printSignature();
+
+        Intent intent = new Intent();
+        intent.setClass(this, AskAddToBlacklistActivity.class);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_WHAT_TO_SHOW, 4);
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_NUMBER, "13027964843");
+        int[] data = new int[] {1,1000,1000, 1000};
+        intent.putExtra(AskAddToBlacklistActivity.EXTRA_FILTERTYPE_ARRAY,  data);
+        startActivity(intent);
     }
 
     private void printSignature() {
