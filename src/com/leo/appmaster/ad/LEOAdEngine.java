@@ -140,9 +140,10 @@ public class LEOAdEngine {
             return;
         }
 
-        if (nativeAd == null) {
-            nativeAd = createLEONative(unitId);
-        }
+        /*if (nativeAd == null) {
+        }*/
+        // 每次都使用新的Native Ad对象
+        nativeAd = createLEONative(unitId);
         try {
             // 这个地方执行导致crash，直接catch住
             nativeAd.loadNativeAd(new AdListenerImpl(unitId));
@@ -290,7 +291,7 @@ public class LEOAdEngine {
         public void onAdClicked() {
             LEONativeAdData data = null;
             /* Max SDK先把这个已经点击过的缓存清理掉 */
-            LeoCompositeData m = mLEOLoadedNatives.remove(mUnitId);
+            LeoCompositeData m = mLEOLoadedNatives.get(mUnitId);
             if (m != null) {
                 data = m.campaign;
             }
