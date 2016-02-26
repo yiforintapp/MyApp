@@ -182,16 +182,36 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/time_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop">
+        android:layout_marginTop="40dp">
+
+        <View
+            android:id="@+id/line_one"
+            android:layout_width="70dp"
+            android:layout_height="1px"
+            android:layout_centerVertical="true"
+            android:background="#9e9ac8" />
 
         <TextView
             android:id="@+id/left_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/line_one"
+            android:drawableLeft="@drawable/icon_time_clock"
+            android:drawablePadding="3dp"
             android:text="@string/battery_protect_view_time_title"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/line_two"
+            android:layout_width="70dp"
+            android:layout_height="1px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/left_time"
+            android:background="#9e9ac8" />
 
     </RelativeLayout>
     <!-- 剩余时间 -->
@@ -202,40 +222,68 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/remain_time"
-        android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop">
-
-        <!--<TextView-->
-        <!--android:id="@+id/use_time_title"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="35dp"-->
-        <!--android:text="@string/battery_protect_view_time_title"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="16sp" />-->
+        android:layout_marginTop="28dp">
 
         <RelativeLayout
             android:id="@+id/three_remain_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
-            <!--android:layout_below="@id/use_time_title"-->
-            <!--android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop"-->
 
             <RelativeLayout
                 android:id="@+id/remain_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <RelativeLayout
                     android:id="@+id/tv_remain_one_fill"
-                    android:layout_width="60dp"
-                    android:layout_height="70dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:text="11h"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:background="@drawable/bottom_time_phone"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_one_time_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8"
+                        android:textColor="@color/white"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tv_one_time_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_one_time_one"
+                        android:layout_marginBottom="3dp"
+                        android:layout_toRightOf="@id/tv_one_time_one"
+                        android:text="h"
+                        android:textColor="#91d4ff"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_one_time_three"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_one_time_one"
+                        android:layout_toRightOf="@id/tv_one_time_two"
+                        android:text="8"
+                        android:textColor="@color/white"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tv_one_time_four"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_one_time_one"
+                        android:layout_marginBottom="3dp"
+                        android:layout_toRightOf="@id/tv_one_time_three"
+                        android:text="m"
+                        android:textColor="#91d4ff"
+                        android:textSize="13sp" />
+                </RelativeLayout>
+
 
                 <TextView
                     android:id="@+id/tv_remain_one"
@@ -246,7 +294,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/battery_protect_view_remain_one_title"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="11sp" />
 
             </RelativeLayout>
 
@@ -254,19 +302,58 @@
                 android:id="@+id/remain_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="19dp"
                 android:layout_toRightOf="@id/remain_one">
 
-                <TextView
+
+                <RelativeLayout
                     android:id="@+id/tv_remain_two_fill"
-                    android:layout_width="60dp"
-                    android:layout_height="70dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:text="11h"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:background="@drawable/bottom_time_internet"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_two_time_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8"
+                        android:textColor="@color/white"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tv_two_time_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_two_time_one"
+                        android:layout_marginBottom="3dp"
+                        android:layout_toRightOf="@id/tv_two_time_one"
+                        android:text="h"
+                        android:textColor="#91d4ff"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_two_time_three"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_two_time_one"
+                        android:layout_toRightOf="@id/tv_two_time_two"
+                        android:text="8"
+                        android:textColor="@color/white"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tv_two_time_four"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_two_time_one"
+                        android:layout_marginBottom="3dp"
+                        android:layout_toRightOf="@id/tv_two_time_three"
+                        android:text="m"
+                        android:textColor="#91d4ff"
+                        android:textSize="13sp" />
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tv_remain_two"
@@ -277,7 +364,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/battery_protect_view_remain_two_title"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="11sp" />
 
             </RelativeLayout>
 
@@ -285,38 +372,59 @@
                 android:id="@+id/remain_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="19dp"
                 android:layout_toRightOf="@id/remain_two">
+
 
                 <RelativeLayout
                     android:id="@+id/tv_remain_three_fill"
-                    android:layout_width="60dp"
-                    android:layout_height="70dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/white"
-                    android:padding="2dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#e0000000" />
+                    android:background="@drawable/bottom_time_app"
+                    android:gravity="center">
 
                     <TextView
+                        android:id="@+id/tv_three_time_one"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="11h"
+                        android:text="8"
                         android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tv_three_time_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_three_time_one"
+                        android:layout_marginBottom="3dp"
+                        android:layout_toRightOf="@id/tv_three_time_one"
+                        android:text="h"
+                        android:textColor="#91d4ff"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_three_time_three"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_three_time_one"
+                        android:layout_toRightOf="@id/tv_three_time_two"
+                        android:text="8"
+                        android:textColor="@color/white"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tv_three_time_four"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_three_time_one"
+                        android:layout_marginBottom="3dp"
+                        android:layout_toRightOf="@id/tv_three_time_three"
+                        android:text="m"
+                        android:textColor="#91d4ff"
+                        android:textSize="13sp" />
                 </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/default_user_avatar" />
-                
                 <TextView
                     android:id="@+id/tv_remain_three"
                     android:layout_width="wrap_content"
@@ -326,7 +434,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/battery_protect_view_remain_three_title"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="11sp" />
             </RelativeLayout>
 
 
@@ -342,152 +450,133 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="@dimen/batteryscreen_remaintime_margintop"
             android:background="@drawable/batter_card_item_bg"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            android:visibility="invisible">
 
-            <TextView
-                android:id="@+id/show_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/battery_protect_view_show_title"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/show_small_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/show_title"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:visibility="invisible">
 
-                <RelativeLayout
-                    android:id="@+id/show_one"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/show_title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/battery_protect_view_show_title"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
-                    <com.leo.appmaster.privacycontact.CircleImageView
-                        android:id="@+id/iv_show_one"
-                        android:layout_width="@dimen/privacy_contact_icon_size"
-                        android:layout_height="@dimen/privacy_contact_icon_size"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/default_user_avatar" />
-
-                    <!--<ImageView-->
-                    <!--android:id="@+id/iv_show_one"-->
-                    <!--android:layout_width="45dp"-->
-                    <!--android:layout_height="45dp"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:background="@drawable/backup_delete_btn" />-->
-
-                    <TextView
-                        android:id="@+id/tv_show_one"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/iv_show_one"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/battery_protect_view_remain_three_title"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/show_two"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_below="@id/show_title"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                    <com.leo.appmaster.privacycontact.CircleImageView
-                        android:id="@+id/iv_show_two"
-                        android:layout_width="@dimen/privacy_contact_icon_size"
-                        android:layout_height="@dimen/privacy_contact_icon_size"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/default_user_avatar" />
-                    <!--<ImageView-->
-                    <!--android:id="@+id/iv_show_two"-->
-                    <!--android:layout_width="45dp"-->
-                    <!--android:layout_height="45dp"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:background="@drawable/backup_delete_btn" />-->
-
-                    <TextView
-                        android:id="@+id/tv_show_two"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/show_one"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/iv_show_two"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/battery_protect_view_remain_three_title"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </RelativeLayout>
+                        android:layout_weight="1">
 
-                <RelativeLayout
-                    android:id="@+id/show_three"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                        <com.leo.appmaster.privacycontact.CircleImageView
+                            android:id="@+id/iv_show_one"
+                            android:layout_width="@dimen/privacy_contact_icon_size"
+                            android:layout_height="@dimen/privacy_contact_icon_size"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/default_user_avatar" />
 
-                    <com.leo.appmaster.privacycontact.CircleImageView
-                        android:id="@+id/iv_show_three"
-                        android:layout_width="@dimen/privacy_contact_icon_size"
-                        android:layout_height="@dimen/privacy_contact_icon_size"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/default_user_avatar" />
+                        <TextView
+                            android:id="@+id/tv_show_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/iv_show_one"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/battery_protect_view_remain_three_title"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
 
-                    <!--<ImageView-->
-                    <!--android:id="@+id/iv_show_three"-->
-                    <!--android:layout_width="45dp"-->
-                    <!--android:layout_height="45dp"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:background="@drawable/backup_delete_btn" />-->
-
-                    <TextView
-                        android:id="@+id/tv_show_three"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/show_two"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/iv_show_three"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/battery_protect_view_remain_three_title"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </RelativeLayout>
+                        android:layout_weight="1">
 
-                <RelativeLayout
-                    android:id="@+id/show_four"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                        <com.leo.appmaster.privacycontact.CircleImageView
+                            android:id="@+id/iv_show_two"
+                            android:layout_width="@dimen/privacy_contact_icon_size"
+                            android:layout_height="@dimen/privacy_contact_icon_size"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/default_user_avatar" />
 
-                    <com.leo.appmaster.privacycontact.CircleImageView
-                        android:id="@+id/iv_show_four"
-                        android:layout_width="@dimen/privacy_contact_icon_size"
-                        android:layout_height="@dimen/privacy_contact_icon_size"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/default_user_avatar" />
+                        <TextView
+                            android:id="@+id/tv_show_two"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/iv_show_two"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/battery_protect_view_remain_three_title"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
 
-                    <!--<ImageView-->
-                    <!--android:id="@+id/iv_show_four"-->
-                    <!--android:layout_width="45dp"-->
-                    <!--android:layout_height="45dp"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:background="@drawable/backup_delete_btn" />-->
-
-                    <TextView
-                        android:id="@+id/tv_show_four"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/show_three"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/iv_show_four"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/battery_protect_view_remain_three_title"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_weight="1">
+
+                        <com.leo.appmaster.privacycontact.CircleImageView
+                            android:id="@+id/iv_show_three"
+                            android:layout_width="@dimen/privacy_contact_icon_size"
+                            android:layout_height="@dimen/privacy_contact_icon_size"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/default_user_avatar" />
+
+                        <TextView
+                            android:id="@+id/tv_show_three"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/iv_show_three"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/battery_protect_view_remain_three_title"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/show_four"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <com.leo.appmaster.privacycontact.CircleImageView
+                            android:id="@+id/iv_show_four"
+                            android:layout_width="@dimen/privacy_contact_icon_size"
+                            android:layout_height="@dimen/privacy_contact_icon_size"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/default_user_avatar" />
+
+                        <TextView
+                            android:id="@+id/tv_show_four"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/iv_show_four"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/battery_protect_view_remain_three_title"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
         <!-- 推荐使用 -->
     </RelativeLayout>
