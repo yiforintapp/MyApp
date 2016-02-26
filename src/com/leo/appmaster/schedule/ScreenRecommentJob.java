@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.battery.BatteryAppItem;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.imageloader.utils.IoUtils;
@@ -83,7 +84,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         PreferenceTable.getInstance().putString(PrefConst.KEY_SS_RECOMMEND_LIST, response.toString());
     }
 
-    private static void parseJsonArrayAndCache(String key, JSONArray array) {
+    private static void parseJsonArrayAndCache(String key, JSONArray array, boolean isApp) {
         List<BatteryAppItem> appItemList = new ArrayList<BatteryAppItem>();
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = null;
@@ -95,7 +96,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
             if (obj == null) {
                 continue;
             }
-            BatteryAppItem item = parseJson(obj);
+            BatteryAppItem item = parseJson(obj, isApp);
             if (item != null) {
                 appItemList.add(item);
             }
@@ -108,7 +109,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         sRecommendData.put(key, appItemList);
     }
 
-    private static BatteryAppItem parseJson(JSONObject object) {
+    private static BatteryAppItem parseJson(JSONObject object, boolean isApp) {
         BatteryAppItem appItem = new BatteryAppItem();
 
         try {
@@ -121,6 +122,11 @@ public class ScreenRecommentJob extends FetchScheduleJob {
             return null;
         }
 
+        Context ctx = AppMasterApplication.getInstance();
+        if (isApp && (TextUtils.isEmpty(appItem.pkg) || !AppUtil.appInstalled(ctx, appItem.pkg))) {
+            return null;
+        }
+
         boolean itemIsValid = valideItem(appItem);
         if (!itemIsValid) {
             return null;
@@ -130,7 +136,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
     }
 
     private static boolean valideItem(BatteryAppItem appItem) {
-        return appItem != null && !TextUtils.isEmpty(appItem.name) && !TextUtils.isEmpty(appItem.iconUrl);
+        return appItem != null && !TextUtils.isEmpty(appItem.name)/* && !TextUtils.isEmpty(appItem.iconUrl)*/;
     }
 
     @Override
@@ -220,7 +226,15 @@ public class ScreenRecommentJob extends FetchScheduleJob {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 String[] array = line.split("---");
-                BatteryAppItem appItem = parseJson(new JSONObject(array[1]));
+
+                boolean isApp = false;
+                if (KEY_CALL.equals(array[0]) || KEY_VIDEO.equals(array[0])) {
+                    isApp = true;
+                }
+                BatteryAppItem appItem = parseJson(new JSONObject(array[1]), isApp);
+                if (appItem == null) {
+                    continue;
+                }
                 if (KEY_CALL.equals(array[0])) {
                     callList.add(appItem);
                 } else if (KEY_NET.equals(array[0])) {
@@ -252,7 +266,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         try {
             call = object.getString(KEY_CALL);
             JSONArray callArray = new JSONArray(call);
-            parseJsonArrayAndCache(KEY_CALL, callArray);
+            parseJsonArrayAndCache(KEY_CALL, callArray, true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -261,7 +275,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         try {
             net = object.getString(KEY_NET);
             JSONArray netArray = new JSONArray(net);
-            parseJsonArrayAndCache(KEY_NET, netArray);
+            parseJsonArrayAndCache(KEY_NET, netArray, false);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -270,7 +284,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         try {
             video = object.getString(KEY_VIDEO);
             JSONArray videoArray = new JSONArray(video);
-            parseJsonArrayAndCache(KEY_VIDEO, videoArray);
+            parseJsonArrayAndCache(KEY_VIDEO, videoArray, true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
