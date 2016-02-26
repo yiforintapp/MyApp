@@ -510,6 +510,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationStart(Animation animation) {
                 mRecommandView.setVisibility(View.VISIBLE);
+                boolean isSlideContentShow = mBossView.getVisibility() == 0;
+                if (isSlideContentShow) {
+                    mSlideView.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -539,6 +543,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationEnd(Animation animation) {
                 mRecommandView.setVisibility(View.INVISIBLE);
+
+                boolean isSlideContentShow = mBossView.getVisibility() == 0;
+                if (isSlideContentShow) {
+                    mSlideView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -926,15 +935,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_setting");
                 mActivity.finish();
                 break;
-//            case R.id.speed_content:
-//                showPop(CHARING_TYPE_SPEED);
-//                break;
-//            case R.id.continuous_content:
-//                showPop(CHARING_TYPE_CONTINUOUS);
-//                break;
-//            case R.id.trickle_content:
-//                showPop(CHARING_TYPE_TRICKLE);
-//                break;
             case R.id.ad_wrapper:
                 mClickRunnable = new Runnable() {
                     @Override
@@ -1002,15 +1002,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (mCurrentClickType == recommandTypeThree) {
             mCurrentClickType = 0;
             shrinkRecommandContent();
-            makeSlideContentUp();
+//            makeSlideContentUp();
         } else {
             if (mCurrentClickType == 0) {
                 expandRecommandContent();
-                makeSlideContentDown();
+//                makeSlideContentDown();
             } else if (mCurrentClickType == -1) {
                 mCurrentClickType = 0;
                 shrinkRecommandContent();
-                makeSlideContentUp();
+//                makeSlideContentUp();
                 return;
             } else {
                 //TODO 展示内容替换
@@ -1022,8 +1022,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void makeSlideContentUp() {
         boolean isSlideContentShow = mBossView.getVisibility() == 0;
         if (isSlideContentShow) {
-            mMoveDisdance = mMoveDisdance - mRecommandViewHeight;
-            mSlideView.setY(mMoveDisdance);
+//            mMoveDisdance = mMoveDisdance - mRecommandViewHeight;
+//            mSlideView.setY(mMoveDisdance);
+            mSlideView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1032,10 +1033,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (isSlideContentShow) {
 //            mMoveDisdance = mMoveDisdance + mRecommandViewHeight;
 //            mSlideView.setY(mMoveDisdance);
-            ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-                    "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop() + mMoveDisdance + mRecommandViewHeight);
-            animMoveY.setDuration(600);
-            animMoveY.start();
+
+//            ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+//                    "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop() + mMoveDisdance + mRecommandViewHeight);
+//            animMoveY.setDuration(600);
+//            animMoveY.start();
+
+            mSlideView.setVisibility(View.INVISIBLE);
         }
     }
 
