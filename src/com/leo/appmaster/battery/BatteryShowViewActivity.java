@@ -45,6 +45,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private String mChangeType = BatteryManager.SHOW_TYPE_IN;
     private int mRemainTime;
     private boolean showWhenScreenOff;
+    private int[] mRemainTimeArr;
     private ViewPager mViewPager;
     private BatteryFragmentHoler[] mFragmentHolders = new BatteryFragmentHoler[2];
 
@@ -190,14 +191,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         LeoEventBus.getDefaultBus().register(this);
         mBatteryManager.setBatteryStateListener(this);
         mBatterViewBg = (RelativeLayout) findViewById(R.id.batter_view_bg);
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-//        Drawable drawable = BitmapUtils.getDeskTopBitmap(
-//                BatteryShowViewActivity.this, preferenceTable);
-//        LeoLog.e("getDeskTopBitmap", "drawable :" + drawable);
-//        if (drawable != null) {
-//            LeoLog.e("getDeskTopBitmap", "drawable != null");
-//            mBatterViewBg.setBackgroundDrawable(drawable);
-//        }
 
         mViewPager = (ViewPager) findViewById(R.id.battery_viewpager);
         initFragment();
@@ -207,7 +200,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         mViewPager.setOnPageChangeListener(this);
 
         if (batteryFragment != null) {
-            batteryFragment.initCreate(mChangeType, newState, mRemainTime);
+            batteryFragment.initCreate(mChangeType, newState, mRemainTime, mRemainTimeArr);
         }
 
 
@@ -284,6 +277,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         mChangeType = intent.getStringExtra(BatteryManager.PROTECT_VIEW_TYPE);
         mRemainTime = intent.getIntExtra(BatteryManager.REMAIN_TIME, 0);
         showWhenScreenOff = intent.getBooleanExtra(BatteryManager.SHOW_WHEN_SCREEN_OFF_FLAG, false);
+        mRemainTimeArr = intent.getIntArrayExtra(BatteryManager.ARR_REMAIN_TIME);
     }
 
     public void onEventMainThread(BatteryViewEvent event) {
@@ -292,42 +286,12 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             BatteryShowViewActivity.isActivityAlive = false;
             finish();
         }
-
-//        finish();
-
-//        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-//        KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
-//        //解锁
-//        kl.disableKeyguard();
-//        //获取电源管理器对象
-//        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-//        //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
-//        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
-//        //点亮屏幕
-//        wl.acquire();
-//
-//        Window win = getWindow();
-//        win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-//                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         LeoLog.d(TAG, "onStop");
-//        if (mFinish) {
-//            final TaskDetectService tds = TaskDetectService.getService();
-//            if (tds != null) {
-//                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        LeoLog.d(TAG, "onStop, call pretend app launch.");
-//                        tds.callPretendAppLaunch();
-//                    }
-//                }, 200);
-//            }
-//        }
     }
 
     @Override
@@ -376,7 +340,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     }
 
     @Override
-    public void onStateChange(BatteryManager.EventType type, BatteryManager.BatteryState state, int remainTime) {
+    public void onStateChange(BatteryManager.EventType type, BatteryManager.BatteryState state, int remainTime, int[] timeArr) {
         if (type.equals(BatteryManager.EventType.BAT_EVENT_CHARGING)) {
             //3
             mChangeType = BatteryManager.UPDATE_UP;
@@ -392,13 +356,14 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         }
         newState = state;
         mRemainTime = remainTime;
+        mRemainTimeArr = timeArr;
         process();
     }
 
     private void process() {
         LeoLog.d(TAG, "process mChangeType : " + mChangeType);
         if (batteryFragment != null) {
-            batteryFragment.process(mChangeType, newState, mRemainTime);
+            batteryFragment.process(mChangeType, newState, mRemainTime, mRemainTimeArr);
         }
     }
 
@@ -428,15 +393,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     public void onFinishActivity() {
         mViewPager.setCurrentItem(0);
-    }
-
-    public void onEventMainThread(VirtualEvent event) {
-//        if (event.mIsVirtual && mBatterViewBg != null) {
-//            Drawable drawable = BitmapUtils.getFinalDrawable(BatteryShowViewActivity.this);
-//            if (drawable != null) {
-//                mBatterViewBg.setBackgroundDrawable(drawable);
-//            }
-//        }
     }
 
     public void onEvent(AppUnlockEvent event) {

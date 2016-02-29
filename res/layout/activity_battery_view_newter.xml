@@ -259,7 +259,7 @@
                         android:layout_marginBottom="3dp"
                         android:layout_toRightOf="@id/tv_one_time_one"
                         android:text="h"
-                        android:textColor="#91d4ff"
+                        android:textColor="#88fd8b"
                         android:textSize="13sp" />
 
                     <TextView
@@ -280,7 +280,7 @@
                         android:layout_marginBottom="3dp"
                         android:layout_toRightOf="@id/tv_one_time_three"
                         android:text="m"
-                        android:textColor="#91d4ff"
+                        android:textColor="#88fd8b"
                         android:textSize="13sp" />
                 </RelativeLayout>
 
@@ -400,7 +400,7 @@
                         android:layout_marginBottom="3dp"
                         android:layout_toRightOf="@id/tv_three_time_one"
                         android:text="h"
-                        android:textColor="#91d4ff"
+                        android:textColor="#ffebaf"
                         android:textSize="13sp" />
 
                     <TextView
@@ -421,7 +421,7 @@
                         android:layout_marginBottom="3dp"
                         android:layout_toRightOf="@id/tv_three_time_three"
                         android:text="m"
-                        android:textColor="#91d4ff"
+                        android:textColor="#ffebaf"
                         android:textSize="13sp" />
                 </RelativeLayout>
 

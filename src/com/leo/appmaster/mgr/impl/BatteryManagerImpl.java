@@ -214,14 +214,15 @@ public class BatteryManagerImpl extends BatteryManager {
 //        Toast.makeText(mContext, "用户插上充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
                 newState.level, 0);
-        broadcastBatteryLevel(newState);
-        if (!BatteryShowViewActivity.isActivityAlive) {
+        int[] remainTimeArr = getTimeArr(newState);
 
+        if (!BatteryShowViewActivity.isActivityAlive) {
             final Intent intent = new Intent(mContext, BatteryShowViewActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(PROTECT_VIEW_TYPE, SHOW_TYPE_IN);
             intent.putExtra(REMAIN_TIME, remainTime);
             intent.putExtra(SHOW_WHEN_SCREEN_OFF_FLAG, whenScreenOff);
+            intent.putExtra(ARR_REMAIN_TIME, remainTimeArr);
             Bundle bundle = new Bundle();
             bundle.putSerializable(SEND_BUNDLE, newState);
             intent.putExtras(bundle);
@@ -246,10 +247,21 @@ public class BatteryManagerImpl extends BatteryManager {
             if (mListenerRef != null) {
                 BatteryStateListener listener = mListenerRef.get();
                 if (listener != null) {
-                    listener.onStateChange(EventType.SHOW_TYPE_IN, newState, remainTime);
+                    listener.onStateChange(EventType.SHOW_TYPE_IN, newState, remainTime, remainTimeArr);
                 }
+
             }
         }
+    }
+
+    private int[] getTimeArr(BatteryState newState) {
+        int callTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_CALL,
+                newState.level, newState.scale);
+        int internetTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_INTERNET,
+                newState.level, newState.scale);
+        int videoTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_VIDEO,
+                newState.level, newState.scale);
+        return new int[]{callTime, internetTime, videoTime};
     }
 
 
@@ -264,13 +276,13 @@ public class BatteryManagerImpl extends BatteryManager {
             return;
         }
 //        Toast.makeText(mContext, "用户拔下充电器事件" + newState.toString(), Toast.LENGTH_LONG).show();
-        broadcastBatteryLevel(newState);
-
+//        broadcastBatteryLevel(newState);
+        int[] remainTimeArr = getTimeArr(newState);
         if (BatteryShowViewActivity.isActivityAlive) {
             if (mListenerRef != null) {
                 BatteryStateListener listener = mListenerRef.get();
                 if (listener != null) {
-                    listener.onStateChange(EventType.SHOW_TYPE_OUT, newState, 0);
+                    listener.onStateChange(EventType.SHOW_TYPE_OUT, newState, 0, remainTimeArr);
                 }
             }
         }
@@ -289,16 +301,18 @@ public class BatteryManagerImpl extends BatteryManager {
             return;
         }
 //        Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
-        broadcastBatteryLevel(newState);
+//        broadcastBatteryLevel(newState);
+
         int remainTime = getRemainTimeHelper(newState)
                 .getEstimatedTime(mPreviousState.level, newState.level,
                         (newState.timestamp - mPreviousState.timestamp));
 
+        int[] remainTimeArr = getTimeArr(newState);
         if (BatteryShowViewActivity.isActivityAlive) {
             if (mListenerRef != null) {
                 BatteryStateListener listener = mListenerRef.get();
                 if (listener != null) {
-                    listener.onStateChange(EventType.BAT_EVENT_CHARGING, newState, remainTime);
+                    listener.onStateChange(EventType.BAT_EVENT_CHARGING, newState, remainTime, remainTimeArr);
                 }
             }
         }
@@ -316,12 +330,13 @@ public class BatteryManagerImpl extends BatteryManager {
             return;
         }
 //        Toast.makeText(mContext, "正在耗电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
-        broadcastBatteryLevel(newState);
+//        broadcastBatteryLevel(newState);
+        int[] remainTimeArr = getTimeArr(newState);
         if (BatteryShowViewActivity.isActivityAlive) {
             if (mListenerRef != null) {
                 BatteryStateListener listener = mListenerRef.get();
                 if (listener != null) {
-                    listener.onStateChange(EventType.BAT_EVENT_CONSUMING, newState, 0);
+                    listener.onStateChange(EventType.BAT_EVENT_CONSUMING, newState, 0, remainTimeArr);
                 }
             }
         }
@@ -385,13 +400,13 @@ public class BatteryManagerImpl extends BatteryManager {
 
     @Override
     public boolean shouldShowBubble() {
-        return (mSp.getScreenSaveBubbleCount()<MAX_BUBBLE_SHOW_TIME);
+        return (mSp.getScreenSaveBubbleCount() < MAX_BUBBLE_SHOW_TIME);
     }
 
     @Override
     public void markShowBubble() {
         int count = mSp.getScreenSaveBubbleCount();
-        mSp.setScreenSaveBubbleCount(count+1);
+        mSp.setScreenSaveBubbleCount(count + 1);
     }
 
     @Override
@@ -400,22 +415,30 @@ public class BatteryManagerImpl extends BatteryManager {
     }
 
     /* 外发电量通知 */
-    private void broadcastBatteryLevel(BatteryState state) {
-        LeoLog.d(TAG, "broadcast battery event for audience");
-        int callTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_CALL,
-                state.level, state.scale);
-        int internetTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_INTERNET,
-                state.level, state.scale);
-        int videoTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_VIDEO,
-                state.level, state.scale);
-
-        LeoLog.d(TAG, "callTime = " + callTime + "; internetTime = " + internetTime
-                        + "; videoTime = " + videoTime);
-
-        LeoEventBus.getDefaultBus().postSticky(
-                new BatteryViewEvent(EventId.EVENT_BATTERY_CHANGE_ID, state,
-                        new int[]{callTime, internetTime, videoTime}));
-    }
+//    private void broadcastBatteryLevel(BatteryState state) {
+//        LeoLog.d(TAG, "broadcast battery event for audience");
+//        int callTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_CALL,
+//                state.level, state.scale);
+//        int internetTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_INTERNET,
+//                state.level, state.scale);
+//        int videoTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_VIDEO,
+//                state.level, state.scale);
+//
+//        LeoLog.d(TAG, "callTime = " + callTime + "; internetTime = " + internetTime
+//                + "; videoTime = " + videoTime);
+//
+////        LeoEventBus.getDefaultBus().postSticky(
+////                new BatteryViewEvent(EventId.EVENT_BATTERY_CHANGE_ID, state,
+////                        new int[]{callTime, internetTime, videoTime}));
+////        LeoEventBus.getDefaultBus().post(new BatteryViewEvent("holy shit"));
+//
+//        if (mListenerRef != null) {
+//            BatteryStateListener listener = mListenerRef.get();
+//            if (listener != null) {
+//                listener.onTimeChange(state, new int[]{callTime, internetTime, videoTime});
+//            }
+//        }
+//    }
 
     /* 剩余充电时间计算相关 */
     private RemainTimeHelper getRemainTimeHelper(BatteryState batteryState) {

@@ -69,6 +69,7 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -127,6 +128,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private boolean loadFastThanInit = false;
     private GradientMaskView mMaskView;
 
+    private TextView mPhoneHour;
+    private TextView mPhoneHourText;
+    private TextView mPhoneMin;
+    private TextView mPhoneMinText;
+    private TextView mNetHour;
+    private TextView mNetHourText;
+    private TextView mNetMin;
+    private TextView mNetMinText;
+    private TextView mPlayHour;
+    private TextView mPlayHourText;
+    private TextView mPlayMin;
+    private TextView mPlayMinText;
+
 
     private CircleImageView mIvShowOne;
     private CircleImageView mIvShowTwo;
@@ -139,6 +153,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private BatteryManager.BatteryState newState;
     private String mChangeType = BatteryManager.SHOW_TYPE_IN;
     private int mRemainTime;
+    private int[] mRemainTimeArr;
     private View mBossView;
     private boolean isSetInitPlace = false;
 
@@ -448,6 +463,22 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mIvShowThree = (CircleImageView) findViewById(R.id.iv_show_three);
         mIvShowFour = (CircleImageView) findViewById(R.id.iv_show_four);
 
+        mPhoneHour = (TextView) findViewById(R.id.tv_one_time_one);
+        mPhoneHourText = (TextView) findViewById(R.id.tv_one_time_two);
+        mPhoneMin = (TextView) findViewById(R.id.tv_one_time_three);
+        mPhoneMinText = (TextView) findViewById(R.id.tv_one_time_four);
+
+        mNetHour = (TextView) findViewById(R.id.tv_two_time_one);
+        mNetHourText = (TextView) findViewById(R.id.tv_two_time_two);
+        mNetMin = (TextView) findViewById(R.id.tv_two_time_three);
+        mNetMinText = (TextView) findViewById(R.id.tv_two_time_four);
+
+        mPlayHour = (TextView) findViewById(R.id.tv_three_time_one);
+        mPlayHourText = (TextView) findViewById(R.id.tv_three_time_two);
+        mPlayMin = (TextView) findViewById(R.id.tv_three_time_three);
+        mPlayMinText = (TextView) findViewById(R.id.tv_three_time_four);
+
+
 //        List<PackageInfo> packages = mActivity.getPackageManager().getInstalledPackages(0);
 //        PackageInfo packageInfo = packages.get(15);
 //            packageInfo.applicationInfo.loadLabel(mActivity.getPackageManager()).toString();
@@ -475,7 +506,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         });
 
         if (newState != null) {
-            process(mChangeType, newState, mRemainTime);
+            process(mChangeType, newState, mRemainTime, mRemainTimeArr);
         }
 
         if (mRootView != null) {
@@ -627,16 +658,20 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mUpdateTimer.schedule(mUpdateTask, 0, 10 * 1000);
     }
 
-    public void initCreate(String type, BatteryManager.BatteryState state, int remainTime) {
+    public void initCreate(String type, BatteryManager.BatteryState state, int remainTime, int[] remainTimeArr) {
         mChangeType = type;
         newState = state;
         mRemainTime = remainTime;
+        mRemainTimeArr = remainTimeArr;
+        LeoLog.d("testBatteryEvent", "initCreate : " + mRemainTimeArr[0] + " ; " + mRemainTimeArr[1] + " ; " + mRemainTimeArr[2]);
     }
 
-    public void process(String type, BatteryManager.BatteryState state, int remainTime) {
+    public void process(String type, BatteryManager.BatteryState state, int remainTime, int[] remainTimeArr) {
         mChangeType = type;
         newState = state;
         mRemainTime = remainTime;
+        mRemainTimeArr = remainTimeArr;
+        LeoLog.d("testBatteryEvent", "process : " + mRemainTimeArr[0] + " ; " + mRemainTimeArr[1] + " ; " + mRemainTimeArr[2]);
         notifyUI(mChangeType);
     }
 
@@ -663,6 +698,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         setBatteryPercent();
         setBottleWater();
         setTime(mRemainTime, isExpand);
+        setThreeRemainTime(mRemainTimeArr);
 
         if (BatteryManager.SHOW_TYPE_OUT.equals(type)) {
             if (!isExpand) {
@@ -701,6 +737,93 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
 
+    }
+
+    private void setThreeRemainTime(int[] timeArr) {
+        int phoneTime = timeArr[0];
+        int netTime = timeArr[1];
+        int playTime = timeArr[2];
+
+        List<String> phoneTimeArr = getTimes(phoneTime);
+        String phoneHourStr = phoneTimeArr.get(0);
+        String phoneMinStr = phoneTimeArr.get(1);
+        if (phoneHourStr.equals("0")) {
+            mPhoneHour.setVisibility(View.GONE);
+            mPhoneHourText.setVisibility(View.GONE);
+            mPhoneMin.setVisibility(View.VISIBLE);
+            mPhoneMinText.setVisibility(View.VISIBLE);
+
+            mPhoneMin.setText(phoneMinStr);
+        } else {
+            if (phoneMinStr.equals("0")) {
+                mPhoneHour.setVisibility(View.VISIBLE);
+                mPhoneHourText.setVisibility(View.VISIBLE);
+                mPhoneMin.setVisibility(View.GONE);
+                mPhoneMinText.setVisibility(View.GONE);
+
+                mPhoneHour.setText(phoneHourStr);
+            } else {
+                mPhoneHour.setVisibility(View.VISIBLE);
+                mPhoneHourText.setVisibility(View.VISIBLE);
+                mPhoneMin.setVisibility(View.VISIBLE);
+                mPhoneMinText.setVisibility(View.VISIBLE);
+
+                mPhoneHour.setText(phoneHourStr);
+                mPhoneMin.setText(phoneMinStr);
+            }
+        }
+
+        List<String> netTimeArr = getTimes(netTime);
+        String netHourStr = netTimeArr.get(0);
+        String netMinStr = netTimeArr.get(1);
+        if (netHourStr.equals("0")) {
+            mNetHour.setVisibility(View.GONE);
+            mNetHourText.setVisibility(View.GONE);
+            mNetMin.setVisibility(View.VISIBLE);
+            mNetMinText.setVisibility(View.VISIBLE);
+            mNetMin.setText(netMinStr);
+        } else {
+            if (netMinStr.equals("0")) {
+                mNetHour.setVisibility(View.VISIBLE);
+                mNetHourText.setVisibility(View.VISIBLE);
+                mNetMin.setVisibility(View.GONE);
+                mNetMinText.setVisibility(View.GONE);
+                mNetHour.setText(netHourStr);
+            } else {
+                mNetHour.setVisibility(View.VISIBLE);
+                mNetHourText.setVisibility(View.VISIBLE);
+                mNetMin.setVisibility(View.VISIBLE);
+                mNetMinText.setVisibility(View.VISIBLE);
+                mNetHour.setText(netHourStr);
+                mNetMin.setText(netMinStr);
+            }
+        }
+
+        List<String> playTimeArr = getTimes(playTime);
+        String playHourStr = playTimeArr.get(0);
+        String playMinStr = playTimeArr.get(1);
+        if (playHourStr.equals("0")) {
+            mPlayHour.setVisibility(View.GONE);
+            mPlayHourText.setVisibility(View.GONE);
+            mPlayMin.setVisibility(View.VISIBLE);
+            mPlayMinText.setVisibility(View.VISIBLE);
+            mPlayMin.setText(playMinStr);
+        } else {
+            if (playMinStr.equals("0")) {
+                mPlayHour.setVisibility(View.VISIBLE);
+                mPlayHourText.setVisibility(View.VISIBLE);
+                mPlayMin.setVisibility(View.GONE);
+                mPlayMinText.setVisibility(View.GONE);
+                mPlayHour.setText(playHourStr);
+            } else {
+                mPlayHour.setVisibility(View.VISIBLE);
+                mPlayHourText.setVisibility(View.VISIBLE);
+                mPlayMin.setVisibility(View.VISIBLE);
+                mPlayMinText.setVisibility(View.VISIBLE);
+                mPlayHour.setText(playHourStr);
+                mPlayMin.setText(playMinStr);
+            }
+        }
     }
 
     private void updateTime() {
@@ -748,10 +871,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    public void setTime(int second, boolean isExpandContent) {
-        if (mActivity == null) {
-            return;
-        }
+    private List<String> getTimes(int second) {
+        List<String> strings = new ArrayList<String>();
         int h = 0;
         int d = 0;
         int s = 0;
@@ -778,6 +899,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         String hString, dString;
         hString = String.valueOf(h);
         dString = String.valueOf(d);
+
+        strings.add(hString);
+        strings.add(dString);
+        return strings;
+    }
+
+    public void setTime(int second, boolean isExpandContent) {
+        if (mActivity == null) {
+            return;
+        }
+
+        List<String> timeStr = getTimes(second);
+        String hString, dString;
+        hString = timeStr.get(0);
+        dString = timeStr.get(1);
         LeoLog.d("testBatteryView", "hString : " + hString + "dString : " + dString);
         boolean isCharing = newState.plugged != 0 ? true : false;
 

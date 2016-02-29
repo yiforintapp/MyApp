@@ -24,6 +24,7 @@ public abstract class BatteryManager extends Manager {
     public static final String PROTECT_VIEW_TYPE = "protect_view_type";
     public static final String REMAIN_TIME = "remain_time";
     public static final String SHOW_WHEN_SCREEN_OFF_FLAG = "show_when_screen_off";
+    public static final String ARR_REMAIN_TIME = "arr_remain_time";
 
     public static final String SHOW_TYPE_IN = "type_1";
     public static final String SHOW_TYPE_OUT = "type_2";
@@ -35,7 +36,7 @@ public abstract class BatteryManager extends Manager {
     }
 
     public interface BatteryStateListener {
-        public void onStateChange(EventType type, BatteryState newState, int remainTime);
+        public void onStateChange(EventType type, BatteryState newState, int remainTime,int[] remainTimeArr);
     }
 
     public static class BatteryState implements Serializable {
