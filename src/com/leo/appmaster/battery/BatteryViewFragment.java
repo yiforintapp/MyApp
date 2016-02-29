@@ -5,7 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -21,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -195,6 +198,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private boolean mShowBoost = false;
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
+
+    private List<PackageInfo> mPackages;
 
     public static String[] days = AppMasterApplication.getInstance().getResources()
             .getStringArray(R.array.days_of_week);
@@ -506,11 +511,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         bottomTwoText = (TextView) findViewById(R.id.tv_remain_two);
         bottomThreeText = (TextView) findViewById(R.id.tv_remain_three);
 
-//        List<PackageInfo> packages = mActivity.getPackageManager().getInstalledPackages(0);
-//        PackageInfo packageInfo = packages.get(15);
-//            packageInfo.applicationInfo.loadLabel(mActivity.getPackageManager()).toString();
-//        Drawable map = packageInfo.applicationInfo.loadIcon(mActivity.getPackageManager());
-//        mIvShowOne.setImageDrawable(map);
+        mPackages = mActivity.getPackageManager().getInstalledPackages(0);
 
         mShowOne = findViewById(R.id.remain_one);
         mShowOne.setOnClickListener(this);
@@ -611,12 +612,55 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             //fill the local ,  size of : 3
             mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_contacts));
             mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_contact));
+            mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(mActivity, "contact", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             mIvShowTwo.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_phone));
             mRecommandTvTwo.setText(getString(R.string.battery_protect_show_num_call));
+            mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(mActivity, "call", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             mIvShowThree.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_message));
             mRecommandTvThree.setText(getString(R.string.battery_protect_show_num_msm));
+            mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+            String name = null;
+            Drawable map = null;
+            BatteryAppItem info = phoneList.get(0);
+            for (int i = 0; i < mPackages.size(); i++) {
+                PackageInfo packageInfo = mPackages.get(i);
+                if (packageInfo.applicationInfo.packageName.equals(info.pkg)) {
+                    name = packageInfo.applicationInfo.loadLabel(mActivity.getPackageManager()).toString();
+                    map = packageInfo.applicationInfo.loadIcon(mActivity.getPackageManager());
+                    break;
+                }
+            }
+            if (name != null && map != null) {
+                mRecommandNumFour.setVisibility(View.VISIBLE);
+                mIvShowFour.setImageDrawable(map);
+                mRecommandTvFour.setText(name);
+                mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+            } else {
+                mRecommandNumFour.setVisibility(View.GONE);
+            }
 
 
         } else if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
@@ -626,6 +670,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             //fill the local ,  size of : 1
             mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_browser));
             mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_browser));
+            mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(mActivity, "browser", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         } else {
             List<BatteryAppItem> playList = ScreenRecommentJob.getBatteryVideoList();
@@ -1151,7 +1201,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 dlIntent.putExtra(Constants.BATTERY_FROM, Constants.FROM_BATTERY_PROTECT);
                 dlIntent.putExtra(BatteryManager.REMAIN_TIME, mRemainTime);
-                dlIntent.putExtra(BatteryManager.ARR_REMAIN_TIME,mRemainTimeArr);
+                dlIntent.putExtra(BatteryManager.ARR_REMAIN_TIME, mRemainTimeArr);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(BatteryManager.SEND_BUNDLE, newState);
                 dlIntent.putExtras(bundle);
