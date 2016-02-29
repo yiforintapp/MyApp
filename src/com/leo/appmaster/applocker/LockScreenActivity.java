@@ -556,7 +556,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryHidePermissionGuideToast() {
-        if (mPermissionGuideToast != null) {
+        if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing()) {
             mPermissionGuideToast.hide();
         }
     }
@@ -568,7 +568,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //        if (true) {   
                 mRlNoPermission.setVisibility(View.VISIBLE);
             } else {
-                mRlNoPermission.setVisibility(View.GONE);
+                mRlNoPermission.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -1692,7 +1692,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     String cleanRate = String.format(textResource, mCleanRate);
                     mText.setText(cleanRate);
                     mToast.setGravity(Gravity.BOTTOM, 0, 66);
-                    mToast.setDuration(1000);
+                    mToast.setDuration(Toast.LENGTH_LONG);
                     mToast.setView(mLockClean);
                     mToast.show();
                 }
@@ -1951,19 +1951,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
                     }
                     ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                        
+
                         @Override
                         public void run() {
                             if (mPermissionGuideToast == null) {
                                 mPermissionGuideToast = new BaseSelfDurationToast(LockScreenActivity.this);
 
                             }
-                            mPermissionGuideToast.setDuration(1000 * 5);
+                            mPermissionGuideToast.setDuration(1000 * 60);
                             mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
+                            mPermissionGuideToast.setMatchParent();
                             mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, 0);
-                            final View view = View.inflate(LockScreenActivity.this, R.layout.toast_get_score,null);
-                            final RelativeLayout rlScore = (RelativeLayout) view.findViewById(R.id.rl_score);
-                            rlScore.setOnClickListener(new View.OnClickListener() {
+                            final View view = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null, true);
+                            RelativeLayout root = (RelativeLayout) view.findViewById(R.id.rl_root);
+//                            final View view = View.inflate(LockScreenActivity.this, R.layout.toast_permission_guide,null);
+                            final ImageView ivClose = (ImageView) view.findViewById(R.id.iv_permission_guide_close);
+                            ivClose.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mPermissionGuideToast.hide();

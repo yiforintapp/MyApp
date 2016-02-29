@@ -43,6 +43,7 @@ public class BaseSelfDurationToast {
     private float mVerticalMargin;
     private View mView;
     private View mNextView;
+    private boolean mIsShowing = false;
     
     private WindowManager mWM;
     private final WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
@@ -196,12 +197,16 @@ public class BaseSelfDurationToast {
                  .getSystemService(Context.WINDOW_SERVICE);
     }
 
+    public void setMatchParent() {
+        mParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+    }
+
     public void setWindowAnimations(int styleId) {
         mParams.windowAnimations = styleId;
     }
     
     private void handleShow() {
- 
+
         if (mView != mNextView) {
             // remove the old view if necessary
             handleHide();
@@ -226,6 +231,7 @@ public class BaseSelfDurationToast {
                 mWM.removeView(mView);
             }
             mWM.addView(mView, mParams);
+            mIsShowing = true;
         }
     }
  
@@ -236,8 +242,13 @@ public class BaseSelfDurationToast {
             if (mView.getParent() != null)
             {
                 mWM.removeView(mView);
+                mIsShowing = false;
             }
             mView = null;
         }
+    }
+
+    public boolean isShowing() {
+        return mIsShowing;
     }
 }
