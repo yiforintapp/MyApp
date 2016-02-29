@@ -7,14 +7,23 @@
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_main"
         android:layout_width="match_parent"
-        android:background="@color/cb"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/cb" />
+
+    <ImageView
+        android:id="@+id/big_pic_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/ctb_main"
+        android:background="@drawable/pic_setup_bay" />
 
     <com.leo.appmaster.ui.RippleView
         android:id="@+id/rv_item_screenview"
         android:layout_width="match_parent"
         android:layout_height="68dp"
-        android:layout_below="@id/ctb_main"
+        android:layout_below="@id/big_pic_set"
         app:rippleAlpha="1"
         app:rippleColor="@color/home_tab_pressed"
         app:rippleDuration="250"
@@ -24,9 +33,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/iv_switch_screenview"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@+id/iv_switch_screenview"
             android:gravity="left">
 
             <TextView
@@ -44,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_title_screenview"
                 android:layout_marginTop="4dp"
-                android:gravity="top"
                 android:ellipsize="end"
+                android:gravity="top"
                 android:maxLines="3"
                 android:text="@string/batterymanage_switch_screen_summary"
                 android:textColor="@color/c4"
@@ -78,8 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/iv_switch_noti"
             android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@+id/iv_switch_noti"
             android:gravity="left">
 
             <TextView
