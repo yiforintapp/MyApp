@@ -477,7 +477,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (mRootView != null) {
             try {
-                loadAd();
+                 loadAd();
             } catch (Exception e) {
                 LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
                 if (e != null) {
@@ -1242,6 +1242,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //            }
 //        });
 
+        View saverAdView = rootView.findViewById(R.id.screen_saver_id);
+        saverAdView.setVisibility(View.VISIBLE);
 
         adView.setVisibility(View.VISIBLE);
         mAdWrapper.postDelayed(new Runnable() {

@@ -633,8 +633,10 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
+                        android:id="@+id/screen_saver_id"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
 
                         <!-- 为了满足广告SDK展示和点击的统计正确，只能用这样的布局 -->
                         <com.leo.appmaster.ui.AdWrapperLayout
