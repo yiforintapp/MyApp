@@ -1,19 +1,19 @@
-call---{"pkg":"com.whatsapp","icon":"","name":"WhatsApp Messenger","url":"http://www.leomaster.com"}
-call---{"pkg":"com.facebook.orca","icon":"","name":"Messenger","url":"http://www.leomaster.com"}
-call---{"pkg":"com.skype.raider","icon":"","name":"Skype","url":"http://www.leomaster.com"}
-call---{"pkg":"com.bsb.hike","icon":"","name":"Hike Messenger","url":"http://www.leomaster.com"}
-call---{"pkg":"com.bbm","icon":"","name":"BBM","url":"http://www.leomaster.com"}
-call---{"pkg":"com.icq.mobile.client","icon":"","name":"ICQ","url":"http://www.leomaster.com"}
-call---{"pkg":"jp.naver.line.android","icon":"","name":"LINE","url":"http://www.leomaster.com"}
-call---{"pkg":"com.jb.gosms","icon":"","name":"GO SMS Pro","url":"http://www.leomaster.com"}
-call---{"pkg":"com.tencent.mm","icon":"","name":"WeChat","url":"http://www.leomaster.com"}
-net---{"pkg":"","icon":"","name":"Google","url":"www.google.com"}
-net---{"pkg":"","icon":"","name":"Amazon","url":"www.amazon.com"}
-net---{"pkg":"","icon":"","name":"Yahoo","url":"www.yahoo.com"}
+call---{"pkg":"com.whatsapp","icon":"","name":"WhatsApp Messenger","url":""}
+call---{"pkg":"com.facebook.orca","icon":"","name":"Messenger","url":""}
+call---{"pkg":"com.skype.raider","icon":"","name":"Skype","url":""}
+call---{"pkg":"com.bsb.hike","icon":"","name":"Hike Messenger","url":""}
+call---{"pkg":"com.bbm","icon":"","name":"BBM","url":""}
+call---{"pkg":"com.icq.mobile.client","icon":"","name":"ICQ","url":""}
+call---{"pkg":"jp.naver.line.android","icon":"","name":"LINE","url":""}
+call---{"pkg":"com.jb.gosms","icon":"","name":"GO SMS Pro","url":""}
+call---{"pkg":"com.tencent.mm","icon":"","name":"WeChat","url":""}
+net---{"pkg":"","icon":"","name":"Google","url":"http://www.google.com"}
+net---{"pkg":"","icon":"","name":"Amazon","url":"http://www.amazon.com"}
+net---{"pkg":"","icon":"","name":"Yahoo","url":"http://www.yahoo.com"}
 video---{"pkg":"com.instagram.android","icon":"","name":"Instagram","url":""}
-video---{"pkg":"com.facebook.katana","icon":"","name":"Facebook","url":"www.facebook.com"}
+video---{"pkg":"com.facebook.katana","icon":"","name":"Facebook","url":"http://www.facebook.com"}
 video---{"pkg":"com.snapchat.android","icon":"","name":"Snapchat","url":""}
-video---{"pkg":"com.twitter.android","icon":"","name":"Twitter","url":"www.twitter.com"}
+video---{"pkg":"com.twitter.android","icon":"","name":"Twitter","url":"http://www.twitter.com"}
 video---{"pkg":"com.mico","icon":"","name":"Mico","url":""}
 video---{"pkg":"com.badoo.mobile","icon":"","name":"Badoo","url":""}
 video---{"pkg":"com.facebook.lite","icon":"","name":"Facebook Lite","url":""}
@@ -34,4 +34,4 @@ video---{"pkg":"com.ea.games.r3_row","icon":"","name":"Real Racing 3","url":""}
 video---{"pkg":"com.skgames.trafficrider","icon":"","name":"Traffic Rider","url":""}
 video---{"pkg":"com.miniclip.eightballpool","icon":"","name":"8 Ball Pool","url":""}
 video---{"pkg":"com.google.android.youtube","icon":"","name":"YouTube","url":""}
-video---{"pkg":"com.mobilemotion.dubsmash","icon":"","name":"Dubsmash","url":"www.youtube.com"}
+video---{"pkg":"com.mobilemotion.dubsmash","icon":"","name":"Dubsmash","url":"http://www.youtube.com"}
