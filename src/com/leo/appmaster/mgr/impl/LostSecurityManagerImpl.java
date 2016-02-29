@@ -182,17 +182,17 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     public Location getLocation() {
         Location location = null;
         boolean isGoogleAva = false;
-        LeoLog.d(TAG, "start get location google play service");
+        LeoLog.d(TAG, "start get location");
         mLostImpl = this;
         int gpCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext);
         //Google play service
         switch (gpCode) {
             case ConnectionResult.SUCCESS:
-                LeoLog.d(TAG, "googley play service can connect ...");
+                LeoLog.d(TAG, "googley play service can connect,try use google play service ...");
                 isGoogleAva = true;
                 break;
             default:
-                LeoLog.d(TAG, "googley play service no can connect ...");
+                LeoLog.d(TAG, "googley play service no can connect,tyr use location manager ...");
                 break;
         }
         if (isGoogleAva) {
@@ -256,15 +256,16 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             }
 
             String provider = PhoneSecurityUtils.getLocateProvider(locationManager);
-            LeoLog.i(TAG, "provider=" + provider);
+            LeoLog.i(TAG, "google play service no get location,use location manager provider:" + provider);
             if (locationManager.isProviderEnabled(provider)) {
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 5; i++) {
                     location = locationManager.getLastKnownLocation(provider);
                     if (location != null) {
                         break;
                     }
                 }
             }
+            LeoLog.i(TAG, "location ,location.getLatitude():"+location.getLatitude()+",location.getLongitude"+location.getLongitude());
         }
         if (mGoogleApiClient != null) {
             LeoLog.i(TAG, "mGoogleApiClient.isConnected():" + mGoogleApiClient.isConnected());
@@ -284,9 +285,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         mLocation = null;
         mLostImpl = null;
         if (location == null) {
-            LeoLog.i(TAG, "location is null ");
-        } else {
-            LeoLog.d(TAG, "location manager,latitude:" + location.getLatitude() + ";location manager,,longitude:" + location.getLongitude());
+            LeoLog.i(TAG, "location is null ! ");
+        }else{
+            LeoLog.i(TAG, "location  no is null !");
         }
         return location;
     }
