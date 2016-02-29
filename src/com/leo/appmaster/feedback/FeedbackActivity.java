@@ -343,7 +343,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             data.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             data.setData(Uri.parse("mailto:".concat(mToEmailTextView.getText().toString())));
 //            data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
-//            data.putExtra(Intent.EXTRA_TEXT, "这是内容");
+            data.putExtra(Intent.EXTRA_TEXT, " ");
             try {
                 String[] datas = Utilities.getEmailInfo(FeedbackActivity.this,
                         mToEmailTextView.getText().toString()); // 浏览器信息
