@@ -29,6 +29,7 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
     private BatteryManager.BatteryState newState;
     private LEOAlarmDialog mConfirmCloseDialog;
     private int mRemainTime;
+    private int[] mRemainTimeArr;
     //    private boolean mNotiStatusWhenSwitch = false;
     private BatteryManager mBtrManager;
 
@@ -49,6 +50,7 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
             mRemainTime = intent.getIntExtra(BatteryManager.REMAIN_TIME, 0);
             newState = (BatteryManager.BatteryState)
                     intent.getExtras().get(BatteryManager.SEND_BUNDLE);
+            mRemainTimeArr = intent.getIntArrayExtra(BatteryManager.ARR_REMAIN_TIME);
         }
     }
 
@@ -101,6 +103,7 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(BatteryManager.PROTECT_VIEW_TYPE, BatteryManager.SHOW_TYPE_IN);
             intent.putExtra(BatteryManager.REMAIN_TIME, mRemainTime);
+            intent.putExtra(BatteryManager.ARR_REMAIN_TIME,mRemainTimeArr);
             Bundle bundle = new Bundle();
             bundle.putSerializable(BatteryManager.SEND_BUNDLE, newState);
             intent.putExtras(bundle);

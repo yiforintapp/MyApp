@@ -254,7 +254,7 @@ public class BatteryManagerImpl extends BatteryManager {
         }
     }
 
-    private int[] getTimeArr(BatteryState newState) {
+    public int[] getTimeArr(BatteryState newState) {
         int callTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_CALL,
                 newState.level, newState.scale);
         int internetTime = mTimeEstimator.getRemainingTime(RemainingTimeEstimator.SCENE_INTERNET,

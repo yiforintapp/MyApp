@@ -1147,6 +1147,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 dlIntent.putExtra(Constants.BATTERY_FROM, Constants.FROM_BATTERY_PROTECT);
                 dlIntent.putExtra(BatteryManager.REMAIN_TIME, mRemainTime);
+                dlIntent.putExtra(BatteryManager.ARR_REMAIN_TIME,mRemainTimeArr);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(BatteryManager.SEND_BUNDLE, newState);
                 dlIntent.putExtras(bundle);
