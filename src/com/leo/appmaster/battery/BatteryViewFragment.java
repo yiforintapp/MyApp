@@ -193,6 +193,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private ImageLoader mImageLoader;
 
+    private boolean mShowBoost = false;
+
     public static String[] days = AppMasterApplication.getInstance().getResources()
             .getStringArray(R.array.days_of_week);
 
@@ -539,6 +541,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (mRootView != null) {
                 initSwiftyLayout(mRootView);
                 initExtraLayout(mRootView);
+                if (mShowBoost) {
+                    initBoostLayout();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -548,6 +553,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         intentFilter.addAction(Intent.ACTION_USER_PRESENT);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         mActivity.registerReceiver(mPresentReceiver, intentFilter);
+    }
+
+    private void initBoostLayout() {
+        ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
+        viewStub.inflate();
+
+        mRemainContent.setVisibility(View.GONE);
+        mBossView.setVisibility(View.GONE);
     }
 
     private void expandRecommandContent() {

@@ -708,6 +708,12 @@
     </RelativeLayout>
     <!-- 滑动区域 -->
 
+    <ViewStub
+        android:id="@+id/boost_stub"
+        android:layout="@layout/stub_battery_boost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <RelativeLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
