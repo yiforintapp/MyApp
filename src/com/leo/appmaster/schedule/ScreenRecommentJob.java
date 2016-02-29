@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.provider.Contacts;
 import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.battery.BatteryAppItem;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.AppUtil;
@@ -171,7 +173,32 @@ public class ScreenRecommentJob extends FetchScheduleJob {
     }
 
     public static List<BatteryAppItem> getBatteryNetList() {
-        return getBatteryListInner(KEY_NET);
+        List<BatteryAppItem> list = getBatteryListInner(KEY_NET);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("http://www.google.com"));
+        PackageManager pm = AppMasterApplication.getInstance().getPackageManager();
+        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
+        if (resolveInfos == null || resolveInfos.size() == 0) {
+            return list;
+        }
+
+        ResolveInfo chrome = null;
+        for (ResolveInfo resolveInfo : resolveInfos) {
+            if (Constants.CHROME_PACKAGE_NAME.equals(resolveInfo.activityInfo.packageName)) {
+                chrome = resolveInfo;
+                break;
+            }
+        }
+        if (chrome == null) {
+            chrome = resolveInfos.get(0);
+        }
+        BatteryAppItem appItem = new BatteryAppItem();
+        appItem.name = (String) chrome.activityInfo.loadLabel(pm);
+        appItem.pkg = chrome.activityInfo.packageName;
+        list.add(0, appItem);
+
+        return list;
     }
 
     public static List<BatteryAppItem> getBatteryVideoList() {

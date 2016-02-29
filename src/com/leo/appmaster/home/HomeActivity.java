@@ -42,6 +42,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
@@ -197,7 +198,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         registerLocaleChange();
 
         openAdvanceProtectDialogHandler();
-//        printSignature();
+//        if (AppMasterConfig.LOGGABLE) {
+//            printSignature();
+//        }
 
     }
 
