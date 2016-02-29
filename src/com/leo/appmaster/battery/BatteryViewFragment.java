@@ -178,11 +178,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 case MOVE_UP:
                     if (mBossView.getVisibility() == View.VISIBLE) {
                         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_up");
-                        if (newState.plugged == 0) {
-                            mIvArrowMove.setVisibility(View.INVISIBLE);
-                        } else {
-                            mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
-                        }
+//                        if (newState.plugged == 0) {
+//                            mIvArrowMove.setVisibility(View.INVISIBLE);
+//                        } else {
+                        mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
+//                        }
 //                        mSlideView.setScrollable(true);
                         mShowing = true;
                         showMoveUp();
@@ -193,17 +193,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     }
                     break;
                 case MOVE_DOWN:
-                    if (newState.plugged != 0) {
-                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_down");
-                        mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
+//                    if (newState.plugged != 0) {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_down");
+                    mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
 //                        mSlideView.setScrollable(true);
-                        mShowing = true;
-                        showMoveDown();
-                        mRemainTimeContent.setVisibility(View.VISIBLE);
-                        mRemainContent.setVisibility(View.VISIBLE);
+                    mShowing = true;
+                    showMoveDown();
+                    mRemainTimeContent.setVisibility(View.VISIBLE);
+                    mRemainContent.setVisibility(View.VISIBLE);
 //                        timeContentMoveBig();
 //                        batteryIconMoveBig();
-                    }
+//                    }
                     break;
                 case LOAD_DONE_INIT_PLACE:
                     int type = (Integer) msg.obj;
@@ -664,14 +664,27 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (BatteryManager.SHOW_TYPE_OUT.equals(type)) {
             if (!isExpand) {
 //                mSlideView.setScrollable(true);
-                expandContent(true);
+
+//                expandContent(true);
+                boolean isShowContentShow = mRecommandView.getVisibility() == 0;
+                if (!isShowContentShow) {
+                    expandRecommandContent();
+                    mCurrentClickType = RECOMMAND_TYPE_TWO;
+                }
 //                showRecommandContent(RECOMMAND_TYPE_TWO);
+            } else {
+                expandContent(false);
+                boolean isShowContentShow = mRecommandView.getVisibility() == 0;
+                if (!isShowContentShow) {
+                    expandRecommandContent();
+                    mCurrentClickType = RECOMMAND_TYPE_TWO;
+                }
             }
         }
 
         if (newState != null && mIvArrowMove != null && mBottleWater != null) {
             if (newState.plugged == 0) {
-                mIvArrowMove.setVisibility(View.INVISIBLE);
+//                mIvArrowMove.setVisibility(View.INVISIBLE);
                 mBottleWater.setIsNeedWave(false);
             } else {
                 mBottleWater.setIsNeedWave(true);
