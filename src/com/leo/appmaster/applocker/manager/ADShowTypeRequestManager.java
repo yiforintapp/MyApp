@@ -554,7 +554,7 @@ public class ADShowTypeRequestManager {
                     updateADAfterAcceleratingConfig(response, forceClose);
                     //WIFI扫描中的广告开关
                     updateADAtWifiScanConfig(response, forceClose);
-                    //隐私防护中的广告开关
+                    //隐私防护中的广告开关 - 扫描处理完成页的广告位
                     updateADAtPrivacyProtectionConfig(response, forceClose);
                     //原主页中躲在一边的钱钱
                     updateADEntryAtHomeActivityConfig(response, forceClose);

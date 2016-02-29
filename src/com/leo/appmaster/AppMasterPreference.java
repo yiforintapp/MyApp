@@ -2838,7 +2838,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getADAfterScan() {
         return mPref.getInt(PREF_AD_AFTER_SCAN,
-                AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
+                AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:0);
     }
 
     // 3.3 屏保广告开关
