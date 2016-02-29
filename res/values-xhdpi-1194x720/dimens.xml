@@ -190,4 +190,7 @@
     <!--手机防盗-->
     <dimen name="ph_sec_nu_bkup_cb_pd_left">20dp</dimen>
     <dimen name="wifi_result_trans_content">170dp</dimen>
+
+    <!-- AM-3880 -->
+    <dimen name="pas_four_icon_m_top">35dp</dimen>
 </resources>

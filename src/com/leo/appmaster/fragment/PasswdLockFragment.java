@@ -220,7 +220,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         String passwdtip = AppMasterPreference.getInstance(mActivity)
                 .getPasswdTip();
         if (passwdtip == null || passwdtip.trim().equals("")) {
-            mPasswdHint.setVisibility(View.GONE);
+            mPasswdHint.setVisibility(View.INVISIBLE);
         } else {
             mPasswdHint.setVisibility(View.VISIBLE);
             mPasswdHint.setText(mActivity.getString(R.string.passwd_hint_tip)
