@@ -176,7 +176,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MOVE_UP:
-                    if (mBossView.getVisibility() == View.VISIBLE) {
+                    if (mBossView.getVisibility() == View.VISIBLE && mArrowMoveContent.getVisibility() == View.VISIBLE) {
                         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_up");
 //                        if (newState.plugged == 0) {
 //                            mIvArrowMove.setVisibility(View.INVISIBLE);
@@ -269,16 +269,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mBossView.setVisibility(View.VISIBLE);
                 }
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    isSetInitPlace = true;
-                }
             });
             animMoveY.setDuration(600);
             animMoveY.start();
+            isSetInitPlace = true;
+            mArrowMoveContent.setVisibility(View.INVISIBLE);
         } else {
-
+            mArrowMoveContent.setVisibility(View.VISIBLE);
         }
     }
 
@@ -477,7 +474,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (mRootView != null) {
             try {
-                 loadAd();
+                loadAd();
             } catch (Exception e) {
                 LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
                 if (e != null) {
