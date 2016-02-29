@@ -6,7 +6,7 @@ import com.leo.appmaster.utils.PrefConst;
  * 常用字段获取帮助接口
  * Created by Jasper on 2016/2/26.
  */
-public class PrerfTableHelper {
+public class PrefTableHelper {
 
     /**
      * 应用内是否展示充电屏保
