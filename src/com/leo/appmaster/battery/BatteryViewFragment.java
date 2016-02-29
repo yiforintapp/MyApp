@@ -125,6 +125,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mRecommandContentView;
     private int mRecommandViewHeight;
     private boolean loadFastThanInit = false;
+    private GradientMaskView mMaskView;
+
 
     private CircleImageView mIvShowOne;
     private CircleImageView mIvShowTwo;
@@ -274,8 +276,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             animMoveY.start();
             isSetInitPlace = true;
             mArrowMoveContent.setVisibility(View.INVISIBLE);
+            mMaskView.hideMask();
         } else {
             mArrowMoveContent.setVisibility(View.VISIBLE);
+            mMaskView.showMask();
         }
     }
 
@@ -456,6 +460,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShowTwo.setOnClickListener(this);
         mShowThree = findViewById(R.id.remain_three);
         mShowThree.setOnClickListener(this);
+
+        mMaskView = (GradientMaskView) findViewById(R.id.mask_view);
 
         mRecommandView = findViewById(R.id.three_show_content);
         mRecommandContentView = findViewById(R.id.show_small_content);
@@ -1289,7 +1295,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (true) {
+//        if (false) {
             mSwiftyView = viewStub.inflate();
 
             mSwiftyImg = (ImageView) mSwiftyView.findViewById(R.id.card_img);
@@ -1347,7 +1353,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (true) {
+//        if (false) {
             mExtraView = viewStub.inflate();
             mExtraTitle = (TextView) mExtraView.findViewById(R.id.card_title);
             mExtraImg = (ImageView) mExtraView.findViewById(R.id.card_img);
