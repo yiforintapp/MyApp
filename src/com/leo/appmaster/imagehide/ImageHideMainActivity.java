@@ -166,7 +166,13 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_image_hide);
         mTtileBar.setOptionMenuVisible(false);
+        mTtileBar.setNavigationClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         loadingBar = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mGridView = (GridView) findViewById(R.id.Image_hide_folder);
         mGridView.setOnItemClickListener(this);

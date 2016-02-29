@@ -635,11 +635,12 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
                 }
                 break;
             case R.id.ct_back_rl:
-                if (isScanIng) {
-                    wifiFragment.dismissTab(BACK_PRESS);
-                } else {
-                    WifiSecurityActivity.this.finish();
-                }
+                onBackPressed();
+//                if (isScanIng) {
+//                    wifiFragment.dismissTab(BACK_PRESS);
+//                } else {
+//                    WifiSecurityActivity.this.finish();
+//                }
                 break;
         }
     }

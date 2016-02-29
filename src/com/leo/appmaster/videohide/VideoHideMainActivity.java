@@ -252,6 +252,13 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_video_hide);
         mTtileBar.setOptionMenuVisible(false);
+        mTtileBar.setNavigationClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         mRvAdd = (RippleView) findViewById(R.id.rv_add);
         mRvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
