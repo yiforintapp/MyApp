@@ -53,14 +53,12 @@ public class AppUtil {
     }
 
     public static boolean appInstalled(Context ctx, String pkg) {
-
         PackageManager pm;
         try {
             pm = ctx.getPackageManager();
             pm.getApplicationInfo(pkg, PackageManager.GET_ACTIVITIES);
             return true;
         } catch (NameNotFoundException e) {
-            e.printStackTrace();
             return false;
         }
     }

@@ -21,4 +21,7 @@ public class LeoUrls {
 
     public static final String PATH_BLACK = "/app/config";
     public static final String URI_BLACK_LIST = HTTP + DOMAIN_BLACK_PREFIX + DOMAIN + PATH_BLACK;
+
+    public static final String PATH_BATTERY_RECOMMEND = "/appmaster/screensaver";
+    public static final String URL_BATTERY_RECOMMEND = HTTP + DOMAIN + PATH_BATTERY_RECOMMEND;
 }

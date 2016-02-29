@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.battery.BatteryAppItem;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.AppUtil;
@@ -55,12 +56,14 @@ public class ScreenRecommentJob extends FetchScheduleJob {
     private static HashMap<String, List<BatteryAppItem>> sRecommendData;
 
     public static void initialize() {
-        getBatteryCallList();
+        loadAndParseData();
     }
 
     @Override
     protected void work() {
-
+        Context context = AppMasterApplication.getInstance();
+        FetchScheduleListener listener = newJsonObjListener();
+        HttpRequestAgent.getInstance(context).loadBatteryRecommendList(listener, listener);
     }
 
     @Override
@@ -75,26 +78,26 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         try {
             object = (JSONObject) response;
         } catch (Exception e) {
-            e.printStackTrace();
-            LeoLog.d(TAG, "onFetchSuccess, response is not json array format.");
+            LeoLog.d(TAG, "onFetchSuccess, response is not json array format." + e.getMessage());
             return;
         }
 
         // 3G通话
-        parseCategoryData(object);
+        try {
+            parseCategoryData(object);
+        } catch (Exception e) {
+            LeoLog.e(TAG, "onFetchSuccess, parseCategoryData ex. " + e.getMessage());
+            return;
+        }
         // 以字符串的形式存储
         PreferenceTable.getInstance().putString(PrefConst.KEY_SS_RECOMMEND_LIST, response.toString());
     }
 
-    private static void parseJsonArrayAndCache(String key, JSONArray array, boolean isApp) {
+    private static int parseJsonArrayAndCache(String key, JSONArray array, boolean isApp)
+            throws JSONException {
         List<BatteryAppItem> appItemList = new ArrayList<BatteryAppItem>();
         for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = null;
-            try {
-                obj = array.getJSONObject(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            JSONObject obj = array.getJSONObject(i);
             if (obj == null) {
                 continue;
             }
@@ -109,6 +112,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         }
 
         sRecommendData.put(key, appItemList);
+        return appItemList.size();
     }
 
     private static BatteryAppItem parseJson(JSONObject object, boolean isApp) {
@@ -120,7 +124,11 @@ public class ScreenRecommentJob extends FetchScheduleJob {
             appItem.name = object.getString(DATA_NAME);
             appItem.pkg = object.getString(DATA_PKG);
         } catch (JSONException e) {
-            e.printStackTrace();
+            LeoLog.e(TAG, "parseJson json exception: object: " + object + " | " + e.getMessage());
+            return null;
+        }
+
+        if (TextUtils.isEmpty(appItem.pkg) && TextUtils.isEmpty(appItem.actionUrl)) {
             return null;
         }
 
@@ -237,7 +245,9 @@ public class ScreenRecommentJob extends FetchScheduleJob {
                 parseCategoryData(object);
                 return;
             } catch (JSONException e) {
-                e.printStackTrace();
+                LeoLog.e(TAG, "parse category data json exception." + e.getMessage());
+            } catch (RuntimeException e) {
+                LeoLog.e(TAG, "parse category data RuntimeException." + e.getMessage());
             }
         }
 
@@ -285,35 +295,26 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         sRecommendData.put(KEY_VIDEO, videoList);
     }
 
-    private static void parseCategoryData(JSONObject object) {
+    private static void parseCategoryData(JSONObject object) throws JSONException, RuntimeException {
         if (object == null) {
             return;
         }
         String call = null;
-        try {
-            call = object.getString(KEY_CALL);
-            JSONArray callArray = new JSONArray(call);
-            parseJsonArrayAndCache(KEY_CALL, callArray, true);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        call = object.getString(KEY_CALL);
+        JSONArray callArray = new JSONArray(call);
+        parseJsonArrayAndCache(KEY_CALL, callArray, true);
 
         String net = null;
-        try {
-            net = object.getString(KEY_NET);
-            JSONArray netArray = new JSONArray(net);
-            parseJsonArrayAndCache(KEY_NET, netArray, false);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        net = object.getString(KEY_NET);
+        JSONArray netArray = new JSONArray(net);
+        parseJsonArrayAndCache(KEY_NET, netArray, false);
 
         String video = null;
-        try {
-            video = object.getString(KEY_VIDEO);
-            JSONArray videoArray = new JSONArray(video);
-            parseJsonArrayAndCache(KEY_VIDEO, videoArray, true);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        video = object.getString(KEY_VIDEO);
+        JSONArray videoArray = new JSONArray(video);
+        int size = parseJsonArrayAndCache(KEY_VIDEO, videoArray, true);
+        if (size == 0) {
+            throw new RuntimeException("video list must not be empty.");
         }
     }
 

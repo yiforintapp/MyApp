@@ -705,6 +705,39 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
+    /**
+     * 获取屏保推荐列表
+     * @param listener
+     * @param errorListener
+     */
+    public void loadBatteryRecommendList(Listener<JSONObject> listener, ErrorListener errorListener) {
+        String object = "";
+        int versionCode = 0;
+        try {
+            versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+        } catch (NameNotFoundException e) {
+        }
+        String channelCode = mContext.getString(R.string.channel_code);
+        Context context = AppMasterApplication.getInstance();
+        String country = Utilities.getCountryID(context);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(LeoUrls.URL_BATTERY_RECOMMEND).append("/")
+                .append(country).append("/")
+                .append(versionCode).append("/")
+                .append(channelCode)
+                .append(".html");
+        String url = stringBuilder.toString();
+        LeoLog.i(TAG, "loadBatteryRecommendList, load url: " + url);
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
+                errorListener);
+        request.setShouldCache(true);
+        // 最多重试3次
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
+        mRequestQueue.add(request);
+    }
 
     public abstract static class RequestListener<T> implements Listener<JSONObject>, ErrorListener {
         private WeakReference<T> outerContextRef;
