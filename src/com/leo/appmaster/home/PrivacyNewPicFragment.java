@@ -199,7 +199,9 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
             @Override
             public void run() {
                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                mActivity.setHidePicFinish(false);
                 pdm.onHideAllPic(photoItems);
+                mActivity.setHidePicFinish(true);
                 mHidingFinish = true;
                 if (!mHidingTimeout) {
                     onProcessFinish(incScore);

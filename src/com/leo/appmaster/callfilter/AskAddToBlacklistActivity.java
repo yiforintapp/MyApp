@@ -463,6 +463,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                     mShareDialog.dismiss();
                     mShareDialog = null;
                 }
+                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block_noshare");
             }
         });
         mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
@@ -472,6 +473,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                     mShareDialog.dismiss();
                     mShareDialog = null;
                 }
+                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block_share");
                 shareApps(sharePreferenceTable);
             }
         });

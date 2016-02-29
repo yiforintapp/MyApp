@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.imagehide;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,6 +38,9 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImageHideMainActivity extends BaseActivity implements OnItemClickListener {
 
     public final static int INIT_UI_DONE = 20;
@@ -61,6 +61,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
 
     public static final int REQUEST_CODE_OPTION = 1001;
+
+    private Toast mToast;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -149,6 +151,15 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             SDKWrapper.addEvent(ImageHideMainActivity.this, SDKWrapper.P1,
                     "assistant", "hidepic_cnts");
         }
+        if (!getIntent().getBooleanExtra("hidePicFinish", true)) {
+            if (mToast == null) {
+                mToast = Toast.makeText(ImageHideMainActivity.this,
+                        getString(R.string.toast_hide_ing), Toast.LENGTH_SHORT);
+            } else {
+                mToast.setText(getString(R.string.toast_hide_ing));
+            }
+            mToast.show();
+        }
     }
 
     private void initUI() {
@@ -196,6 +207,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
+        }
+        if (mToast != null) {
+            mToast.cancel();
         }
     }
 

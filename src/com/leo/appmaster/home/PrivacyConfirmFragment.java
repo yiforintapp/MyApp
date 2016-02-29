@@ -1400,6 +1400,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
         table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
         Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
+        intent.putExtra("hidePicFinish", mActivity.getHidePicFinish());
         mActivity.startActivity(intent);
     }
 

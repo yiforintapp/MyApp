@@ -1046,4 +1046,6 @@
     <string name="addto_blacklist_share_dialog_content">分享给好友，让隐私卫士帮他们识别骚扰电话！</string>
     <string name="addto_blacklist_share_content">%1$s是骚扰电话，快将其加入黑名单！木有来电拦截？点这里：%2$s</string>
 
+    <string name="toast_hide_ing">正在隐藏图片...</string>
+
 </resources>

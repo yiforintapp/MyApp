@@ -338,6 +338,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
             MenuFaqBrowserActivity.startMenuFaqWeb(this, faqtitle, url, true);
         } else if (v == mToEmailTextView) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "feedback", "mail");
             LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             Intent data=new Intent(Intent.ACTION_SENDTO);
             data.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

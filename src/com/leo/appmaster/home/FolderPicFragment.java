@@ -65,7 +65,11 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
             @Override
             public void run() {
                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                LeoLog.e("getBrowserInfo", "hide start");
+                mActivity.setHidePicFinish(false);
                 pdm.onHideAllPic(photoItems);
+                mActivity.setHidePicFinish(true);
+                LeoLog.e("getBrowserInfo", "hide finish");
                 onProcessFinish(incScore);
             }
         });

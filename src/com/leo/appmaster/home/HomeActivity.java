@@ -42,7 +42,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
@@ -146,6 +145,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private int mLockAppNum = 0;
     private int mHidePicNum = 0;
     private int mHideVidNum = 0;
+
+    private boolean mHidePicFinish = true;
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
@@ -1569,5 +1570,13 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     public void onMemoryLessScanCancel() {
         mPrivacyFragment.onScanCancel();
+    }
+
+    public boolean getHidePicFinish() {
+        return mHidePicFinish;
+    }
+
+    public void setHidePicFinish(boolean b) {
+        this.mHidePicFinish = b;
     }
 }
