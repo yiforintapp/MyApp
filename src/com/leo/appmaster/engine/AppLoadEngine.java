@@ -150,48 +150,92 @@ public class AppLoadEngine extends BroadcastReceiver {
 
     public final static String SAVE_LOCK_LIST = "save_lock_list";
     public final static String SAVE_LOCK_LIST_NUM = "save_lock_list_num";
-    public final static String[] sLocalLockArray = new String[]{
-            "com.whatsapp", "com.android.mms",
-            "com.sonyericsson.conversations", "com.facebook.katana",
-            "com.android.gallery3d", "com.sec.android.gallery3d",
-            "com.sonyericsson.album", "com.android.contacts",
-            "com.google.android.contacts", "com.sonyericsson.android.socialphonebook",
-            "com.facebook.orca", "com.google.android.youtube",
-            "com.android.providers.downloads.ui", "com.sec.android.app.myfiles",
-            "com.android.email", "com.viber.voip",
-            "com.google.android.talk", "com.mxtech.videoplayer.ad",
-            "com.android.calendar", "com.google.android.calendar",
-            "com.tencent.mm", "com.tencent.mobileqq",
-            "com.tencent.qq", "jp.naver.line.android",
-            "com.twitter.android", "com.htc.soundrecorder",
-            "com.appstar.callrecorder", "com.samsung.everglades.video",
-            "com.android.dialer", "com.google.android.videos",
-            "com.google.plus", "com.sec.android.app.videoplayer",
-            "com.android.soundrecorder", "com.mediatek.videoplayer",
-            "com.android.vending", "com.android.settings",
-            "com.mediatek.filemanager"
+    public static String[] sLocalLockArray;
+//            = new String[]{
+//            "com.whatsapp", "com.android.mms",
+//            "com.sonyericsson.conversations", "com.facebook.katana",
+//            "com.android.gallery3d", "com.sec.android.gallery3d",
+//            "com.sonyericsson.album", "com.android.contacts",
+//            "com.google.android.contacts", "com.sonyericsson.android.socialphonebook",
+//            "com.facebook.orca", "com.google.android.youtube",
+//            "com.android.providers.downloads.ui", "com.sec.android.app.myfiles",
+//            "com.android.email", "com.viber.voip",
+//            "com.google.android.talk", "com.mxtech.videoplayer.ad",
+//            "com.android.calendar", "com.google.android.calendar",
+//            "com.tencent.mm", "com.tencent.mobileqq",
+//            "com.tencent.qq", "jp.naver.line.android",
+//            "com.twitter.android", "com.htc.soundrecorder",
+//            "com.appstar.callrecorder", "com.samsung.everglades.video",
+//            "com.android.dialer", "com.google.android.videos",
+//            "com.google.plus", "com.sec.android.app.videoplayer",
+//            "com.android.soundrecorder", "com.mediatek.videoplayer",
+//            "com.android.vending", "com.android.settings",
+//            "com.mediatek.filemanager"
+//    };
+    public static String[] sLocalLockNumArray;
+//    = new String[]{
+//            "24000000", "14000000",
+//            "1200000", "14000000",
+//            "15000000", "10000000",
+//            "1500000", "10000000",
+//            "1800000", "1200000",
+//            "12000000", "7900000",
+//            "6700000", "6300000",
+//            "6500000", "1600000",
+//            "5500000", "9800000",
+//            "5200000", "1500000",
+//            "1200000", "1200000",
+//            "1200000", "2500000",
+//            "1800000", "1500000",
+//            "1500000", "4200000",
+//            "5100000", "3800000",
+//            "1500000", "1500000",
+//            "5300000", "7400000",
+//            "13000000", "16000000",
+//            "10000000"
+//    };
+
+    public final static String[] sLocalRecommendedAppAndNum = new String[]{
+            "com.whatsapp","17500000",
+            "com.android.gallery3d","10900000",
+            "com.android.settings","10700000",
+            "com.android.mms","9600000",
+            "com.facebook.katana","9200000",
+            "com.android.vending","8400000",
+            "com.facebook.orca","8200000",
+            "com.mxtech.videoplayer.ad","7400000",
+            "com.sec.android.gallery3d","7000000",
+            "com.android.contacts","6900000",
+            "com.mediatek.filemanager","6800000",
+            "com.google.android.gm","5500000",
+            "com.google.android.youtube","5100000",
+            "com.mediatek.videoplayer","4700000",
+            "com.android.browser","4600000",
+            "com.android.chrome","4400000",
+            "com.android.providers.downloads.ui","4200000",
+            "com.sec.android.app.myfiles","4200000",
+            "com.android.email","4100000",
+            "com.android.music","4000000",
+            "com.google.android.gms","3800000",
+            "com.google.android.talk","3500000",
+            "com.android.dialer","3500000",
+            "com.UCMobile.intl","3400000",
+            "com.google.android.apps.maps","3400000",
+            "com.lenovo.anyshare.gps","3400000",
+            "com.android.calendar","3300000",
+            "com.android.soundrecorder","3300000",
+            "com.google.android.music","3200000",
+            "com.google.android.apps.plus","3200000",
+            "com.bbm","2800000",
+            "com.android.calculator2","2800000",
+            "com.instagram.android","2800000",
+            "com.google.android.googlequicksearchbox","2600000",
+            "com.google.android.apps.docs","2600000",
+            "com.bsb.hike","2200000",
+            "com.uc.browser.en","2300000",
+            "com.imo.android.imoim","2300000"
     };
-    public final static String[] sLocalLockNumArray = new String[]{
-            "24000000", "14000000",
-            "1200000", "14000000",
-            "15000000", "10000000",
-            "1500000", "10000000",
-            "1800000", "1200000",
-            "12000000", "7900000",
-            "6700000", "6300000",
-            "6500000", "1600000",
-            "5500000", "9800000",
-            "5200000", "1500000",
-            "1200000", "1200000",
-            "1200000", "2500000",
-            "1800000", "1500000",
-            "1500000", "4200000",
-            "5100000", "3800000",
-            "1500000", "1500000",
-            "5300000", "7400000",
-            "13000000", "16000000",
-            "10000000"
-    };
+
     public static final String PG_PACKAGENAME = "com.android.vending";
     public static final long CLICKINTERVAl = 1000 * 60 * 60 * 2;
     private List<String> mRecommendLocklist;
@@ -204,6 +248,8 @@ public class AppLoadEngine extends BroadcastReceiver {
         mLatch = new CountDownLatch(1);
         mAppDetails = new ConcurrentHashMap<String, AppItemInfo>();
         mListeners = new ArrayList<AppChangeListener>(1);
+
+        divideRecommendedAppAndNum();
 
         List<String> list = AppMasterPreference.getInstance(mContext)
                 .getRecommendList();
@@ -226,6 +272,16 @@ public class AppLoadEngine extends BroadcastReceiver {
 
         LeoGlobalBroadcast.registerBroadcastListener(mPackageChangedListener);
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+    }
+
+    private void divideRecommendedAppAndNum() {
+        int halflenth = sLocalRecommendedAppAndNum.length / 2;
+        sLocalLockArray = new String[halflenth];
+        sLocalLockNumArray = new String[halflenth];
+        for (int i = 0; i < halflenth; i++) {
+            sLocalLockArray[i] = sLocalRecommendedAppAndNum[i * 2];
+            sLocalLockNumArray[i] = sLocalRecommendedAppAndNum[i * 2 + 1];
+        }
     }
 
     private PackageChangedListener mPackageChangedListener = new PackageChangedListener() {
