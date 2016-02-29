@@ -558,7 +558,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void tryHidePermissionGuideToast() {
         if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing()) {
-            Toast.makeText(LockScreenActivity.this, "hide when on resume", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(LockScreenActivity.this, "hide when on resume", Toast.LENGTH_SHORT).show();
             mPermissionGuideToast.hide();
         }
     }

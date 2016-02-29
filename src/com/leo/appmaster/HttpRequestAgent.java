@@ -660,7 +660,7 @@ public class HttpRequestAgent {
         .append(channelCode)
         .append(".html");
         String url = sb.toString();
-        url = "http://api.leomaster.com/appmaster/copy/cn/en/3.0/0001a.html";//TODO
+//        url = "http://api.leomaster.com/appmaster/copy/cn/en/3.0/0001a.html";
         LeoLog.i("LockPermissionTipStringFetchJob", "request url: " + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, body, listener,
                 errorListener);
