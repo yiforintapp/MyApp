@@ -149,54 +149,54 @@ public class ScreenRecommentJob extends FetchScheduleJob {
     public static List<BatteryAppItem> getBatteryCallList() {
         List<BatteryAppItem> list = getBatteryListInner(KEY_CALL);
 
-        Intent sms = new Intent(Intent.ACTION_VIEW);
-        sms.setType("vnd.android-dir/mms-sms");
-        BatteryAppItem smsItem = queryIntentInfo(sms);
-        if (smsItem != null) {
-            list.add(0, smsItem);
-        }
-
-        Intent contact = new Intent();
-        contact.setAction(Intent.ACTION_VIEW);
-        contact.setData(Contacts.People.CONTENT_URI);
-        BatteryAppItem contactItem = queryIntentInfo(contact);
-        if (contactItem != null) {
-            list.add(0, contactItem);
-        }
-
-        Intent call = new Intent(Intent.ACTION_CALL_BUTTON);
-        BatteryAppItem callItem = queryIntentInfo(call);
-        if (callItem != null) {
-            list.add(0, callItem);
-        }
+//        Intent sms = new Intent(Intent.ACTION_VIEW);
+//        sms.setType("vnd.android-dir/mms-sms");
+//        BatteryAppItem smsItem = queryIntentInfo(sms);
+//        if (smsItem != null) {
+//            list.add(0, smsItem);
+//        }
+//
+//        Intent contact = new Intent();
+//        contact.setAction(Intent.ACTION_VIEW);
+//        contact.setData(Contacts.People.CONTENT_URI);
+//        BatteryAppItem contactItem = queryIntentInfo(contact);
+//        if (contactItem != null) {
+//            list.add(0, contactItem);
+//        }
+//
+//        Intent call = new Intent(Intent.ACTION_CALL_BUTTON);
+//        BatteryAppItem callItem = queryIntentInfo(call);
+//        if (callItem != null) {
+//            list.add(0, callItem);
+//        }
         return list;
     }
 
     public static List<BatteryAppItem> getBatteryNetList() {
         List<BatteryAppItem> list = getBatteryListInner(KEY_NET);
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("http://www.google.com"));
-        PackageManager pm = AppMasterApplication.getInstance().getPackageManager();
-        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
-        if (resolveInfos == null || resolveInfos.size() == 0) {
-            return list;
-        }
-
-        ResolveInfo chrome = null;
-        for (ResolveInfo resolveInfo : resolveInfos) {
-            if (Constants.CHROME_PACKAGE_NAME.equals(resolveInfo.activityInfo.packageName)) {
-                chrome = resolveInfo;
-                break;
-            }
-        }
-        if (chrome == null) {
-            chrome = resolveInfos.get(0);
-        }
-        BatteryAppItem appItem = new BatteryAppItem();
-        appItem.name = (String) chrome.activityInfo.loadLabel(pm);
-        appItem.pkg = chrome.activityInfo.packageName;
-        list.add(0, appItem);
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setData(Uri.parse("http://www.google.com"));
+//        PackageManager pm = AppMasterApplication.getInstance().getPackageManager();
+//        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(intent, 0);
+//        if (resolveInfos == null || resolveInfos.size() == 0) {
+//            return list;
+//        }
+//
+//        ResolveInfo chrome = null;
+//        for (ResolveInfo resolveInfo : resolveInfos) {
+//            if (Constants.CHROME_PACKAGE_NAME.equals(resolveInfo.activityInfo.packageName)) {
+//                chrome = resolveInfo;
+//                break;
+//            }
+//        }
+//        if (chrome == null) {
+//            chrome = resolveInfos.get(0);
+//        }
+//        BatteryAppItem appItem = new BatteryAppItem();
+//        appItem.name = (String) chrome.activityInfo.loadLabel(pm);
+//        appItem.pkg = chrome.activityInfo.packageName;
+//        list.add(0, appItem);
 
         return list;
     }
