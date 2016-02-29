@@ -8,8 +8,8 @@
         android:layout_height="193dp"
         android:layout_centerInParent="true" />
 
-    <View
-        android:background="@drawable/battery_boost_gradient_shape"
+    <ImageView
+        android:src="@drawable/battery_boost_gradient_shape"
         android:layout_centerInParent="true"
         android:layout_width="100dp"
         android:layout_height="100dp" />
