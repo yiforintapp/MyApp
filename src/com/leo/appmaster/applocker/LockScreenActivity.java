@@ -184,6 +184,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private ImageView mADAnimalEntry;
     private PreferenceTable mPt;
     private BaseSelfDurationToast mPermissionGuideToast;
+    private TextView mTvPermissionTip;
     /**
      * 大banner
      */
@@ -557,6 +558,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void tryHidePermissionGuideToast() {
         if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing()) {
+            Toast.makeText(LockScreenActivity.this, "hide when on resume", Toast.LENGTH_SHORT).show();
             mPermissionGuideToast.hide();
         }
     }
@@ -567,8 +569,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (!state.checkAvailable()) {
 //        if (true) {   
                 mRlNoPermission.setVisibility(View.VISIBLE);
+                String tip = mPt.getString(PrefConst.KEY_APP_USAGE_STATE_GUIDE_STRING);
+                if(!TextUtils.isEmpty(tip)) {
+                    mTvPermissionTip.setText(tip);
+                }
             } else {
-                mRlNoPermission.setVisibility(View.INVISIBLE);
+                mRlNoPermission.setVisibility(View.GONE);
             }
         }
     }
@@ -1113,6 +1119,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void initUI() {
         mRlNoPermission = (RelativeLayout) findViewById(R.id.rl_nopermission_tip);
         mRlNoPermission.setOnClickListener(this);
+        mTvPermissionTip = (TextView) findViewById(R.id.tv_nopermission_tip);
         mADAnimalEntry = (ImageView) findViewById(R.id.iv_AD_entry);
         if (!NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
             mADAnimalEntry.setVisibility(View.GONE);
@@ -1958,7 +1965,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 mPermissionGuideToast = new BaseSelfDurationToast(LockScreenActivity.this);
 
                             }
-                            mPermissionGuideToast.setDuration(1000 * 60);
+                            mPermissionGuideToast.setDuration(1000 * 60 * 2);
                             mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
                             mPermissionGuideToast.setMatchParent();
                             mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, 0);

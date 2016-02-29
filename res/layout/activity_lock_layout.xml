@@ -61,7 +61,7 @@
         <!-- 5.1以上版本没有应用查看权限的提示 -->
         <RelativeLayout
             android:id="@+id/rl_nopermission_tip"
-            android:visibility= "visible"
+            android:visibility= "gone"
             android:layout_marginBottom="24dp"
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
@@ -88,7 +88,7 @@
                 android:layout_toRightOf="@id/iv_nopermission_tip"
                 android:id="@+id/tv_nopermission_tip"
                 android:layout_marginLeft="7dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:textColor="@color/c1"
                 android:textSize="@dimen/f5"
                 android:layout_width="match_parent"

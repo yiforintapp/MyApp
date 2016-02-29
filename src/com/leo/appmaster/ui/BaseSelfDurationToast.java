@@ -155,10 +155,10 @@ public class BaseSelfDurationToast {
      */
     public void show() {
         mHandler.post(mShow);
-        
+        mHandler.removeCallbacks(mHide);
         if(mDuration>0)
         {
-             mHandler.postDelayed(mHide, mDuration);
+            mHandler.postDelayed(mHide, mDuration);
         }
     }
  
