@@ -16,7 +16,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -51,7 +50,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,9 +59,9 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.ad.LEOAdEngine;
+import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.LEOAdManager;
-import com.leo.appmaster.ad.LEONativeAdData;
+import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
@@ -90,7 +88,6 @@ import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
-import com.leo.appmaster.intruderprotection.ShowToast;
 import com.leo.appmaster.intruderprotection.WaterMarkUtils;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -126,7 +123,6 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
-import com.leo.leoadlib.MaxSdk;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -192,7 +188,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private FrameLayout mBannerParent;
     private ViewPager mBannerContainer;
     private AdBannerAdapter mAdapterCycle;
-    private LinkedHashMap<String, LEONativeAdData> mAdMap = new LinkedHashMap<String, LEONativeAdData>();
+    private LinkedHashMap<String, WrappedCampaign> mAdMap = new LinkedHashMap<String, WrappedCampaign>();
     private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
@@ -234,6 +230,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static boolean mIsPicSaved = false;
 
     public static boolean mHasTakePic = false;
+	
+	
+	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
     //
 //    public boolean mIs
 
@@ -1069,7 +1068,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     // 避免产生anr，放到子线程
 					for (String id : mBannerAdids) {
 						LeoLog.d("LEOAdEngine", "id : =" + id);
-						LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
+						//LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
+						/* 3.3.2 封装Max与Mob SDK */
+						ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id);
 					}
                 }
             });
@@ -1239,6 +1240,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //            mAdapterCycle.getViews().clear();
             mAdapterCycle = null;
         }
+		/*调用sdk前，明确是哪个sdk，mobvista or max ? */
+		AppMasterPreference sp = AppMasterPreference.getInstance(this.getApplicationContext());
+		mAdSource = sp.getLockBannerAdConfig();
         asyncLoadAd();
     }
 
@@ -1249,19 +1253,150 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         for (int i = 0; i < mBannerAdids.length; i++) {
             final String unitId = mBannerAdids[i];
 
-            final LEOAdEngine leoAdEngine = LEOAdEngine.getInstance(this.getApplicationContext());
+			final ADEngineWrapper  wrapperAdEngine = ADEngineWrapper.getInstance(this);
+			LeoLog.e("STONE_AD_DEBUG", "mAdSource " + mAdSource + "|"+unitId);
+			ADEngineWrapper.getInstance(this).loadAd(mAdSource, unitId,  new ADEngineWrapper.WrappedAdListener(){
+
+				/**
+				 * 广告请求回调
+				 *
+				 * @param code     返回码，如ERR_PARAMS_NULL
+				 * @param campaign 请求成功的广告结构体，失败为null
+				 * @param msg      请求失败sdk返回的描述，成功为null
+				 */
+				@Override
+				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+					if (campaign != null && deleteRedundant(unitId, campaign)) {
+						/* 开始load 广告大图 */
+						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
+							@Override
+							public void onLoadingStarted(String imageUri, View view) {
+								LeoLog.d("STONE_AD_DEBUG", "start to load preview for: " + imageUri);
+							}
+
+							@Override
+							public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+								mAdMap.remove(unitId);
+								LeoLog.d("STONE_AD_DEBUG", "onLoadingFailed for: " + imageUri);
+							}
+
+							@Override
+							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+								LeoLog.d("STONE_AD_DEBUG", "onLoadingComplete for: " + imageUri);
+
+								if (unitId.equals(mBannerAdids[0])) {
+									mAdUnitIdList.add(0, unitId);
+								} else {
+									mAdUnitIdList.add(unitId);
+								}
+								mAdBitmapMap.put(unitId, loadedImage);
+
+								/*校验此广告是否用第一个id来申请的*/
+								if (unitId.equals(mBannerAdids[0])) {
+									/*如果是则将其他两个广告显示开光打开*/
+									otherAdSwitcher = true;
+								}
+								/* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 */
+								if (!unitId.equals(mBannerAdids[0])) {
+									/*如果广告开关没有被打开，则直接退出*/
+									if (!otherAdSwitcher) {
+										return ;
+									}
+								}
+								if (mAdapterCycle == null) {
+									mBannerContainer.setVisibility(View.INVISIBLE);
+									mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
+									mBannerContainer.setAdapter(mAdapterCycle);
+									if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
+										mBannerContainer.setCurrentItem(1, false);
+										mAdapterCycle.setLasterSlectedPage(1);
+										showAdAnimaiton();
+										delayBannerHideAnim();
+										hideIconAndPswTips();
+									} else {
+										mBannerContainer.setVisibility(View.VISIBLE);
+										mBannerContainer.setCurrentItem(0, false);
+										mAdapterCycle.setLasterSlectedPage(0);
+									}
+								} else {
+                                    /* AM-3907 规避多次添加广告 */
+                                    /*if (mAdapterCycle.getCount() == mBannerAdids.length) {
+                                        return;
+                                    }*/
+									mAdapterCycle.addItem(unitId);
+								}
+
+							}
+
+							@Override
+							public void onLoadingCancelled(String imageUri, View view) {
+								mAdMap.remove(unitId);
+							}
+						});
+
+
+					}
+				}
+
+				/**
+				 * 广告点击回调
+				 *
+				 * @param campaign
+				 */
+				@Override
+				public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
+					if (unitID != null && unitID.equals(mBannerAdids[0])) {
+						otherAdSwitcher = false;
+					}
+
+					// 干掉旧广告？ - onResume()的时候会重新拉取
+//					try {
+//
+//						ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, unitID);
+//						
+//						Bitmap image = mAdBitmapMap.remove(unitID);
+//						if (image != null && !image.isRecycled()) {
+//							image.recycle();
+//						}
+//						for (String key : mAdBitmapMap.keySet()) {
+//							Bitmap image = mAdBitmapMap.get(key);
+//							if (!image.isRecycled()) {
+//								image.recycle();
+//							}
+//						}
+//						mAdBitmapMap.clear();
+
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//					if (mAdBitmapMap.isEmpty() && mBannerContainer != null) {
+//						try {
+//							mBannerContainer.setVisibility(View.GONE);
+//						} catch (Exception e) {
+//						}
+//					}
+					// 重新拉取
+					// loadAD();
+				}
+			});
+			
+			
+			
+			
+			
+            /*final LEOAdEngine leoAdEngine = LEOAdEngine.getInstance(this.getApplicationContext());
             leoAdEngine.loadMobvista(unitId, new LEOAdEngine.LeoListener() {
-                /**
+                *//**
                  * 广告请求回调
                  *
                  * @param code     返回码，如ERR_PARAMS_NULL
                  * @param campaign 请求成功的广告结构体，失败为null
                  * @param msg      请求失败sdk返回的描述，成功为null
-                 */
+                 *//*
                 @Override
                 public void onLeoAdLoadFinished(int code, final LEONativeAdData campaign, String msg) {
                     if (campaign != null && campaign.getCode() == MaxSdk.ERR_OK && deleteRedundant(unitId, campaign)) {
-						/* 开始load 广告大图 */
+						*//* 开始load 广告大图 *//*
                         ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String imageUri, View view) {
@@ -1278,10 +1413,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                                 LeoLog.d("STONE_AD_DEBUG", "onLoadingComplete for: " + imageUri);
                                 //synchronized (mAdUnitIdList) {
-                                    /* AM-3907 规避多次添加广告 - 在多线程的情况下可能会有问题 */
-                                    /*if (mAdUnitIdList.size() == mBannerAdids.length) {
+                                    *//* AM-3907 规避多次添加广告 - 在多线程的情况下可能会有问题 *//*
+                                    *//*if (mAdUnitIdList.size() == mBannerAdids.length) {
                                         return;
-                                    }*/
+                                    }*//*
                                 //}
 								
 								if (unitId.equals(mBannerAdids[0])) {
@@ -1291,14 +1426,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 								}
 								mAdBitmapMap.put(unitId, loadedImage);
 
-								/*校验此广告是否用第一个id来申请的*/
+								*//*校验此广告是否用第一个id来申请的*//*
 								if (unitId.equals(mBannerAdids[0])) {
-									/*如果是则将其他两个广告显示开光打开*/
+									*//*如果是则将其他两个广告显示开光打开*//*
 									otherAdSwitcher = true;
 								}
-								/* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 */
+								*//* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 *//*
 								if (!unitId.equals(mBannerAdids[0])) {
-									/*如果广告开关没有被打开，则直接退出*/
+									*//*如果广告开关没有被打开，则直接退出*//*
 									if (!otherAdSwitcher) {
 										return ;
 									}
@@ -1319,10 +1454,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                         mAdapterCycle.setLasterSlectedPage(0);
                                     }
                                 } else {
-                                    /* AM-3907 规避多次添加广告 */
-                                    /*if (mAdapterCycle.getCount() == mBannerAdids.length) {
+                                    *//* AM-3907 规避多次添加广告 *//*
+                                    *//*if (mAdapterCycle.getCount() == mBannerAdids.length) {
                                         return;
-                                    }*/
+                                    }*//*
                                     mAdapterCycle.addItem(unitId);
                                 }
 
@@ -1338,11 +1473,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     }
                 }
 
-                /**
+                *//**
                  * 广告点击回调
                  *
                  * @param campaign
-                 */
+                 *//*
                 @Override
                 public void onLeoAdClick(LEONativeAdData campaign, String unitID) {
 					if (unitID != null && unitID.equals(mBannerAdids[0])) {
@@ -1371,7 +1506,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     // 重新拉取
                     // loadAD();
                 }
-            });
+            });*/
 
             /*MobvistaEngine.getInstance(this).loadMobvista(unitId, new MobvistaListener() {
                 @Override
@@ -1457,13 +1592,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      * @param campaign
      * @return 是否添加新的数据
      */
-    private boolean deleteRedundant(String unitId, LEONativeAdData campaign) {
+    private boolean deleteRedundant(String unitId, WrappedCampaign campaign) {
         LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
         for (String key : mAdMap.keySet()) {
-            LEONativeAdData data = mAdMap.get(key);
+			WrappedCampaign data = mAdMap.get(key);
             if (data.getAppName().equals(campaign.getAppName())
                     || data.getImageUrl().equals(campaign.getImageUrl())
-                    || data.getAppDesc().equals(campaign.getAppDesc())) {
+                    || data.getDescription().equals(campaign.getDescription())) {
                 return false;
             }
         }
@@ -2515,15 +2650,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         private ArrayList<String> mList; //
         private ViewPager mViewPager; //页面
         private int lasterSlectedPage = -1; //上一次选择的页面
-        private LEOAdEngine mLeoAdEngine;
+        private ADEngineWrapper mWrapperEngine;
 
         public AdBannerAdapter(Context context, ViewPager viewPager,
-                               ArrayList<String> list, LEOAdEngine leoAdEngine) {
+                               ArrayList<String> list, ADEngineWrapper wrapperEngine) {
             mContext = context;
             mInflater = LayoutInflater.from(context);
             mViewPager = viewPager;
             mList = list;
-            mLeoAdEngine = leoAdEngine;
+			mWrapperEngine = wrapperEngine;
             mViewPager.setOnPageChangeListener(this);
 			synchronized (mViewPager) {
 				if (list != null) {
@@ -2584,7 +2719,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         private void setItemViewContent(RelativeLayout view, String unitId) {
-            LEONativeAdData campaign = mAdMap.get(unitId);
+            WrappedCampaign campaign = mAdMap.get(unitId);
             if (campaign == null) {
                 return;
             }
@@ -2597,11 +2732,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			
             ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
             ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
-            ((TextView) view.findViewById(R.id.ad_details)).setText(unitId + campaign.getAppDesc());
+            ((TextView) view.findViewById(R.id.ad_details)).setText(unitId + campaign.getDescription());
             ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             final View clickArea = view.findViewById(R.id.click_area);
-            if (mLeoAdEngine != null) {
-                mLeoAdEngine.registerView(unitId, clickArea);
+            if (mWrapperEngine != null) {
+				mWrapperEngine.registerView(mAdSource, clickArea, unitId);
             }
             /*MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, clickArea, new MobvistaListener() { //这里这个回调只是用来 打个统计点而已
                 @Override

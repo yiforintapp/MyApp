@@ -27,6 +27,9 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ad.ADEngineWrapper;
+import com.leo.appmaster.ad.WrappedCampaign;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.PreferenceTable;
@@ -191,6 +194,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private ImageLoader mImageLoader;
 
     private boolean mShowBoost = false;
+	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
     public static String[] days = AppMasterApplication.getInstance().getResources()
             .getStringArray(R.array.days_of_week);
@@ -1446,7 +1450,24 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         LeoLog.d(TAG, "loadAd called");
         mShouldLoadAd = AppMasterPreference.getInstance(mActivity).getADOnScreenSaver() == 1;
         if (mShouldLoadAd) {
-            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_CHARGING,
+			mAdSource = AppMasterPreference.getInstance(mActivity).getChargingAdConfig();
+			ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, new ADEngineWrapper.WrappedAdListener() {
+				@Override
+				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+					if (code == MobvistaEngine.ERR_OK) {
+						LeoLog.d(TAG, "Ad data ready");
+						sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign);
+						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+					}
+				}
+
+				@Override
+				public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
+					SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
+					LeoLog.d(TAG, "Ad clicked");
+				}
+			});
+            /*MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_CHARGING,
                     new MobvistaEngine.MobvistaListener() {
                         @Override
                         public void onMobvistaFinished(int code, Campaign campaign, String msg) {
@@ -1462,22 +1483,23 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
                             LeoLog.d(TAG, "Ad clicked");
                         }
-                    });
+                    });*/
         }
     }
 
     private void releaseAd() {
         if (mShouldLoadAd) {
             LeoLog.d(TAG, "release ad");
-            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_CHARGING);
+			ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, Constants.UNIT_ID_CHARGING);
+            //MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_CHARGING);
         }
     }
 
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
         WeakReference<BatteryViewFragment> mFragment;
-        Campaign mCampaign;
+		WrappedCampaign mCampaign;
 
-        public AdPreviewLoaderListener(BatteryViewFragment fragment, final Campaign campaign) {
+        public AdPreviewLoaderListener(BatteryViewFragment fragment, final WrappedCampaign campaign) {
             mFragment = new WeakReference<BatteryViewFragment>(fragment);
             mCampaign = campaign;
         }
@@ -1518,7 +1540,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private static AdPreviewLoaderListener sAdImageListener;
 
-    private void initAdLayout(View rootView, Campaign campaign, Bitmap previewImage) {
+    private void initAdLayout(View rootView, WrappedCampaign campaign, Bitmap previewImage) {
         View adView = rootView.findViewById(R.id.ad_content);
         mAdWrapper = (AdWrapperLayout) rootView.findViewById(R.id.ad_wrapper);
         mAdWrapper.setNeedIntercept(true);
@@ -1535,7 +1557,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
         TextView tvDesc = (TextView) adView.findViewById(R.id.item_description);
-        tvDesc.setText(campaign.getAppDesc());
+        tvDesc.setText(campaign.getDescription());
         Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
         btnCTA.setText(campaign.getAdCall());
         ResizableImageView preview = (ResizableImageView) adView.findViewById(R.id.item_ad_preview);
@@ -1568,8 +1590,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mAdView = adView;
 
         // make the count correct
-        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
-
+        //MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
+		ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING);
         mAdWrapper.setOnClickListener(this);
     }
     /* 广告相关 - 结束 */

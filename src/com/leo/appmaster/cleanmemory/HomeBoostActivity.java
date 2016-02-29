@@ -25,8 +25,9 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ad.ADEngineWrapper;
+import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
-import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -41,14 +42,14 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
     private View mStatusBar;
-    private MobvistaEngine mAdEngine;
+    //private MobvistaEngine mAdEngine;
+	private ADEngineWrapper mAdEngine;
     private boolean isClean = false;
     private ProcessCleaner mCleaner;
     private long mLastUsedMem;
@@ -66,6 +67,8 @@ public class HomeBoostActivity extends Activity {
     private ImageView mSpeedAdLight;
     private AnimatorSet mRocketAnim;
     private AnimatorSet mAdAnim;
+
+	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,14 +90,49 @@ public class HomeBoostActivity extends Activity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);       
         if (NetWorkUtil.isNetworkAvailable(getApplicationContext()) && amp.getADChanceAfterAccelerating() == 1) {
             LeoLog.e("poha", "to load");
+			mAdSource = AppMasterPreference.getInstance(this).getAccelerationAdConfig();
             loadAD();
         }
     }
 
     private void loadAD() {
 
-        mAdEngine = MobvistaEngine.getInstance(this);
-        mAdEngine.loadMobvista(Constants.UNIT_ID_62,new MobvistaListener() {
+		mAdEngine = ADEngineWrapper.getInstance(this);
+        //mAdEngine = MobvistaEngine.getInstance(this);
+		mAdEngine.loadAd(mAdSource, Constants.UNIT_ID_62, new ADEngineWrapper.WrappedAdListener() {
+			/**
+			 * 广告请求回调
+			 *
+			 * @param code     返回码，如ERR_PARAMS_NULL
+			 * @param campaign 请求成功的广告结构体，失败为null
+			 * @param msg      请求失败sdk返回的描述，成功为null
+			 */
+			@Override
+			public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+				if (code == MobvistaEngine.ERR_OK  && campaign != null) {
+					sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaign);
+					ImageLoader.getInstance().loadImage(campaign.getImageUrl(),
+							new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 262),
+									DipPixelUtil.dip2px(HomeBoostActivity.this, 130)),
+							sAdImageListener);
+				}
+			}
+
+			/**
+			 * 广告点击回调
+			 *
+			 * @param campaign
+			 * @param unitID
+			 */
+			@Override
+			public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
+				HomeBoostActivity.this.finish();
+
+				SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1, "ad_cli",
+						"adv_cnts_bst");
+			}
+		});
+        /*mAdEngine.loadMobvista(Constants.UNIT_ID_62,new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
@@ -114,7 +152,7 @@ public class HomeBoostActivity extends Activity {
                 SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1, "ad_cli",
                         "adv_cnts_bst");
             }
-        });
+        });*/
     }
 
     /**
@@ -122,9 +160,10 @@ public class HomeBoostActivity extends Activity {
      */
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
         WeakReference<HomeBoostActivity> mActivity;
-        Campaign mCampaign;
+        //Campaign mCampaign;
+		WrappedCampaign mCampaign;
 
-        public AdPreviewLoaderListener (HomeBoostActivity activity, final Campaign campaign) {
+        public AdPreviewLoaderListener (HomeBoostActivity activity, final WrappedCampaign campaign) {
             mActivity = new WeakReference<HomeBoostActivity>(activity);
             mCampaign = campaign;
         }
@@ -157,7 +196,7 @@ public class HomeBoostActivity extends Activity {
     }
     private static AdPreviewLoaderListener sAdImageListener;
 
-    private void notifyAdLoadFinish(Campaign campaign, Bitmap previewBitmap){
+    private void notifyAdLoadFinish(WrappedCampaign campaign, Bitmap previewBitmap){
         mIsADLoaded = true;
         LeoLog.e("poha", "loaded!");
         long currentTime = System.currentTimeMillis();
@@ -179,13 +218,13 @@ public class HomeBoostActivity extends Activity {
 
         TextView appdesc = (TextView) findViewById(R.id.tv_ad_appdesc);
         if(appdesc != null) {
-            appdesc.setText(campaign.getAppDesc());
+            appdesc.setText(campaign.getDescription());
         }
 
         Button call = (Button) findViewById(R.id.btn_ad_appcall);
         if(call != null) {
             call.setText(campaign.getAdCall());
-            mAdEngine.registerView(Constants.UNIT_ID_62, mRlResultWithAD);
+            mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
         }
     }
 
@@ -612,7 +651,7 @@ public class HomeBoostActivity extends Activity {
         super.onDestroy();
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
         if(mAdEngine!=null){
-            mAdEngine.release(Constants.UNIT_ID_62);
+            mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62);
         }
         if (mAdAnim != null) {
             mAdAnim.cancel();

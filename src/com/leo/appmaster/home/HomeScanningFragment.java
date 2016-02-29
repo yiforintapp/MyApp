@@ -55,7 +55,6 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
-import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -461,7 +460,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                         }
 
                         @Override
-                        public void onWrappedAdClick(WrappedCampaign campaign) {
+                        public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                             LeoLog.d("AfterPrivacyScan", "onMobvistaClick");
                             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_cli", "adv_cnts_scan");
                             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);

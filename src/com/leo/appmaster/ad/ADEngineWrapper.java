@@ -3,6 +3,7 @@ package com.leo.appmaster.ad;
 import android.content.Context;
 import android.view.View;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.utils.LeoLog;
 import com.mobvista.sdk.m.core.entity.Campaign;
@@ -15,8 +16,8 @@ public class ADEngineWrapper {
     private static final String TAG = "ADEngineWrapper";
 
     /* 两个可选的广告来源 */
-    public static final int SOURCE_MOB = 1;
-    public static final int SOURCE_MAX = 2;
+    public static final int SOURCE_MOB = AppMasterPreference.AD_SDK_SOURCE_USE_3TH;
+    public static final int SOURCE_MAX = AppMasterPreference.AD_SDK_SOURCE_USE_MAX;
 
     private Context mContext;
 
@@ -35,7 +36,7 @@ public class ADEngineWrapper {
          * 广告点击回调
          * @param campaign
          */
-        public void onWrappedAdClick(WrappedCampaign campaign);
+        public void onWrappedAdClick(WrappedCampaign campaign, String unitID);
     }
 
     private static ADEngineWrapper sInstance;
@@ -70,7 +71,7 @@ public class ADEngineWrapper {
 
                 @Override
                 public void onLeoAdClick(LEONativeAdData campaign, String unitID) {
-                    listener.onWrappedAdClick(WrappedCampaign.fromMaxSDK(campaign));
+                    listener.onWrappedAdClick(WrappedCampaign.fromMaxSDK(campaign), unitID);
                 }
             });
         } else {
@@ -87,7 +88,7 @@ public class ADEngineWrapper {
 
                 @Override
                 public void onMobvistaClick(Campaign campaign, String unitID) {
-                    listener.onWrappedAdClick(WrappedCampaign.fromMabVistaSDK(campaign));
+                    listener.onWrappedAdClick(WrappedCampaign.fromMabVistaSDK(campaign), unitID);
                 }
             });
         }

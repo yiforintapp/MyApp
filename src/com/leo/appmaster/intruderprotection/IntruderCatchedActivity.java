@@ -31,6 +31,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ad.ADEngineWrapper;
+import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.db.PreferenceTable;
@@ -57,7 +59,6 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
-import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -113,6 +114,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private TextView mSwiftyContent;
     private RippleView mSwiftyBtnLt;
     private final String TAG = "IntruderCatchedActivity";
+	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
     
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
@@ -129,6 +131,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mLockManager.filterPackage(mPkgName, 5000);
         init();
 
+		mAdSource = AppMasterPreference.getInstance(this).getInvaderAdConfig();
         // 3.2 add advertise
         loadAd();
 
@@ -321,7 +324,26 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private void loadAd() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (amp.getADIntruder() == 1) {
-            MobvistaEngine.getInstance(this).loadMobvista(INTRUDER_AD_ID, new MobvistaEngine.MobvistaListener() {
+			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, new ADEngineWrapper.WrappedAdListener() {
+				@Override
+				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+					if (code == MobvistaEngine.ERR_OK) {
+						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
+						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
+						mImageLoader.loadImage(campaign.getImageUrl(), sAdImageListener);
+					}
+				}
+
+				@Override
+				public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
+					LeoLog.d("IntruderAd", "onMobvistaClick");
+					SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
+							"ad_cli", "adv_cnts_capture");
+					LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+					lm.filterSelfOneMinites();
+				}
+			});
+            /*MobvistaEngine.getInstance(this).loadMobvista(INTRUDER_AD_ID, new MobvistaEngine.MobvistaListener() {
 
                 @Override
                 public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
@@ -340,7 +362,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                     lm.filterSelfOneMinites();
                 }
-            });
+            });*/
         }
     }
 
@@ -349,9 +371,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
      */
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
         WeakReference<IntruderCatchedActivity> mActivity;
-        Campaign mCampaign;
+		WrappedCampaign mCampaign;
 
-        public AdPreviewLoaderListener(IntruderCatchedActivity fragment, final Campaign campaign) {
+        public AdPreviewLoaderListener(IntruderCatchedActivity fragment, final WrappedCampaign campaign) {
             mActivity = new WeakReference<IntruderCatchedActivity>(fragment);
             mCampaign = campaign;
         }
@@ -384,7 +406,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
     private static AdPreviewLoaderListener sAdImageListener;
 
-    private void initAdLayout(View rootView, Campaign campaign, String unitId, Bitmap previewImage) {
+    private void initAdLayout(View rootView, WrappedCampaign campaign, String unitId, Bitmap previewImage) {
         ViewParent vg = rootView.getParent();
         if (vg.getClass().equals(ViewGroup.class)) {
             ((ViewGroup) vg).setLayoutTransition(new LayoutTransition());
@@ -394,12 +416,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         tvTitle.setText(campaign.getAppName());
         ResizableImageView preview = (ResizableImageView) adView.findViewById(R.id.item_ad_preview);
         TextView summary = (TextView) adView.findViewById(R.id.item_summary);
-        summary.setText(campaign.getAppDesc());
+        summary.setText(campaign.getDescription());
         Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
         btnCTA.setText(campaign.getAdCall());
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
-        MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
+		ADEngineWrapper.getInstance(this).registerView(mAdSource, adView, INTRUDER_AD_ID);
+        //MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
                 "ad_act", "adv_shws_capture");
     }
@@ -749,8 +772,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
+		ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
         // 3.2 advertise
-        MobvistaEngine.getInstance(this).release(INTRUDER_AD_ID);
+        //MobvistaEngine.getInstance(this).release(INTRUDER_AD_ID);
     }
 
     private void initSwiftyLayout() {

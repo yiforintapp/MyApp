@@ -3228,11 +3228,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	/**
 	 * v:3.3.2
 	 * 返回锁屏广告大图的配置
-	 * @return 0 广告关闭，1外部第三方sdk广告源, 2为max
+	 * @return 1外部第三方sdk广告源, 2为max
 	 */
 	public int getLockBannerAdConfig() {
-		return mPref.getInt(AD_IN_LOCK_SCREEN_SDK_SOURCE, 
-				AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : AD_SDK_SOURCE_USE_3TH);
+		return mPref.getInt(AD_IN_LOCK_SCREEN_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 	
 
@@ -3251,8 +3250,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * @return 0 广告关闭，1外部第三方sdk广告源, 2为max
 	 */
 	public int getChargingAdConfig() {
-		return mPref.getInt(AD_CHARGING_SDK_SOURCE, 
-				AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : AD_SDK_SOURCE_USE_3TH);
+		return mPref.getInt(AD_CHARGING_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 
 	/**
@@ -3270,8 +3268,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * @return 0 广告关闭，1外部第三方sdk广告源，2为max
 	 */
 	public int getInvaderAdConfig() {
-		return mPref.getInt(AD_IN_INVADER_SDK_SOURCE, 
-				AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : AD_SDK_SOURCE_USE_3TH);
+		return mPref.getInt(AD_IN_INVADER_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 
 	/**
@@ -3289,7 +3286,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * @return 0 广告关闭，1外部第三方sdk广告源，2为max
 	 */
 	public int getAccelerationAdConfig() {
-		return mPref.getInt(AD_IN_ACCELERATION_SDK_SOURCE, 
-				AppMasterConfig.IS_FOR_MAINLAND_CHINA ? 0 : AD_SDK_SOURCE_USE_3TH);
+		return mPref.getInt(AD_IN_ACCELERATION_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 }

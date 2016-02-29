@@ -34,7 +34,7 @@ public class WrappedCampaign {
     public String getAdCall() {
         return mCta;
     }
-
+	
     private static WrappedCampaign createCampaign (String title, String desc,
                                            String iconUrl, String previewUrl, String cta) {
         WrappedCampaign campaign = new WrappedCampaign();
