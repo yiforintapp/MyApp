@@ -1048,4 +1048,10 @@
 
     <string name="toast_hide_ing">正在隐藏图片...</string>
 
+    <string name="battery_protect_show_num_contact">通讯录</string>
+    <string name="battery_protect_show_num_call">电话</string>
+    <string name="battery_protect_show_num_msm">短信</string>
+    <string name="battery_protect_show_num_browser">浏览器</string>
+
+
 </resources>

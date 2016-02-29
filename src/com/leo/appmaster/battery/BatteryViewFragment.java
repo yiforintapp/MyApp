@@ -5,48 +5,36 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.Html;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.BatteryManager;
-import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.privacycontact.CircleImageView;
+import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.AdWrapperLayout;
 import com.leo.appmaster.ui.ResizableImageView;
@@ -64,7 +52,6 @@ import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
-import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
@@ -150,10 +137,20 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView bottomThreeText;
 
 
+    private View mRecommandNumOne;
+    private View mRecommandNumTwo;
+    private View mRecommandNumThree;
+    private View mRecommandNumFour;
+
     private CircleImageView mIvShowOne;
     private CircleImageView mIvShowTwo;
     private CircleImageView mIvShowThree;
     private CircleImageView mIvShowFour;
+
+    private TextView mRecommandTvOne;
+    private TextView mRecommandTvTwo;
+    private TextView mRecommandTvThree;
+    private TextView mRecommandTvFour;
 
 
     private int mCurrentClickType = -1;
@@ -468,10 +465,20 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mIvCancel = (ImageView) findViewById(R.id.iv_cancle);
         mIvCancel.setOnClickListener(this);
 
+        mRecommandNumOne = findViewById(R.id.show_one);
+        mRecommandNumTwo = findViewById(R.id.show_two);
+        mRecommandNumThree = findViewById(R.id.show_three);
+        mRecommandNumFour = findViewById(R.id.show_four);
+
         mIvShowOne = (CircleImageView) findViewById(R.id.iv_show_one);
         mIvShowTwo = (CircleImageView) findViewById(R.id.iv_show_two);
         mIvShowThree = (CircleImageView) findViewById(R.id.iv_show_three);
         mIvShowFour = (CircleImageView) findViewById(R.id.iv_show_four);
+
+        mRecommandTvOne = (TextView) findViewById(R.id.tv_show_one);
+        mRecommandTvTwo = (TextView) findViewById(R.id.tv_show_two);
+        mRecommandTvThree = (TextView) findViewById(R.id.tv_show_three);
+        mRecommandTvFour = (TextView) findViewById(R.id.tv_show_four);
 
         mPhoneHour = (TextView) findViewById(R.id.tv_one_time_one);
         mPhoneHourText = (TextView) findViewById(R.id.tv_one_time_two);
@@ -517,8 +524,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             public void run() {
                 mRecommandViewHeight = mRecommandView.getHeight();
                 loadFastThanInit = true;
-                turnDark(RECOMMAND_TYPE_TWO);
-                expandRecommandContent();
+                expandRecommandContent(RECOMMAND_TYPE_TWO);
             }
         });
 
@@ -563,7 +569,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mBossView.setVisibility(View.GONE);
     }
 
-    private void expandRecommandContent() {
+    private void expandRecommandContent(final int recommandTypeThree) {
+        turnDark(recommandTypeThree);
         mRecommandView.clearAnimation();
         mRecommandContentView.setVisibility(View.INVISIBLE);
         Animation expand = AnimationUtils.
@@ -576,6 +583,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (isSlideContentShow) {
                     mSlideView.setVisibility(View.INVISIBLE);
                 }
+                fillShowContentData(recommandTypeThree);
             }
 
             @Override
@@ -589,6 +597,36 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         });
         mRecommandView.setAnimation(expand);
+    }
+
+    private void fillShowContentData(int recommandTypeThree) {
+        if (recommandTypeThree == RECOMMAND_TYPE_ONE) {
+            List<BatteryAppItem> phoneList = ScreenRecommentJob.getBatteryCallList();
+            LeoLog.d("testGetList", "phoneList size is : " + phoneList.size());
+
+            //fill the local ,  size of : 3
+            mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_contacts));
+            mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_contact));
+
+            mIvShowTwo.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_phone));
+            mRecommandTvTwo.setText(getString(R.string.battery_protect_show_num_call));
+
+            mIvShowThree.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_message));
+            mRecommandTvThree.setText(getString(R.string.battery_protect_show_num_msm));
+
+
+        } else if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
+            List<BatteryAppItem> netList = ScreenRecommentJob.getBatteryNetList();
+            LeoLog.d("testGetList", "netList size is : " + netList.size());
+
+            //fill the local ,  size of : 1
+            mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_browser));
+            mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_browser));
+
+        } else {
+            List<BatteryAppItem> playList = ScreenRecommentJob.getBatteryVideoList();
+            LeoLog.d("testGetList", "playList size is : " + playList.size());
+        }
     }
 
     private void shrinkRecommandContent() {
@@ -736,8 +774,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //                expandContent(true);
                 boolean isShowContentShow = mRecommandView.getVisibility() == 0;
                 if (!isShowContentShow) {
-                    turnDark(RECOMMAND_TYPE_TWO);
-                    expandRecommandContent();
+                    expandRecommandContent(RECOMMAND_TYPE_TWO);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
                 }
 //                showRecommandContent(RECOMMAND_TYPE_TWO);
@@ -745,8 +782,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 expandContent(false);
                 boolean isShowContentShow = mRecommandView.getVisibility() == 0;
                 if (!isShowContentShow) {
-                    turnDark(RECOMMAND_TYPE_TWO);
-                    expandRecommandContent();
+                    expandRecommandContent(RECOMMAND_TYPE_TWO);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
                 }
             }
@@ -1289,14 +1325,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             shrinkRecommandContent();
         } else {
             if (mCurrentClickType == 0) {
-                turnDark(recommandTypeThree);
-                expandRecommandContent();
+                expandRecommandContent(recommandTypeThree);
             } else if (mCurrentClickType == -1) {
                 mCurrentClickType = 0;
                 shrinkRecommandContent();
                 return;
             } else {
                 //TODO 展示内容替换
+                mCurrentClickType = 0;
+                shrinkRecommandContent();
+                return;
             }
             mCurrentClickType = recommandTypeThree;
         }
