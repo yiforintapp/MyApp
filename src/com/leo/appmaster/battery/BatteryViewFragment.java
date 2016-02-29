@@ -196,7 +196,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private ImageLoader mImageLoader;
 
-    private boolean mShowBoost = false;
+    private boolean mShowBoost = true;
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
     private List<PackageInfo> mPackages;
