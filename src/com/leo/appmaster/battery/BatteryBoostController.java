@@ -1,16 +1,26 @@
 package com.leo.appmaster.battery;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.engine.BatteryComsuption;
+import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.ui.CircleArroundView;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
@@ -25,7 +35,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Jasper on 2016/3/1.
  */
-public class BatteryBoostContainer extends RelativeLayout {
+public class BatteryBoostController extends RelativeLayout {
     private static final String TAG = "BatteryBoostContainer";
 
     private static final int STATE_BEGIN = 0;
@@ -34,6 +44,11 @@ public class BatteryBoostContainer extends RelativeLayout {
 
     private static final int BOOST_SIZE = 10;
     private static final int BOOST_ITEM_DURATION = 1000;
+    private static final int MIN_BOOST_NUM = 10;
+    private ImageView mShieldIv;
+    private CircleArroundView mShieldCircle;
+    private BatteryBoostAnimView mBoostAnimView;
+    private View mShieldRootView;
 
     public interface OnBoostFinishListener {
         public void onBoostFinish();
@@ -44,21 +59,17 @@ public class BatteryBoostContainer extends RelativeLayout {
     private ImageView mAnimIv3;
     private ImageView mAnimIv4;
 
+    private TextView mBoostToastTv;
+
     private View mBoostRl;
 
     private boolean mStarted = true;
 
-    private LinkedBlockingQueue<ImageView> mIdleViews;
-
-    private int mCount = 10;
-    private List<AppItemInfo> mItemsInfo;
-
     private OnBoostFinishListener mListener;
+    private int mCleanedNum;
 
-    public BatteryBoostContainer(Context context, AttributeSet attrs) {
+    public BatteryBoostController(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        mIdleViews = new LinkedBlockingQueue<ImageView>(3);
     }
 
     @Override
@@ -70,6 +81,14 @@ public class BatteryBoostContainer extends RelativeLayout {
         mAnimIv3 = (ImageView) findViewById(R.id.boost_anim_iv3);
         mAnimIv4 = (ImageView) findViewById(R.id.boost_anim_iv4);
         mBoostRl = findViewById(R.id.boost_anim_rl);
+
+        mShieldIv = (ImageView) findViewById(R.id.iv_shield);
+        mShieldCircle = (CircleArroundView) findViewById(R.id.cav_batterymain);
+
+        mBoostAnimView = (BatteryBoostAnimView) findViewById(R.id.boost_anim_containor);
+        mShieldRootView = findViewById(R.id.rl_shield);
+
+        mBoostToastTv = (TextView) findViewById(R.id.boost_toast_tv);
     }
 
     @Override
@@ -91,8 +110,21 @@ public class BatteryBoostContainer extends RelativeLayout {
             appItemInfos.addAll(list);
         }
 
-        mItemsInfo = appItemInfos;
         startTranslate(STATE_NROMAL, drawable, mAnimIv1, appItemInfos.iterator());
+
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                BatteryManager batteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
+                List<BatteryComsuption> beforeBoost = batteryManager.getBatteryDrainApps();
+
+                ProcessCleaner cleaner = ProcessCleaner.getInstance(getContext());
+                cleaner.tryClean(getContext());
+                List<BatteryComsuption> afterBoost = batteryManager.getBatteryDrainApps();
+
+                mCleanedNum = afterBoost.size() - beforeBoost.size();
+            }
+        });
     }
 
     public void setBoostFinishListener(OnBoostFinishListener listener) {
@@ -113,7 +145,6 @@ public class BatteryBoostContainer extends RelativeLayout {
         float start = -translation;
         float end = translation;
 
-        target.setVisibility(View.VISIBLE);
         target.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
         ObjectAnimator iv1Anim = ObjectAnimator.ofFloat(target, "translationY", start, end);
         iv1Anim.addListener(new AnimatorListenerAdapter() {
@@ -123,9 +154,7 @@ public class BatteryBoostContainer extends RelativeLayout {
                 LeoLog.d(TAG, "onAnimationEnd, add target: " + target);
                 target.setVisibility(View.INVISIBLE);
                 if (!hasNext) {
-                    if (mListener != null) {
-                        mListener.onBoostFinish();
-                    }
+                    onBoostFinish();
                     return;
                 }
                 startTranslate(STATE_NROMAL, drawable, getTargetNextGroup(target), iterator);
@@ -160,7 +189,6 @@ public class BatteryBoostContainer extends RelativeLayout {
         float end = translation;
         final ImageView nextTarget = getTargetCurrentGroup(target);
         nextTarget.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
-        nextTarget.setVisibility(View.VISIBLE);
         ObjectAnimator iv2Anim = ObjectAnimator.ofFloat(nextTarget, "translationY", start, end);
         iv2Anim.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -168,9 +196,7 @@ public class BatteryBoostContainer extends RelativeLayout {
                 super.onAnimationEnd(animation);
                 nextTarget.setVisibility(View.INVISIBLE);
                 if (!hasNext) {
-                    if (mListener != null) {
-                        mListener.onBoostFinish();
-                    }
+                    onBoostFinish();
                 }
             }
 
@@ -192,5 +218,60 @@ public class BatteryBoostContainer extends RelativeLayout {
 
     private ImageView getTargetNextGroup(ImageView target) {
         return target == mAnimIv1 ? mAnimIv3 : mAnimIv1;
+    }
+
+    private void onBoostFinish() {
+        mBoostAnimView.setVisibility(View.INVISIBLE);
+        mShieldRootView.setVisibility(View.VISIBLE);
+        startShieldFlip(mShieldIv, mShieldCircle);
+    }
+
+    private void startShieldFlip(final ImageView ivShield, final CircleArroundView cavCircle) {
+        final float centerX = ivShield.getWidth() / 2.0f;
+        final float centerY = ivShield.getHeight() / 2.0f;
+        if (centerX != 0f && centerY != 0f) {
+            final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,
+                    centerX, centerY, 0.0f, true);
+            rotation.setDuration(680);
+            rotation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    cavCircle.startAnim(0f, -360f, 680l, new CircleArroundView.OnArroundFinishListener() {
+                        @Override
+                        public void onArroundFinish() {
+                            ivShield.setVisibility(View.VISIBLE);
+                            int number = mCleanedNum <= 0 ? MIN_BOOST_NUM : mCleanedNum;
+                            double seed = Math.random();
+                            int minites = (int) (number + ((float)number * seed));
+                            String boostResult = getContext().getString(R.string.battery_boost_result, minites, number);
+                            mBoostToastTv.setText(boostResult);
+                            BatteryBoostController.this.onArroundFinish();
+                        }
+                    });
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ivShield.setVisibility(View.VISIBLE);
+                }
+            });
+            rotation.setFillAfter(false);
+            ivShield.startAnimation(rotation);
+        }
+    }
+
+    private void onArroundFinish() {
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mListener != null) {
+                    mListener.onBoostFinish();
+                }
+            }
+        }, 2000);
     }
 }

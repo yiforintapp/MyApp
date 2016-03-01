@@ -1,13 +1,11 @@
 
 package com.leo.appmaster.battery;
 
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -21,13 +19,12 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.provider.Contacts;
 import android.text.Html;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -46,7 +43,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.WrappedCampaign;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -76,7 +72,6 @@ import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.ObjectAnimator;
-import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -220,7 +215,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private ImageLoader mImageLoader;
 
-    private boolean mShowBoost = false;
+    private boolean mShowBoost = true;
     private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
     private List<PackageInfo> mPackages;
@@ -268,6 +263,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     };
 
     private int mMoveDisdance;
+    private BatteryBoostController mBoostView;
 
     private void reLocateMoveContent(int type) {
         LeoLog.d("locationP", "slideview Y : " + mSlideView.getY());
@@ -435,6 +431,37 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mRecommandView = findViewById(R.id.three_show_content);
         mRecommandContentView = findViewById(R.id.show_small_content);
+
+        if (newState != null) {
+            process(mChangeType, newState, mRemainTime, mRemainTimeArr);
+        }
+
+        if (mShowBoost) {
+            initBoostLayout();
+        }
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        mActivity.registerReceiver(mPresentReceiver, intentFilter);
+    }
+
+    private void initBoostLayout() {
+        ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
+        mBoostView = (BatteryBoostController) viewStub.inflate();
+
+        mRemainContent.setVisibility(View.GONE);
+        mBossView.setVisibility(View.GONE);
+
+        mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
+            @Override
+            public void onBoostFinish() {
+                showViewAfterBoost();
+            }
+        });
+    }
+
+    private void showViewAfterBoost() {
         mRecommandView.post(new Runnable() {
             @Override
             public void run() {
@@ -443,10 +470,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 expandRecommandContent(RECOMMAND_TYPE_TWO);
             }
         });
-
-        if (newState != null) {
-            process(mChangeType, newState, mRemainTime, mRemainTimeArr);
-        }
 
         if (mRootView != null) {
             try {
@@ -463,37 +486,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (mRootView != null) {
                 initSwiftyLayout(mRootView);
                 initExtraLayout(mRootView);
-                if (mShowBoost) {
-                    initBoostLayout();
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_USER_PRESENT);
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        mActivity.registerReceiver(mPresentReceiver, intentFilter);
-    }
-
-    private void initBoostLayout() {
-        ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
-        final BatteryBoostContainer boostView = (BatteryBoostContainer) viewStub.inflate();
-
-        final View shieldRootView = boostView.findViewById(R.id.rl_shield);
-        final ImageView ivShield = (ImageView) boostView.findViewById(R.id.iv_shield);
-        final CircleArroundView cavCircle = (CircleArroundView) boostView.findViewById(R.id.cav_batterymain);
-        boostView.setBoostFinishListener(new BatteryBoostContainer.OnBoostFinishListener() {
-            @Override
-            public void onBoostFinish() {
-                shieldRootView.setVisibility(View.VISIBLE);
-                startShieldFlip(ivShield, cavCircle);
-            }
-        });
-
-        mRemainContent.setVisibility(View.GONE);
-        mBossView.setVisibility(View.GONE);
+        try {
+            ViewGroup viewGroup = (ViewGroup) mBoostView.getParent();
+            viewGroup.removeView(mBoostView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void startShieldFlip(final ImageView ivShield, final CircleArroundView cavCircle) {
