@@ -1626,7 +1626,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 break;
             case R.id.iv_cancle:
                 BatteryShowViewActivity activity = (BatteryShowViewActivity) mActivity;
-                activity.onFinishActivity();
+                boolean isClickCancel = PreferenceTable.getInstance().getBoolean(Constants.CANCEL_BAY_FIRST_TIME, false);
+                if (!isClickCancel && newState.plugged != 0) {
+                    activity.onFinishActivity(true, newState.level);
+                    PreferenceTable.getInstance().putBoolean(Constants.CANCEL_BAY_FIRST_TIME, true);
+                } else {
+                    activity.onFinishActivity(false, 0);
+                }
+
                 break;
             case R.id.remain_one:
                 showRecommandContent(RECOMMAND_TYPE_ONE);

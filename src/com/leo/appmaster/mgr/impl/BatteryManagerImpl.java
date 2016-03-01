@@ -194,7 +194,6 @@ public class BatteryManagerImpl extends BatteryManager {
     private void handleBatteryChange(BatteryState newState) {
         if (newState.plugged != UNPLUGGED && mPreviousState.plugged == UNPLUGGED) {
             /* 连接充电器事件 */
-//            if (PrefTableHelper.showInsideApp()) {
             if (isInApp()) {
                 Toast.makeText(mContext, "in APP", Toast.LENGTH_SHORT).show();
                 if (PrefTableHelper.showInsideApp()) {
@@ -207,9 +206,6 @@ public class BatteryManagerImpl extends BatteryManager {
                 Toast.makeText(mContext, "in LAUNCHER", Toast.LENGTH_SHORT).show();
                 handlePluginEvent(newState, false);
             }
-//            } else {
-//                mNotifyHelper.showNotificationForScreenSaver(newState.level);
-//            }
         } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
             mNotifyHelper.dismissScreenSaverNotification();

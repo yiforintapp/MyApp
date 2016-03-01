@@ -510,4 +510,7 @@ public class Constants {
 
     //屏保广告点击忽略时间
     public static final String AD_CLICK_IGNORE = "ad_click_ignore";
+
+    //第一次点击按钮关闭屏幕保护
+    public static final String CANCEL_BAY_FIRST_TIME = "first_cancel_bay_protect";
 }
