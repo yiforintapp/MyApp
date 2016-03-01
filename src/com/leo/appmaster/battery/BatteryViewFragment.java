@@ -783,6 +783,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public void onStart() {
         super.onStart();
         scheduleUpdateTimer();
+        mBatteryManager.dismissSaverNotification();
     }
 
     @Override

@@ -206,4 +206,19 @@ public abstract class BatteryManager extends Manager {
      * 用户点击了屏保上的设置按钮时调用此接口
      */
     public abstract void markSettingClick();
+
+    /***
+     * 3.3.2 用户点击了屏保通知
+     */
+    public abstract void onSaverNotifiClick ();
+
+    /***
+     * 3.3.2 显示充电屏保通知
+     */
+    public abstract void showSaverNotification ();
+
+    /***
+     * 3.3.2 隐藏充电屏保通知
+     */
+    public abstract void dismissSaverNotification ();
 }

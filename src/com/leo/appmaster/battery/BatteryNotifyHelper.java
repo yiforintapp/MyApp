@@ -35,9 +35,12 @@ public class BatteryNotifyHelper {
 
     private static final String TAG = "BatteryNotifyHelper";
     private static final int NOTIFICATION_ID = 20160116;
+    private static final int SAVER_NOTIFICATION_ID = 16030110;
     private static final int MAX_ICON_ACCOUNT = 6;
     private static final String ACTION_LEO_BATTERY_APP =
             "com.leo.appmaster.battery.notification.action";
+    private static final String ACTION_LEO_SAVER_NOTIFI_CLICKED =
+            "com.leo.appmaster.battery.saver.notifi.click.action";
     private static final int CHECK_INTERVAL = 3 * 60 * 60 * 1000;
 //    private static final int CHECK_INTERVAL = 10 * 1000;
     private BatteryManager mManager;
@@ -49,6 +52,7 @@ public class BatteryNotifyHelper {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_LEO_BATTERY_APP);
+        filter.addAction(ACTION_LEO_SAVER_NOTIFI_CLICKED);
         mContext.registerReceiver(mReceiver, filter);
 
         fireTimerAction();
@@ -119,28 +123,71 @@ public class BatteryNotifyHelper {
         mNotificationManager.notify(NOTIFICATION_ID, notify);
     }
 
-
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (mManager.shouldNotify()) {
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
-                        LeoLog.d(TAG, "apps count: " + list.size()
-                                + "/" + mManager.getAppThreshold());
-                        if (list.size() > mManager.getAppThreshold()) {
-                            ThreadManager.executeOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    notifyAppConsumption(list);
-                                }
-                            });
+            String action = intent.getAction();
+            if (action.equalsIgnoreCase(ACTION_LEO_SAVER_NOTIFI_CLICKED)) {
+                /* 屏保通知点击广播 */
+                LeoLog.d(TAG, "receive ACTION_LEO_SAVER_NOTIFI_CLICKED");
+                mManager.onSaverNotifiClick();
+            } else if (action.equalsIgnoreCase(ACTION_LEO_BATTERY_APP)) {
+                /* 后台耗电定时广播 */
+                if (mManager.shouldNotify()) {
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
+                            LeoLog.d(TAG, "apps count: " + list.size()
+                                    + "/" + mManager.getAppThreshold());
+                            if (list.size() > mManager.getAppThreshold()) {
+                                ThreadManager.executeOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        notifyAppConsumption(list);
+                                    }
+                                });
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
     };
+
+    /* 3.3.2 充电屏保通知 */
+    public void showNotificationForScreenSaver () {
+        NotificationManager mNotificationManager =
+                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        RemoteViews view_custom;
+        view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_apps_notify);
+
+        view_custom.setTextViewText(R.id.app_number, "充电中");
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
+        mBuilder.setContent(view_custom)
+                .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
+                .setTicker(mContext.getApplicationContext().getString(R.string.batterymanage_switch_noti))
+                .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
+                .setOngoing(true)// 不是正在进行的 true为正在进行 效果和.flag一样
+                .setSmallIcon(R.drawable.statusbar_battery_icon)
+                .setAutoCancel(true);
+
+        Intent intent = new Intent(ACTION_LEO_SAVER_NOTIFI_CLICKED);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(mContext, 0, intent, 0);
+        mBuilder.setContentIntent(pendingIntent);
+
+        Notification notify = mBuilder.build();
+        notify.contentView = view_custom;
+        mNotificationManager.notify(SAVER_NOTIFICATION_ID, notify);
+    }
+
+    public void dismissScreenSaverNotification () {
+        NotificationManager notificationManager =
+                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancel(SAVER_NOTIFICATION_ID);
+        }
+    }
 }
