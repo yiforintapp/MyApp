@@ -220,7 +220,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private ImageLoader mImageLoader;
 
-    private boolean mShowBoost = true;
+    private boolean mShowBoost = false;
     private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
     private List<PackageInfo> mPackages;
@@ -479,92 +479,54 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void initBoostLayout() {
         ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
-        final View boostView = viewStub.inflate();
+        final BatteryBoostContainer boostView = (BatteryBoostContainer) viewStub.inflate();
+
+        final View shieldRootView = boostView.findViewById(R.id.rl_shield);
         final ImageView ivShield = (ImageView) boostView.findViewById(R.id.iv_shield);
         final CircleArroundView cavCircle = (CircleArroundView) boostView.findViewById(R.id.cav_batterymain);
-
-        //TODO 这里故意延迟1秒去开始动画，避免X Y为0,实际功能中不会一加载就进行 不会出现X Y为0的情况
-        //TODO 在使用真实动画开启时机后，请删除延迟开始动画的代码
-
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+        boostView.setBoostFinishListener(new BatteryBoostContainer.OnBoostFinishListener() {
             @Override
-            public void run() {
-                final float centerX = ivShield.getWidth() / 2.0f;
-                final float centerY = ivShield.getHeight() / 2.0f;
-                Toast.makeText(mActivity, centerX + " : x   y : " + centerY, Toast.LENGTH_LONG).show();
-                if (centerX != 0f && centerY != 0f) {
-                    final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,
-                            centerX, centerY, 0.0f, true);
-                    rotation.setDuration(680);
-                    rotation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            cavCircle.startAnim(0f, -360f, 680l, new CircleArroundView.OnArroundFinishListener() {
-                                @Override
-                                public void onArroundFinish() {
-                                    ivShield.setVisibility(View.VISIBLE);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            ivShield.setVisibility(View.VISIBLE);
-                        }
-                    });
-                    rotation.setFillAfter(false);
-                    ivShield.startAnimation(rotation);
-                }
+            public void onBoostFinish() {
+                shieldRootView.setVisibility(View.VISIBLE);
+                startShieldFlip(ivShield, cavCircle);
             }
-        }, 1000);
-
-
-//        boostView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                final float centerX = ivShield.getWidth() / 2.0f;
-//                final float centerY = ivShield.getHeight() / 2.0f;
-//                Toast.makeText(mActivity, centerX + " : x   y : " + centerY, Toast.LENGTH_LONG).show();
-//
-//                if (centerX != 0f && centerY != 0f) {
-//                    final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,
-//                            centerX, centerY, 0.0f, true);
-//                    rotation.setDuration(680);
-//                    rotation.setAnimationListener(new Animation.AnimationListener() {
-//                        @Override
-//                        public void onAnimationStart(Animation animation) {
-//                            cavCircle.startAnim(0f, -360f, 680l, new CircleArroundView.OnArroundFinishListener() {
-//                                @Override
-//                                public void onArroundFinish() {
-//                                    ivShield.setVisibility(View.VISIBLE);
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onAnimationRepeat(Animation animation) {
-//                        }
-//
-//                        @Override
-//                        public void onAnimationEnd(Animation animation) {
-//                            ivShield.setVisibility(View.VISIBLE);
-//                        }
-//                    });
-//                    rotation.setFillAfter(false);
-//                    ivShield.startAnimation(rotation);
-//                }
-//
-//                boostView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//            }
-//        });
-
+        });
 
         mRemainContent.setVisibility(View.GONE);
         mBossView.setVisibility(View.GONE);
+    }
+
+    private void startShieldFlip(final ImageView ivShield, final CircleArroundView cavCircle) {
+        final float centerX = ivShield.getWidth() / 2.0f;
+        final float centerY = ivShield.getHeight() / 2.0f;
+        Toast.makeText(mActivity, centerX + " : x   y : " + centerY, Toast.LENGTH_LONG).show();
+        if (centerX != 0f && centerY != 0f) {
+            final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,
+                    centerX, centerY, 0.0f, true);
+            rotation.setDuration(680);
+            rotation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    cavCircle.startAnim(0f, -360f, 680l, new CircleArroundView.OnArroundFinishListener() {
+                        @Override
+                        public void onArroundFinish() {
+                            ivShield.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    ivShield.setVisibility(View.VISIBLE);
+                }
+            });
+            rotation.setFillAfter(false);
+            ivShield.startAnimation(rotation);
+        }
     }
 
     private void expandRecommandContent(final int recommandTypeThree) {

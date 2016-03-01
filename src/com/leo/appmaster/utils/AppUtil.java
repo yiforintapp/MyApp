@@ -144,6 +144,14 @@ public class AppUtil {
         return d;
     }
 
+    public static Drawable getAppIcon(String pkg) {
+        Drawable d = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppIcon(pkg);
+        if (d == null) {
+            d = loadAppIconDensity(pkg);
+        }
+        return d;
+    }
+
     public static String getAppLabel(PackageManager pm, String pkg) {
         String label = null;
         AppItemInfo app = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppInfo(pkg);

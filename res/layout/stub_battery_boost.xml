@@ -13,20 +13,22 @@
         android:id="@+id/boost_anim_rl"
         android:layout_width="193dp"
         android:layout_height="193dp"
-        android:padding="50dp"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:padding="50dp">
 
         <ImageView
             android:id="@+id/boost_anim_iv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:visibility="invisible"
             android:src="@drawable/ic_launcher" />
 
         <ImageView
             android:id="@+id/boost_anim_iv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_launcher" />
 
@@ -34,6 +36,7 @@
             android:id="@+id/boost_anim_iv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_launcher" />
 
@@ -42,14 +45,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:visibility="invisible"
             android:src="@drawable/ic_launcher" />
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_shield"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:padding="70dp"
-        android:visibility="visible">
+        android:visibility="invisible">
 
 
         <ImageView
@@ -67,13 +73,5 @@
             android:layout_height="match_parent" />
 
     </RelativeLayout>
-
-
-
-    <!--<ImageView
-        android:src="@drawable/battery_boost_gradient_shape"
-        android:layout_centerInParent="true"
-        android:layout_width="100dp
-        android:layout_height="100dp" />-->
 
 </com.leo.appmaster.battery.BatteryBoostContainer>
