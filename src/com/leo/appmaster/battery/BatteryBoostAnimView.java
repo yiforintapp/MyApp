@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,24 +29,18 @@ public class BatteryBoostAnimView extends View {
     private static final String TAG = "BatteryBoostAnimView";
     private static final int ROTATE_INTERVAL = 4;
 
-
     private Drawable mBgDrawable;
     private Drawable mGradientDrawable;
 
     private int mRotateAngel;
 
-
     public BatteryBoostAnimView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
-
     }
 
     @Override

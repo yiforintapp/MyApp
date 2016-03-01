@@ -43,7 +43,7 @@ public class BatteryBoostController extends RelativeLayout {
     private static final int STATE_END = 1;
     private static final int STATE_NROMAL = 2;
 
-    private static final int BOOST_SIZE = 10;
+    private static final int BOOST_SIZE = 8;
     private static final int BOOST_ITEM_DURATION = 1000;
     private static final int MIN_BOOST_NUM = 5;
     private ImageView mShieldIv;
@@ -111,7 +111,19 @@ public class BatteryBoostController extends RelativeLayout {
         List<AppItemInfo> list = AppLoadEngine.getInstance(getContext()).getAllPkgInfo();
         List<AppItemInfo> appItemInfos = new ArrayList<AppItemInfo>(BOOST_SIZE);
         if (list.size() > BOOST_SIZE) {
-            appItemInfos.addAll(list.subList(0, BOOST_SIZE));
+            // 随机取
+            float seed = (float) Math.random();
+            int start = (int) ((float)(list.size() - 1) * seed);
+            for (int i = start; i < list.size() + start; i++) {
+                int index = i;
+                if (index >= list.size()) {
+                    index -= list.size();
+                }
+                appItemInfos.add(list.get(index));
+                if (appItemInfos.size() >= BOOST_SIZE) {
+                    break;
+                }
+            }
         } else {
             appItemInfos.addAll(list);
         }
