@@ -134,7 +134,7 @@ public class CircleArroundView extends View {
 		mCenterY = mTotalH / 2;
 		mBmCircle = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.circle_battery); 
 		int min = Math.min(mTotalW, mTotalH);
-		mBmCircle = Bitmap.createScaledBitmap(mBmCircle, (int)((float)(min * 1f)), (int)((float)(min * 1f)), true);
+		mBmCircle = Bitmap.createScaledBitmap(mBmCircle, (int)((float)(min * 0.9f)), (int)((float)(min * 0.9f)), true);
 	}
 	
 	public interface OnArroundFinishListener {
