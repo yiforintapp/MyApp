@@ -2157,6 +2157,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mBossView.setVisibility(View.INVISIBLE);
                 popupWindow.dismiss();
 
+                showRecommandContent(RECOMMAND_TYPE_TWO);
                 PreferenceTable.getInstance().putLong(Constants.AD_CLICK_IGNORE, System.currentTimeMillis());
             }
         });
