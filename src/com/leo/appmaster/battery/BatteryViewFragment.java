@@ -447,7 +447,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void initBoostLayout() {
-        if (PrefTableHelper.shouldBatteryBoost()) {
+//        if (PrefTableHelper.shouldBatteryBoost()) {
+        if (false) {
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
 
@@ -897,6 +898,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        if (!url.contains("://")) {
+            url = "http://" + url;
+        }
+
         Uri content_url = Uri.parse(url);
         intent.setData(content_url);
         try {
