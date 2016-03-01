@@ -156,13 +156,17 @@ public class BatteryNotifyHelper {
     };
 
     /* 3.3.2 充电屏保通知 */
-    public void showNotificationForScreenSaver () {
+    public void showNotificationForScreenSaver (int level) {
+        LeoLog.d("stone_saver", "in showNotificationForScreenSaver, level = " + level);
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews view_custom;
-        view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_apps_notify);
+        view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
 
-        view_custom.setTextViewText(R.id.app_number, "充电中");
+        view_custom.setTextViewText(R.id.tv_charge_percent, level+"");
+
+        view_custom.setTextViewText(R.id.tv_charge_tip,
+                mContext.getString(R.string.screen_protect_charing_text_two)+"...");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setContent(view_custom)

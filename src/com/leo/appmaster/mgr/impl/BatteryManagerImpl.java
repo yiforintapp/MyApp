@@ -195,7 +195,7 @@ public class BatteryManagerImpl extends BatteryManager {
             if (PrefTableHelper.showInsideApp()) {
                 handlePluginEvent(newState, false);
             } else {
-                mNotifyHelper.showNotificationForScreenSaver();
+                mNotifyHelper.showNotificationForScreenSaver(newState.level);
             }
         } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
@@ -439,7 +439,8 @@ public class BatteryManagerImpl extends BatteryManager {
 
     @Override
     public void showSaverNotification() {
-        mNotifyHelper.showNotificationForScreenSaver();
+        LeoLog.d("stone_saver", "call showNotificationForScreenSaver");
+        mNotifyHelper.showNotificationForScreenSaver(mPreviousState.level);
     }
 
     @Override
