@@ -6,13 +6,15 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
 
 /**
  * Created by Jasper on 2016/2/29.
  */
-public class BatteryBoostAnimView extends View {
+public class BatteryBoostAnimView extends RelativeLayout {
     private static final int ROTATE_INTERVAL = 4;
 
     private Drawable mBgDrawable;
@@ -20,9 +22,22 @@ public class BatteryBoostAnimView extends View {
 
     private int mRotateAngel;
 
+    private ImageView mAnimIv1;
+    private ImageView mAnimIv2;
+
+    private boolean mStarted = false;
+
     public BatteryBoostAnimView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+        mAnimIv1 = (ImageView) findViewById(R.id.boost_anim_iv1);
+        mAnimIv1 = (ImageView) findViewById(R.id.boost_anim_iv2);
     }
 
     @Override
@@ -30,12 +45,16 @@ public class BatteryBoostAnimView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
 
         Resources res = getContext().getResources();
-        mBgDrawable = getContext().getResources().getDrawable(R.drawable.bg_circular_clear);
-        mBgDrawable.setBounds(0, 0, getWidth(), getHeight());
+        mBgDrawable = res.getDrawable(R.drawable.bg_circular_clear);
+        if (mBgDrawable != null) {
+            mBgDrawable.setBounds(0, 0, getWidth(), getHeight());
+        }
 
         int padding = res.getDimensionPixelSize(R.dimen.battery_boost_padding);
-        mGradientDrawable = getContext().getResources().getDrawable(R.drawable.battery_boost_gradient_shape);
-        mGradientDrawable.setBounds(padding, padding, getWidth() - padding, getHeight() - padding);
+        mGradientDrawable = res.getDrawable(R.drawable.battery_boost_gradient_shape);
+        if (mGradientDrawable != null) {
+            mGradientDrawable.setBounds(padding, padding, getWidth() - padding, getHeight() - padding);
+        }
     }
 
     @Override
@@ -54,6 +73,13 @@ public class BatteryBoostAnimView extends View {
 
         mGradientDrawable.draw(canvas);
 
+        if (mStarted) {
+            invalidate();
+        }
+    }
+
+    public void startBoost() {
+        mStarted = true;
         invalidate();
     }
 }

@@ -1053,5 +1053,7 @@
     <string name="battery_protect_show_num_msm">短信</string>
     <string name="battery_protect_show_num_browser">浏览器</string>
 
+    <string name="battery_boosting">正在清理耗电应用</string>
+    <string name="battery_boost_result">充电屏保将节省%1$d分钟充电时间，已清理%2$d个耗电应用</string>
 
 </resources>
