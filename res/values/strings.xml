@@ -1059,5 +1059,7 @@
     <string name="battery_protect_setting_pow_sav_des">充电中自动清理耗电应用</string>
 
     <string name="battery_protect_pop_text">忽略</string>
+    
+    <string name="battery_saver_remain_charge_time">剩余充电时间</string>
 
 </resources>
