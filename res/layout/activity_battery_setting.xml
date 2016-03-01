@@ -14,9 +14,9 @@
         android:id="@+id/big_pic_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/ctb_main"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/ctb_main"
         android:background="@drawable/pic_setup_bay" />
 
     <com.leo.appmaster.ui.RippleView
@@ -73,10 +73,63 @@
     </com.leo.appmaster.ui.RippleView>
 
     <com.leo.appmaster.ui.RippleView
-        android:id="@+id/rv_item_noti"
+        android:id="@+id/rv_item_pow_sav"
         android:layout_width="match_parent"
         android:layout_height="68dp"
         android:layout_below="@id/rv_item_screenview"
+        app:rippleAlpha="1"
+        app:rippleColor="@color/home_tab_pressed"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@+id/iv_switch_noti"
+            android:gravity="left">
+
+            <TextView
+                android:id="@+id/tv_title_pow_sav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="@string/battery_protect_setting_pow_sav_title"
+                android:textColor="@color/c2"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_summary_pow_sav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_pow_sav"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:gravity="top"
+                android:maxLines="3"
+                android:text="@string/battery_protect_setting_pow_sav_des"
+                android:textColor="@color/c4"
+                android:textSize="10dp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_switch_pow_sav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="26dp" />
+
+        <View style="@style/priAppItem" />
+    </com.leo.appmaster.ui.RippleView>
+
+    <com.leo.appmaster.ui.RippleView
+        android:id="@+id/rv_item_noti"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_below="@id/rv_item_pow_sav"
         app:rippleAlpha="1"
         app:rippleColor="@color/home_tab_pressed"
         app:rippleDuration="250"

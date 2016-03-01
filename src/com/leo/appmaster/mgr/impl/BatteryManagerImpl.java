@@ -363,6 +363,16 @@ public class BatteryManagerImpl extends BatteryManager {
     }
 
     @Override
+    public boolean getBatteryPowSavStatus() {
+        return mPt.getBoolean(PrefConst.KEY_BATTERY_POWER_SAVING_STATUS, true);
+    }
+
+    @Override
+    public void setBatteryPowSavStatus(boolean value) {
+        mPt.putBoolean(PrefConst.KEY_BATTERY_POWER_SAVING_STATUS, value);
+    }
+
+    @Override
     public void setBatteryStateListener(BatteryStateListener listener) {
         mListenerRef = new WeakReference<BatteryStateListener>(listener);
     }

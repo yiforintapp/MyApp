@@ -149,6 +149,20 @@ public abstract class BatteryManager extends Manager {
      */
     public abstract void setBatteryNotiStatus(boolean value);
 
+    /**
+     * 获取自动清理耗电应用的开关
+     *
+     * @return
+     */
+    public abstract boolean getBatteryPowSavStatus();
+
+    /**
+     * 设置自动清理耗电应用的开关
+     *
+     * @return
+     */
+    public abstract void setBatteryPowSavStatus(boolean value);
+
     /***
      * 设置监听电池状态listener
      */

@@ -182,6 +182,8 @@ public class PrefConst {
     public static final String KEY_BATTERY_SCREEN_VIEW_STATUS = "battery_screen_view_status";
     //耗电应用通知的开关状态
     public static final String KEY_BATTERY_NOTIFICATION_STATUS = "battery_notification_status";
+    //自动清理耗电应用的开关状态
+    public static final String KEY_BATTERY_POWER_SAVING_STATUS = "battery_power_saving_status";
     /**
      * 黑名单提示人数
      */

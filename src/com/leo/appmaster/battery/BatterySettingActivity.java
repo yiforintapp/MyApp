@@ -25,6 +25,8 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
     private ImageView checkBoxTwo;
     private RippleView rpBtn;
     private RippleView rpBtnTwo;
+    private ImageView checkBoxThree;
+    private RippleView rpBtnThree;
     private String mFromWhere;
     private BatteryManager.BatteryState newState;
     private LEOAlarmDialog mConfirmCloseDialog;
@@ -68,6 +70,14 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
         } else {
             checkBoxTwo.setImageResource(R.drawable.switch_off);
         }
+
+        boolean isBatteryPowSavOpen = mBtrManager.getBatteryPowSavStatus();
+        if (isBatteryPowSavOpen) {
+            checkBoxThree.setImageResource(R.drawable.switch_on);
+        } else {
+            checkBoxThree.setImageResource(R.drawable.switch_off);
+        }
+
     }
 
     private void initUI() {
@@ -87,8 +97,12 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
         rpBtnTwo = (RippleView) findViewById(R.id.rv_item_noti);
         rpBtnTwo.setOnClickListener(this);
 
+        rpBtnThree = (RippleView) findViewById(R.id.rv_item_pow_sav);
+        rpBtnThree.setOnClickListener(this);
+
         checkBox = (ImageView) findViewById(R.id.iv_switch_screenview);
         checkBoxTwo = (ImageView) findViewById(R.id.iv_switch_noti);
+        checkBoxThree = (ImageView) findViewById(R.id.iv_switch_pow_sav);
     }
 
     @Override
@@ -103,7 +117,7 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(BatteryManager.PROTECT_VIEW_TYPE, BatteryManager.SHOW_TYPE_IN);
             intent.putExtra(BatteryManager.REMAIN_TIME, mRemainTime);
-            intent.putExtra(BatteryManager.ARR_REMAIN_TIME,mRemainTimeArr);
+            intent.putExtra(BatteryManager.ARR_REMAIN_TIME, mRemainTimeArr);
             Bundle bundle = new Bundle();
             bundle.putSerializable(BatteryManager.SEND_BUNDLE, newState);
             intent.putExtras(bundle);
@@ -169,6 +183,16 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                     mBtrManager.setBatteryNotiStatus(false);
                     SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
                             "batterypage", "setting_ntf_off");
+                }
+                break;
+            case R.id.rv_item_pow_sav:
+                boolean isBatteryPowSavOpen = mBtrManager.getBatteryPowSavStatus();
+                if (!isBatteryPowSavOpen) {
+                    checkBoxThree.setImageResource(R.drawable.switch_on);
+                    mBtrManager.setBatteryPowSavStatus(true);
+                } else {
+                    checkBoxThree.setImageResource(R.drawable.switch_off);
+                    mBtrManager.setBatteryPowSavStatus(false);
                 }
                 break;
         }
