@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -191,12 +194,22 @@ public class BatteryManagerImpl extends BatteryManager {
     private void handleBatteryChange(BatteryState newState) {
         if (newState.plugged != UNPLUGGED && mPreviousState.plugged == UNPLUGGED) {
             /* 连接充电器事件 */
-            Toast.makeText(mContext, "PLUG IN!!!!!!", Toast.LENGTH_SHORT).show();
-            if (PrefTableHelper.showInsideApp()) {
-                handlePluginEvent(newState, false);
-            } else {
+//            if (PrefTableHelper.showInsideApp()) {
+            if (isInApp()) {
+                Toast.makeText(mContext, "in APP", Toast.LENGTH_SHORT).show();
+                if (PrefTableHelper.showInsideApp()) {
+                    handlePluginEvent(newState, false);
+                } else {
+                    mNotifyHelper.showNotificationForScreenSaver(newState.level);
+                }
                 mNotifyHelper.showNotificationForScreenSaver(newState.level);
+            } else {
+                Toast.makeText(mContext, "in LAUNCHER", Toast.LENGTH_SHORT).show();
+                handlePluginEvent(newState, false);
             }
+//            } else {
+//                mNotifyHelper.showNotificationForScreenSaver(newState.level);
+//            }
         } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
             mNotifyHelper.dismissScreenSaverNotification();
@@ -450,6 +463,36 @@ public class BatteryManagerImpl extends BatteryManager {
         mNotifyHelper.dismissScreenSaverNotification();
     }
 
+    @Override
+    public boolean isInApp() {
+        return !isHome();
+    }
+
+    public boolean isHome() {
+        try {
+            List<String> homes = getHomes();
+            ActivityManager mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
+            return homes.contains(rti.get(0).topActivity.getPackageName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private List<String> getHomes() {
+        List<String> packages = new ArrayList<String>();
+        PackageManager packageManager = mContext.getPackageManager();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        List<ResolveInfo> resolveInfo = packageManager.queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo info : resolveInfo) {
+            packages.add(info.activityInfo.packageName);
+            System.out.println(info.activityInfo.packageName);
+        }
+        return packages;
+    }
     /* 外发电量通知 */
 //    private void broadcastBatteryLevel(BatteryState state) {
 //        LeoLog.d(TAG, "broadcast battery event for audience");

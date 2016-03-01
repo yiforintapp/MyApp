@@ -221,4 +221,9 @@ public abstract class BatteryManager extends Manager {
      * 3.3.2 隐藏充电屏保通知
      */
     public abstract void dismissSaverNotification ();
+
+    /***
+     * 3.3.2 是否在应用内
+     */
+    public abstract boolean isInApp();
 }
