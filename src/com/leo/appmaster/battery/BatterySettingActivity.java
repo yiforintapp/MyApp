@@ -60,8 +60,21 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
         boolean isScreenViewOpen = mBtrManager.getScreenViewStatus();
         if (isScreenViewOpen) {
             checkBox.setImageResource(R.drawable.switch_on);
+
+            rpBtnThree.setFocusable(true);
+            rpBtnThree.setEnabled(true);
+            boolean isBatteryPowSavOpen = mBtrManager.getBatteryPowSavStatus();
+            if (isBatteryPowSavOpen) {
+                checkBoxThree.setImageResource(R.drawable.switch_on);
+            } else {
+                checkBoxThree.setImageResource(R.drawable.switch_off);
+            }
         } else {
             checkBox.setImageResource(R.drawable.switch_off);
+
+            rpBtnThree.setFocusable(false);
+            rpBtnThree.setEnabled(false);
+            checkBoxThree.setImageResource(R.drawable.switch_off);
         }
 
         boolean isBatteryNotiOpen = mBtrManager.getBatteryNotiStatus();
@@ -69,13 +82,6 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
             checkBoxTwo.setImageResource(R.drawable.switch_on);
         } else {
             checkBoxTwo.setImageResource(R.drawable.switch_off);
-        }
-
-        boolean isBatteryPowSavOpen = mBtrManager.getBatteryPowSavStatus();
-        if (isBatteryPowSavOpen) {
-            checkBoxThree.setImageResource(R.drawable.switch_on);
-        } else {
-            checkBoxThree.setImageResource(R.drawable.switch_off);
         }
 
     }
@@ -151,6 +157,16 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                     mBtrManager.setScreenViewStatus(true);
                     SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
                             "batterypage", "setting_scr_on");
+
+                    boolean isBatteryPowSavOpen = mBtrManager.getBatteryPowSavStatus();
+                    if (isBatteryPowSavOpen) {
+                        checkBoxThree.setImageResource(R.drawable.switch_on);
+                    } else {
+                        checkBoxThree.setImageResource(R.drawable.switch_off);
+                    }
+                    rpBtnThree.setFocusable(true);
+                    rpBtnThree.setEnabled(true);
+
                 } else {
                     if (mConfirmCloseDialog == null) {
                         mConfirmCloseDialog = new LEOAlarmDialog(this);
@@ -165,6 +181,11 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                             mBtrManager.setScreenViewStatus(false);
                             SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
                                     "batterypage", "setting_scr_off");
+
+                            checkBoxThree.setImageResource(R.drawable.switch_off);
+                            rpBtnThree.setFocusable(false);
+                            rpBtnThree.setEnabled(false);
+
                             mConfirmCloseDialog.dismiss();
                         }
                     });
