@@ -2,17 +2,22 @@
 package com.leo.appmaster.battery;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.Contacts;
 import android.text.Html;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -598,7 +603,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mActivity, "contact", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mActivity, "contact", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Contacts.People.CONTENT_URI);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(intent);
+                        mActivity.finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -608,7 +623,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mActivity, "call", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mActivity, "call", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(intent);
+                        mActivity.finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -618,36 +641,86 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    try {
+                        //摩托短信列表
+                        Intent intentM = new Intent(Intent.ACTION_VIEW);
+                        intentM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        ComponentName cnM = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationList");
+                        intentM.setComponent(cnM);
+                        startActivity(intentM);
+                    } catch (Exception e) {
+                        try {
+                            //努比亚短信列表
+                            Intent intentN = new Intent(Intent.ACTION_VIEW);
+                            intentN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            ComponentName cnN = new ComponentName("com.android.contacts", "com.android.contacts.MmsConversationActivity");
+                            intentN.setComponent(cnN);
+                            startActivity(intentN);
+                        } catch (Exception e1) {
+                            //三星
+                            try {
+                                Intent intentS = new Intent(Intent.ACTION_VIEW);
+                                intentS.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                ComponentName cnS = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationComposer");
+                                intentS.setComponent(cnS);
+                                startActivity(intentS);
+                            } catch (Exception e2) {
+                                e2.printStackTrace();
+                            }
+                        }
 
+                    } finally {
+                        mActivity.finish();
+                    }
                 }
             });
 
             String name = null;
             Drawable map = null;
-            BatteryAppItem info = phoneList.get(0);
-            for (int i = 0; i < mPackages.size(); i++) {
-                PackageInfo packageInfo = mPackages.get(i);
-                if (packageInfo.applicationInfo.packageName.equals(info.pkg)) {
-                    name = packageInfo.applicationInfo.loadLabel(mActivity.getPackageManager()).toString();
-                    map = packageInfo.applicationInfo.loadIcon(mActivity.getPackageManager());
-                    break;
-                }
-            }
-            if (name != null && map != null) {
-                mRecommandNumFour.setVisibility(View.VISIBLE);
-                mIvShowFour.setImageDrawable(map);
-                mRecommandTvFour.setText(name);
-                mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
+            if (phoneList != null && phoneList.size() > 0) {
+                BatteryAppItem info = phoneList.get(0);
+                final BatteryAppItem infoCopy = info;
+                for (int i = 0; i < mPackages.size(); i++) {
+                    PackageInfo packageInfo = mPackages.get(i);
+                    if (packageInfo.applicationInfo.packageName.equals(info.pkg)) {
+                        name = packageInfo.applicationInfo.loadLabel(mActivity.getPackageManager()).toString();
+                        map = packageInfo.applicationInfo.loadIcon(mActivity.getPackageManager());
+                        break;
                     }
-                });
+                }
+                if (name != null && map != null) {
+                    mRecommandNumFour.setVisibility(View.VISIBLE);
+                    mIvShowFour.setImageDrawable(map);
+                    mRecommandTvFour.setText(name);
+                    mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+                            resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                            resolveIntent.setPackage(infoCopy.pkg);
+                            List<ResolveInfo> resolveinfoList = mActivity.getPackageManager()
+                                    .queryIntentActivities(resolveIntent, 0);
+                            ResolveInfo resolveinfo = resolveinfoList.iterator().next();
+                            if (resolveinfo != null) {
+                                String className = resolveinfo.activityInfo.name;
+                                Intent intent = new Intent(Intent.ACTION_MAIN);
+                                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                ComponentName cn = new ComponentName(infoCopy.pkg, className);
+                                intent.setComponent(cn);
+                                try {
+                                    startActivity(intent);
+                                    mActivity.finish();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
+                    });
+                }
             } else {
                 mRecommandNumFour.setVisibility(View.GONE);
             }
-
-
         } else if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
             List<BatteryAppItem> netList = ScreenRecommentJob.getBatteryNetList();
             LeoLog.d("testGetList", "netList size is : " + netList.size());

@@ -24,6 +24,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
