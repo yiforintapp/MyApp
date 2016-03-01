@@ -43,6 +43,7 @@ import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.DeskProxyActivity;
@@ -240,7 +241,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     break;
                 case LOAD_DONE_INIT_PLACE:
                     int type = (Integer) msg.obj;
-                    reLocateMoveContent(type);
+
+                    //是否满足忽略按钮
+                    long lastIgnore = PreferenceTable.getInstance().getLong(Constants.AD_CLICK_IGNORE, 0);
+                    long now = System.currentTimeMillis();
+                    long internal = PrefTableHelper.getIgnoreTs() * 60 * 60 * 60;//hours change to mmin
+                    LeoLog.d("locationP", "now - lastIgnore : " + (now - lastIgnore) + " . internal : " + internal);
+                    if (now - lastIgnore > internal) {
+                        reLocateMoveContent(type);
+                    }
+
                     break;
             }
         }
@@ -1379,30 +1389,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
 
-//    private void makeSlideContentUp() {
-//        boolean isSlideContentShow = mBossView.getVisibility() == 0;
-//        if (isSlideContentShow) {
-////            mMoveDisdance = mMoveDisdance - mRecommandViewHeight;
-////            mSlideView.setY(mMoveDisdance);
-//            mSlideView.setVisibility(View.VISIBLE);
-//        }
-//    }
-
-//    private void makeSlideContentDown() {
-//        boolean isSlideContentShow = mBossView.getVisibility() == 0;
-//        if (isSlideContentShow) {
-////            mMoveDisdance = mMoveDisdance + mRecommandViewHeight;
-////            mSlideView.setY(mMoveDisdance);
-//
-////            ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-////                    "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop() + mMoveDisdance + mRecommandViewHeight);
-////            animMoveY.setDuration(600);
-////            animMoveY.start();
-//
-//            mSlideView.setVisibility(View.INVISIBLE);
-//        }
-//    }
-
     /* AM-3889: 三星5.x的手机从系统锁之外跳转有问题，需要特殊处理 */
     private boolean samsungLolipopDevice() {
         LeoLog.d(TAG, "MANUFACTURER: " + Build.MANUFACTURER);
@@ -1438,43 +1424,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mClickRunnable = null;
         }
     }
-
-//    private long showTime;
-//
-//    private void showPop(int type) {
-//        if (!isExpand && !mShowing) {
-//            String str = getRightMenuItems(type);
-//            View view;
-//            if (type == CHARING_TYPE_SPEED) {
-////                view = mSpeedContent;
-//                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_quick");
-//            } else if (type == CHARING_TYPE_CONTINUOUS) {
-////                view = mContinuousContent;
-//                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_constant");
-//            } else {
-////                view = mTrickleContent;
-//                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_trickle");
-//            }
-//
-////            showPopUp(view, str);
-//            showTime = System.currentTimeMillis();
-//            mHandler.sendEmptyMessageDelayed(DIMISS_POP, 5000);
-//        }
-//    }
-
-//    private String getRightMenuItems(int type) {
-//        Context ctx = mActivity;
-//        String mStr;
-//        if (type == CHARING_TYPE_SPEED) {
-//            mStr = ctx.getString(R.string.screen_protect_type_pop_one);
-//        } else if (type == CHARING_TYPE_CONTINUOUS) {
-//            mStr = ctx.getString(R.string.screen_protect_type_pop_two);
-//        } else {
-//            mStr = ctx.getString(R.string.screen_protect_type_pop_three);
-//        }
-//        return mStr;
-//    }
-
 
     /* 广告相关 - 开始 */
     private boolean mShouldLoadAd = false;
@@ -1797,8 +1746,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSlideView.setVisibility(View.INVISIBLE);
+                mBossView.setVisibility(View.INVISIBLE);
                 popupWindow.dismiss();
+
+                PreferenceTable.getInstance().putLong(Constants.AD_CLICK_IGNORE, System.currentTimeMillis());
             }
         });
 

@@ -507,4 +507,7 @@ public class Constants {
     // deep link相关
     public static final String DP_SCHEMA = "privacyguard";
     public static final String DP_HOST = "com.leo.appmaster";
+
+    //屏保广告点击忽略时间
+    public static final String AD_CLICK_IGNORE = "ad_click_ignore";
 }
