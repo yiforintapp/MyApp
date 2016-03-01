@@ -751,6 +751,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 if (resolveinfo != null) {
                                     String className = resolveinfo.activityInfo.name;
                                     Intent intent = new Intent(Intent.ACTION_MAIN);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.addCategory(Intent.CATEGORY_LAUNCHER);
                                     ComponentName cn = new ComponentName(browserPack, className);
                                     intent.setComponent(cn);
@@ -781,6 +782,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         public void run() {
                             Intent intent = new Intent();
                             intent.setAction("android.intent.action.VIEW");
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             Uri content_url = Uri.parse(urlTwo);
                             intent.setData(content_url);
                             try {
@@ -808,6 +810,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         public void run() {
                             Intent intent = new Intent();
                             intent.setAction("android.intent.action.VIEW");
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             Uri content_url = Uri.parse(urlThree);
                             intent.setData(content_url);
                             try {
@@ -835,6 +838,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         public void run() {
                             Intent intent = new Intent();
                             intent.setAction("android.intent.action.VIEW");
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             Uri content_url = Uri.parse(urlFour);
                             intent.setData(content_url);
                             try {
@@ -853,6 +857,23 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else {
             List<BatteryAppItem> playList = ScreenRecommentJob.getBatteryVideoList();
             LeoLog.d("testGetList", "playList size is : " + playList.size());
+
+            int i = 0;
+            BatteryAppItem infoOne = playList.get(i);
+            String packNameOne = infoOne.pkg;
+            String urlOne = infoOne.actionUrl;
+            if (!Utilities.isEmpty(packNameOne)) {
+
+            } else if (!Utilities.isEmpty(urlOne)) {
+
+            } else {
+
+            }
+
+
+            i = i + 1;
+
+
         }
     }
 
