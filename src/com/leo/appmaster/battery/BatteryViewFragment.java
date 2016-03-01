@@ -1332,6 +1332,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
 
     private void turnLight() {
+        if (getActivity() == null || isDetached() || isRemoving()) {  // 防止崩溃
+            return;
+        }
         backOneView.getBackground().setAlpha(255);
         mPhoneHour.setTextColor(getResources().getColor(R.color.white));
         mPhoneHourText.setTextColor(getResources().getColor(R.color.green_back_normal));
