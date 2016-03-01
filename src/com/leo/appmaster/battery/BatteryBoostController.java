@@ -5,7 +5,9 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -235,29 +237,29 @@ public class BatteryBoostController extends RelativeLayout {
 
     private AnimatorSet getTotalAnimator(ObjectAnimator animator, ImageView target) {
         ObjectAnimator alpha1 = ObjectAnimator.ofFloat(target, "alpha", 0f, 1f);
-        alpha1.setInterpolator(new LinearInterpolator());
+        alpha1.setInterpolator(new AccelerateInterpolator());
         alpha1.setDuration(BOOST_ITEM_DURATION / 2);
 
         ObjectAnimator alpha2 = ObjectAnimator.ofFloat(target, "alpha", 1f, 0f);
-        alpha2.setInterpolator(new LinearInterpolator());
+        alpha2.setInterpolator(new DecelerateInterpolator());
         alpha2.setDuration(BOOST_ITEM_DURATION / 2);
         AnimatorSet alphaSet = new AnimatorSet();
         alphaSet.playSequentially(alpha1, alpha2);
 
-        ObjectAnimator scaleX1 = ObjectAnimator.ofFloat(target, "scaleX", 0f, 1f);
-        scaleX1.setInterpolator(new LinearInterpolator());
+        ObjectAnimator scaleX1 = ObjectAnimator.ofFloat(target, "scaleX", 0.1f, 1f);
+        scaleX1.setInterpolator(new AccelerateInterpolator());
         scaleX1.setDuration(BOOST_ITEM_DURATION / 2);
-        ObjectAnimator scaleY1 = ObjectAnimator.ofFloat(target, "scaleY", 0f, 1f);
-        scaleY1.setInterpolator(new LinearInterpolator());
+        ObjectAnimator scaleY1 = ObjectAnimator.ofFloat(target, "scaleY", 0.1f, 1f);
+        scaleY1.setInterpolator(new AccelerateInterpolator());
         scaleY1.setDuration(BOOST_ITEM_DURATION / 2);
         AnimatorSet scale1Set = new AnimatorSet();
         scale1Set.playTogether(scaleX1, scaleY1);
 
-        ObjectAnimator scaleX2 = ObjectAnimator.ofFloat(target, "scaleX", 1f, 0f);
-        scaleX2.setInterpolator(new LinearInterpolator());
+        ObjectAnimator scaleX2 = ObjectAnimator.ofFloat(target, "scaleX", 1f, 0.1f);
+        scaleX2.setInterpolator(new DecelerateInterpolator());
         scaleX2.setDuration(BOOST_ITEM_DURATION / 2);
-        ObjectAnimator scaleY2 = ObjectAnimator.ofFloat(target, "scaleY", 1f, 0f);
-        scaleY2.setInterpolator(new LinearInterpolator());
+        ObjectAnimator scaleY2 = ObjectAnimator.ofFloat(target, "scaleY", 1f, 0.1f);
+        scaleY2.setInterpolator(new DecelerateInterpolator());
         scaleY2.setDuration(BOOST_ITEM_DURATION / 2);
         AnimatorSet scale2Set = new AnimatorSet();
         scale2Set.playTogether(scaleX2, scaleY2);
