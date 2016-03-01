@@ -447,8 +447,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void initBoostLayout() {
-//        if (PrefTableHelper.shouldBatteryBoost()) {
-        if (false) {
+        if (PrefTableHelper.shouldBatteryBoost()) {
+//        if (false) {
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
 
