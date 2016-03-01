@@ -53,7 +53,7 @@ import java.util.TimerTask;
 public class LostSecurityManagerImpl extends LostSecurityManager {
     public static final Boolean DBG = false;
     public static final String TAG = "LostSecurityManagerImpl";
-    private static final long WAIT_TIME_OUT = 10000;
+    private static final long WAIT_TIME_OUT = 5*1000;
     private static boolean mIsLocation;
     private static boolean mIsOnkey;
     private static boolean mIsFormate;
