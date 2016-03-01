@@ -1447,7 +1447,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mTvHideTime.setText(Html.fromHtml(text));
                 }
             } else {
-                String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
+                String text2 = mActivity.getString(R.string.battery_saver_remain_char_power);
                 mTvHideText.setText(text2);
                 mTvHideTime.setVisibility(View.GONE);
             }

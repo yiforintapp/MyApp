@@ -1062,4 +1062,6 @@
     
     <string name="battery_saver_remain_charge_time">剩余充电时间</string>
 
+    <string name="battery_saver_remain_char_power">建议充电</string>
+
 </resources>
