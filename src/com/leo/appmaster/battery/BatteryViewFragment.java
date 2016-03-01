@@ -468,7 +468,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void initBoostLayout() {
         ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
-        final View boostView= viewStub.inflate();
+        final View boostView = viewStub.inflate();
         final ImageView ivShield = (ImageView) boostView.findViewById(R.id.iv_shield);
         final CircleArroundView cavCircle = (CircleArroundView) boostView.findViewById(R.id.cav_batterymain);
 
@@ -509,7 +509,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     ivShield.startAnimation(rotation);
                 }
             }
-        },1000);
+        }, 1000);
 
 
 //        boostView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -550,14 +550,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //                boostView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 //            }
 //        });
-
-
-
-
-
-
-
-
 
 
         mRemainContent.setVisibility(View.GONE);
@@ -1530,14 +1522,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mAdWrapper.setNeedIntercept(true);
 
         final Button ignoreBtn = (Button) rootView.findViewById(R.id.ignore_button);
-        ignoreBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO 用户点击了ignore右上角的菜单
-                LeoLog.d("stone_test_ignore", "ignore!");
-                showPopUp(ignoreBtn);
-            }
-        });
+        boolean isShowIgnoreBtn = PrefTableHelper.showIgnoreBtn();
+//        if (isShowIgnoreBtn) {
+        if(true){
+            ignoreBtn.setVisibility(View.VISIBLE);
+            ignoreBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO 用户点击了ignore右上角的菜单
+                    LeoLog.d("stone_test_ignore", "ignore!");
+                    showPopUp(ignoreBtn);
+                }
+            });
+        } else {
+            ignoreBtn.setVisibility(View.INVISIBLE);
+        }
 
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
@@ -1756,7 +1755,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         int[] location = new int[2];
         v.getLocationOnScreen(location);
-        int x = location[0] - v.getWidth() / 2;
+        int x = location[0] - v.getWidth() * 2;
         int y = location[1] + v.getHeight();
         popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, x, y);
 
