@@ -7,20 +7,27 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -1481,12 +1488,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mAdWrapper = (AdWrapperLayout) rootView.findViewById(R.id.ad_wrapper);
         mAdWrapper.setNeedIntercept(true);
 
-        Button ignoreBtn = (Button) rootView.findViewById(R.id.ignore_button);
+        final Button ignoreBtn = (Button) rootView.findViewById(R.id.ignore_button);
         ignoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO 用户点击了ignore右上角的菜单
                 LeoLog.d("stone_test_ignore", "ignore!");
+                showPopUp(ignoreBtn);
             }
         });
 
@@ -1514,8 +1522,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             delayTime = AD_LOAD_TIME;
         }
 
-        LeoLog.d("testDelayTime","System.currentTimeMillis() - mInitTime : " + (System.currentTimeMillis() - mInitTime));
-        LeoLog.d("testDelayTime","delayTime : " + delayTime);
+        LeoLog.d("testDelayTime", "System.currentTimeMillis() - mInitTime : " + (System.currentTimeMillis() - mInitTime));
+        LeoLog.d("testDelayTime", "delayTime : " + delayTime);
 
         mAdWrapper.postDelayed(new Runnable() {
             @Override
@@ -1683,23 +1691,44 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         return options;
     }
 
-//    private PopupWindow popupWindow;
-//    private void showPopUp(View v, String str) {
-//        View contentView = LayoutInflater.from(mActivity).inflate(
-//                R.layout.popmenu_battery_list_item, null);
-//        TextView text = (TextView) contentView.findViewById(R.id.menu_text);
+    private PopupWindow popupWindow;
+
+    private void showPopUp(View v) {
+        View contentView = LayoutInflater.from(mActivity).inflate(
+                R.layout.popmenu_battery_list_item, null);
+
+        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);//TODO 原本是用height，为啥？
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        contentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSlideView.setVisibility(View.INVISIBLE);
+                popupWindow.dismiss();
+            }
+        });
+
+
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
+        int x = location[0] - v.getWidth() / 2;
+        int y = location[1] + v.getHeight();
+        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, x, y);
+
+        //        TextView text = (TextView) contentView.findViewById(R.id.menu_text);
 //        float textWidth = getTextViewLength(text, str);
 //        LeoLog.d("testPop", "width : " + textWidth);
+//
 //        text.setText(str);
 //        int size = (int) getResources().getDimension(R.dimen.popu_txt_size);
 //        text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 //        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(AppMasterApplication.sScreenWidth, View.MeasureSpec.AT_MOST);
 //        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 //        text.measure(widthMeasureSpec, heightMeasureSpec);
-//
-//        int[] location = new int[2];
-//        v.getLocationOnScreen(location);
-//        int x;
+
+
 //        int height = DipPixelUtil.dip2px(mActivity, 50);
 //        if (textWidth > CHANGE_LINE_INT) {
 //            x = location[0];
@@ -1709,15 +1738,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //        } else {
 //            x = location[0] - 100;
 //        }
-//
-//        popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);//TODO 原本是用height，为啥？
-//        popupWindow.setFocusable(true);
-//        popupWindow.setOutsideTouchable(true);
-//        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-//        LeoLog.d("testPop", "text_height : " + text.getMeasuredHeight());
-//        int y = location[1] - text.getMeasuredHeight() - mSpeedContent.getHeight();
-//        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, x, y);
-//    }
+
+    }
 
 //    public float getTextViewLength(TextView textView, String text) {
 //        TextPaint paint = textView.getPaint();
