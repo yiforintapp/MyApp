@@ -801,7 +801,6 @@ public final class Utilities {
             List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(
                     intent, PackageManager.GET_INTENT_FILTERS);
 
-
             LeoLog.i("getBrowserInfo", "能跳转的浏览器个数： " + resolveInfoList.size());
             for (int i = 0; i < resolveInfoList.size(); i++) {
                 LeoLog.i("getBrowserInfo", resolveInfoList.get(i).activityInfo.packageName);

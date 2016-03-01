@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -100,6 +101,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private final int EXTRA_TYPE_MSG = 3;
 
     private static final int AD_LOAD_TIME = 3000;
+
+    private final String GOOGLE = "Google";
+    private final String AMAZON = "Amazon";
+    private final String YAHOO = "Yahoo";
 
 
     public static boolean mShowing = false;
@@ -731,14 +736,168 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mActivity, "browser", Toast.LENGTH_SHORT).show();
+                    mClickRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            String browserPack = getBrowserApp(mActivity);
+                            if (!Utilities.isEmpty(browserPack)) {
+                                Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+                                resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                resolveIntent.setPackage(browserPack);
+                                List<ResolveInfo> resolveinfoList = mActivity.getPackageManager()
+                                        .queryIntentActivities(resolveIntent, 0);
+                                ResolveInfo resolveinfo = resolveinfoList.iterator().next();
+                                if (resolveinfo != null) {
+                                    String className = resolveinfo.activityInfo.name;
+                                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                    ComponentName cn = new ComponentName(browserPack, className);
+                                    intent.setComponent(cn);
+                                    try {
+                                        startActivity(intent);
+                                        mActivity.finish();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    handleRunnable();
                 }
             });
+
+            BatteryAppItem typeTwo = netList.get(0);
+            final String urlTwo = typeTwo.actionUrl;
+            Drawable mapOne = getRightIcon(typeTwo.name);
+            mIvShowTwo.setImageDrawable(mapOne);
+            mRecommandTvTwo.setText(typeTwo.name);
+            mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mClickRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(urlTwo);
+                            intent.setData(content_url);
+                            try {
+                                startActivity(intent);
+                                mActivity.finish();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    handleRunnable();
+                }
+            });
+
+            BatteryAppItem typeThree = netList.get(1);
+            final String urlThree = typeThree.actionUrl;
+            Drawable mapTwo = getRightIcon(typeThree.name);
+            mIvShowThree.setImageDrawable(mapTwo);
+            mRecommandTvThree.setText(typeThree.name);
+            mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mClickRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(urlThree);
+                            intent.setData(content_url);
+                            try {
+                                startActivity(intent);
+                                mActivity.finish();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    handleRunnable();
+                }
+            });
+
+            BatteryAppItem typeFour = netList.get(2);
+            final String urlFour = typeFour.actionUrl;
+            Drawable mapFour = getRightIcon(typeFour.name);
+            mIvShowFour.setImageDrawable(mapFour);
+            mRecommandTvFour.setText(typeFour.name);
+            mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mClickRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri content_url = Uri.parse(urlFour);
+                            intent.setData(content_url);
+                            try {
+                                startActivity(intent);
+                                mActivity.finish();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    handleRunnable();
+                }
+            });
+
 
         } else {
             List<BatteryAppItem> playList = ScreenRecommentJob.getBatteryVideoList();
             LeoLog.d("testGetList", "playList size is : " + playList.size());
         }
+    }
+
+    private Drawable getRightIcon(String name) {
+        Drawable map;
+        if (name.equals(GOOGLE)) {
+            map = getResources().getDrawable(R.drawable.icon_time_google);
+        } else if (name.equals(AMAZON)) {
+            map = getResources().getDrawable(R.drawable.icon_time_amazon);
+        } else {
+            map = getResources().getDrawable(R.drawable.icon_time_yahoo);
+        }
+        return map;
+    }
+
+    private String getBrowserApp(Context context) {
+        String default_browser = "android.intent.category.DEFAULT";
+
+        String browsable = "android.intent.category.BROWSABLE";
+        String view = "android.intent.action.VIEW";
+
+        Intent intent = new Intent(view);
+        intent.addCategory(default_browser);
+        intent.addCategory(browsable);
+        Uri uri = Uri.parse("http://");
+        intent.setDataAndType(uri, null);
+
+        String pack = null;
+        try {
+            // 找出手机当前安装的所有浏览器程序
+            List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(
+                    intent, PackageManager.GET_INTENT_FILTERS);
+
+            LeoLog.i("getBrowserInfo", "能跳转的浏览器个数： " + resolveInfoList.size());
+            for (int i = 0; i < resolveInfoList.size(); i++) {
+                LeoLog.i("getBrowserInfo", resolveInfoList.get(i).activityInfo.packageName);
+            }
+
+            if (resolveInfoList.size() > 0) {
+                pack = resolveInfoList.get(0).activityInfo.packageName;
+            }
+
+        } catch (Exception e) {
+            return null;
+        }
+        return pack;
     }
 
     private void shrinkRecommandContent() {
@@ -1331,7 +1490,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-
     private void turnLight() {
         if (getActivity() == null || isDetached() || isRemoving()) {  // 防止崩溃
             return;
@@ -1601,7 +1759,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         final Button ignoreBtn = (Button) rootView.findViewById(R.id.ignore_button);
         boolean isShowIgnoreBtn = PrefTableHelper.showIgnoreBtn();
 //        if (isShowIgnoreBtn) {
-        if(true){
+        if (true) {
             ignoreBtn.setVisibility(View.VISIBLE);
             ignoreBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
