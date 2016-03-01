@@ -451,8 +451,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
 
-            mRemainContent.setVisibility(View.GONE);
-            mBossView.setVisibility(View.GONE);
+            mRemainTimeContent.setVisibility(View.INVISIBLE);
+            mRemainContent.setVisibility(View.INVISIBLE);
+            mBossView.setVisibility(View.INVISIBLE);
 
             mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
                 @Override
@@ -469,6 +470,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mRecommandView.post(new Runnable() {
             @Override
             public void run() {
+                mRemainTimeContent.setVisibility(View.VISIBLE);
                 mRemainContent.setVisibility(View.VISIBLE);
                 mRecommandViewHeight = mRecommandView.getHeight();
                 loadFastThanInit = true;
