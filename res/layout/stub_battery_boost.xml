@@ -19,7 +19,16 @@
             android:id="@+id/boost_anim_iv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_launcher"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/boost_anim_iv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
     </com.leo.appmaster.battery.BatteryBoostAnimView>
@@ -27,32 +36,27 @@
     <RelativeLayout
         android:id="@+id/rl_shield"
         android:layout_width="match_parent"
-        android:padding="70dp"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:visibility="visible" >
+        android:padding="70dp"
+        android:visibility="visible">
 
 
         <ImageView
             android:id="@+id/iv_shield"
-            android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:padding="20dp"
             android:src="@drawable/batterymanage_shield"
             android:visibility="visible" />
 
         <com.leo.appmaster.ui.CircleArroundView
             android:id="@+id/cav_batterymain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
-
-
-
-
 
 
     <!--<ImageView
