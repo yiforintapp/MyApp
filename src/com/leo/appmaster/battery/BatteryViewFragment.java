@@ -447,18 +447,22 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void initBoostLayout() {
-        ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
-        mBoostView = (BatteryBoostController) viewStub.inflate();
+        if (PrefTableHelper.shouldBatteryBoost()) {
+            ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
+            mBoostView = (BatteryBoostController) viewStub.inflate();
 
-        mRemainContent.setVisibility(View.GONE);
-        mBossView.setVisibility(View.GONE);
+            mRemainContent.setVisibility(View.GONE);
+            mBossView.setVisibility(View.GONE);
 
-        mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
-            @Override
-            public void onBoostFinish() {
-                showViewAfterBoost();
-            }
-        });
+            mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
+                @Override
+                public void onBoostFinish() {
+                    showViewAfterBoost();
+                }
+            });
+        } else {
+            showViewAfterBoost();
+        }
     }
 
     private void showViewAfterBoost() {

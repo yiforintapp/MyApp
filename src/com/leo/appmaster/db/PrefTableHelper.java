@@ -1,12 +1,18 @@
 package com.leo.appmaster.db;
 
+import android.content.Context;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.ProcessUtils;
 
 /**
  * 常用字段获取帮助接口
  * Created by Jasper on 2016/2/26.
  */
 public class PrefTableHelper {
+    private static final String TAG = "PrefTableHelper";
 
     /**
      * 应用内是否展示充电屏保
@@ -48,5 +54,31 @@ public class PrefTableHelper {
      */
     public static double getBoostMem() {
         return PreferenceTable.getInstance().getDouble(PrefConst.KEY_SHOW_BOOST_MEM, 0.7);
+    }
+
+    public static boolean shouldBatteryBoost() {
+        return true;
+//        long lastBoostTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_LAST_BOOST_TS, 0);
+//        if (lastBoostTs == 0) {
+//            return true;
+//        }
+//
+//        Context ctx = AppMasterApplication.getInstance();
+//        long totalMem = ProcessUtils.getTotalMem();
+//        long usedMem = ProcessUtils.getUsedMem(ctx);
+//        double ratio = (double)usedMem / (double)totalMem;
+//        LeoLog.d(TAG, "shouldBatteryBoost, totalMem: " + totalMem + " | usedMem: " + usedMem +
+//                " | ratio: " + ratio);
+//        long currentTs = System.currentTimeMillis();
+//
+//        long interval = getBoostTs();
+//        long intervalMs = interval * 60L * 60L * 1000L;
+//
+//        double defRatio = PrefTableHelper.getBoostMem();
+//        if ((currentTs - lastBoostTs >= intervalMs || currentTs < lastBoostTs) && ratio >= defRatio) {
+//            return true;
+//        }
+//
+//        return false;
     }
 }

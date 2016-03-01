@@ -96,7 +96,12 @@ public class BatteryBoostController extends RelativeLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        startBoost();
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startBoost();
+            }
+        }, 500);
     }
 
     public void startBoost() {
@@ -169,22 +174,8 @@ public class BatteryBoostController extends RelativeLayout {
         });
         iv1Anim.setInterpolator(new LinearInterpolator());
         iv1Anim.setDuration(BOOST_ITEM_DURATION);
-//        iv1Anim.start();
 
-        ObjectAnimator alpha1 = ObjectAnimator.ofFloat(target, "alpha", 0f, 0.6f, 1f);
-        alpha1.setInterpolator(new LinearInterpolator());
-        alpha1.setDuration(BOOST_ITEM_DURATION / 2);
-        alpha1.start();
-
-        ObjectAnimator alpha2 = ObjectAnimator.ofFloat(target, "alpha", 1f, 0.6f, 0f);
-        alpha2.setInterpolator(new LinearInterpolator());
-        alpha2.setDuration(BOOST_ITEM_DURATION / 2);
-        alpha2.start();
-        AnimatorSet alphaSet = new AnimatorSet();
-        alphaSet.playSequentially(alpha1, alpha2);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(iv1Anim, alphaSet);
+        AnimatorSet animatorSet = getTotalAnimator(iv1Anim, target);
         animatorSet.start();
         startTranslatePaired(state, target, iterator);
     }
@@ -225,7 +216,47 @@ public class BatteryBoostController extends RelativeLayout {
         iv2Anim.setInterpolator(new LinearInterpolator());
         iv2Anim.setDuration(BOOST_ITEM_DURATION);
         iv2Anim.setStartDelay(BOOST_ITEM_DURATION / 2);
-        iv2Anim.start();
+
+        AnimatorSet animatorSet = getTotalAnimator(iv2Anim, target);
+        animatorSet.start();
+    }
+
+    private AnimatorSet getTotalAnimator(ObjectAnimator animator, ImageView target) {
+        ObjectAnimator alpha1 = ObjectAnimator.ofFloat(target, "alpha", 0f, 1f);
+        alpha1.setInterpolator(new LinearInterpolator());
+        alpha1.setDuration(BOOST_ITEM_DURATION / 2);
+
+        ObjectAnimator alpha2 = ObjectAnimator.ofFloat(target, "alpha", 1f, 0f);
+        alpha2.setInterpolator(new LinearInterpolator());
+        alpha2.setDuration(BOOST_ITEM_DURATION / 2);
+        AnimatorSet alphaSet = new AnimatorSet();
+        alphaSet.playSequentially(alpha1, alpha2);
+
+        ObjectAnimator scaleX1 = ObjectAnimator.ofFloat(target, "scaleX", 0f, 1f);
+        scaleX1.setInterpolator(new LinearInterpolator());
+        scaleX1.setDuration(BOOST_ITEM_DURATION / 2);
+        ObjectAnimator scaleY1 = ObjectAnimator.ofFloat(target, "scaleY", 0f, 1f);
+        scaleY1.setInterpolator(new LinearInterpolator());
+        scaleY1.setDuration(BOOST_ITEM_DURATION / 2);
+        AnimatorSet scale1Set = new AnimatorSet();
+        scale1Set.playTogether(scaleX1, scaleY1);
+
+        ObjectAnimator scaleX2 = ObjectAnimator.ofFloat(target, "scaleX", 1f, 0f);
+        scaleX2.setInterpolator(new LinearInterpolator());
+        scaleX2.setDuration(BOOST_ITEM_DURATION / 2);
+        ObjectAnimator scaleY2 = ObjectAnimator.ofFloat(target, "scaleY", 1f, 0f);
+        scaleY2.setInterpolator(new LinearInterpolator());
+        scaleY2.setDuration(BOOST_ITEM_DURATION / 2);
+        AnimatorSet scale2Set = new AnimatorSet();
+        scale2Set.playTogether(scaleX2, scaleY2);
+
+        AnimatorSet scaleSet = new AnimatorSet();
+        scale1Set.playSequentially(scale1Set, scale2Set);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animator, alphaSet, scaleSet);
+
+        return animatorSet;
     }
 
     private ImageView getTargetCurrentGroup(ImageView target) {

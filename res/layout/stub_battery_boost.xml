@@ -14,7 +14,7 @@
         android:layout_width="193dp"
         android:layout_height="193dp"
         android:layout_centerInParent="true"
-        android:padding="50dp">
+        android:padding="40dp">
 
         <ImageView
             android:id="@+id/boost_anim_iv1"
