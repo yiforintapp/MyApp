@@ -85,7 +85,7 @@ public abstract class LostSecurityManager extends Manager {
      * 注：必须使用异步线程调用
      * @return
      */
-    public abstract Location getLocation() throws InterruptedException;
+    public abstract  Location getLocation() throws InterruptedException;
     /***
      * 执行追踪手机位置操作
      * 如果不指定手机号，默认给防盗号码发送位置信息

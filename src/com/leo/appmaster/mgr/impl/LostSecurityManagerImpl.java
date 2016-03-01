@@ -179,7 +179,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     }
 
     @Override
-    public Location getLocation() {
+    public synchronized Location getLocation() {
         Location location = null;
         boolean isGoogleAva = false;
         LeoLog.d(TAG, "start get location");
@@ -217,7 +217,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
                             @Override
                             public void onConnectionSuspended(int i) {
-
+                                LeoLog.d(TAG, "disconnection ---onConnectionSuspended");
                             }
                         })
                         .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
@@ -283,7 +283,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             }
         }
         mLocation = null;
-        mLostImpl = null;
+//        mLostImpl = null;
         if (location == null) {
             LeoLog.i(TAG, "location is null ! ");
         }else{
