@@ -46,6 +46,8 @@ public class BatteryNotifyHelper {
     private BatteryManager mManager;
     private Context mContext;
 
+    private boolean mNeedUpdateLevel = false;
+
     public BatteryNotifyHelper(Context context, BatteryManager batteryManager) {
         mContext = context;
         mManager = batteryManager;
@@ -185,6 +187,7 @@ public class BatteryNotifyHelper {
         Notification notify = mBuilder.build();
         notify.contentView = view_custom;
         mNotificationManager.notify(SAVER_NOTIFICATION_ID, notify);
+        mNeedUpdateLevel = true;
     }
 
     public void dismissScreenSaverNotification () {
@@ -192,6 +195,17 @@ public class BatteryNotifyHelper {
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
             notificationManager.cancel(SAVER_NOTIFICATION_ID);
+        }
+        mNeedUpdateLevel = false;
+    }
+
+    /***
+     * 更新通知栏电量值
+     * @param level
+     */
+    public void updateNotificationLevel (int level) {
+        if (mNeedUpdateLevel) {
+            showNotificationForScreenSaver(level);
         }
     }
 }

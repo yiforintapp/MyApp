@@ -199,8 +199,10 @@ public class BatteryManagerImpl extends BatteryManager {
             }
         } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
+            mNotifyHelper.dismissScreenSaverNotification();
         } else if (newState.plugged != UNPLUGGED && newState.level != mPreviousState.level) {
             handleChargingEvent(newState);
+            mNotifyHelper.updateNotificationLevel(newState.level);
         } else if (newState.level != mPreviousState.level) {
             handleConsumingState(newState);
         }
