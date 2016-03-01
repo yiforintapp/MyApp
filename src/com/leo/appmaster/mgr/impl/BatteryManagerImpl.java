@@ -74,6 +74,7 @@ public class BatteryManagerImpl extends BatteryManager {
 
     public BatteryManagerImpl() {
         mTimeEstimator = new RemainingTimeEstimator(mContext);
+        mNotifyHelper = new BatteryNotifyHelper(mContext, this);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
@@ -84,8 +85,6 @@ public class BatteryManagerImpl extends BatteryManager {
 
         mSp = AppMasterPreference.getInstance(mContext);
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-
-        mNotifyHelper = new BatteryNotifyHelper(mContext, this);
     }
 
     @Override
