@@ -25,6 +25,7 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class BatteryBoostController extends RelativeLayout {
 
     private static final int BOOST_SIZE = 10;
     private static final int BOOST_ITEM_DURATION = 1000;
-    private static final int MIN_BOOST_NUM = 10;
+    private static final int MIN_BOOST_NUM = 5;
     private ImageView mShieldIv;
     private CircleArroundView mShieldCircle;
     private BatteryBoostAnimView mBoostAnimView;
@@ -168,8 +169,23 @@ public class BatteryBoostController extends RelativeLayout {
         });
         iv1Anim.setInterpolator(new LinearInterpolator());
         iv1Anim.setDuration(BOOST_ITEM_DURATION);
-        iv1Anim.start();
+//        iv1Anim.start();
 
+        ObjectAnimator alpha1 = ObjectAnimator.ofFloat(target, "alpha", 0f, 0.6f, 1f);
+        alpha1.setInterpolator(new LinearInterpolator());
+        alpha1.setDuration(BOOST_ITEM_DURATION / 2);
+        alpha1.start();
+
+        ObjectAnimator alpha2 = ObjectAnimator.ofFloat(target, "alpha", 1f, 0.6f, 0f);
+        alpha2.setInterpolator(new LinearInterpolator());
+        alpha2.setDuration(BOOST_ITEM_DURATION / 2);
+        alpha2.start();
+        AnimatorSet alphaSet = new AnimatorSet();
+        alphaSet.playSequentially(alpha1, alpha2);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(iv1Anim, alphaSet);
+        animatorSet.start();
         startTranslatePaired(state, target, iterator);
     }
 
