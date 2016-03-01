@@ -10,6 +10,7 @@ import java.util.List;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -812,6 +813,7 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private boolean needAppGuide() {
+//        Toast.makeText(AppLockListActivity.this, Build.VERSION.SDK_INT+"__"+TaskDetectService.sDetectSpecial+"__"+BuildProperties.isLenoveModel(), Toast.LENGTH_SHORT).show();
         if (TaskDetectService.sDetectSpecial && !mIsLenovo) {
             ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
             return !usageStats.checkAvailable();

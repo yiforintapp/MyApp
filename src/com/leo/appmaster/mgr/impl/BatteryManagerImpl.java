@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
@@ -22,6 +23,7 @@ import com.leo.appmaster.battery.BatteryShowViewActivity;
 import com.leo.appmaster.battery.RemainTimeHelper;
 import com.leo.appmaster.battery.RemainingTimeEstimator;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
+import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
@@ -188,7 +190,13 @@ public class BatteryManagerImpl extends BatteryManager {
     /* 充电时间计算相关 */
     private void handleBatteryChange(BatteryState newState) {
         if (newState.plugged != UNPLUGGED && mPreviousState.plugged == UNPLUGGED) {
-            handlePluginEvent(newState, false);
+            /* 连接充电器事件 */
+            Toast.makeText(mContext, "PLUG IN!!!!!!", Toast.LENGTH_SHORT).show();
+            if (PrefTableHelper.showInsideApp()) {
+                handlePluginEvent(newState, false);
+            } else {
+                mNotifyHelper.showNotificationForScreenSaver();
+            }
         } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
         } else if (newState.plugged != UNPLUGGED && newState.level != mPreviousState.level) {
@@ -422,6 +430,21 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public void markSettingClick() {
         mSp.setScreenSaveBubbleCount(MAX_BUBBLE_SHOW_TIME);
+    }
+
+    @Override
+    public void onSaverNotifiClick() {
+        handlePluginEvent(mPreviousState, false);
+    }
+
+    @Override
+    public void showSaverNotification() {
+        mNotifyHelper.showNotificationForScreenSaver();
+    }
+
+    @Override
+    public void dismissSaverNotification() {
+        mNotifyHelper.dismissScreenSaverNotification();
     }
 
     /* 外发电量通知 */

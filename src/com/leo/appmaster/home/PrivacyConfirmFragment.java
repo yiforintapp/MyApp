@@ -289,8 +289,6 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         HomeActivity mMianActivity = mActivity;
         mMianActivity.clearAllNum();
 
-        mActivity.setHidePicFinish(true);
-
     }
 
     /**
