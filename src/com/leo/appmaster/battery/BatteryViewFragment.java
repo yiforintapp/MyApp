@@ -456,7 +456,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void initBoostLayout() {
         ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
-        viewStub.inflate();
+        View view = viewStub.inflate();
+        BatteryBoostAnimView animView = (BatteryBoostAnimView) view.findViewById(R.id.boost_anim_containor);
+//        animView.startBoost();
 
         mRemainContent.setVisibility(View.GONE);
         mBossView.setVisibility(View.GONE);

@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <com.leo.appmaster.battery.BatteryBoostAnimView
+        android:id="@+id/boost_anim_containor"
         android:layout_width="193dp"
         android:layout_height="193dp"
         android:layout_centerInParent="true">
@@ -19,10 +20,20 @@
             android:id="@+id/boost_anim_iv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_launcher"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/boost_anim_iv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
     </com.leo.appmaster.battery.BatteryBoostAnimView>
+
+
 
     <!--<ImageView
         android:src="@drawable/battery_boost_gradient_shape"
