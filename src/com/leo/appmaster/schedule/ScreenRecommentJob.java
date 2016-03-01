@@ -320,7 +320,10 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         String net = null;
         net = object.getString(KEY_NET);
         JSONArray netArray = new JSONArray(net);
-        parseJsonArrayAndCache(KEY_NET, netArray, false);
+        int netSize = parseJsonArrayAndCache(KEY_NET, netArray, false);
+        if (netSize == 0) {
+            throw new RuntimeException("net list must not be empty.");
+        }
 
         String video = null;
         video = object.getString(KEY_VIDEO);
