@@ -574,7 +574,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Toast.makeText(mActivity, "contact", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Contacts.People.CONTENT_URI);
@@ -594,7 +593,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Toast.makeText(mActivity, "call", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
@@ -646,6 +644,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             });
 
+            //4
             String name = null;
             Drawable map = null;
             if (phoneList != null && phoneList.size() > 0) {
@@ -735,11 +734,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             });
 
+            //2
             if (netList != null && netList.size() > 0) {
                 mRecommandNumTwo.setVisibility(View.VISIBLE);
                 BatteryAppItem typeTwo = netList.get(0);
                 final String urlTwo = typeTwo.actionUrl;
-                Drawable mapOne = getRightIcon(typeTwo.name);
+                Drawable mapOne = getRightIcon(typeTwo);
                 mIvShowTwo.setImageDrawable(mapOne);
                 mRecommandTvTwo.setText(typeTwo.name);
                 mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
@@ -748,17 +748,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mClickRunnable = new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent();
-                                intent.setAction("android.intent.action.VIEW");
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                Uri content_url = Uri.parse(urlTwo);
-                                intent.setData(content_url);
-                                try {
-                                    startActivity(intent);
-                                    mActivity.finish();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                startBrowser(urlTwo);
                             }
                         };
                         handleRunnable();
@@ -769,11 +759,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
 
 
+            //3
             if (netList != null && netList.size() > 1) {
                 mRecommandNumThree.setVisibility(View.VISIBLE);
                 BatteryAppItem typeThree = netList.get(1);
                 final String urlThree = typeThree.actionUrl;
-                Drawable mapTwo = getRightIcon(typeThree.name);
+                Drawable mapTwo = getRightIcon(typeThree);
                 mIvShowThree.setImageDrawable(mapTwo);
                 mRecommandTvThree.setText(typeThree.name);
                 mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
@@ -782,17 +773,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mClickRunnable = new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent();
-                                intent.setAction("android.intent.action.VIEW");
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                Uri content_url = Uri.parse(urlThree);
-                                intent.setData(content_url);
-                                try {
-                                    startActivity(intent);
-                                    mActivity.finish();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                startBrowser(urlThree);
                             }
                         };
                         handleRunnable();
@@ -802,11 +783,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mRecommandNumThree.setVisibility(View.GONE);
             }
 
+            //4
             if (netList != null && netList.size() > 2) {
                 mRecommandNumFour.setVisibility(View.VISIBLE);
                 BatteryAppItem typeFour = netList.get(2);
                 final String urlFour = typeFour.actionUrl;
-                Drawable mapFour = getRightIcon(typeFour.name);
+                Drawable mapFour = getRightIcon(typeFour);
                 mIvShowFour.setImageDrawable(mapFour);
                 mRecommandTvFour.setText(typeFour.name);
                 mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
@@ -815,17 +797,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mClickRunnable = new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent();
-                                intent.setAction("android.intent.action.VIEW");
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                Uri content_url = Uri.parse(urlFour);
-                                intent.setData(content_url);
-                                try {
-                                    startActivity(intent);
-                                    mActivity.finish();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                startBrowser(urlFour);
                             }
                         };
                         handleRunnable();
@@ -914,9 +886,23 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
+    private void startBrowser(String url) {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri content_url = Uri.parse(url);
+        intent.setData(content_url);
+        try {
+            startActivity(intent);
+            mActivity.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void gotoBrowser(BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView) {
         final String urlFour = infoOne.actionUrl;
-//        mIvShowFour.setImageDrawable(mapFour);
+        icon.setImageDrawable(getRightIcon(infoOne));
         title.setText(infoOne.name);
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -924,17 +910,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mClickRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent();
-                        intent.setAction("android.intent.action.VIEW");
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        Uri content_url = Uri.parse(urlFour);
-                        intent.setData(content_url);
-                        try {
-                            startActivity(intent);
-                            mActivity.finish();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        startBrowser(urlFour);
                     }
                 };
                 handleRunnable();
@@ -943,7 +919,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void gotoApp(final BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView) {
-
         String name = null;
         Drawable map = null;
 
@@ -1022,16 +997,22 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
 
-    private Drawable getRightIcon(String name) {
+    private Drawable getRightIcon(BatteryAppItem info) {
         Drawable map;
-        if (name.equals(GOOGLE)) {
-            map = getResources().getDrawable(R.drawable.icon_time_google);
-        } else if (name.equals(AMAZON)) {
-            map = getResources().getDrawable(R.drawable.icon_time_amazon);
-        } else if (name.equals(YAHOO)) {
-            map = getResources().getDrawable(R.drawable.icon_time_yahoo);
+        Context ctx = AppMasterApplication.getInstance();
+        if (info.name.equals(GOOGLE)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_google);
+        } else if (info.name.equals(AMAZON)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_amazon);
+        } else if (info.name.equals(YAHOO)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_yahoo);
         } else {
-            map = getResources().getDrawable(R.drawable.default_user_avatar);
+            if (info.iconUrl != null) {
+                map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
+            } else {
+                map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
+            }
+
         }
         return map;
     }
