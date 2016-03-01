@@ -469,6 +469,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mRecommandView.post(new Runnable() {
             @Override
             public void run() {
+                mRemainContent.setVisibility(View.VISIBLE);
                 mRecommandViewHeight = mRecommandView.getHeight();
                 loadFastThanInit = true;
                 expandRecommandContent(RECOMMAND_TYPE_TWO);
