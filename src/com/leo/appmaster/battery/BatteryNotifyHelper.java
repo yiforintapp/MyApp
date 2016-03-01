@@ -42,7 +42,7 @@ public class BatteryNotifyHelper {
     private static final String ACTION_LEO_SAVER_NOTIFI_CLICKED =
             "com.leo.appmaster.battery.saver.notifi.click.action";
     private static final int CHECK_INTERVAL = 3 * 60 * 60 * 1000;
-//    private static final int CHECK_INTERVAL = 10 * 1000;
+    //    private static final int CHECK_INTERVAL = 10 * 1000;
     private BatteryManager mManager;
     private Context mContext;
 
@@ -61,7 +61,7 @@ public class BatteryNotifyHelper {
     }
 
     private void fireTimerAction() {
-        long nextTime = CHECK_INTERVAL - SystemClock.elapsedRealtime()%CHECK_INTERVAL;
+        long nextTime = CHECK_INTERVAL - SystemClock.elapsedRealtime() % CHECK_INTERVAL;
         LeoLog.d(TAG, "check after " + nextTime + " ms");
         Intent intent = new Intent(ACTION_LEO_BATTERY_APP);
         PendingIntent sendIntent = PendingIntent.getBroadcast(mContext, 0,
@@ -99,7 +99,7 @@ public class BatteryNotifyHelper {
             }
         }
 
-        view_custom.setTextViewText(R.id.app_number, list.size()+"");
+        view_custom.setTextViewText(R.id.app_number, list.size() + "");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setContent(view_custom)
@@ -158,17 +158,22 @@ public class BatteryNotifyHelper {
     };
 
     /* 3.3.2 充电屏保通知 */
-    public void showNotificationForScreenSaver (int level) {
+    public void showNotificationForScreenSaver(int level) {
         LeoLog.d("stone_saver", "in showNotificationForScreenSaver, level = " + level);
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews view_custom;
         view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
 
-        view_custom.setTextViewText(R.id.tv_charge_percent, level+"");
+        view_custom.setTextViewText(R.id.tv_charge_percent, level + "");
 
-        view_custom.setTextViewText(R.id.tv_charge_tip,
-                mContext.getString(R.string.screen_protect_charing_text_two)+"...");
+        if (level == 100) {
+            view_custom.setTextViewText(R.id.tv_charge_tip,
+                    mContext.getString(R.string.screen_protect_charing_text_four) + "...");
+        } else {
+            view_custom.setTextViewText(R.id.tv_charge_tip,
+                    mContext.getString(R.string.screen_protect_charing_text_two) + "...");
+        }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setContent(view_custom)
@@ -190,7 +195,7 @@ public class BatteryNotifyHelper {
         mNeedUpdateLevel = true;
     }
 
-    public void dismissScreenSaverNotification () {
+    public void dismissScreenSaverNotification() {
         NotificationManager notificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
@@ -201,9 +206,10 @@ public class BatteryNotifyHelper {
 
     /***
      * 更新通知栏电量值
+     *
      * @param level
      */
-    public void updateNotificationLevel (int level) {
+    public void updateNotificationLevel(int level) {
         if (mNeedUpdateLevel) {
             showNotificationForScreenSaver(level);
         }
