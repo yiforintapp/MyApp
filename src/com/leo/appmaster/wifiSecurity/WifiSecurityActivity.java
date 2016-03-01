@@ -183,9 +183,10 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
             mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
             mDialogAskCreateShotcut.setRightBtnListener(new DialogInterface.OnClickListener() {
-                
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    SDKWrapper.addEvent(WifiSecurityActivity.this, SDKWrapper.P1, "assistant", "shortcut_wifi");
                     Intent intent = new Intent();
                     intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -193,6 +194,13 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
                     intent.putExtra("from_quickhelper", true);
                     QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_wifi_safety), R.drawable.qh_wifi_icon, intent, WifiSecurityActivity.this);
                     Toast.makeText(WifiSecurityActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();
+                    mDialogAskCreateShotcut.dismiss();
+                }
+            });
+            mDialogAskCreateShotcut.setLeftBtnListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SDKWrapper.addEvent(WifiSecurityActivity.this, SDKWrapper.P1, "assistant", "shortcut_wifi_no");
                     mDialogAskCreateShotcut.dismiss();
                 }
             });

@@ -140,15 +140,23 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
             mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
             mDialogAskCreateShotcut.setRightBtnListener(new DialogInterface.OnClickListener() {
-                
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1, "assistant", "shortcut_hidevid");
                     Intent intent = new Intent();
                     intent = new Intent(AppMasterApplication.getInstance(), VideoHideMainActivity.class);
                     intent.putExtra("from_quickhelper", true);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_video_hide), R.drawable.qh_video_icon, intent, VideoHideMainActivity.this);
                     Toast.makeText(VideoHideMainActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();
+                    mDialogAskCreateShotcut.dismiss();
+                }
+            });
+            mDialogAskCreateShotcut.setLeftBtnListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1, "assistant", "shortcut_hidevid_no");
                     mDialogAskCreateShotcut.dismiss();
                 }
             });

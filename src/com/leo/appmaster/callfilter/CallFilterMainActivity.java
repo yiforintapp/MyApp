@@ -80,9 +80,10 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
             mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
             mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
             mDialogAskCreateShotcut.setRightBtnListener(new DialogInterface.OnClickListener() {
-                
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "assistant", "shortcut_block");
                     Intent intent = new Intent();
                     intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -90,6 +91,13 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
                     intent.putExtra("from_quickhelper", true);
                     QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_callfilter), R.drawable.qh_call_filter, intent, CallFilterMainActivity.this);
                     Toast.makeText(CallFilterMainActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();
+                    mDialogAskCreateShotcut.dismiss();
+                }
+            });
+            mDialogAskCreateShotcut.setLeftBtnListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "assistant", "shortcut_block_no");
                     mDialogAskCreateShotcut.dismiss();
                 }
             });

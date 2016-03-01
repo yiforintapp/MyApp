@@ -161,6 +161,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final int AD_TYPE_SHAKE = 1;
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
+    private static boolean mHasClickGoGrantPermission = false;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -569,14 +570,25 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //        if (Build.VERSION.SDK_INT >= 21) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
             if (!state.checkAvailable()) {
-//        if (true) {   
+//        if (true) {
                 mRlNoPermission.setVisibility(View.VISIBLE);
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_show");
                 String tip = mPt.getString(PrefConst.KEY_APP_USAGE_STATE_GUIDE_STRING);
                 if(!TextUtils.isEmpty(tip)) {
                     mTvPermissionTip.setText(tip);
                 }
             } else {
                 mRlNoPermission.setVisibility(View.GONE);
+                if (mHasClickGoGrantPermission) {
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
+                    mHasClickGoGrantPermission = false;
+                }
+            }
+        }else {
+            mRlNoPermission.setVisibility(View.GONE);
+            if (mHasClickGoGrantPermission) {
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
+                mHasClickGoGrantPermission = false;
             }
         }
     }
@@ -2095,6 +2107,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     if (!TextUtils.isEmpty(filterTarget)) {
                         mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
                     }
+                    mHasClickGoGrantPermission = true;
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_click");
                     ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 
                         @Override
