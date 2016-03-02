@@ -421,12 +421,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShowOne = findViewById(R.id.remain_one);
         mShowOne.setTag(true);
         mShowOne.setOnClickListener(this);
+        makeSmall(mShowOne);
         mShowTwo = findViewById(R.id.remain_two);
         mShowTwo.setTag(true);
         mShowTwo.setOnClickListener(this);
+        makeSmall(mShowTwo);
         mShowThree = findViewById(R.id.remain_three);
         mShowThree.setTag(true);
         mShowThree.setOnClickListener(this);
+        makeSmall(mShowThree);
 
         mMaskView = (GradientMaskView) findViewById(R.id.mask_view);
 
@@ -731,55 +734,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mRecommandNumTwo.setVisibility(View.VISIBLE);
                 BatteryAppItem typeTwo = netList.get(0);
                 gotoBrowser(typeTwo, mIvShowTwo, mRecommandTvTwo, mRecommandNumTwo);
-//                final String urlTwo = typeTwo.actionUrl;
-//                if (urlTwo != null) {
-//                    mImageLoader.displayImage(urlTwo, mIvShowTwo, getOptions(R.drawable.default_user_avatar));
-//                } else {
-//                    mIvShowTwo.setImageDrawable(getRightIcon(typeTwo));
-//                }
-//                mRecommandTvTwo.setText(typeTwo.name);
-//                mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        mClickRunnable = new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                startBrowser(urlTwo);
-//                            }
-//                        };
-//                        handleRunnable();
-//                    }
-//                });
             } else {
                 mRecommandNumTwo.setVisibility(View.GONE);
             }
-
 
             //3
             if (netList != null && netList.size() > 1) {
                 mRecommandNumThree.setVisibility(View.VISIBLE);
                 BatteryAppItem typeThree = netList.get(1);
                 gotoBrowser(typeThree, mIvShowThree, mRecommandTvThree, mRecommandNumThree);
-//                final String urlThree = typeThree.actionUrl;
-//                if (urlThree != null) {
-//                    mImageLoader.displayImage(urlThree, mIvShowThree, getOptions(R.drawable.default_user_avatar));
-//                } else {
-//                    mIvShowThree.setImageDrawable(getRightIcon(typeThree));
-//                }
-//
-//                mRecommandTvThree.setText(typeThree.name);
-//                mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        mClickRunnable = new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                startBrowser(urlThree);
-//                            }
-//                        };
-//                        handleRunnable();
-//                    }
-//                });
             } else {
                 mRecommandNumThree.setVisibility(View.GONE);
             }
@@ -787,37 +750,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             //4
             if (netList != null && netList.size() > 2) {
                 mRecommandNumFour.setVisibility(View.VISIBLE);
-
-
                 BatteryAppItem typeFour = netList.get(2);
                 gotoBrowser(typeFour, mIvShowFour, mRecommandTvFour, mRecommandNumFour);
-
-//                final String urlFour = typeFour.actionUrl;
-//                if (urlFour != null) {
-//                    mImageLoader.displayImage(urlFour, mIvShowFour, getOptions(R.drawable.default_user_avatar));
-//                } else {
-//                    mIvShowFour.setImageDrawable(getRightIcon(typeFour));
-//                }
-//                mRecommandTvFour.setText(typeFour.name);
-//                mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        mClickRunnable = new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                startBrowser(urlFour);
-//                            }
-//                        };
-//                        handleRunnable();
-//                    }
-//                });
-
-
             } else {
                 mRecommandNumFour.setVisibility(View.GONE);
             }
-
-
         } else {
             List<BatteryAppItem> playList = ScreenRecommentJob.getBatteryVideoList();
             LeoLog.d("testGetList", "玩应用 size is : " + playList.size());
@@ -1690,166 +1627,251 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             return;
         }
 
-        Context ctx = AppMasterApplication.getInstance();
+        boolean isOneNormal = (Boolean) mShowOne.getTag();
+        boolean isTwoNormal = (Boolean) mShowTwo.getTag();
+        boolean isThreeNormal = (Boolean) mShowThree.getTag();
 
-        backOneView.getBackground().setAlpha(255);
-        mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white));
-        mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
-        mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white));
-        mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
-        bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white));
+        if (!isOneNormal) {
+            turnNormal(mShowOne);
+        }
+        if (!isTwoNormal) {
+            turnNormal(mShowTwo);
+        }
+        if (!isThreeNormal) {
+            turnNormal(mShowThree);
+        }
 
-        backTwoView.getBackground().setAlpha(255);
-        mNetHour.setTextColor(ctx.getResources().getColor(R.color.white));
-        mNetHourText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
-        mNetMin.setTextColor(ctx.getResources().getColor(R.color.white));
-        mNetMinText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
-        bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white));
-
-        backThreeView.getBackground().setAlpha(255);
-        mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white));
-        mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
-        mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white));
-        mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
-        bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white));
+//        Context ctx = AppMasterApplication.getInstance();
+//        backOneView.getBackground().setAlpha(255);
+//        mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white));
+//        mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
+//        mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white));
+//        mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
+//        bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white));
+//
+//        backTwoView.getBackground().setAlpha(255);
+//        mNetHour.setTextColor(ctx.getResources().getColor(R.color.white));
+//        mNetHourText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
+//        mNetMin.setTextColor(ctx.getResources().getColor(R.color.white));
+//        mNetMinText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
+//        bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white));
+//
+//        backThreeView.getBackground().setAlpha(255);
+//        mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white));
+//        mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
+//        mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white));
+//        mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
+//        bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white));
     }
 
+
     private void turnDark(int recommandType) {
+        boolean isOneNormal = (Boolean) mShowOne.getTag();
+        boolean isTwoNormal = (Boolean) mShowTwo.getTag();
+        boolean isThreeNormal = (Boolean) mShowThree.getTag();
 
         if (recommandType == RECOMMAND_TYPE_ONE) {
-            boolean isOneNormal = (Boolean) mShowOne.getTag();
-            boolean isTwoNormal = (Boolean) mShowOne.getTag();
-            boolean isThreeNormal = (Boolean) mShowOne.getTag();
-
+            if (isOneNormal) {
+                turnBig(mShowOne);
+            }
+            if (!isTwoNormal) {
+                turnNormal(mShowTwo);
+            }
+            if (!isThreeNormal) {
+                turnNormal(mShowThree);
+            }
+        } else if (recommandType == RECOMMAND_TYPE_TWO) {
             if (!isOneNormal) {
                 turnNormal(mShowOne);
             }
-
             if (isTwoNormal) {
-                turnSmall(mShowTwo);
+                turnBig(mShowTwo);
             }
-
+            if (!isThreeNormal) {
+                turnNormal(mShowThree);
+            }
+        } else {
+            if (!isOneNormal) {
+                turnNormal(mShowOne);
+            }
+            if (!isTwoNormal) {
+                turnNormal(mShowTwo);
+            }
             if (isThreeNormal) {
-                turnSmall(mShowThree);
+                turnBig(mShowThree);
+            }
+        }
+
+//        Context ctx = AppMasterApplication.getInstance();
+//        if (recommandType == RECOMMAND_TYPE_ONE) {
+//            //light
+//            backOneView.getBackground().setAlpha(255);
+//            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white));
+//            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
+//            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white));
+//            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
+//            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white));
+//
+//            //dark
+//            backTwoView.getBackground().setAlpha(78);
+//            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//
+//            //dark
+//            backThreeView.getBackground().setAlpha(78);
+//            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//
+//        } else if (recommandType == RECOMMAND_TYPE_TWO) {
+//            //dark
+//            backOneView.getBackground().setAlpha(78);
+//            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//
+//            //light
+//            backTwoView.getBackground().setAlpha(255);
+//            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white));
+//            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
+//            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white));
+//            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
+//            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white));
+//
+//            //dark
+//            backThreeView.getBackground().setAlpha(78);
+//            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//        } else {
+//            //dark
+//            backOneView.getBackground().setAlpha(78);
+//            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//
+//            //dark
+//            backTwoView.getBackground().setAlpha(78);
+//            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white_20));
+//
+//            //light
+//            backThreeView.getBackground().setAlpha(255);
+//            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white));
+//            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
+//            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white));
+//            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
+//            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white));
+//        }
+    }
+
+    private void turnBig(View View) {
+        View.setTag(false);
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(View,
+                "scaleX", 0.9f, 1.1f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(View,
+                "scaleY", 0.9f, 1.1f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
             }
 
-
-        } else if (recommandType == RECOMMAND_TYPE_TWO) {
-
-        } else {
-
-        }
-
-
-        Context ctx = AppMasterApplication.getInstance();
-        if (recommandType == RECOMMAND_TYPE_ONE) {
-            //light
-            backOneView.getBackground().setAlpha(255);
-            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white));
-            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
-            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white));
-            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
-            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white));
-
-            //dark
-            backTwoView.getBackground().setAlpha(78);
-            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-
-            //dark
-            backThreeView.getBackground().setAlpha(78);
-            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-
-        } else if (recommandType == RECOMMAND_TYPE_TWO) {
-            //dark
-            backOneView.getBackground().setAlpha(78);
-            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-
-            //light
-            backTwoView.getBackground().setAlpha(255);
-            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white));
-            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
-            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white));
-            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
-            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white));
-
-            //dark
-            backThreeView.getBackground().setAlpha(78);
-            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-        } else {
-            //dark
-            backOneView.getBackground().setAlpha(78);
-            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-
-            //dark
-            backTwoView.getBackground().setAlpha(78);
-            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-
-            //light
-            backThreeView.getBackground().setAlpha(255);
-            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white));
-            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
-            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white));
-            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
-            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white));
-        }
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+            }
+        });
+        set.setDuration(200);
+        set.play(anim20).with(anim21);
+        set.start();
     }
 
-    private void turnSmall(View View) {
-        View.setTag(false);
+    private void makeSmall(View View) {
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(View,
+                "scaleX", 1.0f, 0.9f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(View,
+                "scaleY", 1.0f, 0.9f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+            }
+        });
+        set.setDuration(10);
+        set.play(anim20).with(anim21);
+        set.start();
     }
 
-    private void turnNormal(View View) {
-        View.setTag(true);
+//    private void turnSmall(View View) {
+//        View.setTag(false);
 //        ObjectAnimator anim20 = ObjectAnimator.ofFloat(View,
-//                "scaleX", 1f, 1.1f);
+//                "scaleX", 1.0f, 0.8f);
 //        ObjectAnimator anim21 = ObjectAnimator.ofFloat(View,
-//                "scaleY", 0f, 1.1f);
+//                "scaleY", 1.0f, 0.8f);
 //
 //        AnimatorSet set = new AnimatorSet();
 //        set.addListener(new AnimatorListenerAdapter() {
 //            @Override
 //            public void onAnimationEnd(Animator animation) {
 //                super.onAnimationEnd(animation);
-//                fixResultAnimation();
 //            }
 //
 //            @Override
 //            public void onAnimationStart(Animator animation) {
 //                super.onAnimationStart(animation);
-//                contentView.setVisibility(View.GONE);
 //            }
 //        });
-//        set.setDuration(800);
+//        set.setDuration(200);
 //        set.play(anim20).with(anim21);
-//        set.play(anim21).with(anim22);
-//        if (!isSafe) {
-//            set.play(anim22).with(anim23);
-//        }
 //        set.start();
+//    }
+
+    private void turnNormal(View View) {
+        View.setTag(true);
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(View,
+                "scaleX", 1.1f, 0.9f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(View,
+                "scaleY", 1.1f, 0.9f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+            }
+        });
+        set.setDuration(200);
+        set.play(anim20).with(anim21);
+        set.start();
     }
 
     private void showRecommandContent(int recommandTypeThree) {

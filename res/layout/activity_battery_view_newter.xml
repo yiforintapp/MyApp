@@ -222,7 +222,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/remain_time"
-        android:layout_marginTop="28dp">
+        android:layout_marginTop="8dp">
 
         <RelativeLayout
             android:id="@+id/three_remain_content"
@@ -233,7 +233,9 @@
             <RelativeLayout
                 android:id="@+id/remain_one"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="20dp">
 
                 <RelativeLayout
                     android:id="@+id/tv_remain_one_fill"
@@ -302,7 +304,9 @@
                 android:id="@+id/remain_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="19dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/remain_one">
 
 
@@ -372,7 +376,9 @@
                 android:id="@+id/remain_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="19dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/remain_two">
 
 
@@ -437,7 +443,6 @@
                     android:textSize="11sp" />
             </RelativeLayout>
 
-
         </RelativeLayout>
 
         <!-- 推荐使用 -->
@@ -446,7 +451,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/three_remain_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/folder_bottom"
             android:paddingBottom="14dp"
             android:visibility="invisible">
