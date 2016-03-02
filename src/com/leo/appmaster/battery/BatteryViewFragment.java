@@ -276,19 +276,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (type == AD_TYPE_MSG) {
             if (mAdWrapper != null) {
-                mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight;
+                mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight - 25;
                 LeoLog.d("locationP", "mAdWrapper.getHeight() : " + mAdWrapper.getHeight());
                 setYplace(contentHeight);
             }
         } else if (type == SWTIFY_TYPE_MSG) {
             if (mSwiftyView != null) {
-                mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight;
+                mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight - 25;
                 LeoLog.d("locationP", "mSwiftyView.getHeight() : " + mSwiftyView.getHeight());
                 setYplace(contentHeight);
             }
         } else if (type == EXTRA_TYPE_MSG) {
             if (mExtraView != null && mExtraView.getHeight() > 0) {
-                mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight;
+                mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight - 25;
                 LeoLog.d("locationP", "mExtraView.getHeight() : " + mExtraView.getHeight());
                 setYplace(contentHeight);
             }
@@ -1460,8 +1460,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showMoveUp() {
         AnimatorSet animationSet = new AnimatorSet();
 
-//        ObjectAnimator animMoveMaskY = ObjectAnimator.ofFloat(mMaskView,
-//                "y", mSlideView.getTop(), mSlideView.getTop() - 25);
 
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop());
@@ -1475,20 +1473,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mShowing = false;
                 mScrollView.setScrollY(0);
 //                mSlideView.setScrollable(false);
-
                 mMaskView.setY(mMaskView.getTop() - 25);
             }
         });
         animMoveY.start();
 
-//        animationSet.setDuration(ANIMATION_TIME);
-//        animationSet.play(animMoveMaskY).with(animMoveY);
-//        animationSet.start();
     }
 
     private void showMoveDown() {
-//        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-//                "y", mSlideView.getTop(), mSlideView.getTop() + mBossView.getHeight() * 9 / 16);
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop(), mSlideView.getTop() + mMoveDisdance);
         animMoveY.setDuration(ANIMATION_TIME);
@@ -1825,30 +1817,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         set.play(anim20).with(anim21);
         set.start();
     }
-
-//    private void turnSmall(View View) {
-//        View.setTag(false);
-//        ObjectAnimator anim20 = ObjectAnimator.ofFloat(View,
-//                "scaleX", 1.0f, 0.8f);
-//        ObjectAnimator anim21 = ObjectAnimator.ofFloat(View,
-//                "scaleY", 1.0f, 0.8f);
-//
-//        AnimatorSet set = new AnimatorSet();
-//        set.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                super.onAnimationEnd(animation);
-//            }
-//
-//            @Override
-//            public void onAnimationStart(Animator animation) {
-//                super.onAnimationStart(animation);
-//            }
-//        });
-//        set.setDuration(200);
-//        set.play(anim20).with(anim21);
-//        set.start();
-//    }
 
     private void turnNormal(View View) {
         View.setTag(true);
