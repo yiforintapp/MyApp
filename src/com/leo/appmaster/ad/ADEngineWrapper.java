@@ -57,6 +57,7 @@ public class ADEngineWrapper {
      * 请求广告数据
      */
     public void loadAd (final int source, String unitId, final WrappedAdListener listener) {
+		LeoLog.e(TAG, "AD TYPE :" + source + " AD ID: " + unitId);
         if (source == SOURCE_MAX) {
             mMaxEngine.loadMobvista(unitId, new LEOAdEngine.LeoListener() {
                 @Override
