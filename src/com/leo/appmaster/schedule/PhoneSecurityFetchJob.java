@@ -101,6 +101,8 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
                 data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC_TS);
                 LeoLog.i(TAG, "忽略屏保的忽略按钮后再次显示的时间间隔(hour) : " + data);
                 preferenceTable.putInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, data);
+            } else {
+                LeoLog.i(TAG, "没有-忽略屏保的忽略按钮后再次显示的时间间隔");
             }
 
             // 屏保省电动画的时间间隔
@@ -109,6 +111,8 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
                 int bootData = resp.getInt(PrefConst.KEY_SHOW_BOOST_TS);
                 LeoLog.i(TAG, "屏保省电动画的时间间隔 : " + bootData);
                 preferenceTable.putInt(PrefConst.KEY_SHOW_BOOST_TS, bootData);
+            } else {
+                LeoLog.i(TAG, "没有-屏保省电动画的时间间隔");
             }
 
             // 屏保省电动画的内存阀值
@@ -117,6 +121,8 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
                 double bootData = resp.getDouble(PrefConst.KEY_SHOW_BOOST_MEM);
                 LeoLog.i(TAG, "屏保省电动画的内存阀值 : " + bootData);
                 preferenceTable.putDouble(PrefConst.KEY_SHOW_BOOST_MEM, bootData);
+            } else {
+                LeoLog.i(TAG, "没有-屏保省电动画的内存阀值");
             }
         } catch (JSONException e) {
             e.printStackTrace();
