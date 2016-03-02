@@ -75,17 +75,23 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             // 应用内是否展示充电屏保，默认不显示
             boolean hasData = !resp.isNull(PrefConst.KEY_SHOW_INSIDE_APP);
             if (hasData) {
+                LeoLog.i(TAG, "应用内展示充电屏保");
                 int data = resp.getInt(PrefConst.KEY_SHOW_INSIDE_APP);
                 boolean showInsideApp = data == 1;
                 preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, showInsideApp);
+            } else {
+                LeoLog.i(TAG, "应用内不展示充电屏保");
             }
 
             // 是否显示屏保的忽略按钮
             hasData = !resp.isNull(PrefConst.KEY_SHOW_IGNORE_COC);
             if (hasData) {
+                LeoLog.i(TAG, "显示屏保的忽略按钮");
                 int data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC);
                 boolean showIgnore = data == 1;
                 preferenceTable.putBoolean(PrefConst.KEY_SHOW_IGNORE_COC, showIgnore);
+            } else {
+                LeoLog.i(TAG, "不显示屏保的忽略按钮");
             }
 
             // 忽略屏保的忽略按钮后再次显示的时间间隔
@@ -93,6 +99,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             if (hasData) {
                 int data = 24; // 默认24小时
                 data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC_TS);
+                LeoLog.i(TAG, "忽略屏保的忽略按钮后再次显示的时间间隔(hour) : " + data);
                 preferenceTable.putInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, data);
             }
 
@@ -100,6 +107,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             hasData = !resp.isNull(PrefConst.KEY_SHOW_BOOST_TS);
             if (hasData) {
                 int bootData = resp.getInt(PrefConst.KEY_SHOW_BOOST_TS);
+                LeoLog.i(TAG, "屏保省电动画的时间间隔 : " + bootData);
                 preferenceTable.putInt(PrefConst.KEY_SHOW_BOOST_TS, bootData);
             }
 
@@ -107,6 +115,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             hasData = !resp.isNull(PrefConst.KEY_SHOW_BOOST_MEM);
             if (hasData) {
                 double bootData = resp.getDouble(PrefConst.KEY_SHOW_BOOST_MEM);
+                LeoLog.i(TAG, "屏保省电动画的内存阀值 : " + bootData);
                 preferenceTable.putDouble(PrefConst.KEY_SHOW_BOOST_MEM, bootData);
             }
         } catch (JSONException e) {
