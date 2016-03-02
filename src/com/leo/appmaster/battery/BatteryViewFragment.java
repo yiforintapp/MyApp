@@ -459,6 +459,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
                 @Override
                 public void onBoostFinish() {
+                    PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
                     showViewAfterBoost();
                 }
             });
