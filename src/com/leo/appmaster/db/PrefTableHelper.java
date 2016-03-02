@@ -56,8 +56,11 @@ public class PrefTableHelper {
         return PreferenceTable.getInstance().getDouble(PrefConst.KEY_SHOW_BOOST_MEM, 0.7);
     }
 
+    private static final boolean DBG = false;
     public static boolean shouldBatteryBoost() {
-//        return true;
+        if (DBG) {
+            return true;
+        }
         long lastBoostTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_LAST_BOOST_TS, 0);
         if (lastBoostTs == 0) {
             return true;

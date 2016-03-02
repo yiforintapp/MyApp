@@ -370,5 +370,5 @@
 
     <!-- 3.3.2-->
     <dimen name="battery_screen_ad_margin">20dp</dimen>
-    <dimen name="battery_boost_padding">35dp</dimen>
+    <dimen name="battery_boost_padding">31dp</dimen>
 </resources>

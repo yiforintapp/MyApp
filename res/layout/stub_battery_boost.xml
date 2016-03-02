@@ -3,18 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.leo.appmaster.battery.BatteryBoostAnimView
-        android:id="@+id/boost_anim_containor"
-        android:layout_width="193dp"
-        android:layout_height="193dp"
-        android:layout_centerInParent="true" />
+  <!--  <ImageView
+        android:src="@drawable/battery_boost_gradient_shape"
+        android:layout_centerInParent="true"
+        android:layout_width="162dp"
+        android:layout_height="162dp" />-->
 
     <RelativeLayout
         android:id="@+id/boost_anim_rl"
         android:layout_width="193dp"
+        android:background="@drawable/battery_boost_gradient_shape"
         android:layout_height="193dp"
         android:layout_centerInParent="true"
-        android:padding="40dp">
+        android:padding="@dimen/battery_boost_padding">
 
         <ImageView
             android:id="@+id/boost_anim_iv1"
@@ -45,13 +46,18 @@
             android:visibility="gone" />
     </RelativeLayout>
 
+    <com.leo.appmaster.battery.BatteryBoostAnimView
+        android:id="@+id/boost_anim_containor"
+        android:layout_width="193dp"
+        android:layout_height="193dp"
+        android:layout_centerInParent="true" />
+
     <RelativeLayout
         android:id="@+id/rl_shield"
         android:layout_width="213dp"
         android:layout_height="213dp"
         android:layout_centerInParent="true"
         android:visibility="invisible">
-
 
         <ImageView
             android:id="@+id/iv_shield"
@@ -63,10 +69,10 @@
             android:visibility="visible" />
 
         <com.leo.appmaster.ui.CircleArroundView
-            android:layout_margin="0dp"
             android:id="@+id/cav_batterymain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_margin="0dp" />
 
     </RelativeLayout>
 
@@ -74,9 +80,9 @@
         android:id="@+id/boost_toast_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/battery_boosting"
         android:layout_below="@id/boost_anim_containor"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:text="@string/battery_boosting" />
 
 </com.leo.appmaster.battery.BatteryBoostController>

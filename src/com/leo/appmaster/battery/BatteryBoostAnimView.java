@@ -30,7 +30,7 @@ public class BatteryBoostAnimView extends View {
     private static final int ROTATE_INTERVAL = 4;
 
     private Drawable mBgDrawable;
-    private Drawable mGradientDrawable;
+    private Drawable mCircleDrawable;
 
     private int mRotateAngel;
 
@@ -52,29 +52,27 @@ public class BatteryBoostAnimView extends View {
         if (mBgDrawable != null) {
             mBgDrawable.setBounds(0, 0, getWidth(), getHeight());
         }
-
-        int padding = res.getDimensionPixelSize(R.dimen.battery_boost_padding);
-        mGradientDrawable = res.getDrawable(R.drawable.battery_boost_gradient_shape);
-        if (mGradientDrawable != null) {
-            mGradientDrawable.setBounds(padding, padding, getWidth() - padding, getHeight() - padding);
+        mCircleDrawable = res.getDrawable(R.drawable.bg_circular_clear_circle);
+        if (mCircleDrawable != null) {
+            mCircleDrawable.setBounds(0, 0, getWidth(), getHeight());
         }
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        mBgDrawable.draw(canvas);
         canvas.save();
         canvas.rotate(mRotateAngel, getWidth() / 2, getHeight() / 2);
-        mBgDrawable.draw(canvas);
+        mCircleDrawable.draw(canvas);
         canvas.restore();
 
         mRotateAngel += ROTATE_INTERVAL;
         if (mRotateAngel > 360) {
             mRotateAngel = 0;
         }
-
-        mGradientDrawable.draw(canvas);
 
         invalidate();
     }
