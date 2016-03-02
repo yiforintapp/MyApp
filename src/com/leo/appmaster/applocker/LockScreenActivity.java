@@ -136,6 +136,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -2863,20 +2864,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         public void addItem(String unitId) {
-			/*if (unitId.equals(mBannerAdids[0])) {
-				if (mList != null && !mList.isEmpty()) {
-					mList.add(0, unitId);
-				} else {
-					mList.add(unitId);
-				}
-			} else {
-			}*/
+			/* 移除已经存在的unitid */
+			if (mList.contains(unitId)) {
+				mList.remove(unitId);
+			}
 			mList.add(unitId);
+			LeoLog.e("llb", Arrays.toString(mList.toArray()));
 			RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
             view.setTag(mViews.size());
             setItemViewContent(view, unitId);
             SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
-			mViews.add(view);
+			if (!mViews.isEmpty() && unitId.equals(mBannerAdids[0])) {
+				mViews.add(1, view);				
+			} else {
+				mViews.add(view);
+			}
             notifyDataSetChanged();
         }
 
