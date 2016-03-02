@@ -136,6 +136,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -565,6 +566,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryShowNoPermissionTip() {
+//        Toast.makeText(LockScreenActivity.this, "虚拟按键？ = " + Utilities.hasNavigationBar(this), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(LockScreenActivity.this, Build.VERSION.SDK_INT+"__"+TaskDetectService.sDetectSpecial+"__"+BuildProperties.isLenoveModel(), Toast.LENGTH_SHORT).show();
         if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
 //        if (Build.VERSION.SDK_INT >= 21) {
@@ -2118,7 +2120,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                             }
                             mPermissionGuideToast.setDuration(1000 * 60 * 2);
-                            mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
+                            if (Utilities.hasNavigationBar(LockScreenActivity.this)) {
+                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission_navigationbar);
+                            } else {
+                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
+                            }
                             mPermissionGuideToast.setMatchParent();
                             mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, 0);
                             final View view = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null, true);
@@ -2740,15 +2746,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 return;
             }
 			
-			//debug
-			if (unitId.equals(mBannerAdids[0])) {
-				view.setBackgroundColor(Color.CYAN);
-			}
-			//debug
 			
             ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
             ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
-            ((TextView) view.findViewById(R.id.ad_details)).setText(unitId + campaign.getDescription());
+            ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
             ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             final View clickArea = view.findViewById(R.id.click_area);
             if (mWrapperEngine != null) {
@@ -2858,20 +2859,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         public void addItem(String unitId) {
-			/*if (unitId.equals(mBannerAdids[0])) {
-				if (mList != null && !mList.isEmpty()) {
-					mList.add(0, unitId);
-				} else {
-					mList.add(unitId);
-				}
-			} else {
-			}*/
+			/* 移除已经存在的unitid */
+			if (mList.contains(unitId)) {
+				mList.remove(unitId);
+			}
 			mList.add(unitId);
+			LeoLog.e("llb", Arrays.toString(mList.toArray()));
 			RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
             view.setTag(mViews.size());
             setItemViewContent(view, unitId);
             SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
-			mViews.add(view);
+			if (!mViews.isEmpty() && unitId.equals(mBannerAdids[0])) {
+				mViews.add(1, view);				
+			} else {
+				mViews.add(view);
+			}
             notifyDataSetChanged();
         }
 

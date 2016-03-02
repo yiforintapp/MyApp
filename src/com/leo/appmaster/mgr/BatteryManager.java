@@ -215,7 +215,7 @@ public abstract class BatteryManager extends Manager {
     /***
      * 3.3.2 显示充电屏保通知
      */
-    public abstract void showSaverNotification ();
+    public abstract void showSaverNotification (int level);
 
     /***
      * 3.3.2 隐藏充电屏保通知

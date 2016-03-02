@@ -71,6 +71,7 @@ import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
 import java.lang.ref.WeakReference;
@@ -459,6 +460,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
                 @Override
                 public void onBoostFinish() {
+                    PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
                     showViewAfterBoost();
                 }
             });
@@ -1479,11 +1481,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveUp() {
+        AnimatorSet animationSet = new AnimatorSet();
 
-//        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
-//                "y", mSlideView.getTop() + mBossView.getHeight() * 9 / 16, mSlideView.getTop());
+//        ObjectAnimator animMoveMaskY = ObjectAnimator.ofFloat(mMaskView,
+//                "y", mSlideView.getTop(), mSlideView.getTop() - 25);
+
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop());
+
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -1493,9 +1498,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mShowing = false;
                 mScrollView.setScrollY(0);
 //                mSlideView.setScrollable(false);
+
+                mMaskView.setY(mMaskView.getTop() - 25);
             }
         });
         animMoveY.start();
+
+//        animationSet.setDuration(ANIMATION_TIME);
+//        animationSet.play(animMoveMaskY).with(animMoveY);
+//        animationSet.start();
     }
 
     private void showMoveDown() {
@@ -1505,6 +1516,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 "y", mSlideView.getTop(), mSlideView.getTop() + mMoveDisdance);
         animMoveY.setDuration(ANIMATION_TIME);
         animMoveY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mMaskView.setY(mMaskView.getTop() + 25);
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);

@@ -74,7 +74,7 @@ public class BatteryManagerImpl extends BatteryManager {
 
     public BatteryManagerImpl() {
         mTimeEstimator = new RemainingTimeEstimator(mContext);
-        mNotifyHelper = new BatteryNotifyHelper(mContext, this);
+        mNotifyHelper = BatteryNotifyHelper.getInstance(mContext, this);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
@@ -448,9 +448,9 @@ public class BatteryManagerImpl extends BatteryManager {
     }
 
     @Override
-    public void showSaverNotification() {
+    public void showSaverNotification(int level) {
         LeoLog.d("stone_saver", "call showNotificationForScreenSaver");
-        mNotifyHelper.showNotificationForScreenSaver(mPreviousState.level);
+        mNotifyHelper.showNotificationForScreenSaver(level);
     }
 
     @Override
