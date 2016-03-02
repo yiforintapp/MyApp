@@ -47,7 +47,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private boolean showWhenScreenOff;
     private int[] mRemainTimeArr;
     private ViewPager mViewPager;
-    private BatteryFragmentHoler[] mFragmentHolders = new BatteryFragmentHoler[2];
+    private BatteryFragmentHoler[] mFragmentHolders = new BatteryFragmentHoler[1];
 
     private EmptyFragment emptyFragment;
     private BatteryViewFragment batteryFragment;
@@ -195,8 +195,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         mViewPager = (ViewPager) findViewById(R.id.battery_viewpager);
         initFragment();
         mViewPager.setAdapter(new BatteryPagerAdapter(getSupportFragmentManager()));
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setCurrentItem(1);
+        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setCurrentItem(0);
         mViewPager.setOnPageChangeListener(this);
 
         if (batteryFragment != null) {
@@ -214,18 +214,17 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     }
 
     private void initFragment() {
+//        BatteryFragmentHoler holder = new BatteryFragmentHoler();
+//        holder.title = "type_0";
+//        emptyFragment = new EmptyFragment();
+//        holder.fragment = emptyFragment;
+//        mFragmentHolders[0] = holder;
+
         BatteryFragmentHoler holder = new BatteryFragmentHoler();
-
-        holder.title = "type_0";
-        emptyFragment = new EmptyFragment();
-        holder.fragment = emptyFragment;
-        mFragmentHolders[0] = holder;
-
-        holder = new BatteryFragmentHoler();
         holder.title = "type_1";
         batteryFragment = new BatteryViewFragment();
         holder.fragment = batteryFragment;
-        mFragmentHolders[1] = holder;
+        mFragmentHolders[0] = holder;
 
         // AM-614, remove cached fragments
         FragmentManager fm = getSupportFragmentManager();
@@ -374,16 +373,15 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     @Override
     public void onPageSelected(int i) {
-        if (i == 0) {
-            mViewPager.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    SDKWrapper.addEvent(BatteryShowViewActivity.this, SDKWrapper.P1, "batterypage", "screen_unlock");
-                    finish();
-                }
-            }, 250);
-
-        }
+//        if (i == 0) {
+//            mViewPager.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    SDKWrapper.addEvent(BatteryShowViewActivity.this, SDKWrapper.P1, "batterypage", "screen_unlock");
+//                    finish();
+//                }
+//            }, 250);
+//        }
     }
 
     @Override
