@@ -48,7 +48,8 @@ public class BatteryNotifyHelper {
 
     private boolean mNeedUpdateLevel = false;
 
-    public BatteryNotifyHelper(Context context, BatteryManager batteryManager) {
+    private static BatteryNotifyHelper sInstance;
+    private BatteryNotifyHelper(Context context, BatteryManager batteryManager) {
         mContext = context;
         mManager = batteryManager;
 
@@ -58,6 +59,13 @@ public class BatteryNotifyHelper {
         mContext.registerReceiver(mReceiver, filter);
 
         fireTimerAction();
+    }
+
+    public static BatteryNotifyHelper getInstance (Context context, BatteryManager batteryManager) {
+        if (sInstance == null) {
+            sInstance = new BatteryNotifyHelper(context, batteryManager);
+        }
+        return sInstance;
     }
 
     private void fireTimerAction() {

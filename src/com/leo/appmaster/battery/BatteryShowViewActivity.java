@@ -394,8 +394,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     public void onFinishActivity(boolean showNoti, int level) {
 
         if (showNoti) {
-            BatteryNotifyHelper mNotifyHelper = new BatteryNotifyHelper(this, mBatteryManager);
-            mNotifyHelper.showNotificationForScreenSaver(level);
+            mBatteryManager.showSaverNotification(level);
         }
 
         mViewPager.setCurrentItem(0);
