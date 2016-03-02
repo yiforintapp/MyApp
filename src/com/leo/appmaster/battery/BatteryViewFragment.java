@@ -1473,7 +1473,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mShowing = false;
                 mScrollView.setScrollY(0);
 //                mSlideView.setScrollable(false);
-                mMaskView.setY(mMaskView.getTop() - 25);
+//                mMaskView.setY(mMaskView.getTop() - 25);
             }
         });
         animMoveY.start();
@@ -1488,7 +1488,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mMaskView.setY(mMaskView.getTop() + 25);
+//                mMaskView.setY(mMaskView.getTop() + 25);
             }
 
             @Override
