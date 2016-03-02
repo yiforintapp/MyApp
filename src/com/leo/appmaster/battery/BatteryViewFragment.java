@@ -257,7 +257,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     if (now - lastIgnore > internal) {
                         reLocateMoveContent(type);
                     }
-
                     break;
             }
         }
@@ -420,10 +419,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mPackages = mActivity.getPackageManager().getInstalledPackages(0);
 
         mShowOne = findViewById(R.id.remain_one);
+        mShowOne.setTag(true);
         mShowOne.setOnClickListener(this);
         mShowTwo = findViewById(R.id.remain_two);
+        mShowTwo.setTag(true);
         mShowTwo.setOnClickListener(this);
         mShowThree = findViewById(R.id.remain_three);
+        mShowThree.setTag(true);
         mShowThree.setOnClickListener(this);
 
         mMaskView = (GradientMaskView) findViewById(R.id.mask_view);
@@ -543,8 +545,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void fillShowContentData(int recommandTypeThree) {
         if (recommandTypeThree == RECOMMAND_TYPE_ONE) {
             List<BatteryAppItem> phoneList = ScreenRecommentJob.getBatteryCallList();
-            LeoLog.d("testGetList", "phoneList size is : " + phoneList.size());
-
+            LeoLog.d("testGetList", "3G通话 size is : " + phoneList.size());
+            for (int i = 0; i < phoneList.size(); i++) {
+                LeoLog.d("testGetList", "名字: " + phoneList.get(i).name);
+                LeoLog.d("testGetList", "包名: " + phoneList.get(i).pkg);
+                LeoLog.d("testGetList", "Url: " + phoneList.get(i).actionUrl);
+                LeoLog.d("testGetList", "iconUrl: " + phoneList.get(i).iconUrl);
+            }
+            LeoLog.d("testGetList", "-------------分割线---------------");
             //fill the local ,  size of : 3
             mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_contacts));
             mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_contact));
@@ -672,8 +680,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         } else if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
             List<BatteryAppItem> netList = ScreenRecommentJob.getBatteryNetList();
-            LeoLog.d("testGetList", "netList size is : " + netList.size());
-
+            LeoLog.d("testGetList", "上网 size is : " + netList.size());
+            for (int i = 0; i < netList.size(); i++) {
+                LeoLog.d("testGetList", "名字: " + netList.get(i).name);
+                LeoLog.d("testGetList", "包名: " + netList.get(i).pkg);
+                LeoLog.d("testGetList", "Url: " + netList.get(i).actionUrl);
+                LeoLog.d("testGetList", "iconUrl: " + netList.get(i).iconUrl);
+            }
+            LeoLog.d("testGetList", "-------------分割线---------------");
             //fill the local ,  size of : 1
             mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_browser));
             mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_browser));
@@ -716,22 +730,26 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (netList != null && netList.size() > 0) {
                 mRecommandNumTwo.setVisibility(View.VISIBLE);
                 BatteryAppItem typeTwo = netList.get(0);
-                final String urlTwo = typeTwo.actionUrl;
-                Drawable mapOne = getRightIcon(typeTwo);
-                mIvShowTwo.setImageDrawable(mapOne);
-                mRecommandTvTwo.setText(typeTwo.name);
-                mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mClickRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                startBrowser(urlTwo);
-                            }
-                        };
-                        handleRunnable();
-                    }
-                });
+                gotoBrowser(typeTwo, mIvShowTwo, mRecommandTvTwo, mRecommandNumTwo);
+//                final String urlTwo = typeTwo.actionUrl;
+//                if (urlTwo != null) {
+//                    mImageLoader.displayImage(urlTwo, mIvShowTwo, getOptions(R.drawable.default_user_avatar));
+//                } else {
+//                    mIvShowTwo.setImageDrawable(getRightIcon(typeTwo));
+//                }
+//                mRecommandTvTwo.setText(typeTwo.name);
+//                mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        mClickRunnable = new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                startBrowser(urlTwo);
+//                            }
+//                        };
+//                        handleRunnable();
+//                    }
+//                });
             } else {
                 mRecommandNumTwo.setVisibility(View.GONE);
             }
@@ -741,22 +759,27 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (netList != null && netList.size() > 1) {
                 mRecommandNumThree.setVisibility(View.VISIBLE);
                 BatteryAppItem typeThree = netList.get(1);
-                final String urlThree = typeThree.actionUrl;
-                Drawable mapTwo = getRightIcon(typeThree);
-                mIvShowThree.setImageDrawable(mapTwo);
-                mRecommandTvThree.setText(typeThree.name);
-                mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mClickRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                startBrowser(urlThree);
-                            }
-                        };
-                        handleRunnable();
-                    }
-                });
+                gotoBrowser(typeThree, mIvShowThree, mRecommandTvThree, mRecommandNumThree);
+//                final String urlThree = typeThree.actionUrl;
+//                if (urlThree != null) {
+//                    mImageLoader.displayImage(urlThree, mIvShowThree, getOptions(R.drawable.default_user_avatar));
+//                } else {
+//                    mIvShowThree.setImageDrawable(getRightIcon(typeThree));
+//                }
+//
+//                mRecommandTvThree.setText(typeThree.name);
+//                mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        mClickRunnable = new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                startBrowser(urlThree);
+//                            }
+//                        };
+//                        handleRunnable();
+//                    }
+//                });
             } else {
                 mRecommandNumThree.setVisibility(View.GONE);
             }
@@ -764,23 +787,32 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             //4
             if (netList != null && netList.size() > 2) {
                 mRecommandNumFour.setVisibility(View.VISIBLE);
+
+
                 BatteryAppItem typeFour = netList.get(2);
-                final String urlFour = typeFour.actionUrl;
-                Drawable mapFour = getRightIcon(typeFour);
-                mIvShowFour.setImageDrawable(mapFour);
-                mRecommandTvFour.setText(typeFour.name);
-                mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mClickRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                startBrowser(urlFour);
-                            }
-                        };
-                        handleRunnable();
-                    }
-                });
+                gotoBrowser(typeFour, mIvShowFour, mRecommandTvFour, mRecommandNumFour);
+
+//                final String urlFour = typeFour.actionUrl;
+//                if (urlFour != null) {
+//                    mImageLoader.displayImage(urlFour, mIvShowFour, getOptions(R.drawable.default_user_avatar));
+//                } else {
+//                    mIvShowFour.setImageDrawable(getRightIcon(typeFour));
+//                }
+//                mRecommandTvFour.setText(typeFour.name);
+//                mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        mClickRunnable = new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                startBrowser(urlFour);
+//                            }
+//                        };
+//                        handleRunnable();
+//                    }
+//                });
+
+
             } else {
                 mRecommandNumFour.setVisibility(View.GONE);
             }
@@ -788,8 +820,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         } else {
             List<BatteryAppItem> playList = ScreenRecommentJob.getBatteryVideoList();
-            LeoLog.d("testGetList", "playList size is : " + playList.size());
-
+            LeoLog.d("testGetList", "玩应用 size is : " + playList.size());
+            for (int i = 0; i < playList.size(); i++) {
+                LeoLog.d("testGetList", "名字: " + playList.get(i).name);
+                LeoLog.d("testGetList", "包名: " + playList.get(i).pkg);
+                LeoLog.d("testGetList", "Url: " + playList.get(i).actionUrl);
+                LeoLog.d("testGetList", "iconUrl: " + playList.get(i).iconUrl);
+            }
+            LeoLog.d("testGetList", "-------------分割线---------------");
             List<BatteryAppItem> fitList = new ArrayList<BatteryAppItem>();
             for (int i = 0; i < playList.size(); i++) {
                 boolean isRightinfo = getRightInfo(playList, i);
@@ -1678,6 +1716,32 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void turnDark(int recommandType) {
+
+        if (recommandType == RECOMMAND_TYPE_ONE) {
+            boolean isOneNormal = (Boolean) mShowOne.getTag();
+            boolean isTwoNormal = (Boolean) mShowOne.getTag();
+            boolean isThreeNormal = (Boolean) mShowOne.getTag();
+
+            if (!isOneNormal) {
+                turnNormal(mShowOne);
+            }
+
+            if (isTwoNormal) {
+                turnSmall(mShowTwo);
+            }
+
+            if (isThreeNormal) {
+                turnSmall(mShowThree);
+            }
+
+
+        } else if (recommandType == RECOMMAND_TYPE_TWO) {
+
+        } else {
+
+        }
+
+
         Context ctx = AppMasterApplication.getInstance();
         if (recommandType == RECOMMAND_TYPE_ONE) {
             //light
@@ -1753,6 +1817,40 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
             bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white));
         }
+    }
+
+    private void turnSmall(View View) {
+        View.setTag(false);
+    }
+
+    private void turnNormal(View View) {
+        View.setTag(true);
+//        ObjectAnimator anim20 = ObjectAnimator.ofFloat(View,
+//                "scaleX", 1f, 1.1f);
+//        ObjectAnimator anim21 = ObjectAnimator.ofFloat(View,
+//                "scaleY", 0f, 1.1f);
+//
+//        AnimatorSet set = new AnimatorSet();
+//        set.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                super.onAnimationEnd(animation);
+//                fixResultAnimation();
+//            }
+//
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                super.onAnimationStart(animation);
+//                contentView.setVisibility(View.GONE);
+//            }
+//        });
+//        set.setDuration(800);
+//        set.play(anim20).with(anim21);
+//        set.play(anim21).with(anim22);
+//        if (!isSafe) {
+//            set.play(anim22).with(anim23);
+//        }
+//        set.start();
     }
 
     private void showRecommandContent(int recommandTypeThree) {
