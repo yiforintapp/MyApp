@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 
 import com.leo.appmaster.engine.BatteryComsuption;
+import com.leo.appmaster.utils.LeoLog;
 
 import java.io.Serializable;
 import java.util.List;
@@ -211,6 +212,11 @@ public abstract class BatteryManager extends Manager {
      * 3.3.2 用户点击了屏保通知
      */
     public abstract void onSaverNotifiClick ();
+
+    /***
+     * 3.3.2 显示充电屏保通知
+     */
+    public abstract void showSaverNotification ();
 
     /***
      * 3.3.2 显示充电屏保通知

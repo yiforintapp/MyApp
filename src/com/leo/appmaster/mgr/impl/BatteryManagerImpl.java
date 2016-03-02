@@ -142,15 +142,24 @@ public class BatteryManagerImpl extends BatteryManager {
     }
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        boolean mFirstTouch = true;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mPreviousState == null) {
                 // AM-3789
                 mPreviousState = new BatteryState(intent);
             }
+
             String action = intent.getAction();
             if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
                 BatteryState bs = new BatteryState(intent);
+                if (mFirstTouch) {
+                    mFirstTouch = false;
+                    if (bs.plugged != UNPLUGGED) {
+                        showSaverNotification(bs.level);
+                    }
+                }
                 handleBatteryChange(bs);
                 LeoLog.d(TAG, "newState: " + bs.toString());
             } else {
@@ -197,14 +206,13 @@ public class BatteryManagerImpl extends BatteryManager {
                 Toast.makeText(mContext, "in APP", Toast.LENGTH_SHORT).show();
                 if (PrefTableHelper.showInsideApp()) {
                     handlePluginEvent(newState, false);
-                } else {
-                    mNotifyHelper.showNotificationForScreenSaver(newState.level);
                 }
-                mNotifyHelper.showNotificationForScreenSaver(newState.level);
             } else {
                 Toast.makeText(mContext, "in LAUNCHER", Toast.LENGTH_SHORT).show();
                 handlePluginEvent(newState, false);
             }
+            /* 如果屏保开关是打开的，则通知栏一定会出现 */
+            showSaverNotification(newState.level);
         } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
             mNotifyHelper.dismissScreenSaverNotification();
@@ -368,6 +376,11 @@ public class BatteryManagerImpl extends BatteryManager {
     @Override
     public void setScreenViewStatus(boolean value) {
         mPt.putBoolean(PrefConst.KEY_BATTERY_SCREEN_VIEW_STATUS, value);
+        if (value && mPreviousState.plugged != UNPLUGGED) {
+            showSaverNotification(mPreviousState.level);
+        } else {
+            dismissSaverNotification();
+        }
     }
 
     @Override
@@ -448,9 +461,16 @@ public class BatteryManagerImpl extends BatteryManager {
     }
 
     @Override
+    public void showSaverNotification() {
+        this.showSaverNotification(mPreviousState.level);
+    }
+
+    @Override
     public void showSaverNotification(int level) {
-        LeoLog.d("stone_saver", "call showNotificationForScreenSaver");
-        mNotifyHelper.showNotificationForScreenSaver(level);
+        if (getScreenViewStatus()) {
+            LeoLog.d("stone_saver", "call showNotificationForScreenSaver");
+            mNotifyHelper.showNotificationForScreenSaver(level);
+        }
     }
 
     @Override

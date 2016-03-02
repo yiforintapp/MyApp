@@ -177,7 +177,7 @@ public class BatteryNotifyHelper {
 
         if (level == 100) {
             view_custom.setTextViewText(R.id.tv_charge_tip,
-                    mContext.getString(R.string.screen_protect_charing_text_four) + "...");
+                    mContext.getString(R.string.screen_protect_charing_text_four));
         } else {
             view_custom.setTextViewText(R.id.tv_charge_tip,
                     mContext.getString(R.string.screen_protect_charing_text_two) + "...");
@@ -190,7 +190,7 @@ public class BatteryNotifyHelper {
                 .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
                 .setOngoing(true)// 不是正在进行的 true为正在进行 效果和.flag一样
                 .setSmallIcon(R.drawable.statusbar_battery_icon)
-                .setAutoCancel(true);
+                .setAutoCancel(false);
 
         Intent intent = new Intent(ACTION_LEO_SAVER_NOTIFI_CLICKED);
         PendingIntent pendingIntent =
