@@ -846,7 +846,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mRecommandNumThree.setVisibility(View.GONE);
             }
 
-            //three
+            //four
             if (fitList != null && fitList.size() > 3) {
                 mRecommandNumFour.setVisibility(View.VISIBLE);
                 BatteryAppItem infoTwo = fitList.get(3);
@@ -885,7 +885,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void gotoBrowser(BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView) {
         final String urlFour = infoOne.actionUrl;
-        icon.setImageDrawable(getRightIcon(infoOne));
+        if (infoOne.iconUrl != null) {
+            mImageLoader.displayImage(infoOne.iconUrl, icon, getOptions(R.drawable.default_user_avatar));
+        } else {
+            icon.setImageDrawable(getRightIcon(infoOne));
+        }
         title.setText(infoOne.name);
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -990,11 +994,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else if (info.name.equals(YAHOO)) {
             map = ctx.getResources().getDrawable(R.drawable.icon_time_yahoo);
         } else {
-            if (info.iconUrl != null) {
-                map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
-            } else {
-                map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
-            }
+//            if (info.iconUrl != null) {
+//                map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
+//            } else {
+            map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
+//            }
 
         }
         return map;
@@ -2014,8 +2018,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mSwiftyLayout = (RelativeLayout) mSwiftyView.findViewById(R.id.parent_layout);
             mSwiftyLayout.setOnClickListener(this);
             mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
+
             String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
+
             mSwiftyTitle = (TextView) mSwiftyView.findViewById(R.id.card_title);
             boolean isTitleEmpty = TextUtils.isEmpty(
                     preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TITLE));
