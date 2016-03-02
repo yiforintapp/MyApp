@@ -62,7 +62,7 @@
         <RelativeLayout
             android:id="@+id/rl_nopermission_tip"
             android:visibility= "gone"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="@dimen/lockscreen_permissiontip_marginbottom"
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
             android:layout_alignParentBottom="true"
