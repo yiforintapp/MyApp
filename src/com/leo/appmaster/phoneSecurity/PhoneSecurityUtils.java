@@ -363,7 +363,7 @@ public class PhoneSecurityUtils {
         try {
             // use BufferedWriter for performance, true to set append to file
             // flag
-            buf = new BufferedWriter(new FileWriter(mLocationLogile, false));
+            buf = new BufferedWriter(new FileWriter(mLocationLogile, true));
             buf.append(message);
         } catch (IOException e) {
         } finally {
