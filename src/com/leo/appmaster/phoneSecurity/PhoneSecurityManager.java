@@ -371,7 +371,7 @@ public class PhoneSecurityManager {
         Location loc = null;
         try {
             LostSecurityManagerImpl lm = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            loc = lm.getLocation();
+            loc = lm.getLocation(PhoneSecurityConstants.LOCA_ID_UP_DATA);
         } catch (Exception e) {
 
         }
@@ -403,7 +403,7 @@ public class PhoneSecurityManager {
         Location loc = null;
         try {
             LostSecurityManagerImpl lm = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            loc = lm.getLocation();
+            loc = lm.getLocation(PhoneSecurityConstants.LOCA_ID_SDKWRAP);
         } catch (Exception e) {
 
         }

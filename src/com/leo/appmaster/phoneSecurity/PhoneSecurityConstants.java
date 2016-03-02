@@ -49,5 +49,14 @@ public class PhoneSecurityConstants {
     /*添加成功*/
     public static final int ADD_SECUR_NUMBER_SUCESS = 2;
     public static final int MAX_SCORE = 6;
+    /*获取位置信息的来源ID*/
+    //sdkwrapper上报请求
+    public static final int LOCA_ID_SDKWRAP = 0;
+    //发送短信获取位置请求
+    public static final int LOCA_ID_MSM = 1;
+    //反向地理解析请求
+    public static final int LOCA_ID_PARSE_LOC = 2;
+    //上报服务器请求
+    public static final int LOCA_ID_UP_DATA = 3;
 
 }

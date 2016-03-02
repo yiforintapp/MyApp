@@ -32,9 +32,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -50,7 +52,7 @@ import java.util.Locale;
  */
 public class PhoneSecurityUtils {
     public static String TAG = "PhoneSecurityUtils";
-
+    private static File mLocationLogile;
     /**
      * 获取GoogleMap位置Uri
      *
@@ -58,7 +60,7 @@ public class PhoneSecurityUtils {
      */
     public static String getGoogleMapLocationUri() {
         LostSecurityManagerImpl lm = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-        Location loc = lm.getLocation();
+        Location loc = lm.getLocation(PhoneSecurityConstants.LOCA_ID_MSM);
         if (loc != null) {
             LeoLog.i(TAG, "纬度：" + loc.getLatitude() + "----经度：" + loc.getLongitude());
             String language = Locale.getDefault().getLanguage();
@@ -222,7 +224,7 @@ public class PhoneSecurityUtils {
         double lat = -1;
         double lon = -1;
         LostSecurityManagerImpl lm = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-        Location loc = lm.getLocation();
+        Location loc = lm.getLocation(PhoneSecurityConstants.LOCA_ID_PARSE_LOC);
         if (latitude > 0) {
             lat = latitude;
         } else {
@@ -330,4 +332,46 @@ public class PhoneSecurityUtils {
         String provider = locateManager.getBestProvider(criteria, true);
         return provider;
     }
+
+
+    public static void writeToFile(String message) {
+        if (!LeoLog.isSDCardAvaible())
+            return;
+
+        try {
+            if (mLocationLogile == null) {
+                File dir = new File(Environment.getExternalStorageDirectory()
+                        .getAbsolutePath() + File.separator + "run_test");
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                mLocationLogile = new File(dir.getAbsolutePath() + File.separator
+                        + "location.txt");
+            }
+
+            if (!mLocationLogile.exists()) {
+                mLocationLogile.createNewFile();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        BufferedWriter buf = null;
+        try {
+            // use BufferedWriter for performance, true to set append to file
+            // flag
+            buf = new BufferedWriter(new FileWriter(mLocationLogile, false));
+            buf.append(message);
+        } catch (IOException e) {
+        } finally {
+            try {
+                buf.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
 }

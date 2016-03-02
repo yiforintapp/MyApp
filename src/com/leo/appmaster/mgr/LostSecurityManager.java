@@ -83,9 +83,12 @@ public abstract class LostSecurityManager extends Manager {
      * Latitude 纬度
      * Longitude 经度
      * 注：必须使用异步线程调用
+     * @param fromId 请求来源
      * @return
+     * @throws InterruptedException
      */
-    public abstract  Location getLocation() throws InterruptedException;
+
+    public abstract  Location getLocation(int fromId) throws InterruptedException;
     /***
      * 执行追踪手机位置操作
      * 如果不指定手机号，默认给防盗号码发送位置信息
