@@ -1917,8 +1917,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         final Button ignoreBtn = (Button) rootView.findViewById(R.id.ignore_button);
         boolean isShowIgnoreBtn = PrefTableHelper.showIgnoreBtn();
-//        if (isShowIgnoreBtn) {
-        if (true) {
+        if (isShowIgnoreBtn) {
+//        if (true) {
             ignoreBtn.setVisibility(View.VISIBLE);
             ignoreBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
