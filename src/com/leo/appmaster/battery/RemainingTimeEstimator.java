@@ -11,6 +11,8 @@ import com.leo.appmaster.utils.LeoLog;
  */
 public class RemainingTimeEstimator {
 
+    private static final String TAG = "RemainingTimeEstimator";
+
     /* 通话 */
     public static final int SCENE_CALL = 0;
     /* 上网 */
@@ -74,9 +76,11 @@ public class RemainingTimeEstimator {
     };
 
     public RemainingTimeEstimator(Context context) {
-        capacity = (int) getDeviceBatteryCapacity();
+        capacity = (int) getDeviceBatteryCapacity(context);
         processorNumber = getDeviceProcessorNumber();
         screenSize = getDeviceScreenSize(context);
+        LeoLog.d(TAG, "capacity="+capacity+"; processorNumber="
+                +processorNumber + "; screenSize="+screenSize);
     }
 
     /***
@@ -105,14 +109,14 @@ public class RemainingTimeEstimator {
     }
 
     /* private methods */
-    private double getDeviceBatteryCapacity() {
+    private double getDeviceBatteryCapacity(Context context) {
         Object mPowerProfile_ = null;
 
         final String POWER_PROFILE_CLASS = "com.android.internal.os.PowerProfile";
 
         try {
             mPowerProfile_ = Class.forName(POWER_PROFILE_CLASS)
-                    .getConstructor(Context.class).newInstance(this);
+                    .getConstructor(Context.class).newInstance(context);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,7 +154,7 @@ public class RemainingTimeEstimator {
             double x = Math.pow(wi, 2);
             double y = Math.pow(hi, 2);
             double screenInches = Math.sqrt(x + y);
-            LeoLog.d("stone_battery", "screenInches=" + screenInches + "; width=" + width + "; height=" + height);
+            LeoLog.d(TAG, "screenInches=" + screenInches + "; width=" + width + "; height=" + height);
             return screenInches;
         } catch (Exception e) {
             e.printStackTrace();
