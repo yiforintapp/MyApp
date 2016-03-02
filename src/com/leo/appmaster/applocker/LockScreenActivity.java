@@ -565,6 +565,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryShowNoPermissionTip() {
+//        Toast.makeText(LockScreenActivity.this, "虚拟按键？ = " + Utilities.hasNavigationBar(this), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(LockScreenActivity.this, Build.VERSION.SDK_INT+"__"+TaskDetectService.sDetectSpecial+"__"+BuildProperties.isLenoveModel(), Toast.LENGTH_SHORT).show();
         if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
 //        if (Build.VERSION.SDK_INT >= 21) {
@@ -2118,7 +2119,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                             }
                             mPermissionGuideToast.setDuration(1000 * 60 * 2);
-                            mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
+                            if (Utilities.hasNavigationBar(LockScreenActivity.this)) {
+                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission_navigationbar);
+                            } else {
+                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
+                            }
                             mPermissionGuideToast.setMatchParent();
                             mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, 0);
                             final View view = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null, true);

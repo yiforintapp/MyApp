@@ -70,6 +70,11 @@
         <item name="@android:windowExitAnimation">@anim/anim_out_translate</item>
     </style>
 
+    <style name="toast_guide_permission_navigationbar">
+        <item name="@android:windowEnterAnimation">@anim/anim_in</item>
+        <item name="@android:windowExitAnimation">@anim/anim_alpha_dimiss_fast</item>
+    </style>
+
     <style name="Theme" parent="@style/activity_theme">
         <item name="android:alertDialogTheme">@style/SingleChoiceDialog</item>
     </style>
