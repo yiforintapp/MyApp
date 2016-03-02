@@ -678,7 +678,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     });
                 }
             } else {
-                mRecommandNumFour.setVisibility(View.GONE);
+                mRecommandNumFour.setVisibility(View.INVISIBLE);
             }
 
         } else if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
@@ -735,7 +735,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 BatteryAppItem typeTwo = netList.get(0);
                 gotoBrowser(typeTwo, mIvShowTwo, mRecommandTvTwo, mRecommandNumTwo);
             } else {
-                mRecommandNumTwo.setVisibility(View.GONE);
+                mRecommandNumTwo.setVisibility(View.INVISIBLE);
             }
 
             //3
@@ -744,7 +744,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 BatteryAppItem typeThree = netList.get(1);
                 gotoBrowser(typeThree, mIvShowThree, mRecommandTvThree, mRecommandNumThree);
             } else {
-                mRecommandNumThree.setVisibility(View.GONE);
+                mRecommandNumThree.setVisibility(View.INVISIBLE);
             }
 
             //4
@@ -753,7 +753,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 BatteryAppItem typeFour = netList.get(2);
                 gotoBrowser(typeFour, mIvShowFour, mRecommandTvFour, mRecommandNumFour);
             } else {
-                mRecommandNumFour.setVisibility(View.GONE);
+                mRecommandNumFour.setVisibility(View.INVISIBLE);
             }
         } else {
             List<BatteryAppItem> playList = ScreenRecommentJob.getBatteryVideoList();
@@ -786,7 +786,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
 
             } else {
-                mRecommandNumOne.setVisibility(View.GONE);
+                mRecommandNumOne.setVisibility(View.INVISIBLE);
             }
 
             //two
@@ -802,7 +802,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
 
             } else {
-                mRecommandNumTwo.setVisibility(View.GONE);
+                mRecommandNumTwo.setVisibility(View.INVISIBLE);
             }
 
             //three
@@ -818,7 +818,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
 
             } else {
-                mRecommandNumThree.setVisibility(View.GONE);
+                mRecommandNumThree.setVisibility(View.INVISIBLE);
             }
 
             //four
@@ -834,7 +834,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
 
             } else {
-                mRecommandNumFour.setVisibility(View.GONE);
+                mRecommandNumFour.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -860,7 +860,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void gotoBrowser(BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView) {
         final String urlFour = infoOne.actionUrl;
-        if (infoOne.iconUrl != null) {
+        if (!Utilities.isEmpty(infoOne.iconUrl)) {
             mImageLoader.displayImage(infoOne.iconUrl, icon, getOptions(R.drawable.default_user_avatar));
         } else {
             icon.setImageDrawable(getRightIcon(infoOne));
@@ -1460,7 +1460,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showMoveUp() {
         AnimatorSet animationSet = new AnimatorSet();
 
-
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop());
 
@@ -1473,7 +1472,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mShowing = false;
                 mScrollView.setScrollY(0);
 //                mSlideView.setScrollable(false);
-//                mMaskView.setY(mMaskView.getTop() - 25);
+
+                mMaskView.setY(mMaskView.getTop() - DipPixelUtil.dip2px(mActivity, 8));
             }
         });
         animMoveY.start();
@@ -1489,6 +1489,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
 //                mMaskView.setY(mMaskView.getTop() + 25);
+                mMaskView.setY(mMaskView.getTop() + DipPixelUtil.dip2px(mActivity, 8));
             }
 
             @Override

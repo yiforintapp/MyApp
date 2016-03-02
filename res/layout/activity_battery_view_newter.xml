@@ -466,7 +466,7 @@
                     android:id="@+id/show_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="60dp"
                     android:layout_marginTop="15dp"
                     android:drawableLeft="@drawable/icon_folder_recommend"
                     android:drawablePadding="5dp"
@@ -711,6 +711,14 @@
                 </LinearLayout>
             </com.leo.appmaster.battery.SelfScrollView>
         </com.leo.appmaster.battery.BatteryTestViewLayout>
+        <!-- 渐变遮罩 -->
+        <com.leo.appmaster.battery.GradientMaskView
+            android:id="@+id/mask_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/battery_screen_ad_margin"
+            android:layout_marginRight="@dimen/battery_screen_ad_margin" />
     </RelativeLayout>
     <!-- 滑动区域 -->
 
@@ -733,14 +741,5 @@
             android:layout_centerInParent="true"
             android:background="@drawable/bay_icon_close" />
     </RelativeLayout>
-
-    <!-- 渐变遮罩 -->
-    <com.leo.appmaster.battery.GradientMaskView
-        android:id="@+id/mask_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/slider"
-        android:layout_marginLeft="@dimen/battery_screen_ad_margin"
-        android:layout_marginRight="@dimen/battery_screen_ad_margin" />
 
 </com.leo.appmaster.battery.BatteryBackground>
