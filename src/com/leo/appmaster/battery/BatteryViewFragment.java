@@ -276,19 +276,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (type == AD_TYPE_MSG) {
             if (mAdWrapper != null) {
-                mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight - 25;
+                mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight - 20;
                 LeoLog.d("locationP", "mAdWrapper.getHeight() : " + mAdWrapper.getHeight());
                 setYplace(contentHeight);
             }
         } else if (type == SWTIFY_TYPE_MSG) {
             if (mSwiftyView != null) {
-                mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight - 25;
+                mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight - 20;
                 LeoLog.d("locationP", "mSwiftyView.getHeight() : " + mSwiftyView.getHeight());
                 setYplace(contentHeight);
             }
         } else if (type == EXTRA_TYPE_MSG) {
             if (mExtraView != null && mExtraView.getHeight() > 0) {
-                mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight - 25;
+                mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight - 20;
                 LeoLog.d("locationP", "mExtraView.getHeight() : " + mExtraView.getHeight());
                 setYplace(contentHeight);
             }
@@ -1845,20 +1845,23 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showRecommandContent(int recommandTypeThree) {
         if (mCurrentClickType == recommandTypeThree) {
             mCurrentClickType = 0;
-//            turnLight();  // put it insideshrinkRecommandContent
             shrinkRecommandContent();
         } else {
             if (mCurrentClickType == 0) {
                 expandRecommandContent(recommandTypeThree);
             } else if (mCurrentClickType == -1) {
-                mCurrentClickType = 0;
-                shrinkRecommandContent();
-                return;
+                if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
+                    mCurrentClickType = 0;
+                    shrinkRecommandContent();
+                    return;
+                } else {
+                    turnDark(recommandTypeThree);
+                    fillShowContentData(recommandTypeThree);
+                }
             } else {
                 //TODO 展示内容替换
-                mCurrentClickType = 0;
-                shrinkRecommandContent();
-                return;
+                turnDark(recommandTypeThree);
+                fillShowContentData(recommandTypeThree);
             }
             mCurrentClickType = recommandTypeThree;
         }
