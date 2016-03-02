@@ -2746,15 +2746,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 return;
             }
 			
-			//debug
-			if (unitId.equals(mBannerAdids[0])) {
-				view.setBackgroundColor(Color.CYAN);
-			}
-			//debug
 			
             ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
             ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
-            ((TextView) view.findViewById(R.id.ad_details)).setText(unitId + campaign.getDescription());
+            ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
             ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             final View clickArea = view.findViewById(R.id.click_area);
             if (mWrapperEngine != null) {
