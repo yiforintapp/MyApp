@@ -500,43 +500,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
 
         try {
+            // 将加速动画view从父布局里移除，降低屏幕渲染压力
             ViewGroup viewGroup = (ViewGroup) mBoostView.getParent();
             viewGroup.removeView(mBoostView);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private void startShieldFlip(final ImageView ivShield, final CircleArroundView cavCircle) {
-        final float centerX = ivShield.getWidth() / 2.0f;
-        final float centerY = ivShield.getHeight() / 2.0f;
-        Toast.makeText(mActivity, centerX + " : x   y : " + centerY, Toast.LENGTH_LONG).show();
-        if (centerX != 0f && centerY != 0f) {
-            final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,
-                    centerX, centerY, 0.0f, true);
-            rotation.setDuration(680);
-            rotation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    cavCircle.startAnim(0f, -360f, 680l, new CircleArroundView.OnArroundFinishListener() {
-                        @Override
-                        public void onArroundFinish() {
-                            ivShield.setVisibility(View.VISIBLE);
-                        }
-                    });
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    ivShield.setVisibility(View.VISIBLE);
-                }
-            });
-            rotation.setFillAfter(false);
-            ivShield.startAnimation(rotation);
         }
     }
 
