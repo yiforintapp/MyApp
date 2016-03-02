@@ -252,7 +252,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     //是否满足忽略按钮
                     long lastIgnore = PreferenceTable.getInstance().getLong(Constants.AD_CLICK_IGNORE, 0);
                     long now = System.currentTimeMillis();
-                    long internal = PrefTableHelper.getIgnoreTs() * 60 * 60 * 60;//hours change to mmin
+                    long internal = PrefTableHelper.getIgnoreTs() * 60 * 60 * 1000;//hours change to mmin
                     LeoLog.d("locationP", "now - lastIgnore : " + (now - lastIgnore) + " . internal : " + internal);
                     if (now - lastIgnore > internal) {
                         reLocateMoveContent(type);
@@ -1421,14 +1421,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mTvHideTime.setText(Html.fromHtml(text));
                 }
             } else {
-                String text2 = mActivity.getString(R.string.battery_saver_remain_char_power);
+//                String text2 = mActivity.getString(R.string.battery_saver_remain_char_power);
+                String text2 = mActivity.getString(R.string.screen_protect_charing_text_one);
                 mTvHideText.setText(text2);
                 mTvHideTime.setVisibility(View.GONE);
             }
 
         }
-
-
     }
 
     private int staryY;
