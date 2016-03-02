@@ -206,6 +206,16 @@ public class BatteryManagerImpl extends BatteryManager {
                 Toast.makeText(mContext, "in APP", Toast.LENGTH_SHORT).show();
                 if (PrefTableHelper.showInsideApp()) {
                     handlePluginEvent(newState, false);
+                } else {
+                    if (BatteryShowViewActivity.isActivityAlive && mListenerRef != null) {
+                        int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
+                                newState.level, 0);
+                        int[] remainTimeArr = getTimeArr(newState);
+                        BatteryStateListener listener = mListenerRef.get();
+                        if (listener != null) {
+                            listener.onStateChange(EventType.SHOW_TYPE_IN, newState, remainTime, remainTimeArr);
+                        }
+                    }
                 }
             } else {
                 Toast.makeText(mContext, "in LAUNCHER", Toast.LENGTH_SHORT).show();
