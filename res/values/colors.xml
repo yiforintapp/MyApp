@@ -179,7 +179,7 @@
     <!--屏保也有弧度的推广卡片背景颜色-->
     <color name="batter_card_bg">#33ffffff</color>
 
-
+    <color name="cb_trans">#db004eff</color>
     <color name="white_20">#33ffffff</color>
     <color name="green_back_normal">#88fd8b</color>
     <color name="blue_back_normal">#91d4ff</color>

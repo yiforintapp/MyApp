@@ -3,15 +3,18 @@
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/cb"
     android:gravity="center_vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+        android:background="@color/cb_trans"
+        >
 
         <ImageView
+            android:layout_centerVertical="true"
             android:id="@+id/iv_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -21,11 +24,13 @@
             android:src="@drawable/logo_permission_guide" />
 
         <TextView
+            android:minHeight="59dp"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="30dp"
             android:layout_toRightOf="@id/iv_icon"
+            android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:text="@string/grant_permission_guide"
             android:textColor="@color/c1"
@@ -33,12 +38,12 @@
 
         <ImageView
             android:id="@+id/iv_permission_guide_close"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="4dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="2dp"
+            android:padding="12dp"
             android:src="@drawable/icon_permission_close" />
 
     </RelativeLayout>

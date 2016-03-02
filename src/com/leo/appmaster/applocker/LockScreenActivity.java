@@ -2126,7 +2126,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
                             }
                             mPermissionGuideToast.setMatchParent();
-                            mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, 0);
+                            mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, DipPixelUtil.dip2px(LockScreenActivity.this,14));
                             final View view = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null, true);
                             RelativeLayout root = (RelativeLayout) view.findViewById(R.id.rl_root);
 //                            final View view = View.inflate(LockScreenActivity.this, R.layout.toast_permission_guide,null);
