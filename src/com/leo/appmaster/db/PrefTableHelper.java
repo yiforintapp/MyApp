@@ -57,28 +57,28 @@ public class PrefTableHelper {
     }
 
     public static boolean shouldBatteryBoost() {
-        return true;
-//        long lastBoostTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_LAST_BOOST_TS, 0);
-//        if (lastBoostTs == 0) {
-//            return true;
-//        }
-//
-//        Context ctx = AppMasterApplication.getInstance();
-//        long totalMem = ProcessUtils.getTotalMem();
-//        long usedMem = ProcessUtils.getUsedMem(ctx);
-//        double ratio = (double)usedMem / (double)totalMem;
-//        LeoLog.d(TAG, "shouldBatteryBoost, totalMem: " + totalMem + " | usedMem: " + usedMem +
-//                " | ratio: " + ratio);
-//        long currentTs = System.currentTimeMillis();
-//
-//        long interval = getBoostTs();
-//        long intervalMs = interval * 60L * 60L * 1000L;
-//
-//        double defRatio = PrefTableHelper.getBoostMem();
-//        if ((currentTs - lastBoostTs >= intervalMs || currentTs < lastBoostTs) && ratio >= defRatio) {
-//            return true;
-//        }
-//
-//        return false;
+//        return true;
+        long lastBoostTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_LAST_BOOST_TS, 0);
+        if (lastBoostTs == 0) {
+            return true;
+        }
+
+        Context ctx = AppMasterApplication.getInstance();
+        long totalMem = ProcessUtils.getTotalMem();
+        long usedMem = ProcessUtils.getUsedMem(ctx);
+        double ratio = (double)usedMem / (double)totalMem;
+        LeoLog.d(TAG, "shouldBatteryBoost, totalMem: " + totalMem + " | usedMem: " + usedMem +
+                " | ratio: " + ratio);
+        long currentTs = System.currentTimeMillis();
+
+        long interval = getBoostTs();
+        long intervalMs = interval * 60L * 60L * 1000L;
+
+        double defRatio = PrefTableHelper.getBoostMem();
+        if ((currentTs - lastBoostTs >= intervalMs || currentTs < lastBoostTs) && ratio >= defRatio) {
+            return true;
+        }
+
+        return false;
     }
 }
