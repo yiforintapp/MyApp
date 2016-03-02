@@ -2,10 +2,7 @@
 <resources>
     <dimen name="lockscreen_permissiontip_marginbottom">20dp</dimen>
     <dimen name="batteryscreen_slidearea_height">70dp</dimen>
-     <dimen name="batteryscreen_remaintime_margintop">10dp</dimen>
     <dimen name="batteryscreen_bossview_height">300dp</dimen>
-    <dimen name="batteryscreen_battery_margintop">35dp</dimen>
-	<dimen name="batteryscreen_clock_margintop">60dp</dimen>
     <dimen name="batteryscreen_clock_margintop_bay">55dp</dimen>
 	<dimen name="batterymanage_toplayout_height">183dp</dimen>
 	<dimen name="batterymanage_toplayout_ball">154dp</dimen>
@@ -29,7 +26,6 @@
     <dimen name="digital_item_marginTop">6dp</dimen>
     <dimen name="digital_item_marginBottom">6dp</dimen>
     <dimen name="lockPatternView_height">280dp</dimen>
-    <dimen name="layout_passwd_marginTop">39dp</dimen>
     <dimen name="layout_four_passwd_marginTop">13dp</dimen>
     <dimen name="indicator_right_padding">10dp</dimen>
     <dimen name="indicator_internal_padding">4dp</dimen>
@@ -218,11 +214,6 @@
     <dimen name="scan_scanning_gap">3dp</dimen>
     <dimen name="scan_percent">46dp</dimen>
     <dimen name="scan_percent_label">16dp</dimen>
-    <dimen name="scan_result_margin_right">14dp</dimen>
-    <dimen name="scan_result_margin_right_ic">16dp</dimen>
-    <dimen name="scan_count_bg">18dp</dimen>
-    <dimen name="scan_count_size">12dp</dimen>
-    <dimen name="scan_count_padding">4dp</dimen>
     <!--<dimen name="scan_shield_offset">34dp</dimen>-->
     <dimen name="scan_shield_offset">60dp</dimen>
     <dimen name="home_menu_divider_left">50dp</dimen>
@@ -235,8 +226,6 @@
     <dimen name="loading_baseline_margin">28dp</dimen>
     <dimen name="home_loading">16dp</dimen>
     <dimen name="home_loading_rise">220dp</dimen>
-    <dimen name="home_scanning_padding_top">352dp</dimen>
-    <dimen name="scanning_icon_margin_top">30dp</dimen>
     <dimen name="home_step_width">164dp</dimen>
     <dimen name="home_step_height">20dp</dimen>
     <dimen name="home_step_middle">8dp</dimen>
@@ -347,21 +336,12 @@
     <dimen name="home_guide_marg">50dp</dimen>
     <dimen name="home_guide_marg_up">45dp</dimen>
 
-    <dimen name="pri_pro_new_sticky">92dp</dimen>
-
     <!-- 3.2 -->
     <dimen name="pp_shield_x_padding">10dp</dimen>
     <dimen name="pp_img_loading_padding">9dp</dimen>
     <dimen name="pp_img_loading_stroke">4dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <!-- 3.3 -->
     <dimen name="scan_ad_preview_height">159dp</dimen>
-    <dimen name="mask_text_size">20dp</dimen>
-    <dimen name="mask_text_size_icon">19dp</dimen>
-    <dimen name="mask_text_icon_pd">5dp</dimen>
-    <dimen name="popu_txt_size">12dp</dimen>
     <!-- 3.3.1 -->
     <dimen name="home_more_empty_height">93dp</dimen>
 

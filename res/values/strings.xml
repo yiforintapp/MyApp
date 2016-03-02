@@ -203,7 +203,6 @@
 
     <!-- v2.0 -->
 
-    <string name="pravicy_protect">Protection</string>
     <string name="privacy_contacts">Private Contact</string>
     <string name="privacy_sms">Private SMS</string>
     <string name="privacy_call">Private Calls</string>
@@ -320,13 +319,6 @@
     <string name="back_backed">Backed-up</string>
     <string name="the_best_status_toast">Optimum State. Please try again later.</string>
 
-    <!-- My Apps -->
-    <string name="app_manager">My Apps</string>
-
-    <!--
-     Data Usage / Battery
-     and used data(Month).
-    -->
     <string name="traffic_progress_bar">Monthly Usage</string>
     <string name="traff_first_page_small_set_low">Type your data plan and monthly used data</string>
     <string name="traff_first_page_small_set">Set data plan</string>
@@ -456,7 +448,6 @@
     <!-- version 2.4 start -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty, the most popular tool on Google Play. One touch, shortcuts, favorite apps, messages are at hand.</string>
     <string name="grade_tip_feedback">Feedback</string>
-    <string name="quick_first_tip_dialog_right_bt">Enable</string>
     <string name="quick_first_tip_dialog_left_bt">Later</string>
     <!-- version 2.4 end -->
 
@@ -512,10 +503,6 @@
 
     <!-- 2.8 start -->
     <string name="device_admin_extra">Prevent uninstallation by others</string>
-    <string name="iswip_update_tip_title_text">Update Easy Shortcuts!</string>
-    <string name="iswip_update_tip_context_text">Easy shortcuts is renamed as Swifty. Download it and have a try!</string>
-    <string name="iswip_update_tip_left_button_text">Later</string>
-    <string name="iswip_update_tip_right_button_text">Download</string>
     <string name="ad_timeout">Wow! More surprises are waiting for you!</string>
     <string name="action_settings">Settings</string>
     <!-- 2.8 end -->
@@ -542,7 +529,6 @@
     <string name="advace_protect_dialog_title_text">Suggest enable Advanced Protection</string>
     <string name="advace_protect_dialog_content_text">Congrats! Applock applied successfully.Tips: Enable "Advanced Protection", then no one can peek at your secrets by uninstalling Privacy Guard. But if really want uninstall our app, please check the side bar.</string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="advance_protect_open_success_tip_title">Succeed!</string>
     <string name="auto_start_tip_xiaomi4_and_letv">For better privacy protection, please click "Autostart", choose LEO Privacy Guard to add to Autostart List</string>
     <string name="auto_start_tip_redmi">For better privacy protection, please go to"Permissions", add Privacy Guard to Autostart Applications</string>
     <string name="auto_start_tip_huawei">For better privacy protection, please go to"Protected Apps", add PG to protected list</string>
@@ -580,13 +566,10 @@
     <string name="hp_helper_label">Assistant</string>
     <string name="hp_helper_shot">Shortcuts Assistant</string>
     <string name="hp_helper_iswipe">Swifty</string>
-    <string name="pri_pro_ignore">Skip</string>
 
     <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> New videos</string>
     <string name="pri_pro_new_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> New picture</string>
     <string name="pri_pro_new_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> New app</string>
-    <string name="pri_pro_scan_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Video detected</string>
-    <string name="pri_pro_scan_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Picture detected</string>
     <string name="pri_pro_scan_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> App detected</string>
 
     <string name="pri_pro_hide_vid">Hide Video</string>
@@ -632,7 +615,6 @@
     <string name="loading_hiding_pic">Hiding photos…</string>
     <string name="loading_hiding_vid">Hiding videos…</string>
 
-    <string name="lock_app_item_desc">%1$s people have locked</string>
     <string name="lock_app_action">%1$s have locked</string>
     <string name="unlock_app_action">%1$s have unlocked</string>
 
@@ -773,10 +755,6 @@
     <string name="secur_location_msm">[LEOMASTER] The position of the lost phone is located, click to view: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">Are you sure to ignore the result? To do so, you will not gain the score</string>
 
-    <string name="scanint_result_app">New apps</string>
-    <string name="scanint_result_pic">New photos</string>
-    <string name="scanint_result_vid">New videos</string>
-    <string name="scanint_result_deep">Advance privacy</string>
     <string name="secur_add_self_number_tip">You have input this phone\'s number, please input again</string>
     <string name="new_arrival">New journey</string>
     <string name="new_funciton">New interface, new function, new start</string>
@@ -801,7 +779,6 @@
     <string name="huawei7pl_op_tip">Please choose "Application" in Permission Manager and select Privacy Guard , then assign the "Access SMS/MMS"&amp;"Send SMS" to us.</string>
 
     <!-- 3.1 -->
-    <string name="feedback_tell_us_contact_type_1">Email:support@leomaster.com</string>
     <string name="feedback_tell_us_contact_type_2">Whatsapp:+86 15802959395 </string>
     <string name="feedback_tell_us_contact_type_3">Wechat:316261039</string>
     <string name="feedback_tell_us_contact_type_4">Skype:Sharon Dang</string>
@@ -823,7 +800,6 @@
     <string name="fb_item_content">For more interesting and official news of LEO Privacy Guard, please immediately follow us on facebook.</string>
     <string name="fb_item_btn">Follow us</string>
     <string name="intruderprotection_forbit_content">Due to the limitation of Android, the intruder prevention function could not work.</string>
-    <string name="adv_prot_open_suc_tip_cnt">LEO Privacy Guard can not uninstall under advanced protection. If it is needed, please go to AppLock page and disenable \"Advanced Protection\" in AppLock Settings.</string>
     <string name="pri_pro_btn">Enable(+%1$d points)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
 
@@ -837,7 +813,6 @@
     <string name="samsung_tip_txt">To ensure normal operation of application lock, check Privacy Guard in "Application Program Optimization"->"Detail" and select "Disable", or set them later in Application Lock. </string>
     <string name="pri_result_wifimaster_content">Professional and optimized speed tester to ensure higher and more stable WiFi speed and provide free WIFI with higher quality.</string>
     <string name="wifi_result_wifimaster_content">Test your WiFi speed now! Select the fastest WiFi connection!</string>
-    <string name="pri_result_wifimaster_btn">Start</string>
     <string name="video_guide_txt">Click Edit to check and unhide the video</string>
 
     <!-- 3.2 -->
@@ -876,10 +851,7 @@
     <string name="number_toast_text_black">Drawn in by %1$s users</string>
     <string name="number_toast_text_mark">Marked by %1$s users</string>
     <string name="number_toast_color"><Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data></string>
-    <string name="number_add_to_black_list">In blacklist of %1$s users</string>
     <string name="number_call_duration_s">%1$s S</string>
-    <string name="number_call_duration_m">%1$s M</string>
-    <string name="number_call_duration_h">%1$s H</string>
     <string name="scan_score">complete +%1$s points</string>
     <string name="scan_app_title"> %1$s apps found</string>
     <string name="scan_app_content_less_three"> %1$s high risk privacy apps</string>
@@ -898,7 +870,6 @@
     <string name="scan_lost_content">Open phone security, find the lost phone</string>
     <string name="scan_contact_title">Frequent privacy contacts</string>
     <string name="scan_wifi_title">Wifi security</string>
-    <string name="scan_wifi_content">Wifi safe mode</string>
     <string name="scan_app_start">Scanning apps</string>
     <string name="scan_pic_start">Scanning pictures</string>
     <string name="scan_vid_start">Scanning videos</string>
@@ -928,7 +899,6 @@
     <string name="gud_page_call_fil">Smart recognise phone number，keep harassment away</string>
 
     <string name="call_filter_add_to_blacklist_people_tips">In blacklist of %1$s users</string>
-    <string name="call_filter_marked_people_tips">%1$s users marked as %2$s</string>
     <string name="call_filter_marked_and_add_tips">Mark %1$s，Add to blacklist</string>
     <string name="call_filter_confirm_ask_mark_summary">%1$s users marked as %2$s</string>
 
@@ -967,34 +937,20 @@
     <string name="intruder_share_content">Hi, I\'m using the Intrusion Prevention function of Privacy Guard. It has helped me shoot %1$s persons who peek at my mobile. Now, I know who are peeking at my mobile. Do you want to have a try?</string>
     <string name="up_list_swifty_title">Efficiency promotion</string>
 
-    <string name="screen_protect_type_one">Quick charging</string>
-    <string name="screen_protect_type_two">Constant current charging</string>
-    <string name="screen_protect_type_three">Trickle charging</string>
-
     <string name="screen_protect_time">Remaining time </string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>m</string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>m</string>
 
-    <string name="screen_protect_unlock_text">Slide to unlock</string>
     <string name="oppo_rom_tip_txt">Due to system restriction, you need to enable the permission to have Privacy Guard work normally. You can do it by choosing Add program > Add applications running in background > Select and add Privacy Guard</string>
-    <string name="recom_lft_txt">No, thanks</string>
-    <string name="recom_rgt_txt">Try</string>
 
     <!--翻译遗漏，暂时用中文替代-->
-    <string name="screen_protect_type_pop_one">Conduct quick charging while the electriciy is lower than 70%</string>
-    <string name="screen_protect_type_pop_two">Keep the charging current stable to protect the battery</string>
-    <string name="screen_protect_type_pop_three">Reduce the charging current to prolong the battery life</string>
-
     <string name="screen_protect_charing_text_one">Please connect the charger</string>
     <string name="screen_protect_charing_text_two">Charging</string>
-    <string name="screen_protect_charing_text_three">Fully charged, please remove the charger</string>
     <string name="screen_protect_charing_text_four">Fully charged</string>
     <string name="batterymanage_scaning">scanning</string>
     <string name="batterymanage_boosting">Processing</string>
     <string name="batterymanage_notif_process">optimize</string>
     <string name="today">Today</string>
-    <!-- 屏保页面向下的剪头 -->
-    <string name="sliding_icon">&#xe61d;</string>
 
     <!-- 3.3.1 -->
 
@@ -1030,7 +986,6 @@
     <string name="grant_permission_guide">为Privacy Guard开启权限。保证应用锁正常工作</string>
     <string name="grant_permission_default_tip">开启权限以修复应用锁出现的问题</string>
     
-    <string name="battery_protect_view_title">用电情况</string>
     <string name="battery_protect_view_time_title">可用时间</string>
     <string name="battery_protect_view_remain_one_title">3G通话</string>
     <string name="battery_protect_view_remain_two_title">WiFi上网</string>
@@ -1060,8 +1015,4 @@
 
     <string name="battery_protect_pop_text">忽略</string>
     
-    <string name="battery_saver_remain_charge_time">剩余充电时间</string>
-
-    <string name="battery_saver_remain_char_power">建议充电</string>
-
 </resources>

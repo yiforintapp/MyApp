@@ -196,7 +196,6 @@
     <string name="lock_help_lock_theme_setting_button">เปลี่ยนธีม</string>
 
     <!-- V2.0 -->
-    <string name="pravicy_protect">การป้องกัน</string>
     <string name="privacy_contacts">รายชื่อส่วนตัว</string>
     <string name="privacy_sms">ข้อความ</string>
     <string name="privacy_call">โทรส่วนตัว</string>
@@ -312,9 +311,6 @@
     <string name="app_application">แอพ</string>
     <string name="app_hot_app">ยอดนิยม</string>
     <string name="back_backed">สำรองแล้ว</string>
-
-    <!-- My Apps -->
-    <string name="app_manager">แอพของฉัน</string>
 
     <!-- Data Usage / Battery -->
     <string name="traffic_progress_bar">เดือนนี้ใช้ไป</string>
@@ -452,7 +448,6 @@
     <!-- quick gesture -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty เครื่องมือยอดนิยมที่สุดบน Google Play เพียงสัมผัสเดียว ปุ่มลัด แอพสุดโปรด ข้อความในควบคุมของคุณ</string>
     <string name="grade_tip_feedback">เสนอแนะ</string>
-    <string name="quick_first_tip_dialog_right_bt">เปิดทท.</string>
     <string name="quick_first_tip_dialog_left_bt">ภายหลัง</string>
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -505,10 +500,6 @@
 
     <!-- 2.8 start -->
     <string name="device_admin_extra">กันการถอนติดตั้ง</string>
-    <string name="iswip_update_tip_title_text">อัพเดทง่าย</string>
-    <string name="iswip_update_tip_context_text">ปุ่มลัดเปลี่ยนชื่อเป็น Swifty ดาวน์โหลดและลองใช้เลย!</string>
-    <string name="iswip_update_tip_left_button_text">ภายหลัง</string>
-    <string name="iswip_update_tip_right_button_text">ดาวนโหลด</string>
     <string name="ad_timeout">ว้าว น่าอัศจรรย์</string>
     <!-- 2.8 end -->
     <!-- 2.10 start -->
@@ -530,7 +521,6 @@
     <string name="advace_protect_dialog_title_text">ใช้ปกป้องขั้นสูง</string>
     <string name="advace_protect_dialog_content_text">ล็อคแล้ว ใช้ปกป้องขั้นสูงเลี่ยงถอนติดตั้ง ถอนติดตั้ง Privacy Guard ที่แถบข้าง </string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="advance_protect_open_success_tip_title">ใช้ปกป้องขั้นสูง</string>
     <string name="auto_start_tip_xiaomi4_and_letv">คลิก"เริ่มอัตโนมัติ" เพิ่ม LEO Privacy Guard</string>
     <string name="auto_start_tip_redmi">ไปที่"การอนุญาตสิทธิ์" และเพิ่ม Privacy Guard</string>
     <string name="auto_start_tip_huawei">ไป "แอพที่ป้องกัน" และเพิ่ม PG ไปรายการป้องกัน</string>
@@ -568,13 +558,10 @@
     <string name="hp_helper_label">ตัวช่วย</string>
     <string name="hp_helper_shot">ตัวช่วยปุ่มลัด</string>
     <string name="hp_helper_iswipe">Swifty</string>
-    <string name="pri_pro_ignore">ข้าม</string>
 
     <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> วิดีโอใหม่</string>
     <string name="pri_pro_new_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> ภาพใหม่</string>
     <string name="pri_pro_new_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> แอพใหม่</string>
-    <string name="pri_pro_scan_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> พบวิดีโอ</string>
-    <string name="pri_pro_scan_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> พบภาพ</string>
     <string name="pri_pro_scan_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> พบแอพ</string>
 
     <string name="pri_pro_hide_vid">ซ่อนวิดิโอ</string>
@@ -620,7 +607,6 @@
     <string name="loading_hiding_pic">กำลังซ่อนรูปถ่าย...</string>
     <string name="loading_hiding_vid">กำลังซ่อนวิดีโอ...</string>
 
-    <string name="lock_app_item_desc">%1$s ผู้คนล็อคไว้</string>
     <string name="lock_app_action">%1$s ล็อคไว้</string>
     <string name="unlock_app_action">%1$s ปลดล็อค</string>
 
@@ -763,10 +749,6 @@
     <string name="secur_location_msm"> [LEOMASTER] ตำแหน่งหายถูกค้นหา คลิกดู: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">คุณแน่ใจว่าไม่สนใจผลลัพธ์นี้? หากตกลง คุณจะไม่ได้รับคะแนน</string>
 
-    <string name="scanint_result_app">แอพใหม่</string>
-    <string name="scanint_result_pic">รูปภาพใหม่</string>
-    <string name="scanint_result_vid">วิดีโอใหม่</string>
-    <string name="scanint_result_deep">ความส่วนตัวขั้นสูง</string>
     <string name="secur_add_self_number_tip">คุณป้อนหมายเลขนี้ โปรดป้อนอีกครั้ง</string>
     <string name="new_arrival">การเดินทางใหม่</string>
     <string name="new_funciton">อินเตอร์เฟสใหม่ ฟังก์ชันใหม่ เริ่มใหม่</string>
@@ -801,7 +783,6 @@
     <string name="fb_item_content">อยากทราบข่าวสารและเรื่องราวสนุกเกี่ยวกับLEO Privacy Guard สามารถติดตามเพ็จของเราบนFacebookได้เลย</string>
     <string name="fb_item_btn">ติดตาม</string>
     <string name="intruderprotection_forbit_content">ไม่สามารถใช้ระบบป้องกันแฮคเกอร์ได้ เนื่องจากข้อจำกัดของระบบ</string>
-    <string name="adv_prot_open_suc_tip_cnt">เปิดใช้แล้วไม่สามารถถอนการติดตั้งLEO Privacy Guardได้ คุณต้องยกเลิกการตั้งค่าการป้องกันขั้นสูงก่อน</string>
     <string name="pri_pro_btn">เปิด(+%1$dคะแนน)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
 
@@ -815,7 +796,6 @@
     <string name="samsung_tip_txt">โปรดคลิก "รายละเอียด" จาก "จัดการแอพ" แล้วแตะ Privaty และเลือก "ห้ามใช้" เพื่อให้กุญแจแอพได้ทำงานปกติ หรือไม่ก็ตั้งค่ากุญแจแอพภายหลังได้</string>
     <string name="pri_result_wifimaster_content">เครื่องมือวัดความเร็วมืออาชีพ ช่วยให้WiFiของคุณเสถียร และช่วยหาWiFiฟรีให้</string>
     <string name="wifi_result_wifimaster_content">ลองวัดความเร็วWiFi และเชื่อมต่อWiFiที่เร็วที่สุด</string>
-    <string name="pri_result_wifimaster_btn">เปิด</string>
     <string name="video_guide_txt">แตะปุ่มแก้ไข จะสามารถเลือกคลิปเพื่อยกเลิกการซ่อนได้</string>
 
     <!--3.2-->
@@ -853,10 +833,7 @@
     <string name="mark_number_from_list">ปักหมุดเบอร์นี้แล้ว</string>
     <string name="number_toast_text_black">ถูก%1$sคนเพิ่มเข้า</string>
     <string name="number_toast_text_mark">ถูก%1$sคนปักหมุดเป็น</string>
-    <string name="number_add_to_black_list">ถูก%1$sคนดึงเข้าแบล็คลิสต์</string>
     <string name="number_call_duration_s">%1$sวินาที</string>
-    <string name="number_call_duration_m">%1$sนาที</string>
-    <string name="number_call_duration_h">%1$sชม.</string>
     <string name="scan_score">จัดการ:+%1$sจุดี</string>
     <string name="scan_app_title">พบ%1$sแอพ</string>
     <string name="scan_app_content_less_three">แอพที่มีความเสี่ยง%1$sแอพ</string>
@@ -875,7 +852,6 @@
     <string name="scan_lost_content">เปิดระบบป้องกันขโมย ช่วยตามหาโทรศัพท์ที่ถูกขโมยไป</string>
     <string name="scan_contact_title">เบอร์ลับที่โทรเข้าบ่อย</string>
     <string name="scan_wifi_title">Wifiปลอดภัย</string>
-    <string name="scan_wifi_content">โหมดWifiปลอดภัย</string>
     <string name="scan_app_start">กำลังแสกนแอพ</string>
     <string name="scan_pic_start">กำลังแสกนภาพ</string>
     <string name="scan_vid_start">กำลังแสกนคลิป</string>
@@ -903,7 +879,6 @@
     <string name="strange_call_empty">ไม่มีคนแปลกหน้าโทร</string>
 
     <string name="call_filter_add_to_blacklist_people_tips">ถูก%1$sคนดึงเข้าแบล็คลิสต์</string>
-    <string name="call_filter_marked_people_tips">ผู้ใช้%1$sทำเครื่องหมายเป็น%2$s</string>
     <string name="call_filter_marked_and_add_tips">เครื่องหมาย %1$s， เพิ่มเข้าแบล็คลิสต์</string>
     <string name="call_filter_confirm_ask_mark_summary">ผู้ใช้%1$sทำเครื่องหมายเป็น%2$s</string>
 
@@ -940,27 +915,15 @@
     <string name="intruder_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นป้องกันผู้บุกรุกของ LEO Privacy Guard อยู่ มันถ่ายรูปของผู้แอบดูมือถือ %1$s คนแล้ว ตอนนี้ฉันรู้แล้วว่ามีใครบ้างที่แอบดูมือถือของฉันอยู่ มาลองใช้กันดู </string>
     <string name="up_list_swifty_title">เพิ่มประสิทธิภาพ</string>
 
-    <string name="screen_protect_type_one">ชาร์จแบบรวดเร็ว</string>
-    <string name="screen_protect_type_two">ชาร์จด้วยกระแสคงที่</string>
-    <string name="screen_protect_type_three">ชาร์จด้วยกระแสต่ำ</string>
-
     <string name="screen_protect_time">เวลาที่เหลือชาร์จ </string>
     <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
     <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
 
-    <string name="screen_protect_unlock_text">เลื่อนเพื่อปลดล็อค</string>
     <string name="oppo_rom_tip_txt">ด้วยข้อจำกัดของระบบมือถือ LEO Privacy Guard ต้องได้รับการมอบอำนาจก่อนใช้งาน ขั้นตอนการมอบคือ "เพิ่มแอพ" --> "เพิ่มแอพที่ทำงานอยู่เบื้องหลังได้" --> เลือกเพิ่ม LEO Privacy Guard</string>
-    <string name="recom_lft_txt">ไม่ต้องแล้ว</string>
-    <string name="recom_rgt_txt">ลองใช้ดู</string>
     <string name="batterymanage_boosted_number">%1$dมีการปรับรายการ</string>
-
-    <string name="screen_protect_type_pop_one">ใช้โหมดการชาร์จแบบรวดเร็ว เมื่อแบตเตอรี่เหลือต่ำกว่า 70%</string>
-    <string name="screen_protect_type_pop_two">มีเสถียรภาพในปัจจุบัน เพื่อรักษาแบตเตอรี่ให้อยู่ในสภาพการที่ดี</string>
-    <string name="screen_protect_type_pop_three">ลดกระแสไฟฟ้ เพื่อยืดอายุการใช้งานของแบตเตอรี่</string>
 
     <string name="screen_protect_charing_text_one">กรุณาเสียบสายชาร์จ</string>
     <string name="screen_protect_charing_text_two">กำลังชาร์จ</string>
-    <string name="screen_protect_charing_text_three">ชาร์จเต็มแล้ว กรุณาถอดสายชาร์จออก</string>
     <string name="screen_protect_charing_text_four">ชาร์จเต็มแล้ว</string>
     <string name="batterymanage_scaning">การสแกน</string>
     <string name="batterymanage_boosting">การประมวลผล</string>

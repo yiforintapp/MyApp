@@ -3,7 +3,6 @@
 
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
-    <color name="per50_black">#7d000000</color>
     <color name="gallery_bg">#80000000</color>
     <color name="white">#ffffffff</color>
     <color name="text_color_blue">#0582ff</color>
@@ -55,7 +54,6 @@
 
     <color name="home_btn_lock_pressed">#e3edfd</color>
     <color name="webview_pro_bg">#e4e4e4</color>
-    <color name="webview_pro">#28b1ff</color>
     <color name="cool_red">#ff2a00</color>
     <color name="translucent_background">#b2000000</color>
     <color name="translucent_background_more_light">#52000000</color>
@@ -91,7 +89,6 @@
     <color name="pri_pro_list_bg">#ebebed</color>
     <color name="green_button">#16ca37</color>
     <color name="green_button_ripple">#08b329</color>
-    <color name="blue_button_click">#00008B</color>
 	 <color name="home_menu_text">#636363</color>
     <color name="wifi_result_safe_start">#0057e8</color>
     <color name="wifi_result_safe_end">#3c73ff</color>
@@ -159,19 +156,12 @@
     <color name="cgn">#15c937</color>
     <!--不可操作按钮-->
     <color name="cgy">#cbcbcb</color>
-    <!--警戒操作按钮-->
-    <color name="cr">#ff3217</color>
     <!--背景色-->
     <color name="cbg">#ededed</color>
     <!--点击蒙板-->
     <color name="cm">#33000000</color>
     <!--分栏-->
     <color name="fl">#f0f3f7</color>
-    <!--分栏描边-->
-    <color name="flb">#d9dfe6</color>
-    <color name="cgn_40">#6615c937</color>
-    <color name="cb_40">#662674f6</color>
-    <color name="cgy_40">#66cbcbcb</color>
 
     <color name="contact_no_select">#cbcbcb</color>
     <color name="pp_img_load_bg">#4d000000</color>
@@ -180,7 +170,6 @@
     <color name="batter_card_bg">#33ffffff</color>
 
     <color name="cb_trans">#db004eff</color>
-    <color name="white_20">#33ffffff</color>
     <color name="green_back_normal">#88fd8b</color>
     <color name="blue_back_normal">#91d4ff</color>
     <color name="yellow_back_normal">#ffebaf</color>

@@ -2,9 +2,6 @@
 <resources>
     <dimen name="batteryscreen_slidearea_height">55dp</dimen>
     <dimen name="batteryscreen_bossview_height">280dp</dimen>
-    <dimen name="batteryscreen_remaintime_margintop">10dp</dimen>
-    <dimen name="batteryscreen_battery_margintop">35dp</dimen>
-    <dimen name="batteryscreen_clock_margintop">40dp</dimen>
     <dimen name="batteryscreen_clock_margintop_bay">40dp</dimen>
     <dimen name="home_left_list_item_height">50dp</dimen>
     <dimen name="splash_width">176dp</dimen>
@@ -24,7 +21,6 @@
     <dimen name="digital_item_marginTop">4dp</dimen>
     <dimen name="digital_item_marginBottom">4dp</dimen>
     <dimen name="lockPatternView_height">280dp</dimen>
-    <dimen name="layout_passwd_marginTop">30dp</dimen>
     <dimen name="layout_four_passwd_marginTop">10dp</dimen>
     <dimen name="circle_count_text_size">74dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>
@@ -302,8 +298,6 @@
     <dimen name="scur_contact_char">10dp</dimen>
     <dimen name="secur_instru_grid_itme_hor_spac">0dp</dimen>
     <dimen name="home_tab_height">202dp</dimen>
-    <dimen name="home_scanning_padding_top">290dp</dimen>
-    <dimen name="scanning_icon_margin_top">25dp</dimen>
     <dimen name="fragment_lock_margin_top">50dp</dimen>
     <dimen name="fragment_lock_large_banner_out_height">137dp</dimen>
     <dimen name="fragment_lock_large_banner_image_height">100dp</dimen>

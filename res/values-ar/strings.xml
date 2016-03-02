@@ -255,7 +255,6 @@
     <string name="lock_help_lock_theme_setting_button">تبديل الموضوع</string>
 
     <!-- V2.0 -->
-    <string name="pravicy_protect">"السرية"</string>
     <string name="privacy_contacts">جهة اتصال سري</string>
     <string name="privacy_sms">رسالة سرية</string>
     <string name="privacy_call">مكالمة سرية</string>
@@ -393,9 +392,6 @@
     <string name="app_hot_app">روائع</string>
     <string name="back_backed">محفوظ</string>
     <string name="the_best_status_toast">بلغ إلى أفضل وضع، انتظر للمحاولة</string>
-
-    <!-- My Apps -->
-    <string name="app_manager">"إدارة"</string>
 
     <!-- Data Usage / Battery -->
     <string name="traffic_progress_bar">استهلاك شهري</string>
@@ -554,7 +550,6 @@
     <string name="feedback_category_guide">نوع السؤال</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swiftly، الاداة الأكثر شعبية بمتجر جوجل. بنقرة واحدة، تكون الاختصارات، التطبيقات المفضلة، الرسائل بين يديك.</string>
     <string name="grade_tip_feedback">كلامي</string>
-    <string name="quick_first_tip_dialog_right_bt">تمكين</string>
     <string name="quick_first_tip_dialog_left_bt">لاحقا</string>
 
     <!-- quick gesture -->
@@ -608,10 +603,6 @@
 
     <!-- 2.8 start -->
     <string name="device_admin_extra">منع إلغاء التثبيت بواسطة الآخرين</string>
-    <string name="iswip_update_tip_title_text">تحديث الاختصارات السهلة!</string>
-    <string name="iswip_update_tip_context_text">تم إعادة تسمية الاختصار السهل إلى Swifty. قم بتنزيله وتجربته!</string>
-    <string name="iswip_update_tip_left_button_text">لاحقا</string>
-    <string name="iswip_update_tip_right_button_text">التنزيل</string>
     <string name="ad_timeout">رائع! المزيد من المفاجآت بانتظارك!</string>
     <!-- 2.8 end -->
     <!-- 2.10start -->
@@ -633,7 +624,6 @@
     <string name="advace_protect_dialog_title_text">حماية متقدمة</string>
     <string name="advace_protect_dialog_content_text">تم إضافة القفل بنجاح. تم اقتراح الحماية المتقدمة لتجنب إلغاء تثبيت الآخرين. يمكنك إلغاء تثبيت حارس الخصوصية في الشريط الجانبي. يمكنك إلغاء تثبيت حارس الخصوصية في الشريط الجانبي.</string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="advance_protect_open_success_tip_title">تنجح!</string>
     <string name="auto_start_tip_xiaomi4_and_letv">يرجى الضغط على "التشغيل التلقائي" وإضافة حارس الخصوصية LEO لقائمة التشغيل التلقائي.</string>
     <string name="auto_start_tip_redmi">يرجى الذهاب إلى "الأذونات" وإضافة حارس الخصوصية لتطبيقات التشغيل التلقائي</string>
     <string name="auto_start_tip_huawei">يرجى الذهاب إلى "التطبيقات المحمية" وإضافة حارس الخصوصية للقائمة المحمية</string>
@@ -670,13 +660,10 @@
     <string name="hp_helper_label">المساعدة</string>
     <string name="hp_helper_shot">المساعدة السريعة</string>
     <string name="hp_helper_iswipe">Swifty</string>
-    <string name="pri_pro_ignore">تجاوز</string>
 
     <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فيديو جديد </string>
     <string name="pri_pro_new_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>صورة جديدة </string>
     <string name="pri_pro_new_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>تطبيق جديد </string>
-    <string name="pri_pro_scan_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فحص للفيديو </string>
-    <string name="pri_pro_scan_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فحص للصورة </string>
     <string name="pri_pro_scan_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>فحص للتطبيق </string>
 
     <string name="pri_pro_hide_vid">إخفاء فيديو</string>
@@ -719,7 +706,6 @@
     <string name="loading_locking">قفل التطبيق...</string>
     <string name="loading_hiding_pic">إخفاء صورة...</string>
     <string name="loading_hiding_vid">إخفاء فيديو...</string>
-    <string name="lock_app_item_desc">قفل <xliff:g>%1$s</xliff:g> شخص</string>
     <string name="lock_app_action">تم قفل <xliff:g>%1$s</xliff:g></string>
     <string name="unlock_app_action">تم إلغاء قفل <xliff:g>%1$s</xliff:g></string>
     <string name="wifi_titlebar_name">حماية واي فاي</string>
@@ -851,10 +837,6 @@
     <string name="secur_backup_msm">[LEOMASTER] لقد قمت باختيار النسخ الاحتياطي لأوامر التحكم عبر الرسائل النصية: 1. قفل الهاتف: #lockmobile 2. تحديد موقع الهاتف:  #locateposition 3. إرسال تنبيه: #alert  4. الانذار:#alertoff 5. مسح البيانات: formatdata# 6. تمكين القفل، التعقب؛ المنبه؛ المسح: #onekey. إذت تعرض الهاتف للضياع، ارسل الأوامر المطابقة لما تريد. إذا نسيت الأوامر، انقر على "النسخ الاحتياطي لأوامر التحكم عن بعد" لإرسال هذه الرسالة النصية مرة أخرى. http://www.leomaster.com</string>
     <string name="secur_location_msm">[LEOMASTER] تم تحديد موقع الهاتف المفقود، انقر لترى: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">هل أنت متأكد من تجاهل النتائج؟ للقيام بذلك، لن تحصل على الدرجة</string>
-    <string name="scanint_result_app">تطبيقات جديدة</string>
-    <string name="scanint_result_pic">صور جديدة</string>
-    <string name="scanint_result_vid">فيديوهات جديدة</string>
-    <string name="scanint_result_deep">الخصوصية المتقدمة</string>
     <string name="secur_add_self_number_tip">لقد قمت بإدخال رقم هذا الهاتف، يرجى الإدخال مرة أخرى</string>
     <string name="new_arrival">رحلة جديدة</string>
     <string name="new_funciton">واجهة جديدة، خاصية جديدة، بداية جديدة</string>
@@ -889,7 +871,6 @@
     <string name="fb_item_content">للحصول علي الأخبار الأكثر إثارة للاهتمام والرسمية لLEO حارس الشيخوخة، تابعنا  فورا في Facebook</string>
     <string name="fb_item_btn">تابعنا</string>
     <string name="intruderprotection_forbit_content">بسبب الحد من النظام، لا تعمل وظيفة منع الدخيل</string>
-    <string name="adv_prot_open_suc_tip_cnt">لا يمكن إلغاء تثبيت LEO حارس الشيخوخة. أذهب إلي قفل التطبيق وعطًل حماية متقدمة</string>
     <string name="pri_pro_btn">تمكين (+%1$d نقطة)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
     <!--3.11-->
@@ -902,7 +883,6 @@
     <string name="samsung_tip_txt">لضمان عمل القفل التطبيقى عاديا ، احتاج اليكم أن تنقر حارس الإخفاء فى " التفاصيل " ← " تحسين البرنامج التطبيق " ، واختر " ممنوع " . </string>
     <string name="pri_result_wifimaster_content">أداة تحسين قياس السرعة الخاصة ، تجعل WiFi أسرع الإستقرار ، لبحث لكم عن أكثر من WiFi الممتاز لإتصالكم مجانا .</string>
     <string name="wifi_result_wifimaster_content">يجرى قياس سرعة WiFi فورا ، اختر أسرع WiFi لإتصال !</string>
-    <string name="pri_result_wifimaster_btn">بدء التشغيل</string>
     <string name="video_guide_txt">اضغط  زر التحرير ، ممكن  وضع علامة اختبار الفيديو لإلغاء الإخفاء ～</string>
 
     <!--3.2-->
@@ -940,10 +920,7 @@
     <string name="mark_number_from_list">قد ترميز الرقم</string>
     <string name="number_toast_text_black">قد تم سحب %1$s فردا الى </string>
     <string name="number_toast_text_mark">قد تم رمز %1$s فردا الى</string>
-    <string name="number_add_to_black_list">يسحب %1$s فردا تسويد</string>
     <string name="number_call_duration_s">%1$s ثانية</string>
-    <string name="number_call_duration_m">%1$s دقيقة</string>
-    <string name="number_call_duration_h">%1$s ساعة</string>
     <string name="scan_score">معالجة + %1$s نقاط</string>
     <string name="scan_app_title">يوجد %1$s تطبيقا</string>
     <string name="scan_app_content_less_three">منها يوجد تطبيق كتم الأسرار الخطيرة العالية %1$s</string>
@@ -962,7 +939,6 @@
     <string name="scan_lost_content">بدء تشغيل وقاية من سرق الجوال ، اعادة الى الجوال المسورق</string>
     <string name="scan_contact_title">اخفاء الشخص الإتصال به مستمرا</string>
     <string name="scan_wifi_title">سلامة Wifi</string>
-    <string name="scan_wifi_content">نموذج سلامة Wifi</string>
     <string name="scan_app_start">جاري مسح التطبيقات</string>
     <string name="scan_pic_start">جاري مسح الصور</string>
     <string name="scan_vid_start">جاري مسح الفيديو</string>
@@ -990,7 +966,6 @@
     <string name="strange_call_empty">لا يمكن إجراء مكالمات غريب</string>
 
     <string name="call_filter_add_to_blacklist_people_tips">يسحب %1$s فردا تسويد</string>
-    <string name="call_filter_marked_people_tips">وضع علامة المستخدمين %1$s كما %2$s</string>
     <string name="call_filter_marked_and_add_tips">علامة %1$s, اضافة الى  القائمة السوداء</string>
     <string name="call_filter_confirm_ask_mark_summary">وضع علامة المستخدمين %1$s كما %2$s</string>
 
@@ -1027,26 +1002,15 @@
     <string name="intruder_share_content"> قد.الغزاة من لوقاية الخصوصية حارس وظييفة أستخدم أن جاري %1$s يتصفحوا أن هؤلاء عرفت الآن جوالي لتصفح شخص لتصوير ساعدني  بسرعة اجرب جوالي</string>
     <string name="up_list_swifty_title">ترقية الفعالية</string>
     <string name="batterymanage_boosted_number">%1$d هي الأمثل البنود</string>
-    <string name="screen_protect_type_one">الشحن سريعا</string>
-    <string name="screen_protect_type_two">الشحن بالتيار الثابت</string>
-    <string name="screen_protect_type_three">الشحن بالتيار المتكسر</string>
 
     <string name="screen_protect_time"> وقت الباقية</string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color=""#0ad931"">%1$s</font>]]></Data> h<Data><![CDATA[<font color=""#0ad931"">%2$s</font>]]></Data>m</string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>m</string>
 
-    <string name="screen_protect_unlock_text">حرك لفتح القفل</string>
     <string name="oppo_rom_tip_txt">،الخصوصية حارس تشغيل بعد عادية الصلاحية تعمل النظام قيد بنسبة  اجازة بعد الخافية التطبيقات تشغيل ، البرنامج اختر اضافة اضافة التشغيل الخصوصية حارس خطوة ، اضافة</string>
-    <string name="recom_lft_txt">لا داعى بذلك</string>
-    <string name="recom_rgt_txt">أريد أن أحاول</string>
-
-    <string name="screen_protect_type_pop_one">يجرى الشحن سريعا عند كمية الكهرباء أقل 70%</string>
-    <string name="screen_protect_type_pop_two"> تيار الشحن المستقر بحماية البطارية</string>
-    <string name="screen_protect_type_pop_three">تخفيض تيار الشحن لتمديد عمر البطارية</string>
 
     <string name="screen_protect_charing_text_one">صل شاحن الكهرباء</string>
     <string name="screen_protect_charing_text_two">جارى شحن الكهرباء</string>
-    <string name="screen_protect_charing_text_three">قد تم الشحن ، اخرج شاحن الكهرباء</string>
     <string name="screen_protect_charing_text_four">قد تم الشحن</string>
     <string name="batterymanage_scaning">مسح</string>
     <string name="batterymanage_boosting">معالجة</string>

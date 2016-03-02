@@ -198,7 +198,6 @@
     <string name="lock_help_lock_theme_setting_button">更換主題</string>
 
     <!-- V2.0 -->
-    <string name="pravicy_protect">"隱私防護"</string>
     <string name="privacy_contacts">隱私連絡人</string>
     <string name="privacy_sms">隱私簡訊</string>
     <string name="privacy_call">隱私通話</string>
@@ -317,8 +316,6 @@
     <string name="back_backed">已備份</string>
     <string name="the_best_status_toast">已是最佳狀態，請稍後再試</string>
 
-    <!-- My Apps -->
-    <string name="app_manager">"應用管理"</string>
 
     <!-- Data Usage / Battery -->
     <string name="traffic_progress_bar">本月已用</string>
@@ -455,7 +452,6 @@
     <!-- quick gesture -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty，谷歌市場最熱門工具。輕輕壹點，快捷開關、常用應用、好友消息壹手掌握。</string>
     <string name="grade_tip_feedback">我要吐槽</string>
-    <string name="quick_first_tip_dialog_right_bt">開启</string>
     <string name="quick_first_tip_dialog_left_bt">稍後</string>
 
     <!-- quick gesture -->
@@ -510,10 +506,6 @@
 
     <!-- 2.8 start -->
     <string name="device_admin_extra">防止被協力廠商軟件或他人卸載</string>
-    <string name="iswip_update_tip_title_text">快捷手勢更新了</string>
-    <string name="iswip_update_tip_context_text">快捷手勢正式更名為Swifty，更多功能等著你，馬上下載體驗吧！</string>
-    <string name="iswip_update_tip_left_button_text">稍後再說</string>
-    <string name="iswip_update_tip_right_button_text">立即下載</string>
     <string name="ad_timeout">Wow！我猜下次你會收到一些更精彩的東西！</string>
     <!-- 2.8 end -->
     <!-- 2.10 start -->
@@ -535,7 +527,6 @@
     <string name="advace_protect_dialog_title_text">建議打開高級保護</string>
     <string name="advace_protect_dialog_content_text">恭喜您加鎖成功，為了防止隱私衛士被他人無意卸載後無法繼續加鎖應用，建議您進行高級保護。隨後您可以在側邊欄中卸載隱私衛士。</string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="advance_protect_open_success_tip_title">高級保護設置成功</string>
     <string name="auto_start_tip_xiaomi4_and_letv">為了保證持續保護，請點擊“自啟動管理”，將隱私衛士加入到自啟動列表</string>
     <string name="auto_start_tip_redmi">為了保證持續保護，請進入“自啟動應用管理”，選擇“添加自啟動應用”，將隱私衛士加入到自啟動列表</string>
     <string name="auto_start_tip_huawei">為了保證持續保護，請進入“受保護應用”，將PG加入受保護名單中</string>
@@ -572,13 +563,10 @@
     <string name="hp_helper_label">小助手</string>
     <string name="hp_helper_shot">快捷小助手</string>
     <string name="hp_helper_iswipe">Swifty</string>
-    <string name="pri_pro_ignore">跳過</string>
 
     <string name="pri_pro_new_vid">新增視頻<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
     <string name="pri_pro_new_pic">新增圖片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
     <string name="pri_pro_new_app">新增應用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
-    <string name="pri_pro_scan_vid">掃描到視頻<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
-    <string name="pri_pro_scan_pic">掃描到圖片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
     <string name="pri_pro_scan_app">掃描到應用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
 
     <string name="pri_pro_hide_vid">隱藏視頻</string>
@@ -624,7 +612,6 @@
     <string name="loading_hiding_pic">正在隱藏圖片...</string>
     <string name="loading_hiding_vid">正在隱藏視頻...</string>
 
-    <string name="lock_app_item_desc">已有%1$s人加鎖</string>
     <string name="lock_app_action">已經為%1$s加鎖</string>
     <string name="unlock_app_action">已經為%1$s解鎖</string>
 
@@ -766,10 +753,6 @@
     <string name="secur_location_msm"> 【LEOMASTER】隱私衛士已經為您獲取到已丟失手機的地理位置，點擊查看：<xliff:g id="locate_posi">%1$s</xliff:g> 。http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">確認不對掃描出的結果進行任何處理麼？跳過處理將不會增加您的得分</string>
 
-    <string name="scanint_result_app">新應用</string>
-    <string name="scanint_result_pic">新圖片</string>
-    <string name="scanint_result_vid">新視頻</string>
-    <string name="scanint_result_deep">深度隱私</string>
     <string name="secur_add_self_number_tip">您輸入的號碼是本機號碼，請重新輸入</string>
     <string name="new_arrival">全新旅途</string>
     <string name="new_funciton">新界面，新功能，新起點</string>
@@ -804,7 +787,6 @@
     <string name="fb_item_content">想要知道更多隱私衛士有趣的和官方的新聞嗎？還在等什麼，趕緊關注我們的Facebook主頁吧</string>
     <string name="fb_item_btn">關注</string>
     <string name="intruderprotection_forbit_content">由於系統限制，入侵者防護功能無法正常使用</string>
-    <string name="adv_prot_open_suc_tip_cnt">開啟後無法在軟件外部卸載隱私衛士。如需卸載，您需要先在應用鎖設置中取消高級保護設置。</string>
     <string name="pri_pro_btn">去開啟 (+%1$d分)</string>
     <string name="uninstall_empty_page">沒有可以卸載的應用</string>
 
@@ -818,7 +800,6 @@
     <string name="samsung_tip_txt">為保證應用鎖正常工作，需要您在"應用程序優化"→"詳情"中點擊隱私衛士，並選擇"禁止"。您也可以稍後在應用鎖中設置。</string>
     <string name="pri_result_wifimaster_content">專業的優化測速工具，讓你的WiFi更加快速穩定，為你尋找更多優質的免費WiFi可以連接。</string>
     <string name="wifi_result_wifimaster_content">馬上進行WiFi測速，選擇最快的WiFi鏈接！</string>
-    <string name="pri_result_wifimaster_btn">開啟</string>
     <string name="video_guide_txt">點擊編輯按鈕，就可以勾選視頻取消隱藏哦～</string>
 
     <!--3.2-->
@@ -856,10 +837,7 @@
     <string name="mark_number_from_list">號碼已標記</string>
     <string name="number_toast_text_black">已被%1$s人拉入</string>
     <string name="number_toast_text_mark">已被%1$s人標記為</string>
-    <string name="number_add_to_black_list">被%1$s人拉黑</string>
     <string name="number_call_duration_s">%1$s秒</string>
-    <string name="number_call_duration_m">%1$s分</string>
-    <string name="number_call_duration_h">%1$s時</string>
     <string name="scan_score">處理+%1$s分</string>
     <string name="scan_app_title">發現%1$s個應用</string>
     <string name="scan_app_content_less_three">發現私密應用%1$s</string>
@@ -878,7 +856,6 @@
     <string name="scan_lost_content">開啟手機防盜,找回被盜手機</string>
     <string name="scan_contact_title">頻繁隱私聯繫人</string>
     <string name="scan_wifi_title">Wifi安全</string>
-    <string name="scan_wifi_content">Wifi安全模式</string>
     <string name="scan_app_start">正在掃描應用</string>
     <string name="scan_pic_start">正在掃描圖片</string>
     <string name="scan_vid_start">正在掃描視頻</string>
@@ -906,7 +883,6 @@
     <string name="strange_call_empty">沒有陌生來電</string>
 
     <string name="call_filter_add_to_blacklist_people_tips">已被%1$s的人拉入黑名單</string>
-    <string name="call_filter_marked_people_tips">已被%1$s的人標記為%2$s</string>
     <string name="call_filter_marked_and_add_tips">標記%1$s並加入黑名單</string>
     <string name="call_filter_confirm_ask_mark_summary">已有%1$s的人將該號碼標記為%2$s</string>
 
@@ -943,27 +919,15 @@
     <string name="intruder_share_content">Hi，我正在使用隱私衛士的入侵者防護功能。他已經幫我拍到了%1$s個偷看我手機的人，現在我已經知道是哪些人在偷看我的手機了，你也快來試試看～</string>
     <string name="up_list_swifty_title">效率提升</string>
 
-    <string name="screen_protect_type_one">快速充電</string>
-    <string name="screen_protect_type_two">恆流充電</string>
-    <string name="screen_protect_type_three">涓流充電</string>
-
     <string name="screen_protect_time">充電剩餘時間 </string>
     <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>時<Data><![CDATA[<font color="#0ad931"> %2$s</font>]]>分</Data></string>-->
     <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>分</string>-->
 
-    <string name="screen_protect_unlock_text">滑動來解鎖</string>
     <string name="oppo_rom_tip_txt">由於系統限制，隱私衛士需要開啟權限才能正常工作。開啟步驟“添加程序”-->“添加允許後台運行的應用”-->選擇添加隱私衛士</string>
-    <string name="recom_lft_txt">不用了</string>
-    <string name="recom_rgt_txt">我要試試</string>
     <string name="batterymanage_boosted_number">對%1$d個項目進行了優化</string>
-
-    <string name="screen_protect_type_pop_one">電量低於70%時快速進行充電</string>
-    <string name="screen_protect_type_pop_two">電量充足，穩定充電電流以保護電池</string>
-    <string name="screen_protect_type_pop_three">即將充滿，減小充電電流以延長電池壽命</string>
 
     <string name="screen_protect_charing_text_one">請連接充電器</string>
     <string name="screen_protect_charing_text_two">充電中</string>
-    <string name="screen_protect_charing_text_three">已充滿，請移除充電器</string>
     <string name="screen_protect_charing_text_four">已充滿</string>
     <string name="batterymanage_scaning">掃描中</string>
     <string name="batterymanage_boosting">處理中</string>

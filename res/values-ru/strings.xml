@@ -191,7 +191,6 @@
     <string name="lock_help_password_setting_button">настройки</string>
     <string name="lock_help_lock_setting_button">настройка блокировки</string>
     <string name="lock_help_lock_theme_setting_button">изменить тему</string>
-    <string name="pravicy_protect">защита</string>
     <string name="privacy_contacts">личные контакты</string>
     <string name="privacy_sms">тайное сообщение</string>
     <string name="privacy_call">тайный разговор</string>
@@ -306,7 +305,6 @@
     <string name="back_backed">уже бэкап</string>
     <string name="the_best_status_toast"> уже  -  лучший,  попробуйте позже </string>
     <!-- My Apps -->
-    <string name="app_manager">APP</string>
     <string name="traffic_progress_bar">месячный трафик</string>
     <string name="traff_first_page_small_set_low">Вы можете ввести ваш пакет услуг трафика и уже пользоваемый трафик в этой месяц</string>
     <string name="traff_first_page_small_set">настроить пакет</string>
@@ -433,7 +431,6 @@
     <!-- version 2.4 start -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty наиб.попул. инстр.на Google рынке,касание,ярлык,люб. прил. сообщ. под рукой.</string>
     <string name="grade_tip_feedback">Проблемы</string>
-    <string name="quick_first_tip_dialog_right_bt">включить</string>
     <string name="quick_first_tip_dialog_left_bt">позже</string>
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -488,10 +485,6 @@
 
     <!-- 2.8 start -->
     <string name="device_admin_extra">Против удал. чужими</string>
-    <string name="iswip_update_tip_title_text">Обновл. E. Shortcuts</string>
-    <string name="iswip_update_tip_context_text">Easy Shortcuts поменялись на Swifty. Попробуй скачать их!</string>
-    <string name="iswip_update_tip_left_button_text">позже</string>
-    <string name="iswip_update_tip_right_button_text">скачать</string>
     <string name="ad_timeout">Вас ждут сюрпризы!</string>
     <!-- 2.8 end -->
     <!-- 2.10 start -->
@@ -513,7 +506,6 @@
     <string name="advace_protect_dialog_title_text">Предл. улучш. защита</string>
     <string name="advace_protect_dialog_content_text">Блок. добавл. Предл. улучш. защиту от удал. постор. PrivGuard удал. из бок. панели.</string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="advance_protect_open_success_tip_title">Улучш. защита вкл.</string>
     <string name="auto_start_tip_xiaomi4_and_letv">Для защ. конфид. нажмите "Автостарт" и добавьте LEO PG</string>
     <string name="auto_start_tip_redmi">Для защ. конфид. в "Пр. доступа" добавьте PG в автозагр.</string>
     <string name="auto_start_tip_huawei">Для защ. конфид. в "Защ. Прилож." добавьте PG в список</string>
@@ -551,13 +543,10 @@
     <string name="hp_helper_label">Помощник</string>
     <string name="hp_helper_shot">Быстрый помощник</string>
     <string name="hp_helper_iswipe">Swifty </string>
-    <string name="pri_pro_ignore">скип</string>
 
     <string name="pri_pro_new_vid">Новое видео <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data></string>
     <string name="pri_pro_new_pic">Новые фото <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data></string>
     <string name="pri_pro_new_app">Новое прил. <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data></string>
-    <string name="pri_pro_scan_vid">Скан. в видео <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data></string>
-    <string name="pri_pro_scan_pic">Скан. в картинки <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data></string>
     <string name="pri_pro_scan_app">Скан. в прил. <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data></string>
 
     <string name="pri_pro_hide_vid">Скрыть видео</string>
@@ -603,7 +592,6 @@
     <string name="loading_hiding_pic">Сокрытие фото</string>
     <string name="loading_hiding_vid">Сокрытие видео ...</string>
 
-    <string name="lock_app_item_desc">%1$s замкнули</string>
     <string name="lock_app_action">%1$s были заблокированы</string>
     <string name="unlock_app_action">%1$s были разблокированы</string>
 
@@ -746,10 +734,6 @@
     <string name="secur_location_msm"> [LEOMASTER] Privacy Guard получил место потерянного тел., нажмите:<xliff:g id="locate_posi">%1$s</xliff:g> http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">Подтвердить ли не решить результат скан.? Перейти обработку не увеличить ваш счет</string>
 
-    <string name="scanint_result_app">Новое примен.</string>
-    <string name="scanint_result_pic">Новое фото</string>
-    <string name="scanint_result_vid">Нов. видео</string>
-    <string name="scanint_result_deep">Секрет глубиный</string>
     <string name="secur_add_self_number_tip">Номер ввода-номер с.т.‚ введите снова</string>
     <string name="new_arrival">Новое путешествие</string>
     <string name="new_funciton">Новый интерфейс,новая функция,новое начало</string>
@@ -784,7 +768,6 @@
     <string name="fb_item_content">Хотите узнать больше интересных официальных новостей о Privacy Guard? Пожалуйста, немедленно следуйте за нами на Facebook</string>
     <string name="fb_item_btn">следовать за нами</string>
     <string name="intruderprotection_forbit_content">Из-за ограничений системы, защита от агрессора не может нормально работать</string>
-    <string name="adv_prot_open_suc_tip_cnt">Под улучшенную защиту никто не может удалить Leo Privacy Guard.Если хотите удалить,пожалуйста, перейдите на страницу “Applock”, отменять"расширенную защиту" на настройках “Applock”</string>
     <string name="pri_pro_btn">Включить (+%1$d балл)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
 
@@ -798,7 +781,6 @@
     <string name="samsung_tip_txt">Для нормальной работы замка для приложений необходимо в «Оптимизация прикладных программ» → «Подробно» нажать кнопкузащиты конфиденциальности и выбрать «Запретить». Вы также можете сделать настройки в замкедля приложений.</string>
     <string name="pri_result_wifimaster_content">Профессиональное иулучшенное средство для тестирования скорости поможет сделать Ваш WiFi быстрее и стабильнееи найти больше качественных и бесплатных WiFi соединений.</string>
     <string name="wifi_result_wifimaster_content">Начать тестирование скорости WiFi прямо сейчас и выбрать самое быстрое WiFi подключение!</string>
-    <string name="pri_result_wifimaster_btn">Начать </string>
     <string name="video_guide_txt">Для отмены скрытия нажмитекнопку редактирования и отметьте галочкой видео</string>
 
     <!--3.2-->
@@ -836,10 +818,7 @@
     <string name="mark_number_from_list">Номер отмечен</string>
     <string name="number_toast_text_black">%1$s пользователей уже внесли</string>
     <string name="number_toast_text_mark">%1$s пользователей уже отметили</string>
-    <string name="number_add_to_black_list">%1$s пользователей уже заблокировали</string>
     <string name="number_call_duration_s">%1$s секунд</string>
-    <string name="number_call_duration_m">%1$s минут</string>
-    <string name="number_call_duration_h">%1$s часов</string>
     <string name="scan_score">Обработано +%1$s баллов </string>
     <string name="scan_app_title">Обнаружено %1$s приложений</string>
     <string name="scan_app_content_less_three">Заметить секретное приложение %1$s</string>
@@ -858,7 +837,6 @@
     <string name="scan_lost_content">Включить защиту от кражи для поиска украденного телефона</string>
     <string name="scan_contact_title">Постоянные конфиденциальные контактные лица</string>
     <string name="scan_wifi_title">Безопасность Wifi</string>
-    <string name="scan_wifi_content">Безопасный режим Wifi</string>
     <string name="scan_app_start">Идет сканирование приложений</string>
     <string name="scan_pic_start">Идет сканирование изображений</string>
     <string name="scan_vid_start">Идет сканирование видео</string>
@@ -886,7 +864,6 @@
     <string name="strange_call_empty">Незнакомый звонок нету</string>
 
     <string name="call_filter_add_to_blacklist_people_tips">%1$s пользователей уже заблокировали</string>
-    <string name="call_filter_marked_people_tips">%1$s пользователи отмечен как %2$s</string>
     <string name="call_filter_marked_and_add_tips">отметка %1$s, Добавить в черный список</string>
     <string name="call_filter_confirm_ask_mark_summary">%1$s пользователи отмечен как %2$s</string>
 
@@ -923,27 +900,15 @@
     <string name="intruder_share_content">Привет, я пользуюсь функцией защиты от захватчиков Privacy Guard. Она помогла мне сфотографировать %1$s человек, которые подглядывали в мой телефон. Теперь я знаю, кто подглядывал в мой телефон. Попробуй и ты эту функцию!</string>
     <string name="up_list_swifty_title">Повышение эффективности</string>
 
-    <string name="screen_protect_type_one">Быстрая зарядка</string>
-    <string name="screen_protect_type_two">Зарядка при постоянном токе</string>
-    <string name="screen_protect_type_three">зарядка малым током</string>
-
     <string name="screen_protect_time">Оставшееся время </string>
     <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
     <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
 
-    <string name="screen_protect_unlock_text">Разблокировки</string>
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы Privacy Guard требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить Privacy Guard</string>
-    <string name="recom_lft_txt">Нет, спасибо</string>
-    <string name="recom_rgt_txt">Попробовать сейчас</string>
     <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>
-
-    <string name="screen_protect_type_pop_one">Начать быструю подзарядку, когда заряд менее 70%</string>
-    <string name="screen_protect_type_pop_two">стабильный зарядный ток для защиты батареи</string>
-    <string name="screen_protect_type_pop_three">уменьшение зарядного тока для увеличения срока службы батареи</string>
 
     <string name="screen_protect_charing_text_one">Подключите зарядное устройство</string>
     <string name="screen_protect_charing_text_two">Идет подзарядка</string>
-    <string name="screen_protect_charing_text_three">Зарядка завершена, отключите зарядное устройство</string>
     <string name="screen_protect_charing_text_four">Зарядка завершена</string>
     <string name="batterymanage_scaning">сканирование</string>
     <string name="batterymanage_boosting">обработка</string>

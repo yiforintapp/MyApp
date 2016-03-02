@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="batteryscreen_bossview_height">430dp</dimen>
-    <dimen name="batteryscreen_clock_margintop">75dp</dimen>
     <dimen name="batteryscreen_clock_margintop_bay">68dp</dimen>
-    <dimen name="batteryscreen_battery_margintop">45dp</dimen>
-    <dimen name="batteryscreen_remaintime_margintop">20dp</dimen>
 </resources>
 

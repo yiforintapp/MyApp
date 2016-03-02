@@ -196,7 +196,6 @@
     <string name="lock_help_lock_theme_setting_button">Tema değiştir</string>
 
     <!-- V2.0 -->
-    <string name="pravicy_protect">"Koruma"</string>
     <string name="privacy_contacts">Özel Kontakt</string>
     <string name="privacy_sms">Özel SMS</string>
     <string name="privacy_call">Özel Aramalar</string>
@@ -451,7 +450,6 @@
     <!-- quick gesture -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty, Google Play\'deki en popüler araç. Tek dokunuşla, kısayollar, favori uygulamalar, mesajlar elinizde.</string>
     <string name="grade_tip_feedback">Geri bildirim</string>
-    <string name="quick_first_tip_dialog_right_bt">Hemen açın</string>
     <string name="quick_first_tip_dialog_left_bt">Daha sonra</string>
 
     <!-- quick gesture -->
@@ -506,10 +504,6 @@
 
     <!-- 2.8 start -->
     <string name="device_admin_extra">Başkaları tarafından kaldırılmayı önle</string>
-    <string name="iswip_update_tip_title_text">Easy Shortcuts\'ı Güncelle!</string>
-    <string name="iswip_update_tip_context_text">Easy Shortcuts\'ın adı Swifty olarak değiştirildi. Yükleyip deneyin!</string>
-    <string name="iswip_update_tip_left_button_text">Daha Sonra</string>
-    <string name="iswip_update_tip_right_button_text">İndir</string>
     <string name="ad_timeout">Harika! Daha fazla sürpriz seni bekliyor!</string>
     <!-- 2.8 end -->
     <!-- 2.10 srart -->
@@ -531,7 +525,6 @@
     <string name="advace_protect_dialog_title_text">Gelişmiş Koruma</string>
     <string name="advace_protect_dialog_content_text">Kilit başarıyla eklendi. Programın başkaları tarafından kaldırılmasını önlemek için Gelişmiş Koruma önerildi. Gizlilik Korumayı yan çubuktan kaldırabilirsiniz. Gizlilik Korumayı yan çubuktan kaldırabilirsiniz.   </string>
     <string name="desk_ad_name">Mutlu Uygulama</string>
-    <string name="advance_protect_open_success_tip_title">başarıya ulaşmak</string>
     <string name="auto_start_tip_xiaomi4_and_letv">Lütfen "Otomatik başlat"a tıklayın ve LEO PG başlatma Listesine ekleyin</string>
     <string name="auto_start_tip_redmi">Lütfen "İzinler"e gidin ve PG başlatma Uygulamalarına ekleyin</string>
     <string name="auto_start_tip_huawei">Lütfen "Korumalı Uygulamalar"a gidin, PG\'yi korumalı listeye ekleyin</string>
@@ -569,13 +562,10 @@
     <string name="hp_helper_label">Asistan</string>
     <string name="hp_helper_shot">Kısayollar Asistanı</string>
     <string name="hp_helper_iswipe">Swifty </string>
-    <string name="pri_pro_ignore">Atla</string>
 
     <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Yeni videolar</string>
     <string name="pri_pro_new_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Yeni resim</string>
     <string name="pri_pro_new_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Yeni uygulama</string>
-    <string name="pri_pro_scan_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Video algılandı</string>
-    <string name="pri_pro_scan_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Resim algılandı</string>
     <string name="pri_pro_scan_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Uygulama algılandı</string>
 
     <string name="pri_pro_hide_vid">Videoyu Gizle</string>
@@ -621,7 +611,6 @@
     <string name="loading_hiding_pic">Fotoğrafları gizliyor...</string>
     <string name="loading_hiding_vid">Videoları gizliyor...</string>
 
-    <string name="lock_app_item_desc">%1$s kişi kilitlendi</string>
     <string name="lock_app_action">%1$s kilitlendi</string>
     <string name="unlock_app_action">%1$s kilidi kaldırıldı</string>
 
@@ -763,10 +752,6 @@
     <string name="secur_location_msm"> [LEOMASTER] Kayıp telefonun konumu belirlendi, görüntülemek için tıklayın: <xliff:g id="locate_posi">%1$s</xliff:g>. http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">Sonucu görmezden gelmeye emin misiniz? Bunu yaparak, puanı kazanamazsınız </string>
 
-    <string name="scanint_result_app">Yeni uygulamalar </string>
-    <string name="scanint_result_pic">Yeni fotoğraflar </string>
-    <string name="scanint_result_vid">Yeni videolar </string>
-    <string name="scanint_result_deep">İleri seviye gizlilik</string>
     <string name="secur_add_self_number_tip">Bu telefonun numarasını girdiniz, lütfen tekrar girin</string>
     <string name="new_arrival">Yeni serüven</string>
     <string name="new_funciton">Yeni arayüz, yeni bir fonksiyon, yeni bir başlangıç</string>
@@ -801,7 +786,6 @@
     <string name="fb_item_content">LEO Kişisel Güvenlik resmi duyurularını takip edebilmeniz için Facebook sayfamıza gelin.</string>
     <string name="fb_item_btn">Takip Et</string>
     <string name="intruderprotection_forbit_content">Android cihazlardaki sınırlamalardan dolayı Break-in uyarısı çalışmayabilir.</string>
-    <string name="adv_prot_open_suc_tip_cnt">LEO Kişisel Güvenlik programı çalışırken kaldırılamaz. Lütfen, önce AppLock sayfasından “Gelişmiş Koruma” seçeneğini iptal edin.</string>
     <string name="pri_pro_btn">Aç (+%1$d puan)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
 
@@ -815,7 +799,6 @@
     <string name="samsung_tip_txt">Uygulamanın stabil çalışmasını sağlamak için "Uygulama Ayarları"ndan "Ayrıntılar"da LEO Privacy Guard seçeneğine tıklayarak "Yasaklar"ı seçin. Bu ayarları istediğiniz zaman değiştirebilirsiniz.</string>
     <string name="pri_result_wifimaster_content">Profesyonel araçlar ile WiFi hızlandırabilir ve WiFi noktalarına bağlanabilirsiniz.</string>
     <string name="wifi_result_wifimaster_content">WiFi hızılarını test ederek en hızlı WiFi noktasına bağlan</string>
-    <string name="pri_result_wifimaster_btn">Aç</string>
     <string name="video_guide_txt">Düzenlemeye tıklayarak Video gizle işlemini kaldırabilirsiniz.</string>
 
     <!--3.2-->
@@ -853,10 +836,7 @@
     <string name="mark_number_from_list">Numara işaretli</string>
     <string name="number_toast_text_black">%1$s tarafından engelli</string>
     <string name="number_toast_text_mark">%1$s tarafından işaretli</string>
-    <string name="number_add_to_black_list">%1$s tarafından kara listede</string>
     <string name="number_call_duration_s">%1$s sn</string>
-    <string name="number_call_duration_m">%1$s dk</string>
-    <string name="number_call_duration_h">%1$s sa</string>
     <string name="scan_score">İşlem +%1$s</string>
     <string name="scan_app_title">%1$s adet uygulama</string>
     <string name="scan_app_content_less_three">%1$s özel uygulamalar var</string>
@@ -875,7 +855,6 @@
     <string name="scan_lost_content">Çalınan telefonu bul</string>
     <string name="scan_contact_title">Gizli kişileri çoğalt</string>
     <string name="scan_wifi_title">WiFi Güvenlik</string>
-    <string name="scan_wifi_content">WiFi Güvenlik Modu</string>
     <string name="scan_app_start">Uygulama Taranıyor</string>
     <string name="scan_pic_start">Fotoğraf Taranıyor</string>
     <string name="scan_vid_start">Video Taranıyor</string>
@@ -903,7 +882,6 @@
     <string name="strange_call_empty">Hiçbir yabancı aramalar</string>
 
     <string name="call_filter_add_to_blacklist_people_tips">%1$s tarafından kara listede</string>
-    <string name="call_filter_marked_people_tips">%1$s kullanıcıların %2$s olarak işaretlenmiş</string>
     <string name="call_filter_marked_and_add_tips">Markos %1$s, Kara Listeye Ekle</string>
     <string name="call_filter_confirm_ask_mark_summary">%1$s kullanıcıların %2$s olarak işaretlenmiş</string>
 
@@ -940,27 +918,15 @@
     <string name="intruder_share_content">Leomaster Privacy Guard davetsiz misafir fonksiyonunu kullanıyorum. Şimdiye kadar %1$s kişinin telefonuma baktığını gördüm. Senin de denemeni öneriyorum!</string>
     <string name="up_list_swifty_title">Etki Oranı Yükselt</string>
 
-    <string name="screen_protect_type_one">Hızlı Şarj</string>
-    <string name="screen_protect_type_two">Sabit Akım Şarj</string>
-    <string name="screen_protect_type_three">Dengeli Şarj</string>
-
     <string name="screen_protect_time">Kalan Şarj Süresi </string>
     <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>Saat <Data><![CDATA[<font color="#0ad931">%2$s</font>]]>dk</Data></string>-->
     <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>dk.</string>-->
 
-    <string name="screen_protect_unlock_text">Kaydırarak ekranı açın</string>
     <string name="oppo_rom_tip_txt">Sistem kısıtlamaları yüzünden Privacy Guard işlem yetkilerini açmanız gerekmektedir. İşlemler -- "Arka planda çalışan uygulama izinleri"--Privacy Guard\'ı ekleyin</string>
-    <string name="recom_lft_txt">Hayır</string>
-    <string name="recom_rgt_txt">Dene</string>
     <string name="batterymanage_boosted_number">%1$d ürün optimize</string>
-
-    <string name="screen_protect_type_pop_one">Güç %70\'in altında olduğunda hızlı şarj eder</string>
-    <string name="screen_protect_type_pop_two">Normal şarj ile bataryanız korunur.</string>
-    <string name="screen_protect_type_pop_three">Bataryanızın ömrü için şarj azaltılıyor.</string>
 
     <string name="screen_protect_charing_text_one">Şarj cihazını takın.</string>
     <string name="screen_protect_charing_text_two">Şarj ediliyor</string>
-    <string name="screen_protect_charing_text_three">Şarj edildi. Şarj cihazını çıkarın.</string>
     <string name="screen_protect_charing_text_four">Dolu</string>
     <string name="batterymanage_scaning">Tarama</string>
     <string name="batterymanage_boosting">İşleme</string>

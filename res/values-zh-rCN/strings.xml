@@ -193,7 +193,6 @@
     <string name="lock_help_lock_theme_setting_button">更换主题</string>
 
     <!-- V2.0 -->
-    <string name="pravicy_protect">"隐私防护"</string>
     <string name="privacy_contacts">隐私联系人</string>
     <string name="privacy_sms">隐私短信</string>
     <string name="privacy_call">隐私通话</string>
@@ -313,8 +312,6 @@
     <string name="back_backed">已备份</string>
     <string name="the_best_status_toast">已是最佳状态，请稍后再试</string>
 
-    <!-- My Apps -->
-    <string name="app_manager">"应用管理"</string>
 
     <!-- Data Usage / Battery -->
     <string name="traffic_progress_bar">本月已用</string>
@@ -450,7 +447,6 @@
     <!-- quick gesture -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty，谷歌市场最热门工具。轻轻一点，快捷开关、常用应用、好友消息一手掌握。</string>
     <string name="grade_tip_feedback">我要吐槽</string>
-    <string name="quick_first_tip_dialog_right_bt">开启</string>
     <string name="quick_first_tip_dialog_left_bt">稍后</string>
 
     <!-- quick gesture -->
@@ -504,10 +500,6 @@
     <!-- 2.7 end -->
     <!-- 2.8 start -->
     <string name="device_admin_extra">防止隐私卫士被恶意卸载</string>
-    <string name="iswip_update_tip_title_text">快捷手势更新了</string>
-    <string name="iswip_update_tip_context_text">快捷手势正式更名为Swifty，更多功能等着你，马上下载体验吧！</string>
-    <string name="iswip_update_tip_left_button_text">稍后再说</string>
-    <string name="iswip_update_tip_right_button_text">立即下载</string>
     <string name="ad_timeout">Wow!我猜下次你会收到一些更精彩的东西！</string>
     <!-- 2.8 end -->
 
@@ -533,7 +525,6 @@
     <string name="advace_protect_dialog_title_text">建议打开高级保护</string>
     <string name="advace_protect_dialog_content_text">恭喜您加锁成功，为了防止隐私卫士被他人无意卸载后无法继续加锁应用，建议您进行高级保护。随后您可以在侧边栏中卸载隐私卫士。</string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="advance_protect_open_success_tip_title">高级保护设置成功</string>
     <string name="auto_start_tip_xiaomi4_and_letv">为了保证隐私卫士能够正常保护您的隐私。请点击“自启动管理”，选择隐私卫士加入到自启动列表 </string>
     <string name="auto_start_tip_redmi">为了保证隐私卫士能够正常保护您的隐私。请进入“自启动应用管理”，选择“添加自启动应用”，将隐私卫士加入到自启动列表</string>
     <string name="auto_start_tip_huawei">为了保证隐私卫士能够正常保护您的隐私。请进入“受保护应用”，将PG加入受保护名单中</string>
@@ -573,12 +564,9 @@
     <string name="hp_helper_label">小助手</string>
     <string name="hp_helper_shot">快捷方式小助手</string>
     <string name="hp_helper_iswipe">Swifty</string>
-    <string name="pri_pro_ignore">跳过</string>
     <string name="pri_pro_new_vid">新增视频<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
     <string name="pri_pro_new_pic">新增图片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
     <string name="pri_pro_new_app">新增应用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
-    <string name="pri_pro_scan_vid">扫描到视频<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
-    <string name="pri_pro_scan_pic">扫描到图片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
     <string name="pri_pro_scan_app">扫描到应用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个</string>
     <string name="pri_pro_hide_vid">隐藏视频</string>
     <string name="pri_pro_hide_pic">隐藏图片</string>
@@ -620,7 +608,6 @@
     <string name="loading_locking">正在加锁应用...</string>
     <string name="loading_hiding_pic">正在隐藏图片...</string>
     <string name="loading_hiding_vid">正在隐藏视频...</string>
-    <string name="lock_app_item_desc">已有%1$s人加锁</string>
     <string name="lock_app_action">已经为%1$s加锁</string>
     <string name="unlock_app_action">已经为%1$s解锁</string>
     <string name="wifi_titlebar_name">WiFi安全</string>
@@ -755,10 +742,6 @@
 
     <!-- 翻译给出后新增文案 -->
     <string name="pri_pro_ignore_dialog">确认不对扫描出的结果进行任何处理么？跳过处理将不会增加您的得分</string>
-    <string name="scanint_result_app">新应用</string>
-    <string name="scanint_result_pic">新图片</string>
-    <string name="scanint_result_vid">新视频</string>
-    <string name="scanint_result_deep">深度隐私</string>
     <string name="secur_add_self_number_tip">您输入的号码是本机号码，请重新输入</string>
     <string name="new_arrival">全新旅途</string>
     <string name="new_funciton">新界面，新功能，新起点</string>
@@ -799,7 +782,6 @@
     <string name="fb_item_content">想要知道更多隐私卫士有趣的和官方的新闻吗？还在等什么，赶紧关注我们的Facebook主页吧</string>
     <string name="fb_item_btn">关注</string>
     <string name="intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
-    <string name="adv_prot_open_suc_tip_cnt">开启后无法在软件外部卸载隐私卫士。如需卸载，您需要先在应用锁设置中取消高级保护设置。</string>
     <string name="uninstall_empty_page">没有可以卸载的应用</string>
 
     <!-- 3.11 -->
@@ -812,7 +794,6 @@
     <string name="pri_result_wifimaster_title">WifiMaster</string>
     <string name="pri_result_wifimaster_content">专业的优化测速工具，让你的WiFi更加快速稳定，为你寻找更多优质的免费WiFi可以连接。</string>
     <string name="wifi_result_wifimaster_content">马上进行WiFi测速，选择最快的WiFi链接！</string>
-    <string name="pri_result_wifimaster_btn">开启</string>
     <string name="video_guide_txt">点击编辑按钮，就可以勾选视频取消隐藏哦～</string>
     <!-- 3.2 -->
     <string name="call_filter_remove_from_blacklist_checkbox_title">您将会收到这个号码的来电，确认要移出黑名单吗？</string>
@@ -832,7 +813,6 @@
     <string name="call_filter_dialog_add_black">添加黑名单</string>
     <string name="add_black_list_done">号码已加入黑名单</string>
     <string name="call_filter_add_to_blacklist_people_tips">已被%1$s人拉入黑名单</string>
-    <string name="call_filter_marked_people_tips">已被%1$s人标记为%2$s</string>
     <string name="call_filter_marked_and_add_tips">标记%1$s并加入黑名单</string>
     <string name="call_filter_confirm_ask_mark_summary">已有%1$s人将该号码标记为%2$s</string>
     <string name="call_filter_record">拦截记录</string>
@@ -854,10 +834,7 @@
     <string name="number_toast_text_black">已被%1$s人拉入</string>
     <string name="number_toast_text_mark">已被%1$s人标记为</string>
     <string name="number_toast_color"><Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data></string>
-    <string name="number_add_to_black_list">被%1$s人拉黑</string>
     <string name="number_call_duration_s">%1$s秒</string>
-    <string name="number_call_duration_m">%1$s分</string>
-    <string name="number_call_duration_h">%1$s时</string>
     <string name="scan_score">处理+%1$s分</string>
     <string name="scan_app_title">发现%1$s个应用</string>
     <string name="scan_app_content_less_three">发现私密应用%1$s</string>
@@ -876,7 +853,6 @@
     <string name="scan_lost_content">开启手机防盗,找回被盗手机</string>
     <string name="scan_contact_title">频繁隐私联系人</string>
     <string name="scan_wifi_title">Wifi安全</string>
-    <string name="scan_wifi_content">Wifi安全模式</string>
     <string name="scan_app_start">正在扫描应用</string>
     <string name="scan_pic_start">正在扫描图片</string>
     <string name="scan_vid_start">正在扫描视频</string>
@@ -936,21 +912,13 @@
     <string name="callfilter_share_content">Hi，我正在使用隐私卫士的电话拦截功能。我把那些烦人的推销员都屏蔽掉了，最关键的是，它还能自动识别来电，简直太方便了。我真的很想让你也一起来用它。</string>
     <string name="intruder_share_content">Hi，我正在使用隐私卫士的入侵者防护功能。他已经帮我拍到了%1$s个偷看我手机的人，现在我已经知道是哪些人在偷看我的手机了，你也快来试试看～</string>
     <string name="up_list_swifty_title">效率提升</string>
-    <string name="screen_protect_type_one">快速充电</string>
-    <string name="screen_protect_type_two">恒流充电</string>
-    <string name="screen_protect_type_three">涓流充电</string>
     <string name="screen_protect_time">充电剩余时间 </string>
     <!-- <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H<Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string> -->
     <!-- <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>M</string> -->
 
-    <string name="screen_protect_unlock_text">滑动来解锁</string>
     <string name="oppo_rom_tip_txt">由于系统限制，隐私卫士需要开启权限才能正常工作。开启步骤“添加程序”-->“添加允许后台运行的应用”-->选择添加隐私卫士</string>
-    <string name="screen_protect_type_pop_one">电量低于70%时快速进行充电</string>
-    <string name="screen_protect_type_pop_two">电量充足，稳定充电电流以保护电池</string>
-    <string name="screen_protect_type_pop_three">即将充满，减小充电电流以延长电池寿命</string>
     <string name="screen_protect_charing_text_one">请连接充电器</string>
     <string name="screen_protect_charing_text_two">充电中</string>
-    <string name="screen_protect_charing_text_three">已充满，请移除充电器</string>
     <string name="screen_protect_charing_text_four">已充满</string>
     <string name="batterymanage_boosted_number">对%1$d个应用进行了优化</string>
     <string name="batterymanage_scaning">扫描中</string>

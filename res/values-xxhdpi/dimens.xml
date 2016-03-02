@@ -2,8 +2,6 @@
 <resources>
     <dimen name="batteryscreen_slidearea_height">70dp</dimen>
     <dimen name="batteryscreen_bossview_height">380dp</dimen>
-    <dimen name="batteryscreen_battery_margintop">35dp</dimen>
-    <dimen name="batteryscreen_clock_margintop">65dp</dimen>
     <dimen name="batteryscreen_clock_margintop_bay">60dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
@@ -22,8 +20,6 @@
     <dimen name="digital_item_marginBottom">6dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
 
-
-    <dimen name="layout_passwd_marginTop">33dp</dimen>
 
     <dimen name="layout_four_passwd_marginTop">5dp</dimen>
 
@@ -333,7 +329,6 @@
     <!-- 3.0 -->
     <dimen name="scan_shield_offset">70dp</dimen>
     <dimen name="home_tab_height">244dp</dimen>
-    <dimen name="scan_result_margin_right_ic">18dp</dimen>
     <dimen name="fragment_lock_margin_top">80dp</dimen>
     <dimen name="fragment_lock_large_banner_out_height">176dp</dimen>
     <dimen name="fragment_lock_large_banner_image_height">128dp</dimen>
@@ -372,10 +367,6 @@
 
     <dimen name="empty_page_text_m_top">10dp</dimen>
 
-
-    <dimen name="mask_text_margin_left">100dp</dimen>
-    <dimen name="mask_text_margin_top">60dp</dimen>
-    <dimen name="slidable_length">210dp</dimen>
 
     <dimen name="question_passwd_width">195dp</dimen>
     <!-- 3.3.1 -->
