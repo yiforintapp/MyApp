@@ -34,7 +34,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -43,19 +42,16 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.WrappedCampaign;
-import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.CircleImageView;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.AdWrapperLayout;
-import com.leo.appmaster.ui.CircleArroundView;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
@@ -460,7 +456,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void initBoostLayout() {
-        if (PrefTableHelper.shouldBatteryBoost()) {
+        BatteryManager btrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
+        boolean isBatteryPowSavOpen = btrManager.getBatteryPowSavStatus();
+        if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
 //        if (true) {
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
