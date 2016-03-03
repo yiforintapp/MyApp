@@ -48,7 +48,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="10:33"
                 android:textColor="@color/white"
-                android:textSize="50sp" />
+                android:textSize="40sp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:text="12/31"
                     android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    android:textSize="11sp" />
 
                 <TextView
                     android:id="@+id/time_small_right"
@@ -72,7 +72,7 @@
                     android:layout_toRightOf="@id/time_small"
                     android:text="周四"
                     android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    android:textSize="11sp" />
             </RelativeLayout>
         </RelativeLayout>
         <!-- 时间 -->
@@ -82,7 +82,7 @@
             android:id="@+id/infos_content"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
-            android:layout_centerVertical="true"
+            android:layout_alignBottom="@id/time_move_content"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/time_move_content"
             android:visibility="invisible">
@@ -203,7 +203,7 @@
             android:drawablePadding="3dp"
             android:text="@string/battery_protect_view_time_title"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <View
             android:id="@+id/line_two"
@@ -739,7 +739,8 @@
             android:id="@+id/iv_cancle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
             android:background="@drawable/bay_icon_close" />
     </RelativeLayout>
 

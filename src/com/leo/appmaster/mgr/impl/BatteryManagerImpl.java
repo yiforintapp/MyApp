@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -207,14 +208,24 @@ public class BatteryManagerImpl extends BatteryManager {
                 if (PrefTableHelper.showInsideApp()) {
                     handlePluginEvent(newState, false);
                 } else {
-                    if (BatteryShowViewActivity.isActivityAlive && mListenerRef != null) {
+
+                    if (AppUtil.isScreenLocked(mContext)) {
+                        LeoLog.d("testforwhile", "done done done");
+                    } else {
+                        LeoLog.d("testforwhile", "fuck fuck fuck");
+                    }
+
+                    if ((BatteryShowViewActivity.isActivityAlive && mListenerRef != null)) {
                         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
                                 newState.level, 0);
+                        LeoLog.d("testforwhile", "remainTime remainTime");
                         int[] remainTimeArr = getTimeArr(newState);
                         BatteryStateListener listener = mListenerRef.get();
                         if (listener != null) {
                             listener.onStateChange(EventType.SHOW_TYPE_IN, newState, remainTime, remainTimeArr);
                         }
+                    } else if (AppUtil.isScreenLocked(mContext)) {
+                        handlePluginEvent(newState, false);
                     }
                 }
             } else {
