@@ -134,6 +134,9 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
                     mStickyHeight = height;
                     mPicList.addHeaderView(getEmptyHeader());
                     mPicList.setAdapter(mAdaper);
+                    if (mAdaper != null) {
+                        mAdaper.setList(mDataList);
+                    }
                 }
             }
         });

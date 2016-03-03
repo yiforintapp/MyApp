@@ -1,16 +1,8 @@
 package com.leo.appmaster.applocker;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -58,6 +50,13 @@ import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by qili on 15-10-9.
@@ -124,7 +123,9 @@ public class AppLockListActivity extends BaseActivity implements
         }
 
         mProgressBar.setVisibility(View.GONE);
-        mLockList.setVisibility(View.VISIBLE);
+        if (mGuideTip.getVisibility() == View.GONE) {
+            mLockList.setVisibility(View.VISIBLE);
+        }
     }
 
     private void asyncLoad() {
