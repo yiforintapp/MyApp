@@ -98,6 +98,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private final String GOOGLE = "Google";
     private final String AMAZON = "Amazon";
     private final String YAHOO = "Yahoo";
+    private final String FACEBOOK = "Facebook";
+    private final String TWITTER = "Twitter";
+    private final String YOUTUBE = "YouTube";
 
 
     public static boolean mShowing = false;
@@ -1079,13 +1082,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             map = ctx.getResources().getDrawable(R.drawable.icon_time_amazon);
         } else if (info.name.equals(YAHOO)) {
             map = ctx.getResources().getDrawable(R.drawable.icon_time_yahoo);
+        } else if (info.name.equals(FACEBOOK)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_facebook);
+        } else if (info.name.equals(YOUTUBE)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_youtube);
+        } else if (info.name.equals(TWITTER)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_twitter);
         } else {
-//            if (info.iconUrl != null) {
-//                map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
-//            } else {
             map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
-//            }
-
         }
         return map;
     }
@@ -1384,7 +1388,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             } else {
                 mPlayMin.setText(playMinStr);
             }
-
         } else {
             if (playMinStr.equals("0")) {
                 mPlayHour.setVisibility(View.VISIBLE);

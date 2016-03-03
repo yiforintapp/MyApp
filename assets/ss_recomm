@@ -33,5 +33,5 @@ video---{"pkg":"me.pou.app","icon":"","name":"Pou","url":""}
 video---{"pkg":"com.ea.games.r3_row","icon":"","name":"Real Racing 3","url":""}
 video---{"pkg":"com.skgames.trafficrider","icon":"","name":"Traffic Rider","url":""}
 video---{"pkg":"com.miniclip.eightballpool","icon":"","name":"8 Ball Pool","url":""}
-video---{"pkg":"com.google.android.youtube","icon":"","name":"YouTube","url":""}
-video---{"pkg":"com.mobilemotion.dubsmash","icon":"","name":"Dubsmash","url":"http://www.youtube.com"}
+video---{"pkg":"com.google.android.youtube","icon":"","name":"YouTube","url":"http://www.youtube.com"}
+video---{"pkg":"com.mobilemotion.dubsmash","icon":"","name":"Dubsmash","url":""}
