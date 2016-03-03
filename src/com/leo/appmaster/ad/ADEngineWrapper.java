@@ -13,7 +13,7 @@ import com.mobvista.sdk.m.core.entity.Campaign;
  */
 public class ADEngineWrapper {
 
-    private static final String TAG = "ADEngineWrapper";
+    private static final String TAG = "ADEngineWrapper [AD_DEBUG]";
 
     /* 两个可选的广告来源 */
     public static final int SOURCE_MOB = AppMasterPreference.AD_SDK_SOURCE_USE_3TH;
@@ -53,13 +53,13 @@ public class ADEngineWrapper {
     /***
      * 请求广告数据
      */
-    public void loadAd (final int source, String unitId, final WrappedAdListener listener) {
+    public void loadAd (final int source, final String unitId, final WrappedAdListener listener) {
 		LeoLog.e(TAG, "AD TYPE :" + source + " AD ID: " + unitId);
         if (source == SOURCE_MAX) {
             mMaxEngine.loadMobvista(unitId, new LEOAdEngine.LeoListener() {
                 @Override
                 public void onLeoAdLoadFinished(int code, LEONativeAdData campaign, String msg) {
-                    LeoLog.d(TAG, "source = " + source + "; code = " + code);
+                    LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
                     WrappedCampaign wrappedCampaign = null;
                     if (code == LEOAdEngine.ERR_OK) {
                         wrappedCampaign = WrappedCampaign.fromMaxSDK(campaign);
@@ -76,7 +76,7 @@ public class ADEngineWrapper {
             mMobEngine.loadMobvista(unitId, new MobvistaEngine.MobvistaListener() {
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                    LeoLog.d(TAG, "source = " + source + "; code = " + code);
+                    LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
                     WrappedCampaign wrappedCampaign = null;
                     if (code == MobvistaEngine.ERR_OK) {
                         wrappedCampaign = WrappedCampaign.fromMabVistaSDK(campaign);
@@ -93,6 +93,7 @@ public class ADEngineWrapper {
     }
 
     public void registerView (int source, View view, String unitId) {
+        LeoLog.d(TAG, "registerView called");
         if (source == SOURCE_MAX) {
             mMaxEngine.registerView(unitId, view);
         } else {

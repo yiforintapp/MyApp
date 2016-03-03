@@ -24,7 +24,7 @@ import java.util.Map;
  *
  */
 public class LEOAdEngine {
-    private static final String TAG = "LEOAdEngine";
+    private static final String TAG = "LEOAdEngine [AD_DEBUG]";
     
     private Context mAppContext;
     private AppMasterPreference mPref;

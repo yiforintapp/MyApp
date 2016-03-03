@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Jasper
  */
 public class MobvistaEngine {
-    private static final String TAG = "MobvistaEngine";
+    private static final String TAG = "MobvistaEngine [AD_DEBUG]";
 
     private Context mAppContext;
     private AppMasterPreference mPref;
