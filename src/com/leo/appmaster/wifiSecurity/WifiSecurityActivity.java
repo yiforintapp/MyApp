@@ -179,6 +179,8 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             if (mDialogAskCreateShotcut == null) {
                 mDialogAskCreateShotcut = new LEOAlarmDialog(this);
             }
+            mDialogAskCreateShotcut.setTitleVisiable(false);
+            mDialogAskCreateShotcut.setDialogIcon(R.drawable.qh_wifi_icon);
             mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_wifi_security));
             mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
             mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));

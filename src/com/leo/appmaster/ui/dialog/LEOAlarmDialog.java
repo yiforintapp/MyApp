@@ -58,6 +58,15 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         }
     }
 
+    public void setTitleVisiable(boolean visiable) {
+        if (visiable) {
+            mTitle.setVisibility(View.VISIBLE);
+        } else {
+            mTitle.setVisibility(View.GONE);
+            mDialogIcon.getLayoutParams();
+        }
+    }
+
     public void setContent(String titleStr) {
         if (titleStr != null) {
             mContent.setText(titleStr);

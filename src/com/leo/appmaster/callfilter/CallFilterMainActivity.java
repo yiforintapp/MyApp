@@ -76,6 +76,8 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
             if (mDialogAskCreateShotcut == null) {
                 mDialogAskCreateShotcut = new LEOAlarmDialog(this);
             }
+            mDialogAskCreateShotcut.setTitleVisiable(false);
+            mDialogAskCreateShotcut.setDialogIcon(R.drawable.qh_call_filter);
             mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_callfilter));
             mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
             mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
