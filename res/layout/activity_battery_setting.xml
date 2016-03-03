@@ -31,6 +31,14 @@
             android:layout_marginTop="6dp"
             android:background="@drawable/pic_setup_bay" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp"
+            android:text="@string/batterymanage_switch_screen"
+            android:textColor="@color/white"
+            android:textSize="17dp" />
 
         <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_item_screenview"
