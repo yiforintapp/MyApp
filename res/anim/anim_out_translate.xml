@@ -12,8 +12,8 @@
         android:fromXDelta="0"
         android:fromYDelta="0"
         android:toXDelta="0"
-        android:toYDelta="200"
-        android:duration="400"
+        android:toYDelta="500"
+        android:duration="800"
         android:fillAfter="true"
         />
    <!-- <alpha
