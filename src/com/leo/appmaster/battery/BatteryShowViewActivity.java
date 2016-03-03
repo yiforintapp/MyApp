@@ -414,8 +414,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                 animMoveY.start();
             }
         });
-
-//        finish();
     }
 
     public void onEvent(AppUnlockEvent event) {

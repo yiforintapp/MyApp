@@ -1295,7 +1295,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mPhoneMin.setVisibility(View.VISIBLE);
             mPhoneMinText.setVisibility(View.VISIBLE);
 
-            mPhoneMin.setText(phoneMinStr);
+            if (phoneMinStr.equals("0")) {
+                mPhoneMin.setText("1");//if min == 0 , then show 1min
+            } else {
+                mPhoneMin.setText(phoneMinStr);
+            }
         } else {
             if (phoneMinStr.equals("0")) {
                 mPhoneHour.setVisibility(View.VISIBLE);
@@ -1323,7 +1327,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mNetHourText.setVisibility(View.GONE);
             mNetMin.setVisibility(View.VISIBLE);
             mNetMinText.setVisibility(View.VISIBLE);
-            mNetMin.setText(netMinStr);
+
+            if (netMinStr.equals("0")) {
+                mNetMin.setText("1");//if min == 0 , then show 1min
+            } else {
+                mNetMin.setText(netMinStr);
+            }
+
         } else {
             if (netMinStr.equals("0")) {
                 mNetHour.setVisibility(View.VISIBLE);
@@ -1349,7 +1359,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mPlayHourText.setVisibility(View.GONE);
             mPlayMin.setVisibility(View.VISIBLE);
             mPlayMinText.setVisibility(View.VISIBLE);
-            mPlayMin.setText(playMinStr);
+
+            if (playMinStr.equals("0")) {
+                mPlayMin.setText("1");//if min == 0 , then show 1min
+            } else {
+                mPlayMin.setText(playMinStr);
+            }
+
         } else {
             if (playMinStr.equals("0")) {
                 mPlayHour.setVisibility(View.VISIBLE);
