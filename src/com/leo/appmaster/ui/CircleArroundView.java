@@ -83,8 +83,8 @@ public class CircleArroundView extends View {
 			matrix.postConcat(mRotateMatrix);
 			canvas.concat(mRotateMatrix);
 			canvas.drawBitmap(mBmCircle, (mTotalW - mBmCircle.getWidth()) / 2, (mTotalH - mBmCircle.getHeight()) / 2, mPaintNormal);
+			invalidate();
 		}
-		invalidate();
 	}
 
 	private void init() {
@@ -104,6 +104,7 @@ public class CircleArroundView extends View {
 			@Override
 			public void onAnimationStart(Animator animation) {
 				mIsAnimating = true;
+				invalidate();
 			}
 			@Override
 			public void onAnimationRepeat(Animator animation) {
