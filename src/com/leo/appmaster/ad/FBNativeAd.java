@@ -10,6 +10,9 @@ import com.facebook.ads.AdError;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.NativeAd;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.leoadlib.MaxSdk;
+
+import java.lang.ref.WeakReference;
 
 public class FBNativeAd extends BaseNativeAd implements AdListener {
     
@@ -22,33 +25,49 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
     
     private final static String TAG = "FACEBOOK_AD_DEBUG";
     private final static String FACEBOOK_URL = "http://www.facebook.com";
-    
-    private Handler mPushToMain = new Handler() {
+
+    static class MainHandler extends Handler {
+        WeakReference<FBNativeAd> mFBNativeAdRef;
+
+        public MainHandler(FBNativeAd ad) {
+            mFBNativeAdRef = new WeakReference<FBNativeAd>(ad);
+        }
+
         @Override
         public void handleMessage(Message msg) {
+            if (mFBNativeAdRef == null) {
+                return;
+            }
+            FBNativeAd ad = mFBNativeAdRef.get();
+            if (ad == null) {
+                return;
+            }
             switch (msg.what) {
                 case CHECK_RESULT_OK:
                     LeoLog.d(TAG, "can link to facebook, start to load now");
-                    NativeAd fbad = new NativeAd(mContext, mPlacementID);
-                    fbad.setAdListener(FBNativeAd.this);
+                    NativeAd fbad = new NativeAd(ad.mContext, ad.mPlacementID);
+                    fbad.setAdListener(ad);
                     fbad.loadAd();
                     break;
                 case CHECK_RESULT_FAILED:
                     LeoLog.i(TAG, "shit happened, can not link to facebook");
-                    if(mListener != null){
-                        mListener.onLoadFailed();
+                    if(ad.mListener != null){
+                        ad.mListener.onLoadFailed();
                     }
                     break;
                 default:
                     break;
             }
         }
-    };
+    }
+    
+    private Handler mPushToMain = null;
     
     public FBNativeAd(Context ctx, String id){
         mContext = ctx;
         mPlacementID = id;
         mNativeAd = null;
+        mPushToMain = new MainHandler(this);
     }
 
     @Override
