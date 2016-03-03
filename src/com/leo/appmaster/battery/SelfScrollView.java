@@ -10,6 +10,8 @@ import com.leo.appmaster.utils.LeoLog;
 
 public class SelfScrollView extends ScrollView {
 
+    public boolean isCanScrool = true;
+
     public SelfScrollView(Context context) {
         super(context);
     }
@@ -29,12 +31,6 @@ public class SelfScrollView extends ScrollView {
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         top = t;
         oldTop = oldt;
-//        if(t + getHeight() >=  computeVerticalScrollRange()){
-//            if(scrollBottomListener != null){
-//                //ScrollView滑动到底部了
-//                scrollBottomListener.scrollBottom();
-//            }
-//        }
     }
 
     private BatteryTestViewLayout mParent;
@@ -52,42 +48,49 @@ public class SelfScrollView extends ScrollView {
 
     private int firstTab = 0;
 
+    public void setScrollEnabled(boolean scrollabled) {
+        isCanScrool = scrollabled;
+        firstTab = 0;
+    }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:// 手指按下屏幕
-                break;
-            case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
-                int newY = (int) event.getRawY();
-
-                if (firstTab == 0) {
+        if (!isCanScrool) {
+            return true;
+        } else {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:// 手指按下屏幕
                     firstTab = (int) event.getRawY();
-                }
+                    break;
+                case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动
 
-                int moveY = newY - firstTab;
+                    int newY = (int) event.getRawY();
 
-//                LeoLog.d("testBatteryView", "top : " + top);
-//                LeoLog.d("testBatteryView", "oldTop : " + oldTop);
-                LeoLog.d("testBatteryView", "moveY : " + moveY);
+                    if (firstTab == 0) {
+                        firstTab = (int) event.getRawY();
+                    }
 
-//                if (!BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing) {
-//                    if (top > 0 && oldTop >= 0 && moveY < -50) {
-//                        mParent.getScrollBottomListener().scrollTop();
-//                    }
-//                }
-//
-//
-                if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
-                        top == 0 && moveY > 50) {
-                    mParent.getScrollBottomListener().scrollBottom();
-                }
+//                    LeoLog.d("testBatteryView", "newY : " + newY);
+//                    LeoLog.d("testBatteryView", "startX : " + firstTab);
+                    int moveY = newY - firstTab;
 
+                    LeoLog.d("testBatteryView", "moveY : " + moveY);
 
-                break;
-            case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
-                firstTab = 0;
-                break;
+                    if (BatteryViewFragment.isExpand && !BatteryViewFragment.mShowing &&
+                            top == 0 && moveY > 50) {
+                        LeoLog.d("testBatteryView", "scrollBottom");
+                        mParent.getScrollBottomListener().scrollBottom();
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:// 手指离开屏幕一瞬间
+                    firstTab = 0;
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    firstTab = 0;
+                    break;
+            }
+            return super.onTouchEvent(event);
         }
-        return super.onTouchEvent(event);
     }
 }

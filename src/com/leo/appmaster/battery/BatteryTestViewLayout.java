@@ -127,20 +127,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        LeoLog.d("testBatteryView", "onInterceptTouchEvent");
-//        if (isScrollable) {
-//            LeoLog.d("testBatteryView", "isScrollable");
-//            return false;
-//        }
         boolean result = mDetector.onTouchEvent(ev);
         return result;
-//        if (!result) {
-//            return super.onInterceptTouchEvent(ev);
-//        }
-//
-//        return true;
-    }
-
-    public void setScrollable(boolean flag) {
     }
 }
