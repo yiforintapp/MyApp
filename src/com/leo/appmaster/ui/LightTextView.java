@@ -9,7 +9,7 @@ import android.widget.TextView;
  * Created by Jasper on 2016/3/3.
  */
 public class LightTextView extends TextView {
-    private static Typeface sLightFace;
+    public static Typeface sLightFace;
 
     public LightTextView(Context context) {
         this(context, null);
@@ -22,9 +22,14 @@ public class LightTextView extends TextView {
     public LightTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
 
+        setTypeface(getLightFace(context));
+    }
+
+    public static Typeface getLightFace(Context context) {
         if (sLightFace == null) {
             sLightFace = Typeface.createFromAsset(context.getAssets(), "Leo-Light.ttf");
         }
-        setTypeface(sLightFace);
+
+        return sLightFace;
     }
 }
