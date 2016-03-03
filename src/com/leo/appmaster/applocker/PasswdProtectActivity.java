@@ -1,8 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import java.util.Arrays;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +7,12 @@ import android.os.Handler;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,6 +34,9 @@ import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.Utilities;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class PasswdProtectActivity extends BaseActivity implements
         OnClickListener {
 
@@ -52,6 +51,10 @@ public class PasswdProtectActivity extends BaseActivity implements
 
     private List<String> mCategories;
     private String mSelectQues;
+
+    private String mCurrentQuestion;
+    private String mSaveQuestion;
+    private String mSaveAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +194,12 @@ public class PasswdProtectActivity extends BaseActivity implements
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position,
                                             long id) {
+                        if (mSaveQuestion.equals(mCategories.get(position))) {
+                            mAnwser.setText(mSaveAnswer);
+                        } else if (!mCurrentQuestion.equals(mCategories.get(position))) {
+                            mAnwser.setText("");
+                        }
+                        mCurrentQuestion = mCategories.get(position);
                         mQuestion.setText(mCategories.get(position));
                         mQuestion.selectAll();
                         mQuestion.setSelection(0);
@@ -290,6 +299,8 @@ public class PasswdProtectActivity extends BaseActivity implements
             mQuestion.selectAll();
         }
         mQuestion.setSelection(0);
+        mSaveQuestion = mQuestion.getText().toString();
+        mCurrentQuestion = mQuestion.getText().toString();
 //        CharSequence text = mQuestion.getText();
 //        if (text instanceof Spannable) {
 //             Spannable spanText = (Spannable)text;
@@ -299,6 +310,7 @@ public class PasswdProtectActivity extends BaseActivity implements
         String answer = AppMasterPreference.getInstance(this).getPpAnwser();
         if (question != null) {
             mAnwser.setText(answer);
+            mSaveAnswer = answer;
             CharSequence astext = mAnwser.getText();
             if (astext instanceof Spannable) {
                 Spannable spanText = (Spannable) astext;
