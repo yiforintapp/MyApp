@@ -41,14 +41,14 @@
             android:layout_centerInParent="true"
             android:visibility="invisible">
 
-            <TextView
+            <com.leo.appmaster.ui.LightTextView
                 android:id="@+id/time_big"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="10:33"
                 android:textColor="@color/white"
-                android:textSize="40sp" />
+                android:textSize="40dp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -61,8 +61,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12/31"
+                    android:typeface="monospace"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="11dp" />
 
                 <TextView
                     android:id="@+id/time_small_right"
@@ -72,7 +73,7 @@
                     android:layout_toRightOf="@id/time_small"
                     android:text="周四"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="11dp" />
             </RelativeLayout>
         </RelativeLayout>
         <!-- 时间 -->
@@ -118,8 +119,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerInParent="true"
                         android:text="100%"
+                        android:typeface="monospace"
                         android:textColor="@color/white"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -157,9 +159,10 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="3dp"
+                    android:typeface="monospace"
                     android:text="30"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/hide_tv_two"
@@ -170,7 +173,7 @@
                     android:layout_marginTop="9dp"
                     android:text="@string/screen_protect_time"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </RelativeLayout>
         </RelativeLayout>
         <!-- 电池 && 图标 -->
@@ -203,7 +206,7 @@
             android:drawablePadding="3dp"
             android:text="@string/battery_protect_view_time_title"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <View
             android:id="@+id/line_two"
@@ -251,8 +254,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="8"
+                        android:typeface="monospace"
                         android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:textSize="22dp" />
 
                     <TextView
                         android:id="@+id/tv_one_time_two"
@@ -263,7 +267,7 @@
                         android:layout_toRightOf="@id/tv_one_time_one"
                         android:text="h"
                         android:textColor="@color/green_back_normal"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                     <TextView
                         android:id="@+id/tv_one_time_three"
@@ -272,8 +276,9 @@
                         android:layout_alignBottom="@id/tv_one_time_one"
                         android:layout_toRightOf="@id/tv_one_time_two"
                         android:text="8"
+                        android:typeface="monospace"
                         android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:textSize="22dp" />
 
                     <TextView
                         android:id="@+id/tv_one_time_four"
@@ -284,7 +289,7 @@
                         android:layout_toRightOf="@id/tv_one_time_three"
                         android:text="m"
                         android:textColor="@color/green_back_normal"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
                 </RelativeLayout>
 
 
@@ -297,7 +302,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/battery_protect_view_remain_one_title"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="11dp" />
 
             </RelativeLayout>
 
@@ -324,8 +329,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="8"
+                        android:typeface="monospace"
                         android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:textSize="22dp" />
 
                     <TextView
                         android:id="@+id/tv_two_time_two"
@@ -336,7 +342,7 @@
                         android:layout_toRightOf="@id/tv_two_time_one"
                         android:text="h"
                         android:textColor="@color/blue_back_normal"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                     <TextView
                         android:id="@+id/tv_two_time_three"
@@ -345,8 +351,9 @@
                         android:layout_alignBottom="@id/tv_two_time_one"
                         android:layout_toRightOf="@id/tv_two_time_two"
                         android:text="8"
+                        android:typeface="monospace"
                         android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:textSize="22dp" />
 
                     <TextView
                         android:id="@+id/tv_two_time_four"
@@ -357,7 +364,7 @@
                         android:layout_toRightOf="@id/tv_two_time_three"
                         android:text="m"
                         android:textColor="@color/blue_back_normal"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
                 </RelativeLayout>
 
                 <TextView
@@ -369,7 +376,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/battery_protect_view_remain_two_title"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="11dp" />
 
             </RelativeLayout>
 
@@ -396,8 +403,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="8"
+                        android:typeface="monospace"
                         android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:textSize="22dp" />
 
                     <TextView
                         android:id="@+id/tv_three_time_two"
@@ -408,7 +416,7 @@
                         android:layout_toRightOf="@id/tv_three_time_one"
                         android:text="h"
                         android:textColor="@color/yellow_back_normal"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
 
                     <TextView
                         android:id="@+id/tv_three_time_three"
@@ -417,8 +425,9 @@
                         android:layout_alignBottom="@id/tv_three_time_one"
                         android:layout_toRightOf="@id/tv_three_time_two"
                         android:text="8"
+                        android:typeface="monospace"
                         android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:textSize="22dp" />
 
                     <TextView
                         android:id="@+id/tv_three_time_four"
@@ -429,7 +438,7 @@
                         android:layout_toRightOf="@id/tv_three_time_three"
                         android:text="m"
                         android:textColor="@color/yellow_back_normal"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
                 </RelativeLayout>
 
                 <TextView
@@ -441,7 +450,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/battery_protect_view_remain_three_title"
                     android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    android:textSize="11dp" />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -473,7 +482,7 @@
                     android:drawablePadding="5dp"
                     android:text="@string/battery_protect_view_show_title"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
 
                 <RelativeLayout
                     android:id="@+id/expand_click_content"
@@ -504,7 +513,7 @@
                             android:layout_marginTop="7dp"
                             android:text="@string/battery_protect_view_remain_three_title"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10dp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -530,7 +539,7 @@
                             android:layout_marginTop="7dp"
                             android:text="@string/battery_protect_view_remain_three_title"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10dp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -556,7 +565,7 @@
                             android:layout_marginTop="7dp"
                             android:text="@string/battery_protect_view_remain_three_title"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10dp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -582,7 +591,7 @@
                             android:layout_marginTop="7dp"
                             android:text="@string/battery_protect_view_remain_three_title"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10dp" />
                     </RelativeLayout>
                 </RelativeLayout>
             </RelativeLayout>

@@ -283,7 +283,8 @@ public class LockHelpSettingTip extends BaseActivity {
                         SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
                                 "theme");
                         Intent intent = new Intent(LockHelpSettingTip.this, LockerTheme.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("to_online_theme", true);
                         intent.putExtra("help_setting_current", 2);
                         try {
