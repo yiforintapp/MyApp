@@ -231,7 +231,7 @@ public class LEOAdEngine {
 //        removeMobAdData(unitId);
     }
     
-    private LEONativeAd removeMobAdData(String unitId){
+    public LEONativeAd removeMobAdData(String unitId){
         LeoCompositeData adData = mLEOLoadedNatives.remove(unitId);
         if(adData != null){
             LEONativeAd nativeAd = adData.nativeAd;

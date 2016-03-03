@@ -416,7 +416,7 @@ public class MobvistaEngine {
 //        removeMobAdData(unitId);
     }
 
-    private void removeMobAdData(String unitId) {
+    public void removeMobAdData(String unitId) {
         MobvistaAdData adData = mMobvistaMap.remove(unitId);
         if (adData != null) {
             MobvistaAdNative nativeAd = adData.nativeAd;

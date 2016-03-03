@@ -108,5 +108,13 @@ public class ADEngineWrapper {
             mMobEngine.release(unitId);
         }
     }
-
+	
+	public void removeMobAdData(int source, String unitId) {
+		if (source == SOURCE_MAX) {
+			mMaxEngine.removeMobAdData(unitId);
+		} else {
+			mMobEngine.removeMobAdData(unitId);
+		}
+	}
+	
 }

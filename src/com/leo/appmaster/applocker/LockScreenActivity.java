@@ -36,7 +36,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -1380,36 +1379,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 						otherAdSwitcher = false;
 					}
 
+					ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID);
 
-
-					// 干掉旧广告？ - onResume()的时候会重新拉取
-//					try {
-//
-//						ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, unitID);
-//						
-//						Bitmap image = mAdBitmapMap.remove(unitID);
-//						if (image != null && !image.isRecycled()) {
-//							image.recycle();
-//						}
-//						for (String key : mAdBitmapMap.keySet()) {
-//							Bitmap image = mAdBitmapMap.get(key);
-//							if (!image.isRecycled()) {
-//								image.recycle();
-//							}
-//						}
-//						mAdBitmapMap.clear();
-
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//					if (mAdBitmapMap.isEmpty() && mBannerContainer != null) {
-//						try {
-//							mBannerContainer.setVisibility(View.GONE);
-//						} catch (Exception e) {
-//						}
-//					}
-					// 重新拉取
-					 loadAD();
+					loadAD();
+					mBannerContainer.setCurrentItem(0, true);
 				}
 			});
 			
@@ -2766,6 +2739,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             lasterSlectedPage = index;
         }
 
+		public int getLasterSlectedPage() {
+			return lasterSlectedPage;
+		}
+		
         private void setItemViewContent(RelativeLayout view, String unitId) {
             WrappedCampaign campaign = mAdMap.get(unitId);
             if (campaign == null) {
@@ -2886,8 +2863,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         public void addItem(String unitId) {
 			/* 移除已经存在的unitid */
-			if (mList.contains(unitId)) {
-				mList.remove(unitId);
+			for (int i = 0; i < mList.size(); i++) {
+				if (mList.get(i) != null && mList.get(i).equals(unitId)) {
+					mList.remove(i);
+				}
 			}
 			mList.add(unitId);
 			LeoLog.e("llb", Arrays.toString(mList.toArray()));
