@@ -36,6 +36,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -164,8 +165,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final int AD_TYPE_SHAKE = 1;
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
-    private static boolean sHasClickGoGrantPermission = false;
-//    private boolean mHasClickGoGrantPermission = false;
+//    private static boolean sHasClickGoGrantPermission = false;
+    private boolean mHasClickGoGrantPermission = false;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -185,7 +186,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private View switch_bottom_content;
     private ImageView mADAnimalEntry;
     private PreferenceTable mPt;
-    private static BaseSelfDurationToast mPermissionGuideToast;
+    private BaseSelfDurationToast mPermissionGuideToast;
     private TextView mTvPermissionTip;
     /**
      * 大banner
@@ -496,8 +497,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.d(TAG, "onResume...");
         mCanTakePhoto = true;
         whichTypeShow();
-        LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + sHasClickGoGrantPermission );
-        tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
+        LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
+//        if (mHasClickGoGrantPermission) {
+//            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
+//        }
         tryShowNoPermissionTip();
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
@@ -564,8 +567,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryHidePermissionGuideToast() {
-        if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing() && sHasClickGoGrantPermission) {
+        if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing()) {
 //            Toast.makeText(LockScreenActivity.this, "hide when on resume", Toast.LENGTH_SHORT).show();
+            mHasClickGoGrantPermission = false;
             mPermissionGuideToast.hide();
         }
     }
@@ -586,16 +590,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             } else {
                 mRlNoPermission.setVisibility(View.GONE);
-                if (sHasClickGoGrantPermission) {
+                if (mHasClickGoGrantPermission) {
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
-                    sHasClickGoGrantPermission = false;
+                    mHasClickGoGrantPermission = false;
                 }
             }
         }else {
             mRlNoPermission.setVisibility(View.GONE);
-            if (sHasClickGoGrantPermission) {
+            if (mHasClickGoGrantPermission) {
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
-                sHasClickGoGrantPermission = false;
+                mHasClickGoGrantPermission = false;
             }
         }
     }
@@ -2114,17 +2118,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_nopermission_tip:
-                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                String filterTarget = getfilterTarget(intent);
                 try {
+//                    Intent home = new Intent(Intent.ACTION_MAIN);
+//                    home.addCategory(Intent.CATEGORY_HOME);
+//                    startActivity(home);
+                    Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    String filterTarget = getfilterTarget(intent);
                     startActivity(intent);
+//                    sHasClickGoGrantPermission = true;
+                    mHasClickGoGrantPermission = true;
+//                    startActivity(intent);
 //                    mLockManager.filterSelfOneMinites();
 //                    if (!TextUtils.isEmpty(filterTarget)) {
 //                        mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
 //                    }
-                    sHasClickGoGrantPermission = true;
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_click");
-                    finish();
+//                    finish();
                     ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 
                         @Override
@@ -2154,7 +2164,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             mPermissionGuideToast.setView(view);
                             mPermissionGuideToast.show();
                         }
-                    }, 500);
+                    }, 200);
                 } catch (Exception e) {
                 }
                 
@@ -2905,12 +2915,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            LeoLog.d("HomeReceiver_Lock", "received! action = " + action);
             if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
                 // android.intent.action.CLOSE_SYSTEM_DIALOGS
                 String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
                 if (SYSTEM_DIALOG_REASON_HOME_KEY.equals(reason)) {
-                    LeoLog.d("HomeReceiver_Lock","received! tryHideToast has clicked? = " + sHasClickGoGrantPermission);
-                            tryHidePermissionGuideToast();
+                    LeoLog.d("HomeReceiver_Lock", "received! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
+                    if (mHasClickGoGrantPermission) {
+                        tryHidePermissionGuideToast();
+                    }
                 }
             }
 
@@ -2932,5 +2945,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             unregisterReceiver(mReceiver);
         }
     }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if ((keyCode == KeyEvent.KEYCODE_BACK && sHasClickGoGrantPermission)) {
+//            LeoLog.d("HomeReceiver_Lock", "back pressed! tryHideToast has clicked? = " + sHasClickGoGrantPermission);
+//            if (sHasClickGoGrantPermission) {
+//                tryHidePermissionGuideToast();
+//            }
+//            return false;
+//        } else {
+//            return super.onKeyDown(keyCode, event);
+//        }
+//    }
+
 
 }
