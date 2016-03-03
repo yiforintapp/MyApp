@@ -29,7 +29,7 @@ public class WaveView extends View {
     // 第一条水波移动速度  
     private final int TRANSLATE_X_SPEED_ONE = DipPixelUtil.dip2px(mContext, 5);
     // 第二条水波移动速度  
-    private final int TRANSLATE_X_SPEED_TWO = DipPixelUtil.dip2px(mContext, 3); 
+    private final int TRANSLATE_X_SPEED_TWO = DipPixelUtil.dip2px(mContext, 3);
     
     private float mCycleFactorW;  //完整波的周期
     private float mPercent = 50;	//波纹高度占满View的百分比
@@ -64,7 +64,15 @@ public class WaveView extends View {
     public void setFactorA(float a) {
         mFactorA = a;
     }
-    
+
+    public void setSpeed1(int s) {
+        mXOffsetSpeedOne = s;
+    }
+
+    public void setSpeed2(int s) {
+        mXOffsetSpeedTwo = s;
+    }
+
     public void setIsNeedWave (boolean isNeedWave) {
         mIsNeedWave = isNeedWave;
     }
@@ -184,7 +192,7 @@ public class WaveView extends View {
         // 用于保存波纹二的y值  
         mResetTwoYPositions = new float[mTotalWidth];  
         // 将周期定为view总宽度  
-        mCycleFactorW = (float) (2 * Math.PI / mTotalWidth);  
+        mCycleFactorW = (float) (2 * Math.PI / mTotalWidth) * 0.5f;
         // 根据view总宽度得出所有对应的y值  
         for (int i = 0; i < mTotalWidth; i++) {  
             mYPositions[i] = (float) (mFactorA * Math.sin(mCycleFactorW * i) + OFFSET_Y);  
