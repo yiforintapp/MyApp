@@ -114,7 +114,7 @@ public class BatteryBoostController extends RelativeLayout {
         if (list.size() > BOOST_SIZE) {
             // 随机取
             float seed = (float) Math.random();
-            int start = (int) ((float)(list.size() - 1) * seed);
+            int start = (int) ((float) (list.size() - 1) * seed);
             for (int i = start; i < list.size() + start; i++) {
                 int index = i;
                 if (index >= list.size()) {
@@ -132,8 +132,10 @@ public class BatteryBoostController extends RelativeLayout {
         Iterator<AppItemInfo> iterator = appItemInfos.iterator();
         final AppItemInfo itemInfo = iterator.next();
         iterator.remove();
-        mAnimIv1.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
-        Animator animatorSet = getTotalAnimator(iterator, mAnimIv1, true);
+
+        ImageView target = getNext(null);
+        target.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
+        Animator animatorSet = getTotalAnimator(iterator, target, iterator.hasNext());
         animatorSet.start();
 
         ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -160,15 +162,17 @@ public class BatteryBoostController extends RelativeLayout {
             @Override
             public void run() {
                 Animator continueSet = null;
-                if (iterator.hasNext()) {
+
+                final boolean hasNext = iterator.hasNext();
+                if (hasNext) {
                     ImageView next = getNext(target);
                     AppItemInfo itemInfo = (AppItemInfo) iterator.next();
                     iterator.remove();
                     next.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
 
-                    continueSet = getTotalAnimator(iterator, next, true);
+                    continueSet = getTotalAnimator(iterator, next, iterator.hasNext());
                 }
-                Animator nextAnimator = getTotalAnimator(iterator, target, false);
+                Animator nextAnimator = getDismissAnimator(target, hasNext);
                 AnimatorSet animatorSet = null;
                 if (continueSet != null) {
                     animatorSet = new AnimatorSet();
@@ -181,32 +185,19 @@ public class BatteryBoostController extends RelativeLayout {
         }, 100);
     }
 
-    private Animator getTotalAnimator(Iterator iterator, ImageView target, final boolean isUp) {
+    private Animator getTotalAnimator(final Iterator iterator, final ImageView target, boolean hasNext) {
         float translation = getTranslation();
-        float transFrom = 0;
-        float transTo = translation;
-        if (isUp) {
-            transFrom = -translation;
-            transTo = 0;
-        }
+        float transFrom = -translation;
+        float transTo = 0;
 
         ObjectAnimator transAnim = ObjectAnimator.ofFloat(target, "translationY", transFrom, transTo);
 
         float alpha = 0.5f;
-        ObjectAnimator alphaAnim = null;
-        if (isUp) {
-            alphaAnim = ObjectAnimator.ofFloat(target, "alpha", alpha, 1f);
-        } else {
-            alphaAnim = ObjectAnimator.ofFloat(target, "alpha", 1f, alpha);
-        }
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(target, "alpha", alpha, 1f);
 
-        float scale = 0.8f;
-        float scaleFrom = 1.2f;
-        float scaleTo = scale;
-        if (isUp) {
-            scaleFrom = scale;
-            scaleTo = 1.2f;
-        }
+        float scale = 0.5f;
+        float scaleFrom = scale;
+        float scaleTo = 1.2f;
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, "scaleX", scaleFrom, scaleTo);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, "scaleY", scaleFrom, scaleTo);
 
@@ -214,7 +205,43 @@ public class BatteryBoostController extends RelativeLayout {
         animatorSet.playTogether(transAnim, alphaAnim, scaleX, scaleY);
         animatorSet.setDuration(BOOST_ITEM_DURATION);
         animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.addListener(new AnimatorAdapter(iterator, target, isUp));
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                LeoLog.d(TAG, "onAnimationEnd, target: " + target);
+                continueTranslateDelay(target, iterator);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                target.setVisibility(View.VISIBLE);
+                target.setRotation(0);
+                LeoLog.d(TAG, "onAnimationStart, target: " + target);
+            }
+        });
+
+        return animatorSet;
+    }
+
+    private Animator getDismissAnimator(ImageView target, final boolean hasNext) {
+        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(target, "rotation", 0f, 180f);
+        ObjectAnimator scaleXAnim = ObjectAnimator.ofFloat(target, "scaleX", 1f, 0f);
+        ObjectAnimator scaleYAnim = ObjectAnimator.ofFloat(target, "scaleY", 1f, 0f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(200);
+        animatorSet.playTogether(rotateAnim, scaleXAnim, scaleYAnim);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (!hasNext) {
+                    onBoostFinish();
+                }
+            }
+        });
 
         return animatorSet;
     }
@@ -237,7 +264,7 @@ public class BatteryBoostController extends RelativeLayout {
         } else if (mAnimIv4 == target) {
             return mAnimIv1;
         }
-        return null;
+        return mAnimIv1;
 //        return target == mAnimIv1 ? mAnimIv2 : mAnimIv1;
     }
 
@@ -264,7 +291,7 @@ public class BatteryBoostController extends RelativeLayout {
                             ivShield.setVisibility(View.VISIBLE);
                             int number = mCleanedNum <= 0 ? MIN_BOOST_NUM : mCleanedNum;
                             double seed = Math.random();
-                            int minites = (int) (number + ((float)number * seed));
+                            int minites = (int) (number + ((float) number * seed));
                             String boostResult = getContext().getString(R.string.battery_boost_result, minites, number);
                             mBoostToastTv.setText(boostResult);
                             BatteryBoostController.this.onArroundFinish();
@@ -301,36 +328,5 @@ public class BatteryBoostController extends RelativeLayout {
         int harfH = mBoostRl.getHeight() / 2;
         int padding = getPaddingTop();
         return harfH - padding;
-    }
-
-    private class AnimatorAdapter extends AnimatorListenerAdapter {
-        private Iterator iterator;
-        private boolean isUp;
-        private ImageView target;
-        public AnimatorAdapter(Iterator iterator, ImageView target, boolean isUp) {
-            this.iterator = iterator;
-            this.isUp = isUp;
-            this.target = target;
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            super.onAnimationStart(animation);
-            LeoLog.d(TAG, "onAnimationEnd, target: " + target);
-            if (!iterator.hasNext()) {
-                onBoostFinish();
-                return;
-            }
-            if (isUp) {
-                continueTranslateDelay(target, iterator);
-            }
-        }
-
-        @Override
-        public void onAnimationStart(Animator animation) {
-            super.onAnimationEnd(animation);
-            target.setVisibility(View.VISIBLE);
-            LeoLog.d(TAG, "onAnimationStart, target: " + target);
-        }
     }
 }
