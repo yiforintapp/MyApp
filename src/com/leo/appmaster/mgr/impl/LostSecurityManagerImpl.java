@@ -180,6 +180,8 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public synchronized Location getLocation(int fromId) {
+
+        //TODO
         StringBuilder sb = new StringBuilder();
         if (fromId == 0) {
             sb.append(System.currentTimeMillis()+",本次请求为：sdkwrapper上报请求");
@@ -407,6 +409,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public boolean executeLockLocateposition(String number, boolean isExecuNoMsm) {
+
+        long cu1 = System.currentTimeMillis();
+        LeoLog.d("getTime", "executeLockLocateposition:"+mIsLocation);
         if (!mIsLocation) {
             LeoLog.i(TAG, "执行位置追踪指令");
             mIsLocation = true;
@@ -432,6 +437,12 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             if (!isExecuNoMsm) {
                 googleMapUri = PhoneSecurityManager.getInstance(mContext).securLocateHandler();
             }
+
+            long cu2 = System.currentTimeMillis();
+            LeoLog.d("getTime","获取经纬度耗时："+(cu2-cu1));
+
+            long cu3 = System.currentTimeMillis();
+
             if (!Utilities.isEmpty(googleMapUri)) {
                 locatePositionMsm = mContext.getResources().getString(R.string.secur_location_msm, googleMapUri);
                 LeoLog.i(TAG, "执行位置URL=" + locatePositionMsm);
@@ -455,6 +466,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                     }
                 }
             }
+            LeoLog.d("getTime","获取经纬度后发送短信时间："+(cu3-cu2));
             mIsLocation = false;
         }
         return false;

@@ -210,6 +210,9 @@ public class PhoneSecurityManager {
      * 检查是否为防盗指令
      */
     private void checkMsmIsInstructs(String phoneNumber, ArrayList<MessageBean> messages) {
+
+        long cu1 = System.currentTimeMillis();
+
         phoneNumber = PrivacyContactUtils.simpleFromateNumber(phoneNumber);
         final LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         for (MessageBean message : messages) {
@@ -249,7 +252,7 @@ public class PhoneSecurityManager {
                         PreferenceTable.getInstance().putLong(PrefConst.KEY_INSTRU_MSM_ID, msmId);
                     }
                     LeoLog.i(TAG, "可以执行指令，信息内容：" + body);
-                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                    new Thread(new Runnable() {
                         @Override
                         public void run() {
                             /*上传手机数据*/
@@ -262,6 +265,15 @@ public class PhoneSecurityManager {
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_location_" + sekData);
                         }
                     });
+//                    ThreadManager.executeOnAsyncThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    });
+
+                    LeoLog.d("getTime","准备执行位置耗时："+(System.currentTimeMillis()-cu1));
+
                    /* 选择性执行防盗操作*/
                     chanageExecuteInstructs(body);
                 }
@@ -289,6 +301,9 @@ public class PhoneSecurityManager {
             int[] protectTime = securMgr.getPhoneProtectTime();
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_use_onekey_$" + protectTime[0] + "d" + protectTime[1] + "h");
         } else if (SecurityInstructSet.LOCATEPOSITION.equals(body)) {
+
+            long cu1 = System.currentTimeMillis();
+
             /*执行位置指令前，先初始化各个信息*/
             if (mLocationManager != null) {
                 if (mLocationListener != null) {
@@ -301,7 +316,7 @@ public class PhoneSecurityManager {
             }
             PhoneSecurityManager.getInstance(mContext).setIsExecuteLocate(false);
 
-            ThreadManager.executeOnAsyncThread(new Runnable() {
+           new Thread(new Runnable() {
                 @Override
                 public void run() {
                                                              /*sdk event*/
@@ -311,6 +326,9 @@ public class PhoneSecurityManager {
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_use_gps_$" + protectTime[0] + "d" + protectTime[1] + "h");
                 }
             });
+
+            LeoLog.d("getTime","获取位置信息准备2："+(System.currentTimeMillis()-cu1));
+
             mgr.executeLockLocateposition(null, false);
         } else if (SecurityInstructSet.ALERT.equals(body)) {
             /*防盗警报会进入死循环，因此该除需要先删除短信和上报数据在执行*/
@@ -515,7 +533,13 @@ public class PhoneSecurityManager {
      * 手机防盗获取位置处理
      */
     public String securLocateHandler() {
+
+        long cur1 = System.currentTimeMillis();
+
         String locateUrl = PhoneSecurityUtils.getGoogleMapLocationUri();
+
+        long cur2 = System.currentTimeMillis();
+        LeoLog.d("getTime","首次获取位置信息耗时："+(cur2-cur1));
         if (Utilities.isEmpty(locateUrl)) {
             LocationManager locationManager = getLocationManager();
             if (mLocationListener == null) {
@@ -541,6 +565,8 @@ public class PhoneSecurityManager {
                 }
             }, PhoneSecurityConstants.DELAY_REMOVE_LOCATION_TIME);
         }
+        long cur3 = System.currentTimeMillis();
+        LeoLog.d("getTime","获取位置信息总耗时："+(cur3-cur2));
         return locateUrl;
     }
 

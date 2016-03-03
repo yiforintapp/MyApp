@@ -367,7 +367,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                        public void run() {
 //                            LostSecurityManager lm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
 //                            try {
-//                                lm.getLocation();
+//                                lm.getLocation(PhoneSecurityConstants.LOCA_ID_MSM);
 //
 //                            } catch (InterruptedException e) {
 //                                e.printStackTrace();
