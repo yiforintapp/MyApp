@@ -67,6 +67,9 @@ public class CircleArroundView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+		if (getVisibility() != VISIBLE) {
+			return;
+		}
 		Matrix matrix = canvas.getMatrix();
 		int save1 = canvas.save();
 		LeoLog.i("CircleArroundView", "mIsAnimating = " + mIsAnimating);

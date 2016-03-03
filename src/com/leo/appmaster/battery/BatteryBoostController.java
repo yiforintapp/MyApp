@@ -246,14 +246,6 @@ public class BatteryBoostController extends RelativeLayout {
         return animatorSet;
     }
 
-    private ImageView getTargetCurrentGroup(ImageView target) {
-        return target == mAnimIv1 ? mAnimIv2 : mAnimIv4;
-    }
-
-    private ImageView getTargetNextGroup(ImageView target) {
-        return target == mAnimIv1 ? mAnimIv3 : mAnimIv1;
-    }
-
     private ImageView getNext(ImageView target) {
         if (mAnimIv1 == target) {
             return mAnimIv2;
@@ -265,14 +257,37 @@ public class BatteryBoostController extends RelativeLayout {
             return mAnimIv1;
         }
         return mAnimIv1;
-//        return target == mAnimIv1 ? mAnimIv2 : mAnimIv1;
     }
 
     private void onBoostFinish() {
         mBoostRl.setVisibility(View.INVISIBLE);
-        mBoostAnimView.setVisibility(View.INVISIBLE);
         mShieldRootView.setVisibility(View.VISIBLE);
-        startShieldFlip(mShieldIv, mShieldCircle);
+        mShieldCircle.setVisibility(View.INVISIBLE);
+        startBoostDismissAnim();
+    }
+
+    private void startBoostDismissAnim() {
+        ObjectAnimator shieldAlpha = ObjectAnimator.ofFloat(mShieldRootView, "alpha", 0f, 255f);
+        ObjectAnimator shieldScaleX = ObjectAnimator.ofFloat(mShieldRootView, "scaleX", 0.8f, 1f);
+        ObjectAnimator shieldScaleY = ObjectAnimator.ofFloat(mShieldRootView, "scaleY", 0.8f, 1f);
+
+        ObjectAnimator boostAlpha = ObjectAnimator.ofFloat(mBoostAnimView, "alpha", 255f, 0f);
+        ObjectAnimator boostScaleX = ObjectAnimator.ofFloat(mBoostAnimView, "scaleX", 1f, 0.8f);
+        ObjectAnimator boostScaleY = ObjectAnimator.ofFloat(mBoostAnimView, "scaleY", 1f, 0.8f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(shieldAlpha, shieldScaleX, shieldScaleY, boostAlpha, boostScaleX, boostScaleY);
+        animatorSet.setDuration(400);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                startShieldFlip(mShieldIv, mShieldCircle);
+                mBoostAnimView.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        animatorSet.start();
     }
 
     private void startShieldFlip(final ImageView ivShield, final CircleArroundView cavCircle) {
@@ -285,6 +300,7 @@ public class BatteryBoostController extends RelativeLayout {
             rotation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
+                    cavCircle.setVisibility(View.VISIBLE);
                     cavCircle.startAnim(0f, -360f, 680l, new CircleArroundView.OnArroundFinishListener() {
                         @Override
                         public void onArroundFinish() {
