@@ -510,6 +510,9 @@
                             android:layout_below="@id/iv_show_one"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="50dp"
                             android:text="@string/battery_protect_view_remain_three_title"
                             android:textColor="@color/white"
                             android:textSize="10dp" />
@@ -536,6 +539,9 @@
                             android:layout_below="@id/iv_show_two"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="50dp"
                             android:text="@string/battery_protect_view_remain_three_title"
                             android:textColor="@color/white"
                             android:textSize="10dp" />
@@ -562,6 +568,9 @@
                             android:layout_below="@id/iv_show_three"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="50dp"
                             android:text="@string/battery_protect_view_remain_three_title"
                             android:textColor="@color/white"
                             android:textSize="10dp" />
@@ -588,6 +597,9 @@
                             android:layout_below="@id/iv_show_four"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="50dp"
                             android:text="@string/battery_protect_view_remain_three_title"
                             android:textColor="@color/white"
                             android:textSize="10dp" />
