@@ -313,4 +313,6 @@ public class PrefConst {
     // 屏保页面推荐列表
     public static final String KEY_SS_RECOMMEND_LIST = "ss_recommend_list";
 
+    // 3.3.2 电量系数
+    public static final String KEY_BATTERY_REMAINING_COE = "battery_remaning_time_coe";
 }

@@ -7,7 +7,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -88,11 +90,20 @@ public class RemainingTimeEstimator {
     private float mFinalCoe = 1.0f;
 
     public RemainingTimeEstimator(Context context) {
+        float coe = PreferenceTable.getInstance()
+                .getFloat(PrefConst.KEY_BATTERY_REMAINING_COE, -1.0f);
+        if (coe > 0.0f) {
+            mFinalCoe = coe;
+            LeoLog.d(TAG, "mFinalCoe = " + mFinalCoe);
+            return;
+        }
+
         /* 计算策略 */
         calCapacityCoe(context);
         calProcessorCoe();
         calScreenCoe(context);
         mFinalCoe = mCapacityCoe*mProcessorCoe*mScreenCoe;
+        PreferenceTable.getInstance().putFloat(PrefConst.KEY_BATTERY_REMAINING_COE, mFinalCoe);
 
         LeoLog.d(TAG, "CAPACITY=" + REFERENT_CAPACITY + "; CPU_NUMBER="
                 + REFERENT_PROCESSOR_NUMBER + "; SCREEN_SIZE=" + REFERENT_SCREEN_SIZE);
