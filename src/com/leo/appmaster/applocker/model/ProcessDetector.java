@@ -242,8 +242,7 @@ public class ProcessDetector {
         } else if (result.size() > 0) {
             target = result.get(0);
 
-            if (target != null &&
-                    (target.ppid > MAX_ZYGOTE || target.ppid == 1)) {
+            if (target != null && target.ppid == 1) {
                 target = null;
             }
         }
