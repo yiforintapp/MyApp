@@ -56,7 +56,7 @@ public class PrefTableHelper {
         return PreferenceTable.getInstance().getDouble(PrefConst.KEY_SHOW_BOOST_MEM, 0.7);
     }
 
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
     public static boolean shouldBatteryBoost() {
         if (DBG) {
             return true;
