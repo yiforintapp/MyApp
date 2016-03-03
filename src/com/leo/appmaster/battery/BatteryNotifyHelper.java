@@ -186,7 +186,7 @@ public class BatteryNotifyHelper {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setContent(view_custom)
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
-                .setTicker(mContext.getApplicationContext().getString(R.string.batterymanage_switch_noti))
+                .setTicker(mContext.getApplicationContext().getString(R.string.batterymanage_switch_screen))
                 .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
                 .setOngoing(true)// 不是正在进行的 true为正在进行 效果和.flag一样
                 .setSmallIcon(R.drawable.statusbar_battery_icon)
