@@ -78,7 +78,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
                 LeoLog.i(TAG, "应用内展示充电屏保");
                 int data = resp.getInt(PrefConst.KEY_SHOW_INSIDE_APP);
                 boolean showInsideApp = data == 1;
-                preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, showInsideApp);
+                preferenceTable.putBoolean(PrefConst.KEY_SHOW_INSIDE_APP, showInsideApp);
             } else {
                 LeoLog.i(TAG, "应用内不展示充电屏保");
             }
