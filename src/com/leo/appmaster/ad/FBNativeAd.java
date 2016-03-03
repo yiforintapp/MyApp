@@ -10,7 +10,6 @@ import com.facebook.ads.AdError;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.NativeAd;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.leoadlib.MaxSdk;
 
 import java.lang.ref.WeakReference;
 
@@ -22,6 +21,9 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
     
     private final static int CHECK_RESULT_OK = 1;
     private final static int CHECK_RESULT_FAILED = 2;
+
+    private final static int LOAD_FB_DONE = 100001;
+    private final static int LOAD_FB_TIMEOUT = 100002;
     
     private final static String TAG = "FACEBOOK_AD_DEBUG";
     private final static String FACEBOOK_URL = "http://www.facebook.com";
@@ -55,6 +57,23 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
                         ad.mListener.onLoadFailed();
                     }
                     break;
+                case LOAD_FB_TIMEOUT:
+                    LeoLog.d(TAG, "LOAD_FB_TIMEOUT arrived");
+                    synchronized (ad) {
+                        if (ad.mAlreadyNotifyUser) {
+                            return;
+                        }
+                        ad.mAlreadyNotifyUser = true;
+                    }
+                    if(ad.mListener != null){
+                        ad.mListener.onLoadFailed();
+                    }
+                    NativeAd nativeAd = (NativeAd) msg.obj;
+                    if (nativeAd != null) {
+                        nativeAd.setAdListener(null);
+                        nativeAd.destroy();
+                    }
+                    break;
                 default:
                     break;
             }
@@ -70,12 +89,24 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
         mPushToMain = new MainHandler(this);
     }
 
+    private Runnable mFailedRunnable;
+    private Runnable mDoneRunnable;
+    private boolean mAlreadyNotifyUser;
+
     @Override
     public void loadAd() {
         /* facebook's NativeAd can not load more than once */
         LeoLog.d(TAG, "FBNativeAd: loadAd() called");
-        
-        URLChecker.checkURL(FACEBOOK_URL, new URLChecker.URLCheckCallback() {
+        synchronized (this) {
+            mAlreadyNotifyUser = false;
+        }
+
+        NativeAd fbad = new NativeAd(mContext, mPlacementID);
+        fbad.setAdListener(this);
+        fbad.loadAd();
+        mPushToMain.sendMessageDelayed(Message.obtain(mPushToMain, LOAD_FB_TIMEOUT, 0, 0, fbad), 10 * 1000);
+
+        /*URLChecker.checkURL(FACEBOOK_URL, new URLChecker.URLCheckCallback() {
             
             @Override
             public void onURLUnavailable() {
@@ -86,7 +117,7 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
             public void onURLAvailable() {
                 mPushToMain.sendEmptyMessage(CHECK_RESULT_OK);
             }
-        });
+        });*/
 
     }
 
@@ -126,6 +157,13 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
 
     @Override
     public void onAdLoaded(Ad arg0) {
+        synchronized (this) {
+            if (mAlreadyNotifyUser) {
+                return;
+            }
+            mAlreadyNotifyUser = true;
+            mPushToMain.removeMessages(LOAD_FB_TIMEOUT);
+        }
         NativeAd ad = (NativeAd)arg0;
         LeoLog.d(TAG, "FBNativeAd[" + ad.getId() + "]: onAdLoaded() called");
         destroyPrevious();
@@ -143,6 +181,13 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
 
     @Override
     public void onError(Ad arg0, AdError arg1) {
+        synchronized (this) {
+            if (mAlreadyNotifyUser) {
+                return;
+            }
+            mAlreadyNotifyUser = true;
+            mPushToMain.removeMessages(LOAD_FB_TIMEOUT);
+        }
         
         NativeAd ad =  (NativeAd)arg0;
         if(mNativeAd!=null && mNativeAd.getId()!= null

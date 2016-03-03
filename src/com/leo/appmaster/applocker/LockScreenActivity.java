@@ -1307,7 +1307,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 							@Override
 							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-								LeoLog.d("STONE_AD_DEBUG", "onLoadingComplete for: " + imageUri);
+								LeoLog.d("STONE_AD_DEBUG", "["+unitId+"]onLoadingComplete for: " + imageUri);
 
 								if (unitId.equals(mBannerAdids[0])) {
 									mAdUnitIdList.add(0, unitId);
