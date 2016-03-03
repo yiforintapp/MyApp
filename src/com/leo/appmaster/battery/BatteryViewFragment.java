@@ -438,13 +438,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         BatteryManager btrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
         boolean isBatteryPowSavOpen = btrManager.getBatteryPowSavStatus();
         if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
-//        if (true) {
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
 
             mRemainTimeContent.setVisibility(View.INVISIBLE);
             mRemainContent.setVisibility(View.INVISIBLE);
             mBossView.setVisibility(View.INVISIBLE);
+
             mTimeContentView.setVisibility(View.VISIBLE);
 
             mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
@@ -466,19 +466,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mTimeContentView.post(new Runnable() {
                 @Override
                 public void run() {
-                    ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mTimeContentAll,
-                            "x", mTimeContentAll.getLeft(), mTimeContentAll.getLeft() - mTimeContentView.getWidth() / 2);
+
+                    ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mTimeContentView,
+                            "x", mTimeContentView.getLeft(), mTimeContentView.getLeft() -
+                                    mTimeContentView.getWidth() / 2 - DipPixelUtil.dip2px(mActivity, 15));
                     animMoveY.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            super.onAnimationStart(animation);
-
-                        }
-
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            mBatteryIconView.setVisibility(View.VISIBLE);
                             bayIconTurnBig();
                         }
                     });
@@ -491,31 +486,44 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mTimeContentView.post(new Runnable() {
                 @Override
                 public void run() {
-                    ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mTimeContentAll,
-                            "x", mTimeContentAll.getLeft(), mTimeContentAll.getLeft() - mTimeContentView.getWidth() / 2);
-                    animMoveY.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            super.onAnimationStart(animation);
-                        }
+                    ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mTimeContentView,
+                            "x", mTimeContentView.getLeft(), mTimeContentView.getLeft() -
+                                    mTimeContentView.getWidth() / 2 - DipPixelUtil.dip2px(mActivity, 15));
 
+                    ObjectAnimator animMoveY2 = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "x", mBatteryIconView.getLeft(), mBatteryIconView.getLeft() +
+                                    mBatteryIconView.getWidth() / 2 + DipPixelUtil.dip2px(mActivity, 5));
+
+
+                    AnimatorSet set = new AnimatorSet();
+                    set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
                             mTimeContentView.setVisibility(View.VISIBLE);
                             mBatteryIconView.setVisibility(View.VISIBLE);
-                            topContentTurnBig();
                         }
                     });
-
-                    animMoveY.setDuration(500);
-                    animMoveY.start();
+                    set.setDuration(20);
+                    set.play(animMoveY).with(animMoveY2);
+                    set.start();
                 }
             });
         }
     }
 
     private void bayIconTurnBig() {
+        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIconView,
+                "x", mBatteryIconView.getLeft(), mBatteryIconView.getLeft() +
+                        mBatteryIconView.getWidth() / 2 + DipPixelUtil.dip2px(mActivity, 5));
+        animMoveY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mBatteryIconView.setVisibility(View.VISIBLE);
+            }
+        });
+
         ObjectAnimator anim20 = ObjectAnimator.ofFloat(mBatteryIconView,
                 "scaleX", 0f, 1.0f);
         ObjectAnimator anim21 = ObjectAnimator.ofFloat(mBatteryIconView,
@@ -525,21 +533,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         AnimatorSet set = new AnimatorSet();
         set.setDuration(500);
-        set.play(anim20).with(anim21);
-        set.play(anim21).with(anim22);
-        set.start();
-    }
-
-    private void topContentTurnBig() {
-        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mTimeContentAll,
-                "scaleX", 0f, 1.0f);
-        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mTimeContentAll,
-                "scaleY", 0f, 1.0f);
-        ObjectAnimator anim22 = ObjectAnimator.ofFloat(mTimeContentAll,
-                "alpha", 0f, 1f);
-
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(500);
+        set.play(animMoveY).before(anim20);
         set.play(anim20).with(anim21);
         set.play(anim21).with(anim22);
         set.start();
@@ -605,7 +599,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void expandRecommandContent(final int recommandTypeThree) {
-        if(mActivity == null) return;
+        if (mActivity == null) return;
         turnDark(recommandTypeThree);
         mRecommandView.clearAnimation();
         mRecommandContentView.setVisibility(View.INVISIBLE);
@@ -636,7 +630,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void fillShowContentData(int recommandTypeThree) {
-        if(mActivity == null) return;
+        if (mActivity == null) return;
         if (recommandTypeThree == RECOMMAND_TYPE_ONE) {
             List<BatteryAppItem> phoneList = ScreenRecommentJob.getBatteryCallList();
             LeoLog.d("testGetList", "3G通话 size is : " + phoneList.size());
@@ -972,7 +966,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void gotoApp(final BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView) {
-        if(mActivity == null) return;
+        if (mActivity == null) return;
         String name = null;
         Drawable map = null;
 
@@ -1106,7 +1100,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void shrinkRecommandContent() {
-        if(mActivity == null) return;
+        if (mActivity == null) return;
         turnLight();
         mRecommandView.clearAnimation();
         mRecommandContentView.setVisibility(View.INVISIBLE);
@@ -1141,7 +1135,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public void onDestroyView() {
         super.onDestroyView();
         releaseAd();
-        if(mActivity != null) {
+        if (mActivity != null) {
             mActivity.unregisterReceiver(mPresentReceiver);
         }
     }
@@ -1560,7 +1554,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveUp() {
-        if(mActivity == null) return;
+        if (mActivity == null) return;
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop());
 
@@ -1582,7 +1576,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveDown() {
-        if(mActivity == null) return;
+        if (mActivity == null) return;
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop(), mSlideView.getTop() + mMoveDisdance);
         animMoveY.setDuration(ANIMATION_TIME);
@@ -1971,7 +1965,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
 
-
     private void handleRunnable() {
         if (mClickRunnable == null || mActivity == null) {
             return;
@@ -2319,7 +2312,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private PopupWindow popupWindow;
 
     private void showPopUp(View v) {
-        if(mActivity == null) return;
+        if (mActivity == null) return;
         View contentView = LayoutInflater.from(mActivity).inflate(
                 R.layout.popmenu_battery_list_item, null);
 
