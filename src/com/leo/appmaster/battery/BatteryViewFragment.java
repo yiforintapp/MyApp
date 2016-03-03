@@ -312,7 +312,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
-                    boolean isExpandContentShow = mRecommandView.getVisibility() == 0;
+                    boolean isExpandContentShow = mRecommandView.getVisibility() == View.VISIBLE;
                     if (isExpandContentShow && loadFastThanInit) {
                         mCurrentClickType = 0;
                         shrinkRecommandContent();
@@ -617,7 +617,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationStart(Animation animation) {
                 mRecommandView.setVisibility(View.VISIBLE);
-                boolean isSlideContentShow = mBossView.getVisibility() == 0;
+                boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
                 if (isSlideContentShow) {
                     mSlideView.setVisibility(View.INVISIBLE);
                 }
@@ -1120,7 +1120,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             public void onAnimationEnd(Animation animation) {
                 mRecommandView.setVisibility(View.INVISIBLE);
 
-                boolean isSlideContentShow = mBossView.getVisibility() == 0;
+                boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
                 if (isSlideContentShow) {
                     mSlideView.setVisibility(View.VISIBLE);
                 }
@@ -1247,7 +1247,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //                mSlideView.setScrollable(true);
 
 //                expandContent(true);
-                boolean isShowContentShow = mRecommandView.getVisibility() == 0;
+                boolean isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
                 if (!isShowContentShow) {
                     expandRecommandContent(RECOMMAND_TYPE_TWO);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
@@ -1255,7 +1255,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //                showRecommandContent(RECOMMAND_TYPE_TWO);
             } else {
                 expandContent(false);
-                boolean isShowContentShow = mRecommandView.getVisibility() == 0;
+                boolean isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
                 if (!isShowContentShow) {
                     expandRecommandContent(RECOMMAND_TYPE_TWO);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
