@@ -1458,7 +1458,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     public void setTime(int second, boolean isExpandContent) {
-        if (mActivity == null) {
+        if (mActivity == null || newState == null) {
             return;
         }
 

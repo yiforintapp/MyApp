@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 3.0 -->
-    <dimen name="batteryscreen_clock_margintop_bay">60dp</dimen>
     <dimen name="fragment_lock_margin_top">80dp</dimen>
     <dimen name="fragment_lock_large_banner_out_height">176dp</dimen>
     <dimen name="fragment_lock_large_banner_image_height">128dp</dimen>

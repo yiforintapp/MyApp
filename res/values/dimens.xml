@@ -3,7 +3,6 @@
     <dimen name="lockscreen_permissiontip_marginbottom">20dp</dimen>
     <dimen name="batteryscreen_slidearea_height">70dp</dimen>
     <dimen name="batteryscreen_bossview_height">300dp</dimen>
-    <dimen name="batteryscreen_clock_margintop_bay">55dp</dimen>
 	<dimen name="batterymanage_toplayout_height">183dp</dimen>
 	<dimen name="batterymanage_toplayout_ball">154dp</dimen>
 	<dimen name="home_left_list_item_height">60dp</dimen>
@@ -307,7 +306,6 @@
 
     <!-- 3.0标准字体规范 -->
     <dimen name="f1">20dp</dimen>
-    <dimen name="f2">17dp</dimen>
     <dimen name="f3">16dp</dimen>
     <dimen name="f4">14dp</dimen>
     <dimen name="f5">13dp</dimen>

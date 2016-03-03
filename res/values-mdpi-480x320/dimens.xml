@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="batteryscreen_clock_margintop_bay">50dp</dimen>
     <dimen name="home_tab_height">184dp</dimen>
 </resources>

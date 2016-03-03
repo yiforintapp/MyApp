@@ -2,7 +2,6 @@
 <resources>
     <dimen name="lockPatternView_height">330dp</dimen>
     <dimen name="batteryscreen_bossview_height">380dp</dimen>
-    <dimen name="batteryscreen_clock_margintop_bay">60dp</dimen>
     <dimen name="about_logo_width">124dp</dimen>
     <dimen name="about_logo_height">132dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>

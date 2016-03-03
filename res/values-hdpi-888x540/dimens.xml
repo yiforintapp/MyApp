@@ -2,7 +2,6 @@
 <resources>
     <dimen name="batteryscreen_slidearea_height">55dp</dimen>
     <dimen name="batteryscreen_bossview_height">330dp</dimen>
-    <dimen name="batteryscreen_clock_margintop_bay">50dp</dimen>
 	<dimen name="home_left_list_item_height">50dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>
