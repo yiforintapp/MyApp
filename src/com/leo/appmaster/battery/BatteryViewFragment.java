@@ -761,6 +761,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                         }
                     });
+                } else {
+                    mRecommandNumFour.setVisibility(View.INVISIBLE);
                 }
             } else {
                 mRecommandNumFour.setVisibility(View.INVISIBLE);
