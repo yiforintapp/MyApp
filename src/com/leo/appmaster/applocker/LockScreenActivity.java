@@ -164,7 +164,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final int AD_TYPE_SHAKE = 1;
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
-    private static boolean mHasClickGoGrantPermission = false;
+    private static boolean sHasClickGoGrantPermission = false;
+//    private boolean mHasClickGoGrantPermission = false;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -495,8 +496,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.d(TAG, "onResume...");
         mCanTakePhoto = true;
         whichTypeShow();
+        LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + sHasClickGoGrantPermission );
+        tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
         tryShowNoPermissionTip();
-        tryHidePermissionGuideToast();
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
@@ -562,7 +564,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryHidePermissionGuideToast() {
-        if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing()) {
+        if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing() && sHasClickGoGrantPermission) {
 //            Toast.makeText(LockScreenActivity.this, "hide when on resume", Toast.LENGTH_SHORT).show();
             mPermissionGuideToast.hide();
         }
@@ -571,8 +573,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void tryShowNoPermissionTip() {
 //        Toast.makeText(LockScreenActivity.this, "虚拟按键？ = " + Utilities.hasNavigationBar(this), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(LockScreenActivity.this, Build.VERSION.SDK_INT+"__"+TaskDetectService.sDetectSpecial+"__"+BuildProperties.isLenoveModel(), Toast.LENGTH_SHORT).show();
-//        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
-        if (Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
+//        if (Build.VERSION.SDK_INT >= 21) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
             if (!state.checkAvailable()) {
 //        if (true) {
@@ -584,16 +586,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             } else {
                 mRlNoPermission.setVisibility(View.GONE);
-                if (mHasClickGoGrantPermission) {
+                if (sHasClickGoGrantPermission) {
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
-                    mHasClickGoGrantPermission = false;
+                    sHasClickGoGrantPermission = false;
                 }
             }
         }else {
             mRlNoPermission.setVisibility(View.GONE);
-            if (mHasClickGoGrantPermission) {
+            if (sHasClickGoGrantPermission) {
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
-                mHasClickGoGrantPermission = false;
+                sHasClickGoGrantPermission = false;
             }
         }
     }
@@ -2120,7 +2122,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                    if (!TextUtils.isEmpty(filterTarget)) {
 //                        mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
 //                    }
-                    mHasClickGoGrantPermission = true;
+                    sHasClickGoGrantPermission = true;
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_click");
                     finish();
                     ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -2907,8 +2909,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // android.intent.action.CLOSE_SYSTEM_DIALOGS
                 String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
                 if (SYSTEM_DIALOG_REASON_HOME_KEY.equals(reason)) {
-                    LeoLog.d("HomeReceiver_Lock","received! tryHideToast");
-                    tryHidePermissionGuideToast();
+                    LeoLog.d("HomeReceiver_Lock","received! tryHideToast has clicked? = " + sHasClickGoGrantPermission);
+                            tryHidePermissionGuideToast();
                 }
             }
 
