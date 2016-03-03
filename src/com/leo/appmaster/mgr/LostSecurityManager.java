@@ -94,9 +94,10 @@ public abstract class LostSecurityManager extends Manager {
      * 如果不指定手机号，默认给防盗号码发送位置信息
      * @param number 电话号码
      * @param isExecuNoMsm 是否发送无法获取获取位置信息
+     * @param otherFlag 其他需要直接进入到执行位置获取位置信息的情况，默认值：false
      * @return
      */
-    public abstract  boolean executeLockLocateposition(String number,boolean isExecuNoMsm);
+    public abstract  boolean executeLockLocateposition(String number,boolean isExecuNoMsm,boolean otherFlag);
 
     /**
      *执行擦除数据此操作

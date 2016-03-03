@@ -3,6 +3,7 @@ package com.leo.appmaster.mgr.impl;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationRequest;
@@ -12,6 +13,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -41,6 +43,7 @@ import com.leo.appmaster.utils.SimDetecter;
 import com.leo.appmaster.utils.Utilities;
 
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -184,13 +187,13 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         //TODO
         StringBuilder sb = new StringBuilder();
         if (fromId == 0) {
-            sb.append(System.currentTimeMillis()+",本次请求为：sdkwrapper上报请求");
+            sb.append(System.currentTimeMillis() + ",本次请求为：sdkwrapper上报请求");
         } else if (fromId == 1) {
-            sb.append(System.currentTimeMillis()+",本次请求为：发送短信获取位置请求");
+            sb.append(System.currentTimeMillis() + ",本次请求为：发送短信获取位置请求");
         } else if (fromId == 2) {
-            sb.append(System.currentTimeMillis()+",本次请求为：反向地理解析位置请求");
+            sb.append(System.currentTimeMillis() + ",本次请求为：反向地理解析位置请求");
         } else if (fromId == 3) {
-            sb.append(System.currentTimeMillis()+",本次请求为：上报服务器位置请求");
+            sb.append(System.currentTimeMillis() + ",本次请求为：上报服务器位置请求");
         }
         sb.append("\n");
 
@@ -265,8 +268,8 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
         //TODO
         if (mLocation != null) {
-            sb.append(System.currentTimeMillis()+",本次位置信息获取使用Google play service\n");
-            sb.append(System.currentTimeMillis()+",位置信息：google_api,latitude:" + mLocation.getLatitude() + ";google_api,longitude:" + mLocation.getLongitude() + "\n");
+            sb.append(System.currentTimeMillis() + ",本次位置信息获取使用Google play service\n");
+            sb.append(System.currentTimeMillis() + ",位置信息：google_api,latitude:" + mLocation.getLatitude() + ";google_api,longitude:" + mLocation.getLongitude() + "\n");
         }
 
 
@@ -281,7 +284,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
             String provider = PhoneSecurityUtils.getLocateProvider(locationManager);
             LeoLog.i(TAG, "google play service no get location,use location manager provider:" + provider);
-            if (locationManager.isProviderEnabled(provider)) {
+            if (!TextUtils.isEmpty(provider) && locationManager.isProviderEnabled(provider)) {
                 for (int i = 0; i < 5; i++) {
                     location = locationManager.getLastKnownLocation(provider);
                     if (location != null) {
@@ -291,14 +294,14 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             }
 
             //TODO
-            sb.append(System.currentTimeMillis()+",本次位置信息获取使用LocationManager,provider=" + provider + "\n");
+            sb.append(System.currentTimeMillis() + ",本次位置信息获取使用LocationManager,provider=" + provider + "\n");
 
             if (location != null) {
                 LeoLog.i(TAG, "location ,location.getLatitude():" + location.getLatitude() + ",location.getLongitude" + location.getLongitude());
                 LeoLog.d(TAG, "本次位置信息获取使用LocationManager,provider=" + provider);
 
                 //TODO
-                sb.append(System.currentTimeMillis()+",location ,location.getLatitude():" + location.getLatitude() + ",location.getLongitude" + location.getLongitude() + "\n");
+                sb.append(System.currentTimeMillis() + ",location ,location.getLatitude():" + location.getLatitude() + ",location.getLongitude" + location.getLongitude() + "\n");
 
             }
         }
@@ -324,13 +327,13 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             LeoLog.i(TAG, "location is null ! ");
 
             //TODO
-            sb.append(System.currentTimeMillis()+",本次位置信息获取没有结果！\n");
+            sb.append(System.currentTimeMillis() + ",本次位置信息获取没有结果！\n");
 
         } else {
             LeoLog.i(TAG, "location  no is null !");
 
             //TODO
-            sb.append(System.currentTimeMillis()+",http://www.google.com/maps?mrt=loc&q=" + location.getLatitude() + "%2C" + location.getLongitude());
+            sb.append(System.currentTimeMillis() + ",http://www.google.com/maps?mrt=loc&q=" + location.getLatitude() + "%2C" + location.getLongitude());
         }
         final StringBuilder s = sb;
         ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -408,66 +411,73 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     }
 
     @Override
-    public boolean executeLockLocateposition(String number, boolean isExecuNoMsm) {
+    public boolean executeLockLocateposition(String number, boolean isExecuNoMsm,boolean otherFlag) {
 
         long cu1 = System.currentTimeMillis();
-        LeoLog.d("getTime", "executeLockLocateposition:"+mIsLocation);
-        if (!mIsLocation) {
-            LeoLog.i(TAG, "执行位置追踪指令");
-            mIsLocation = true;
-            String sendNumber = null;
-            if (Utilities.isEmpty(number)) {
-            /*如果不指定手机号，默认给防盗号码发送位置信息*/
-                String nameAndnumber = getPhoneSecurityNumber();
-                if (!Utilities.isEmpty(nameAndnumber)) {
-                    String[] numbers = nameAndnumber.split(":");
-                    if (numbers.length >= 2) {
-                        sendNumber = numbers[1];
+        LeoLog.d("getTime", "executeLockLocateposition:" + mIsLocation);
+        if (!mIsLocation || otherFlag) {
+            try {
+                LeoLog.i(TAG, "执行位置追踪指令");
+                mIsLocation = true;
+                String sendNumber = null;
+                if (Utilities.isEmpty(number)) {
+                /*如果不指定手机号，默认给防盗号码发送位置信息*/
+                    String nameAndnumber = getPhoneSecurityNumber();
+                    if (!Utilities.isEmpty(nameAndnumber)) {
+                        String[] numbers = nameAndnumber.split(":");
+                        if (numbers.length >= 2) {
+                            sendNumber = numbers[1];
+                        }
                     }
+                } else {
+                    sendNumber = number;
                 }
-            } else {
-                sendNumber = number;
-            }
-            if (Utilities.isEmpty(sendNumber)) {
-                mIsLocation = false;
-                return false;
-            }
-            String googleMapUri = null;
-            String locatePositionMsm = null;
-            if (!isExecuNoMsm) {
-                googleMapUri = PhoneSecurityManager.getInstance(mContext).securLocateHandler();
-            }
-
-            long cu2 = System.currentTimeMillis();
-            LeoLog.d("getTime","获取经纬度耗时："+(cu2-cu1));
-
-            long cu3 = System.currentTimeMillis();
-
-            if (!Utilities.isEmpty(googleMapUri)) {
-                locatePositionMsm = mContext.getResources().getString(R.string.secur_location_msm, googleMapUri);
-                LeoLog.i(TAG, "执行位置URL=" + locatePositionMsm);
-                try {
-                    PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-                    mgr.sendMessage(sendNumber, locatePositionMsm);
+                if (Utilities.isEmpty(sendNumber)) {
                     mIsLocation = false;
-                    return true;
-                } catch (Exception e) {
+                    return false;
                 }
-            } else {
-                if (isExecuNoMsm) {
-                    String noLocation = mContext.getResources().getString(R.string.secur_send_msm_no_location);
-                    locatePositionMsm = noLocation;
+                String googleMapUri = null;
+                String locatePositionMsm = null;
+                if (!isExecuNoMsm) {
+                    googleMapUri = PhoneSecurityManager.getInstance(mContext).securLocateHandler();
+                }
+
+                long cu2 = System.currentTimeMillis();
+                LeoLog.d("getTime", "获取经纬度耗时：" + (cu2 - cu1));
+
+                long cu3 = System.currentTimeMillis();
+
+                if (!Utilities.isEmpty(googleMapUri)) {
+                    locatePositionMsm = mContext.getResources().getString(R.string.secur_location_msm, googleMapUri);
+                    LeoLog.i(TAG, "执行位置URL=" + locatePositionMsm);
                     try {
                         PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
                         mgr.sendMessage(sendNumber, locatePositionMsm);
+                        LeoLog.d("getTime", "msm content：" + locatePositionMsm);
                         mIsLocation = false;
                         return true;
                     } catch (Exception e) {
                     }
+                } else {
+                    if (isExecuNoMsm) {
+                        String noLocation = mContext.getResources().getString(R.string.secur_send_msm_no_location);
+                        locatePositionMsm = noLocation;
+                        try {
+                            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+                            mgr.sendMessage(sendNumber, locatePositionMsm);
+                            LeoLog.d("getTime", "msm content：" + locatePositionMsm);
+                            mIsLocation = false;
+                            return true;
+                        } catch (Exception e) {
+                        }
+                    }
                 }
+                LeoLog.d("getTime", "获取经纬度后发送短信时间：" + (cu3 - cu2));
+            } catch (Resources.NotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                mIsLocation = false;
             }
-            LeoLog.d("getTime","获取经纬度后发送短信时间："+(cu3-cu2));
-            mIsLocation = false;
         }
         return false;
     }
@@ -663,7 +673,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             mIsOnkey = true;
             try {
                 boolean result = executeLockPhone(false, null, false);
-                boolean resultPostion = executeLockLocateposition(null, false);
+                boolean resultPostion = executeLockLocateposition(null, false,false);
                 boolean resultAlert = executeAlert(false);
                 ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                     @Override

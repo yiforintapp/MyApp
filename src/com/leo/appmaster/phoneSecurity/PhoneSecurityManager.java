@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.text.TextUtils;
 
 import com.leo.analytics.LeoAgent;
 import com.leo.appmaster.ThreadManager;
@@ -29,7 +30,7 @@ import com.leo.appmaster.utils.Utilities;
 
 /**
  * Created by runlee on 15-9-29.
- * <p/>
+ * <p>
  * 手机防盗
  */
 public class PhoneSecurityManager {
@@ -272,7 +273,7 @@ public class PhoneSecurityManager {
 //                        }
 //                    });
 
-                    LeoLog.d("getTime","准备执行位置耗时："+(System.currentTimeMillis()-cu1));
+                    LeoLog.d("getTime", "准备执行位置耗时：" + (System.currentTimeMillis() - cu1));
 
                    /* 选择性执行防盗操作*/
                     chanageExecuteInstructs(body);
@@ -316,7 +317,7 @@ public class PhoneSecurityManager {
             }
             PhoneSecurityManager.getInstance(mContext).setIsExecuteLocate(false);
 
-           new Thread(new Runnable() {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                                                              /*sdk event*/
@@ -327,9 +328,9 @@ public class PhoneSecurityManager {
                 }
             });
 
-            LeoLog.d("getTime","获取位置信息准备2："+(System.currentTimeMillis()-cu1));
+            LeoLog.d("getTime", "获取位置信息准备2：" + (System.currentTimeMillis() - cu1));
 
-            mgr.executeLockLocateposition(null, false);
+            mgr.executeLockLocateposition(null, false, false);
         } else if (SecurityInstructSet.ALERT.equals(body)) {
             /*防盗警报会进入死循环，因此该除需要先删除短信和上报数据在执行*/
             ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -519,13 +520,13 @@ public class PhoneSecurityManager {
     }
 
     /*执行位置指令*/
-    public synchronized void executeLockLocateposition(String number, boolean isExecute) {
+    public synchronized void executeLockLocateposition(String number, boolean isExecut, boolean otherFlag) {
         PhoneSecurityManager psm = PhoneSecurityManager.getInstance(mContext);
         boolean isExeLoca = psm.isIsExecuteLocate();
         if (!isExeLoca) {
             psm.setIsExecuteLocate(true);
             LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            manager.executeLockLocateposition(number, isExecute);
+            manager.executeLockLocateposition(number, isExecut, otherFlag);
         }
     }
 
@@ -539,7 +540,7 @@ public class PhoneSecurityManager {
         String locateUrl = PhoneSecurityUtils.getGoogleMapLocationUri();
 
         long cur2 = System.currentTimeMillis();
-        LeoLog.d("getTime","首次获取位置信息耗时："+(cur2-cur1));
+        LeoLog.d("getTime", "首次获取位置信息耗时：" + (cur2 - cur1));
         if (Utilities.isEmpty(locateUrl)) {
             LocationManager locationManager = getLocationManager();
             if (mLocationListener == null) {
@@ -550,23 +551,27 @@ public class PhoneSecurityManager {
                 setLocationManager(locationManager);
             }
             String provider = PhoneSecurityUtils.getLocateProvider(mLocationManager);
-            locationManager.requestLocationUpdates(provider, PhoneSecurityConstants.LOCATION_MIN_TIME, PhoneSecurityConstants.LOCATION_MIN_DISTANCE, mLocationListener, mContext.getMainLooper());
-            ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
-                @Override
-                public void run() {
-                    LocationManager locationManager = getLocationManager();
-                    if (mLocationListener != null && locationManager != null) {
-                        mLocationManager.removeUpdates(mLocationListener);
-                        mLocationListener = null;
-                        PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, true);
-                        setLocationManager(null);
-                        LeoLog.i(TAG, "移除手机防盗位置改变监听！");
+            if (!TextUtils.isEmpty(provider)) {
+                locationManager.requestLocationUpdates(provider, PhoneSecurityConstants.LOCATION_MIN_TIME, PhoneSecurityConstants.LOCATION_MIN_DISTANCE, mLocationListener, mContext.getMainLooper());
+                ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                    @Override
+                    public void run() {
+                        LocationManager locationManager = getLocationManager();
+                        if (mLocationListener != null && locationManager != null) {
+                            mLocationManager.removeUpdates(mLocationListener);
+                            mLocationListener = null;
+                            PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, true, true);
+                            setLocationManager(null);
+                            LeoLog.i(TAG, "移除手机防盗位置改变监听！");
+                        }
                     }
-                }
-            }, PhoneSecurityConstants.DELAY_REMOVE_LOCATION_TIME);
+                }, PhoneSecurityConstants.DELAY_REMOVE_LOCATION_TIME);
+            } else {
+                PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, true, true);
+            }
         }
         long cur3 = System.currentTimeMillis();
-        LeoLog.d("getTime","获取位置信息总耗时："+(cur3-cur2));
+        LeoLog.d("getTime", "获取位置信息总耗时：" + (cur3 - cur2));
         return locateUrl;
     }
 
@@ -619,7 +624,7 @@ public class PhoneSecurityManager {
                 mLocationListener = null;
                 setLocationManager(null);
             }
-            PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, false);
+            PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, false, true);
         }
     }
 
