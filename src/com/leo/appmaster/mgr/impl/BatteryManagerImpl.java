@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
+import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.battery.BatteryNotifyHelper;
 import com.leo.appmaster.battery.BatteryShowViewActivity;
@@ -37,6 +38,7 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.AppUtil;
@@ -507,9 +509,26 @@ public class BatteryManagerImpl extends BatteryManager {
     public boolean isHome() {
         try {
             List<String> homes = getHomes();
-            ActivityManager mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
-            return homes.contains(rti.get(0).topActivity.getPackageName());
+
+            if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
+                ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
+                if (state.checkAvailable()) {
+                    TaskDetectService service = TaskDetectService.getService();
+                    return homes.contains(service.getLastRunningPackage());
+                } else {
+                    //always inHome
+                    return true;
+                }
+            } else {
+                TaskDetectService service = TaskDetectService.getService();
+                return homes.contains(service.getLastRunningPackage());
+            }
+
+
+//            ActivityManager mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+//            List<ActivityManager.RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
+//            return homes.contains(rti.get(0).topActivity.getPackageName());
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
