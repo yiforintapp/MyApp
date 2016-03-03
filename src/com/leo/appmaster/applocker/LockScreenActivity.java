@@ -3,9 +3,11 @@ package com.leo.appmaster.applocker;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -149,7 +151,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
 
     public static final String TAG = "LockScreenActivity";
-
+    private HomeWatcherReceiver mReceiver;
     private static final String mPrivateLockPck = "com.leo.appmaster";
     public static final String THEME_CHANGE = "lock_theme_change";
     public static final String EXTRA_LOCK_MODE = "extra_lock_type";
@@ -182,7 +184,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private View switch_bottom_content;
     private ImageView mADAnimalEntry;
     private PreferenceTable mPt;
-    private BaseSelfDurationToast mPermissionGuideToast;
+    private static BaseSelfDurationToast mPermissionGuideToast;
     private TextView mTvPermissionTip;
     /**
      * 大banner
@@ -262,6 +264,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_layout);
+        registerHomeKeyReceiver();
         LeoLog.d(TAG, "onCreate...");
         mISManager = (IntrudeSecurityManager) MgrContext
                 .getManager(MgrContext.MGR_INTRUDE_SECURITY);
@@ -568,8 +571,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void tryShowNoPermissionTip() {
 //        Toast.makeText(LockScreenActivity.this, "虚拟按键？ = " + Utilities.hasNavigationBar(this), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(LockScreenActivity.this, Build.VERSION.SDK_INT+"__"+TaskDetectService.sDetectSpecial+"__"+BuildProperties.isLenoveModel(), Toast.LENGTH_SHORT).show();
-        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
-//        if (Build.VERSION.SDK_INT >= 21) {
+//        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
+        if (Build.VERSION.SDK_INT >= 21) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
             if (!state.checkAvailable()) {
 //        if (true) {
@@ -1049,6 +1052,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onDestroy() {
+        if (mReceiver != null) {
+            unregisterHomeKeyReceiver();
+        }
         mLockManager.setPauseScreenonLock(false);
         super.onDestroy();
         if (mAppBaseInfoLayoutbg != null) {
@@ -2110,19 +2116,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 String filterTarget = getfilterTarget(intent);
                 try {
                     startActivity(intent);
-                    mLockManager.filterSelfOneMinites();
-                    if (!TextUtils.isEmpty(filterTarget)) {
-                        mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
-                    }
+//                    mLockManager.filterSelfOneMinites();
+//                    if (!TextUtils.isEmpty(filterTarget)) {
+//                        mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
+//                    }
                     mHasClickGoGrantPermission = true;
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_click");
+                    finish();
                     ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 
                         @Override
                         public void run() {
                             if (mPermissionGuideToast == null) {
                                 mPermissionGuideToast = new BaseSelfDurationToast(LockScreenActivity.this);
-
                             }
                             mPermissionGuideToast.setDuration(1000 * 60 * 2);
                             if (Utilities.hasNavigationBar(LockScreenActivity.this)) {
@@ -2887,6 +2893,42 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
 
+    }
+
+    public class HomeWatcherReceiver extends BroadcastReceiver {
+        private static final String LOG_TAG = "HomeReceiver";
+        private static final String SYSTEM_DIALOG_REASON_KEY = "reason";
+        private static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
+                // android.intent.action.CLOSE_SYSTEM_DIALOGS
+                String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
+                if (SYSTEM_DIALOG_REASON_HOME_KEY.equals(reason)) {
+                    LeoLog.d("HomeReceiver_Lock","received! tryHideToast");
+                    tryHidePermissionGuideToast();
+                }
+            }
+
+        }
+
+    }
+
+    private void registerHomeKeyReceiver() {
+        LeoLog.d("lisHome", "registerHomeKeyReceiver");
+        mReceiver = new HomeWatcherReceiver();
+        final IntentFilter homeFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+
+        registerReceiver(mReceiver, homeFilter);
+    }
+
+    private void unregisterHomeKeyReceiver() {
+        LeoLog.d("lisHome", "unregisterHomeKeyReceiver");
+        if (null != mReceiver) {
+            unregisterReceiver(mReceiver);
+        }
     }
 
 }

@@ -38,6 +38,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.callfilter.CallFIlterUIHelper;
 import com.leo.appmaster.feedback.FeedbackActivity;
@@ -97,6 +98,8 @@ public class IntruderprotectionActivity extends BaseActivity {
             SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                     "assistant", "intruder_cnts");
         }
+//        Intent i = new Intent(this,LockScreenActivity.class);
+//        startActivity(i);
 
         mImanager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         mPDManager = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
