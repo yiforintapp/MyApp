@@ -1,19 +1,17 @@
 package com.leo.appmaster.battery;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import android.content.Context;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 /**
  * Created by stone on 16/2/25.

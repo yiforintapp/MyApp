@@ -1,6 +1,14 @@
 
 package com.leo.appmaster.battery;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,7 +21,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.SystemClock;
@@ -53,7 +60,6 @@ import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.AdWrapperLayout;
 import com.leo.appmaster.ui.ResizableImageView;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -69,14 +75,6 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
@@ -107,8 +105,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public static boolean isExpand = false;
     public static boolean mIsExtraLayout = false;
 
-    private View mTimeContent;
-    private View mBatteryIcon;
     private View mRemainTimeContent;
     private View mRemainContent;
     private BatteryTestViewLayout mSlideView;
@@ -117,7 +113,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mTvBigTime;
     private TextView mTvSmallLeft;
     private TextView mTvSmallRight;
-    private TextView mTvLeftTime;
     //    private TextView mTvTime;
     private SelfScrollView mScrollView;
     private WaveView mBottleWater;
@@ -132,7 +127,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mShowThree;
     private View mRecommandView;
     private View mRecommandContentView;
-    private int mRecommandViewHeight;
     private boolean loadFastThanInit = false;
     private GradientMaskView mMaskView;
 
@@ -148,15 +142,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mPlayHourText;
     private TextView mPlayMin;
     private TextView mPlayMinText;
-
-    private View backOneView;
-    private View backTwoView;
-    private View backThreeView;
-
-    private TextView bottomOneText;
-    private TextView bottomTwoText;
-    private TextView bottomThreeText;
-
 
     private View mRecommandNumOne;
     private View mRecommandNumTwo;
@@ -203,7 +188,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mSwiftyTitle;
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
-    private RippleView mSwiftyBtnLt;
     private RelativeLayout mSwiftyLayout;
 
     /**
@@ -350,7 +334,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mTvSmallRight = (TextView) findViewById(R.id.time_small_right);
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
-        mTvLeftTime = (TextView) findViewById(R.id.left_time);
 
         mBossView = findViewById(R.id.move_boss);
         mBossView.setOnTouchListener(this);
@@ -410,13 +393,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mPlayHourText = (TextView) findViewById(R.id.tv_three_time_two);
         mPlayMin = (TextView) findViewById(R.id.tv_three_time_three);
         mPlayMinText = (TextView) findViewById(R.id.tv_three_time_four);
-
-        backOneView = findViewById(R.id.tv_remain_one_fill);
-        backTwoView = findViewById(R.id.tv_remain_two_fill);
-        backThreeView = findViewById(R.id.tv_remain_three_fill);
-        bottomOneText = (TextView) findViewById(R.id.tv_remain_one);
-        bottomTwoText = (TextView) findViewById(R.id.tv_remain_two);
-        bottomThreeText = (TextView) findViewById(R.id.tv_remain_three);
 
         mBatteryIconView = findViewById(R.id.infos_content);
         mTimeContentAll = findViewById(R.id.time_content);
@@ -572,7 +548,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showViewAfterBoost() {
         mRemainTimeContent.setVisibility(View.VISIBLE);
         mRemainContent.setVisibility(View.VISIBLE);
-        mRecommandViewHeight = mRecommandView.getHeight();
         loadFastThanInit = true;
 
         startRemindTimeAppearAnim();
@@ -630,6 +605,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void expandRecommandContent(final int recommandTypeThree) {
+        if(mActivity == null) return;
         turnDark(recommandTypeThree);
         mRecommandView.clearAnimation();
         mRecommandContentView.setVisibility(View.INVISIBLE);
@@ -660,6 +636,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void fillShowContentData(int recommandTypeThree) {
+        if(mActivity == null) return;
         if (recommandTypeThree == RECOMMAND_TYPE_ONE) {
             List<BatteryAppItem> phoneList = ScreenRecommentJob.getBatteryCallList();
             LeoLog.d("testGetList", "3G通话 size is : " + phoneList.size());
@@ -995,6 +972,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void gotoApp(final BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView) {
+        if(mActivity == null) return;
         String name = null;
         Drawable map = null;
 
@@ -1128,6 +1106,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void shrinkRecommandContent() {
+        if(mActivity == null) return;
         turnLight();
         mRecommandView.clearAnimation();
         mRecommandContentView.setVisibility(View.INVISIBLE);
@@ -1162,7 +1141,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public void onDestroyView() {
         super.onDestroyView();
         releaseAd();
-        mActivity.unregisterReceiver(mPresentReceiver);
+        if(mActivity != null) {
+            mActivity.unregisterReceiver(mPresentReceiver);
+        }
     }
 
     @Override
@@ -1246,7 +1227,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             String action = intent.getAction();
             LeoLog.d("stone_test_browser", "action=" + action);
             if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-                if (mClickRunnable != null) {
+                if (mClickRunnable != null && mActivity != null) {
                     mActivity.finish();
                 }
             } else if (action.equals(Intent.ACTION_USER_PRESENT)) {
@@ -1455,25 +1436,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         List<String> strings = new ArrayList<String>();
         int h = 0;
         int d = 0;
-        int s = 0;
         int temp = second % 3600;
         if (second > 3600) {
             h = second / 3600;
             if (temp != 0) {
                 if (temp > 60) {
                     d = temp / 60;
-                    if (temp % 60 != 0) {
-                        s = temp % 60;
-                    }
-                } else {
-                    s = temp;
                 }
             }
         } else {
             d = second / 60;
-            if (second % 60 != 0) {
-                s = second % 60;
-            }
         }
 
         String hString, dString;
@@ -1588,8 +1560,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveUp() {
-        AnimatorSet animationSet = new AnimatorSet();
-
+        if(mActivity == null) return;
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop());
 
@@ -1611,6 +1582,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveDown() {
+        if(mActivity == null) return;
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop(), mSlideView.getTop() + mMoveDisdance);
         animMoveY.setDuration(ANIMATION_TIME);
@@ -1999,17 +1971,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
 
-    /* AM-3889: 三星5.x的手机从系统锁之外跳转有问题，需要特殊处理 */
-    private boolean samsungLolipopDevice() {
-        LeoLog.d(TAG, "MANUFACTURER: " + Build.MANUFACTURER);
-        LeoLog.d(TAG, "SDK_INT: " + Build.VERSION.SDK_INT);
-        return (Build.MANUFACTURER.equalsIgnoreCase("samsung")
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && Build.VERSION.SDK_INT < 23 /*Marshmallow*/);
-    }
 
     private void handleRunnable() {
-        if (mClickRunnable == null) {
+        if (mClickRunnable == null || mActivity == null) {
             return;
         }
 
@@ -2040,10 +2004,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void loadAd() {
         LeoLog.d(TAG, "loadAd called");
-        mShouldLoadAd = AppMasterPreference.getInstance(mActivity).getADOnScreenSaver() == 1;
+        AppMasterPreference amp = AppMasterPreference.getInstance(AppMasterApplication.getInstance());
+        mShouldLoadAd = amp.getADOnScreenSaver() == 1;
         if (mShouldLoadAd) {
-            mAdSource = AppMasterPreference.getInstance(mActivity).getChargingAdConfig();
-            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, new ADEngineWrapper.WrappedAdListener() {
+            mAdSource = amp.getChargingAdConfig();
+            ADEngineWrapper.getInstance(AppMasterApplication.getInstance()).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, new ADEngineWrapper.WrappedAdListener() {
                 @Override
                 public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
@@ -2354,6 +2319,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private PopupWindow popupWindow;
 
     private void showPopUp(View v) {
+        if(mActivity == null) return;
         View contentView = LayoutInflater.from(mActivity).inflate(
                 R.layout.popmenu_battery_list_item, null);
 

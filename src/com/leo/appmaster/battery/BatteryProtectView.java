@@ -1,36 +1,22 @@
 package com.leo.appmaster.battery;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FailReason;
-import com.leo.imageloader.core.ImageLoadingListener;
-import com.mobvista.sdk.m.core.entity.Campaign;
-
-import java.lang.ref.WeakReference;
 
 
 public class BatteryProtectView {
-    private static final String TAG = "CallFilterToast";
     private static final int API_LEVEL_19 = 19;
 
-    private static Context mContext;
     private static int currSDK_INT = Build.VERSION.SDK_INT;
     private static BatteryMainViewLayout view;
 
@@ -39,18 +25,10 @@ public class BatteryProtectView {
     private String mTime;
     public static boolean isShowing = false;
 
-    private static Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-
-            }
-        }
-    };
 
 
     public static BatteryProtectView makeText(final Context context) {
         final BatteryProtectView result = new BatteryProtectView(context);
-        mContext = context;
         if (!isShowing) {
             LayoutInflater inflater = LayoutInflater.from(context);
             view = (BatteryMainViewLayout)

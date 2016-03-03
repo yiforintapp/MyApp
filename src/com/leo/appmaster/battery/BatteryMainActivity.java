@@ -42,7 +42,6 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CircleArroundView;
 import com.leo.appmaster.ui.CircleArroundView.OnArroundFinishListener;
-import com.leo.appmaster.ui.CircleView;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
@@ -80,14 +79,10 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private WaveView mWvBattery;
     private BatteryBoostResultFragment mFrgmResult;
     private TextView mTvBoostedNumber;
-    private final int TOP_TRANSLUCENT_HEIGHT = DipPixelUtil.dip2px(this, 160);
     private final int TRANSLATE_ANIM_DURATION = 600;
     private ImageView mIvLittleBattery;
     private TextView mTvBottomText;
-    private CircleView mCvFront;
-    private CircleView mCvBack;
     private CircleArroundView mCavMain;
-    private RelativeLayout mRlShield;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +111,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
     
     private void initUI() {
-        mRlShield = (RelativeLayout) findViewById(R.id.rl_shield);
 //        mCvFront = (CircleView) findViewById(R.id.cv_front);
 //        mCvBack = (CircleView) findViewById(R.id.cv_back);
         mCavMain = (CircleArroundView) findViewById(R.id.cav_batterymain);
@@ -247,10 +241,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
     }
 
-    private void disableBoostButton() {
-        mRvBoost.setEnabled(false);
-        mRvBoost.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_radius_shape_disable));
-    }
 
     @Override
     protected void onPause() {
@@ -320,7 +310,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
     private void startFlipAnimation() {
         final float centerX = mIvShield.getWidth() / 2.0f;  
-        final float centerY = mIvShield.getHeight() / 2.0f;  
         final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,  
                 centerX, DipPixelUtil.dip2px(this, 26), 0.0f, true);  
         rotation.setDuration(680);

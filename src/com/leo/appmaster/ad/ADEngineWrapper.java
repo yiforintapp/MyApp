@@ -19,8 +19,6 @@ public class ADEngineWrapper {
     public static final int SOURCE_MOB = AppMasterPreference.AD_SDK_SOURCE_USE_3TH;
     public static final int SOURCE_MAX = AppMasterPreference.AD_SDK_SOURCE_USE_MAX;
 
-    private Context mContext;
-
     private LEOAdEngine mMaxEngine;
     private MobvistaEngine mMobEngine;
 
@@ -41,7 +39,6 @@ public class ADEngineWrapper {
 
     private static ADEngineWrapper sInstance;
     private ADEngineWrapper (Context context) {
-        mContext =  context;
         mMaxEngine = LEOAdEngine.getInstance(context);
         mMobEngine = MobvistaEngine.getInstance(context);
     }

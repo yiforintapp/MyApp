@@ -1,26 +1,15 @@
 package com.leo.appmaster.battery;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.Html;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.tools.animator.Animator;
-import com.leo.tools.animator.AnimatorListenerAdapter;
-import com.leo.tools.animator.ObjectAnimator;
 
 
 public class BatteryTestViewLayout extends RelativeLayout {
-
-    private boolean isScrollable = false;
 
     private GestureDetector mDetector;
     private ScrollBottomListener scrollBottomListener;
@@ -153,6 +142,5 @@ public class BatteryTestViewLayout extends RelativeLayout {
     }
 
     public void setScrollable(boolean flag) {
-        isScrollable = flag;
     }
 }

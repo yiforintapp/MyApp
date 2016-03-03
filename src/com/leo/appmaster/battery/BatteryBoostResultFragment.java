@@ -86,7 +86,7 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
                 int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
                 table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2+1);
                 Intent intent = new Intent(mActivity, WifiSecurityActivity.class);
-                startActivity(intent);
+                mActivity.startActivity(intent);
             }
         } else if (mSwiftyBtnLt == v) {
             if (mActivity != null) {
@@ -104,7 +104,7 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
                 int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
                 table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
                 Intent intent = new Intent(mActivity, CallFilterMainActivity.class);
-                startActivity(intent);
+                mActivity.startActivity(intent);
             }
         }
 

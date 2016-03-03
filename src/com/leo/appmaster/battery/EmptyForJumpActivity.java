@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.utils.LeoLog;
-
 public class EmptyForJumpActivity extends Activity {
 
     @Override

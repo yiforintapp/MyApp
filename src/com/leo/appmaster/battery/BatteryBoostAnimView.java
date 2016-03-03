@@ -4,23 +4,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.tools.animator.Animator;
-import com.leo.tools.animator.AnimatorListenerAdapter;
-import com.leo.tools.animator.AnimatorSet;
-import com.leo.tools.animator.ObjectAnimator;
-import com.leo.tools.animator.ValueAnimator;
-
-import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Jasper on 2016/2/29.
@@ -63,10 +50,14 @@ public class BatteryBoostAnimView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        mBgDrawable.draw(canvas);
+        if(mBgDrawable != null) {
+            mBgDrawable.draw(canvas);
+        }
         canvas.save();
         canvas.rotate(mRotateAngel, getWidth() / 2, getHeight() / 2);
-        mCircleDrawable.draw(canvas);
+        if(mCircleDrawable != null) {
+            mCircleDrawable.draw(canvas);
+        }
         canvas.restore();
 
         mRotateAngel += ROTATE_INTERVAL;

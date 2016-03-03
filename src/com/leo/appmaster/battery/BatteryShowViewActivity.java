@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,20 +19,16 @@ import android.widget.RelativeLayout;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
-import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.ObjectAnimator;
@@ -52,7 +47,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private ViewPager mViewPager;
     private BatteryFragmentHoler[] mFragmentHolders = new BatteryFragmentHoler[1];
 
-    private EmptyFragment emptyFragment;
     private BatteryViewFragment batteryFragment;
 
     public static Boolean isActivityAlive = false;
@@ -61,8 +55,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
     private GuideFragment mGuideFragment;
     private boolean isShowGuide = false;
-
-    private boolean mFinish = false;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -152,7 +144,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     }
 
     public class HomeWatcherReceiver extends BroadcastReceiver {
-        private static final String LOG_TAG = "HomeReceiver";
         private static final String SYSTEM_DIALOG_REASON_KEY = "reason";
         private static final String SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";
         private static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
@@ -313,7 +304,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     @Override
     public void finish() {
         super.finish();
-        mFinish = true;
         LeoLog.d(TAG, "finish");
 
         if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {

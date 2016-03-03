@@ -1,7 +1,6 @@
 package com.leo.appmaster.battery;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
@@ -15,8 +14,6 @@ public class RemainTimeHelper {
 
     // 当充电数据校验了1000次之后算稳定了，或者更多
     private static final int MAX_ESTIMATE_COUNT = 1000;
-    // 计算电量步长
-    private static final int STEP = 3;
 
     private static final String RT_PREFERENCE_KEY = "battery_charge_time_for_";
     private static final int MILLES_IN_SECOND = 1000;
@@ -24,7 +21,6 @@ public class RemainTimeHelper {
     private static final int INITIAL_TIME_IN_SECOND = 100;
 
     private ArrayList<PeriodUnit> mPreferenceList;
-    private HashMap<Integer, Integer> mCurrentMap;
 
     private int mScale;
 
@@ -62,7 +58,6 @@ public class RemainTimeHelper {
         mScale = scale;
         mPreferenceList = new ArrayList<PeriodUnit>();
         loadPreferenceList(scale);
-        mCurrentMap = new HashMap<Integer, Integer>();
     }
 
     private void loadPreferenceList(int scale) {

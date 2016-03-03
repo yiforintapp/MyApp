@@ -21,15 +21,7 @@ public class BatteryMainViewLayout extends RelativeLayout {
     private static final int API_LEVEL_19 = 19;
     private static int currSDK_INT = Build.VERSION.SDK_INT;
     private static View mMoveContent;
-    private boolean mIsCharing = false;
-    private int mBatteryLevel;
-    private String mTime;
-    private View mTimeContent;
     private TextView mTvLevel;
-    private TextView mTvStatus;
-    private TextView mTvBigTime;
-    private TextView mTvSmallLeft;
-    private TextView mTvSmallRight;
     private TextView mTvTime;
 
 
@@ -50,14 +42,9 @@ public class BatteryMainViewLayout extends RelativeLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mMoveContent = findViewById(R.id.move_content);
-        mTimeContent = findViewById(R.id.time_content);
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
-        mTvStatus = (TextView) findViewById(R.id.battery_status);
 
-        mTvBigTime = (TextView) findViewById(R.id.battery_num);
-        mTvSmallLeft = (TextView) findViewById(R.id.battery_num);
-        mTvSmallRight = (TextView) findViewById(R.id.battery_num);
         mTvTime = (TextView) findViewById(R.id.right_time);
 
         fillTime();
@@ -134,10 +121,6 @@ public class BatteryMainViewLayout extends RelativeLayout {
     }
 
     public void notifyUI(boolean isCharing, int level, String time) {
-        mIsCharing = isCharing;
-        mBatteryLevel = level;
-        mTime = time;
-
         if (isCharing) {
             mTvLevel.setVisibility(VISIBLE);
             mTvLevel.setText("电量 : " + level);
