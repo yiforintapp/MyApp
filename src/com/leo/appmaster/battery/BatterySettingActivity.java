@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -34,6 +35,8 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
     private int[] mRemainTimeArr;
     //    private boolean mNotiStatusWhenSwitch = false;
     private BatteryManager mBtrManager;
+    private TextView mChargeCleanTitle; // 自动省电优化开关title
+    private TextView mChargeCleanSummary; // 自动省电优化开关内容
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,8 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
 
             rpBtnThree.setFocusable(true);
             rpBtnThree.setEnabled(true);
+            mChargeCleanTitle.setTextColor(getResources().getColor(R.color.c2));
+            mChargeCleanSummary.setTextColor(getResources().getColor(R.color.c4));
             boolean isBatteryPowSavOpen = mBtrManager.getBatteryPowSavStatus();
             if (isBatteryPowSavOpen) {
                 checkBoxThree.setImageResource(R.drawable.switch_on);
@@ -74,7 +79,9 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
 
             rpBtnThree.setFocusable(false);
             rpBtnThree.setEnabled(false);
-            checkBoxThree.setImageResource(R.drawable.switch_off);
+            checkBoxThree.setImageResource(R.drawable.switch_untouch);
+            mChargeCleanTitle.setTextColor(getResources().getColor(R.color.cgy));
+            mChargeCleanSummary.setTextColor(getResources().getColor(R.color.cgy));
         }
 
         boolean isBatteryNotiOpen = mBtrManager.getBatteryNotiStatus();
@@ -104,6 +111,8 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
         rpBtnTwo.setOnClickListener(this);
 
         rpBtnThree = (RippleView) findViewById(R.id.rv_item_pow_sav);
+        mChargeCleanTitle = (TextView) findViewById(R.id.tv_title_pow_sav);
+        mChargeCleanSummary = (TextView) findViewById(R.id.tv_summary_pow_sav);
         rpBtnThree.setOnClickListener(this);
 
         checkBox = (ImageView) findViewById(R.id.iv_switch_screenview);
@@ -166,6 +175,8 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                     }
                     rpBtnThree.setFocusable(true);
                     rpBtnThree.setEnabled(true);
+                    mChargeCleanTitle.setTextColor(getResources().getColor(R.color.c2));
+                    mChargeCleanSummary.setTextColor(getResources().getColor(R.color.c4));
 
                 } else {
                     if (mConfirmCloseDialog == null) {
@@ -182,9 +193,11 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                             SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
                                     "batterypage", "setting_scr_off");
 
-                            checkBoxThree.setImageResource(R.drawable.switch_off);
+                            checkBoxThree.setImageResource(R.drawable.switch_untouch);
                             rpBtnThree.setFocusable(false);
                             rpBtnThree.setEnabled(false);
+                            mChargeCleanTitle.setTextColor(getResources().getColor(R.color.cgy));
+                            mChargeCleanSummary.setTextColor(getResources().getColor(R.color.cgy));
 
                             mConfirmCloseDialog.dismiss();
                         }
