@@ -40,7 +40,7 @@ public class RemainingTimeEstimator {
     /* 参考设备：华为P7 */
     private static final int REFERENT_CAPACITY = 2460;
     private static final int REFERENT_PROCESSOR_NUMBER = 4;
-    private static final double REFERENT_SCREEN_SIZE = 4.33f;
+    private static final double REFERENT_SCREEN_SIZE = 4.35f;
     /* 100->99, 99->98, 98->97, .... 1->0 的时间值 */
     private static final int[][] REFERENT_TIMES = {
         /* 通话时间 */
@@ -129,7 +129,7 @@ public class RemainingTimeEstimator {
     private void calScreenCoe (Context context) {
         screenSize = getDeviceScreenSize(context);
         mScreenCoe = 1.0f +
-                (float) ((REFERENT_SCREEN_SIZE-screenSize)/(REFERENT_SCREEN_SIZE*50));
+                (float) ((REFERENT_SCREEN_SIZE-screenSize)/(REFERENT_SCREEN_SIZE*20));
     }
 
     /***
@@ -158,7 +158,7 @@ public class RemainingTimeEstimator {
     }
 
     private boolean reasonableScreenSize (double screenSize) {
-        if (screenSize < 1.0f || screenSize > 100.0f) {
+        if (screenSize < 1.0f || screenSize > 80.0f) {
             return false;
         }
         return true;
