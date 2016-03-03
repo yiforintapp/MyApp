@@ -29,9 +29,8 @@
 
     <RelativeLayout
         android:id="@+id/time_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/batteryscreen_clock_margintop_bay">
 
         <!-- 时间 -->
@@ -39,7 +38,8 @@
             android:id="@+id/time_move_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
+            android:layout_centerInParent="true"
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/time_big"
@@ -84,7 +84,8 @@
             android:layout_height="56dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/time_move_content">
+            android:layout_toRightOf="@id/time_move_content"
+            android:visibility="invisible">
 
             <!-- 电池 -->
             <RelativeLayout

@@ -131,9 +131,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mShowOne;
     private View mShowTwo;
     private View mShowThree;
-    private TextView mTvShowOne;
-    private TextView mTvShowTwo;
-    private TextView mTvShowThree;
     private View mRecommandView;
     private View mRecommandContentView;
     private int mRecommandViewHeight;
@@ -176,6 +173,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private TextView mRecommandTvTwo;
     private TextView mRecommandTvThree;
     private TextView mRecommandTvFour;
+
+    private View mBatteryIconView;
+    private View mTimeContentAll;
+    private View mTimeContentView;
 
     private long mInitTime;
 
@@ -416,6 +417,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         bottomTwoText = (TextView) findViewById(R.id.tv_remain_two);
         bottomThreeText = (TextView) findViewById(R.id.tv_remain_three);
 
+        mBatteryIconView = findViewById(R.id.infos_content);
+        mTimeContentAll = findViewById(R.id.time_content);
+        mTimeContentView = findViewById(R.id.time_move_content);
+
         mPackages = mActivity.getPackageManager().getInstalledPackages(0);
 
         mShowOne = findViewById(R.id.remain_one);
@@ -454,24 +459,111 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void initBoostLayout() {
         if (PrefTableHelper.shouldBatteryBoost()) {
-//        if (false) {
+//        if (true) {
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
 
             mRemainTimeContent.setVisibility(View.INVISIBLE);
             mRemainContent.setVisibility(View.INVISIBLE);
             mBossView.setVisibility(View.INVISIBLE);
+            mTimeContentView.setVisibility(View.VISIBLE);
 
             mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
                 @Override
                 public void onBoostFinish() {
                     PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
+                    checkingData(true);
                     showViewAfterBoost();
                 }
             });
         } else {
+            checkingData(false);
             showViewAfterBoost();
         }
+    }
+
+    private void checkingData(boolean checking) {
+        if (checking) {
+            mTimeContentView.post(new Runnable() {
+                @Override
+                public void run() {
+                    ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mTimeContentAll,
+                            "x", mTimeContentAll.getLeft(), mTimeContentAll.getLeft() - mTimeContentView.getWidth() / 2);
+                    animMoveY.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mBatteryIconView.setVisibility(View.VISIBLE);
+                            bayIconTurnBig();
+                        }
+                    });
+
+                    animMoveY.setDuration(500);
+                    animMoveY.start();
+                }
+            });
+        } else {
+            mTimeContentView.post(new Runnable() {
+                @Override
+                public void run() {
+                    ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mTimeContentAll,
+                            "x", mTimeContentAll.getLeft(), mTimeContentAll.getLeft() - mTimeContentView.getWidth() / 2);
+                    animMoveY.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mTimeContentView.setVisibility(View.VISIBLE);
+                            mBatteryIconView.setVisibility(View.VISIBLE);
+                            topContentTurnBig();
+                        }
+                    });
+
+                    animMoveY.setDuration(500);
+                    animMoveY.start();
+                }
+            });
+        }
+    }
+
+    private void bayIconTurnBig() {
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mBatteryIconView,
+                "scaleX", 0f, 1.0f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mBatteryIconView,
+                "scaleY", 0f, 1.0f);
+        ObjectAnimator anim22 = ObjectAnimator.ofFloat(mBatteryIconView,
+                "alpha", 0f, 1f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(500);
+        set.play(anim20).with(anim21);
+        set.play(anim21).with(anim22);
+        set.start();
+    }
+
+    private void topContentTurnBig() {
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mTimeContentAll,
+                "scaleX", 0f, 1.0f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mTimeContentAll,
+                "scaleY", 0f, 1.0f);
+        ObjectAnimator anim22 = ObjectAnimator.ofFloat(mTimeContentAll,
+                "alpha", 0f, 1f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(500);
+        set.play(anim20).with(anim21);
+        set.play(anim21).with(anim22);
+        set.start();
     }
 
     private void showViewAfterBoost() {

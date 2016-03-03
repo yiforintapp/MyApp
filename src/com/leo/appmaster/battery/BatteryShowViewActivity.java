@@ -395,7 +395,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             mBatteryManager.showSaverNotification(level);
         }
 
-        mViewPager.setCurrentItem(0);
+        finish();
     }
 
     public void onEvent(AppUnlockEvent event) {
