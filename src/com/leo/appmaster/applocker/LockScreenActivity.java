@@ -1284,6 +1284,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
 					if (campaign != null && deleteRedundant(unitId, campaign)) {
 						/* 开始load 广告大图 */
+                        LeoLog.d("STONE_AD_DEBUG", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
 						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
 							@Override
 							public void onLoadingStarted(String imageUri, View view) {
@@ -1324,12 +1325,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 									mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
 									mBannerContainer.setAdapter(mAdapterCycle);
 									if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
-										mBannerContainer.setCurrentItem(1, false);
+										/* 第一个广告直接出现 */
+                                        mBannerContainer.setCurrentItem(1, false);
 										mAdapterCycle.setLasterSlectedPage(1);
 										showAdAnimaiton();
 										delayBannerHideAnim();
 										hideIconAndPswTips();
 									} else {
+                                        /* 广告隐藏在右边 */
 										mBannerContainer.setVisibility(View.VISIBLE);
 										mBannerContainer.setCurrentItem(0, false);
 										mAdapterCycle.setLasterSlectedPage(0);
@@ -1364,6 +1367,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					if (unitID != null && unitID.equals(mBannerAdids[0])) {
 						otherAdSwitcher = false;
 					}
+
+
 
 					// 干掉旧广告？ - onResume()的时候会重新拉取
 //					try {

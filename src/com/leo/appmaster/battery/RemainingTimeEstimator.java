@@ -1,10 +1,17 @@
 package com.leo.appmaster.battery;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.leo.appmaster.utils.LeoLog;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Created by stone on 16/2/25.
@@ -75,12 +82,43 @@ public class RemainingTimeEstimator {
         }
     };
 
+    private float mCapacityCoe = 1.0f;
+    private float mProcessorCoe = 1.0f;
+    private float mScreenCoe = 1.0f;
+    private float mFinalCoe = 1.0f;
+
     public RemainingTimeEstimator(Context context) {
-        capacity = (int) getDeviceBatteryCapacity(context);
+        /* 计算策略 */
+        calCapacityCoe(context);
+        calProcessorCoe();
+        calScreenCoe(context);
+        mFinalCoe = mCapacityCoe*mProcessorCoe*mScreenCoe;
+
+        LeoLog.d(TAG, "CAPACITY=" + REFERENT_CAPACITY + "; CPU_NUMBER="
+                + REFERENT_PROCESSOR_NUMBER + "; SCREEN_SIZE=" + REFERENT_SCREEN_SIZE);
+        LeoLog.d(TAG, "capacity=" + capacity + "; processorNumber="
+                + processorNumber + "; screenSize=" + screenSize);
+        LeoLog.d(TAG, "mCapacityCoe="+mCapacityCoe+"; mProcessorCoe="
+                +mProcessorCoe+"; mScreenCoe="+mScreenCoe);
+        LeoLog.d(TAG, "mFinalCoe = " + mFinalCoe);
+    }
+
+    private void calCapacityCoe (Context context) {
+        capacity = getDeviceBatteryCapacity(context);
+        mCapacityCoe = (float) ((float)capacity/(float)REFERENT_CAPACITY);
+    }
+
+    private void calProcessorCoe () {
         processorNumber = getDeviceProcessorNumber();
+        mProcessorCoe = 1.0f +
+                (float)(REFERENT_PROCESSOR_NUMBER-processorNumber)
+                        /(float)(REFERENT_PROCESSOR_NUMBER*100);
+    }
+
+    private void calScreenCoe (Context context) {
         screenSize = getDeviceScreenSize(context);
-        LeoLog.d(TAG, "capacity="+capacity+"; processorNumber="
-                +processorNumber + "; screenSize="+screenSize);
+        mScreenCoe = 1.0f +
+                (float) ((REFERENT_SCREEN_SIZE-screenSize)/(REFERENT_SCREEN_SIZE*50));
     }
 
     /***
@@ -105,15 +143,45 @@ public class RemainingTimeEstimator {
         for (int i=MAX_UNIFY_LEVEL-unifyLevel;i<REFERENT_TIMES[scene].length;i++) {
             time += REFERENT_TIMES[scene][i];
         }
-        return time;
+        return (int) (time*mFinalCoe);
+    }
+
+    private boolean reasonableScreenSize (double screenSize) {
+        if (screenSize < 1.0f || screenSize > 100.0f) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean reasonableCapacity (int capacity) {
+        if (capacity < 1000 || capacity > 10000) {
+            return false;
+        }
+        return true;
     }
 
     /* private methods */
-    private double getDeviceBatteryCapacity(Context context) {
+    private int getDeviceBatteryCapacity(Context context) {
+        /* load battery_capacity.properties */
+        long start = SystemClock.elapsedRealtime();
+        Properties prop = new Properties();
+        try {
+            prop.load(context.getResources().getAssets().open("battery_capacity.properties"));
+            String cap = prop.getProperty(Build.MODEL, "-1");
+            LeoLog.d(TAG, Build.MODEL + " has battery with " + cap + " mAh");
+            int capInt = Integer.parseInt(cap);
+            if (capInt > 0) {
+                return capInt;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            LeoLog.d(TAG, "Fail to read properties file -> " + e.getLocalizedMessage());
+        }
+        LeoLog.d(TAG, "parse properties file done cost -> " + (SystemClock.elapsedRealtime()-start) + "ms");
+
+        /* 使用反射获取，有些厂家在这里随便填一个值，结果也会不准确 */
         Object mPowerProfile_ = null;
-
         final String POWER_PROFILE_CLASS = "com.android.internal.os.PowerProfile";
-
         try {
             mPowerProfile_ = Class.forName(POWER_PROFILE_CLASS)
                     .getConstructor(Context.class).newInstance(context);
@@ -129,8 +197,13 @@ public class RemainingTimeEstimator {
                     .forName(POWER_PROFILE_CLASS)
                     .getMethod("getAveragePower", java.lang.String.class)
                     .invoke(mPowerProfile_, "battery.capacity");
-            LeoLog.d("stone_battery", "batteryCapacity=" + batteryCapacity);
-            return batteryCapacity;
+            int intValue = (int) batteryCapacity;
+            LeoLog.d(TAG, "reflection capacity =" + batteryCapacity);
+            if (reasonableCapacity(intValue)) {
+                return intValue;
+            } else {
+                return REFERENT_CAPACITY;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,7 +214,7 @@ public class RemainingTimeEstimator {
         return Runtime.getRuntime().availableProcessors();
     }
 
-    public double getDeviceScreenSize (Context context) {
+    private double getDeviceScreenSize (Context context) {
         try {
             DisplayMetrics dm = new DisplayMetrics();
             WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -155,7 +228,11 @@ public class RemainingTimeEstimator {
             double y = Math.pow(hi, 2);
             double screenInches = Math.sqrt(x + y);
             LeoLog.d(TAG, "screenInches=" + screenInches + "; width=" + width + "; height=" + height);
-            return screenInches;
+            if (reasonableScreenSize(screenInches)) {
+                return screenInches;
+            } else {
+                return REFERENT_SCREEN_SIZE;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
