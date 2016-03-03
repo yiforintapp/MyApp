@@ -41,10 +41,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Jasper on 2016/3/1.
  */
 public class BatteryBoostController extends RelativeLayout {
-    private static final String TAG = "BatteryBoostContainer";
+    private static final String TAG = "BatteryBoostController";
 
     private static final int BOOST_SIZE = 8;
-    private static final int BOOST_ITEM_DURATION = 1500;
+    private static final int BOOST_ITEM_DURATION = 350;
     private static final int MIN_BOOST_NUM = 5;
     private ImageView mShieldIv;
     private CircleArroundView mShieldCircle;
@@ -109,8 +109,6 @@ public class BatteryBoostController extends RelativeLayout {
     }
 
     public void startBoost() {
-        Drawable drawable = getContext().getResources().getDrawable(R.drawable.ic_launcher);
-
         List<AppItemInfo> list = AppLoadEngine.getInstance(getContext()).getAllPkgInfo();
         List<AppItemInfo> appItemInfos = new ArrayList<AppItemInfo>(BOOST_SIZE);
         if (list.size() > BOOST_SIZE) {
@@ -131,7 +129,12 @@ public class BatteryBoostController extends RelativeLayout {
             appItemInfos.addAll(list);
         }
 
-        startTranslate(mAnimIv1, appItemInfos.iterator());
+        Iterator<AppItemInfo> iterator = appItemInfos.iterator();
+        final AppItemInfo itemInfo = iterator.next();
+        iterator.remove();
+        mAnimIv1.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
+        Animator animatorSet = getTotalAnimator(iterator, mAnimIv1, true);
+        animatorSet.start();
 
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
@@ -152,126 +155,66 @@ public class BatteryBoostController extends RelativeLayout {
         mListener = listener;
     }
 
-    private void startTranslate(final ImageView target, final Iterator<AppItemInfo> iterator) {
-        if (!iterator.hasNext()) {
-            return;
-        }
-        AppItemInfo itemInfo = iterator.next();
-        iterator.remove();
-
-        final boolean hasNext = iterator.hasNext();
-        float translation = getTranslation();
-        LeoLog.d(TAG, "startTranslate, translation: " + translation);
-
-        float start = -translation;
-        float end = translation;
-
-        target.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
-        ObjectAnimator iv1Anim = ObjectAnimator.ofFloat(target, "translationY", start, 0f, end);
-        iv1Anim.addListener(new AnimatorListenerAdapter() {
+    private void continueTranslateDelay(final ImageView target, final Iterator iterator) {
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                LeoLog.d(TAG, "onAnimationEnd, add target: " + target);
-                target.setVisibility(View.INVISIBLE);
-                if (!hasNext) {
-                    onBoostFinish();
-                    return;
+            public void run() {
+                Animator continueSet = null;
+                if (iterator.hasNext()) {
+                    ImageView next = getNext(target);
+                    AppItemInfo itemInfo = (AppItemInfo) iterator.next();
+                    iterator.remove();
+                    next.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
+
+                    continueSet = getTotalAnimator(iterator, next, true);
                 }
-                startTranslate(getTargetNextGroup(target), iterator);
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                target.setVisibility(View.VISIBLE);
-            }
-        });
-        iv1Anim.setInterpolator(new LinearInterpolator());
-        iv1Anim.setDuration(BOOST_ITEM_DURATION);
-
-        AnimatorSet animatorSet = getTotalAnimator(iv1Anim, target);
-        animatorSet.start();
-        startTranslatePaired(target, iterator);
-    }
-
-    private void startTranslatePaired(ImageView target, final Iterator<AppItemInfo> iterator) {
-        if (!iterator.hasNext()) {
-            return;
-        }
-
-        AppItemInfo itemInfo = iterator.next();
-        iterator.remove();
-
-        final boolean hasNext = iterator.hasNext();
-        float translation = getTranslation();
-        LeoLog.d(TAG, "startTranslatePaired, translation: " + translation);
-
-        float start = -translation;
-        float end = translation;
-        final ImageView nextTarget = getTargetCurrentGroup(target);
-        nextTarget.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
-        ObjectAnimator iv2Anim = ObjectAnimator.ofFloat(nextTarget, "translationY", start, end);
-        iv2Anim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                nextTarget.setVisibility(View.INVISIBLE);
-                if (!hasNext) {
-                    onBoostFinish();
+                Animator nextAnimator = getTotalAnimator(iterator, target, false);
+                AnimatorSet animatorSet = null;
+                if (continueSet != null) {
+                    animatorSet = new AnimatorSet();
+                    animatorSet.playTogether(continueSet, nextAnimator);
+                    animatorSet.start();
+                } else {
+                    nextAnimator.start();
                 }
             }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                nextTarget.setVisibility(View.VISIBLE);
-            }
-        });
-        iv2Anim.setInterpolator(new LinearInterpolator());
-        iv2Anim.setDuration(BOOST_ITEM_DURATION);
-
-        AnimatorSet animatorSet = getTotalAnimator(iv2Anim, nextTarget);
-        animatorSet.setStartDelay(BOOST_ITEM_DURATION / 2);
-        animatorSet.start();
+        }, 100);
     }
 
-    private AnimatorSet getTotalAnimator(ObjectAnimator animator, ImageView target) {
+    private Animator getTotalAnimator(Iterator iterator, ImageView target, final boolean isUp) {
+        float translation = getTranslation();
+        float transFrom = 0;
+        float transTo = translation;
+        if (isUp) {
+            transFrom = -translation;
+            transTo = 0;
+        }
+
+        ObjectAnimator transAnim = ObjectAnimator.ofFloat(target, "translationY", transFrom, transTo);
+
         float alpha = 0.5f;
-        ObjectAnimator alpha1 = ObjectAnimator.ofFloat(target, "alpha", alpha, 1f);
-        alpha1.setInterpolator(new LinearInterpolator());
-        alpha1.setDuration(BOOST_ITEM_DURATION / 2);
+        ObjectAnimator alphaAnim = null;
+        if (isUp) {
+            alphaAnim = ObjectAnimator.ofFloat(target, "alpha", alpha, 1f);
+        } else {
+            alphaAnim = ObjectAnimator.ofFloat(target, "alpha", 1f, alpha);
+        }
 
-        ObjectAnimator alpha2 = ObjectAnimator.ofFloat(target, "alpha", 1f, alpha);
-        alpha2.setInterpolator(new LinearInterpolator());
-        alpha2.setDuration(BOOST_ITEM_DURATION / 2);
-        AnimatorSet alphaSet = new AnimatorSet();
-        alphaSet.playSequentially(alpha1, alpha2);
-
-        float scale = 0.5f;
-        ObjectAnimator scaleX1 = ObjectAnimator.ofFloat(target, "scaleX", scale, 1f);
-        scaleX1.setInterpolator(new LinearInterpolator());
-        scaleX1.setDuration(BOOST_ITEM_DURATION / 2);
-        ObjectAnimator scaleY1 = ObjectAnimator.ofFloat(target, "scaleY", scale, 1f);
-        scaleY1.setInterpolator(new LinearInterpolator());
-        scaleY1.setDuration(BOOST_ITEM_DURATION / 2);
-        AnimatorSet scale1Set = new AnimatorSet();
-        scale1Set.playTogether(scaleX1, scaleY1);
-
-        ObjectAnimator scaleX2 = ObjectAnimator.ofFloat(target, "scaleX", 1f, scale);
-        scaleX2.setInterpolator(new LinearInterpolator());
-        scaleX2.setDuration(BOOST_ITEM_DURATION / 2);
-        ObjectAnimator scaleY2 = ObjectAnimator.ofFloat(target, "scaleY", 1f, scale);
-        scaleY2.setInterpolator(new LinearInterpolator());
-        scaleY2.setDuration(BOOST_ITEM_DURATION / 2);
-        AnimatorSet scale2Set = new AnimatorSet();
-        scale2Set.playTogether(scaleX2, scaleY2);
-
-        AnimatorSet scaleSet = new AnimatorSet();
-        scaleSet.playSequentially(scale1Set, scale2Set);
+        float scale = 0.8f;
+        float scaleFrom = 1.2f;
+        float scaleTo = scale;
+        if (isUp) {
+            scaleFrom = scale;
+            scaleTo = 1.2f;
+        }
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, "scaleX", scaleFrom, scaleTo);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, "scaleY", scaleFrom, scaleTo);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(animator, alphaSet, scaleSet);
+        animatorSet.playTogether(transAnim, alphaAnim, scaleX, scaleY);
+        animatorSet.setDuration(BOOST_ITEM_DURATION);
+        animatorSet.setInterpolator(new LinearInterpolator());
+        animatorSet.addListener(new AnimatorAdapter(iterator, target, isUp));
 
         return animatorSet;
     }
@@ -282,6 +225,20 @@ public class BatteryBoostController extends RelativeLayout {
 
     private ImageView getTargetNextGroup(ImageView target) {
         return target == mAnimIv1 ? mAnimIv3 : mAnimIv1;
+    }
+
+    private ImageView getNext(ImageView target) {
+        if (mAnimIv1 == target) {
+            return mAnimIv2;
+        } else if (mAnimIv2 == target) {
+            return mAnimIv3;
+        } else if (mAnimIv3 == target) {
+            return mAnimIv4;
+        } else if (mAnimIv4 == target) {
+            return mAnimIv1;
+        }
+        return null;
+//        return target == mAnimIv1 ? mAnimIv2 : mAnimIv1;
     }
 
     private void onBoostFinish() {
@@ -344,5 +301,36 @@ public class BatteryBoostController extends RelativeLayout {
         int harfH = mBoostRl.getHeight() / 2;
         int padding = getPaddingTop();
         return harfH - padding;
+    }
+
+    private class AnimatorAdapter extends AnimatorListenerAdapter {
+        private Iterator iterator;
+        private boolean isUp;
+        private ImageView target;
+        public AnimatorAdapter(Iterator iterator, ImageView target, boolean isUp) {
+            this.iterator = iterator;
+            this.isUp = isUp;
+            this.target = target;
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationStart(animation);
+            LeoLog.d(TAG, "onAnimationEnd, target: " + target);
+            if (!iterator.hasNext()) {
+                onBoostFinish();
+                return;
+            }
+            if (isUp) {
+                continueTranslateDelay(target, iterator);
+            }
+        }
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+            super.onAnimationEnd(animation);
+            target.setVisibility(View.VISIBLE);
+            LeoLog.d(TAG, "onAnimationStart, target: " + target);
+        }
     }
 }

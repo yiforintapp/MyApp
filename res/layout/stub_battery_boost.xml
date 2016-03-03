@@ -22,28 +22,28 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/boost_anim_iv2"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/boost_anim_iv3"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/boost_anim_iv4"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <com.leo.appmaster.battery.BatteryBoostAnimView
@@ -82,7 +82,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/boost_anim_containor"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:textSize="@dimen/f5"
+        android:textColor="@color/c1"
+        android:layout_marginTop="50dp"
         android:text="@string/battery_boosting" />
 
 </com.leo.appmaster.battery.BatteryBoostController>
