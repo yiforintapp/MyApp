@@ -101,7 +101,7 @@ public class LEOAdEngine {
         // 必须初始化
         MaxSdk.init(ctx, "appmaster");
 
-        mAppContext = ctx;
+        mAppContext = ctx.getApplicationContext();
         mPref = AppMasterPreference.getInstance(ctx);
         mLEOLoadedNatives = new HashMap<String, LeoCompositeData>();
         mLeoListeners = new HashMap<String, LeoListener>();

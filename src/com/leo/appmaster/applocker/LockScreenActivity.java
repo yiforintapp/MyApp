@@ -305,12 +305,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         initUI();
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mobvistaCheck();
-            }
-        }, 1500);
+//        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mobvistaCheck();
+//            }
+//        }, 1500);
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
@@ -2220,8 +2220,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // wallAd.clickWall();
                 mAmp.setIsADAppwallNeedUpdate(false);
                 try {
-                    Intent mWallIntent = wallAd.getWallIntent();
-                    startActivity(mWallIntent);
+//                    Intent mWallIntent = wallAd.getWallIntent();
+//                    startActivity(mWallIntent);
+                    wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+                    wallAd.preloadWall();
+                    wallAd.clickWall();
                 } catch (Exception e) {
                 }
                 if (!mHaveNewThings && !clickShakeIcon) {

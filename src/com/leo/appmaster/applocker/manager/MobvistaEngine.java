@@ -142,7 +142,7 @@ public class MobvistaEngine {
     }
 
     private MobvistaEngine(Context ctx) {
-        mAppContext = ctx;
+        mAppContext = ctx.getApplicationContext();
         mPref = AppMasterPreference.getInstance(mAppContext);
         mMobvistaMap = new HashMap<String, MobvistaAdData>();
         mMobvistaListeners = new HashMap<String, MobvistaListener>();
