@@ -34,6 +34,9 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.ObjectAnimator;
 
 
 public class BatteryShowViewActivity extends BaseFragmentActivity implements BatteryManager.BatteryStateListener, ViewPager.OnPageChangeListener {
@@ -395,7 +398,24 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             mBatteryManager.showSaverNotification(level);
         }
 
-        finish();
+        mBatterViewBg.post(new Runnable() {
+            @Override
+            public void run() {
+                ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatterViewBg,
+                        "y", mBatterViewBg.getTop(), mBatterViewBg.getTop() - mBatterViewBg.getHeight());
+                animMoveY.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        finish();
+                    }
+                });
+                animMoveY.setDuration(200);
+                animMoveY.start();
+            }
+        });
+
+//        finish();
     }
 
     public void onEvent(AppUnlockEvent event) {
