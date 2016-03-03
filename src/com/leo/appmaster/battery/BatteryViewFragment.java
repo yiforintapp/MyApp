@@ -567,44 +567,63 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showViewAfterBoost() {
-        mRecommandView.post(new Runnable() {
+        mRemainTimeContent.setVisibility(View.VISIBLE);
+        mRemainContent.setVisibility(View.VISIBLE);
+        mRecommandViewHeight = mRecommandView.getHeight();
+        loadFastThanInit = true;
+
+        startRemindTimeAppearAnim();
+
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mRemainTimeContent.setVisibility(View.VISIBLE);
-                mRemainContent.setVisibility(View.VISIBLE);
-                mRecommandViewHeight = mRecommandView.getHeight();
-                loadFastThanInit = true;
-                expandRecommandContent(RECOMMAND_TYPE_TWO);
-            }
-        });
-
-        if (mRootView != null) {
-            try {
-                loadAd();
-            } catch (Exception e) {
-                LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
-                if (e != null) {
-                    LeoLog.e(TAG, e.getLocalizedMessage());
+                try {
+                    // 将加速动画view从父布局里移除，降低屏幕渲染压力
+                    ViewGroup viewGroup = (ViewGroup) mBoostView.getParent();
+                    viewGroup.removeView(mBoostView);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        }
+        }, 1000);
+    }
 
-        try {
-            if (mRootView != null) {
-                initSwiftyLayout(mRootView);
-                initExtraLayout(mRootView);
+    private void startRemindTimeAppearAnim() {
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(mRemainContent, "alpha", 0f, 255f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mRemainContent, "scaleX", 0.8f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mRemainContent, "scaleY", 0.8f, 1f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(500);
+        animatorSet.playTogether(alpha, scaleX, scaleY);
+        animatorSet.start();
+
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                expandRecommandContent(RECOMMAND_TYPE_TWO);
+                if (mRootView != null) {
+                    try {
+                        loadAd();
+                    } catch (Exception e) {
+                        LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
+                        if (e != null) {
+                            LeoLog.e(TAG, e.getLocalizedMessage());
+                        }
+                    }
+                }
+
+                try {
+                    if (mRootView != null) {
+                        initSwiftyLayout(mRootView);
+                        initExtraLayout(mRootView);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            // 将加速动画view从父布局里移除，降低屏幕渲染压力
-            ViewGroup viewGroup = (ViewGroup) mBoostView.getParent();
-            viewGroup.removeView(mBoostView);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     private void expandRecommandContent(final int recommandTypeThree) {

@@ -333,6 +333,7 @@ public class BatteryBoostController extends RelativeLayout {
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                setVisibility(View.INVISIBLE);
                 if (mListener != null) {
                     mListener.onBoostFinish();
                 }
