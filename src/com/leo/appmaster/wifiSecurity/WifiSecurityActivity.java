@@ -504,6 +504,15 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
+        if (mDialogAskCreateShotcut != null && mDialogAskCreateShotcut.isShowing()) {
+            mDialogAskCreateShotcut.dismiss();
+            mDialogAskCreateShotcut = null;
+        }
+
+        if (selectWifiDialog != null && selectWifiDialog.isShowing()) {
+            selectWifiDialog.dismiss();
+            selectWifiDialog = null;
+        }
     }
 
     private void setWifiName(boolean connectWifi) {
