@@ -629,6 +629,7 @@
                 android:id="@+id/move_arrow"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
+                android:visibility="invisible"
                 android:background="@color/transparent">
 
                 <ImageView
