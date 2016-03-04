@@ -1,6 +1,7 @@
 package com.leo.appmaster.ad;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -69,7 +70,7 @@ public class LEOAdEngine {
     
     private Map<String, LeoCompositeData> mLEOLoadedNatives;
     private Map<String, LeoListener> mLeoListeners;
-    private Map<String, LEONativeAd> mLeoLoadingNatives;
+    private Map<String, LeoLoadingNative> mLeoLoadingNatives;
 
     private Map<String, String> mUnitIdToPlacementIdMap;
 
@@ -105,7 +106,7 @@ public class LEOAdEngine {
         mPref = AppMasterPreference.getInstance(ctx);
         mLEOLoadedNatives = new HashMap<String, LeoCompositeData>();
         mLeoListeners = new HashMap<String, LeoListener>();
-        mLeoLoadingNatives = new HashMap<String, LEONativeAd>();
+        mLeoLoadingNatives = new HashMap<String, LeoLoadingNative>();
 
         mUnitIdToPlacementIdMap = new HashMap<String, String>();
         mUnitIdToPlacementIdMap.put(LEOAdManager.UNIT_ID_LOCK, LEOAdManager.PLACEMENTID_LOCK);
@@ -135,7 +136,10 @@ public class LEOAdEngine {
     
     private void loadSingleMobAd(String unitId, LEONativeAd nativeAd){
         // 对应的ad正在loading，不重复load
-        if(mLeoLoadingNatives.get(unitId) != null){
+        LeoLoadingNative loadingNative = mLeoLoadingNatives.get(unitId);
+        if(loadingNative != null &&
+                (SystemClock.elapsedRealtime()-loadingNative.requestTime < 60 * 1000)){
+            LeoLog.d(TAG, "["+unitId+"]previous loading process ongoing, ignore");
             return;
         }
         String placementId = mUnitIdToPlacementIdMap.get(unitId);
@@ -158,7 +162,7 @@ public class LEOAdEngine {
             // 这个地方执行导致crash，直接catch住
             nativeAd.loadNativeAd(new AdListenerImpl(unitId));
             LeoLog.i(TAG, "loadSingleMobAd -> ad["+unitId+"]");
-            mLeoLoadingNatives.put(unitId, nativeAd);
+            mLeoLoadingNatives.put(unitId, new LeoLoadingNative(nativeAd, SystemClock.elapsedRealtime()));
         } catch (Throwable thr) {
             LeoListener listener = mLeoListeners.get(unitId);
             if(listener != null){
@@ -273,7 +277,8 @@ public class LEOAdEngine {
 			}
 			LeoCompositeData mobvista = new LeoCompositeData();
 			// 将load成功的 MobvistaAdNative 对象移动到 LeoCompositeData 中
-			mobvista.nativeAd = mLeoLoadingNatives.remove(mUnitId);
+            LeoLoadingNative loadingNative = mLeoLoadingNatives.remove(mUnitId);
+			mobvista.nativeAd = loadingNative.nativeAd;
             mobvista.campaign = adData;
             mobvista.requestTimeMs = System.currentTimeMillis();
             mLEOLoadedNatives.put(mUnitId, mobvista);
@@ -365,6 +370,15 @@ public class LEOAdEngine {
         public LEONativeAdData campaign;
         public LEONativeAd nativeAd;
         public long requestTimeMs;
+    }
+
+    private static class LeoLoadingNative {
+        public long requestTime;
+        public LEONativeAd nativeAd;
+        public LeoLoadingNative (LEONativeAd nativeAd, long timestamp) {
+            this.requestTime = timestamp;
+            this.nativeAd = nativeAd;
+        }
     }
 
 }
