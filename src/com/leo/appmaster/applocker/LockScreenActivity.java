@@ -137,7 +137,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -1339,9 +1338,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                         mBannerContainer.setCurrentItem(1, false);
 										mAdapterCycle.setLasterSlectedPage(1);
 										mBannerContainer.setVisibility(View.VISIBLE);
-										showAdAnimaiton();
+										showAdAnimaiton(unitId);
 										delayBannerHideAnim();
 										hideIconAndPswTips();
+										
 									} else {
                                         /* 广告隐藏在右边 */
 										mBannerContainer.setVisibility(View.VISIBLE);
@@ -1622,14 +1622,32 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
     }*/
 
-    private void showAdAnimaiton() {
-        View animView = mAdapterCycle.getViews().get(1);
-		LeoLog.e("llb", "animView " + ((TextView)animView.findViewById(R.id.ad_title)).getText().toString());
-		LinkedList<View> views  = mAdapterCycle.getViews();
-		for (View v : views) {
-			String title = ((TextView)v.findViewById(R.id.ad_title)).getText().toString();
-			LeoLog.e("llb", "title " + title);
+	private int findTargetViewIndex(String unitId) {
+		int reValue = -1;
+		
+		if (unitId != null && mAdapterCycle != null && mAdapterCycle.getViews() != null) {
+			LinkedList<View> localViews =  mAdapterCycle.getViews();
+			String unit;
+			for (View v : localViews) {
+				if (v != null) {
+					unit = (String) v.findViewById(R.id.ad_title).getTag();
+					if (unit != null && unit.equals(mBannerAdids[0])) {
+						reValue = localViews.indexOf(v);
+						break;
+					}
+				}
+			}
 		}
+		
+		return reValue;
+	}
+	
+    private void showAdAnimaiton(String unitId) {
+		int index = findTargetViewIndex(unitId);
+		if (index == -1) {
+			return;
+		}
+        View animView = mAdapterCycle.getViews().get(index);
 		
         final int itemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
         final int itemHeight = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
@@ -1664,6 +1682,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 mBannerContainer.setVisibility(View.VISIBLE);
+				mBannerContainer.setCurrentItem(1, false);
+				mAdapterCycle.setLasterSlectedPage(1);
             }
 
             @Override
@@ -2773,9 +2793,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 return;
             }
 			
-			
             ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
             ((TextView) view.findViewById(R.id.ad_title)).setText(unitId + " " +campaign.getAppName());
+			view.findViewById(R.id.ad_title).setTag(unitId);
             ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
             ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             final View clickArea = view.findViewById(R.id.click_area);
@@ -2808,6 +2828,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     snapforClick((ViewGroup) v.getParent());
                 }
             });
+			int index = findTargetViewIndex(unitId);
+			if (index != -1) {
+				mBannerContainer.setCurrentItem(index, false);
+				mAdapterCycle.setLasterSlectedPage(index);
+			}
         }
 
         private void snapforClick(View v) {
@@ -2893,7 +2918,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				}
 			}
 			mList.add(unitId);
-			LeoLog.e("llb", Arrays.toString(mList.toArray()));
 			RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
             view.setTag(mViews.size());
             setItemViewContent(view, unitId);
