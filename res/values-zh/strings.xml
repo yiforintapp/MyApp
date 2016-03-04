@@ -971,7 +971,7 @@
     <string name="battery_protect_view_show_title">推薦使用</string>
     <string name="addto_blacklist_share_dialog_title">添加成功！</string>
     <string name="addto_blacklist_share_dialog_content">分享給好友，讓隱私衛士幫他們識別騷擾電話！</string>
-    <string name="addto_blacklist_share_content">%1$s是騷擾電話，快將其加入黑名單！木有來電攔截？點這裡：%2$s</string>
+    <string name="addto_blacklist_share_content">%1$s是壹個騷擾電話，請大家註意並將其列入黑名單！避免騷擾電話困擾，保護手機隱私安全，推薦使用 LEO隱私衛士哦: %2$s</string>
     <string name="toast_hide_ing">正在隱藏圖片…</string>
     <string name="battery_protect_show_num_contact">通訊錄</string>
     <string name="battery_protect_show_num_call">電話</string>

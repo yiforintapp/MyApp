@@ -971,7 +971,7 @@
     <string name="battery_protect_view_show_title">Tavsiye et</string>
     <string name="addto_blacklist_share_dialog_title">başarıyla eklendi</string>
     <string name="addto_blacklist_share_dialog_content">Arkadaşlarınıza paylaşın,gizlilik Nöbetçisi onlara taciz telefon görüşmeleri belirlemenize yardım ededi.</string>
-    <string name="addto_blacklist_share_content">%1$s taciz olan telefondur. haydi kara listeye ekle!çağrı engellme yok mu?Burada teklayın!</string>
+    <string name="addto_blacklist_share_content">%1$s taciz olan telefondur. haydi kara listeye ekle!çağrı engellme yok mu?Burada teklayın!%2$s</string>
     <string name="toast_hide_ing">Resimler gizliyor</string>
     <string name="battery_protect_show_num_contact">kişiler</string>
     <string name="battery_protect_show_num_call">telefon</string>
