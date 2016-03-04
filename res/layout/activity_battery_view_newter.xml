@@ -47,10 +47,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:includeFontPadding="false"
-                android:textStyle="bold"
                 android:text="10:33"
                 android:textColor="@color/white"
-                android:textSize="40dp" />
+                android:textSize="40dp"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
         <RelativeLayout
             android:id="@+id/infos_content"
             android:layout_width="wrap_content"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@id/time_move_content"
             android:layout_centerHorizontal="true"
             android:visibility="invisible">
@@ -171,10 +171,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/hide_tv_one"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="9dp"
-                    android:text="@string/screen_protect_time"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:maxWidth="100dp"
+                    android:text="@string/battery_saver_remain_charge_time"
                     android:textColor="@color/white"
-                    android:textSize="14dp" />
+                    android:textSize="13dp" />
             </RelativeLayout>
         </RelativeLayout>
         <!-- 电池 && 图标 -->
@@ -631,8 +634,8 @@
                 android:id="@+id/move_arrow"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:visibility="invisible"
-                android:background="@color/transparent">
+                android:background="@color/transparent"
+                android:visibility="invisible">
 
                 <ImageView
                     android:id="@+id/iv_move_arrow"
