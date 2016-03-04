@@ -947,5 +947,34 @@
 
     <string name="game_box_one">เร่งความเร็วของเกม</string>
 
-
+    <!--3.3.2-->
+    <string name="ask_create_shortcut_button_right">ก่อตั้ง</string>
+    <string name="ask_create_shortcut_content_imagehide">หากอย่ากจะดูรูปที่แฝงสะดวกกว่า ขอก่อตั้งทางลัดหนึ่งที่หน้าโต๊ะ</string>
+    <string name="ask_create_shortcut_content_videohide">หากอยากจะดูวีดีโอที่แฝงสะดวกกว่า ขอก่อตั้งทางลัดหนึ่งที่หน้าโต๊ะ</string>
+    <string name="ask_create_shortcut_content_callfilter">เพิ่มทางลัดหน้าโต๊ะ เพื่อบริหารบัญชีดำและการสกัดบันทึกที่สะดวกกว่า </string>
+    <string name="ask_create_shortcut_content_wifi_security">หากเป็นห่วงความปลอดภัยของเครื่อข่าย ขอก่อตั้งทางลัดเพื่อตรวจวัดความปลอดภัยของไวไฟได้ทุกเวลา</string>
+    <string name="grant_permission_guide">เปิดขอบเขตอำนาจของLEO Privacy รับรองกุญแจการใช้สามารถทำงานได้ปกติ</string>
+    <string name="grant_permission_default_tip">เปิดขอบเขตอำนาจเพื่อแก้ไขปัญหาของล็อกประยุกต์</string>
+    <string name="battery_protect_view_time_title">เวลาใช้ได้</string>
+    <string name="battery_protect_view_remain_one_title">พูดโทรศัพท์</string>
+    <string name="battery_protect_view_remain_two_title">เข้าอินเตอร์เน็ต</string>
+    <string name="battery_protect_view_remain_three_title">เล่นประยุกต์การใช้</string>
+    <string name="pri_pro_wifi_not_scan">wifiที่เชื่อมตอนนี้ยังไม่ได้ตรวจ</string>
+    <string name="battery_protect_view_show_title">แนะนำให้ใช้</string>
+    <string name="addto_blacklist_share_dialog_title">เพิ่มเติมสำเร็จ</string>
+    <string name="addto_blacklist_share_dialog_content">แบ่งความสุขกับเพื่อน ให้ผู้ความลับส่วนตัวช่วยแยกแยะโทรศัพท์ก่อกวน</string>
+    <string name="addto_blacklist_share_content">%1sคือโทรศัพท์ก่อกวน รีบให้มันเดิมเข้าไปบัญชีดำ หลีกเลี่ยงโทรศัพท์ก่อกวนรักษความปลอดภัยส่วนตัว แนะนำใช้LEOผู้ความลับส่วนตัว  </string>
+    <string name="toast_hide_ing">กำลังแฝงรูปภาพ</string>
+    <string name="battery_protect_show_num_contact">ติดต่อ</string>
+    <string name="battery_protect_show_num_call">โทรศัพท์</string>
+    <string name="battery_protect_show_num_msm">แมสซิจ</string>
+    <string name="battery_protect_show_num_browser">เบราว์เซอร์</string>
+    <string name="battery_boosting">กำลังสะสางประยุกต์ที่เปลืองไฟ</string>
+    <string name="battery_boost_result">อัดแบตเตรรี่ที่รักษาจอจะประหยัดเวลาอัดแบตเตรรี่...นาที สะสางประยุกตที่เปลืองไฟ...ตัวแล้ว</string>
+    <string name="battery_protect_setting_pow_sav_title">บันทึกอัตโนมัติเพิ่มประสิทธิภาพพลังงาน</string>
+    <string name="battery_protect_setting_pow_sav_des">อัตโนมัติสะสางประยุกต์ที่เปลืองไฟเมื่ออัดแบตเตรรี่</string>
+    <string name="battery_protect_pop_text">เผอเรอ</string>
+    <string name="battery_saver_remain_charge_time">เวลาอัดแบตเตรรี่ที่เหลือ</string>
+    <string name="feedback_tell_us_email_title">Email:</string>
+    <string name="feedback_tell_us_email_url">support@leomaster.com</string>
 </resources>
