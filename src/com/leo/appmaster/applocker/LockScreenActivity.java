@@ -498,9 +498,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mCanTakePhoto = true;
         whichTypeShow();
         LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
-//        if (mHasClickGoGrantPermission) {
-//            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
-//        }
+        if (mHasClickGoGrantPermission) {
+            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
+        }
         tryShowNoPermissionTip();
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
