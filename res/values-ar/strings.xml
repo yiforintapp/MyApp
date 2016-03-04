@@ -756,7 +756,7 @@
     <string name="secur_bottom_bt_text">التالي</string>
     <string name="open_secur_text">تمكين خاصية مكافحة السرقة</string>
     <string name="no_secur_text">يمكنك استخدام الوظائف التالية:</string>
-    <string name="open_secur_checkbox_text">تمكين الحماية المتقدمة، أضف privacy guard لمدير الجهاز</string>
+    <string name="open_secur_checkbox_text">تمكين الحماية المتقدمة، أضف LEO Privacy لمدير الجهاز</string>
 
     <string name="quick_helper_pic_hide">إخفاء صورة</string>
     <string name="quick_helper_video_hide">إخفاء فيديو</string>
@@ -859,10 +859,10 @@
     <string name="toast_getscore_text">مبروك! قد زادت النقاط</string>
     <string name="feedback_tell_us_content">إذا لديك أي أسئلة أو احتياجات، لا تردد في الاتصال بنا وتابعنا في Facebook وWhatsapp.</string>
     <string name="feedback_tell_us_contact_type_title">جهات الاتصال</string>
-    <string name="dialog_fivestars_content_text">تتمتع بPrivacy Guard؟ تقدير ب5 نجوم منك لمساعدتنا علي توفير أفضل الخدمات! </string>
+    <string name="dialog_fivestars_content_text">تتمتع بLEO Privacy؟ تقدير ب5 نجوم منك لمساعدتنا علي توفير أفضل الخدمات! </string>
     <string name="elect_empty_content">عذرا، معلومات البطارية غير متاحة مؤقتا</string>
     <string name="swifty_item_btn">تمكين</string>
-    <string name="grade_item_title">تحب Privacy Guard؟</string>
+    <string name="grade_item_title">تحب LEO Privacy؟</string>
     <string name="grade_item_btn">تقدير ب5 نجوم</string>
     <string name="change_wifi_toast_unsafe">المخاطر المحتملة</string>
     <string name="change_wifi_toast_safe">الأمن</string>
@@ -1045,7 +1045,7 @@
     <string name="ask_create_shortcut_content_videohide">تريد أن تخفي الصور بأسهل الطريقة؟ أنشأ الطريقة السريعة علي سطح المكتب !</string>
     <string name="ask_create_shortcut_content_callfilter">اضافة الطريقة السرعة علي سطح المكتب لادارة القائمة السوداء و سجلات المنع</string>
     <string name="ask_create_shortcut_content_wifi_security">تخاف علي أمن الشبكة ؟ أنشأ الطريقة السريعة لفحص أمن wifi في أي الوقت</string>
-    <string name="grant_permission_guide">فتح الأذن لPrivacy Guard من أجل عمل قفل التطبيق الطبيعي</string>
+    <string name="grant_permission_guide">فتح الأذن لLEO Privacy من أجل عمل قفل التطبيق الطبيعي</string>
     <string name="grant_permission_default_tip">فتح الأذن لاصلاح مشاكل قفل التطبيق</string>
     <string name="battery_protect_view_time_title">الوقت المتبقي</string>
     <string name="battery_protect_view_remain_one_title">مكالمة </string>

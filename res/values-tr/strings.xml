@@ -662,7 +662,7 @@
     <string name="secur_bottom_bt_text">Sonraki </string>
     <string name="open_secur_text">Hırsızlık karşıtı koruma fonksiyonu etkin</string>
     <string name="no_secur_text">Şu fonksiyonları kullanabilirsiniz:</string>
-    <string name="open_secur_checkbox_text">İleri korumayı etkinleştirip, aygıt yöneticisine privacy guard ekleyin</string>
+    <string name="open_secur_checkbox_text">İleri korumayı etkinleştirip, aygıt yöneticisine LEO Privacy ekleyin</string>
 
     <string name="quick_helper_pic_hide">Fotoğrafı gizle</string>
     <string name="quick_helper_video_hide">Videoyu gizle</string>
@@ -792,10 +792,10 @@
     <string name="pri_result_wifimaster_title">WifiMaster</string>
     <string name="home_guide_txt">Fotoğraf, video gizleme ve daha fazla ayarlar burada.</string>
     <string name="pic_video_guide_txt">Tuş düzenlemeye tıklayarak fotoğraf gizleme seçeneği iptal edilebilir.</string>
-    <string name="prot_open_suc_tip_cnt">Yüksek güvenlik açılmıştır. LEO Privacy Guard kaldırma işlemini sol menüden yapabilirsiniz.</string>
+    <string name="prot_open_suc_tip_cnt">Yüksek güvenlik açılmıştır. LEO Privacy kaldırma işlemini sol menüden yapabilirsiniz.</string>
     <string name="wifi_result_swifty_title">Veri Kısayolu</string>
     <string name="wifi_result_swifty_content">Swifty ile WiFi noktalarını seçerek Veri bağlantı kotanızı koruyun.</string>
-    <string name="samsung_tip_txt">Uygulamanın stabil çalışmasını sağlamak için "Uygulama Ayarları"ndan "Ayrıntılar"da LEO Privacy Guard seçeneğine tıklayarak "Yasaklar"ı seçin. Bu ayarları istediğiniz zaman değiştirebilirsiniz.</string>
+    <string name="samsung_tip_txt">Uygulamanın stabil çalışmasını sağlamak için "Uygulama Ayarları"ndan "Ayrıntılar"da LEO Privacy seçeneğine tıklayarak "Yasaklar"ı seçin. Bu ayarları istediğiniz zaman değiştirebilirsiniz.</string>
     <string name="pri_result_wifimaster_content">Profesyonel araçlar ile WiFi hızlandırabilir ve WiFi noktalarına bağlanabilirsiniz.</string>
     <string name="wifi_result_wifimaster_content">WiFi hızılarını test ederek en hızlı WiFi noktasına bağlan</string>
     <string name="video_guide_txt">Düzenlemeye tıklayarak Video gizle işlemini kaldırabilirsiniz.</string>
@@ -912,16 +912,16 @@
     <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">Arkadaşlarınızla paylaşın</font>]]></Data></string>
     <string name="share_dialog_btn_query">Paylaş</string>
     <string name="share_dialog_query_btn_cancel">İptal</string>
-    <string name="phone_share_content">Leomaster Privacy Guard çalıntılara karşı fonksiyonunu kullanıyorum. Yalnızca bir kısa mesaj ile telefonumu uzaktan kontrol edebiliyorum. Çok kullanışlı. Senin de denemeni öneriyorum!</string>
-    <string name="callfilter_share_content">Leomaster Privacy Guard rahatsız eden telefon numaraları engelleme fonksiyonunu kullanıyorum. Ayrıca telefon numaralarını otomatik olarak da tanımlıyor. Çok kullanışlı. Senin de denemeni öneriyorum!</string>
-    <string name="intruder_share_content">Leomaster Privacy Guard davetsiz misafir fonksiyonunu kullanıyorum. Şimdiye kadar %1$s kişinin telefonuma baktığını gördüm. Senin de denemeni öneriyorum!</string>
+    <string name="phone_share_content">Leomaster LEO Privacy çalıntılara karşı fonksiyonunu kullanıyorum. Yalnızca bir kısa mesaj ile telefonumu uzaktan kontrol edebiliyorum. Çok kullanışlı. Senin de denemeni öneriyorum!</string>
+    <string name="callfilter_share_content">Leomaster LEO Privacy rahatsız eden telefon numaraları engelleme fonksiyonunu kullanıyorum. Ayrıca telefon numaralarını otomatik olarak da tanımlıyor. Çok kullanışlı. Senin de denemeni öneriyorum!</string>
+    <string name="intruder_share_content">Leomaster LEO Privacy davetsiz misafir fonksiyonunu kullanıyorum. Şimdiye kadar %1$s kişinin telefonuma baktığını gördüm. Senin de denemeni öneriyorum!</string>
     <string name="up_list_swifty_title">Etki Oranı Yükselt</string>
 
     <string name="screen_protect_time">Kalan Şarj Süresi </string>
     <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>Saat <Data><![CDATA[<font color="#0ad931">%2$s</font>]]>dk</Data></string>-->
     <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>dk.</string>-->
 
-    <string name="oppo_rom_tip_txt">Sistem kısıtlamaları yüzünden Privacy Guard işlem yetkilerini açmanız gerekmektedir. İşlemler -- "Arka planda çalışan uygulama izinleri"--Privacy Guard\'ı ekleyin</string>
+    <string name="oppo_rom_tip_txt">Sistem kısıtlamaları yüzünden LEO Privacy işlem yetkilerini açmanız gerekmektedir. İşlemler -- "Arka planda çalışan uygulama izinleri"--LEO Privacy\'ı ekleyin</string>
     <string name="batterymanage_boosted_number">%1$d ürün optimize</string>
 
     <string name="screen_protect_charing_text_one">Şarj cihazını takın.</string>
@@ -961,7 +961,7 @@
     <string name="ask_create_shortcut_content_videohide"> Gizli videolara daha kolay seyretmek istiyor musun?Masaüstünde bir kısayol oluşturun !</string>
     <string name="ask_create_shortcut_content_callfilter">Masaüstü kısayolu arttın,kara liste ve durdurma kayıtları daha kolay yönettin.</string>
     <string name="ask_create_shortcut_content_wifi_security">Ağ güvenliği endişelenmek misin?Masaüstüde kısayolu oluşturun ve WİFİ güvenliği kontrol et.</string>
-    <string name="grant_permission_guide">APP çalışmak için Privacy Guard yetki sınırı aç</string>
+    <string name="grant_permission_guide">APP çalışmak için LEO Privacy yetki sınırı aç</string>
     <string name="grant_permission_default_tip">İzin kilit sorunları gidermek için uygulamayı aç</string>
     <string name="battery_protect_view_time_title">kullanılabilan zaman</string>
     <string name="battery_protect_view_remain_one_title">çağrı</string>

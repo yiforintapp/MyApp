@@ -961,7 +961,7 @@
     <string name="ask_create_shortcut_content_videohide">想要更方便地瀏覽隱藏的視頻？在桌面創建一個快捷方式吧！</string>
     <string name="ask_create_shortcut_content_callfilter">添加桌面快捷方式，更便利地管理黑名單和攔截記錄。</string>
     <string name="ask_create_shortcut_content_wifi_security">擔心網絡安全？創建桌面快捷方式隨時掃檢測wi-fi安全！</string>
-    <string name="grant_permission_guide">為Privacy Guard開啟權限。保證應用鎖正常工作</string>
+    <string name="grant_permission_guide">為LEO Privacy開啟權限。保證應用鎖正常工作</string>
     <string name="grant_permission_default_tip">開啟權限以修復應用鎖出現的問題</string>
     <string name="battery_protect_view_time_title">可用時間</string>
     <string name="battery_protect_view_remain_one_title">通話</string>

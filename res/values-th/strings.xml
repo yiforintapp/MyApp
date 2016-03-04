@@ -249,7 +249,7 @@
     <!-- privacy_contact_v2.0 end -->
     <!-- ImageHide -->
     <string name="no_image_hide_dialog_title">ลบไฟล์ต้นฉบับ?</string>
-    <string name="no_image_hide_dialog_content">นำเข้ารูปภาพไป Privacy Guardสำเร็จ กรุณาลบภาพต้นฉบับของคุณ</string>
+    <string name="no_image_hide_dialog_content">นำเข้ารูปภาพไป LEO Privacyสำเร็จ กรุณาลบภาพต้นฉบับของคุณ</string>
     <string name="no_image_hide_dialog_button">ตกลง</string>
     <string name="image_hide_memery_insuficient_dialog_title">ความจุไม่เพียงพอ</string>
     <string name="image_hide_memery_insuficient_dialog_content">หน่วยความจำการ์ดเต็ม ลบบางไฟล์ก่อน "ซ่อน"</string>
@@ -407,7 +407,7 @@
     <string name="error_mode_ok">เปิดใช้งานโหมดแอพลิเคชันทำงานผิดปกติ</string>
     <string name="zhiwen_mode_ok">เปิดใช้งานโหมดการตรวจสอบลายนิ้วมือ</string>
     <string name="weizhuang_error_title">ปลดล็อกโดยเลื่อนปุ่ม"ปิด"จากซ้ายไปขวา</string>
-    <string name="weizhuang_error_notice">ขออภัย \"Privacy Guard\" ถูกปิดใช้งานแล้ว</string>
+    <string name="weizhuang_error_notice">ขออภัย \"LEO Privacy\" ถูกปิดใช้งานแล้ว</string>
     <string name="weizhuang_error_notice_set_false">แหม เลื่อนไปอีกหน่อยนะ</string>
     <string name="weizhuang_zhiwen_notice">ปลดล็อกโดยคลิกจุดปลดล็อกด้วยลายนิ้วมือ3ครั้งภายใน1วิ</string>
     <string name="error_cancel_button">ปิด</string>
@@ -502,7 +502,7 @@
     <string name="ad_timeout">ว้าว น่าอัศจรรย์</string>
     <!-- 2.8 end -->
     <!-- 2.10 start -->
-    <string name="auto_start_guide_tip_content">เรียกใช้ Privacy Guard เมื่อเริ่มต้น</string>
+    <string name="auto_start_guide_tip_content">เรียกใช้ LEO Privacy เมื่อเริ่มต้น</string>
     <string name="msg_center_title">ศูนย์ข้อความ</string>
     <string name="msg_center_empty">ไม่มีข้อความใหม่</string>
     <string name="msg_center_empty_say">บอกเราสิ่งที่คุณต้องการ</string>
@@ -518,18 +518,18 @@
     <string name="advace_protect_dialog_left_text">ภายหลัง</string>
     <string name="advace_protect_dialog_right_text">ตอนนี้</string>
     <string name="advace_protect_dialog_title_text">ใช้ปกป้องขั้นสูง</string>
-    <string name="advace_protect_dialog_content_text">ล็อคแล้ว ใช้ปกป้องขั้นสูงเลี่ยงถอนติดตั้ง ถอนติดตั้ง Privacy Guard ที่แถบข้าง </string>
+    <string name="advace_protect_dialog_content_text">ล็อคแล้ว ใช้ปกป้องขั้นสูงเลี่ยงถอนติดตั้ง ถอนติดตั้ง LEO Privacy ที่แถบข้าง </string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="auto_start_tip_xiaomi4_and_letv">คลิก"เริ่มอัตโนมัติ" เพิ่ม LEO Privacy Guard</string>
-    <string name="auto_start_tip_redmi">ไปที่"การอนุญาตสิทธิ์" และเพิ่ม Privacy Guard</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">คลิก"เริ่มอัตโนมัติ" เพิ่ม LEO Privacy</string>
+    <string name="auto_start_tip_redmi">ไปที่"การอนุญาตสิทธิ์" และเพิ่ม LEO Privacy</string>
     <string name="auto_start_tip_huawei">ไป "แอพที่ป้องกัน" และเพิ่ม PG ไปรายการป้องกัน</string>
-    <string name="auto_start_tip_lenovo">แอพ", "เริ่มอัตโนมัติ" เพิ่ม LEO Privacy Guard</string>
+    <string name="auto_start_tip_lenovo">แอพ", "เริ่มอัตโนมัติ" เพิ่ม LEO Privacy</string>
 
     <!-- 2.10 end -->
     <!-- 2.12 start -->
     <string name="applock_guide_tip_title">ใช้สิทธิ์เพื่อใช้งานปกติ</string>
     <string name="applock_guide_tip_subtitle">ข้อจำกัดของระบบ ต้องเปิดใช้สิทธิ์อนุญาต</string>
-    <string name="applock_guide_tip_security_text">ให้สิทธิ์อนุญาตของ Privacy Guard เพื่อใช้แอพ</string>
+    <string name="applock_guide_tip_security_text">ให้สิทธิ์อนุญาตของ LEO Privacy เพื่อใช้แอพ</string>
     <string name="auto_start_tip_text_huawei_plus">เปิดใช้สิทธิ์เริ่มอัตโนมัติ ปกป้องหลังรีสตาร์ท</string>
     <string name="applock_guide_set_text">การตั้งค่า</string>
     <string name="applock_guide_set_finish">ดำเนินการ</string>
@@ -659,7 +659,7 @@
     <string name="secur_bottom_bt_text">ถัดไป</string>
     <string name="open_secur_text">เปิดใช้ฟังก์ชันกันขโมย</string>
     <string name="no_secur_text">คุณใช้ฟังก์ชันต่อไปนี้ได้:</string>
-    <string name="open_secur_checkbox_text">เปิดปกป้องขั้นสูง เพิ่ม privacy guard ไปตัวจัดการ</string>
+    <string name="open_secur_checkbox_text">เปิดปกป้องขั้นสูง เพิ่ม LEO Privacy ไปตัวจัดการ</string>
 
     <string name="quick_helper_pic_hide">ซ่่อนรูปถ่าย</string>
     <string name="quick_helper_video_hide">ซ่อนวิดิโอ</string>
@@ -779,7 +779,7 @@
     <string name="change_wifi_toast_unsafe">มีความเสี่ยง</string>
     <string name="change_wifi_toast_safe">ปลอดภัย</string>
     <string name="fb_item_title">ติดตามเพ็จของเราบนFacebook</string>
-    <string name="fb_item_content">อยากทราบข่าวสารและเรื่องราวสนุกเกี่ยวกับLEO Privacy Guard สามารถติดตามเพ็จของเราบนFacebookได้เลย</string>
+    <string name="fb_item_content">อยากทราบข่าวสารและเรื่องราวสนุกเกี่ยวกับLEO Privacy สามารถติดตามเพ็จของเราบนFacebookได้เลย</string>
     <string name="fb_item_btn">ติดตาม</string>
     <string name="intruderprotection_forbit_content">ไม่สามารถใช้ระบบป้องกันแฮคเกอร์ได้ เนื่องจากข้อจำกัดของระบบ</string>
     <string name="pri_pro_btn">เปิด(+%1$dคะแนน)</string>
@@ -909,16 +909,16 @@
     <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">หากรู้สึกใช้งานได้ดี</font>]]></Data></string>
     <string name="share_dialog_btn_query">แชร์</string>
     <string name="share_dialog_query_btn_cancel">ยกเลิก</string>
-    <string name="phone_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นกันขโมยของ LEO Privacy Guard อยู่ เพียงแค่ส่งข้อความสั้น ก็สามารถควบคุมมือถือได้จากระยะไกล สะดวกต่อการใช้งาน ฉันอยากให้คุณลองใช้แอพนี้ด้วย</string>
-    <string name="callfilter_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นปิดกั้นโทรศัพท์สายรบกวนของ LEO Privacy Guard อยู่ ฉันกั้นโทรศัพท์สายเข้าจากผู้ขายของทั้งหมด และที่สำคัญคือสามารถแยกแยะสายเข้าได้โดยอัตโนมัติ สะดวกต่อการใช้งานเป็นอย่างมาก ฉันอยากให้คุณมาใช้ด้วยกัน</string>
-    <string name="intruder_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นป้องกันผู้บุกรุกของ LEO Privacy Guard อยู่ มันถ่ายรูปของผู้แอบดูมือถือ %1$s คนแล้ว ตอนนี้ฉันรู้แล้วว่ามีใครบ้างที่แอบดูมือถือของฉันอยู่ มาลองใช้กันดู </string>
+    <string name="phone_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นกันขโมยของ LEO Privacy อยู่ เพียงแค่ส่งข้อความสั้น ก็สามารถควบคุมมือถือได้จากระยะไกล สะดวกต่อการใช้งาน ฉันอยากให้คุณลองใช้แอพนี้ด้วย</string>
+    <string name="callfilter_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นปิดกั้นโทรศัพท์สายรบกวนของ LEO Privacy อยู่ ฉันกั้นโทรศัพท์สายเข้าจากผู้ขายของทั้งหมด และที่สำคัญคือสามารถแยกแยะสายเข้าได้โดยอัตโนมัติ สะดวกต่อการใช้งานเป็นอย่างมาก ฉันอยากให้คุณมาใช้ด้วยกัน</string>
+    <string name="intruder_share_content">หวัสดี ฉันกำลังใช้ฟังก์ชั่นป้องกันผู้บุกรุกของ LEO Privacy อยู่ มันถ่ายรูปของผู้แอบดูมือถือ %1$s คนแล้ว ตอนนี้ฉันรู้แล้วว่ามีใครบ้างที่แอบดูมือถือของฉันอยู่ มาลองใช้กันดู </string>
     <string name="up_list_swifty_title">เพิ่มประสิทธิภาพ</string>
 
     <string name="screen_protect_time">เวลาที่เหลือชาร์จ </string>
     <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
     <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
 
-    <string name="oppo_rom_tip_txt">ด้วยข้อจำกัดของระบบมือถือ LEO Privacy Guard ต้องได้รับการมอบอำนาจก่อนใช้งาน ขั้นตอนการมอบคือ "เพิ่มแอพ" --> "เพิ่มแอพที่ทำงานอยู่เบื้องหลังได้" --> เลือกเพิ่ม LEO Privacy Guard</string>
+    <string name="oppo_rom_tip_txt">ด้วยข้อจำกัดของระบบมือถือ LEO Privacy ต้องได้รับการมอบอำนาจก่อนใช้งาน ขั้นตอนการมอบคือ "เพิ่มแอพ" --> "เพิ่มแอพที่ทำงานอยู่เบื้องหลังได้" --> เลือกเพิ่ม LEO Privacy</string>
     <string name="batterymanage_boosted_number">%1$dมีการปรับรายการ</string>
 
     <string name="screen_protect_charing_text_one">กรุณาเสียบสายชาร์จ</string>

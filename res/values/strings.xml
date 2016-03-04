@@ -256,7 +256,7 @@
     <!-- privacy_contact_v2.0 end -->
     <!-- ImageHide -->
     <string name="no_image_hide_dialog_title">Delete original files?</string>
-    <string name="no_image_hide_dialog_content">Images successfully imported to Privacy Guard! Please delete the original images to proceed.</string>
+    <string name="no_image_hide_dialog_content">Images successfully imported to LEO Privacy! Please delete the original images to proceed.</string>
     <string name="no_image_hide_dialog_button">OK</string>
     <string name="image_hide_memery_insuficient_dialog_title">Low storage!</string>
     <string name="image_hide_memery_insuficient_dialog_content">SD card storage run out! Free space to hide photos.</string>
@@ -412,7 +412,7 @@
     <string name="error_mode_ok">Error mode is enabled</string>
     <string name="zhiwen_mode_ok">Fingerprint identification mode was enabled</string>
     <string name="weizhuang_error_title">Slide to unlock on Close</string>
-    <string name="weizhuang_error_notice">Sorry, \"Privacy Guard\" has stopped.</string>
+    <string name="weizhuang_error_notice">Sorry, \"LEO Privacy\" has stopped.</string>
     <string name="weizhuang_error_notice_set_false">Oops! Longer sliding distance</string>
     <string name="weizhuang_zhiwen_notice">Tap 3 times within 1 second to unlock</string>
     <string name="error_cancel_button">Close</string>
@@ -509,7 +509,7 @@
 
 
     <!-- 2.10 白名单引导 -->
-    <string name="auto_start_guide_tip_content">Start Leo Privacy Guard after booting，safe and sound</string>
+    <string name="auto_start_guide_tip_content">Start Leo LEO Privacy after booting，safe and sound</string>
 
     <!-- 2.10 消息中心 -->
     <string name="msg_center_title">Message Center</string>
@@ -523,23 +523,23 @@
     <string name="ufo_theme_use_toast">Theme Applied</string>
     <string name="ufo_theme_content">Feel boring about your phone? Many cool new themes here!</string>
     <string name="ufo_theme_title">Applock Theme</string>
-    <string name="menue_item_delete_pg">Uninstall Privacy Guard</string>
+    <string name="menue_item_delete_pg">Uninstall LEO Privacy</string>
     <string name="advace_protect_dialog_left_text">Not Now</string>
     <string name="advace_protect_dialog_right_text">Go Settings</string>
     <string name="advace_protect_dialog_title_text">Suggest enable Advanced Protection</string>
-    <string name="advace_protect_dialog_content_text">Congrats! Applock applied successfully.Tips: Enable "Advanced Protection", then no one can peek at your secrets by uninstalling Privacy Guard. But if really want uninstall our app, please check the side bar.</string>
+    <string name="advace_protect_dialog_content_text">Congrats! Applock applied successfully.Tips: Enable "Advanced Protection", then no one can peek at your secrets by uninstalling LEO Privacy. But if really want uninstall our app, please check the side bar.</string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="auto_start_tip_xiaomi4_and_letv">For better privacy protection, please click "Autostart", choose LEO Privacy Guard to add to Autostart List</string>
-    <string name="auto_start_tip_redmi">For better privacy protection, please go to"Permissions", add Privacy Guard to Autostart Applications</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">For better privacy protection, please click "Autostart", choose LEO Privacy to add to Autostart List</string>
+    <string name="auto_start_tip_redmi">For better privacy protection, please go to"Permissions", add LEO Privacy to Autostart Applications</string>
     <string name="auto_start_tip_huawei">For better privacy protection, please go to"Protected Apps", add PG to protected list</string>
-    <string name="auto_start_tip_lenovo">Please go to \"Apps\", choose \"Background App\" and \"Auto-start\", add LEO Privacy Guard to  List</string>
+    <string name="auto_start_tip_lenovo">Please go to \"Apps\", choose \"Background App\" and \"Auto-start\", add LEO Privacy to  List</string>
     <!-- 2.10 end -->
 
     <!-- 2.12 start -->
     <string name="applock_guide_tip_title">Authorization required for normal use</string>
-    <string name="applock_guide_tip_subtitle">Due to system limit, Privacy Guard needs following authorizations to better protect your privacy.</string>
-    <string name="applock_guide_tip_security_text">Authorize Privacy Guard permission</string>
-    <string name="auto_start_tip_text_huawei_plus">Please authorize Privacy Guard "Autostart" permission to keep protect your app after cellphone reboot</string>
+    <string name="applock_guide_tip_subtitle">Due to system limit, LEO Privacy needs following authorizations to better protect your privacy.</string>
+    <string name="applock_guide_tip_security_text">Authorize LEO Privacy permission</string>
+    <string name="auto_start_tip_text_huawei_plus">Please authorize LEO Privacy "Autostart" permission to keep protect your app after cellphone reboot</string>
     <string name="applock_guide_set_text">Settings</string>
     <string name="applock_guide_set_finish">Finish</string>
     <!-- 2.12 end -->
@@ -665,7 +665,7 @@
     <string name="secur_bottom_bt_text">Next</string>
     <string name="open_secur_text">Anti-theft function enabled</string>
     <string name="no_secur_text">You can use following functions:</string>
-    <string name="open_secur_checkbox_text">Enable advance protection, add privacy guard to device manager</string>
+    <string name="open_secur_checkbox_text">Enable advance protection, add LEO Privacy to device manager</string>
 
     <string name="quick_helper_pic_hide">Hide Photo</string>
     <string name="quick_helper_video_hide">Hide Video</string>
@@ -774,22 +774,22 @@
     <string name="phone_security_instruct_alert_off_description">Close sirens</string>
     <string name="alert_off_name">Alert off</string>
     <string name="secur_send_msm_no_location">[LEOMASTER] Unable to get. http://www.leomaster.com</string>
-    <string name="mi_op_tip">Please choose "Permissions" item in the Permissions and select Privacy Guard, enable "Send SMS messages"&amp;"Read SMS messages".</string>
-    <string name="huawei6_op_tip">Please choose "Messages" in Permission Manager and enable Privacy Guard.</string>
-    <string name="huawei7pl_op_tip">Please choose "Application" in Permission Manager and select Privacy Guard , then assign the "Access SMS/MMS"&amp;"Send SMS" to us.</string>
+    <string name="mi_op_tip">Please choose "Permissions" item in the Permissions and select LEO Privacy, enable "Send SMS messages"&amp;"Read SMS messages".</string>
+    <string name="huawei6_op_tip">Please choose "Messages" in Permission Manager and enable LEO Privacy.</string>
+    <string name="huawei7pl_op_tip">Please choose "Application" in Permission Manager and select LEO Privacy, then assign the "Access SMS/MMS"&amp;"Send SMS" to us.</string>
 
     <!-- 3.1 -->
     <string name="feedback_tell_us_contact_type_2">Whatsapp:+86 15802959395 </string>
     <string name="feedback_tell_us_contact_type_3">Wechat:316261039</string>
     <string name="feedback_tell_us_contact_type_4">Skype:Sharon Dang</string>
-    <string name="feedback_tell_us_contact_type_5">Facebook:LEO Privacy Guard/LEO Privacy Guard Q"&amp;"A </string>
+    <string name="feedback_tell_us_contact_type_5">Facebook:LEO Privacy/LEO Privacy Q"&amp;"A </string>
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
 
     <string name="feedback_tell_us_title">Contact us</string>
     <string name="toast_getscore_text">Congratulations!Score has increased</string>
     <string name="feedback_tell_us_content">If you have any further questions or requirements, please do not hesitate to contact us and follow us on Facebook &amp; Whatsapp.</string>
     <string name="feedback_tell_us_contact_type_title">Contacts:</string>
-    <string name="dialog_fivestars_content_text">Enjoying Privacy Guard? 5-Star ratings from you to help us provide better services!</string>
+    <string name="dialog_fivestars_content_text">Enjoying LEO Privacy? 5-Star ratings from you to help us provide better services!</string>
     <string name="elect_empty_content">Sorry, the battery information is temporarily unavailable </string>
     <string name="swifty_item_btn">Enable</string>
     <string name="grade_item_title">Like us?</string>
@@ -797,7 +797,7 @@
     <string name="change_wifi_toast_unsafe">Potential risks</string>
     <string name="change_wifi_toast_safe">Safe</string>
     <string name="fb_item_title">Follow us on Facebook</string>
-    <string name="fb_item_content">For more interesting and official news of LEO Privacy Guard, please immediately follow us on facebook.</string>
+    <string name="fb_item_content">For more interesting and official news of LEO Privacy, please immediately follow us on facebook.</string>
     <string name="fb_item_btn">Follow us</string>
     <string name="intruderprotection_forbit_content">Due to the limitation of Android, the intruder prevention function could not work.</string>
     <string name="pri_pro_btn">Enable(+%1$d points)</string>
@@ -807,10 +807,10 @@
     <string name="pri_result_wifimaster_title">WifiMaster</string>
     <string name="home_guide_txt">Picture hidden, video hidden, more functions here!</string>
     <string name="pic_video_guide_txt">Click edit to check and unhide the picture</string>
-    <string name="prot_open_suc_tip_cnt">Advanced protection started! Operate in side column to unload the Privacy Guard.</string>
+    <string name="prot_open_suc_tip_cnt">Advanced protection started! Operate in side column to unload the LEO Privacy.</string>
     <string name="wifi_result_swifty_title">Flow Toggle Widget</string>
     <string name="wifi_result_swifty_content">Flow runs too fast! Don\'t worry, here comes Swifty! Just a click to start the cellular data and WiFi. Save data flow just now!</string>
-    <string name="samsung_tip_txt">To ensure normal operation of application lock, check Privacy Guard in "Application Program Optimization"->"Detail" and select "Disable", or set them later in Application Lock. </string>
+    <string name="samsung_tip_txt">To ensure normal operation of application lock, check LEO Privacy in "Application Program Optimization"->"Detail" and select "Disable", or set them later in Application Lock. </string>
     <string name="pri_result_wifimaster_content">Professional and optimized speed tester to ensure higher and more stable WiFi speed and provide free WIFI with higher quality.</string>
     <string name="wifi_result_wifimaster_content">Test your WiFi speed now! Select the fastest WiFi connection!</string>
     <string name="video_guide_txt">Click Edit to check and unhide the video</string>
@@ -932,16 +932,16 @@
     <string name="intruder_share_dialog_content">Think me pretty good? <Data><![CDATA[<font color="#FFF600">Share with your friends</font>]]></Data></string>
     <string name="share_dialog_btn_query">Share</string>
     <string name="share_dialog_query_btn_cancel">Cancel</string>
-    <string name="phone_share_content">Hi, I\'m using the anti-theft function of Privacy Guard. I can remotely control my mobile just by sending an MMS. It\'s so convenient and I want you to have a try.</string>
-    <string name="callfilter_share_content">Hi, I\'m using the crank call interception function of Privacy Guard. By using it, I mask all annoying salesmen. The most important is, it can automatically identify incoming calls. It\'s so convenient and I really want you to have a try.</string>
-    <string name="intruder_share_content">Hi, I\'m using the Intrusion Prevention function of Privacy Guard. It has helped me shoot %1$s persons who peek at my mobile. Now, I know who are peeking at my mobile. Do you want to have a try?</string>
+    <string name="phone_share_content">Hi, I\'m using the anti-theft function of LEO Privacy. I can remotely control my mobile just by sending an MMS. It\'s so convenient and I want you to have a try.</string>
+    <string name="callfilter_share_content">Hi, I\'m using the crank call interception function of LEO Privacy. By using it, I mask all annoying salesmen. The most important is, it can automatically identify incoming calls. It\'s so convenient and I really want you to have a try.</string>
+    <string name="intruder_share_content">Hi, I\'m using the Intrusion Prevention function of LEO Privacy. It has helped me shoot %1$s persons who peek at my mobile. Now, I know who are peeking at my mobile. Do you want to have a try?</string>
     <string name="up_list_swifty_title">Efficiency promotion</string>
 
     <string name="screen_protect_time">Remaining time </string>
     <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>m</string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>m</string>
 
-    <string name="oppo_rom_tip_txt">Due to system restriction, you need to enable the permission to have Privacy Guard work normally. You can do it by choosing Add program > Add applications running in background > Select and add Privacy Guard</string>
+    <string name="oppo_rom_tip_txt">Due to system restriction, you need to enable the permission to have LEO Privacy work normally. You can do it by choosing Add program > Add applications running in background > Select and add LEO Privacy</string>
 
     <!--翻译遗漏，暂时用中文替代-->
     <string name="screen_protect_charing_text_one">Please connect the charger</string>
@@ -983,7 +983,7 @@
     <string name="ask_create_shortcut_content_videohide">Want to browse your hidden videos more easily? Create a shortcut on the desktop!</string>
     <string name="ask_create_shortcut_content_callfilter">Add a desktop shortcut, to easily manage blacklist and blocking records.</string>
     <string name="ask_create_shortcut_content_wifi_security">Worry about network security? Create a desktop shortcut to check Wi-Fi security any time!</string>
-    <string name="grant_permission_guide">Authorize Privacy Guard to lock app.</string>
+    <string name="grant_permission_guide">Authorize LEO Privacy to lock app.</string>
     <string name="grant_permission_default_tip">Give permissions to fix App Lock problems.</string>
     <string name="battery_protect_view_time_title">Remaining time available</string>
     <string name="battery_protect_view_remain_one_title">Call</string>
@@ -993,7 +993,7 @@
     <string name="battery_protect_view_show_title">Recommended</string>
     <string name="addto_blacklist_share_dialog_title">Added successfully!</string>
     <string name="addto_blacklist_share_dialog_content">Wanna help your friends to block this crank call? Share it and let LEO protect them too!</string>
-    <string name="addto_blacklist_share_content">Hi all, I have added %1$s to my blacklist as a crank call. Pay attention to this number! Want to avoid crank calls like me? Just download LEO Privacy Guard for free：%2$s</string>
+    <string name="addto_blacklist_share_content">Hi all, I have added %1$s to my blacklist as a crank call. Pay attention to this number! Want to avoid crank calls like me? Just download LEO Privacy for free：%2$s</string>
     <string name="toast_hide_ing">Hiding images…</string>
     <string name="battery_protect_show_num_contact">Contacts</string>
     <string name="battery_protect_show_num_call">Call</string>

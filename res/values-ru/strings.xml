@@ -393,7 +393,7 @@
     <string name="error_mode_ok">включен режим ошибки приложения</string>
     <string name="zhiwen_mode_ok">включен режим отпечатки</string>
     <string name="weizhuang_error_title">скользните на кнопку Закрыть слева направо,чтобы разблокировать</string>
-    <string name="weizhuang_error_notice">к сожалению,”Privacy Guard :был прекращен</string>
+    <string name="weizhuang_error_notice">к сожалению,”LEO Privacy :был прекращен</string>
     <string name="weizhuang_error_notice_set_false">ой, двигайте побольше</string>
     <string name="weizhuang_zhiwen_notice">нажмите три раза в течение одной секунды,чтобы разблокировать</string>
     <string name="error_cancel_button">закрыть</string>
@@ -487,7 +487,7 @@
     <string name="ad_timeout">Вас ждут сюрпризы!</string>
     <!-- 2.8 end -->
     <!-- 2.10 start -->
-    <string name="auto_start_guide_tip_content">Запуск Privacy Guard при старте</string>
+    <string name="auto_start_guide_tip_content">Запуск LEO Privacy при старте</string>
     <string name="msg_center_title">Центр сообщений</string>
     <string name="msg_center_empty">Нет новых сообщений</string>
     <string name="msg_center_empty_say">Расскажите, что вы хотите</string>
@@ -644,7 +644,7 @@
     <string name="secur_bottom_bt_text">следующий</string>
     <string name="open_secur_text">Поздравляем!Основные функции антиугона включены</string>
     <string name="no_secur_text">Вы можете использовать следующие функции:</string>
-    <string name="open_secur_checkbox_text">Открыта вышая защита, доб. privacy guard в супервизор устройства</string>
+    <string name="open_secur_checkbox_text">Открыта вышая защита, доб. LEO Privacy в супервизор устройства</string>
 
     <string name="quick_helper_pic_hide">Скрыть фото</string>
     <string name="quick_helper_video_hide">Скрыть видео</string>
@@ -730,7 +730,7 @@
     <string name="secur_help_bt">Знать</string>
     <string name="advan_secur_text">При включении вышей защиты может использовать вышие функции:</string>
     <string name="secur_backup_msm"> [LEOMASTER] Вы выбрали для резервного копирования контроль заказов через SMS: 1. Блокировка мобильного: #lockmobile 2. найти положение мобильного: #locateposition 3. отправить сигнал тревоги: #alert 4. Сигнализация с: #alertoff 5. предупреждения. четкие данные: #formatdata 6. включить блокировки; отслеживание; сигнализация; стереть: #onekey. Если мобильный потерян, отправить соответствующие приказы. Если вы забыли заказов, нажмите кнопку "Резервное копирование удаленного управления заказами" отправить эту СМС еще раз. http://www.leomaster.com</string>
-    <string name="secur_location_msm"> [LEOMASTER] Privacy Guard получил место потерянного тел., нажмите:<xliff:g id="locate_posi">%1$s</xliff:g> http://www.leomaster.com</string>
+    <string name="secur_location_msm"> [LEOMASTER] LEO Privacy получил место потерянного тел., нажмите:<xliff:g id="locate_posi">%1$s</xliff:g> http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">Подтвердить ли не решить результат скан.? Перейти обработку не увеличить ваш счет</string>
 
     <string name="secur_add_self_number_tip">Номер ввода-номер с.т.‚ введите снова</string>
@@ -742,9 +742,9 @@
     <string name="monitor_new_app">Новые приложения</string>
     <string name="monitor_new_pic">Новые картинки</string>
     <string name="monitor_new_vid">Новое видео</string>
-    <string name="secur_kno_model_msm_tip">Разрешите Privacy Guard право чтения/писанияСМС для антиугона</string>
+    <string name="secur_kno_model_msm_tip">Разрешите LEO Privacy право чтения/писанияСМС для антиугона</string>
     <string name="secur_kno_model_msm_click">Сейчас уполномочить>>></string>
-    <string name="secur_no_kno_model_msm_tip">Антиугон требует предоставить  Privacy Guard разреш.СМС для работы</string>
+    <string name="secur_no_kno_model_msm_tip">Антиугон требует предоставить  LEO Privacy разреш.СМС для работы</string>
     <string name="secur_feedbk_content">Не использ. антиугон</string>
     <string name="secur_help_feedback_tip_button">Обратите к нам</string>
     <string name="phone_security_instruct_alert_off">Сигнализация с: #alertoff</string>
@@ -756,15 +756,15 @@
     <string name="toast_getscore_text">Поздравляем! Ваши баллы увеличились</string>
     <string name="feedback_tell_us_content">Если у вас есть другие вопросы или потребности, пожалуйста, не стесняйтесь обращаться к нам! Наши группы на facebook , WhatsApp поддерживают он-лайн в любое время!</string>
     <string name="feedback_tell_us_contact_type_title">Контакты</string>
-    <string name="dialog_fivestars_content_text">Наслаждайтесь Privacy Guard?Пожалуйста, дайте нам 5 звезд сейчас!</string>
+    <string name="dialog_fivestars_content_text">Наслаждайтесь LEO Privacy?Пожалуйста, дайте нам 5 звезд сейчас!</string>
     <string name="elect_empty_content">К сожалению, информация о батареи пока не была получена</string>
     <string name="swifty_item_btn">Выполнять запуск</string>
-    <string name="grade_item_title">Вам нравится Privacy Guard?</string>
+    <string name="grade_item_title">Вам нравится LEO Privacy?</string>
     <string name="grade_item_btn"> Дайте оценку 5 звёзд</string>
     <string name="change_wifi_toast_unsafe">Существует риск</string>
     <string name="change_wifi_toast_safe">Безопасность</string>
     <string name="fb_item_title">Следуйте за нами на Facebook</string>
-    <string name="fb_item_content">Хотите узнать больше интересных официальных новостей о Privacy Guard? Пожалуйста, немедленно следуйте за нами на Facebook</string>
+    <string name="fb_item_content">Хотите узнать больше интересных официальных новостей о LEO Privacy? Пожалуйста, немедленно следуйте за нами на Facebook</string>
     <string name="fb_item_btn">следовать за нами</string>
     <string name="intruderprotection_forbit_content">Из-за ограничений системы, защита от агрессора не может нормально работать</string>
     <string name="pri_pro_btn">Включить (+%1$d балл)</string>
@@ -894,16 +894,16 @@
     <string name="intruder_share_dialog_content"><Data><![CDATA[<font color="#FFF600">Поделитесь с друзьями!</font>]]></Data></string>
     <string name="share_dialog_btn_query">Поделиться </string>
     <string name="share_dialog_query_btn_cancel">Отмена </string>
-    <string name="phone_share_content">Привет, я пользуюсь функцией защиты от кражи Privacy Guard. Нужно только отправить сообщение, и я могу дистанционно управлять моим телефоном. Это действительно очень удобно, я хочу, чтобы ты тоже попробовал эту программу.</string>
-    <string name="callfilter_share_content">Привет, я пользуюсь функцией блокировки звонков Privacy Guard. Я заблокировал этих надоедливых торговых агентов, а самое главное – эта функция автоматически распознает входящие звонки, это очень удобно. Я хочу, чтобы ты тоже попробовал эту функцию.</string>
-    <string name="intruder_share_content">Привет, я пользуюсь функцией защиты от захватчиков Privacy Guard. Она помогла мне сфотографировать %1$s человек, которые подглядывали в мой телефон. Теперь я знаю, кто подглядывал в мой телефон. Попробуй и ты эту функцию!</string>
+    <string name="phone_share_content">Привет, я пользуюсь функцией защиты от кражи LEO Privacy. Нужно только отправить сообщение, и я могу дистанционно управлять моим телефоном. Это действительно очень удобно, я хочу, чтобы ты тоже попробовал эту программу.</string>
+    <string name="callfilter_share_content">Привет, я пользуюсь функцией блокировки звонков LEO Privacy. Я заблокировал этих надоедливых торговых агентов, а самое главное – эта функция автоматически распознает входящие звонки, это очень удобно. Я хочу, чтобы ты тоже попробовал эту функцию.</string>
+    <string name="intruder_share_content">Привет, я пользуюсь функцией защиты от захватчиков LEO Privacy. Она помогла мне сфотографировать %1$s человек, которые подглядывали в мой телефон. Теперь я знаю, кто подглядывал в мой телефон. Попробуй и ты эту функцию!</string>
     <string name="up_list_swifty_title">Повышение эффективности</string>
 
     <string name="screen_protect_time">Оставшееся время </string>
     <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
     <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
 
-    <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы Privacy Guard требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить Privacy Guard</string>
+    <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы LEO Privacy требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить LEO Privacy</string>
     <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>
 
     <string name="screen_protect_charing_text_one">Подключите зарядное устройство</string>
@@ -944,7 +944,7 @@
     <string name="ask_create_shortcut_content_videohide">Хотите просматривать скрытое видео? На рабочем столе создать ярлык!</string>
     <string name="ask_create_shortcut_content_callfilter">Добавить ярлыки на рабочем столе, и больше чтобы облегчить управление черный список, и перехватить записей.</string>
     <string name="ask_create_shortcut_content_wifi_security">Беспокоится о безопасности сети? Создание ярлыка на рабочем столе,в любое время вамможно проверить сети Wi-Fi безопасность!</string>
-    <string name="grant_permission_guide">Открыть доступ о Privacy Guard</string>
+    <string name="grant_permission_guide">Открыть доступ о LEO Privacy</string>
     <string name="grant_permission_default_tip">Открыть доступ и исправить проблем блокировки</string>
     <string name="battery_protect_view_time_title">Время</string>
     <string name="battery_protect_view_remain_one_title">Разговор</string>
@@ -953,8 +953,8 @@
     <string name="pri_pro_wifi_not_scan">Wi-Fi не проверить</string>
     <string name="battery_protect_view_show_title">Рекомендовать</string>
     <string name="addto_blacklist_share_dialog_title">Добавить успех!</string>
-    <string name="addto_blacklist_share_dialog_content">Делиться Privacy Guard с друзьями,помогите им отличить  преследования вызовов</string>
-    <string name="addto_blacklist_share_content">Привет, я добавил %1$s преследования вызовов в чёрной списоке.Обратите внимание на этот номер! Хотите избежать это? Просто скачайте Leo Privacy Guard бесплатно：с%2$s</string>
+    <string name="addto_blacklist_share_dialog_content">Делиться LEO Privacy с друзьями,помогите им отличить  преследования вызовов</string>
+    <string name="addto_blacklist_share_content">Привет, я добавил %1$s преследования вызовов в чёрной списоке.Обратите внимание на этот номер! Хотите избежать это? Просто скачайте LEO Privacy бесплатно：с%2$s</string>
     <string name="toast_hide_ing">Скрыть фото..</string>
     <string name="battery_protect_show_num_contact">Каталог</string>
     <string name="battery_protect_show_num_call">Телефон</string>
