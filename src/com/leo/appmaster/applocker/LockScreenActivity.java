@@ -1646,6 +1646,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void showAdAnimaiton(String unitId) {
 		int index = findTargetViewIndex(unitId);
 		if (index == -1) {
+			otherAdSwitcher = false;
 			return;
 		}
         View animView = mAdapterCycle.getViews().get(index);
@@ -2804,6 +2805,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (campaign == null) {
                 return;
             }
+
+			int index = findTargetViewIndex(unitId);
+			if (index != -1) {
+				mBannerContainer.setCurrentItem(index, false);
+				mAdapterCycle.setLasterSlectedPage(index);
+				
+			}
 			
             ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
             ((TextView) view.findViewById(R.id.ad_title)).setText(unitId + " " +campaign.getAppName());
@@ -2840,11 +2848,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     snapforClick((ViewGroup) v.getParent());
                 }
             });
-			int index = findTargetViewIndex(unitId);
-			if (index != -1) {
-				mBannerContainer.setCurrentItem(index, false);
-				mAdapterCycle.setLasterSlectedPage(index);
-			}
+			
         }
 
         private void snapforClick(View v) {
