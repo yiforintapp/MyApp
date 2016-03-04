@@ -118,7 +118,6 @@
             android:layout_marginLeft="13dp"
             android:textColor="@color/c2"
             android:textSize="@dimen/f5a"
-            android:text="ghjfgjfgjgfjgfj"
             android:layout_marginRight="14dp"
             android:layout_gravity="center_vertical"/>
 
