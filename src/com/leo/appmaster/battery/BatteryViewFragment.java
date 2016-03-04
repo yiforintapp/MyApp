@@ -282,7 +282,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void setYplace(int contentHeight) {
         int biggestDistance = mBossView.getHeight() / 3;
         if (mMoveDisdance < biggestDistance) {
-            mMoveDisdance = mBossView.getHeight() * 4 / 9;
+            mMoveDisdance = biggestDistance;
+            LeoLog.d("locationP", "so high , reset");
         }
 
         if (!isSetInitPlace) {
