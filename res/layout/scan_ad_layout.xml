@@ -31,7 +31,7 @@
             android:layout_height="28dp"
             android:layout_alignRight="@id/item_ad_preview"
             android:layout_alignTop="@id/item_ad_preview"
-            android:src="@drawable/ad_after_scan_maker" />
+            android:src="@drawable/ad_signal" />
 
         <LinearLayout
             android:id="@+id/item_header_ll"
