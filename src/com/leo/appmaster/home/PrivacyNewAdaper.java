@@ -92,6 +92,9 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
     }
 
     public void toggle(int pos) {
+        if (pos < 0) {
+            return;
+        }
         boolean isChecked = false;
         int selection = mSelectedArray[pos];
         if (selection == SELECTED) {
