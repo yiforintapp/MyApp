@@ -978,7 +978,7 @@
     <string name="battery_protect_show_num_msm">mesaj</string>
     <string name="battery_protect_show_num_browser">tarayıcı</string>
     <string name="battery_boosting">elektrik harcadığı uygulamayı temizliyou</string>
-    <string name="battery_boost_result">Ekran koruyucu %1$d dakika şarj süresini tasarruf edecek. %2$d güç tüketme uygulamalarını düzenlendi.</string>
+    <string name="battery_boost_result">Ekran koruyucu <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> dakika şarj süresini tasarruf edecek. <Data><![CDATA[<font color="#00a8ff">%2$d</font>]]></Data> güç tüketme uygulamalarını düzenlendi.</string>
     <string name="battery_protect_setting_pow_sav_title">Otomatik güç optimizasyonu</string>
     <string name="battery_protect_setting_pow_sav_des"> Şarj etmek zaman elektrik tükendiği uygulamayı temizledi.</string>
     <string name="battery_protect_pop_text">ihmal</string>

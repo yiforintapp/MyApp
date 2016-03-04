@@ -1062,7 +1062,7 @@
     <string name="battery_protect_show_num_msm">رسالة</string>
     <string name="battery_protect_show_num_browser">متصفح</string>
     <string name="battery_boosting">ينظف تطبيق يستهلك الطاقة الكهربائية</string>
-    <string name="battery_boost_result">توفر حماية الشاشة عند الشحن %1$dدقائق الشحن ،تم تنظيف%2$dتطبيقات تستهلك الطاقة الكهربائية</string>
+    <string name="battery_boost_result">توفر حماية الشاشة عند الشحن <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>دقائق الشحن ،تم تنظيف<Data><![CDATA[<font color="#00a8ff">%2$d</font>]]></Data>تطبيقات تستهلك الطاقة الكهربائية</string>
     <string name="battery_protect_setting_pow_sav_title">تحسين توفير الكهرباء التلقائي</string>
     <string name="battery_protect_setting_pow_sav_des">ينظم تطبيقات تستهلك الكهرباء عندما تشحن تلفونك</string>
     <string name="battery_protect_pop_text">تجاهل</string>

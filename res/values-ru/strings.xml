@@ -961,7 +961,7 @@
     <string name="battery_protect_show_num_msm">Сообщение</string>
     <string name="battery_protect_show_num_browser">Браузер</string>
     <string name="battery_boosting">Очистить расход электроэнергии при применении...</string>
-    <string name="battery_boost_result">Экран зарядки сохранить%1$d минут времени зарядки, очистить%2$D расход энергии приложений</string>
+    <string name="battery_boost_result">Экран зарядки сохранить<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> минут времени зарядки, очистить<Data><![CDATA[<font color="#00a8ff">%2$d</font>]]></Data> расход энергии приложений</string>
     <string name="battery_protect_setting_pow_sav_title">Автоматическо экономить ток</string>
     <string name="battery_protect_setting_pow_sav_des">Очистить расход электроэнергии при применении в зарядке</string>
     <string name="battery_protect_pop_text">Пропуск</string>

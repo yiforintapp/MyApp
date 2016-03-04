@@ -978,7 +978,7 @@
     <string name="battery_protect_show_num_msm">短信</string>
     <string name="battery_protect_show_num_browser">瀏覽器</string>
     <string name="battery_boosting">正在清理耗電應用…</string>
-    <string name="battery_boost_result">充電屏保將節省%1$d分鐘充電時間,已清理%2$d個耗電應用</string>
+    <string name="battery_boost_result">充電屏保將節省<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>分鐘充電時間,已清理<Data><![CDATA[<font color="#00a8ff">%2$d</font>]]></Data>個耗電應用</string>
     <string name="battery_protect_setting_pow_sav_title">自動省電優化</string>
     <string name="battery_protect_setting_pow_sav_des">充電中自動清理耗電應用</string>
     <string name="battery_protect_pop_text">忽略</string>

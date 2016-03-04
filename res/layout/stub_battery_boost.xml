@@ -88,4 +88,40 @@
         android:layout_marginTop="50dp"
         android:text="@string/battery_boosting" />
 
+    <LinearLayout
+        android:id="@+id/charge_clean_result_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="33dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginRight="46dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_below="@id/boost_anim_containor"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/charge_clean_result_bg"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/charge_clean_finish"
+            android:layout_marginLeft="14dp"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/charge_clean_result_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/f5a"
+            android:text="ghjfgjfgjgfjgfj"
+            android:layout_marginRight="14dp"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
 </com.leo.appmaster.battery.BatteryBoostController>

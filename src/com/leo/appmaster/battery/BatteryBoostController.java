@@ -1,16 +1,14 @@
 package com.leo.appmaster.battery;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Build;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,6 +28,10 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Jasper on 2016/3/1.
@@ -61,6 +63,9 @@ public class BatteryBoostController extends RelativeLayout {
     private OnBoostFinishListener mListener;
     private int mCleanedNum;
 
+    private LinearLayout mBoostResultLayout;
+    private TextView mBoostResultText;
+
     public BatteryBoostController(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -88,6 +93,9 @@ public class BatteryBoostController extends RelativeLayout {
         mShieldRootView = findViewById(R.id.rl_shield);
 
         mBoostToastTv = (TextView) findViewById(R.id.boost_toast_tv);
+
+        mBoostResultLayout = (LinearLayout) findViewById(R.id.charge_clean_result_layout);
+        mBoostResultText = (TextView) findViewById(R.id.charge_clean_result_txt);
     }
 
     @Override
@@ -303,7 +311,10 @@ public class BatteryBoostController extends RelativeLayout {
                             double seed = Math.random();
                             int minites = (int) (number + ((float) number * seed));
                             String boostResult = getContext().getString(R.string.battery_boost_result, minites, number);
-                            mBoostToastTv.setText(boostResult);
+//                            mBoostToastTv.setText(boostResult);
+                            mBoostResultText.setText(Html.fromHtml(boostResult));
+                            mBoostToastTv.setVisibility(View.GONE);
+                            mBoostResultLayout.setVisibility(View.VISIBLE);
                             BatteryBoostController.this.onArroundFinish();
                         }
                     });

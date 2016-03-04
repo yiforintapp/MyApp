@@ -973,7 +973,7 @@
     <string name="battery_protect_show_num_msm">短信</string>
     <string name="battery_protect_show_num_browser">浏览器</string>
     <string name="battery_boosting">正在清理耗电应用...</string>
-    <string name="battery_boost_result">充电屏保将节省%1$d分钟充电时间，已清理%2$d个耗电应用</string>
+    <string name="battery_boost_result">充电屏保将节省<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>分钟充电时间，已清理<Data><![CDATA[<font color="#00a8ff">%2$d</font>]]></Data>个耗电应用</string>
     <string name="battery_protect_setting_pow_sav_title">自动省电优化</string>
     <string name="battery_protect_setting_pow_sav_des">充电中自动清理耗电应用</string>
     <string name="battery_protect_pop_text">忽略</string>
