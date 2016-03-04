@@ -279,10 +279,12 @@ public class BatteryManagerImpl extends BatteryManager {
             msg.obj = intent;
 
             if (!AppUtil.hasOtherScreenSaverInstalled(mContext)) {
+                mLockManager.filterPackage(mContext.getPackageName(), 2000);
                 mContext.startActivity(intent);
             } else {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
+                        mLockManager.filterPackage(mContext.getPackageName(), 2000);
                         mContext.startActivity(intent);
                     }
                 }, 200);
