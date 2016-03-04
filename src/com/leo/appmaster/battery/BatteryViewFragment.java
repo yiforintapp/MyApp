@@ -713,7 +713,25 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 intentS.setComponent(cnS);
                                 startActivity(intentS);
                             } catch (Exception e2) {
-                                e2.printStackTrace();
+                                //qiku
+                                try {
+                                    Intent intentQiku = new Intent(Intent.ACTION_VIEW);
+                                    intentQiku.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    ComponentName cnQiku = new ComponentName("com.android.mms", "com.yulong.android.mms.ui.MmsConversationListActivity");
+                                    intentQiku.setComponent(cnQiku);
+                                    startActivity(intentQiku);
+                                } catch (Exception e3) {
+                                    //huawei p8
+                                    try {
+                                        Intent intentHwP8 = new Intent(Intent.ACTION_MAIN);
+                                        intentHwP8.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        ComponentName cnHwP8 = new ComponentName("com.android.contacts", "com.android.mms.ui.ConversationList");
+                                        intentHwP8.setComponent(cnHwP8);
+                                        startActivity(intentHwP8);
+                                    } catch (Exception e4) {
+                                        e4.printStackTrace();
+                                    }
+                                }
                             }
                         }
 
