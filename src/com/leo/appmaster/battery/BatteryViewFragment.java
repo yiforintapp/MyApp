@@ -181,6 +181,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     /* 用于更新时间 */
     private Timer mUpdateTimer;
     private UpdateTimeTask mUpdateTask;
+    private int nowSetType = 0;
 
     /**
      * 第一个推广位
@@ -255,7 +256,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         LeoLog.d("locationP", "mBossView.getHeight() : " + mBossView.getHeight());
 
-        setYplace(contentHeight,type);
+        setYplace(contentHeight, type);
     }
 
     private void setYplace(int contentHeight, int type) {
@@ -266,21 +267,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             final int arrowHeight = mArrowMoveContent.getHeight();
             if (type == AD_TYPE_MSG) {
                 if (mAdWrapper != null) {
+                    nowSetType = type;
                     mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight - 20;
                     LeoLog.d("locationP", "mAdWrapper.getHeight() : " + mAdWrapper.getHeight());
-//                    setYplace(contentHeight,type);
                 }
             } else if (type == SWTIFY_TYPE_MSG) {
                 if (mSwiftyView != null) {
+                    nowSetType = type;
                     mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight - 20;
                     LeoLog.d("locationP", "mSwiftyView.getHeight() : " + mSwiftyView.getHeight());
-//                    setYplace(contentHeight, type);
                 }
             } else if (type == EXTRA_TYPE_MSG) {
                 if (mExtraView != null && mExtraView.getHeight() > 0) {
+                    nowSetType = type;
                     mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight - 20;
                     LeoLog.d("locationP", "mExtraView.getHeight() : " + mExtraView.getHeight());
-//                    setYplace(contentHeight, type);
                 }
             }
 
@@ -312,8 +313,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mArrowMoveContent.setVisibility(View.INVISIBLE);
             mMaskView.hideMask();
         } else {
-            mArrowMoveContent.setVisibility(View.VISIBLE);
-            mMaskView.showMask();
+            if (nowSetType != type) {
+                mArrowMoveContent.setVisibility(View.VISIBLE);
+                mMaskView.showMask();
+            }
         }
     }
 
@@ -2204,7 +2207,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (true) {
+//        if (false) {
             mSwiftyView = viewStub.inflate();
 
             mSwiftyImg = (ImageView) mSwiftyView.findViewById(R.id.card_img);
@@ -2272,7 +2275,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (true) {
+//        if (false) {
             mExtraView = viewStub.inflate();
             mExtraTitle = (TextView) mExtraView.findViewById(R.id.card_title);
             mExtraImg = (ImageView) mExtraView.findViewById(R.id.card_img);
