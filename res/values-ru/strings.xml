@@ -938,5 +938,34 @@
     <string name="close_batteryview_confirm_content">Если закроете, ваша скорость зарядки будет уменьшить на 20%, еще хотите закрыть?</string>
     <string name="close_batteryview_confirm_sure">Да</string>
     <string name="close_batteryview_confirm_cancel">Нет</string>
-
+    <!--3.3.2-->
+    <string name="ask_create_shortcut_button_right">Создать</string>
+    <string name="ask_create_shortcut_content_imagehide">Хотите просматривать скрытое фото? На рабочем столе создать ярлык!</string>
+    <string name="ask_create_shortcut_content_videohide">Хотите просматривать скрытое видео? На рабочем столе создать ярлык!</string>
+    <string name="ask_create_shortcut_content_callfilter">Добавить ярлыки на рабочем столе, и больше чтобы облегчить управление черный список, и перехватить записей.</string>
+    <string name="ask_create_shortcut_content_wifi_security">Беспокоится о безопасности сети? Создание ярлыка на рабочем столе,в любое время вамможно проверить сети Wi-Fi безопасность!</string>
+    <string name="grant_permission_guide">Открыть доступ о Privacy Guard</string>
+    <string name="grant_permission_default_tip">Открыть доступ и исправить проблем блокировки</string>
+    <string name="battery_protect_view_time_title">Время</string>
+    <string name="battery_protect_view_remain_one_title">Разговор</string>
+    <string name="battery_protect_view_remain_two_title">Онлайн</string>
+    <string name="battery_protect_view_remain_three_title">Приложения</string>
+    <string name="pri_pro_wifi_not_scan">Wi-Fi не проверить</string>
+    <string name="battery_protect_view_show_title">Рекомендовать</string>
+    <string name="addto_blacklist_share_dialog_title">Добавить успех!</string>
+    <string name="addto_blacklist_share_dialog_content">Делиться Privacy Guard с друзьями,помогите им отличить  преследования вызовов</string>
+    <string name="addto_blacklist_share_content">Привет, я добавил %1$s преследования вызовов в чёрной списоке.Обратите внимание на этот номер! Хотите избежать это? Просто скачайте Leo Privacy Guard бесплатно：с%2$s</string>
+    <string name="toast_hide_ing">Скрыть фото..</string>
+    <string name="battery_protect_show_num_contact">Каталог</string>
+    <string name="battery_protect_show_num_call">Телефон</string>
+    <string name="battery_protect_show_num_msm">Сообщение</string>
+    <string name="battery_protect_show_num_browser">Браузер</string>
+    <string name="battery_boosting">Очистить расход электроэнергии при применении...</string>
+    <string name="battery_boost_result">Экран зарядки сохранить%1$d минут времени зарядки, очистить%2$D расход энергии приложений</string>
+    <string name="battery_protect_setting_pow_sav_title">Автоматическо экономить ток</string>
+    <string name="battery_protect_setting_pow_sav_des">Очистить расход электроэнергии при применении в зарядке</string>
+    <string name="battery_protect_pop_text">Пропуск</string>
+    <string name="battery_saver_remain_charge_time">Оставшееся время зарядки</string>
+    <string name="feedback_tell_us_email_title">Email:</string>
+    <string name="feedback_tell_us_email_url">support@leomaster.com</string>
 </resources>

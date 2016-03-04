@@ -978,41 +978,36 @@
     <string name="close_batteryview_confirm_cancel">Cancel</string>
 
     <!-- 3.3.2 -->
-    <string name="ask_create_shortcut_button_right">创建</string>
-    <string name="ask_create_shortcut_content_imagehide">想要更方便地浏览隐藏的图片？在桌面创建一个快捷方式吧！</string>
-    <string name="ask_create_shortcut_content_videohide">想要更方便地浏览隐藏的视频？在桌面创建一个快捷方式吧！</string>
-    <string name="ask_create_shortcut_content_callfilter">添加桌面快捷方式，更便利地管理黑名单和拦截记录。</string>
-    <string name="ask_create_shortcut_content_wifi_security">担心网络安全？创建桌面快捷方式随时扫检测wifi安全！</string>
-    <string name="grant_permission_guide">为Privacy Guard开启权限。保证应用锁正常工作</string>
-    <string name="grant_permission_default_tip">开启权限以修复应用锁出现的问题</string>
-    
-    <string name="battery_protect_view_time_title">可用时间</string>
-    <string name="battery_protect_view_remain_one_title">3G通话</string>
-    <string name="battery_protect_view_remain_two_title">WiFi上网</string>
-    <string name="battery_protect_view_remain_three_title">玩应用</string>
-
-    <string name="pri_pro_wifi_not_scan">当前连接wifi未检测</string>
-    <string name="battery_protect_view_show_title">推荐使用</string>
-
+    <string name="ask_create_shortcut_button_right">Create</string>
+    <string name="ask_create_shortcut_content_imagehide">Want to browse your hidden photos more easily? Create a shortcut on the desktop!</string>
+    <string name="ask_create_shortcut_content_videohide">Want to browse your hidden videos more easily? Create a shortcut on the desktop!</string>
+    <string name="ask_create_shortcut_content_callfilter">Add a desktop shortcut, to easily manage blacklist and blocking records.</string>
+    <string name="ask_create_shortcut_content_wifi_security">Worry about network security? Create a desktop shortcut to check Wi-Fi security any time!</string>
+    <string name="grant_permission_guide">Authorize Privacy Guard to lock app.</string>
+    <string name="grant_permission_default_tip">Give permissions to fix App Lock problems.</string>
+    <string name="battery_protect_view_time_title">Remaining time available</string>
+    <string name="battery_protect_view_remain_one_title">Call</string>
+    <string name="battery_protect_view_remain_two_title">Internet</string>
+    <string name="battery_protect_view_remain_three_title">Use Apps</string>
+    <string name="pri_pro_wifi_not_scan">Wi-Fi not detected</string>
+    <string name="battery_protect_view_show_title">Recommended</string>
+    <string name="addto_blacklist_share_dialog_title">Added successfully!</string>
+    <string name="addto_blacklist_share_dialog_content">Wanna help your friends to block this crank call? Share it and let LEO protect them too!</string>
+    <string name="addto_blacklist_share_content">Hi all, I have added %1$s to my blacklist as a crank call. Pay attention to this number! Want to avoid crank calls like me? Just download LEO Privacy Guard for free：%2$s</string>
+    <string name="toast_hide_ing">Hiding images…</string>
+    <string name="battery_protect_show_num_contact">Contacts</string>
+    <string name="battery_protect_show_num_call">Call</string>
+    <string name="battery_protect_show_num_msm">SMS</string>
+    <string name="battery_protect_show_num_browser">Browser</string>
+    <string name="battery_boosting">Cleaning power-consuming apps…</string>
+    <string name="battery_boost_result">Charging screensaver can save %1$d min charging time. %2$d power-consuming applications have been cleaned.</string>
+    <string name="battery_protect_setting_pow_sav_title">Automatic Power Save Optimization</string>
+    <string name="battery_protect_setting_pow_sav_des">Automatically clean power-consuming apps while charging.</string>
+    <string name="battery_protect_pop_text">Ignore</string>
+    <string name="battery_saver_remain_charge_time">Remaining charging time</string>
     <string name="feedback_tell_us_email_title">Email:</string>
     <string name="feedback_tell_us_email_url">support@leomaster.com</string>
 
-    <string name="addto_blacklist_share_dialog_title">添加成功！</string>
-    <string name="addto_blacklist_share_dialog_content">分享此号码给好友，让隐私卫士帮助他们远离骚扰电话！</string>
-    <string name="addto_blacklist_share_content">%1$s是一个骚扰电话，请大家注意并将其列入黑名单！避免骚扰电话困扰，保护手机隐私安全，推荐使用LEO隐私卫士哦：%2$s</string>
 
-    <string name="toast_hide_ing">正在隐藏图片...</string>
-
-    <string name="battery_protect_show_num_contact">通讯录</string>
-    <string name="battery_protect_show_num_call">电话</string>
-    <string name="battery_protect_show_num_msm">短信</string>
-    <string name="battery_protect_show_num_browser">浏览器</string>
-
-    <string name="battery_boosting">正在清理耗电应用...</string>
-    <string name="battery_boost_result">充电屏保将节省%1$d分钟充电时间，已清理%2$d个耗电应用</string>
-    <string name="battery_protect_setting_pow_sav_title">自动省电优化</string>
-    <string name="battery_protect_setting_pow_sav_des">充电中自动清理耗电应用</string>
-
-    <string name="battery_protect_pop_text">忽略</string>
     
 </resources>

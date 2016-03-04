@@ -404,6 +404,9 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         /*有发送短信，恢复短信发送失败Toast标志值*/
         com.leo.appmaster.privacycontact.PrivacyContactManager.getInstance(mContext).mSendMsmFail = false;
         SmsManager sms = SmsManager.getDefault();
+        if(!TextUtils.isEmpty(content)){
+            LeoLog.d(TAG,"Send Msm content:"+content);
+        }
         try {
             if (content.length() > 70) {
                 ArrayList<String> messageContents = sms.divideMessage(content);
@@ -421,6 +424,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                         sentIntent, 0);
                 sms.sendTextMessage(number, null, content, sentPI, null);
             }
+            LeoLog.d(TAG, "msm send success!");
             return true;
         } catch (Exception e) {
             e.printStackTrace();

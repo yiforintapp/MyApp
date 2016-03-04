@@ -950,10 +950,39 @@
     <string name="scan_done_vid">隱藏視頻</string>
 
     <string name="game_box_one">遊戲加速</string>
-    
+
     <string name="batteryview_pop_setting">充電設置</string>
     <string name="close_batteryview_confirm_content">您的充電速度將降低20%，確認關閉嗎？</string>
     <string name="close_batteryview_confirm_sure">確認關閉</string>
     <string name="close_batteryview_confirm_cancel">我再想想</string>
-
+    <!--3.3.2-->
+    <string name="ask_create_shortcut_button_right">創建</string>
+    <string name="ask_create_shortcut_content_imagehide">想要更方便地瀏覽隱藏的圖片？在桌面創建一個快捷方式吧！</string>
+    <string name="ask_create_shortcut_content_videohide">想要更方便地瀏覽隱藏的視頻？在桌面創建一個快捷方式吧！</string>
+    <string name="ask_create_shortcut_content_callfilter">添加桌面快捷方式，更便利地管理黑名單和攔截記錄。</string>
+    <string name="ask_create_shortcut_content_wifi_security">擔心網絡安全？創建桌面快捷方式隨時掃檢測wi-fi安全！</string>
+    <string name="grant_permission_guide">為Privacy Guard開啟權限。保證應用鎖正常工作</string>
+    <string name="grant_permission_default_tip">開啟權限以修復應用鎖出現的問題</string>
+    <string name="battery_protect_view_time_title">可用時間</string>
+    <string name="battery_protect_view_remain_one_title">通話</string>
+    <string name="battery_protect_view_remain_two_title">上網</string>
+    <string name="battery_protect_view_remain_three_title">玩應用</string>
+    <string name="pri_pro_wifi_not_scan">當前連接Wi-Fi未檢測</string>
+    <string name="battery_protect_view_show_title">推薦使用</string>
+    <string name="addto_blacklist_share_dialog_title">添加成功！</string>
+    <string name="addto_blacklist_share_dialog_content">分享給好友，讓隱私衛士幫他們識別騷擾電話！</string>
+    <string name="addto_blacklist_share_content">%1$s是騷擾電話，快將其加入黑名單！木有來電攔截？點這裡：%2$s</string>
+    <string name="toast_hide_ing">正在隱藏圖片…</string>
+    <string name="battery_protect_show_num_contact">通訊錄</string>
+    <string name="battery_protect_show_num_call">電話</string>
+    <string name="battery_protect_show_num_msm">短信</string>
+    <string name="battery_protect_show_num_browser">瀏覽器</string>
+    <string name="battery_boosting">正在清理耗電應用…</string>
+    <string name="battery_boost_result">充電屏保將節省%1$d分鐘充電時間,已清理%2$d個耗電應用</string>
+    <string name="battery_protect_setting_pow_sav_title">自動省電優化</string>
+    <string name="battery_protect_setting_pow_sav_des">充電中自動清理耗電應用</string>
+    <string name="battery_protect_pop_text">忽略</string>
+    <string name="battery_saver_remain_charge_time">剩餘充電時間</string>
+    <string name="feedback_tell_us_email_title">Email:</string>
+    <string name="feedback_tell_us_email_url">support@leomaster.com</string>
 </resources>

@@ -211,7 +211,7 @@ public class PhoneSecurityManager {
      * 检查是否为防盗指令
      */
     private void checkMsmIsInstructs(String phoneNumber, ArrayList<MessageBean> messages) {
-
+        LeoLog.i(TAG, "checkMsmIsInstructs检查是否为防盗指令");
         long cu1 = System.currentTimeMillis();
 
         phoneNumber = PrivacyContactUtils.simpleFromateNumber(phoneNumber);

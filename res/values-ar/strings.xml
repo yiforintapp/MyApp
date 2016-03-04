@@ -1038,5 +1038,35 @@
     <string name="close_batteryview_confirm_content">ستخفض سرعة الشحن عشرين بالمائة ،تغلقها؟</string>
     <string name="close_batteryview_confirm_sure">موافق</string>
     <string name="close_batteryview_confirm_cancel">الغاء</string>
-    
+
+    <!--3.3.2-->
+    <string name="ask_create_shortcut_button_right">انشاء</string>
+    <string name="ask_create_shortcut_content_imagehide">تريد أن تخفي الصور بأسهل الطريقة؟ أنشأ الطريقة السريعة علي سطح المكتب !</string>
+    <string name="ask_create_shortcut_content_videohide">تريد أن تخفي الصور بأسهل الطريقة؟ أنشأ الطريقة السريعة علي سطح المكتب !</string>
+    <string name="ask_create_shortcut_content_callfilter">اضافة الطريقة السرعة علي سطح المكتب لادارة القائمة السوداء و سجلات المنع</string>
+    <string name="ask_create_shortcut_content_wifi_security">تخاف علي أمن الشبكة ؟ أنشأ الطريقة السريعة لفحص أمن wifi في أي الوقت</string>
+    <string name="grant_permission_guide">فتح الأذن لPrivacy Guard من أجل عمل قفل التطبيق الطبيعي</string>
+    <string name="grant_permission_default_tip">فتح الأذن لاصلاح مشاكل قفل التطبيق</string>
+    <string name="battery_protect_view_time_title">الوقت المتبقي</string>
+    <string name="battery_protect_view_remain_one_title">مكالمة </string>
+    <string name="battery_protect_view_remain_two_title">Internet</string>
+    <string name="battery_protect_view_remain_three_title">استعمال تطبيق</string>
+    <string name="pri_pro_wifi_not_scan">مستعمل غير الفحصWi-Fi</string>
+    <string name="battery_protect_view_show_title">توصية</string>
+    <string name="addto_blacklist_share_dialog_title">  ! نجح الاضافة </string>
+    <string name="addto_blacklist_share_dialog_content">شاركه مع الأصدقاء لمساعدتك علي منع الازعاج</string>
+    <string name="addto_blacklist_share_content">S$2% الازعاج و تضيفها الي  القائمة السوداء .انتبه ! تريد الا توجد الازعاج ؟ تنزلs$1%</string>
+    <string name="toast_hide_ing">اخفاء الصور الان</string>
+    <string name="battery_protect_show_num_contact">جهات الاتصال</string>
+    <string name="battery_protect_show_num_call">مكالمة</string>
+    <string name="battery_protect_show_num_msm">رسالة</string>
+    <string name="battery_protect_show_num_browser">متصفح</string>
+    <string name="battery_boosting">ينظف تطبيق يستهلك الطاقة الكهربائية</string>
+    <string name="battery_boost_result">توفر حماية الشاشة عند الشحن %1$dدقائق الشحن ،تم تنظيف%2$dتطبيقات تستهلك الطاقة الكهربائية</string>
+    <string name="battery_protect_setting_pow_sav_title">تحسين توفير الكهرباء التلقائي</string>
+    <string name="battery_protect_setting_pow_sav_des">ينظم تطبيقات تستهلك الكهرباء عندما تشحن تلفونك</string>
+    <string name="battery_protect_pop_text">تجاهل</string>
+    <string name="battery_saver_remain_charge_time">المتبقي من وقت الشحن</string>
+    <string name="feedback_tell_us_email_title">Email:</string>
+    <string name="feedback_tell_us_email_url">support@leomaster.com</string>
 </resources>

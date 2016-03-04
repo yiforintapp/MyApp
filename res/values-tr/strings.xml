@@ -947,12 +947,43 @@
     <string name="scan_done_app">uygulama kilitle</string>
     <string name="scan_done_pic">fotoğraf gizle</string>
     <string name="scan_done_vid">video gizle</string>
-    
+
     <string name="batteryview_pop_setting">Şarj ayarları</string>
     <string name="close_batteryview_confirm_content">Sizin şarj oranı% 20 oranında azalacaktır, bunu onaylıyormusunuz? </string>
     <string name="close_batteryview_confirm_sure">Sil</string>
     <string name="close_batteryview_confirm_cancel">iptal</string>
 
     <string name="game_box_one">Oyun Hızlandırma</string>
+
+    <!--3.3.2-->
+    <string name="ask_create_shortcut_button_right">kurmak</string>
+    <string name="ask_create_shortcut_content_imagehide">Gizli resimlere daha kolay göz gezdirmek istiyor musun?Masaüstünde bir kısayol oluşturun !</string>
+    <string name="ask_create_shortcut_content_videohide"> Gizli videolara daha kolay seyretmek istiyor musun?Masaüstünde bir kısayol oluşturun !</string>
+    <string name="ask_create_shortcut_content_callfilter">Masaüstü kısayolu arttın,kara liste ve durdurma kayıtları daha kolay yönettin.</string>
+    <string name="ask_create_shortcut_content_wifi_security">Ağ güvenliği endişelenmek misin?Masaüstüde kısayolu oluşturun ve WİFİ güvenliği kontrol et.</string>
+    <string name="grant_permission_guide">APP çalışmak için Privacy Guard yetki sınırı aç</string>
+    <string name="grant_permission_default_tip">İzin kilit sorunları gidermek için uygulamayı aç</string>
+    <string name="battery_protect_view_time_title">kullanılabilan zaman</string>
+    <string name="battery_protect_view_remain_one_title">çağrı</string>
+    <string name="battery_protect_view_remain_two_title">Internet</string>
+    <string name="battery_protect_view_remain_three_title">APP oyna</string>
+    <string name="pri_pro_wifi_not_scan">WiFi bağlı değil </string>
+    <string name="battery_protect_view_show_title">Tavsiye et</string>
+    <string name="addto_blacklist_share_dialog_title">başarıyla eklendi</string>
+    <string name="addto_blacklist_share_dialog_content">Arkadaşlarınıza paylaşın,gizlilik Nöbetçisi onlara taciz telefon görüşmeleri belirlemenize yardım ededi.</string>
+    <string name="addto_blacklist_share_content">%1$s taciz olan telefondur. haydi kara listeye ekle!çağrı engellme yok mu?Burada teklayın!</string>
+    <string name="toast_hide_ing">Resimler gizliyor</string>
+    <string name="battery_protect_show_num_contact">kişiler</string>
+    <string name="battery_protect_show_num_call">telefon</string>
+    <string name="battery_protect_show_num_msm">mesaj</string>
+    <string name="battery_protect_show_num_browser">tarayıcı</string>
+    <string name="battery_boosting">elektrik harcadığı uygulamayı temizliyou</string>
+    <string name="battery_boost_result">Ekran koruyucu %1$d dakika şarj süresini tasarruf edecek. %2$d güç tüketme uygulamalarını düzenlendi.</string>
+    <string name="battery_protect_setting_pow_sav_title">Otomatik güç optimizasyonu</string>
+    <string name="battery_protect_setting_pow_sav_des"> Şarj etmek zaman elektrik tükendiği uygulamayı temizledi.</string>
+    <string name="battery_protect_pop_text">ihmal</string>
+    <string name="battery_saver_remain_charge_time">Şarj süresi Kalan</string>
+    <string name="feedback_tell_us_email_title">Email:</string>
+    <string name="feedback_tell_us_email_url">support@leomaster.com</string>
 
 </resources>
