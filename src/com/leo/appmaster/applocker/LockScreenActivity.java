@@ -36,6 +36,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -576,8 +577,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void tryShowNoPermissionTip() {
 //        Toast.makeText(LockScreenActivity.this, "虚拟按键？ = " + Utilities.hasNavigationBar(this), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(LockScreenActivity.this, Build.VERSION.SDK_INT+"__"+TaskDetectService.sDetectSpecial+"__"+BuildProperties.isLenoveModel(), Toast.LENGTH_SHORT).show();
-        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
-//        if (Build.VERSION.SDK_INT >= 21) {
+//        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
+        if (Build.VERSION.SDK_INT >= 21) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
             if (!state.checkAvailable()) {
 //        if (true) {
@@ -2124,6 +2125,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             mPermissionGuideToast.setMatchParent();
                             mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, DipPixelUtil.dip2px(LockScreenActivity.this,14));
                             final View view = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null, true);
+//                            view.setOnKeyListener(new View.OnKeyListener() {
+//                                @Override
+//                                public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                                    LeoLog.d("keyaaa", "kekeke back");
+//                                    switch (keyCode) {
+//                                        case KeyEvent.KEYCODE_BACK:
+//                                            return true;
+//                                        default:
+//                                            return false;
+//
+//                                    }
+//                                }
+//                            });
                             RelativeLayout root = (RelativeLayout) view.findViewById(R.id.rl_root);
 //                            final View view = View.inflate(LockScreenActivity.this, R.layout.toast_permission_guide,null);
                             final ImageView ivClose = (ImageView) view.findViewById(R.id.iv_permission_guide_close);
