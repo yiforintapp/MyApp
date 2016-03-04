@@ -37,8 +37,8 @@ import com.leo.tools.animator.ObjectAnimator;
 public class BatteryBoostController extends RelativeLayout {
     private static final String TAG = "BatteryBoostController";
 
-    private static final int BOOST_SIZE = 8;
-    private static final int BOOST_ITEM_DURATION = 350;
+    private static final int BOOST_SIZE = 6;
+    private static final int BOOST_ITEM_DURATION = 300;
     private static final int MIN_BOOST_NUM = 5;
     private ImageView mShieldIv;
     private CircleArroundView mShieldCircle;
@@ -220,7 +220,7 @@ public class BatteryBoostController extends RelativeLayout {
     }
 
     private Animator getDismissAnimator(ImageView target, final boolean hasNext) {
-        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(target, "rotation", 0f, 180f);
+        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(target, "rotation", 0f, 360f);
         ObjectAnimator scaleXAnim = ObjectAnimator.ofFloat(target, "scaleX", 1f, 0f);
         ObjectAnimator scaleYAnim = ObjectAnimator.ofFloat(target, "scaleY", 1f, 0f);
 

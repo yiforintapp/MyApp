@@ -22,7 +22,7 @@ public class LightTextView extends TextView {
     public LightTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
 
-        setTypeface(getLightFace(context));
+        setTypeface(getLightFace(context), Typeface.BOLD);
     }
 
     public static Typeface getLightFace(Context context) {
