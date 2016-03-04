@@ -832,6 +832,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             //fill the local ,  size of : 1
             mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_browser));
             mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_browser));
+            mRecommandNumOne.setVisibility(View.VISIBLE);
             mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
