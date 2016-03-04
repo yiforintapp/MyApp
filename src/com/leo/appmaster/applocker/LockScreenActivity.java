@@ -1383,6 +1383,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					if (mAdapterCycle.getViews() == null) {
 						mBannerContainer.setVisibility(View.GONE);
 					}
+                    showIconAndPswTips();
 					loadAD();
 
 //					mBannerContainer.setCurrentItem(0, false);
@@ -1706,6 +1707,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(0.0f);
         } else {
             ((GestureLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+        }
+    }
+
+    private void showIconAndPswTips() {
+        //隐藏图标和密码提示
+        int type = AppMasterPreference.getInstance(this).getLockType();
+        if (type == LockFragment.LOCK_TYPE_PASSWD) {
+            ((PasswdLockFragment) mLockFragment).getIconView().animate().alpha(1.0f).setDuration(200);
+            ((PasswdLockFragment) mLockFragment).getPasswdHint().animate().alpha(1.0f).setDuration(200);
+        } else {
+            ((GestureLockFragment) mLockFragment).getIconView().animate().alpha(1.0f).setDuration(200);
         }
     }
 
