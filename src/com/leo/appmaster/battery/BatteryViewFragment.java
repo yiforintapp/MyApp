@@ -1240,6 +1240,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (mClickRunnable != null) {
                     mClickRunnable.run();
                     mClickRunnable = null;
+                    mActivity.finish();
                 }
             }
         }
@@ -2002,6 +2003,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             // 没有锁或者默认浏览器不是chrome，直接跑
             mClickRunnable.run();
             mClickRunnable = null;
+            mActivity.finish();
         }
     }
 
