@@ -207,10 +207,11 @@ public class LEOAdEngine {
         LeoCompositeData adData = mLEOLoadedNatives.get(unitId);
         if(adData == null) return true;
 
-        LeoLog.d("STONE_AD_DEBUG", "adData.requestTimeMs = " + adData.requestTimeMs);
-        LeoLog.d("STONE_AD_DEBUG", "mPref.getAdFetchInterval() = " + mPref.getADFetchInterval());
-        if(System.currentTimeMillis() - adData.requestTimeMs
-                > MILLIS_IN_MINUTE * mPref.getADFetchInterval()) {
+        long lastRequestTime = adData.requestTimeMs;
+        long now = System.currentTimeMillis();
+        LeoLog.d(TAG, "["+unitId+"]lastRequest:" + lastRequestTime + "; now:" + now
+                +"; period:" + (now-lastRequestTime));
+        if (now-lastRequestTime > mPref.getADFetchInterval()*MILLIS_IN_MINUTE) {
             return true;
         }
         

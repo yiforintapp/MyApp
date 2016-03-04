@@ -180,7 +180,7 @@ public class MobvistaEngine {
         MobVistaLoadingNative loadingNative = mMobVistaLoadingNative.get(unitId);
         if (loadingNative != null &&
                 (SystemClock.elapsedRealtime()-loadingNative.requestTimeMs < 60*1000)) {
-            LeoLog.d(TAG, "previous loading process ongoing, ignore");
+            LeoLog.d(TAG, "["+unitId+"]previous loading process ongoing, ignore");
             return;
         }
 
@@ -402,8 +402,11 @@ public class MobvistaEngine {
         MobvistaAdData adData = mMobVistaCacheMap.get(unitId);
 
         if (adData == null) return true;
-        if (System.currentTimeMillis() - adData.requestTimeMs
-                > mPref.getADFetchInterval() * MILLIS_IN_MINUTE) {
+        long lastRequestTime = adData.requestTimeMs;
+        long now = System.currentTimeMillis();
+        LeoLog.d(TAG, "["+unitId+"]lastRequest:" + lastRequestTime + "; now:" + now
+                +"; period:" + (now-lastRequestTime));
+        if (now-lastRequestTime > mPref.getADFetchInterval()*MILLIS_IN_MINUTE) {
             return true;
         }
 
