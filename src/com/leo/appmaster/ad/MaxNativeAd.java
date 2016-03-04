@@ -133,4 +133,9 @@ public class MaxNativeAd extends BaseNativeAd {
 			}
 		}
 	};
+
+    @Override
+    protected void release() {
+        
+    }
 }

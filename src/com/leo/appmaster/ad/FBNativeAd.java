@@ -227,4 +227,12 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
         return (mNativeAd==null)?false:mNativeAd.isAdLoaded();
     }
 
+    @Override
+    protected void release() {
+        if(mNativeAd != null){
+            mNativeAd.unregisterView();
+            mNativeAd.destroy();
+        }
+    }
+
 }

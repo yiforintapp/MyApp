@@ -558,7 +558,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         mHasPlayed = false;// 是否播放过动画，开始播放后置为true，以后每次WindowFocusChanged后就不播放动画了，
                         mHasGetLoadResult = false;
                         UFOActivity.this.onWindowFocusChanged(true);
-                        mAdEngine.release(Constants.UNIT_ID_58);
                         toLoad();
                         
                     }

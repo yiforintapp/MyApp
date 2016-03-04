@@ -484,7 +484,7 @@ public class MobvistaEngine {
         @Override
         public void onAdClick(Campaign campaign) {
             Campaign data = null;
-            MobvistaAdData m = mMobVistaCacheMap.get(mUnitId);
+            MobvistaAdData m = mMobVistaCacheMap.remove(mUnitId);
             if (m != null) {
                 data = m.campaign;
             }
@@ -496,7 +496,17 @@ public class MobvistaEngine {
             }
             // 点击之后，重新load此位置的广告
             LeoLog.i(TAG, "reload the clicked Ad");
+            if(m != null && m.nativeAd != null) {
+                try {
+                    MobvistaAd.release();
+                    mMobVistaCacheMap.clear();
+                } catch (Exception e) {
+                }
+            }
             loadSingleMobAd(mUnitId);
+            if(!Constants.UNIT_ID_59.equals(mUnitId)) {
+                loadSingleMobAd(Constants.UNIT_ID_59);
+            }
         }
     }
 

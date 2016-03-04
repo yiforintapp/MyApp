@@ -21,6 +21,8 @@ public abstract class BaseNativeAd {
     protected abstract void bindToView(View view);
 
     protected abstract void unbindView();
+    
+    protected abstract void release();
 
     protected abstract LEONativeAdData getData();
 

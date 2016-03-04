@@ -180,7 +180,9 @@ public class LEONativeAd {
      * Call this in Activity's onDestroy() call.
      */
     public void release() {
-
+        if(mAvailableAd != null){
+            mAvailableAd.release();
+        }
     }
 
 }
