@@ -189,7 +189,7 @@ public class BatteryNotifyHelper {
                 .setTicker(mContext.getApplicationContext().getString(R.string.batterymanage_switch_screen))
                 .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
                 .setOngoing(true)// 不是正在进行的 true为正在进行 效果和.flag一样
-                .setSmallIcon(R.drawable.statusbar_battery_icon)
+                .setSmallIcon(R.drawable.icon_charge)
                 .setAutoCancel(false);
 
         Intent intent = new Intent(ACTION_LEO_SAVER_NOTIFI_CLICKED);
