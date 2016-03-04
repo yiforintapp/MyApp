@@ -610,7 +610,7 @@
     <string name="scan_notify_app"> %1$d new apps found, click to lock now</string>
     <string name="scan_notify_pic"> %1$d new pictures found, click to hide now</string>
     <string name="scan_notify_vid">%1$d new videos found, click to hide now</string>
-    <string name="scan_notify_label">Privacy guard is monitoring your privacy status at backstage, keep you informed of status change</string>
+    <string name="scan_notify_label">LEO Privacy is monitoring your privacy status at backstage, keep you informed of status change</string>
     <string name="loading_locking">Locking apps…</string>
     <string name="loading_hiding_pic">Hiding photos…</string>
     <string name="loading_hiding_vid">Hiding videos…</string>
@@ -650,7 +650,7 @@
     <string name="phone_security_open">Enable Anti-theft</string>
     <string name="phone_security_add_number_title">Family No.:</string>
     <string name="phone_security_add_number_button">Change</string>
-    <string name="phone_security_number_sim_tip">Prompt: \“Anti-theft\” function is based on SMS recognition to work. Message will be sent to the backed-up family No. when you activate \“Anti-theft\” or SIM is changed.We promise that Privacy Guard would never make any additional charge during this process.</string>
+    <string name="phone_security_number_sim_tip">Prompt: \“Anti-theft\” function is based on SMS recognition to work. Message will be sent to the backed-up family No. when you activate \“Anti-theft\” or SIM is changed.We promise that LEO Privacy would never make any additional charge during this process.</string>
     <string name="phone_security_number_backup_text">Send Anti-theft order to Family No. </string>
     <string name="phone_security_instruct_onkey">Enable lock; tracking; alarm; erase: #onekey</string>
     <string name="phone_security_instruct_onkey_description">Enable lock; tracking; alarm; erase</string>
@@ -737,7 +737,7 @@
     <string name="secur_advan_title">Advance function</string>
     <string name="secur_guide_tip">Protected</string>
     <string name="secur_guide_pep">mobile phones</string>
-    <string name="security_guide_tip_content">Privacy Guard would never make any additional charge during this process.Only carriers will charge for text fee.</string>
+    <string name="security_guide_tip_content">LEO Privacy would never make any additional charge during this process.Only carriers will charge for text fee.</string>
     <string name="secur_protect_time_tip">Enable advance protection</string>
     <string name="onkey_name">A click to Anti-theft</string>
     <string name="locat_name">Locate Phone</string>

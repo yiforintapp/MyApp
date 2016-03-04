@@ -605,7 +605,7 @@
     <string name="scan_notify_app">%1$d yeni uygulama bulundu, şimdi gizlemek</string>
     <string name="scan_notify_pic">%1$d yeni resim bulundu, şimdi gizlemek</string>
     <string name="scan_notify_vid">%1$d yeni video bulundu, şimdi gizlemek</string>
-    <string name="scan_notify_label">Privacy guard durum değişikliğinden sizi haberdar etmek için gizlilik durumunuzu arkaplanda izliyor</string>
+    <string name="scan_notify_label">LEO Privacy durum değişikliğinden sizi haberdar etmek için gizlilik durumunuzu arkaplanda izliyor</string>
     <string name="loading_locking">Uygulamaları kilitliyor ...</string>
     <string name="loading_hiding_pic">Fotoğrafları gizliyor...</string>
     <string name="loading_hiding_vid">Videoları gizliyor...</string>

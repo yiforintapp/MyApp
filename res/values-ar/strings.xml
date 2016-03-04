@@ -701,7 +701,7 @@
     <string name="scan_notify_app">تم العثور على <xliff:g>%1$d</xliff:g> تطبيق جديد، انقر للمعالجة الآن</string>
     <string name="scan_notify_pic">تم العثور على <xliff:g>%1$d</xliff:g> صورة جديدة، انقر للمعالجة الآن</string>
     <string name="scan_notify_vid">تم العثور على <xliff:g>%1$d</xliff:g> فيديو جديد، انقر للمعالجة الآن</string>
-    <string name="scan_notify_label">Privacy guard يراقب خصوصيتك في الخلفية</string>
+    <string name="scan_notify_label">LEO Privacy يراقب خصوصيتك في الخلفية</string>
     <string name="loading_locking">قفل التطبيق...</string>
     <string name="loading_hiding_pic">إخفاء صورة...</string>
     <string name="loading_hiding_vid">إخفاء فيديو...</string>

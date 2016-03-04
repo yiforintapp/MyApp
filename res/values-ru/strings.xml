@@ -586,7 +586,7 @@
     <string name="scan_notify_app">Найдены нов. прил. %1$d,Сейчас</string>
     <string name="scan_notify_pic">Найдены нов. картинки %1$d,Сейчас</string>
     <string name="scan_notify_vid">Найдено нов. видео %1$d,Сейчас</string>
-    <string name="scan_notify_label">Privacy Guard контролирует изменение секрета за кулисами для защищы вашевн секрета</string>
+    <string name="scan_notify_label">LEO Privacy контролирует изменение секрета за кулисами для защищы вашевн секрета</string>
     <string name="loading_locking">Замочное Приложение</string>
     <string name="loading_hiding_pic">Сокрытие фото</string>
     <string name="loading_hiding_vid">Сокрытие видео ...</string>

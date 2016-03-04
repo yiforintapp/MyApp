@@ -601,7 +601,7 @@
     <string name="scan_notify_app"> พบ %1$d แอพใหม่ คลิกล็อคเลย</string>
     <string name="scan_notify_pic"> พบ %1$d ภาพใหม่ คลิกล็อคเลย</string>
     <string name="scan_notify_vid">พบ %1$d วิดีโอใหม่ คลิกล็อคเลย</string>
-    <string name="scan_notify_label">Privacy guard ตรวจสอบสถานะส่วนตัว แจ้งให้ทราบหากสถานะเปลี่ยนแปลง</string>
+    <string name="scan_notify_label">LEO Privacy ตรวจสอบสถานะส่วนตัว แจ้งให้ทราบหากสถานะเปลี่ยนแปลง</string>
     <string name="loading_locking">กำลังล็อคแอพ...</string>
     <string name="loading_hiding_pic">กำลังซ่อนรูปถ่าย...</string>
     <string name="loading_hiding_vid">กำลังซ่อนวิดีโอ...</string>

@@ -116,7 +116,7 @@ public class WaterMarkUtils {
         textPaint.setColor(Color.WHITE);
         textPaint.setAlpha(120);
         canvas2.drawText(fts, (int) (35f * fitRate), (int) (18f * fitRate), textPaint);
-        canvas2.drawText("LEO Privacy Guard", photoBitmap.getWidth() - (int) (124f * fitRate),
+        canvas2.drawText("LEO Privacy", photoBitmap.getWidth() - (int) (124f * fitRate),
                 photoBitmap.getHeight() - (int) (6f * fitRate), textPaint);
         //画出pg的logo
         pgIcon = context.getResources().getDrawable(R.drawable.watermarker_logo);
