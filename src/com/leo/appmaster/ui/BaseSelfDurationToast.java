@@ -1,18 +1,22 @@
 package com.leo.appmaster.ui;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class BaseSelfDurationToast {
+public class BaseSelfDurationToast{
    
     public static BaseSelfDurationToast makeText(Context context, CharSequence text, int duration)
     {
@@ -185,14 +189,17 @@ public class BaseSelfDurationToast {
          final WindowManager.LayoutParams params = mParams;
          params.height = WindowManager.LayoutParams.WRAP_CONTENT;
          params.width = WindowManager.LayoutParams.WRAP_CONTENT;
-         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+//         params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+//         | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
+         params.flags =
+//                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
          params.format = PixelFormat.TRANSLUCENT;
 //         params.windowAnimations = android.R.style.Animation_Toast;
          params.windowAnimations = R.style.toast_getscore;
          params.type = WindowManager.LayoutParams.TYPE_TOAST;
          params.setTitle("Toast");
-         
+
          mWM = (WindowManager) context.getApplicationContext()
                  .getSystemService(Context.WINDOW_SERVICE);
     }
@@ -230,11 +237,28 @@ public class BaseSelfDurationToast {
             {
                 mWM.removeView(mView);
             }
+//            LeoLog.d("keyaaa", "to set key");
+//            mView.setOnKeyListener(new View.OnKeyListener() {
+//
+//                @Override
+//                public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                    LeoLog.d("keyaaa", "kekeke back");
+//                    mView.dispatchKeyEvent(event);
+//                    switch (keyCode) {
+//                        case KeyEvent.KEYCODE_BACK:
+//                            hide();
+//                            return true;
+//                        default:
+//                            return false;
+//                    }
+//                }
+//            });
+//            mView.setFocusable(true);
             mWM.addView(mView, mParams);
             mIsShowing = true;
         }
     }
- 
+
     private void handleHide()
     {
         if (mView != null)
@@ -251,4 +275,33 @@ public class BaseSelfDurationToast {
     public boolean isShowing() {
         return mIsShowing;
     }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            event.startTracking();
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onKeyUp(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+//                && !event.isCanceled()) {
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onKeyMultiple(int keyCode, int count, KeyEvent event) {
+//        return false;
+//    }
 }

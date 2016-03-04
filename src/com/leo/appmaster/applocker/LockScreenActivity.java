@@ -105,6 +105,7 @@ import com.leo.appmaster.ui.BaseSelfDurationToast;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoCircleView;
 import com.leo.appmaster.ui.LeoHomePopMenu;
+import com.leo.appmaster.ui.ResponseKeyView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
@@ -163,7 +164,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
 //    private static boolean sHasClickGoGrantPermission = false;
-    private boolean mHasClickGoGrantPermission = false;
+    private static boolean mHasClickGoGrantPermission = false;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -495,9 +496,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mCanTakePhoto = true;
         whichTypeShow();
         LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
-        if (mHasClickGoGrantPermission) {
-            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
-        }
+//        if (mHasClickGoGrantPermission) {
+//            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
+//        }
         tryShowNoPermissionTip();
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
@@ -2167,7 +2168,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             }
                             mPermissionGuideToast.setMatchParent();
                             mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, DipPixelUtil.dip2px(LockScreenActivity.this,14));
-                            final View view = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null, true);
+//                            final View view = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null, true);
 //                            view.setOnKeyListener(new View.OnKeyListener() {
 //                                @Override
 //                                public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -2181,16 +2182,28 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                                    }
 //                                }
 //                            });
-                            RelativeLayout root = (RelativeLayout) view.findViewById(R.id.rl_root);
-//                            final View view = View.inflate(LockScreenActivity.this, R.layout.toast_permission_guide,null);
-                            final ImageView ivClose = (ImageView) view.findViewById(R.id.iv_permission_guide_close);
-                            ivClose.setOnClickListener(new View.OnClickListener() {
+//                            RelativeLayout root = (RelativeLayout) view.findViewById(R.id.rl_root);
+////                            final View view = View.inflate(LockScreenActivity.this, R.layout.toast_permission_guide,null);
+//                            final ImageView ivClose = (ImageView) view.findViewById(R.id.iv_permission_guide_close);
+//                            ivClose.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    mPermissionGuideToast.hide();
+//                                }
+//                            });
+                            ResponseKeyView view = new ResponseKeyView(LockScreenActivity.this);
+                            view.setOnBackPressedListener(new ResponseKeyView.OnBackPressListener() {
                                 @Override
-                                public void onClick(View v) {
+                                public void onBackPressed() {
                                     mPermissionGuideToast.hide();
                                 }
                             });
-
+                            view.setOnCloseClickedListener(new ResponseKeyView.OnCloseClickListener() {
+                                @Override
+                                public void onClosePressed() {
+                                    mPermissionGuideToast.hide();
+                                }
+                            });
                             mPermissionGuideToast.setView(view);
                             mPermissionGuideToast.show();
                         }
@@ -2994,11 +3007,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if ((keyCode == KeyEvent.KEYCODE_BACK && sHasClickGoGrantPermission)) {
-//            LeoLog.d("HomeReceiver_Lock", "back pressed! tryHideToast has clicked? = " + sHasClickGoGrantPermission);
-//            if (sHasClickGoGrantPermission) {
-//                tryHidePermissionGuideToast();
-//            }
+//        if ((keyCode == KeyEvent.KEYCODE_BACK) && mHasClickGoGrantPermission) {
+//            LeoLog.d("HomeReceiver_Lock", "back pressed! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
+////            if (mHasClickGoGrantPermission) {
+//            LeoLog.d("HomeReceiver_Lock", "hide -back");
+//            tryHidePermissionGuideToast();
+////            }
 //            return false;
 //        } else {
 //            return super.onKeyDown(keyCode, event);
