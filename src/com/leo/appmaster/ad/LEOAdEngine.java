@@ -330,7 +330,7 @@ public class LEOAdEngine {
 	 * @param listener
 	 */
 	public void loadMobvista(String unitId, LeoListener listener) {
-		LeoLog.i(TAG, "Attach to Native Ad");
+		LeoLog.i(TAG, "["+unitId+"]Attach to Native Ad");
 		if (listener == null) return;
 
 		if (TextUtils.isEmpty(unitId)) {
@@ -339,7 +339,11 @@ public class LEOAdEngine {
 			return;
 		}
 
-		// 记录下listener
+        // 处理旧listener，记录新listener
+        LeoListener previousListener = mLeoListeners.remove(unitId);
+        if (previousListener != null) {
+            previousListener.onLeoAdLoadFinished(ERR_MOBVISTA_RESULT_NULL, null, "no fill");
+        }
 		mLeoListeners.put(unitId, listener);
 
 		// 广告过时则需要重新拉取
