@@ -134,6 +134,10 @@ public class ScreenRecommentJob extends FetchScheduleJob {
 
         Context ctx = AppMasterApplication.getInstance();
         if (isApp) {
+            if (TextUtils.isEmpty(appItem.pkg) || !AppUtil.appInstalled(ctx, appItem.pkg)) {
+                return null;
+            }
+        } else {
             if (TextUtils.isEmpty(appItem.pkg)) {
                 if (TextUtils.isEmpty(appItem.actionUrl)) {
                     return null;
