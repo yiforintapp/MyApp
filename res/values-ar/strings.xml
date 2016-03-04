@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">PrivacyGuard</string>
     <string name="app_lock">"قفل"</string>
     <string name="button_backup">حفظ</string>
     <string name="button_install">تثبيت</string>

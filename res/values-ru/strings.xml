@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">Privacy Guard</string>
     <string name="app_lock">замок app</string>
     <string name="button_backup">бэкап</string>
     <string name="button_install">установка</string>

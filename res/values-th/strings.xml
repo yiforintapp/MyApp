@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">&#160;Privacy Guard&#160;</string>
     <string name="app_lock">ล็อคแอพ</string>
     <string name="button_backup">สำรอง</string>
     <string name="button_install">ติดตั้ง</string>
