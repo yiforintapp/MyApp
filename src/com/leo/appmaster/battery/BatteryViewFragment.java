@@ -92,6 +92,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private final int EXTRA_TYPE_MSG = 3;
 
     private static final int AD_LOAD_TIME = 3000;
+    private final int DELAY_SHOW_AD = 2000;
 
     private final String GOOGLE = "Google";
     private final String AMAZON = "Amazon";
@@ -127,7 +128,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mShowThree;
     private View mRecommandView;
     private View mRecommandContentView;
-    private boolean loadFastThanInit = false;
     private GradientMaskView mMaskView;
 
     private TextView mPhoneHour;
@@ -299,7 +299,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
                     boolean isExpandContentShow = mRecommandView.getVisibility() == View.VISIBLE;
-                    if (isExpandContentShow && loadFastThanInit) {
+                    if (isExpandContentShow) {
                         mCurrentClickType = 0;
                         shrinkRecommandContent();
                     }
@@ -547,10 +547,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showViewAfterBoost() {
         mRemainTimeContent.setVisibility(View.VISIBLE);
         mRemainContent.setVisibility(View.VISIBLE);
-        loadFastThanInit = true;
 
         startRemindTimeAppearAnim();
-
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -565,45 +563,70 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }, 1000);
     }
 
-    private void startRemindTimeAppearAnim() {
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(mRemainContent, "alpha", 0f, 255f);
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mRemainContent, "scaleX", 0.8f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mRemainContent, "scaleY", 0.8f, 1f);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(500);
-        animatorSet.playTogether(alpha, scaleX, scaleY);
-        animatorSet.start();
-
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                expandRecommandContent(RECOMMAND_TYPE_TWO);
-                if (mRootView != null) {
-                    try {
-                        loadAd();
-                    } catch (Exception e) {
-                        LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
-                        if (e != null) {
-                            LeoLog.e(TAG, e.getLocalizedMessage());
-                        }
-                    }
-                }
-
-                try {
-                    if (mRootView != null) {
-                        initSwiftyLayout(mRootView);
-                        initExtraLayout(mRootView);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+    private void initThreeContent() {
+        if (mRootView != null) {
+            try {
+                loadAd();
+            } catch (Exception e) {
+                LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
+                if (e != null) {
+                    LeoLog.e(TAG, e.getLocalizedMessage());
                 }
             }
-        });
+        }
+
+        try {
+            if (mRootView != null) {
+                initSwiftyLayout(mRootView);
+                initExtraLayout(mRootView);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void expandRecommandContent(final int recommandTypeThree) {
+    private void startRemindTimeAppearAnim() {
+
+        expandRecommandContent(RECOMMAND_TYPE_TWO, true);
+
+//        ObjectAnimator alpha = ObjectAnimator.ofFloat(mRemainContent, "alpha", 0f, 255f);
+//        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mRemainContent, "scaleX", 0.8f, 1f);
+//        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mRemainContent, "scaleY", 0.8f, 1f);
+//
+//        AnimatorSet animatorSet = new AnimatorSet();
+//        animatorSet.setDuration(500);
+//        animatorSet.playTogether(alpha, scaleX, scaleY);
+//        animatorSet.start();
+//
+//        animatorSet.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                super.onAnimationEnd(animation);
+//                expandRecommandContent(RECOMMAND_TYPE_TWO);
+//                if (mRootView != null) {
+//                    try {
+//                        loadAd();
+//                    } catch (Exception e) {
+//                        LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
+//                        if (e != null) {
+//                            LeoLog.e(TAG, e.getLocalizedMessage());
+//                        }
+//                    }
+//                }
+//
+//                try {
+//                    if (mRootView != null) {
+//                        initSwiftyLayout(mRootView);
+//                        initExtraLayout(mRootView);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+    }
+
+    private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
         if (mActivity == null) return;
         turnDark(recommandTypeThree);
         mRecommandView.clearAnimation();
@@ -624,6 +647,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationEnd(Animation animation) {
                 mRecommandContentView.setVisibility(View.VISIBLE);
+
+                if (firInLoad) {
+                    initThreeContent();
+                }
+
             }
 
             @Override
@@ -1282,7 +1310,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //                expandContent(true);
                 boolean isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
                 if (!isShowContentShow) {
-                    expandRecommandContent(RECOMMAND_TYPE_TWO);
+                    expandRecommandContent(RECOMMAND_TYPE_TWO, false);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
                 }
 //                showRecommandContent(RECOMMAND_TYPE_TWO);
@@ -1290,7 +1318,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 expandContent(false);
                 boolean isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
                 if (!isShowContentShow) {
-                    expandRecommandContent(RECOMMAND_TYPE_TWO);
+                    expandRecommandContent(RECOMMAND_TYPE_TWO, false);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
                 }
             }
@@ -1766,27 +1794,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             turnNormal(mShowThree);
         }
 
-//        Context ctx = AppMasterApplication.getInstance();
-//        backOneView.getBackground().setAlpha(255);
-//        mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white));
-//        mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
-//        mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white));
-//        mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
-//        bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white));
-//
-//        backTwoView.getBackground().setAlpha(255);
-//        mNetHour.setTextColor(ctx.getResources().getColor(R.color.white));
-//        mNetHourText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
-//        mNetMin.setTextColor(ctx.getResources().getColor(R.color.white));
-//        mNetMinText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
-//        bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white));
-//
-//        backThreeView.getBackground().setAlpha(255);
-//        mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white));
-//        mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
-//        mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white));
-//        mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
-//        bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white));
     }
 
 
@@ -1827,81 +1834,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
 
-//        Context ctx = AppMasterApplication.getInstance();
-//        if (recommandType == RECOMMAND_TYPE_ONE) {
-//            //light
-//            backOneView.getBackground().setAlpha(255);
-//            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white));
-//            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
-//            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white));
-//            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.green_back_normal));
-//            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white));
-//
-//            //dark
-//            backTwoView.getBackground().setAlpha(78);
-//            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//
-//            //dark
-//            backThreeView.getBackground().setAlpha(78);
-//            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//
-//        } else if (recommandType == RECOMMAND_TYPE_TWO) {
-//            //dark
-//            backOneView.getBackground().setAlpha(78);
-//            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//
-//            //light
-//            backTwoView.getBackground().setAlpha(255);
-//            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white));
-//            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
-//            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white));
-//            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.blue_back_normal));
-//            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white));
-//
-//            //dark
-//            backThreeView.getBackground().setAlpha(78);
-//            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//        } else {
-//            //dark
-//            backOneView.getBackground().setAlpha(78);
-//            mPhoneHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPhoneHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPhoneMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mPhoneMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            bottomOneText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//
-//            //dark
-//            backTwoView.getBackground().setAlpha(78);
-//            mNetHour.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mNetHourText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mNetMin.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            mNetMinText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//            bottomTwoText.setTextColor(ctx.getResources().getColor(R.color.white_20));
-//
-//            //light
-//            backThreeView.getBackground().setAlpha(255);
-//            mPlayHour.setTextColor(ctx.getResources().getColor(R.color.white));
-//            mPlayHourText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
-//            mPlayMin.setTextColor(ctx.getResources().getColor(R.color.white));
-//            mPlayMinText.setTextColor(ctx.getResources().getColor(R.color.yellow_back_normal));
-//            bottomThreeText.setTextColor(ctx.getResources().getColor(R.color.white));
-//        }
     }
 
     private void turnBig(View View) {
@@ -1981,7 +1913,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             shrinkRecommandContent();
         } else {
             if (mCurrentClickType == 0) {
-                expandRecommandContent(recommandTypeThree);
+                expandRecommandContent(recommandTypeThree, false);
             } else if (mCurrentClickType == -1) {
                 if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
                     mCurrentClickType = 0;
@@ -2172,7 +2104,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (System.currentTimeMillis() - mInitTime > AD_LOAD_TIME) {
             delayTime = 300;
         } else {
-            delayTime = AD_LOAD_TIME;
+            delayTime = DELAY_SHOW_AD;
         }
 
         LeoLog.d("testDelayTime", "System.currentTimeMillis() - mInitTime : " + (System.currentTimeMillis() - mInitTime));
@@ -2249,7 +2181,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (System.currentTimeMillis() - mInitTime > AD_LOAD_TIME) {
                 delayTime = 300;
             } else {
-                delayTime = AD_LOAD_TIME;
+                delayTime = DELAY_SHOW_AD;
             }
 
             mIsExtraLayout = true;
@@ -2314,7 +2246,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (System.currentTimeMillis() - mInitTime > AD_LOAD_TIME) {
                 delayTime = 300;
             } else {
-                delayTime = AD_LOAD_TIME;
+                delayTime = DELAY_SHOW_AD;
             }
 
             mIsExtraLayout = true;
