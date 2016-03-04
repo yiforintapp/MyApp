@@ -132,11 +132,22 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         init();
 
 		mAdSource = AppMasterPreference.getInstance(this).getInvaderAdConfig();
-        // 3.2 add advertise
-        loadAd();
 
 //        Intent i = new Intent(this, GradeTipActivity.class);
 //        startActivity(i);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // 3.3.2 将广告加载/释放在onStart/onStop中做
+        loadAd();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
     }
 
     @Override
@@ -772,9 +783,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
-		ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
-        // 3.2 advertise
-        //MobvistaEngine.getInstance(this).release(INTRUDER_AD_ID);
     }
 
     private void initSwiftyLayout() {
