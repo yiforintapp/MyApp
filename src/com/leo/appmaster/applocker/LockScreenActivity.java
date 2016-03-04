@@ -36,7 +36,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -73,7 +72,6 @@ import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
-import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -1340,6 +1338,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 										/* 第一个广告直接出现 */
                                         mBannerContainer.setCurrentItem(1, false);
 										mAdapterCycle.setLasterSlectedPage(1);
+										mBannerContainer.setVisibility(View.VISIBLE);
 										showAdAnimaiton();
 										delayBannerHideAnim();
 										hideIconAndPswTips();
@@ -1381,9 +1380,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					}
 
 					ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID);
-
+					if (mAdapterCycle.getViews() == null) {
+						mBannerContainer.setVisibility(View.GONE);
+					}
 					loadAD();
-					mBannerContainer.setCurrentItem(0, true);
+
+//					mBannerContainer.setCurrentItem(0, false);
 				}
 			});
 			
@@ -1622,6 +1624,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void showAdAnimaiton() {
         View animView = mAdapterCycle.getViews().get(1);
+		LeoLog.e("llb", "animView " + ((TextView)animView.findViewById(R.id.ad_title)).getText().toString());
+		LinkedList<View> views  = mAdapterCycle.getViews();
+		for (View v : views) {
+			String title = ((TextView)v.findViewById(R.id.ad_title)).getText().toString();
+			LeoLog.e("llb", "title " + title);
+		}
+		
         final int itemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
         final int itemHeight = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
         int offset = (getWindowWidth() - itemWidth) / 2;
@@ -1666,6 +1675,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         animatorSet.play(animatorTrans2).with(animatorScaleX).with(animatorScaleY).after(animatorTrans1);
         animatorSet.setStartDelay(300);
         animatorSet.start();
+		
     }
 
     private void hideIconAndPswTips() {
