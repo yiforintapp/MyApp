@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -162,7 +163,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                 if (SYSTEM_DIALOG_REASON_HOME_KEY.equals(reason)) {
                     // 短按Home键
                     LeoLog.d("lisHome", "homekey");
-                    finish();
+                    finishActiviytAnim();
 
                 } else if (SYSTEM_DIALOG_REASON_RECENT_APPS.equals(reason)) {
                     // 长按Home键 或者 activity切换键
@@ -176,10 +177,23 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                     LeoLog.d("lisHome", "assist");
                 }
 
+
             }
         }
 
     }
+//
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+//            finishActiviytAnim();
+//            LeoLog.d("testActivityBack","按下了back键 onKeyDown()");
+//            return false;
+//        } else {
+//            return super.onKeyDown(keyCode, event);
+//        }
+//
+//    }
 
     private void initAll() {
         LeoEventBus.getDefaultBus().register(this);
@@ -277,7 +291,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         LeoLog.d("testBatteryEvent", "getEvent : " + event.eventMsg);
         if (("finish_activity").equals(event.eventMsg)) {
             BatteryShowViewActivity.isActivityAlive = false;
-            finish();
+            finishActiviytAnim();
+//            finish();
         }
     }
 
@@ -292,7 +307,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         if (isShowGuide) {
             cancelGuide();
         }
-        finish();
+        finishActiviytAnim();
+//        finish();
     }
 
     private void cancelGuide() {
@@ -388,6 +404,10 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             mBatteryManager.showSaverNotification(level);
         }
 
+        finishActiviytAnim();
+    }
+
+    public void finishActiviytAnim() {
         mBatterViewBg.post(new Runnable() {
             @Override
             public void run() {

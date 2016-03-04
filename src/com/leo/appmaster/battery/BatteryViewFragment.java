@@ -981,6 +981,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
 
+
+        LeoLog.d("testGetList", "infoOne.pkg is : " + infoOne.pkg);
+        LeoLog.d("testGetList", "---------------");
+        for (int i = 0; i < mPackages.size(); i++) {
+            PackageInfo packageInfo = mPackages.get(i);
+            if (packageInfo.applicationInfo.packageName.equals(infoOne.pkg)) {
+                LeoLog.d("testGetList", "pkg is : " + packageInfo.applicationInfo.packageName);
+            }
+        }
+
+
         if (name != null && map != null) {
             icon.setImageDrawable(map);
             title.setText(name);
@@ -1006,7 +1017,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             e.printStackTrace();
                         }
                     }
-
                 }
             });
         }
