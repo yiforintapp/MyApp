@@ -1282,6 +1282,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void setThreeRemainTime(int[] timeArr) {
+        if (timeArr == null && timeArr.length < 3) {
+            return;
+        }
         int phoneTime = timeArr[0];
         int netTime = timeArr[1];
         int playTime = timeArr[2];
