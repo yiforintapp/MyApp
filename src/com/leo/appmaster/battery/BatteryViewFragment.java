@@ -252,44 +252,45 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void reLocateMoveContent(int type) {
         LeoLog.d("locationP", "slideview Y : " + mSlideView.getY());
         final int contentHeight = mBossView.getHeight();
-        final int arrowHeight = mArrowMoveContent.getHeight();
 
-
-        mMoveDisdance = contentHeight * 9 / 16;
         LeoLog.d("locationP", "mBossView.getHeight() : " + mBossView.getHeight());
 
-        if (type == AD_TYPE_MSG) {
-            if (mAdWrapper != null) {
-                mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight - 20;
-                LeoLog.d("locationP", "mAdWrapper.getHeight() : " + mAdWrapper.getHeight());
-                setYplace(contentHeight);
-            }
-        } else if (type == SWTIFY_TYPE_MSG) {
-            if (mSwiftyView != null) {
-                mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight - 20;
-                LeoLog.d("locationP", "mSwiftyView.getHeight() : " + mSwiftyView.getHeight());
-                setYplace(contentHeight);
-            }
-        } else if (type == EXTRA_TYPE_MSG) {
-            if (mExtraView != null && mExtraView.getHeight() > 0) {
-                mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight - 20;
-                LeoLog.d("locationP", "mExtraView.getHeight() : " + mExtraView.getHeight());
-                setYplace(contentHeight);
-            }
-        }
+        setYplace(contentHeight,type);
     }
 
-    private void setYplace(int contentHeight) {
-        int biggestDistance = mBossView.getHeight() / 3;
-        if (mMoveDisdance < biggestDistance) {
-            mMoveDisdance = biggestDistance;
-            LeoLog.d("locationP", "so high , reset");
-        }
+    private void setYplace(int contentHeight, int type) {
 
         if (!isSetInitPlace) {
-            LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
-//            mSlideView.setY(mMoveDisdance);
+            mMoveDisdance = contentHeight * 9 / 16;
 
+            final int arrowHeight = mArrowMoveContent.getHeight();
+            if (type == AD_TYPE_MSG) {
+                if (mAdWrapper != null) {
+                    mMoveDisdance = contentHeight - mAdWrapper.getHeight() - arrowHeight - 20;
+                    LeoLog.d("locationP", "mAdWrapper.getHeight() : " + mAdWrapper.getHeight());
+//                    setYplace(contentHeight,type);
+                }
+            } else if (type == SWTIFY_TYPE_MSG) {
+                if (mSwiftyView != null) {
+                    mMoveDisdance = contentHeight - mSwiftyView.getHeight() - arrowHeight - 20;
+                    LeoLog.d("locationP", "mSwiftyView.getHeight() : " + mSwiftyView.getHeight());
+//                    setYplace(contentHeight, type);
+                }
+            } else if (type == EXTRA_TYPE_MSG) {
+                if (mExtraView != null && mExtraView.getHeight() > 0) {
+                    mMoveDisdance = contentHeight - mExtraView.getHeight() - arrowHeight - 20;
+                    LeoLog.d("locationP", "mExtraView.getHeight() : " + mExtraView.getHeight());
+//                    setYplace(contentHeight, type);
+                }
+            }
+
+            int biggestDistance = mBossView.getHeight() / 3;
+            if (mMoveDisdance < biggestDistance) {
+                mMoveDisdance = biggestDistance;
+                LeoLog.d("locationP", "so high , reset");
+            }
+
+            LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
             ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                     "y", contentHeight, mSlideView.getTop() + mMoveDisdance);
             animMoveY.addListener(new AnimatorListenerAdapter() {
