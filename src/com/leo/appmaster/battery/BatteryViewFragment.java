@@ -800,6 +800,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 String className = resolveinfo.activityInfo.name;
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 ComponentName cn = new ComponentName(infoCopy.pkg, className);
                                 intent.setComponent(cn);
                                 try {
@@ -1059,6 +1060,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         String className = resolveinfo.activityInfo.name;
                         Intent intent = new Intent(Intent.ACTION_MAIN);
                         intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         ComponentName cn = new ComponentName(infoOne.pkg, className);
                         intent.setComponent(cn);
                         try {
