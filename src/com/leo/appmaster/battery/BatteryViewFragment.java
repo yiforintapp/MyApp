@@ -939,7 +939,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         intent.setData(content_url);
         try {
             startActivity(intent);
-            mActivity.finish();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -2339,6 +2338,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isExpand) {
+                    mRemainTimeContent.setVisibility(View.VISIBLE);
+                    mRemainContent.setVisibility(View.VISIBLE);
+                }
                 mBossView.setVisibility(View.INVISIBLE);
                 popupWindow.dismiss();
 
