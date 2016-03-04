@@ -1,14 +1,6 @@
 
 package com.leo.appmaster.battery;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -75,6 +67,14 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
@@ -1539,7 +1539,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (hString.equals("0")) {
                     if (!dString.equals("0")) {
                         String text = mActivity.getString(R.string.screen_protect_time_right_two, dString);
-                        String text2 = mActivity.getString(R.string.screen_protect_time);
+                        String text2 = mActivity.getString(R.string.battery_saver_remain_charge_time);
                         mTvHideText.setVisibility(View.VISIBLE);
                         mTvHideTime.setVisibility(View.VISIBLE);
                         mTvHideText.setText(text2);
@@ -1551,7 +1551,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     }
                 } else {
                     String text = mActivity.getString(R.string.screen_protect_time_right, hString, dString);
-                    String text2 = mActivity.getString(R.string.screen_protect_time);
+                    String text2 = mActivity.getString(R.string.battery_saver_remain_charge_time);
                     mTvHideText.setVisibility(View.VISIBLE);
                     mTvHideTime.setVisibility(View.VISIBLE);
                     mTvHideText.setText(text2);

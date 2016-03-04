@@ -1055,7 +1055,7 @@
     <string name="battery_protect_view_show_title">توصية</string>
     <string name="addto_blacklist_share_dialog_title">  ! نجح الاضافة </string>
     <string name="addto_blacklist_share_dialog_content">شاركه مع الأصدقاء لمساعدتك علي منع الازعاج</string>
-    <string name="addto_blacklist_share_content">%2$s الازعاج و تضيفها الي  القائمة السوداء .انتبه ! تريد الا توجد الازعاج ؟ تنزل%1$s</string>
+    <string name="addto_blacklist_share_content">%2$s الازعاج و تضيفها الي  القائمة السوداء .انتبه ! تريد الا توجد الازعاج ؟ تنزلs$1%</string>
     <string name="toast_hide_ing">اخفاء الصور الان</string>
     <string name="battery_protect_show_num_contact">جهات الاتصال</string>
     <string name="battery_protect_show_num_call">مكالمة</string>
