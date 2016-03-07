@@ -38,6 +38,7 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -161,6 +162,9 @@ public class BatteryManagerImpl extends BatteryManager {
                 if (mFirstTouch) {
                     mFirstTouch = false;
                     if (bs.plugged != UNPLUGGED) {
+                        // 首次启动 - 此时已经连接着充电器
+                        SDKWrapper.addEvent(mContext,
+                                SDKWrapper.P1, "batterypage", "notify_show");
                         showSaverNotification(bs.level);
                     }
                 }
@@ -250,6 +254,8 @@ public class BatteryManagerImpl extends BatteryManager {
             }
             /* 如果屏保开关是打开的，则通知栏一定会出现 */
             showSaverNotification(newState.level);
+            SDKWrapper.addEvent(mContext,
+                    SDKWrapper.P1, "batterypage", "notify_show");
         } else if (mPreviousState.plugged != UNPLUGGED && newState.plugged == UNPLUGGED) {
             handleUnplugEvent(newState);
             mNotifyHelper.dismissScreenSaverNotification();
@@ -416,6 +422,8 @@ public class BatteryManagerImpl extends BatteryManager {
     public void setScreenViewStatus(boolean value) {
         mPt.putBoolean(PrefConst.KEY_BATTERY_SCREEN_VIEW_STATUS, value);
         if (value && mPreviousState.plugged != UNPLUGGED) {
+            SDKWrapper.addEvent(mContext,
+                    SDKWrapper.P1, "batterypage", "notify_show");
             showSaverNotification(mPreviousState.level);
         } else {
             dismissSaverNotification();

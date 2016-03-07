@@ -9,6 +9,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -23,5 +24,7 @@ public class LeoBatteryBroadcastReceiver extends BroadcastReceiver {
             BatteryManager btm = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
             btm.onSaverNotifiClick();
         }
+        SDKWrapper.addEvent(context.getApplicationContext(),
+                SDKWrapper.P1, "batterypage", "notify_click");
     }
 }

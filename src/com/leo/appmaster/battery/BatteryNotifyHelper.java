@@ -144,6 +144,8 @@ public class BatteryNotifyHelper {
             if (action.equalsIgnoreCase(ACTION_LEO_SAVER_NOTIFI_CLICKED)) {
                 /* 屏保通知点击广播 */
                 LeoLog.d(TAG, "receive ACTION_LEO_SAVER_NOTIFI_CLICKED");
+                SDKWrapper.addEvent(context.getApplicationContext(),
+                        SDKWrapper.P1, "batterypage", "notify_click");
                 mManager.onSaverNotifiClick();
             } else if (action.equalsIgnoreCase(ACTION_LEO_BATTERY_APP)) {
                 /* 后台耗电定时广播 */
