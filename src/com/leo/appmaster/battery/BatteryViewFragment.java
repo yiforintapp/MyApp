@@ -759,7 +759,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                         intentHwP8.setComponent(cnHwP8);
                                         startActivity(intentHwP8);
                                     } catch (Exception e4) {
-                                        e4.printStackTrace();
+                                        //sony
+                                        try {
+                                            Intent intentHwP8 = new Intent(Intent.ACTION_MAIN);
+                                            intentHwP8.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            ComponentName cnHwP8 = new ComponentName("com.sonyericsson.conversations", "com.sonyericsson.conversations.ui.ConversationListActivity");
+                                            intentHwP8.setComponent(cnHwP8);
+                                            startActivity(intentHwP8);
+                                        } catch (Exception e5) {
+                                            e5.printStackTrace();
+                                        }
                                     }
                                 }
                             }
