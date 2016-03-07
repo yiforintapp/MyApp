@@ -50,7 +50,10 @@ public class BatteryTestViewLayout extends RelativeLayout {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 LeoLog.d("testBatteryView", "Big R onScroll");
-                if (e2.getY() < e1.getY()) {
+                LeoLog.d("testBatteryView", "distanceY : " + distanceY);
+//                if (e2.getY() < e1.getY()) {
+                //防止太灵敏 三星note出现此情况
+                if (distanceY > 6) {
                     if (!BatteryViewFragment.isExpand) {
                         if (!BatteryViewFragment.mShowing) {
                             scrollBottomListener.scrollTop();
@@ -62,7 +65,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
                             return true;
                         }
                     }
-                } else {
+                } else if (distanceY < -6) {
                     if (BatteryViewFragment.isExpand) {
                         if (!BatteryViewFragment.mShowing) {
                             if (!BatteryViewFragment.mIsExtraLayout) {
@@ -84,6 +87,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 LeoLog.d("testBatteryView", "Big R onFling");
+                LeoLog.d("testBatteryView", "velocityY : " + velocityY);
                 if (e2.getY() < e1.getY()) {
                     if (!BatteryViewFragment.isExpand) {
                         if (!BatteryViewFragment.mShowing) {
