@@ -353,9 +353,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 //        mBottleWater.setPostInvalidateDelayMs(40);
         mBottleWater.setWaveColor(0xff0ad931);
         mBottleWater.setWave2Color(0xff0ab522);
-        mBottleWater.setFactorA(DipPixelUtil.dip2px(mActivity, 3));
+        mBottleWater.setFactorA(DipPixelUtil.dip2px(mActivity, 2.5f));
         mBottleWater.setSpeed1(DipPixelUtil.dip2px(mActivity, 2f));
-        mBottleWater.setSpeed2(DipPixelUtil.dip2px(mActivity, 1.3f));
+        mBottleWater.setSpeed2(DipPixelUtil.dip2px(mActivity, 1.5f));
 
         mTvHideTime = (TextView) findViewById(R.id.hide_tv_one);
         mTvHideText = (TextView) findViewById(R.id.hide_tv_two);
@@ -1489,9 +1489,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mTvLevel.setText(newState.level + "%");
 
             if (newState.level < 70) {
-                mBottleWater.setPostInvalidateDelayMs(50);
+                mBottleWater.setPostInvalidateDelayMs(66);
             } else if (newState.level < 85) {
-                mBottleWater.setPostInvalidateDelayMs(70);
+                mBottleWater.setPostInvalidateDelayMs(73);
             } else {
                 mBottleWater.setPostInvalidateDelayMs(80);
             }
