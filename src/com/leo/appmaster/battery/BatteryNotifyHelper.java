@@ -184,7 +184,7 @@ public class BatteryNotifyHelper {
         RemoteViews view_custom;
         view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
 
-        view_custom.setTextViewText(R.id.tv_charge_percent, level + "");
+        view_custom.setTextViewText(R.id.tv_charge_percent, String.format("%d", level));
 
         if (level == 100) {
             view_custom.setTextViewText(R.id.tv_charge_tip,
