@@ -60,14 +60,22 @@ public class BaseActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        SDKWrapper.onResume(this);
+        try {
+            SDKWrapper.onResume(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mLifeCircle.onResume();
     }
 
     @Override
     protected void onPause() {
-        SDKWrapper.onPause(this);
+        try {
+            SDKWrapper.onPause(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onPause();
 
         mLifeCircle.onPause();
