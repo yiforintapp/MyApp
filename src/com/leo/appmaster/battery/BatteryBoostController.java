@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
@@ -121,6 +122,12 @@ public class BatteryBoostController extends RelativeLayout {
                 int index = i;
                 if (index >= list.size()) {
                     index -= list.size();
+                }
+
+                AppItemInfo itemInfo = list.get(index);
+                if (itemInfo.packageName == null || itemInfo.packageName.startsWith("com.leo.")) {
+                    // 排出掉公司自研产品
+                    continue;
                 }
                 appItemInfos.add(list.get(index));
                 if (appItemInfos.size() >= BOOST_SIZE) {
