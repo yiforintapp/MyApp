@@ -16,6 +16,11 @@
         android:layout_width="@dimen/fragment_lock_large_banner_image_top"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"/>
+    <com.leo.appmaster.ui.AdWrapperLayout
+        android:id="@+id/ad_wrapper_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:id="@+id/click_area"
         android:layout_width="match_parent"
@@ -80,4 +85,5 @@
             android:layout_marginTop="6dp"
             android:src="@drawable/ad_icon"/>
     </RelativeLayout>
+    </com.leo.appmaster.ui.AdWrapperLayout>
 </RelativeLayout>

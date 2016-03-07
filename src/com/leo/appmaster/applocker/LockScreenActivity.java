@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +38,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -102,6 +104,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.ui.AdWrapperLayout;
 import com.leo.appmaster.ui.BaseSelfDurationToast;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoCircleView;
@@ -2804,9 +2807,30 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
             ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             final View clickArea = view.findViewById(R.id.click_area);
+
             if (mWrapperEngine != null) {
-				mWrapperEngine.registerView(mAdSource, clickArea, unitId);
+                mWrapperEngine.registerView(mAdSource, clickArea, unitId);
             }
+
+            final AdWrapperLayout adWrapper = (AdWrapperLayout) view.findViewById(R.id.ad_wrapper_layout);
+            adWrapper.setNeedIntercept(true);
+            adWrapper.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LeoLog.d(TAG, "dispatch click event");
+                    adWrapper.setNeedIntercept(false);
+                    MotionEvent eventDown = MotionEvent.obtain(SystemClock.elapsedRealtime(),
+                            SystemClock.elapsedRealtime(), MotionEvent.ACTION_DOWN,
+                            10.0f, 10.0f, 0);
+                    clickArea.dispatchTouchEvent(eventDown);
+                    MotionEvent eventUp = MotionEvent.obtain(SystemClock.elapsedRealtime(),
+                            SystemClock.elapsedRealtime(), MotionEvent.ACTION_UP,
+                            10.0f, 10.0f, 0);
+                    clickArea.dispatchTouchEvent(eventUp);
+                }
+            });
+
+
             /*MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, clickArea, new MobvistaListener() { //这里这个回调只是用来 打个统计点而已
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
