@@ -30,6 +30,7 @@ import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
@@ -340,6 +341,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         String newPaht = ((PrivacyDataManager) MgrContext.getManager
                 (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
         if (newPaht == null) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "hide_pic_operation",
+                    "pic_ccl_fal");
             isSuccess = 2;
         } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
             isSuccess = 2;

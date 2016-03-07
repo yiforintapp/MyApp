@@ -46,6 +46,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
@@ -103,7 +104,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static final int TIMES_TO_CATCH_3 = 3;
     private static final int TIMES_TO_CATCH_4 = 5;
     private boolean mNeedIntoHomeWhenFinish = false;
-    private LinearLayout mFiveStarLayout;
+    private FiveStarsLayout mLayout;
 
     private FrameLayout mShareLayout; // 分享layout
     private TextView mShareText;  //分享按钮
@@ -115,7 +116,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private RippleView mSwiftyBtnLt;
     private final String TAG = "IntruderCatchedActivity";
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
-    
+
+    private LinearLayout mFiveStarLayout;
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
 
@@ -147,6 +149,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onStop() {
         super.onStop();
+        if (mLayout != null) {
+            mLayout.stopAnim();
+        }
         ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
     }
 
@@ -320,6 +325,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mRvMore = (RippleView) findViewById(R.id.rv_more);
         mRvMore.setOnClickListener(this);
         mLvMain = (ListView) findViewById(R.id.lv_mainlist);
+        mLayout = (FiveStarsLayout) findViewById(R.id.fsl_fivestars);
         mFiveStarLayout = (LinearLayout) findViewById(R.id.ll_fivestars_layout);
         mFiveStarLayout.setOnClickListener(this);
 
@@ -783,6 +789,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
+
     }
 
     private void initSwiftyLayout() {

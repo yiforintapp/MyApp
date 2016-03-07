@@ -373,6 +373,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                                                 .getDirPathFromFilepath(path), newFileName), this);
                         FileOperationUtil.deleteFileMediaEntry(path, this);
                         mAllPath.remove(mPosition);
+                        SDKWrapper.addEvent(this, SDKWrapper.P1,
+                                "hide_vid_operation",
+                                "vid_ccl_fal");
                         // }
                     }
                 } catch (Exception e) {

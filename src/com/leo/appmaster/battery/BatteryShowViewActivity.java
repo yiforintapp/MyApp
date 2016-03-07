@@ -32,6 +32,7 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.videohide.VideoGriActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.ObjectAnimator;
@@ -53,7 +54,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private BatteryViewFragment batteryFragment;
 
     public static Boolean isActivityAlive = false;
-//    private RelativeLayout mBatterViewBg; // 背景
+    //    private RelativeLayout mBatterViewBg; // 背景
     private HomeWatcherReceiver mReceiver;
 
     private GuideFragment mGuideFragment;
@@ -328,6 +329,11 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     @Override
     public void finish() {
         super.finish();
+
+        SDKWrapper.addEvent(this, SDKWrapper.P1,
+                "batterypage",
+                "screen_unlock");
+
         LeoLog.d(TAG, "finish");
         LeoEventBus.getDefaultBus().unregister(this);
         isActivityAlive = false;

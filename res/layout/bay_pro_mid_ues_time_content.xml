@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@id/remain_time"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="5dp">
 
     <LinearLayout
         android:id="@+id/three_remain_content"
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/bay_pro_three_icon_m_top"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="13dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/bay_pro_three_icon_m_top"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -158,7 +158,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="13dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/bay_pro_three_icon_m_top"
             android:orientation="vertical">
 
             <RelativeLayout

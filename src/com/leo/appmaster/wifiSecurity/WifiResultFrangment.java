@@ -93,6 +93,8 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     private RippleView mGradeBtnLt;
     private RelativeLayout mGradeLayout;
 
+    private FiveStarsLayout mFiveStarLayout;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -124,6 +126,9 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         super.onDestroyView();
         MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60);
         ImageLoader.getInstance().clearMemoryCache();
+        if (mFiveStarLayout != null) {
+            mFiveStarLayout.stopAnim();
+        }
     }
 
     @Override
@@ -553,9 +558,9 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
                     long ttt = System.currentTimeMillis();
                     View include = mGradeViewStub.inflate();
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "GP_shw");
-                    FiveStarsLayout fiveStarsLayout = (FiveStarsLayout)
+                    mFiveStarLayout = (FiveStarsLayout)
                                     include.findViewById(R.id.fsl_fivestars);
-                    fiveStarsLayout.setBackgroundNull();
+                    mFiveStarLayout.setBackgroundNull();
                     mGradeLayout = (RelativeLayout) include.findViewById(R.id.grade_content);
                     mGradeTitle = (TextView) include.findViewById(R.id.grade_text);
                     mGradeImg = (ImageView) include.findViewById(R.id.grade_img);

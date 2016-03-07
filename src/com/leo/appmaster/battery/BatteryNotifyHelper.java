@@ -177,13 +177,14 @@ public class BatteryNotifyHelper {
 
     /* 3.3.2 充电屏保通知 */
     public void showNotificationForScreenSaver(int level, boolean onSystemLockScreen) {
-        LeoLog.d("stone_saver", "in showNotificationForScreenSaver, level = " + level);
+        LeoLog.d("BatteryNotifyHelper", "in showNotificationForScreenSaver, level = "
+                + level + "; onSystemLockScreen = " + onSystemLockScreen);
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews view_custom;
         view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
 
-        view_custom.setTextViewText(R.id.tv_charge_percent, level + "");
+        view_custom.setTextViewText(R.id.tv_charge_percent, String.format("%d", level));
 
         if (level == 100) {
             view_custom.setTextViewText(R.id.tv_charge_tip,

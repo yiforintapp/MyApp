@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/time_content"
     android:layout_centerHorizontal="true"
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="@dimen/bay_pro_show_text_m_top"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 

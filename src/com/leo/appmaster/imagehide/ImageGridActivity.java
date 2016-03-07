@@ -46,6 +46,7 @@ import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.videohide.VideoGriActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -906,6 +907,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                                 deleteList.add(item);
                             }
                         } else {
+                            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                                    "hide_pic_operation",
+                                    "pic_hid_fal");
                             isSuccess = 2;
                         }
                     }
@@ -928,6 +932,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                         LeoLog.d("testHidePic", "result : " + newPaht);
                         LeoLog.d("testHidePic", "---------------------------------------");
                         if (newPaht == null) {
+                            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                                    "hide_pic_operation",
+                                    "pic_ccl_fal");
                             isSuccess = 2;
                         } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
                             isSuccess = 2;
