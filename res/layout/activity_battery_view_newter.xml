@@ -37,12 +37,12 @@
     <include layout="@layout/bay_pro_mid_ues_time_content" />
 
     <!-- 滑动区域 -->
-    <include
-        layout="@layout/bay_advertise_content"
+    <ViewStub
+        android:id="@+id/bay_advertise_stub"
+        android:layout="@layout/bay_advertise_content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/batteryscreen_bossview_height"
         android:layout_above="@id/slider" />
-    <!-- 滑动区域 -->
 
     <ViewStub
         android:id="@+id/boost_stub"

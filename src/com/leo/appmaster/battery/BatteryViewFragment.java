@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.battery;
 
 import android.content.BroadcastReceiver;
@@ -369,14 +368,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
 
-        mBossView = findViewById(R.id.move_boss);
-        mBossView.setOnTouchListener(this);
+        /*mBossView = findViewById(R.id.move_boss);
+        mBossView.setOnTouchListener(this);*/
 
-        mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
+        /*mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
 
         mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
         mScrollView.setParent(mSlideView);
-        mSlideView.setScrollBottomListener(this);
+        mSlideView.setScrollBottomListener(this);*/
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
 //        mBottleWater.setPostInvalidateDelayMs(40);
@@ -391,9 +390,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mSettingView = findViewById(R.id.ct_option_2_rl);
         mSettingView.setOnClickListener(this);
-        mArrowMoveContent = findViewById(R.id.move_arrow);
-        mArrowMoveContent.setOnTouchListener(this);
-        mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);
+        /*mArrowMoveContent = findViewById(R.id.move_arrow);
+        mArrowMoveContent.setOnTouchListener(this);*/
+        /*mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);*/
 
         mIvCancel = (ImageView) findViewById(R.id.slider);
         mIvCancel.setOnClickListener(this);
@@ -447,7 +446,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShowThree.setOnClickListener(this);
         makeSmall(mShowThree);
 
-        mMaskView = (GradientMaskView) findViewById(R.id.mask_view);
+        /*mMaskView = (GradientMaskView) findViewById(R.id.mask_view);*/
 
         mInitTime = System.currentTimeMillis();
 
@@ -478,7 +477,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
             mRemainTimeContent.setVisibility(View.INVISIBLE);
             mRemainContent.setVisibility(View.INVISIBLE);
-            mBossView.setVisibility(View.INVISIBLE);
+//            mBossView.setVisibility(View.INVISIBLE);
 
             mTimeContentView.setVisibility(View.VISIBLE);
 
@@ -577,6 +576,22 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showViewAfterBoost() {
         mRemainTimeContent.setVisibility(View.VISIBLE);
         mRemainContent.setVisibility(View.VISIBLE);
+
+        ViewStub viewStub = (ViewStub) findViewById(R.id.bay_advertise_stub);
+        mBossView = viewStub.inflate();
+        mBossView.setOnTouchListener(this);
+
+        mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
+
+        mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
+        mScrollView.setParent(mSlideView);
+        mSlideView.setScrollBottomListener(this);
+
+        mArrowMoveContent = findViewById(R.id.move_arrow);
+        mArrowMoveContent.setOnTouchListener(this);
+        mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);
+
+        mMaskView = (GradientMaskView) findViewById(R.id.mask_view);
 
         startRemindTimeAppearAnim();
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
