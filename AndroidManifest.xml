@@ -696,7 +696,11 @@
         <service
             android:name=".applocker.service.StatusBarEventService"
             android:exported="true"></service>
-
+        <receiver android:name=".battery.LeoBatteryBroadcastReceiver" android:exported="true" >
+            <intent-filter android:priority="1000" >
+                <action android:name="com.leo.appmaster.battery.saver.notifi.click.action.x" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".applocker.receiver.LockReceiver"
             android:exported="true">

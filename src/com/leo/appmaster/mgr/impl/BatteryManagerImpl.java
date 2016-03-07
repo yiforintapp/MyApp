@@ -83,6 +83,7 @@ public class BatteryManagerImpl extends BatteryManager {
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
         filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         mContext.registerReceiver(mReceiver, filter);
 
@@ -179,6 +180,19 @@ public class BatteryManagerImpl extends BatteryManager {
                         mPreviousState.plugged != UNPLUGGED) {
                     LeoLog.d(TAG, "show screen saver on ACTION_SCREEN_ON");
                     handlePluginEvent(mPreviousState, false);
+                    /* 系统有锁而且充电屏保打开 */
+                    if (getScreenViewStatus()
+                            && AppUtil.isScreenLocked(mContext)
+                            && mPreviousState.plugged != UNPLUGGED) {
+                        mNotifyHelper.showNotificationForScreenSaver(mPreviousState.level, true);
+                    }
+                }
+
+                if (action.equals(Intent.ACTION_USER_PRESENT)) {
+                    if (getScreenViewStatus()
+                            && mPreviousState.plugged != UNPLUGGED) {
+                        mNotifyHelper.showNotificationForScreenSaver(mPreviousState.level, false);
+                    }
                 }
 
                 /*if (AppUtil.hasOtherScreenSaverInstalled(mContext)) {

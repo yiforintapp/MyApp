@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -41,6 +42,8 @@ public class BatteryNotifyHelper {
             "com.leo.appmaster.battery.notification.action";
     private static final String ACTION_LEO_SAVER_NOTIFI_CLICKED =
             "com.leo.appmaster.battery.saver.notifi.click.action";
+    public static final String ACTION_LEO_SAVER_NOTIFI_CLICKEDX =
+            "com.leo.appmaster.battery.saver.notifi.click.action.x";
     private static final int CHECK_INTERVAL = 3 * 60 * 60 * 1000;
     //    private static final int CHECK_INTERVAL = 10 * 1000;
     private BatteryManager mManager;
@@ -137,6 +140,7 @@ public class BatteryNotifyHelper {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+
             if (action.equalsIgnoreCase(ACTION_LEO_SAVER_NOTIFI_CLICKED)) {
                 /* 屏保通知点击广播 */
                 LeoLog.d(TAG, "receive ACTION_LEO_SAVER_NOTIFI_CLICKED");
@@ -165,8 +169,12 @@ public class BatteryNotifyHelper {
         }
     };
 
-    /* 3.3.2 充电屏保通知 */
     public void showNotificationForScreenSaver(int level) {
+        showNotificationForScreenSaver(level, false);
+    }
+
+    /* 3.3.2 充电屏保通知 */
+    public void showNotificationForScreenSaver(int level, boolean onSystemLockScreen) {
         LeoLog.d("stone_saver", "in showNotificationForScreenSaver, level = " + level);
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -192,10 +200,16 @@ public class BatteryNotifyHelper {
                 .setSmallIcon(R.drawable.icon_charge)
                 .setAutoCancel(false);
 
-        Intent intent = new Intent(ACTION_LEO_SAVER_NOTIFI_CLICKED);
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(mContext, 0, intent, 0);
-        mBuilder.setContentIntent(pendingIntent);
+        if (onSystemLockScreen) {
+            view_custom.setOnClickPendingIntent(R.id.notify_whole, PendingIntent.getBroadcast(
+                    mContext, 0, new Intent(ACTION_LEO_SAVER_NOTIFI_CLICKEDX), 0
+            ));
+        } else {
+            Intent intent = new Intent(ACTION_LEO_SAVER_NOTIFI_CLICKED);
+            PendingIntent pendingIntent =
+                    PendingIntent.getBroadcast(mContext, 0, intent, 0);
+            mBuilder.setContentIntent(pendingIntent);
+        }
 
         Notification notify = mBuilder.build();
         notify.contentView = view_custom;
