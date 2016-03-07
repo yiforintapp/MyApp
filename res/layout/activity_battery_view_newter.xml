@@ -33,7 +33,7 @@
     <!-- 可用时间文字 -->
     <include layout="@layout/bay_pro_mid_text_time" />
 
-    <!-- 可用时间 -->
+    <!-- 可用时间 点击动画，展开模块-->
     <include layout="@layout/bay_pro_mid_ues_time_content" />
 
     <!-- 滑动区域 -->
@@ -154,10 +154,10 @@
                         android:background="@color/white"
                         android:layout="@layout/screen_saver_card_layout" />
 
-
                 </LinearLayout>
             </com.leo.appmaster.battery.SelfScrollView>
         </com.leo.appmaster.battery.BatteryTestViewLayout>
+
         <!-- 渐变遮罩 -->
         <com.leo.appmaster.battery.GradientMaskView
             android:id="@+id/mask_view"

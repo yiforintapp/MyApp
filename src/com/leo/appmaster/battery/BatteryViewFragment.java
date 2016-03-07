@@ -629,6 +629,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
         if (mActivity == null) return;
         turnDark(recommandTypeThree);
+
+        mRecommandView.setVisibility(View.VISIBLE);
+        boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
+        if (isSlideContentShow) {
+            mSlideView.setVisibility(View.INVISIBLE);
+        }
+
         mRecommandView.clearAnimation();
         mRecommandContentView.setVisibility(View.INVISIBLE);
         Animation expand = AnimationUtils.
@@ -636,11 +643,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         expand.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                mRecommandView.setVisibility(View.VISIBLE);
-                boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
-                if (isSlideContentShow) {
-                    mSlideView.setVisibility(View.INVISIBLE);
-                }
                 fillShowContentData(recommandTypeThree);
             }
 
@@ -992,6 +994,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         intent.setData(content_url);
         try {
             startActivity(intent);
+            mActivity.finish();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1293,7 +1296,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (mClickRunnable != null) {
                     mClickRunnable.run();
                     mClickRunnable = null;
-                    mActivity.finish();
+//                    mActivity.finish();
                 }
             }
         }
@@ -1960,7 +1963,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             // 没有锁或者默认浏览器不是chrome，直接跑
             mClickRunnable.run();
             mClickRunnable = null;
-            mActivity.finish();
+//            mActivity.finish();
         }
     }
 
