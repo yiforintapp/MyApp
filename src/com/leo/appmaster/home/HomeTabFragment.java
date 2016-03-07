@@ -33,6 +33,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.utils.CollectVideoUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
