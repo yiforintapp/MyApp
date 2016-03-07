@@ -261,7 +261,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private int arrowHeight;
 
-    private void setYplace(int contentHeight, int type) {
+    private void setYplace(int contentHeight, final int type) {
 
         if (!isSetInitPlace) {
             mMoveDisdance = contentHeight * 9 / 16;
@@ -310,6 +310,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         shrinkRecommandContent();
                     }
                     mBossView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+
+                    if (type != AD_TYPE_MSG) {
+                        mArrowMoveContent.setVisibility(View.VISIBLE);
+                        mMaskView.showMask();
+                        isShowMask = true;
+                    }
+
                 }
             });
             animMoveY.setDuration(300);
@@ -2207,7 +2219,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (false) {
+//        if (true) {
             mSwiftyView = viewStub.inflate();
 
             mSwiftyImg = (ImageView) mSwiftyView.findViewById(R.id.card_img);
