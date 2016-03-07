@@ -457,10 +457,15 @@ public class MobvistaEngine {
             MobvistaAdData mobvista = new MobvistaAdData();
             // 将load成功的 MobvistaAdNative 对象移动到 MobvistaAdData 中
             MobVistaLoadingNative loadingNative = mMobVistaLoadingNative.remove(mUnitId);
-            mobvista.nativeAd = loadingNative.nativeAd;
-            mobvista.campaign = campaign;
-            mobvista.requestTimeMs = System.currentTimeMillis();
-            mMobVistaCacheMap.put(mUnitId, mobvista);
+			
+			/* 判断loadingNative 非空，防止空指针 */
+			if (loadingNative != null) {
+
+				mobvista.nativeAd = loadingNative.nativeAd;
+				mobvista.campaign = campaign;
+				mobvista.requestTimeMs = System.currentTimeMillis();
+				mMobVistaCacheMap.put(mUnitId, mobvista);
+			}
 
             MobvistaListener listener = mMobVistaListeners.get(mUnitId);
 
