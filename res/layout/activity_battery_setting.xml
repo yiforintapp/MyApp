@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:layout_toLeftOf="@+id/iv_switch_noti"
+                android:layout_toLeftOf="@+id/iv_switch_pow_sav"
                 android:gravity="left">
 
                 <TextView
