@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.FileObserver;
 import android.os.Process;
+import android.provider.Settings;
+import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
@@ -79,13 +81,26 @@ public class DetectThreadCompat extends Thread {
 
         ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
         ProcessDetector detector = null;
+
+        boolean lastIsCompat22 = false;
         while (true && !isInterrupted()) {
             if (mDetector == null || !mDetector.ready()) continue;
 
             if (usageStats.checkAvailable()) {
                 detector = usageStats;
+                if (lastIsCompat22) {
+                    // AM-4007，防止开启了用量权限后，立即又弹出了设置页面的锁
+                    String usagePkg = getUsagePackage();
+                    if (!TextUtils.isEmpty(usagePkg)) {
+                        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                        lm.filterPackage(usagePkg, 2000);
+                    }
+                }
             } else {
                 detector = mDetector;
+                if (detector.isOOMScoreMode()) {
+                    lastIsCompat22 = true;
+                }
             }
             lastProcessAdj = mForegroundAdj;
             
@@ -194,6 +209,18 @@ public class DetectThreadCompat extends Thread {
             }
             
         }
+    }
+
+    private String getUsagePackage() {
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(intent, 0);
+        if (resolveInfos == null || resolveInfos.isEmpty()) {
+            return null;
+        }
+
+        ResolveInfo resolveInfo = resolveInfos.get(0);
+        return resolveInfo.activityInfo.packageName;
     }
     
     private ProcessAdj checkSelfForeground(ProcessDetector detector, ProcessAdj needToListenAdj) {
