@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -51,7 +53,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private BatteryViewFragment batteryFragment;
 
     public static Boolean isActivityAlive = false;
-    private RelativeLayout mBatterViewBg; // 背景
+//    private RelativeLayout mBatterViewBg; // 背景
     private HomeWatcherReceiver mReceiver;
 
     private GuideFragment mGuideFragment;
@@ -200,7 +202,10 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     private void initAll() {
         LeoEventBus.getDefaultBus().register(this);
         mBatteryManager.setBatteryStateListener(this);
-        mBatterViewBg = (RelativeLayout) findViewById(R.id.batter_view_bg);
+
+//        LayoutInflater inflater = this.getLayoutInflater();
+//        View view = inflater.inflate(R.layout.activity_batter_show_view,null);
+//        mBatterViewBg = (RelativeLayout) findViewById(R.id.batter_view_bg);
 
         mViewPager = (ViewPager) findViewById(R.id.battery_viewpager);
         initFragment();
@@ -410,11 +415,11 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     }
 
     public void finishActiviytAnim() {
-        mBatterViewBg.post(new Runnable() {
+        mViewPager.post(new Runnable() {
             @Override
             public void run() {
-                ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatterViewBg,
-                        "y", mBatterViewBg.getTop(), mBatterViewBg.getTop() - mBatterViewBg.getHeight());
+                ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mViewPager,
+                        "y", mViewPager.getTop(), mViewPager.getTop() - mViewPager.getHeight());
                 animMoveY.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
