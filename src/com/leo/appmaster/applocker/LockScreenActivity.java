@@ -1281,7 +1281,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             final String unitId = mBannerAdids[i];
 
 			final ADEngineWrapper  wrapperAdEngine = ADEngineWrapper.getInstance(this);
-			LeoLog.e("STONE_AD_DEBUG", "mAdSource " + mAdSource + "|"+unitId);
+			LeoLog.e("LockScreenActivity[AD_DEBUG]", "mAdSource " + mAdSource + "|"+unitId);
 			ADEngineWrapper.getInstance(this).loadAd(mAdSource, unitId,  new ADEngineWrapper.WrappedAdListener(){
 
 				/**
@@ -1295,22 +1295,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
 					if (campaign != null && deleteRedundant(unitId, campaign)) {
 						/* 开始load 广告大图 */
-                        LeoLog.d("STONE_AD_DEBUG", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
+                        LeoLog.d("LockScreenActivity[AD_DEBUG]", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
 						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
 							@Override
 							public void onLoadingStarted(String imageUri, View view) {
-								LeoLog.d("STONE_AD_DEBUG", "start to load preview for: " + imageUri);
+								LeoLog.d("LockScreenActivity[AD_DEBUG]", "start to load preview for: " + imageUri);
 							}
 
 							@Override
 							public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 								mAdMap.remove(unitId);
-								LeoLog.d("STONE_AD_DEBUG", "onLoadingFailed for: " + imageUri);
+								LeoLog.d("LockScreenActivity[AD_DEBUG]", "onLoadingFailed for: " + imageUri);
 							}
 
 							@Override
 							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-								LeoLog.d("STONE_AD_DEBUG", "["+unitId+"]onLoadingComplete for: " + imageUri);
+								LeoLog.d("LockScreenActivity[AD_DEBUG]", "["+unitId+"]onLoadingComplete for: " + imageUri);
 
 								if (unitId.equals(mBannerAdids[0])) {
 									mAdUnitIdList.add(0, unitId);
@@ -1412,18 +1412,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String imageUri, View view) {
-                                LeoLog.d("STONE_AD_DEBUG", "start to load preview for: " + imageUri);
+                                LeoLog.d("LockScreenActivity[AD_DEBUG]", "start to load preview for: " + imageUri);
                             }
 
                             @Override
                             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                                 mAdMap.remove(unitId);
-                                LeoLog.d("STONE_AD_DEBUG", "onLoadingFailed for: " + imageUri);
+                                LeoLog.d("LockScreenActivity[AD_DEBUG]", "onLoadingFailed for: " + imageUri);
                             }
 
                             @Override
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                                LeoLog.d("STONE_AD_DEBUG", "onLoadingComplete for: " + imageUri);
+                                LeoLog.d("LockScreenActivity[AD_DEBUG]", "onLoadingComplete for: " + imageUri);
                                 //synchronized (mAdUnitIdList) {
                                     *//* AM-3907 规避多次添加广告 - 在多线程的情况下可能会有问题 *//*
                                     *//*if (mAdUnitIdList.size() == mBannerAdids.length) {
