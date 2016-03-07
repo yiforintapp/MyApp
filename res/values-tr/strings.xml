@@ -978,7 +978,7 @@
     <string name="battery_protect_show_num_msm">Kısa Mesaj</string>
     <string name="battery_protect_show_num_browser">Tarayıcı</string>
     <string name="battery_boosting">Güç harcatan uygulamalar temizleniyor…</string>
-    <string name="battery_boost_result">Şarj ekran koruyucu en az %1$d şarj süresi tasarruf edebilir. %2$d güç-harcatan uygulama temizlendi.</string>
+    <string name="battery_boost_result">Şarj ekran koruyucu en az <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> şarj süresi tasarruf edebilir. <Data><![CDATA[<font color="#00a8ff">%2$d</font>]]></Data> güç-harcatan uygulama temizlendi.</string>
     <string name="battery_protect_setting_pow_sav_title">Oto Güç Kazanç Optimizasyonu</string>
     <string name="battery_protect_setting_pow_sav_des">Şarj ederken güç harcatan uygulamaları otomatik temizle.</string>
     <string name="battery_protect_pop_text">Yoksay</string>
