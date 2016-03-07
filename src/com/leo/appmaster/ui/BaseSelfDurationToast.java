@@ -192,7 +192,7 @@ public class BaseSelfDurationToast{
 //         params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 //         | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
          params.flags =
-//                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
                  WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
          params.format = PixelFormat.TRANSLUCENT;
 //         params.windowAnimations = android.R.style.Animation_Toast;
@@ -237,23 +237,6 @@ public class BaseSelfDurationToast{
             {
                 mWM.removeView(mView);
             }
-//            LeoLog.d("keyaaa", "to set key");
-//            mView.setOnKeyListener(new View.OnKeyListener() {
-//
-//                @Override
-//                public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                    LeoLog.d("keyaaa", "kekeke back");
-//                    mView.dispatchKeyEvent(event);
-//                    switch (keyCode) {
-//                        case KeyEvent.KEYCODE_BACK:
-//                            hide();
-//                            return true;
-//                        default:
-//                            return false;
-//                    }
-//                }
-//            });
-//            mView.setFocusable(true);
             mWM.addView(mView, mParams);
             mIsShowing = true;
         }

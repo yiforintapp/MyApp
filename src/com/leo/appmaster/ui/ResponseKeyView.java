@@ -56,15 +56,15 @@ public class ResponseKeyView extends FrameLayout {
 //	LayoutInflater.from(context).inflate(R.layout.toast_permission_guide, this);  
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
-		if ((event.getKeyCode() == KeyEvent.KEYCODE_BACK) ) {
+		if ((event.getKeyCode() == KeyEvent.KEYCODE_BACK)||(event.getKeyCode() == KeyEvent.KEYCODE_BACK) ) {
 			Log.i("sss", "back");
 			if (mBackPressListener != null) {
 				mBackPressListener.onBackPressed();
 			}
-          return super.dispatchKeyEvent(event);
-      } else {
-          return super.dispatchKeyEvent(event);
-      }
+			return false;
+		} else {
+			return super.dispatchKeyEvent(event);
+		}
 	}
 	
 	public interface OnBackPressListener {

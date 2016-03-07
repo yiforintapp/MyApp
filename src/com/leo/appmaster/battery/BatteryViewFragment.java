@@ -354,8 +354,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mBottleWater.setWaveColor(0xff0ad931);
         mBottleWater.setWave2Color(0xff0ab522);
         mBottleWater.setFactorA(DipPixelUtil.dip2px(mActivity, 3));
-        mBottleWater.setSpeed1(DipPixelUtil.dip2px(mActivity, 4f));
-        mBottleWater.setSpeed2(DipPixelUtil.dip2px(mActivity, 2.5f));
+        mBottleWater.setSpeed1(DipPixelUtil.dip2px(mActivity, 2f));
+        mBottleWater.setSpeed2(DipPixelUtil.dip2px(mActivity, 1.3f));
 
         mTvHideTime = (TextView) findViewById(R.id.hide_tv_one);
         mTvHideText = (TextView) findViewById(R.id.hide_tv_two);

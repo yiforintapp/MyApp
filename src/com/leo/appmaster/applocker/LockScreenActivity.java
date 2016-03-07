@@ -151,7 +151,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
 
     public static final String TAG = "LockScreenActivity";
-    private HomeWatcherReceiver mReceiver;
+//    private HomeWatcherReceiver mReceiver;
     private static final String mPrivateLockPck = "com.leo.appmaster";
     public static final String THEME_CHANGE = "lock_theme_change";
     public static final String EXTRA_LOCK_MODE = "extra_lock_type";
@@ -265,7 +265,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_layout);
-        registerHomeKeyReceiver();
+//        registerHomeKeyReceiver();
         LeoLog.d(TAG, "onCreate...");
         mISManager = (IntrudeSecurityManager) MgrContext
                 .getManager(MgrContext.MGR_INTRUDE_SECURITY);
@@ -1057,9 +1057,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onDestroy() {
-        if (mReceiver != null) {
-            unregisterHomeKeyReceiver();
-        }
         mLockManager.setPauseScreenonLock(false);
         super.onDestroy();
         if (mAppBaseInfoLayoutbg != null) {
@@ -2161,7 +2158,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             if (mPermissionGuideToast == null) {
                                 mPermissionGuideToast = new BaseSelfDurationToast(LockScreenActivity.this);
                             }
-                            mPermissionGuideToast.setDuration(1000 * 60 * 2);
+                            mPermissionGuideToast.setDuration(1000 * 5);
                             if (Utilities.hasNavigationBar(LockScreenActivity.this)) {
                                 mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission_navigationbar);
                             } else {
@@ -2169,43 +2166,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             }
                             mPermissionGuideToast.setMatchParent();
                             mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, DipPixelUtil.dip2px(LockScreenActivity.this,14));
-//                            final View view = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null, true);
-//                            view.setOnKeyListener(new View.OnKeyListener() {
-//                                @Override
-//                                public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                                    LeoLog.d("keyaaa", "kekeke back");
-//                                    switch (keyCode) {
-//                                        case KeyEvent.KEYCODE_BACK:
-//                                            return true;
-//                                        default:
-//                                            return false;
-//
-//                                    }
-//                                }
-//                            });
-//                            RelativeLayout root = (RelativeLayout) view.findViewById(R.id.rl_root);
-////                            final View view = View.inflate(LockScreenActivity.this, R.layout.toast_permission_guide,null);
-//                            final ImageView ivClose = (ImageView) view.findViewById(R.id.iv_permission_guide_close);
-//                            ivClose.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    mPermissionGuideToast.hide();
-//                                }
-//                            });
-                            ResponseKeyView view = new ResponseKeyView(LockScreenActivity.this);
-                            view.setOnBackPressedListener(new ResponseKeyView.OnBackPressListener() {
+                            View v = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide,null);
+                            ImageView ivClose = (ImageView) v.findViewById(R.id.iv_permission_guide_close);
+                            ivClose.setOnClickListener(new OnClickListener() {
                                 @Override
-                                public void onBackPressed() {
-                                    mPermissionGuideToast.hide();
+                                public void onClick(View v) {
+                                    if (mPermissionGuideToast != null) {
+                                        mPermissionGuideToast.hide();
+                                    }
                                 }
                             });
-                            view.setOnCloseClickedListener(new ResponseKeyView.OnCloseClickListener() {
-                                @Override
-                                public void onClosePressed() {
-                                    mPermissionGuideToast.hide();
-                                }
-                            });
-                            mPermissionGuideToast.setView(view);
+                            mPermissionGuideToast.setView(v);
                             mPermissionGuideToast.show();
                         }
                     }, 200);
@@ -2967,44 +2938,44 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     }
 
-    public class HomeWatcherReceiver extends BroadcastReceiver {
-        private static final String LOG_TAG = "HomeReceiver";
-        private static final String SYSTEM_DIALOG_REASON_KEY = "reason";
-        private static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
+//    public class HomeWatcherReceiver extends BroadcastReceiver {
+//        private static final String LOG_TAG = "HomeReceiver";
+//        private static final String SYSTEM_DIALOG_REASON_KEY = "reason";
+//        private static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            LeoLog.d("HomeReceiver_Lock", "received! action = " + action);
+//            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
+//                // android.intent.action.CLOSE_SYSTEM_DIALOGS
+//                String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
+//                if (SYSTEM_DIALOG_REASON_HOME_KEY.equals(reason)) {
+//                    LeoLog.d("HomeReceiver_Lock", "received! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
+//                    if (mHasClickGoGrantPermission) {
+//                        tryHidePermissionGuideToast();
+//                    }
+//                }
+//            }
+//
+//        }
+//
+//    }
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            LeoLog.d("HomeReceiver_Lock", "received! action = " + action);
-            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
-                // android.intent.action.CLOSE_SYSTEM_DIALOGS
-                String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
-                if (SYSTEM_DIALOG_REASON_HOME_KEY.equals(reason)) {
-                    LeoLog.d("HomeReceiver_Lock", "received! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
-                    if (mHasClickGoGrantPermission) {
-                        tryHidePermissionGuideToast();
-                    }
-                }
-            }
-
-        }
-
-    }
-
-    private void registerHomeKeyReceiver() {
-        LeoLog.d("lisHome", "registerHomeKeyReceiver");
-        mReceiver = new HomeWatcherReceiver();
-        final IntentFilter homeFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-
-        registerReceiver(mReceiver, homeFilter);
-    }
-
-    private void unregisterHomeKeyReceiver() {
-        LeoLog.d("lisHome", "unregisterHomeKeyReceiver");
-        if (null != mReceiver) {
-            unregisterReceiver(mReceiver);
-        }
-    }
+//    private void registerHomeKeyReceiver() {
+//        LeoLog.d("lisHome", "registerHomeKeyReceiver");
+//        mReceiver = new HomeWatcherReceiver();
+//        final IntentFilter homeFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+//
+//        registerReceiver(mReceiver, homeFilter);
+//    }
+//
+//    private void unregisterHomeKeyReceiver() {
+//        LeoLog.d("lisHome", "unregisterHomeKeyReceiver");
+//        if (null != mReceiver) {
+//            unregisterReceiver(mReceiver);
+//        }
+//    }
 
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
