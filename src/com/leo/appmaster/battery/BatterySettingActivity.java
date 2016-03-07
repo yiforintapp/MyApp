@@ -19,6 +19,7 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.VideoGriActivity;
 
 public class BatterySettingActivity extends BaseActivity implements View.OnClickListener {
     private CommonToolbar mTitleBar;
@@ -224,9 +225,15 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                 if (!isBatteryPowSavOpen) {
                     checkBoxThree.setImageResource(R.drawable.switch_on);
                     mBtrManager.setBatteryPowSavStatus(true);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1,
+                            "batterypage",
+                            "setting_sav_on");
                 } else {
                     checkBoxThree.setImageResource(R.drawable.switch_off);
                     mBtrManager.setBatteryPowSavStatus(false);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1,
+                            "batterypage",
+                            "setting_sav_off");
                 }
                 break;
         }

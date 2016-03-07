@@ -683,6 +683,9 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                             } else {
                                 mUnhidePath.remove(item.getPath());
                                 isSuccess = false;
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                        "hide_vid_operation",
+                                        "vid_hid_fal");
                             }
                         } catch (Exception e) {
                             isSuccess = false;
@@ -756,6 +759,9 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                                 mVideoItems.remove(item);
                             } else {
                                 isSuccess = false;
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                        "hide_vid_operation",
+                                        "vid_ccl_fal");
                             }
                         } catch (Exception e) {
                             isSuccess = false;

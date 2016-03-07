@@ -57,6 +57,7 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.VideoGriActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
@@ -852,6 +853,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                     .queryIntentActivities(resolveIntent, 0);
                             ResolveInfo resolveinfo = resolveinfoList.iterator().next();
                             if (resolveinfo != null) {
+                                SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                                        "batterypage",
+                                        "call_" + infoCopy.pkg);
                                 String className = resolveinfo.activityInfo.name;
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -928,7 +932,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (netList != null && netList.size() > 0) {
                 mRecommandNumTwo.setVisibility(View.VISIBLE);
                 BatteryAppItem typeTwo = netList.get(0);
-                gotoBrowser(typeTwo, mIvShowTwo, mRecommandTvTwo, mRecommandNumTwo);
+                gotoBrowser(typeTwo, mIvShowTwo, mRecommandTvTwo, mRecommandNumTwo, RECOMMAND_TYPE_TWO);
             } else {
                 mRecommandNumTwo.setVisibility(View.INVISIBLE);
             }
@@ -937,7 +941,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (netList != null && netList.size() > 1) {
                 mRecommandNumThree.setVisibility(View.VISIBLE);
                 BatteryAppItem typeThree = netList.get(1);
-                gotoBrowser(typeThree, mIvShowThree, mRecommandTvThree, mRecommandNumThree);
+                gotoBrowser(typeThree, mIvShowThree, mRecommandTvThree, mRecommandNumThree, RECOMMAND_TYPE_TWO);
             } else {
                 mRecommandNumThree.setVisibility(View.INVISIBLE);
             }
@@ -946,7 +950,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (netList != null && netList.size() > 2) {
                 mRecommandNumFour.setVisibility(View.VISIBLE);
                 BatteryAppItem typeFour = netList.get(2);
-                gotoBrowser(typeFour, mIvShowFour, mRecommandTvFour, mRecommandNumFour);
+                gotoBrowser(typeFour, mIvShowFour, mRecommandTvFour, mRecommandNumFour, RECOMMAND_TYPE_TWO);
             } else {
                 mRecommandNumFour.setVisibility(View.INVISIBLE);
             }
@@ -977,7 +981,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (isPackExist) {
                     gotoApp(infoOne, mIvShowOne, mRecommandTvOne, mRecommandNumOne);
                 } else {
-                    gotoBrowser(infoOne, mIvShowOne, mRecommandTvOne, mRecommandNumOne);
+                    gotoBrowser(infoOne, mIvShowOne, mRecommandTvOne, mRecommandNumOne, RECOMMAND_TYPE_THREE);
                 }
 
             } else {
@@ -993,7 +997,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (isPackExist) {
                     gotoApp(infoTwo, mIvShowTwo, mRecommandTvTwo, mRecommandNumTwo);
                 } else {
-                    gotoBrowser(infoTwo, mIvShowTwo, mRecommandTvTwo, mRecommandNumTwo);
+                    gotoBrowser(infoTwo, mIvShowTwo, mRecommandTvTwo, mRecommandNumTwo, RECOMMAND_TYPE_THREE);
                 }
 
             } else {
@@ -1009,7 +1013,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (isPackExist) {
                     gotoApp(infoTwo, mIvShowThree, mRecommandTvThree, mRecommandNumThree);
                 } else {
-                    gotoBrowser(infoTwo, mIvShowThree, mRecommandTvThree, mRecommandNumThree);
+                    gotoBrowser(infoTwo, mIvShowThree, mRecommandTvThree, mRecommandNumThree, RECOMMAND_TYPE_THREE);
                 }
 
             } else {
@@ -1025,7 +1029,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (isPackExist) {
                     gotoApp(infoTwo, mIvShowFour, mRecommandTvFour, mRecommandNumFour);
                 } else {
-                    gotoBrowser(infoTwo, mIvShowFour, mRecommandTvFour, mRecommandNumFour);
+                    gotoBrowser(infoTwo, mIvShowFour, mRecommandTvFour, mRecommandNumFour, RECOMMAND_TYPE_THREE);
                 }
 
             } else {
@@ -1053,7 +1057,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    private void gotoBrowser(BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView) {
+    private void gotoBrowser(BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView, int type) {
+
+        if (type == RECOMMAND_TYPE_TWO) {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                    "batterypage",
+                    "inter_" + infoOne.name);
+        } else if (type == RECOMMAND_TYPE_THREE) {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                    "batterypage",
+                    "app_" + infoOne.name);
+        }
+
+
         final String urlFour = infoOne.actionUrl;
         if (!Utilities.isEmpty(infoOne.iconUrl)) {
             mImageLoader.displayImage(infoOne.iconUrl, icon, getOptions(R.drawable.default_user_avatar));
@@ -1101,6 +1117,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
 
         if (name != null && map != null) {
+
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                    "batterypage",
+                    "app_" + infoOne.pkg);
+
             icon.setImageDrawable(map);
             title.setText(name);
             contentView.setOnClickListener(new View.OnClickListener() {
@@ -1388,7 +1409,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 } else {
                     isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
                 }
-                
+
                 if (!isShowContentShow) {
                     expandRecommandContent(RECOMMAND_TYPE_TWO, false);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
@@ -1835,12 +1856,21 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                 break;
             case R.id.remain_one:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                        "batterypage",
+                        "screen_call");
                 showRecommandContent(RECOMMAND_TYPE_ONE);
                 break;
             case R.id.remain_two:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                        "batterypage",
+                        "screen_inter");
                 showRecommandContent(RECOMMAND_TYPE_TWO);
                 break;
             case R.id.remain_three:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                        "batterypage",
+                        "screen_app");
                 showRecommandContent(RECOMMAND_TYPE_THREE);
                 break;
         }
