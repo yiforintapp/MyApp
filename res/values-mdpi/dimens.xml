@@ -181,4 +181,8 @@
     <dimen name="home_more_empty_height">93dp</dimen>
     <!-- AM-3880 -->
     <dimen name="pas_four_icon_m_top">25dp</dimen>
+
+    <dimen name="bay_pro_time_m_top">55dp</dimen>
+    <dimen name="bay_pro_show_text_m_top">25dp</dimen>
+    <dimen name="bay_pro_three_icon_m_top">13dp</dimen>
 </resources>

@@ -182,6 +182,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private Timer mUpdateTimer;
     private UpdateTimeTask mUpdateTask;
     private int nowSetType = 0;
+    private boolean isShowMask = false;
 
     /**
      * 第一个推广位
@@ -259,12 +260,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         setYplace(contentHeight, type);
     }
 
+    private int arrowHeight;
+
     private void setYplace(int contentHeight, int type) {
 
         if (!isSetInitPlace) {
             mMoveDisdance = contentHeight * 9 / 16;
 
-            final int arrowHeight = mArrowMoveContent.getHeight();
+            arrowHeight = mArrowMoveContent.getHeight();
             if (type == AD_TYPE_MSG) {
                 if (mAdWrapper != null) {
                     nowSetType = type;
@@ -291,6 +294,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 LeoLog.d("locationP", "so high , reset");
             }
 
+            if (type != AD_TYPE_MSG) {
+                mMoveDisdance = mMoveDisdance + arrowHeight;
+            }
+
             LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
             ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                     "y", contentHeight, mSlideView.getTop() + mMoveDisdance);
@@ -305,9 +312,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     }
                     mBossView.setVisibility(View.VISIBLE);
                 }
-
             });
-            animMoveY.setDuration(600);
+            animMoveY.setDuration(300);
             animMoveY.start();
             isSetInitPlace = true;
             mArrowMoveContent.setVisibility(View.INVISIBLE);
@@ -316,9 +322,32 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (nowSetType != type) {
                 mArrowMoveContent.setVisibility(View.VISIBLE);
                 mMaskView.showMask();
+                isShowMask = true;
+
+//                if (type == AD_TYPE_MSG) {
+//                    moveDownlittle(firstloadDone);
+//                }
+
             }
         }
     }
+
+//    private void moveDownlittle(boolean firstloadDone) {
+//        if (mActivity == null) return;
+//        if (firstloadDone) {
+//            mSlideView.setY(mSlideView.getTop() + mMoveDisdance + arrowHeight);
+//            mMoveDisdance = mMoveDisdance + arrowHeight;
+//        } else {
+//            mSlideView.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mSlideView.setY(mSlideView.getTop() + mMoveDisdance + arrowHeight);
+//                    mMoveDisdance = mMoveDisdance + arrowHeight;
+//                }
+//            }, 300);
+//        }
+//
+//    }
 
 
     @Override
@@ -590,47 +619,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         expandRecommandContent(RECOMMAND_TYPE_TWO, true);
 
-//        ObjectAnimator alpha = ObjectAnimator.ofFloat(mRemainContent, "alpha", 0f, 255f);
-//        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mRemainContent, "scaleX", 0.8f, 1f);
-//        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mRemainContent, "scaleY", 0.8f, 1f);
-//
-//        AnimatorSet animatorSet = new AnimatorSet();
-//        animatorSet.setDuration(500);
-//        animatorSet.playTogether(alpha, scaleX, scaleY);
-//        animatorSet.start();
-//
-//        animatorSet.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                super.onAnimationEnd(animation);
-//                expandRecommandContent(RECOMMAND_TYPE_TWO);
-//                if (mRootView != null) {
-//                    try {
-//                        loadAd();
-//                    } catch (Exception e) {
-//                        LeoLog.e(TAG, "[loadAd Data]Catch exception happen inside Mobvista: ");
-//                        if (e != null) {
-//                            LeoLog.e(TAG, e.getLocalizedMessage());
-//                        }
-//                    }
-//                }
-//
-//                try {
-//                    if (mRootView != null) {
-//                        initSwiftyLayout(mRootView);
-//                        initExtraLayout(mRootView);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
     }
 
     private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
         if (mActivity == null) return;
         turnDark(recommandTypeThree);
 
+        mMaskView.hideMask();
         mRecommandView.setVisibility(View.VISIBLE);
         boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
         if (isSlideContentShow) {
@@ -1201,6 +1196,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void shrinkRecommandContent() {
         if (mActivity == null) return;
         turnLight();
+        if (isShowMask) {
+            mMaskView.showMask();
+        }
         mRecommandView.clearAnimation();
         mRecommandContentView.setVisibility(View.INVISIBLE);
         Animation shrink = AnimationUtils.
