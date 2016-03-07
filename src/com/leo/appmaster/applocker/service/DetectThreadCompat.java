@@ -95,6 +95,7 @@ public class DetectThreadCompat extends Thread {
                         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                         lm.filterPackage(usagePkg, 2000);
                     }
+                    lastIsCompat22 = false;
                 }
             } else {
                 detector = mDetector;
