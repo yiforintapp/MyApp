@@ -282,7 +282,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
                 String[] array = line.split("---");
 
                 boolean isApp = false;
-                if (KEY_CALL.equals(array[0]) || KEY_VIDEO.equals(array[0])) {
+                if (KEY_CALL.equals(array[0])) {
                     isApp = true;
                 }
                 BatteryAppItem appItem = parseJson(new JSONObject(array[1]), isApp);
