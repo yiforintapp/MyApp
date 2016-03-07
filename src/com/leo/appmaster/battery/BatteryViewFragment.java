@@ -1359,7 +1359,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     };
 
     public void notifyUI(String type) {
-
         setBatteryPercent();
         setBottleWater();
         setTime(mRemainTime, isExpand);
@@ -1367,18 +1366,29 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (BatteryManager.SHOW_TYPE_OUT.equals(type)) {
             if (!isExpand) {
-//                mSlideView.setScrollable(true);
 
-//                expandContent(true);
-                boolean isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
+
+                boolean isShowContentShow;
+                if (mRecommandView == null) {
+                    isShowContentShow = true;
+                } else {
+                    isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
+                }
+
                 if (!isShowContentShow) {
                     expandRecommandContent(RECOMMAND_TYPE_TWO, false);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
                 }
-//                showRecommandContent(RECOMMAND_TYPE_TWO);
             } else {
                 expandContent(false);
-                boolean isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
+
+                boolean isShowContentShow;
+                if (mRecommandView == null) {
+                    isShowContentShow = true;
+                } else {
+                    isShowContentShow = mRecommandView.getVisibility() == View.VISIBLE;
+                }
+                
                 if (!isShowContentShow) {
                     expandRecommandContent(RECOMMAND_TYPE_TWO, false);
                     mCurrentClickType = RECOMMAND_TYPE_TWO;
@@ -1388,7 +1398,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         if (newState != null && mIvArrowMove != null && mBottleWater != null) {
             if (newState.plugged == 0) {
-//                mIvArrowMove.setVisibility(View.INVISIBLE);
                 mBottleWater.setIsNeedWave(false);
             } else {
                 mBottleWater.setIsNeedWave(true);
