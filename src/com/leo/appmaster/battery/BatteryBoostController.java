@@ -47,6 +47,7 @@ public class BatteryBoostController extends RelativeLayout {
     private CircleArroundView mShieldCircle;
     private BatteryBoostAnimView mBoostAnimView;
     private View mShieldRootView;
+    private boolean mHasPlayed = false;
 
     public interface OnBoostFinishListener {
         public void onBoostFinish();
@@ -103,12 +104,15 @@ public class BatteryBoostController extends RelativeLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startBoost();
-            }
-        }, 500);
+        if (!mHasPlayed) {
+            mHasPlayed = true;
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startBoost();
+                }
+            }, 500);
+        }
     }
 
     public void startBoost() {
