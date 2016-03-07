@@ -168,6 +168,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                     // 短按Home键
                     LeoLog.d("lisHome", "homekey");
                     finishActiviytAnim();
+                    // AM-4033: 提前到这里
+                    isActivityAlive = false;
 
                 } else if (SYSTEM_DIALOG_REASON_RECENT_APPS.equals(reason)) {
                     // 长按Home键 或者 activity切换键
@@ -327,7 +329,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     public void finish() {
         super.finish();
         LeoLog.d(TAG, "finish");
-
+        LeoEventBus.getDefaultBus().unregister(this);
         isActivityAlive = false;
 
         if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
@@ -344,7 +346,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     protected void onDestroy() {
         super.onDestroy();
         LeoLog.d(TAG, "onDestroy -> " + this);
-        LeoEventBus.getDefaultBus().unregister(this);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "screen_back&home");
         isActivityAlive = false;
         if (mReceiver != null) {
@@ -415,6 +416,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         finishActiviytAnim();
     }
 
+
     public void finishActiviytAnim() {
         mViewPager.post(new Runnable() {
             @Override
@@ -425,6 +427,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
+                        LeoLog.d("lisHome", "call finish() here when animation ends");
                         isActivityAlive = false;
                         finish();
                     }
