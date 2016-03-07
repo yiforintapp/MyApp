@@ -720,7 +720,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 @Override
                 public void onClick(View view) {
                     try {
-                        //摩托短信列表
                         Intent intentM = new Intent(Intent.ACTION_VIEW);
                         intentM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         ComponentName cnM = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationList");
@@ -761,13 +760,22 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                     } catch (Exception e4) {
                                         //sony
                                         try {
-                                            Intent intentHwP8 = new Intent(Intent.ACTION_MAIN);
-                                            intentHwP8.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            ComponentName cnHwP8 = new ComponentName("com.sonyericsson.conversations", "com.sonyericsson.conversations.ui.ConversationListActivity");
-                                            intentHwP8.setComponent(cnHwP8);
-                                            startActivity(intentHwP8);
+                                            Intent intentSony = new Intent(Intent.ACTION_MAIN);
+                                            intentSony.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            ComponentName cnSony = new ComponentName("com.sonyericsson.conversations", "com.sonyericsson.conversations.ui.ConversationListActivity");
+                                            intentSony.setComponent(cnSony);
+                                            startActivity(intentSony);
                                         } catch (Exception e5) {
-                                            e5.printStackTrace();
+                                            try {
+//                                               // ASUS
+                                                Intent intentAsus = new Intent(Intent.ACTION_MAIN);
+                                                intentAsus.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                ComponentName cnAsus = new ComponentName("com.asus.message", "com.android.mms.ui.ConversationList");
+                                                intentAsus.setComponent(cnAsus);
+                                                startActivity(intentAsus);
+                                            } catch (Exception e6) {
+                                                e6.printStackTrace();
+                                            }
                                         }
                                     }
                                 }
