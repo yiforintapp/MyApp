@@ -530,14 +530,26 @@ public class BatteryManagerImpl extends BatteryManager {
                 ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
                 if (state.checkAvailable()) {
                     TaskDetectService service = TaskDetectService.getService();
-                    return homes.contains(service.getLastRunningPackage());
+                    //AM-4027
+                    if (TaskDetectService.PRETEND_PACKAGE.equals(service.getLastRunningPackage())) {
+                        return true;
+                    } else {
+                        boolean isHome = homes.contains(service.getLastRunningPackage());
+                        return isHome;
+                    }
                 } else {
                     //always inHome
                     return true;
                 }
             } else {
                 TaskDetectService service = TaskDetectService.getService();
-                return homes.contains(service.getLastRunningPackage());
+                //AM-4027
+                if (TaskDetectService.PRETEND_PACKAGE.equals(service.getLastRunningPackage())) {
+                    return true;
+                } else {
+                    boolean isHome = homes.contains(service.getLastRunningPackage());
+                    return isHome;
+                }
             }
 
 
