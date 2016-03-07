@@ -88,6 +88,8 @@ public class ADEngineWrapper {
                 public void onMobvistaClick(Campaign campaign, String unitID) {
                     listener.onWrappedAdClick(WrappedCampaign.fromMabVistaSDK(campaign), unitID);
                 }
+				
+				
             });
         }
     }
@@ -114,6 +116,14 @@ public class ADEngineWrapper {
 			mMaxEngine.removeMobAdData(unitId);
 		} else {
 			mMobEngine.removeMobAdData(unitId);
+		}
+	}
+	
+	public boolean isADCacheEmpty(int source) {
+		if (source == SOURCE_MAX) {
+			return mMaxEngine.isADCacheEmpty();
+		} else {
+			return mMobEngine.isADCacheEmpty();
 		}
 	}
 	

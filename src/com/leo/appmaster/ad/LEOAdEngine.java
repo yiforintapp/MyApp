@@ -385,4 +385,8 @@ public class LEOAdEngine {
         }
     }
 
+	
+	public boolean isADCacheEmpty() {
+		return mLEOLoadedNatives == null ? true : mLEOLoadedNatives.isEmpty();
+	}
 }

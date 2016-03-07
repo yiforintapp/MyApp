@@ -501,7 +501,7 @@ public class MobvistaEngine {
                 listener.onMobvistaClick(campaign == null ? data : campaign, mUnitId);
             }
             // 点击之后，重新load此位置的广告
-            LeoLog.i(TAG, "reload the clicked Ad");
+            LeoLog.i(TAG, "reload the clicked Ad"); 	
             if(m != null && m.nativeAd != null) {
                 try {
                     MobvistaAd.release();
@@ -509,11 +509,13 @@ public class MobvistaEngine {
                 } catch (Exception e) {
                 }
             }
-            loadSingleMobAd(mUnitId);
-            if(!Constants.UNIT_ID_59.equals(mUnitId)) {
-                loadSingleMobAd(Constants.UNIT_ID_59);
-            }
+            //loadSingleMobAd(mUnitId);
+//            if(!Constants.UNIT_ID_59.equals(mUnitId)) {
+//                loadSingleMobAd(Constants.UNIT_ID_59);
+//            }
         }
+		
+		
     }
 
     private static class MobvistaAdData {
@@ -530,5 +532,9 @@ public class MobvistaEngine {
             this.nativeAd = nativeAd;
         }
     }
+
+	public boolean isADCacheEmpty() {
+		return mMobVistaCacheMap == null ? true : mMobVistaCacheMap.isEmpty();
+	}
 
 }
