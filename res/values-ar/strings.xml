@@ -1042,7 +1042,7 @@
     <!--3.3.2-->
     <string name="ask_create_shortcut_button_right">انشاء</string>
     <string name="ask_create_shortcut_content_imagehide">تريد أن تخفي الصور بأسهل الطريقة؟ أنشأ الطريقة السريعة علي سطح المكتب !</string>
-    <string name="ask_create_shortcut_content_videohide">تريد أن تخفي الصور بأسهل الطريقة؟ أنشأ الطريقة السريعة علي سطح المكتب !</string>
+<string name="ask_create_shortcut_content_videohide">تريد أن تخفي الفيديو بأسهل الطريقة؟ أنشأ الطريقة السريعة علي سطح المكتب !</string>
     <string name="ask_create_shortcut_content_callfilter">اضافة الطريقة السرعة علي سطح المكتب لادارة القائمة السوداء و سجلات المنع</string>
     <string name="ask_create_shortcut_content_wifi_security">تخاف علي أمن الشبكة ؟ أنشأ الطريقة السريعة لفحص أمن wifi في أي الوقت</string>
     <string name="grant_permission_guide">فتح الأذن لLEO Privacy من أجل عمل قفل التطبيق الطبيعي</string>
