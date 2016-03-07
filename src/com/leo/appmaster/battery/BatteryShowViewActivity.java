@@ -299,7 +299,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         if (("finish_activity").equals(event.eventMsg)) {
             BatteryShowViewActivity.isActivityAlive = false;
             finishActiviytAnim();
-//            finish();
         }
     }
 
@@ -328,6 +327,8 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
     public void finish() {
         super.finish();
         LeoLog.d(TAG, "finish");
+
+        isActivityAlive = false;
 
         if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
             LeoLog.d("isOnHome", "yes");
@@ -424,6 +425,7 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
+                        isActivityAlive = false;
                         finish();
                     }
                 });
