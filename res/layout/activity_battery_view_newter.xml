@@ -42,7 +42,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/batteryscreen_bossview_height"
         android:layout_above="@id/slider"
-        android:background="@color/transparent"
         android:visibility="invisible">
 
         <com.leo.appmaster.battery.BatteryTestViewLayout
@@ -54,7 +53,6 @@
                 android:id="@+id/move_arrow"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:background="@color/transparent"
                 android:visibility="invisible">
 
                 <ImageView
@@ -128,7 +126,6 @@
                                 android:background="@drawable/icon_ad_memu"
                                 android:visibility="invisible" />
                         </LinearLayout>
-
                     </RelativeLayout>
 
 
@@ -175,19 +172,14 @@
         android:layout_height="match_parent"
         android:layout="@layout/stub_battery_boost" />
 
-    <RelativeLayout
+    <ImageView
         android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/batteryscreen_slidearea_height"
-        android:layout_alignParentBottom="true">
-
-        <ImageView
-            android:id="@+id/iv_cancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bay_icon_close" />
-    </RelativeLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bay_icon_close" />
 
 </com.leo.appmaster.battery.BatteryBackground>

@@ -366,7 +366,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mArrowMoveContent.setOnTouchListener(this);
         mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);
 
-        mIvCancel = (ImageView) findViewById(R.id.iv_cancle);
+        mIvCancel = (ImageView) findViewById(R.id.slider);
         mIvCancel.setOnClickListener(this);
 
         mRecommandNumOne = findViewById(R.id.show_one);
@@ -1758,7 +1758,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     handleRunnable();
                 }
                 break;
-            case R.id.iv_cancle:
+            case R.id.slider:
                 BatteryShowViewActivity activity = (BatteryShowViewActivity) mActivity;
                 boolean isClickCancel = PreferenceTable.getInstance().getBoolean(Constants.CANCEL_BAY_FIRST_TIME, false);
                 if (!isClickCancel && newState.plugged != 0) {
