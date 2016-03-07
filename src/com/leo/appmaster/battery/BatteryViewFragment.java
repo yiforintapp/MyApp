@@ -1380,6 +1380,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     };
 
     public void notifyUI(String type) {
+        if (mActivity == null) return;
         setBatteryPercent();
         setBottleWater();
         setTime(mRemainTime, isExpand);
