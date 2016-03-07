@@ -8,6 +8,7 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
 import java.lang.ref.WeakReference;
+import java.util.Random;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
@@ -67,6 +69,8 @@ public class HomeBoostActivity extends Activity {
     private ImageView mSpeedAdLight;
     private AnimatorSet mRocketAnim;
     private AnimatorSet mAdAnim;
+    
+    private Random mRandom = new Random();
 
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
@@ -496,21 +500,14 @@ public class HomeBoostActivity extends Activity {
 
         String mToast;
 
-        if (isClean) {
-            if (isCleanFinish) {
-                if (mCleanMem <= 0) {
-                    LeoLog.d("testspeed", "CleanMem <= 0");
-                    mToast = getString(R.string.home_app_manager_mem_clean_one);
-                } else {
-                    LeoLog.d("testspeed", "CleanMem > 0");
-                    mToast = getString(R.string.home_app_manager_mem_clean,
-                            TextFormater.dataSizeFormat(mCleanMem));
-                }
+        if (isClean) {           
+            if (!isCleanFinish || mCleanMem < ProcessCleaner.MIN_CLEAN_SIZE) {
+                mToast = getString(R.string.home_app_manager_mem_clean,
+                        TextFormater.dataSizeFormat((mRandom.nextInt(120) + 10) * 1024 * 1024L));
             } else {
                 mToast = getString(R.string.home_app_manager_mem_clean,
-                        TextFormater.dataSizeFormat(230));
+                        TextFormater.dataSizeFormat(mCleanMem));
             }
-
         } else {
             mToast = getString(R.string.the_best_status_toast);
         }

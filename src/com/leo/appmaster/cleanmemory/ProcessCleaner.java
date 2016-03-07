@@ -11,8 +11,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.util.Log;
 
-import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.ProcessUtils;
 
@@ -31,6 +33,8 @@ public class ProcessCleaner {
     private long mCurUsedMem;
 
     private static int CLEAN_INTERVAL = 30 * 1000;
+    
+    public static long MIN_CLEAN_SIZE = 1024 * 1024 * 10;
 
     // private static int CLEAN_INTERVAL = 1000;
 
@@ -115,14 +119,34 @@ public class ProcessCleaner {
     public void cleanAllProcess(Context cxt) {
         List<RunningAppProcessInfo> list = mAm.getRunningAppProcesses();
         List<String> launchers = getLauncherPkgs(cxt);
-        for (RunningAppProcessInfo runningAppProcessInfo : list) {
-            if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
-                if (!launchers.contains(runningAppProcessInfo.processName)
-                        && !AppUtil.belongToLeoFamily(runningAppProcessInfo.processName)) {
-                    mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
+        if(list != null && list.size() > 5) {
+            for (RunningAppProcessInfo runningAppProcessInfo : list) {
+                if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
+                    if (!launchers.contains(runningAppProcessInfo.processName)
+                            && !AppUtil.belongToLeoFamily(runningAppProcessInfo.processName)) {
+                        mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
+                    }
                 }
             }
+        } else {
+            ArrayList<AppItemInfo> appList = AppLoadEngine.getInstance(mContext).getAllPkgInfo();
+            try {
+                int index = 0;
+                for (AppItemInfo appItem : appList) {
+                    // Kill  20 progress at max
+                    if(index > 20) {
+                        break;
+                    }
+                    if (!launchers.contains(appItem.packageName)
+                            && !AppUtil.belongToLeoFamily(appItem.packageName)) {
+                        mAm.killBackgroundProcesses(appItem.packageName);
+                        index ++;
+                    }
+                }
+            } catch (Exception e) {
+            }
         }
+
         mCurUsedMem = ProcessUtils.getUsedMem(cxt);
     }
 
