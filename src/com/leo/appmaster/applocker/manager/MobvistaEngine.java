@@ -454,18 +454,20 @@ public class MobvistaEngine {
         @Override
         public void onAdLoaded(Campaign campaign) {
             LeoLog.i(TAG, "onAdLoaded [" + mUnitId + "]: " + campaign.getAppName() + "; imageURL=" + campaign.getImageUrl());
-            MobvistaAdData mobvista = new MobvistaAdData();
-            // 将load成功的 MobvistaAdNative 对象移动到 MobvistaAdData 中
-            MobVistaLoadingNative loadingNative = mMobVistaLoadingNative.remove(mUnitId);
-			
-			/* 判断loadingNative 非空，防止空指针 */
-			if (loadingNative != null) {
 
-				mobvista.nativeAd = loadingNative.nativeAd;
-				mobvista.campaign = campaign;
-				mobvista.requestTimeMs = System.currentTimeMillis();
-				mMobVistaCacheMap.put(mUnitId, mobvista);
-			}
+            MobVistaLoadingNative loadingNative = mMobVistaLoadingNative.remove(mUnitId);
+
+            if (loadingNative == null) {
+                /* AM-4016: 这是一次超时的load操作，直接抛弃 */
+                return;
+            }
+
+            // 将load成功的 MobvistaAdNative 对象移动到 MobvistaAdData 中
+            MobvistaAdData mobvista = new MobvistaAdData();
+            mobvista.nativeAd = loadingNative.nativeAd;
+            mobvista.campaign = campaign;
+            mobvista.requestTimeMs = System.currentTimeMillis();
+            mMobVistaCacheMap.put(mUnitId, mobvista);
 
             MobvistaListener listener = mMobVistaListeners.get(mUnitId);
 
@@ -494,7 +496,6 @@ public class MobvistaEngine {
                 data = m.campaign;
             }
 
-            // 响应之后，干掉listener
             MobvistaListener listener = mMobVistaListeners.get(mUnitId);
             if (listener != null) {
                 listener.onMobvistaClick(campaign == null ? data : campaign, mUnitId);
