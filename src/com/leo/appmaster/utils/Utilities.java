@@ -680,7 +680,7 @@ public final class Utilities {
                     // "#Intent;component=com.leo.appmaster/.wifiSecurity.WifiSecurityActivity;end"
                     Intent intent = Intent.parseUri(browserUrl, 0);  // 跳转应用内功能
                     LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                    mLockManager.filterPackage(context.getPackageName(), 1000);
+                    mLockManager.filterPackage(context.getPackageName(), Constants.TIME_FILTER_TARGET);
                     context.startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
