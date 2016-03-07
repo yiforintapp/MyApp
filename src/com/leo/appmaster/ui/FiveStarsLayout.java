@@ -92,9 +92,7 @@ public class FiveStarsLayout extends FrameLayout{
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mNeedRepeat = false;
-        if(mAsMain != null) {
-            mAsMain.cancel();
-        }
+        stopAnim();
     }
 
     public void setBackgroundNull() {
@@ -165,7 +163,7 @@ public class FiveStarsLayout extends FrameLayout{
         animatorI.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                LeoLog.i("testing", " running!!  ");
+                LeoLog.i("testing", System.currentTimeMillis()+ ":: running!!  ");
             }
         });
         
@@ -244,5 +242,14 @@ public class FiveStarsLayout extends FrameLayout{
         mThreeStar.setVisibility(View.INVISIBLE);
         mFourStar.setVisibility(View.INVISIBLE);
         mFiveStar.setVisibility(View.INVISIBLE);
+    }
+
+    public void stopAnim() {
+        if(mAsMain != null) {
+            LeoLog.i("testing", "onDetachedFromWindow ");
+            mAsMain.cancel();
+            mAsMain.end();
+            mAsMain = null;
+        }
     }
 }

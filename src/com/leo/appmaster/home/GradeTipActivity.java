@@ -106,4 +106,12 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         }
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mLayout != null){
+            mLayout.stopAnim();
+        }
+    }
 }
