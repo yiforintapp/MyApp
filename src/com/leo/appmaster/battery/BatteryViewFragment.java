@@ -774,7 +774,20 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                                 intentAsus.setComponent(cnAsus);
                                                 startActivity(intentAsus);
                                             } catch (Exception e6) {
-                                                e6.printStackTrace();
+                                                try {
+                                                    //lenovo
+                                                    Intent intentLenovo = new Intent(Intent.ACTION_MAIN);
+                                                    intentLenovo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    ComponentName cnLenovo = new ComponentName("com.lenovo.ideafriend", " com.lenovo.ideafriend.alias.MmsActivity");
+                                                    intentLenovo.setComponent(cnLenovo);
+                                                    startActivity(intentLenovo);
+                                                } catch (Exception e7) {
+                                                    //真的跳转不过去跳转到短信编辑页面
+                                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    intent.setType("vnd.android-dir/mms-sms");
+                                                    startActivity(intent);
+                                                }
                                             }
                                         }
                                     }
