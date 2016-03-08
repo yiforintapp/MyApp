@@ -53,7 +53,8 @@
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_item_screenview"
                     android:layout_width="match_parent"
-                    android:layout_height="68dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="68dp"
                     android:layout_below="@id/big_pic_set"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
