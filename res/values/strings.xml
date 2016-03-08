@@ -758,7 +758,7 @@
     <string name="secur_add_self_number_tip">You have input this phone\'s number, please input again</string>
     <string name="new_arrival">New journey</string>
     <string name="new_funciton">New interface, new function, new start</string>
-    <string name="privacy_scan">Privacy scanning</string>
+    <string name="privacy_scan">Privacy Scanning</string>
     <string name="one_key_confirm_privacy">A click to finish privacy protection</string>
     <string name="secur_feedbk_type">Anti-theft</string>
     <string name="phone_security_tips">Locate lost phone, tracking position precisely</string>
@@ -818,7 +818,7 @@
     <!-- 3.2 -->
     <string name="call_filter_remove_from_blacklist_checkbox_title">You\'ll receive calls from this number, sure to delete from blacklist?</string>
     <string name="call_filter_remove_from_blacklist_checkbox_text">Whether to restore intercepted record to call history synchronistically?</string>
-    <string name="call_filter_name">Harass Inter.</string>
+    <string name="call_filter_name">Harass Inter</string>
     <string name="call_filter_black_list_tab">Blacklist </string>
     <string name="call_filter_list_tab">Call Inter.</string>
     <string name="call_filter_black_list_add">Add</string>

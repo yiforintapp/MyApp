@@ -551,6 +551,7 @@ public class PhoneSecurityManager {
                 setLocationManager(locationManager);
             }
             String provider = PhoneSecurityUtils.getLocateProvider(mLocationManager);
+            LeoLog.d("LostSecurityManagerImpl", "requestLocationUpdates,provider:" + provider);
             if (!TextUtils.isEmpty(provider)) {
                 locationManager.requestLocationUpdates(provider, PhoneSecurityConstants.LOCATION_MIN_TIME, PhoneSecurityConstants.LOCATION_MIN_DISTANCE, mLocationListener, mContext.getMainLooper());
                 ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
@@ -562,7 +563,7 @@ public class PhoneSecurityManager {
                             mLocationListener = null;
                             PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, true, true);
                             setLocationManager(null);
-                            LeoLog.i(TAG, "移除手机防盗位置改变监听！");
+                            LeoLog.i("LostSecurityManagerImpl", "移除手机防盗位置改变监听！");
                         }
                     }
                 }, PhoneSecurityConstants.DELAY_REMOVE_LOCATION_TIME);
@@ -613,11 +614,11 @@ public class PhoneSecurityManager {
         if (location != null) {
             double lat = location.getLatitude();
             double lng = location.getLongitude();
-            LeoLog.i(TAG, "经度：" + lng + "纬度：" + lat);
+            LeoLog.i("LostSecurityManagerImpl", "requestLocationUpdates经度：" + lng + "纬度：" + lat);
             if (locateManager != null
                     && mLocationListener != null) {
                 locateManager.removeUpdates(mLocationListener);
-                LeoLog.i(TAG, "updateToNewLocation remove location listener!");
+                LeoLog.i("LostSecurityManagerImpl", "updateToNewLocation remove location listener!");
                 mLocationListener = null;
                 setLocationManager(null);
             } else {

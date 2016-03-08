@@ -38,8 +38,8 @@ public class PhoneSecurityConstants {
     public static final long DELAY_REMOVE_LOCATION_TIME = 10000;
     /*主页跳转到防盗引导页KEY*/
     public static final String KEY_FORM_HOME_SECUR = "FORM_HOME_SECUR";
-    /*位置精度，1米检测*/
-    public static final int LOCATION_MIN_DISTANCE = 1;
+    /*位置精度，0米检测*/
+    public static final int LOCATION_MIN_DISTANCE = 0;
     /*时间精度,1秒检测*/
     public static final int LOCATION_MIN_TIME = 1000;
     /*添加失败*/

@@ -31,6 +31,7 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.CollectVideoUtils;
@@ -369,8 +370,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                            LostSecurityManager lm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
 //                            try {
 //                                lm.getLocation(PhoneSecurityConstants.LOCA_ID_MSM);
-//
-//                            } catch (InterruptedException e) {
+//                                PhoneSecurityManager.getInstance(mActivity).securLocateHandler();
+//                            } catch (Exception e) {
 //                                e.printStackTrace();
 //                            }
 //                        }
