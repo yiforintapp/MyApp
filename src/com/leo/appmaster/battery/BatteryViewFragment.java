@@ -105,6 +105,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public static boolean mShowing = false;
     public static boolean isExpand = false;
     public static boolean mIsExtraLayout = false;
+    public static boolean mIsAdLayout = false;
 
     private View mRemainTimeContent;
     private View mRemainContent;
@@ -1314,6 +1315,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         isExpand = false;
         mShowing = false;
         mIsExtraLayout = false;
+        mIsAdLayout = false;
     }
 
     static class UpdateTimeTask extends TimerTask {
@@ -2181,7 +2183,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         final Button ignoreBtn = (Button) rootView.findViewById(R.id.ignore_button);
         boolean isShowIgnoreBtn = PrefTableHelper.showIgnoreBtn();
         if (isShowIgnoreBtn) {
-//        if (true) {
             ignoreBtn.setVisibility(View.VISIBLE);
             ignoreBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2221,6 +2222,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         LeoLog.d("testDelayTime", "System.currentTimeMillis() - mInitTime : " + (System.currentTimeMillis() - mInitTime));
         LeoLog.d("testDelayTime", "delayTime : " + delayTime);
+
+        mIsAdLayout = true;
 
         mAdWrapper.postDelayed(new Runnable() {
             @Override
@@ -2268,8 +2271,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
-        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (true) {
+//        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+        if (true) {
             mSwiftyView = viewStub.inflate();
 
             mSwiftyImg = (ImageView) mSwiftyView.findViewById(R.id.card_img);

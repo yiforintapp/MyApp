@@ -70,6 +70,8 @@ public class BatteryTestViewLayout extends RelativeLayout {
                         if (!BatteryViewFragment.mShowing) {
                             if (!BatteryViewFragment.mIsExtraLayout) {
                                 scrollBottomListener.scrollBottom();
+                            } else if (!BatteryViewFragment.mIsAdLayout) {
+                                scrollBottomListener.scrollBottom();
                             } else {
                                 return false;
                             }
@@ -104,6 +106,8 @@ public class BatteryTestViewLayout extends RelativeLayout {
                     if (BatteryViewFragment.isExpand) {
                         if (!BatteryViewFragment.mShowing) {
                             if (!BatteryViewFragment.mIsExtraLayout) {
+                                scrollBottomListener.scrollBottom();
+                            } else if (!BatteryViewFragment.mIsAdLayout) {
                                 scrollBottomListener.scrollBottom();
                             } else {
                                 return false;
