@@ -332,7 +332,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
         String video = null;
         video = object.getString(KEY_VIDEO);
         JSONArray videoArray = new JSONArray(video);
-        int size = parseJsonArrayAndCache(KEY_VIDEO, videoArray, true);
+        int size = parseJsonArrayAndCache(KEY_VIDEO, videoArray, false);
         if (size == 0) {
             throw new RuntimeException("video list must not be empty.");
         }
