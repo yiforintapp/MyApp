@@ -80,6 +80,8 @@
         android:textSize="@dimen/f5"
         android:textColor="@color/c1"
         android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="@string/battery_boosting" />
 
     <LinearLayout
@@ -87,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="@dimen/battery_clean_result_margingTop"
         android:layout_marginLeft="46dp"
         android:layout_marginRight="46dp"
         android:paddingTop="8dp"

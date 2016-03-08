@@ -249,7 +249,13 @@ public class FiveStarsLayout extends FrameLayout{
             LeoLog.i("testing", "onDetachedFromWindow ");
             mAsMain.cancel();
             mAsMain.end();
-            mAsMain = null;
+        }
+    }
+
+    public void startAnim() {
+        if(mAsMain != null) {
+            LeoLog.i("testing", "restart ");
+            mAsMain.start();
         }
     }
 }

@@ -965,6 +965,11 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         }
     }
 
-
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (mLayout != null) {
+            mLayout.startAnim();
+        }
+    }
 }
