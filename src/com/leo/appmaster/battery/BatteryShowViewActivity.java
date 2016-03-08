@@ -106,9 +106,9 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         }
 
         if (!showWhenScreenOff) {
-            win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                    | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-//            win.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+//            win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+//                    | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+            win.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         }
 
         setContentView(R.layout.activity_batter_show_view);

@@ -222,8 +222,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
                         mShowing = true;
                         showMoveUp();
-                        mRemainTimeContent.setVisibility(View.INVISIBLE);
-                        mRemainContent.setVisibility(View.INVISIBLE);
+                        theRestPartHide();
                     }
                     break;
                 case MOVE_DOWN:
@@ -231,8 +230,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_up);
                     mShowing = true;
                     showMoveDown();
-                    mRemainTimeContent.setVisibility(View.VISIBLE);
-                    mRemainContent.setVisibility(View.VISIBLE);
+                    theRestPartShow();
+
                     break;
                 case LOAD_DONE_INIT_PLACE:
                     int type = (Integer) msg.obj;
@@ -249,6 +248,80 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
     };
+
+    private void theRestPartShow() {
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mRemainTimeContent,
+                "scaleX", 0f, 1.0f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mRemainTimeContent,
+                "scaleY", 0f, 1.0f);
+        ObjectAnimator anim22 = ObjectAnimator.ofFloat(mRemainTimeContent,
+                "alpha", 0f, 1.0f);
+
+        ObjectAnimator anim23 = ObjectAnimator.ofFloat(mRemainContent,
+                "scaleX", 0f, 1.0f);
+        ObjectAnimator anim24 = ObjectAnimator.ofFloat(mRemainContent,
+                "scaleY", 0f, 1.0f);
+        ObjectAnimator anim25 = ObjectAnimator.ofFloat(mRemainContent,
+                "alpha", 0f, 1.0f);
+
+
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mRemainTimeContent.setVisibility(View.VISIBLE);
+                mRemainContent.setVisibility(View.VISIBLE);
+            }
+        });
+        set.setDuration(ANIMATION_TIME);
+        set.play(anim20).with(anim21);
+        set.play(anim21).with(anim22);
+        set.play(anim22).with(anim23);
+        set.play(anim23).with(anim24);
+        set.play(anim24).with(anim25);
+        set.start();
+    }
+
+    private void theRestPartHide() {
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mRemainTimeContent,
+                "scaleX", 1.0f, 0f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mRemainTimeContent,
+                "scaleY", 1.0f, 0f);
+        ObjectAnimator anim22 = ObjectAnimator.ofFloat(mRemainTimeContent,
+                "alpha", 1.0f, 0f);
+
+        ObjectAnimator anim23 = ObjectAnimator.ofFloat(mRemainContent,
+                "scaleX", 1.0f, 0f);
+        ObjectAnimator anim24 = ObjectAnimator.ofFloat(mRemainContent,
+                "scaleY", 1.0f, 0f);
+        ObjectAnimator anim25 = ObjectAnimator.ofFloat(mRemainContent,
+                "alpha", 1.0f, 0f);
+
+
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mRemainTimeContent.setVisibility(View.INVISIBLE);
+                mRemainContent.setVisibility(View.INVISIBLE);
+            }
+        });
+        set.setDuration(ANIMATION_TIME);
+        set.play(anim20).with(anim21);
+        set.play(anim21).with(anim22);
+        set.play(anim22).with(anim23);
+        set.play(anim23).with(anim24);
+        set.play(anim24).with(anim25);
+        set.start();
+    }
 
     private int mMoveDisdance;
     private BatteryBoostController mBoostView;
@@ -337,31 +410,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mArrowMoveContent.setVisibility(View.VISIBLE);
                 mMaskView.showMask();
                 isShowMask = true;
-
-//                if (type == AD_TYPE_MSG) {
-//                    moveDownlittle(firstloadDone);
-//                }
-
             }
         }
     }
-
-//    private void moveDownlittle(boolean firstloadDone) {
-//        if (mActivity == null) return;
-//        if (firstloadDone) {
-//            mSlideView.setY(mSlideView.getTop() + mMoveDisdance + arrowHeight);
-//            mMoveDisdance = mMoveDisdance + arrowHeight;
-//        } else {
-//            mSlideView.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mSlideView.setY(mSlideView.getTop() + mMoveDisdance + arrowHeight);
-//                    mMoveDisdance = mMoveDisdance + arrowHeight;
-//                }
-//            }, 300);
-//        }
-//
-//    }
 
 
     @Override
@@ -383,14 +434,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mTvLevel = (TextView) findViewById(R.id.battery_num);
 
-        /*mBossView = findViewById(R.id.move_boss);
-        mBossView.setOnTouchListener(this);*/
-
-        /*mSlideView = (BatteryTestViewLayout) findViewById(R.id.slide_content);
-
-        mScrollView = (SelfScrollView) findViewById(R.id.slide_content_sv);
-        mScrollView.setParent(mSlideView);
-        mSlideView.setScrollBottomListener(this);*/
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
 //        mBottleWater.setPostInvalidateDelayMs(40);
@@ -405,9 +448,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mSettingView = findViewById(R.id.ct_option_2_rl);
         mSettingView.setOnClickListener(this);
-        /*mArrowMoveContent = findViewById(R.id.move_arrow);
-        mArrowMoveContent.setOnTouchListener(this);*/
-        /*mIvArrowMove = (ImageView) findViewById(R.id.iv_move_arrow);*/
 
         mIvCancel = (ImageView) findViewById(R.id.slider);
         mIvCancel.setOnClickListener(this);
