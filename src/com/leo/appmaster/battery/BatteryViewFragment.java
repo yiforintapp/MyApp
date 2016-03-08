@@ -18,6 +18,7 @@ import android.os.SystemClock;
 import android.provider.Contacts;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -186,6 +187,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private boolean isShowMask = false;
     private boolean isClickable = true;
 
+    private boolean smallScreen = false;
+
+
     /**
      * 第一个推广位
      */
@@ -231,7 +235,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mShowing = true;
                     showMoveDown();
                     theRestPartShow();
-
                     break;
                 case LOAD_DONE_INIT_PLACE:
                     int type = (Integer) msg.obj;
@@ -373,6 +376,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mMoveDisdance = mMoveDisdance + arrowHeight;
             }
 
+            if (smallScreen) {
+                mMoveDisdance = mMoveDisdance + arrowHeight * 2;
+            }
+
             LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
             ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                     "y", contentHeight, mSlideView.getTop() + mMoveDisdance);
@@ -392,7 +399,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
 
-                    if (type != AD_TYPE_MSG) {
+                    if (type != AD_TYPE_MSG || smallScreen) {
                         mArrowMoveContent.setVisibility(View.VISIBLE);
                         mMaskView.showMask();
                         isShowMask = true;
@@ -500,6 +507,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShowThree.setTag(true);
         mShowThree.setOnClickListener(this);
         makeSmall(mShowThree);
+
+        WindowManager windowManager = mActivity.getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        int screenHeight = display.getHeight();
+        if (screenHeight <= 320) {
+            smallScreen = true;
+        }
+
 
         /*mMaskView = (GradientMaskView) findViewById(R.id.mask_view);*/
 
