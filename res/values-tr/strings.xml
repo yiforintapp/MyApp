@@ -343,8 +343,6 @@
     <string name="flow_charts_this_month">Günlük durum</string>
     <string name="home_app_manager_apps_delete">Kaldırılan Uygulamalar </string>
     <string name="home_app_manager_mem_clean"><Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data> Belleği  temizlendi</string>
-    <string name="home_app_manager_mem_clean_one"><Data><![CDATA[<font color="#00eaff">1MB</font>]]></Data> Belleği  temizlendi</string>
-
     <!-- What\'s Hot -->
     <string name="hot_app_free">Ücretsiz</string>
 
@@ -752,8 +750,6 @@
     <string name="pri_pro_ignore_dialog">Sonucu görmezden gelmeye emin misiniz? Bunu yaparak, puanı kazanamazsınız </string>
 
     <string name="secur_add_self_number_tip">Bu telefonun numarasını girdiniz, lütfen tekrar girin</string>
-    <string name="new_arrival">Yeni serüven</string>
-    <string name="new_funciton">Yeni arayüz, yeni bir fonksiyon, yeni bir başlangıç</string>
     <string name="privacy_scan">Gizlilik taraması</string>
     <string name="one_key_confirm_privacy">Gizlilik korumayı bitirmek için tıklayın</string>
     <string name="secur_feedbk_type">Hırsızlığa karşı koruma</string>

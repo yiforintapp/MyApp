@@ -341,7 +341,6 @@
     <string name="flow_charts_this_month">日流量使用情况</string>
     <string name="home_app_manager_apps_delete">应用卸载</string>
     <string name="home_app_manager_mem_clean">为您清理了<Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data>内存</string>
-    <string name="home_app_manager_mem_clean_one">为您清理了<Data><![CDATA[<font color="#00eaff">1MB</font>]]></Data>内存</string>
 
     <!-- What's Hot -->
     <string name="hot_app_free">免费</string>
@@ -743,8 +742,6 @@
     <!-- 翻译给出后新增文案 -->
     <string name="pri_pro_ignore_dialog">确认不对扫描出的结果进行任何处理么？跳过处理将不会增加您的得分</string>
     <string name="secur_add_self_number_tip">您输入的号码是本机号码，请重新输入</string>
-    <string name="new_arrival">全新旅途</string>
-    <string name="new_funciton">新界面，新功能，新起点</string>
     <string name="privacy_scan">隐私扫描</string>
     <string name="one_key_confirm_privacy">一键完成隐私保护</string>
     <string name="secur_feedbk_type">手机防盗</string>

@@ -429,8 +429,6 @@
     <string name="home_app_manager_mem_clean"> تم تنظيف<xliff:g>%1$s</xliff:g></string>
     <!--  -->
 
-    <string name="home_app_manager_mem_clean_one">تم تنظيف <Data><![CDATA[<font color="#00eaff">1MB</font>]]></Data></string>
-
     <!-- What's Hot -->
     <string name="hot_app_free">مجانا</string>
 
@@ -837,8 +835,6 @@
     <string name="secur_location_msm">[LEOMASTER] تم تحديد موقع الهاتف المفقود، انقر لترى: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">هل أنت متأكد من تجاهل النتائج؟ للقيام بذلك، لن تحصل على الدرجة</string>
     <string name="secur_add_self_number_tip">لقد قمت بإدخال رقم هذا الهاتف، يرجى الإدخال مرة أخرى</string>
-    <string name="new_arrival">رحلة جديدة</string>
-    <string name="new_funciton">واجهة جديدة، خاصية جديدة، بداية جديدة</string>
     <string name="privacy_scan">فحص الخصوصية</string>
     <string name="one_key_confirm_privacy">نقرة لإنهاء حماية الخصوصية</string>
     <string name="secur_feedbk_type">مكافحة السرقة</string>

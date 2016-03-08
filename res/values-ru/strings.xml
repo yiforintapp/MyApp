@@ -331,7 +331,6 @@
     <string name="flow_charts_this_month">ежедневный расход трафика</string>
     <string name="home_app_manager_apps_delete">удаление</string>
     <string name="home_app_manager_mem_clean">память устройства очищена на <Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data></string>
-    <string name="home_app_manager_mem_clean_one">очищен <Data><![CDATA[<font color="#00eaff">1Мб</font>]]></Data> памяти</string>
     <!-- What's Hot -->
     <string name="hot_app_free"> бесплатно </string>
 
@@ -734,8 +733,6 @@
     <string name="pri_pro_ignore_dialog">Подтвердить ли не решить результат скан.? Перейти обработку не увеличить ваш счет</string>
 
     <string name="secur_add_self_number_tip">Номер ввода-номер с.т.‚ введите снова</string>
-    <string name="new_arrival">Новое путешествие</string>
-    <string name="new_funciton">Новый интерфейс,новая функция,новое начало</string>
     <string name="privacy_scan">Сканирование секрета</string>
     <string name="one_key_confirm_privacy">Защита секрата однокнопки</string>
     <string name="secur_feedbk_type">Анти-кражи</string>
