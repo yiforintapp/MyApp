@@ -32,7 +32,6 @@ public class LEOAdManager {
 	}
 
 	private static LEOAdManager sInstance;
-	private Context mContext;
 
 	private LEONativeAd adLock;
     /*LOCK pic 1*/
@@ -52,7 +51,6 @@ public class LEOAdManager {
 	public static final String LEOMAX_APPID = "201409010001";
 
     private LEOAdManager(Context ctx) {
-        mContext = ctx;
     }
 
     public static LEOAdManager getInstance(Context ctx) {

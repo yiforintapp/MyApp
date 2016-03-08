@@ -64,7 +64,6 @@ public class AppWallActivity extends BaseActivity implements
     public static final String GPPACKAGE = "com.android.vending";
     private static final String CHARSETLOCAL = "utf-8";
     private static final String CHARSETSERVICE = "utf-8";
-    private static final String Tag = "AppWallActivity";
     private AppWallDialog p;
     private List<AppWallBean> all;
     private List<AppWallBean> temp;
@@ -120,7 +119,6 @@ public class AppWallActivity extends BaseActivity implements
         lp.alpha = 0.5f;
         lp.dimAmount = 0.0f;
         window.setAttributes(lp);
-        String flag = null;
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.photo_bg_loding)
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
@@ -185,7 +183,6 @@ public class AppWallActivity extends BaseActivity implements
         AppWallUrlBean appUrl = null;
         List<String[]> sort = new ArrayList<String[]>();
         String urlStr = null;
-        Uri url = null;
         for (int i = 0; i < urls.size(); i++) {
             appUrl = urls.get(i);
             String[] tempStr = new String[2];
@@ -254,7 +251,6 @@ public class AppWallActivity extends BaseActivity implements
     }
 
     private class MyAsyncTask extends AsyncTask<String, Void, String> {
-        private boolean flag;
         InputStream is = null;
 
         @Override
@@ -288,7 +284,6 @@ public class AppWallActivity extends BaseActivity implements
                 List<AppItemInfo> pkgInfos = AppLoadEngine.getInstance(
                         AppWallActivity.this).getAllPkgInfo();
                 List<String> pkgName = new ArrayList<String>();
-                StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < pkgInfos.size(); i++) {
                     if (pkgInfos.get(i).packageName.equals("com.android.vending")) {
                         flagGp = true;

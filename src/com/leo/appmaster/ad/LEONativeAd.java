@@ -30,7 +30,6 @@ public class LEONativeAd {
 
     private LEONativeAdListener mLeoListener;
 
-    private boolean isBindToView = false;
     private boolean isLoading = false;
 
     private final static String TAG = "STONE_AD_DEBUG";
@@ -162,7 +161,6 @@ public class LEONativeAd {
     public void bindAdWithView(View view){
         if(isAdReady()){
             mAvailableAd.bindToView(view);
-            isBindToView = true;
         }
     }
 
@@ -170,7 +168,6 @@ public class LEONativeAd {
      * Call this in Activity's onDestroy() call.
      */
     public void detachWithView(){
-        isBindToView = false;
         if(mAvailableAd != null){
             mAvailableAd.unbindView();
         }

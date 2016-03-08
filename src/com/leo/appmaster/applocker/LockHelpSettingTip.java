@@ -34,7 +34,6 @@ import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
 
 public class LockHelpSettingTip extends BaseActivity {
-    private static final String TAG = "LockHelpSettingTip";
     private CommonToolbar mTitle;
     private LeoPictureViewPager mViewPager;
     private List<LockHelpItemPager> mHelpPager;
@@ -209,7 +208,6 @@ public class LockHelpSettingTip extends BaseActivity {
         }
     }
 
-    @SuppressWarnings("unused")
     private class LockHelpPagerAdapter extends PagerAdapter {
         private Context context;
 

@@ -32,10 +32,8 @@ import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
-    private static final String TAG = "LockOptionActivity";
 
     private CommonToolbar mTtileBar;
-    private SharedPreferences mSp;
     private Preference mTheme, mLockSetting, mResetPasswd, mChangeProtectQuestion,
             mChangePasswdTip, mChangeLockTime;
 

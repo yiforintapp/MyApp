@@ -1,5 +1,12 @@
 package com.leo.appmaster.applocker;
 
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -15,7 +22,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -51,13 +57,6 @@ import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Created by qili on 15-10-9.
  */
@@ -77,10 +76,9 @@ public class AppLockListActivity extends BaseActivity implements
     private View mGuideHelpTipBtClick;
     private View mGuideHelpTip;
     private TextView mSecurityGuideBt, mAutoGuideBt, mBackageGroundBt;
-    private Button mFinishBt;
     private RippleView mFinishBtClick;
     private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL;
-    private TextView mSecurityText, mAutoText, mBackGroudText;
+    private TextView  mAutoText, mBackGroudText;
     private View mGuideTip;
     private ListView mLockList;
     private CommonToolbar mTtileBar;
@@ -220,7 +218,6 @@ public class AppLockListActivity extends BaseActivity implements
         mAutoImage = (ImageView) findViewById(R.id.auto_icon);
         mBackgroundRL = (RelativeLayout) findViewById(R.id.background_guide);
 
-        mFinishBt = (Button) findViewById(R.id.finish);
         mFinishBtClick = (RippleView) findViewById(R.id.rv_finish);
         mFinishBtClick.setOnClickListener(this);
 
@@ -230,7 +227,6 @@ public class AppLockListActivity extends BaseActivity implements
         mGuideHelpTipBtClick = findViewById(R.id.tip_help_click);
         mGuideHelpTipBtClick.setOnClickListener(this);
 
-        mSecurityText = (TextView) findViewById(R.id.security_guide_text);
         mAutoText = (TextView) findViewById(R.id.auto_guide_text);
         mBackGroudText = (TextView) findViewById(R.id.background_guide_text);
         updateHelpState();

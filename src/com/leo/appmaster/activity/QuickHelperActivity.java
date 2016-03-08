@@ -54,10 +54,6 @@ public class QuickHelperActivity extends BaseActivity {
     private List<Integer[]> mFinalDrawableArray;
     private List<Integer> mFinalDrawableIds;
     
-    private static int[] mHelperResourceIDs;
-    private static int[] mHelperNames;
-    private static int[] mHelperDescs;
-
     private CommonToolbar mCtb;
     private ListView mLvQuickHelperList;
     private LayoutInflater mInflater;

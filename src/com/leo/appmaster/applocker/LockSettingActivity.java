@@ -24,8 +24,6 @@ import com.leo.appmaster.ui.CommonTitleBar;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
-    private static final String TAG = "LockSettingActivity";
-
     public static final String RESET_PASSWD_FLAG = "reset_passwd";
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
     public static final int LOCK_TYPE_PASSWD = 1;
@@ -196,7 +194,6 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             // mTitleBar.setVisibility(View.INVISIBLE);
 
             Display mDisplay = getWindowManager().getDefaultDisplay();
-            int W = mDisplay.getWidth();
             int H = mDisplay.getHeight();
             // 使得小尺寸机型在此时去除titlebar，而不是隐藏，否则下方位置不够
             if (H > 900) {

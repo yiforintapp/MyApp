@@ -16,16 +16,10 @@
 
 package com.android.volley.toolbox;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,9 +51,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
-import com.leo.imageloader.utils.IoUtils;
-
-import javax.crypto.NoSuchPaddingException;
 
 /**
  * A network performing Volley requests over an {@link HttpStack}.
@@ -317,33 +308,33 @@ public class BasicNetwork implements Network {
 	}
 	
 	// gzip 解压缩
-    private byte[] uncompressForGzip(byte[] data) {
-        int bufferSize = 1024;
-        ByteArrayInputStream bais = null;
-        GZIPInputStream gzip = null;
-        ByteArrayOutputStream baos = null;
-        try {
-            bais = new ByteArrayInputStream(data);
-            gzip = new GZIPInputStream(bais);
-            baos = new ByteArrayOutputStream();
-
-            byte[] buf = new byte[bufferSize];
-            int len = 0;
-            while ((len = gzip.read(buf, 0, bufferSize)) != -1) {
-                baos.write(buf, 0, len);
-            }
-            baos.flush();
-            return baos.toByteArray();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            IoUtils.closeSilently(baos);
-            IoUtils.closeSilently(gzip);
-            IoUtils.closeSilently(bais);
-        }
-
-        return data; 
-    }
+//    private byte[] uncompressForGzip(byte[] data) {
+//        int bufferSize = 1024;
+//        ByteArrayInputStream bais = null;
+//        GZIPInputStream gzip = null;
+//        ByteArrayOutputStream baos = null;
+//        try {
+//            bais = new ByteArrayInputStream(data);
+//            gzip = new GZIPInputStream(bais);
+//            baos = new ByteArrayOutputStream();
+//
+//            byte[] buf = new byte[bufferSize];
+//            int len = 0;
+//            while ((len = gzip.read(buf, 0, bufferSize)) != -1) {
+//                baos.write(buf, 0, len);
+//            }
+//            baos.flush();
+//            return baos.toByteArray();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            IoUtils.closeSilently(baos);
+//            IoUtils.closeSilently(gzip);
+//            IoUtils.closeSilently(bais);
+//        }
+//
+//        return data; 
+//    }
 }

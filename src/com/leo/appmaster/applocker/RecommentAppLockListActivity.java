@@ -276,33 +276,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         }
     }
 
-    private class LockedAppComparator implements Comparator<AppInfo> {
-        List<AppInfo> sortBase;
-
-        public LockedAppComparator(List<AppInfo> sortBase) {
-            super();
-            this.sortBase = sortBase;
-        }
-
-        @Override
-        public int compare(AppInfo lhs, AppInfo rhs) {
-            if (sortBase.indexOf(lhs.packageName) > sortBase
-                    .indexOf(rhs.packageName)) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }
-    }
-
-    private List<String> getDefaultLockList() {
-        List<String> defaultLockList = new ArrayList<String>();
-        for (String string : AppLoadEngine.sLocalLockArray) {
-            defaultLockList.add(string);
-        }
-        return defaultLockList;
-    }
-
     private void getIntentFrom() {
         Intent intent = this.getIntent();
         mFrom = intent.getStringExtra("from");

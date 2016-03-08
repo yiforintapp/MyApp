@@ -19,14 +19,12 @@ public class MaxNativeAd extends BaseNativeAd {
 
     private LeoAdNative maxAd;
     private Campaign mCampaign;
-    private Context mContext;
 	
 	private boolean isFinish = false;
 	
 	private Handler adLoadHandler = new Handler();
 
     public MaxNativeAd (Context context, String unitId) {
-        mContext = context;
         maxAd = LeoAdFactory.newNativeController(
                 AppMasterApplication.getInstance(), unitId);
     }

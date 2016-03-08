@@ -2,15 +2,11 @@ package com.leo.appmaster.applocker;
 
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 
 public class GrantPermissionGuideActivity extends BaseActivity {
-    private RelativeLayout mRlRoot;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +16,7 @@ public class GrantPermissionGuideActivity extends BaseActivity {
     }
     
     private void initUI() {
-        mRlRoot = (RelativeLayout) findViewById(R.id.rl_root);
+//        mRlRoot = (RelativeLayout) findViewById(R.id.rl_root);
 
 //        mRlRoot.setOnClickListener(new OnClickListener() {
 //

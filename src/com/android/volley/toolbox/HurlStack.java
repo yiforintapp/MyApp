@@ -16,12 +16,20 @@
 
 package com.android.volley.toolbox;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Request.Method;
-import com.leo.appmaster.cloud.crypto.CryptoUtils;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.imageloader.utils.IoUtils;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.zip.GZIPOutputStream;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -35,24 +43,12 @@ import org.apache.http.message.BasicStatusLine;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.zip.GZIPOutputStream;
-
-import javax.crypto.NoSuchPaddingException;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocketFactory;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Request.Method;
+import com.leo.appmaster.cloud.crypto.CryptoUtils;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.utils.IoUtils;
 
 /**
  * An {@link HttpStack} based on {@link HttpURLConnection}.

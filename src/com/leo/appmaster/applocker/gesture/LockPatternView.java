@@ -46,7 +46,6 @@ import com.leo.appmaster.utils.LockPatternUtils;
  * @author way
  */
 public class LockPatternView extends ViewGroup {
-    private static final String TAG = "LockPatternView";
     // Aspect to use when rendering this view
     private static final int ASPECT_SQUARE = 0; // View will be the minimum of
     // width/height
@@ -1333,58 +1332,58 @@ public class LockPatternView extends ViewGroup {
      * @param topY
      * @param partOfPattern Whether this circle is part of the pattern.
      */
-    private void drawCircle(Canvas canvas, int leftX, int topY,
-                            boolean partOfPattern) {
-        Bitmap outerCircle;
-        Bitmap innerCircle = null;
-
-        if (!partOfPattern
-                || (mInStealthMode && mPatternDisplayMode != DisplayMode.Wrong)) {
-            // unselected circle
-            outerCircle = mBitmapCircleDefault;
-            innerCircle = null;
-        } else if (mPatternInProgress) {
-            // user is in middle of drawing a pattern
-            outerCircle = mBitmapCircleDefault;
-            innerCircle = mBitmapCircleGreen;
-        } else if (mPatternDisplayMode == DisplayMode.Wrong) {
-            // the pattern is wrong
-            outerCircle = mBitmapCircleDefault;
-            innerCircle = mBitmapCircleRed;
-        } else if (mPatternDisplayMode == DisplayMode.Correct
-                || mPatternDisplayMode == DisplayMode.Animate) {
-            // the pattern is correct
-            outerCircle = mBitmapCircleDefault;
-            innerCircle = mBitmapCircleGreen;
-        } else {
-            throw new IllegalStateException("unknown display mode "
-                    + mPatternDisplayMode);
-        }
-
-        final int width = mBitmapWidth;
-        final int height = mBitmapHeight;
-
-        final float squareWidth = mSquareWidth;
-        final float squareHeight = mSquareHeight;
-
-        int offsetX = (int) ((squareWidth - width) / 2f);
-        int offsetY = (int) ((squareHeight - height) / 2f);
-
-        // Allow circles to shrink if the view is too small to hold them.
-        float sx = Math.min(mSquareWidth / mBitmapWidth, 1.0f);
-        float sy = Math.min(mSquareHeight / mBitmapHeight, 1.0f);
-
-        mCircleMatrix.setTranslate(leftX + offsetX, topY + offsetY);
-        mCircleMatrix.preTranslate(mBitmapWidth / 2, mBitmapHeight / 2);
-        mCircleMatrix.preScale(sx * 0.65f, sy * 0.65f);
-        mCircleMatrix.preTranslate(-mBitmapWidth / 2, -mBitmapHeight / 2);
-
-        if(outerCircle != null) {
-            canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);
-        }
-        if (innerCircle != null)
-            canvas.drawBitmap(innerCircle, mCircleMatrix, mPaint);
-    }
+//    private void drawCircle(Canvas canvas, int leftX, int topY,
+//                            boolean partOfPattern) {
+//        Bitmap outerCircle;
+//        Bitmap innerCircle = null;
+//
+//        if (!partOfPattern
+//                || (mInStealthMode && mPatternDisplayMode != DisplayMode.Wrong)) {
+//            // unselected circle
+//            outerCircle = mBitmapCircleDefault;
+//            innerCircle = null;
+//        } else if (mPatternInProgress) {
+//            // user is in middle of drawing a pattern
+//            outerCircle = mBitmapCircleDefault;
+//            innerCircle = mBitmapCircleGreen;
+//        } else if (mPatternDisplayMode == DisplayMode.Wrong) {
+//            // the pattern is wrong
+//            outerCircle = mBitmapCircleDefault;
+//            innerCircle = mBitmapCircleRed;
+//        } else if (mPatternDisplayMode == DisplayMode.Correct
+//                || mPatternDisplayMode == DisplayMode.Animate) {
+//            // the pattern is correct
+//            outerCircle = mBitmapCircleDefault;
+//            innerCircle = mBitmapCircleGreen;
+//        } else {
+//            throw new IllegalStateException("unknown display mode "
+//                    + mPatternDisplayMode);
+//        }
+//
+//        final int width = mBitmapWidth;
+//        final int height = mBitmapHeight;
+//
+//        final float squareWidth = mSquareWidth;
+//        final float squareHeight = mSquareHeight;
+//
+//        int offsetX = (int) ((squareWidth - width) / 2f);
+//        int offsetY = (int) ((squareHeight - height) / 2f);
+//
+//        // Allow circles to shrink if the view is too small to hold them.
+//        float sx = Math.min(mSquareWidth / mBitmapWidth, 1.0f);
+//        float sy = Math.min(mSquareHeight / mBitmapHeight, 1.0f);
+//
+//        mCircleMatrix.setTranslate(leftX + offsetX, topY + offsetY);
+//        mCircleMatrix.preTranslate(mBitmapWidth / 2, mBitmapHeight / 2);
+//        mCircleMatrix.preScale(sx * 0.65f, sy * 0.65f);
+//        mCircleMatrix.preTranslate(-mBitmapWidth / 2, -mBitmapHeight / 2);
+//
+//        if(outerCircle != null) {
+//            canvas.drawBitmap(outerCircle, mCircleMatrix, mPaint);
+//        }
+//        if (innerCircle != null)
+//            canvas.drawBitmap(innerCircle, mCircleMatrix, mPaint);
+//    }
 
     @Override
     protected Parcelable onSaveInstanceState() {
@@ -1483,15 +1482,15 @@ public class LockPatternView extends ViewGroup {
             dest.writeValue(mTactileFeedbackEnabled);
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+//        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>() {
+//            public SavedState createFromParcel(Parcel in) {
+//                return new SavedState(in);
+//            }
+//
+//            public SavedState[] newArray(int size) {
+//                return new SavedState[size];
+//            }
+//        };
     }
 
     @Override

@@ -221,7 +221,6 @@ public class ZipperView extends View {
         int pointerCount = event.getPointerCount();
 
         if (pointerCount == 1){
-            float x = event.getX();
             float y = event.getY();
 
             switch (event.getAction()) {
@@ -264,8 +263,6 @@ public class ZipperView extends View {
                         mIsZipperTouched = true;
                     }
                     else {
-                        float preX = event.getX();
-                        float preY = event.getY();
                     }
                 }
                 default:

@@ -14,7 +14,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;

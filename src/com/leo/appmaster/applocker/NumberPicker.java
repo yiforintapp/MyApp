@@ -20,7 +20,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -442,11 +441,6 @@ public class NumberPicker extends LinearLayout {
     private int mBottomSelectionDividerBottom;
 
     /**
-     * The virtual id of the last hovered child.
-     */
-    private int mLastHoveredChildVirtualViewId;
-
-    /**
      * Whether the increment virtual button is pressed.
      */
     private boolean mIncrementVirtualButtonPressed;
@@ -707,7 +701,6 @@ public class NumberPicker extends LinearLayout {
         paint.setTextAlign(Align.CENTER);
         paint.setTextSize((int) (mTextSize * 0.7f));
         paint.setTypeface(mInputText.getTypeface());
-        ColorStateList colors = mInputText.getTextColors();
         // int color = colors.getColorForState(ENABLED_STATE_SET, Color.WHITE);
         paint.setColor(Color.rgb(0xce, 0xce, 0xce));
         mSelectorWheelPaint = paint;
@@ -717,7 +710,6 @@ public class NumberPicker extends LinearLayout {
         paint.setTextAlign(Align.CENTER);
         paint.setTextSize(mTextSize);
         paint.setTypeface(mInputText.getTypeface());
-        colors = mInputText.getTextColors();
         // color = colors.getColorForState(ENABLED_STATE_SET, Color.WHITE);
         paint.setColor(Color.rgb(0x42, 0x85, 0xf4));
         mMidWheelPaint = paint;
@@ -908,8 +900,6 @@ public class NumberPicker extends LinearLayout {
                 } else {
                     int eventY = (int) event.getY();
                     int deltaMoveY = (int) Math.abs(eventY - mLastDownEventY);
-                    long deltaTime = event.getEventTime() - mLastDownEventTime;
-                    long tapTimeout = ViewConfiguration.getTapTimeout();
                     if (deltaMoveY <= mTouchSlop) { // && deltaTime <
                                                     // ViewConfiguration.getTapTimeout())
                                                     // {

@@ -22,11 +22,9 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
     private final static int CHECK_RESULT_OK = 1;
     private final static int CHECK_RESULT_FAILED = 2;
 
-    private final static int LOAD_FB_DONE = 100001;
     private final static int LOAD_FB_TIMEOUT = 100002;
     
     private final static String TAG = "FACEBOOK_AD_DEBUG";
-    private final static String FACEBOOK_URL = "http://www.facebook.com";
 
     static class MainHandler extends Handler {
         WeakReference<FBNativeAd> mFBNativeAdRef;
@@ -89,8 +87,6 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
         mPushToMain = new MainHandler(this);
     }
 
-    private Runnable mFailedRunnable;
-    private Runnable mDoneRunnable;
     private boolean mAlreadyNotifyUser;
 
     @Override

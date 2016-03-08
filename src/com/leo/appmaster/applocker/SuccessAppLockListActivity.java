@@ -28,7 +28,6 @@ import com.leo.appmaster.ui.RippleView;
  * Created by qili on 15-10-11.
  */
 public class SuccessAppLockListActivity extends BaseActivity implements OnClickListener {
-    private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "recomment_activity";
     private List<AppInfo> mLockList;
     private ArrayList<AppInfo> resault;
     private ListView mLockListView;
@@ -122,24 +121,6 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         }
     }
 
-    private class LockedAppComparator implements Comparator<AppInfo> {
-        List<String> sortBase;
-
-        public LockedAppComparator(List<String> sortBase) {
-            super();
-            this.sortBase = sortBase;
-        }
-
-        @Override
-        public int compare(AppInfo lhs, AppInfo rhs) {
-            if (sortBase.indexOf(lhs.packageName) > sortBase
-                    .indexOf(rhs.packageName)) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }
-    }
 
     @Override
     public void onClick(View view) {

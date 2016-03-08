@@ -37,7 +37,6 @@ import android.widget.Toast;
  *
  */
 public class ThreadManager {
-    private static final boolean DEBUG = false;
     private static final String TAG = "ThreadManager";
 
     private static final int TIME_UI_ALARM = 300;

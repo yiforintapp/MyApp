@@ -429,7 +429,6 @@ public class LocationLockEditActivity extends BaseActivity implements
             View container = mWifiListDialog.findViewById(R.id.mode_list_container);
             mModeList = (ListView) container.findViewById(R.id.mode_list);
             mNoWifiTv = (TextView) container.findViewById(R.id.no_wifi);
-            View cancel = mWifiListDialog.findViewById(R.id.dlg_bottom_btn);
             RippleView rippView = (RippleView) mWifiListDialog.findViewById(R.id.dlg_bottom_btn_ripp);
             rippView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -609,7 +608,6 @@ public class LocationLockEditActivity extends BaseActivity implements
 
     class WifiListAdapter extends BaseAdapter {
 
-        private LockManager lm;
         private LayoutInflater inflater;
         private List<String> wifiList;
 

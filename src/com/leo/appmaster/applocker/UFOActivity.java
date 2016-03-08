@@ -77,11 +77,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private ImageView mCircleLight;
     private ImageView mSplashLight;
     private CountDownTimer mCdt;
-    private Button mInstall;
     private boolean mIsShowTheme = false;
     // 动画参数
-    private float mUFOW;
-    private float mUFOH;
     private float mWindowW;
     private float mWindowH;
     private int RANDOM_NUMERATOR=1;
@@ -230,8 +227,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_down));
 //        mBtnUseTheme.setText("asdfasdfa");
         mBtnUseTheme.setAllCaps(false);
-        List<String> mHideThemes;
-        mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
 //        if(mHideThemes.contains(mChosenTheme.packageName))
 //        {
 //            mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_use));
@@ -252,7 +247,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                     UFOActivity.this.finish();
                 }
                 else{
-                    ThemeItemInfo bean = new ThemeItemInfo();
                     if (AppUtil.appInstalled(UFOActivity.this, Constants.GP_PACKAGE)) {
                         try {
                             AppwallHttpUtil.requestGp(UFOActivity.this, mChosenTheme.packageName);
@@ -356,7 +350,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mUFO = (ImageView) mWholeUFO.findViewById(R.id.iv_ufo);
         mAlien = (ImageView) mWholeUFO.findViewById(R.id.iv_alien);
         mDialog = (RelativeLayout) findViewById(R.id.rl_ADdialog);
-        mInstall = (Button) findViewById(R.id.btn_ufo_dialog_install);
         // mNativeAd.registerView(mInstall, null);
         mThemDialogBg = (ImageView) findViewById(R.id.iv_ThemedialogBg);
         mLongLight = (ImageView) findViewById(R.id.iv_longlight);
@@ -375,22 +368,12 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
         if (!mHasPlayed) {
             mHasPlayed = true;
-            mUFOH = mWholeUFO.getHeight();
-            mUFOW = mWholeUFO.getWidth();
             playUFOFly();
         }
     }
 
     private void playUFOFly() {
         mWholeUFO.setVisibility(View.VISIBLE);
-        float ufoStartX = mWholeUFO.getX();
-        float ufoStartY = mWholeUFO.getY();
-
-        float xWhenBorder = mWindowW - mUFOW;// UFO在最右边时的x
-        float xWhenMiddle = (mWindowW - mUFOW) / 2;// UFO最终时刻的x，使得UFO在水平方向中间
-
-        float yWhenFinal = mWindowH / 4 - mUFOH / 2;// UFO最终时刻的y，使得UFO在屏幕竖直方向1/4处
-        float yWhenTop = 0f;// UFO在最顶上的y
 
         PropertyValuesHolder ufoX = PropertyValuesHolder.ofFloat("x",
                 0.13f*mWindowW-0.5f*mWholeUFO.getWidth(),
@@ -584,7 +567,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         finalView.setPivotY(0);
         finalView.setY(mWholeUFO.getY() + mWholeUFO.getHeight()
                 + DipPixelUtil.dip2px(UFOActivity.this, 5));
-        float xWhenMiddle = (mWindowW - finalView.getWidth()) / 2;
         float yWhenMiddle = (mWindowH - finalView.getHeight()) / 2;
         // 广告对话框的出现动画
         PropertyValuesHolder dialogy = PropertyValuesHolder.ofFloat(
