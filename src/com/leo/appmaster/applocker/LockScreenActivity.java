@@ -2040,7 +2040,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     }, 200);
                 } catch (Exception e) {
                 }
-                finish();
+//                finish();
                 break;
             case R.id.tv_option_image_content:
                 if (mLeoPopMenu == null) {
