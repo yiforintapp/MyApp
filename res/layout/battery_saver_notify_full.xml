@@ -25,11 +25,11 @@
             android:layout_centerVertical="true"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/appwall_mid_content"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="17dp"
                 android:orientation="horizontal">
 
@@ -38,11 +38,12 @@
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f1"
                     android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
                     android:text="@string/screen_protect_charing_text_four"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/appwall_left"

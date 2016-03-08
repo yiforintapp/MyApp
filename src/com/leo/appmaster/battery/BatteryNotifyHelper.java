@@ -189,7 +189,7 @@ public class BatteryNotifyHelper {
 
         RemoteViews view_custom;
         if (level == 100) {
-            view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
+            view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify_full);
         } else {
             view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
             if (hours == 0) {
@@ -203,7 +203,6 @@ public class BatteryNotifyHelper {
                 view_custom.setTextViewText(R.id.tv_charge_number_2, String.format("%d", minutes));
                 view_custom.setTextViewText(R.id.tv_charge_mark_2, "m");
             }
-            view_custom.setTextViewText(R.id.tv_charge_tip, mContext.getString(R.string.battery_saver_remain_charge_time));
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
