@@ -189,6 +189,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private boolean isClickable = true;
 
     private boolean smallScreen = false;
+    private boolean midScreen = false;
 
 
     /**
@@ -375,11 +376,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
             if (type != AD_TYPE_MSG) {
                 mMoveDisdance = mMoveDisdance + arrowHeight;
+                if (smallScreen) {
+                    mMoveDisdance = mMoveDisdance + arrowHeight * 2;
+                } else if (midScreen) {
+                    mMoveDisdance = mMoveDisdance + arrowHeight;
+                }
+            } else {
+                if (smallScreen || midScreen) {
+                    mMoveDisdance = mMoveDisdance + arrowHeight * 2;
+                }
             }
 
-            if (smallScreen) {
-                mMoveDisdance = mMoveDisdance + arrowHeight * 2;
-            }
 
             LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
             ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
@@ -400,7 +407,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
 
-                    if (type != AD_TYPE_MSG || smallScreen) {
+                    if (type != AD_TYPE_MSG || smallScreen || midScreen) {
                         mArrowMoveContent.setVisibility(View.VISIBLE);
                         mMaskView.showMask();
                         isShowMask = true;
@@ -517,6 +524,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         int screenHeight = display.getHeight();
         if (screenHeight <= 320) {
             smallScreen = true;
+        } else if (screenHeight <= 480) {
+            midScreen = true;
         }
 
 
