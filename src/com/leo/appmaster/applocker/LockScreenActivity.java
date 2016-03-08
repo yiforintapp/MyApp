@@ -1260,6 +1260,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mMobvistaListenerList.clear();
         mAdMap.clear();
         mAdBitmapMap.clear();
+        otherAdSwitcher = false;
         if (mAdapterCycle != null) {
 			mBannerContainer.removeAllViews();
 			mAdapterCycle = null;
@@ -1291,6 +1292,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				 */
 				@Override
 				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+                    if (code != MobvistaEngine.ERR_OK) {
+                        return;
+                    }
 					if (campaign != null && deleteRedundant(unitId, campaign)) {
 						/* 开始load 广告大图 */
                         LeoLog.d("LockScreenActivity[AD_DEBUG]", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
@@ -1309,6 +1313,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 							@Override
 							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 								LeoLog.d("LockScreenActivity[AD_DEBUG]", "["+unitId+"]onLoadingComplete for: " + imageUri);
+
+                                WrappedCampaign wrappedCampaign =  mAdMap.get(unitId);
+                                if(wrappedCampaign == null
+                                        || wrappedCampaign.getAppName()== null
+                                        || wrappedCampaign.getAppName().equalsIgnoreCase("")) {
+                                    mAdMap.remove(unitId);
+                                    return;
+                                }
 
 								if (unitId.equals(mBannerAdids[0])) {
 									mAdUnitIdList.add(0, unitId);

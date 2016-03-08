@@ -231,11 +231,6 @@ public class MobvistaEngine {
             return;
         }
 
-        // 处理旧listener，记录新listener
-        MobvistaListener previousListener = mMobVistaListeners.remove(unitId);
-        if (previousListener != null) {
-            previousListener.onMobvistaFinished(ERR_MOBVISTA_RESULT_NULL, null, "no fill");
-        }
         mMobVistaListeners.put(unitId, listener);
 
         // 广告过时则需要重新拉取
