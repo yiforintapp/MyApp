@@ -603,7 +603,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         TextView tvTitle, tvContent;
         Button enterAppButton;
         ImageView bigImage = null;
-        mPageColors[3] = getResources().getColor(R.color.new_guide_page1_background_color);
+        mPageColors[3] = getResources().getColor(R.color.new_guide_page2_background_color);
         mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
         mPageColors[5] = getResources().getColor(R.color.new_guide_page4_background_color);
         /*骚扰拦截引导*/
@@ -616,11 +616,11 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         /* page1 */
         ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page1.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_1));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.gd_leo_pic));
         tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.new_arrival));
+        tvTitle.setText(getResources().getString(R.string.gde_renm_title));
         tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.new_funciton));
+        tvContent.setText(getResources().getString(R.string.gde_renm_content));
         mNewFuncPageViews.add(page1);
 
         /* page2 */

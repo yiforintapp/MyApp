@@ -844,15 +844,20 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                                     //lenovo
                                                     Intent intentLenovo = new Intent(Intent.ACTION_MAIN);
                                                     intentLenovo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    ComponentName cnLenovo = new ComponentName("com.lenovo.ideafriend", " com.lenovo.ideafriend.alias.MmsActivity");
+                                                    ComponentName cnLenovo = new ComponentName("com.lenovo.ideafriend", "com.lenovo.ideafriend.alias.MmsActivity");
                                                     intentLenovo.setComponent(cnLenovo);
                                                     startActivity(intentLenovo);
                                                 } catch (Exception e7) {
-                                                    //真的跳转不过去跳转到短信编辑页面
-                                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    intent.setType("vnd.android-dir/mms-sms");
-                                                    startActivity(intent);
+                                                    //Nexus 6
+                                                    try {
+                                                        Intent intentNexus6 = new Intent(Intent.ACTION_MAIN);
+                                                        intentNexus6.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        ComponentName cnNexus6 = new ComponentName("com.google.android.apps.messaging", "com.google.android.apps.messaging.ui.ConversationListActivity");
+                                                        intentNexus6.setComponent(cnNexus6);
+                                                        startActivity(intentNexus6);
+                                                    } catch (Exception e8) {
+                                                        e8.printStackTrace();
+                                                    }
                                                 }
                                             }
                                         }

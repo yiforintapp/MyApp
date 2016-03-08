@@ -985,4 +985,7 @@
     <string name="battery_saver_remain_charge_time">剩餘充電時間</string>
     <string name="feedback_tell_us_email_title">Email:</string>
     <string name="feedback_tell_us_email_url">support@leomaster.com</string>
+
+    <!--3.3.2新增引导文案-->
+    <string name="gde_renm_content">新名字，新起点</string>
 </resources>

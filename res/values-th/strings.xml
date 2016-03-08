@@ -977,4 +977,7 @@
     <string name="battery_saver_remain_charge_time">เวลาอัดแบตเตรรี่ที่เหลือ</string>
     <string name="feedback_tell_us_email_title">Email:</string>
     <string name="feedback_tell_us_email_url">support@leomaster.com</string>
+
+    <!--3.3.2新增引导文案-->
+    <string name="gde_renm_content">ชื่อไหม่ จุดเริ่มต้นไหม่</string>
 </resources>
