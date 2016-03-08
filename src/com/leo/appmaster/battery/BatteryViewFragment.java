@@ -164,8 +164,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mTimeContentAll;
     private View mTimeContentView;
 
-    private long mInitTime;
+    private View mBackGroundView;
 
+    private long mInitTime;
     private int mCurrentClickType = -1;
 
     private BatteryManager.BatteryState newState;
@@ -432,6 +433,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         LeoLog.d(TAG, "INIT UI");
         mImageLoader = ImageLoader.getInstance();
 
+        mBackGroundView = findViewById(R.id.background_pic);
+        mBackGroundView.setOnClickListener(this);
+
         mRemainTimeContent = findViewById(R.id.remain_time);
         mRemainContent = findViewById(R.id.use_time_content);
 
@@ -541,7 +545,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         BatteryManager btrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
         boolean isBatteryPowSavOpen = btrManager.getBatteryPowSavStatus();
 //        if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
-        if(true){
+        if (true) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_save");
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
@@ -1974,6 +1978,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             "batterypage",
                             "screen_app");
                     showRecommandContent(RECOMMAND_TYPE_THREE);
+                }
+                break;
+            case R.id.background_pic:
+                if (mRecommandView.getVisibility() == View.VISIBLE && isClickable) {
+                    mCurrentClickType = 0;
+                    shrinkRecommandContent();
                 }
                 break;
         }
