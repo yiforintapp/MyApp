@@ -186,7 +186,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private PreferenceTable mPt;
     private BaseSelfDurationToast mPermissionGuideToast;
     private TextView mTvPermissionTip;
-    private ViewStub mVsPermissionTip;
     private View mVPermissionTip;
     /**
      * 大banner
@@ -580,7 +579,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
             if (!state.checkAvailable()) {
                 if (mVPermissionTip == null) {
-                    mVPermissionTip = mVsPermissionTip.inflate();
+                    ViewStub vs = (ViewStub)findViewById(R.id.vs_permission_tip);
+                    mVPermissionTip = vs.inflate();
                 }
                 mRlNoPermission = (RelativeLayout) mVPermissionTip.findViewById(R.id.rl_nopermission_tip);
                 mRlNoPermission.setOnClickListener(LockScreenActivity.this);
@@ -604,7 +604,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (mRlNoPermission != null) {
                 mRlNoPermission.setVisibility(View.GONE);
             }
-            mRlNoPermission.setVisibility(View.GONE);
             if (mHasClickGoGrantPermission) {
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
                 mHasClickGoGrantPermission = false;
@@ -1156,7 +1155,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
-        mVsPermissionTip = (ViewStub) findViewById(R.id.vs_permission_tip);
         mADAnimalEntry = (ImageView) findViewById(R.id.iv_AD_entry);
         if (!NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
             mADAnimalEntry.setVisibility(View.GONE);
