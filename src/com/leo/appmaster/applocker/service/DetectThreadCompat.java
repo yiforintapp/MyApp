@@ -99,7 +99,7 @@ public class DetectThreadCompat extends Thread {
                 }
             } else {
                 detector = mDetector;
-                if (detector.isOOMScoreMode()) {
+                if ((detector instanceof ProcessDetector) || (detector instanceof ProcessDetectorCompat22)) {
                     lastIsCompat22 = true;
                 }
             }
