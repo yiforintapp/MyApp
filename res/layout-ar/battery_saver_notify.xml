@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/notify_whole"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/notify_whole"
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/content_game_all_item"
@@ -18,17 +18,8 @@
             android:layout_marginLeft="@dimen/noti_spe_icon_m_left"
             android:src="@drawable/battery_icon_notice" />
 
-        <ImageView
-            android:id="@+id/line_divider"
-            android:layout_toRightOf="@+id/appwallIV"
-            android:layout_centerVertical="true"
-            android:layout_width="1px"
-            android:layout_height="46dp"
-            android:layout_marginLeft="9dp"
-            android:background="@color/c5"/>
-
         <LinearLayout
-            android:layout_toRightOf="@id/line_divider"
+            android:layout_toRightOf="@id/appwallIV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -39,45 +30,57 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="17dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:orientation="horizontal"
+                    android:gravity="right"
+                    android:layout_marginRight="13dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right">
-
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_charge_percent"
+                        android:id="@+id/tv_charge_mark_2"
                         android:textColor="@color/c2"
-                        android:textSize="@dimen/f1"
-                        android:text="100"
+                        android:textSize="18dp"
+                        android:text="m"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:textColor="@color/c2"
-                        android:textSize="@dimen/f6"
-                        android:text="%"
+                        android:id="@+id/tv_charge_number_2"
                         android:layout_marginRight="5dp"
+                        android:textColor="@color/cgn"
+                        android:textSize="27dp"
+                        android:text="0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
-                    <ImageView
+                    <TextView
+                        android:id="@+id/tv_charge_mark_1"
+                        android:textColor="@color/c2"
+                        android:textSize="18dp"
+                        android:text="h"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/icon_notification_battery"/>
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_charge_number_1"
+                        android:textColor="@color/cgn"
+                        android:textSize="27dp"
+                        android:text="0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_charge_tip"
                     android:textColor="@color/c2"
-                    android:textSize="@dimen/f4"
-                    android:text="@string/screen_protect_charing_text_two"
+                    android:layout_marginRight="13dp"
+                    android:textSize="@dimen/f5"
+                    android:text="@string/battery_saver_remain_charge_time"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 

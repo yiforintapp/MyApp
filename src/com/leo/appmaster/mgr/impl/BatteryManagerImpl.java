@@ -531,6 +531,11 @@ public class BatteryManagerImpl extends BatteryManager {
         return !isHome();
     }
 
+    @Override
+    public int getRemainChargingTime(int level) {
+        return getRemainTimeHelper(mPreviousState).getEstimatedTimeWithoutUpdate(level);
+    }
+
     public boolean isHome() {
         try {
             List<String> homes = getHomes();

@@ -232,4 +232,11 @@ public abstract class BatteryManager extends Manager {
      * 3.3.2 是否在应用内
      */
     public abstract boolean isInApp();
+
+    /***
+     * 3.3.2 以秒为单位返回所需充电时间
+     * @param level 当前电量百分比
+     * @return
+     */
+    public abstract int getRemainChargingTime(int level);
 }

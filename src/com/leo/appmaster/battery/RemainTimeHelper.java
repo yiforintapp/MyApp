@@ -133,6 +133,10 @@ public class RemainTimeHelper {
         }
     }
 
+    public int getEstimatedTimeWithoutUpdate(int level) {
+        return getTimeFromPreference(level);
+    }
+
     private int getTimeFromPreference(int level) {
         if (level < 0) {
             return 0;

@@ -177,21 +177,33 @@ public class BatteryNotifyHelper {
 
     /* 3.3.2 充电屏保通知 */
     public void showNotificationForScreenSaver(int level, boolean onSystemLockScreen) {
+        int remainSecond = mManager.getRemainChargingTime(level);
+        int hours = remainSecond/(60*60);
+        int minutes = (remainSecond%(60*60))/60;
+        LeoLog.d(TAG, "remainSecond:"+remainSecond+"; hours:"+hours+";minutes:"+minutes);
+
         LeoLog.d("BatteryNotifyHelper", "in showNotificationForScreenSaver, level = "
                 + level + "; onSystemLockScreen = " + onSystemLockScreen);
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
         RemoteViews view_custom;
-        view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
-
-        view_custom.setTextViewText(R.id.tv_charge_percent, String.format("%d", level));
-
         if (level == 100) {
-            view_custom.setTextViewText(R.id.tv_charge_tip,
-                    mContext.getString(R.string.screen_protect_charing_text_four));
+            view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
         } else {
-            view_custom.setTextViewText(R.id.tv_charge_tip,
-                    mContext.getString(R.string.screen_protect_charing_text_two) + "...");
+            view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
+            if (hours == 0) {
+                view_custom.setTextViewText(R.id.tv_charge_number_1, String.format("%d", minutes));
+                view_custom.setTextViewText(R.id.tv_charge_mark_1, "m");
+                view_custom.setTextViewText(R.id.tv_charge_number_2, "");
+                view_custom.setTextViewText(R.id.tv_charge_mark_2, "");
+            } else {
+                view_custom.setTextViewText(R.id.tv_charge_number_1, String.format("%d", hours));
+                view_custom.setTextViewText(R.id.tv_charge_mark_1, "h");
+                view_custom.setTextViewText(R.id.tv_charge_number_2, String.format("%d", minutes));
+                view_custom.setTextViewText(R.id.tv_charge_mark_2, "m");
+            }
+            view_custom.setTextViewText(R.id.tv_charge_tip, mContext.getString(R.string.battery_saver_remain_charge_time));
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);

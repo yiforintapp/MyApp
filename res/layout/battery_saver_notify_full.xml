@@ -31,53 +31,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_charge_number_1"
-                        android:textColor="@color/cgn"
-                        android:textSize="27dp"
-                        android:text="0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/tv_charge_mark_1"
-                        android:textColor="@color/c2"
-                        android:textSize="18dp"
-                        android:text="h"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/tv_charge_number_2"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="@color/cgn"
-                        android:textSize="27dp"
-                        android:text="0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/tv_charge_mark_2"
-                        android:textColor="@color/c2"
-                        android:textSize="18dp"
-                        android:text="m"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_charge_tip"
                     android:textColor="@color/c2"
-                    android:textSize="@dimen/f5"
-                    android:text="@string/battery_saver_remain_charge_time"
+                    android:textSize="@dimen/f1"
+                    android:layout_centerVertical="true"
+                    android:text="@string/screen_protect_charing_text_four"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
