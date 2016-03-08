@@ -183,6 +183,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private UpdateTimeTask mUpdateTask;
     private int nowSetType = 0;
     private boolean isShowMask = false;
+    private boolean isClickable = true;
 
     /**
      * 第一个推广位
@@ -652,8 +653,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
         if (mActivity == null) return;
         turnDark(recommandTypeThree);
-
+        isClickable = false;
         mMaskView.hideMask();
+
         mRecommandView.setVisibility(View.VISIBLE);
         boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
         if (isSlideContentShow) {
@@ -673,11 +675,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationEnd(Animation animation) {
                 mRecommandContentView.setVisibility(View.VISIBLE);
-
                 if (firInLoad) {
                     initThreeContent();
                 }
-
+                isClickable = true;
             }
 
             @Override
@@ -1244,6 +1245,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void shrinkRecommandContent() {
         if (mActivity == null) return;
         turnLight();
+        isClickable = false;
+
         if (isShowMask) {
             mMaskView.showMask();
         }
@@ -1265,6 +1268,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (isSlideContentShow) {
                     mSlideView.setVisibility(View.VISIBLE);
                 }
+                isClickable = true;
             }
 
             @Override
@@ -1857,22 +1861,28 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                 break;
             case R.id.remain_one:
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                        "batterypage",
-                        "screen_call");
-                showRecommandContent(RECOMMAND_TYPE_ONE);
+                if (isClickable) {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                            "batterypage",
+                            "screen_call");
+                    showRecommandContent(RECOMMAND_TYPE_ONE);
+                }
                 break;
             case R.id.remain_two:
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                        "batterypage",
-                        "screen_inter");
-                showRecommandContent(RECOMMAND_TYPE_TWO);
+                if (isClickable) {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                            "batterypage",
+                            "screen_inter");
+                    showRecommandContent(RECOMMAND_TYPE_TWO);
+                }
                 break;
             case R.id.remain_three:
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                        "batterypage",
-                        "screen_app");
-                showRecommandContent(RECOMMAND_TYPE_THREE);
+                if (isClickable) {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                            "batterypage",
+                            "screen_app");
+                    showRecommandContent(RECOMMAND_TYPE_THREE);
+                }
                 break;
         }
     }
