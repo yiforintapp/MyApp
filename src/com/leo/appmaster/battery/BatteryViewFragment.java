@@ -540,16 +540,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void initBoostLayout() {
         BatteryManager btrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
         boolean isBatteryPowSavOpen = btrManager.getBatteryPowSavStatus();
-        if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
+//        if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
+        if(true){
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_save");
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
 
             mRemainTimeContent.setVisibility(View.INVISIBLE);
             mRemainContent.setVisibility(View.INVISIBLE);
-//            mBossView.setVisibility(View.INVISIBLE);
 
-            mTimeContentView.setVisibility(View.VISIBLE);
+            timeTurnBig();
 
             mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
                 @Override
@@ -557,12 +557,44 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
                     checkingData(true);
                     showViewAfterBoost();
+                    timeTurnSmall();
                 }
             });
         } else {
             checkingData(false);
             showViewAfterBoost();
         }
+    }
+
+    private void timeTurnSmall() {
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mTimeContentAll,
+                "scaleX", 1.4f, 1.0f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mTimeContentAll,
+                "scaleY", 1.4f, 1.0f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(100);
+        set.play(anim20).with(anim21);
+        set.start();
+    }
+
+    private void timeTurnBig() {
+        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mTimeContentAll,
+                "scaleX", 1.0f, 1.4f);
+        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mTimeContentAll,
+                "scaleY", 1.0f, 1.4f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mTimeContentView.setVisibility(View.VISIBLE);
+            }
+        });
+        set.setDuration(50);
+        set.play(anim20).with(anim21);
+        set.start();
     }
 
     private void checkingData(boolean checking) {
@@ -701,9 +733,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void startRemindTimeAppearAnim() {
-
         expandRecommandContent(RECOMMAND_TYPE_TWO, true);
-
     }
 
     private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
