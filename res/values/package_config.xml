@@ -4,5 +4,5 @@
     <string name="channel_name">Official</string>
     <string name="channel_code">0000a</string>
     <string name="version_name">3.3.2</string>
-    <integer name="guide_page_version">3</integer>
+    <integer name="guide_page_version">4</integer>
 </resources>

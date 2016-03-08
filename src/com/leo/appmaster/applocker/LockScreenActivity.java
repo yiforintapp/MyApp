@@ -1121,6 +1121,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     public void finish() {
+        LeoLog.d("LS2", "do finish");
         if (!isFinishing()) {
             super.finish();
         }
@@ -1291,7 +1292,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				 * @param msg      请求失败sdk返回的描述，成功为null
 				 */
 				@Override
-				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+				public synchronized void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
                     if (code != MobvistaEngine.ERR_OK) {
                         return;
                     }
@@ -1313,7 +1314,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 							@Override
 							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 								LeoLog.d("LockScreenActivity[AD_DEBUG]", "["+unitId+"]onLoadingComplete for: " + imageUri);
-
+                                // AM-4043 加空指针保护
+                                if (loadedImage == null) {
+                                    return;
+                                }
                                 WrappedCampaign wrappedCampaign =  mAdMap.get(unitId);
                                 if(wrappedCampaign == null
                                         || wrappedCampaign.getAppName()== null
@@ -1322,11 +1326,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                     return;
                                 }
 
+                                if (mAdUnitIdList == null) {
+                                    mAdUnitIdList = new ArrayList<String>();
+                                }
 								if (unitId.equals(mBannerAdids[0])) {
 									mAdUnitIdList.add(0, unitId);
 								} else {
 									mAdUnitIdList.add(unitId);
 								}
+
+                                if (mAdBitmapMap == null) {
+                                    mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
+                                }
 								mAdBitmapMap.put(unitId, loadedImage);
 
 								/*校验此广告是否用第一个id来申请的*/
@@ -1341,6 +1352,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 										return ;
 									}
 								}
+
+                                if (mBannerContainer == null) {
+                                    mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
+                                }
 								if (mAdapterCycle == null) {
 									mBannerContainer.setVisibility(View.INVISIBLE);
 									mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
@@ -2025,7 +2040,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     }, 200);
                 } catch (Exception e) {
                 }
-                
+                finish();
                 break;
             case R.id.tv_option_image_content:
                 if (mLeoPopMenu == null) {

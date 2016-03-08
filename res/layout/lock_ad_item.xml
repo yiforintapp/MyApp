@@ -30,8 +30,7 @@
             android:layout_height="@dimen/fragment_lock_large_banner_image_height"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/fragment_lock_large_banner_image_top"
-            android:scaleType="fitXY"
-            android:src="@drawable/ad_def_pic" />
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/ad_install_button"

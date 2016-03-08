@@ -993,7 +993,6 @@
     <string name="battery_protect_view_show_title">Recommended</string>
     <string name="addto_blacklist_share_dialog_title">Added successfully!</string>
     <string name="addto_blacklist_share_dialog_content">Wanna help your friends to block this crank call? Share it and let LEO protect them too!</string>
-    <string name="addto_blacklist_share_content">Hi all, I have added %1$s to my blacklist as a crank call. Pay attention to this number! Want to avoid crank calls like me? Just download LEO Privacy for free：%2$s</string>
     <string name="toast_hide_ing">Hiding images…</string>
     <string name="battery_protect_show_num_contact">Contacts</string>
     <string name="battery_protect_show_num_call">Call</string>
@@ -1001,14 +1000,15 @@
     <string name="battery_protect_show_num_browser">Browser</string>
     <string name="battery_boosting">Cleaning power-consuming apps…</string>
     <string name="battery_boost_result">Charging screensaver can save <Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> min charging time. <Data><![CDATA[<font color="#00a8ff">%2$d</font>]]></Data> power-consuming applications have been cleaned.</string>
-    <string name="battery_protect_setting_pow_sav_title">Automatic Power Save Optimization</string>
     <string name="battery_protect_setting_pow_sav_des">Automatically clean power-consuming apps while charging.</string>
     <string name="battery_protect_pop_text">Ignore</string>
     <string name="battery_saver_remain_charge_time">Remaining charging time</string>
     <string name="feedback_tell_us_email_title">Email:</string>
     <string name="feedback_tell_us_email_url">support@leomaster.com</string>
-    <!--3.3.2后期新增未翻译文案-->
+    <string name="addto_blacklist_share_content">Hi all, I have added %1$s to my blacklist as a crank call. Pay attention to this number! Want to avoid crank calls like me? Just download LEO Privacy for free：%2$s</string>
+    <string name="battery_protect_setting_pow_sav_title">Auto power save optimization</string>
+    <!--3.3.2新增引导文案-->
     <string name="gde_renm_title">LEO Privacy</string>
-    <string name="gde_renm_content">新名字，新起点</string>
+    <string name="gde_renm_content">New name, new start</string>
 
 </resources>
