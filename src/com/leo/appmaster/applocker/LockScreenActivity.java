@@ -574,8 +574,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void tryShowNoPermissionTip() {
 //        Toast.makeText(LockScreenActivity.this, "虚拟按键？ = " + Utilities.hasNavigationBar(this), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(LockScreenActivity.this, Build.VERSION.SDK_INT+"__"+TaskDetectService.sDetectSpecial+"__"+BuildProperties.isLenoveModel(), Toast.LENGTH_SHORT).show();
-        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
-//        if (Build.VERSION.SDK_INT >= 21) {
+//        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
+        if (Build.VERSION.SDK_INT >= 21) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
             if (!state.checkAvailable()) {
 //        if (true) {
@@ -1121,6 +1121,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     public void finish() {
+        LeoLog.d("LS2", "do finish");
         if (!isFinishing()) {
             super.finish();
         }
@@ -2039,7 +2040,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     }, 200);
                 } catch (Exception e) {
                 }
-                
+                finish();
                 break;
             case R.id.tv_option_image_content:
                 if (mLeoPopMenu == null) {

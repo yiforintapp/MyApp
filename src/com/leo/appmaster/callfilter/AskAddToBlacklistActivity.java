@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
@@ -156,35 +157,41 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogTooShort.setRightBtnListener(new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo info = new BlackListInfo();
-                String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
-                if (!Utilities.isEmpty(name)) {
-                    info.name = name;
-                }
-                int nowItemPosition = mDialogTooShort.getNowItemPosition();
-                info.number = mPhoneNumber;
-                switch (nowItemPosition) {
-                    case 0:
-                        info.markType = CallFilterConstants.MK_CRANK;
-                        break;
-                    case 1:
-                        info.markType = CallFilterConstants.MK_ADVERTISE;
-                        break;
-                    case 2:
-                        info.markType = CallFilterConstants.MK_FRAUD;
-                        break;
-                    default:
-                        break;
-                }
-                LeoLog.i("asdfasdfasfdasdf",mPhoneNumber+":markType="+ info.markType);
-                infost.add(info);
-                boolean inerFlag = mCmp.addBlackList(infost, false);
-                if (!inerFlag) {
-                    CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
-                    cm.addBlackFailTip();
-                }
-                notiUpdateBlackList();
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                        BlackListInfo info = new BlackListInfo();
+                        String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
+                        if (!Utilities.isEmpty(name)) {
+                            info.name = name;
+                        }
+                        int nowItemPosition = mDialogTooShort.getNowItemPosition();
+                        info.number = mPhoneNumber;
+                        switch (nowItemPosition) {
+                            case 0:
+                                info.markType = CallFilterConstants.MK_CRANK;
+                                break;
+                            case 1:
+                                info.markType = CallFilterConstants.MK_ADVERTISE;
+                                break;
+                            case 2:
+                                info.markType = CallFilterConstants.MK_FRAUD;
+                                break;
+                            default:
+                                break;
+                        }
+                        LeoLog.i("asdfasdfasfdasdf",mPhoneNumber+":markType="+ info.markType);
+                        infost.add(info);
+                        boolean inerFlag = mCmp.addBlackList(infost, false);
+                        if (!inerFlag) {
+                            CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
+                            cm.addBlackFailTip();
+                        }
+                        notiUpdateBlackList();
+                    }
+                });
+
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogTooShort.dismiss();
 //                AskAddToBlacklistActivity.this.finish();
@@ -193,6 +200,8 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         });
         mDialogTooShort.show();
     }
+
+
 
     private void showAskAddBlackWithMark(int[] filterTip) {
         mDialogAskAddWithSmrMark = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, this, true, 0, false);
@@ -224,35 +233,40 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogAskAddWithSmrMark.setRightBtnListener(new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo info = new BlackListInfo();
-                String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
-                if (!Utilities.isEmpty(name)) {
-                    info.name = name;
-                }
-                info.markType = CallFilterConstants.MK_BLACK_LIST;
-                int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
-                info.number = mPhoneNumber;
-                switch (nowItemPosition) {
-                    case 0:
-                        info.markType = CallFilterConstants.MK_CRANK;
-                        break;
-                    case 1:
-                        info.markType = CallFilterConstants.MK_ADVERTISE;
-                        break;
-                    case 2:
-                        info.markType = CallFilterConstants.MK_FRAUD;
-                        break;
-                    default:
-                        break;
-                }
-                infost.add(info);
-                boolean inerFlag = mCmp.addBlackList(infost, false);
-                if (!inerFlag) {
-                    CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
-                    cm.addBlackFailTip();
-                }
-                notiUpdateBlackList();
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                        BlackListInfo info = new BlackListInfo();
+                        String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
+                        if (!Utilities.isEmpty(name)) {
+                            info.name = name;
+                        }
+                        info.markType = CallFilterConstants.MK_BLACK_LIST;
+                        int nowItemPosition = mDialogAskAddWithSmrMark.getNowItemPosition();
+                        info.number = mPhoneNumber;
+                        switch (nowItemPosition) {
+                            case 0:
+                                info.markType = CallFilterConstants.MK_CRANK;
+                                break;
+                            case 1:
+                                info.markType = CallFilterConstants.MK_ADVERTISE;
+                                break;
+                            case 2:
+                                info.markType = CallFilterConstants.MK_FRAUD;
+                                break;
+                            default:
+                                break;
+                        }
+                        infost.add(info);
+                        boolean inerFlag = mCmp.addBlackList(infost, false);
+                        if (!inerFlag) {
+                            CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
+                            cm.addBlackFailTip();
+                        }
+                        notiUpdateBlackList();
+                    }
+                });
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmrMark.dismiss();
                 SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_mark&block");
@@ -280,35 +294,40 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogAskAddWithSmr.setRightBtnListener(new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo info = new BlackListInfo();
-                String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
-                if (!Utilities.isEmpty(name)) {
-                    info.name = name;
-                }
-                int nowItemPosition = mDialogAskAddWithSmr.getNowItemPosition();
-                info.number = mPhoneNumber;
-                info.markType = CallFilterConstants.MK_BLACK_LIST;
-                switch (nowItemPosition) {
-                    case 0:
-                        info.markType = CallFilterConstants.MK_CRANK;
-                        break;
-                    case 1:
-                        info.markType = CallFilterConstants.MK_ADVERTISE;
-                        break;
-                    case 2:
-                        info.markType = CallFilterConstants.MK_FRAUD;
-                        break;
-                    default:
-                        break;
-                }
-                infost.add(info);
-                boolean inerFlag = mCmp.addBlackList(infost, false);
-                if (!inerFlag) {
-                    CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
-                    cm.addBlackFailTip();
-                }
-                notiUpdateBlackList();
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                        BlackListInfo info = new BlackListInfo();
+                        String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
+                        if (!Utilities.isEmpty(name)) {
+                            info.name = name;
+                        }
+                        int nowItemPosition = mDialogAskAddWithSmr.getNowItemPosition();
+                        info.number = mPhoneNumber;
+                        info.markType = CallFilterConstants.MK_BLACK_LIST;
+                        switch (nowItemPosition) {
+                            case 0:
+                                info.markType = CallFilterConstants.MK_CRANK;
+                                break;
+                            case 1:
+                                info.markType = CallFilterConstants.MK_ADVERTISE;
+                                break;
+                            case 2:
+                                info.markType = CallFilterConstants.MK_FRAUD;
+                                break;
+                            default:
+                                break;
+                        }
+                        infost.add(info);
+                        boolean inerFlag = mCmp.addBlackList(infost, false);
+                        if (!inerFlag) {
+                            CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
+                            cm.addBlackFailTip();
+                        }
+                        notiUpdateBlackList();
+                    }
+                });
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                 mDialogAskAddWithSmr.dismiss();
 //                AskAddToBlacklistActivity.this.finish();
@@ -331,21 +350,26 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogAskAdd.setRightBtnListener(new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
-                BlackListInfo info = new BlackListInfo();
-                String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
-                if (!Utilities.isEmpty(name)) {
-                    info.name = name;
-                }
-                info.number = mPhoneNumber;
-                info.markType = CallFilterConstants.MK_BLACK_LIST;
-                infost.add(info);
-                boolean inerFlag =  mCmp.addBlackList(infost, false);
-                if (!inerFlag) {
-                    CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
-                    cm.addBlackFailTip();
-                }
-                notiUpdateBlackList();
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+                        BlackListInfo info = new BlackListInfo();
+                        String name = PrivacyContactUtils.getContactNameFromNumber(getContentResolver(), mPhoneNumber);
+                        if (!Utilities.isEmpty(name)) {
+                            info.name = name;
+                        }
+                        info.number = mPhoneNumber;
+                        info.markType = CallFilterConstants.MK_BLACK_LIST;
+                        infost.add(info);
+                        boolean inerFlag = mCmp.addBlackList(infost, false);
+                        if (!inerFlag) {
+                            CallFilterHelper cm = CallFilterHelper.getInstance(AskAddToBlacklistActivity.this);
+                            cm.addBlackFailTip();
+                        }
+                        notiUpdateBlackList();
+                    }
+                });
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.add_black_list_done), Toast.LENGTH_SHORT).show();
                 mDialogAskAdd.dismiss();
                 SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block");
