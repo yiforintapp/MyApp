@@ -544,8 +544,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void initBoostLayout() {
         BatteryManager btrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
         boolean isBatteryPowSavOpen = btrManager.getBatteryPowSavStatus();
-//        if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
-        if (true) {
+        if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
+//        if (true) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_save");
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
