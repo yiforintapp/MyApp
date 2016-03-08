@@ -39,6 +39,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
@@ -185,6 +186,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private PreferenceTable mPt;
     private BaseSelfDurationToast mPermissionGuideToast;
     private TextView mTvPermissionTip;
+    private ViewStub mVsPermissionTip;
+    private View mVPermissionTip;
     /**
      * 大banner
      */
@@ -572,13 +575,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryShowNoPermissionTip() {
-//        Toast.makeText(LockScreenActivity.this, "虚拟按键？ = " + Utilities.hasNavigationBar(this), Toast.LENGTH_SHORT).show();
-//        Toast.makeText(LockScreenActivity.this, Build.VERSION.SDK_INT+"__"+TaskDetectService.sDetectSpecial+"__"+BuildProperties.isLenoveModel(), Toast.LENGTH_SHORT).show();
         if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
 //        if (Build.VERSION.SDK_INT >= 21) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
             if (!state.checkAvailable()) {
-//        if (true) {
+                if (mVPermissionTip == null) {
+                    mVPermissionTip = mVsPermissionTip.inflate();
+                }
+                mRlNoPermission = (RelativeLayout) mVPermissionTip.findViewById(R.id.rl_nopermission_tip);
+                mRlNoPermission.setOnClickListener(LockScreenActivity.this);
+                mTvPermissionTip = (TextView) mVPermissionTip.findViewById(R.id.tv_nopermission_tip);
                 mRlNoPermission.setVisibility(View.VISIBLE);
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_show");
                 String tip = mPt.getString(PrefConst.KEY_APP_USAGE_STATE_GUIDE_STRING);
@@ -586,13 +592,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     mTvPermissionTip.setText(tip);
                 }
             } else {
-                mRlNoPermission.setVisibility(View.GONE);
+                if (mRlNoPermission != null) {
+                    mRlNoPermission.setVisibility(View.GONE);
+                }
                 if (mHasClickGoGrantPermission) {
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
                     mHasClickGoGrantPermission = false;
                 }
             }
         }else {
+            if (mRlNoPermission != null) {
+                mRlNoPermission.setVisibility(View.GONE);
+            }
             mRlNoPermission.setVisibility(View.GONE);
             if (mHasClickGoGrantPermission) {
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
@@ -1145,9 +1156,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
-        mRlNoPermission = (RelativeLayout) findViewById(R.id.rl_nopermission_tip);
-        mRlNoPermission.setOnClickListener(this);
-        mTvPermissionTip = (TextView) findViewById(R.id.tv_nopermission_tip);
+        mVsPermissionTip = (ViewStub) findViewById(R.id.vs_permission_tip);
         mADAnimalEntry = (ImageView) findViewById(R.id.iv_AD_entry);
         if (!NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
             mADAnimalEntry.setVisibility(View.GONE);

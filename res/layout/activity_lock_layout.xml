@@ -58,7 +58,20 @@
         </RelativeLayout>
 
         <!-- 5.1以上版本没有应用查看权限的提示 -->
-        <RelativeLayout
+        <ViewStub
+            android:id="@+id/vs_permission_tip"
+            android:layout="@layout/viewstub_permission_tip"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginBottom="@dimen/lockscreen_permissiontip_marginbottom"
+            android:layout_above="@id/slider"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
+
+
+        <!--<RelativeLayout
             android:id="@+id/rl_nopermission_tip"
             android:visibility= "visible"
             android:layout_marginBottom="@dimen/lockscreen_permissiontip_marginbottom"
@@ -100,7 +113,7 @@
                 android:layout_centerVertical="true"
                 android:layout_height="16dp"
                 android:src="@drawable/share_good_go" />
-        </RelativeLayout>
+        </RelativeLayout>-->
         
         <RelativeLayout
             android:id="@+id/switch_bottom_content"
