@@ -69,7 +69,7 @@
 
     <!-- 点击会展开半屏广告的banner -->
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/rl_halfSreenBannerAD"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -117,7 +117,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:src="@drawable/bt_ad_halfscreen_open" />
-    </RelativeLayout>
+    </RelativeLayout>-->
     
     <FrameLayout
         android:id="@+id/camera_preview"

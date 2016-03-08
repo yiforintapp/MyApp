@@ -25,6 +25,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -181,16 +182,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private String mLockTitle;
     // private ImageView mThemeView;
     private ImageView mAdIcon, mAdIconRedTip;
-    private View switch_bottom_content;
+    // private View switch_bottom_content;
     private ImageView mADAnimalEntry;
     private PreferenceTable mPt;
     private BaseSelfDurationToast mPermissionGuideToast;
     private TextView mTvPermissionTip;
+    private ViewStub mVsPermissionTip;
     private View mVPermissionTip;
     /**
      * 大banner
      */
-    private FrameLayout mBannerParent;
+//    private FrameLayout mBannerParent;
     private ViewPager mBannerContainer;
     private AdBannerAdapter mAdapterCycle;
     private LinkedHashMap<String, WrappedCampaign> mAdMap = new LinkedHashMap<String, WrappedCampaign>();
@@ -264,9 +266,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        long start = SystemClock.elapsedRealtime();
         setContentView(R.layout.activity_lock_layout);
-//        registerHomeKeyReceiver();
-        LeoLog.d(TAG, "onCreate...");
+//        registerHomeKeyReceiver()
+        LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
         mISManager = (IntrudeSecurityManager) MgrContext
                 .getManager(MgrContext.MGR_INTRUDE_SECURITY);
         mPt = PreferenceTable.getInstance();
@@ -1155,31 +1158,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
-        mADAnimalEntry = (ImageView) findViewById(R.id.iv_AD_entry);
-        if (!NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
-            mADAnimalEntry.setVisibility(View.GONE);
-        }
+        mVsPermissionTip = (ViewStub) findViewById(R.id.vs_permission_tip);
 
-        mADAnimalEntry.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "draw");
-                interupAinimation = true;
-                // Toast.makeText(LockScreenActivity.this, showType + "",
-                // 0).show();
-                mADAnimalEntry.setVisibility(View.GONE);
-                Intent intent = new Intent(LockScreenActivity.this,
-                        UFOActivity.class);// TODO
-                startActivity(intent);
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "ad_draw");
-                overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
-            }
-        });
-
-        // mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
-        // mThemeView = (ImageView) findViewById(R.id.img_layout_right);
-        switch_bottom_content = findViewById(R.id.switch_bottom_content);
-        switch_bottom_content.setVisibility(View.INVISIBLE);
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
             mTtileBar.setBackArrowVisibility(View.GONE);
@@ -1194,14 +1174,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     }
                 }
                 if (targetMode != null) {
-//                    mTtileBar.setTitle(R.string.change_lock_mode);
                     setQuickLockModeTiltleBarInfo(targetMode);
                 } else {
-//                    mTtileBar.setTitle(R.string.app_name);
                     setTiltleBarInfo(getPackageName());
                 }
-            } else {
-//                mTtileBar.setTitle(R.string.app_name);
             }
         } else {
             mTtileBar.setSelfBackPressListener(this);
@@ -1215,12 +1191,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mTtileBar.setHelpSettingVisiblity(View.INVISIBLE);
         }
 
-        // if (AppMasterPreference.getInstance(this).getLockScreenMenuClicked())
-        // {
         mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
-        // } else {
-        // mTtileBar.setOptionImage(R.drawable.menu_item_red_tip_btn);
-        // }
 
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
@@ -1237,11 +1208,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAdIcon.setOnClickListener(this);
         }
 
-        // mThemeView = (ImageView) findViewById(R.id.img_layout_right);
-        // ((View) mThemeView.getParent()).setVisibility(View.VISIBLE);
-        // mThemeView.setVisibility(View.VISIBLE);
-        // mThemeView.setOnClickListener(this);
-
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tans = fm.beginTransaction();
         tans.replace(R.id.fragment_contain, mLockFragment);
@@ -1254,7 +1220,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 初始化广告UI */
     private void initAD() {
-        mBannerParent = (FrameLayout) findViewById(R.id.large_adbanner_parent);
+//        mBannerParent = (FrameLayout) findViewById(R.id.large_adbanner_parent);
         mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
         mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
         mBannerContainer.setOffscreenPageLimit(2);
@@ -1263,7 +1229,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void loadAD() {
 
-        mBannerParent.setVisibility(View.VISIBLE);
+        mBannerContainer.setVisibility(View.VISIBLE);
         mAdUnitIdList.clear();
         mMobvistaListenerList.clear();
         mAdMap.clear();
@@ -1277,7 +1243,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		/*调用sdk前，明确是哪个sdk，mobvista or max ? */
 		AppMasterPreference sp = AppMasterPreference.getInstance(this.getApplicationContext());
 		mAdSource = sp.getLockBannerAdConfig();
+        long start = SystemClock.elapsedRealtime();
         asyncLoadAd();
+        LeoLog.d(TAG, "TsCost, loadAD..." + (SystemClock.elapsedRealtime() - start));
     }
 
     /**

@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,23 +21,27 @@
             android:layout_marginTop="@dimen/fragment_lock_margin_top"
             android:layout_below="@id/layout_title_bar"/>
 
-        <FrameLayout
+        <android.support.v4.view.ViewPager
+            android:id="@+id/large_adbanner_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fragment_lock_large_banner_out_height"
+            android:clipToPadding="false"
+            android:paddingLeft="@dimen/fragment_lock_large_banner_pading"
+            android:paddingRight="@dimen/fragment_lock_large_banner_pading"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_below="@id/layout_title_bar"
+            />
+
+        <!--<FrameLayout
             android:id="@+id/large_adbanner_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/layout_title_bar"
             android:visibility="gone">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/large_adbanner_container"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fragment_lock_large_banner_out_height"
-                android:clipToPadding="false"
-                android:paddingLeft="@dimen/fragment_lock_large_banner_pading"
-                android:paddingRight="@dimen/fragment_lock_large_banner_pading"
-                android:layout_gravity="center"
-                /><!--"@dimen/fragment_lock_large_banner_out_width"-->
-        </FrameLayout>
+
+        </FrameLayout>-->
         
         <RelativeLayout
             android:id="@+id/lockerGuide"
@@ -115,7 +119,7 @@
                 android:src="@drawable/share_good_go" />
         </RelativeLayout>-->
         
-        <RelativeLayout
+        <!--<RelativeLayout
             android:id="@+id/switch_bottom_content"
             android:layout_width="wrap_content"
             android:layout_height="23dp"
@@ -156,7 +160,7 @@
             android:background="@drawable/alien_bg1"
             android:focusable="true"
             android:onClick="true"
-            android:visibility="invisible" />
+            android:visibility="invisible" />-->
     </RelativeLayout>
 
     <RelativeLayout
@@ -165,4 +169,4 @@
         android:layout_height="match_parent"
         android:gravity="center"></RelativeLayout>
 
-</FrameLayout>
+</merge>
