@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -61,7 +62,8 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
     private static final boolean DBG = false;
-
+    //中文简写
+    private static final String ZH = "zh";
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
     public static final String SPLASH_TO_WEBVIEW = "splash_to_webview";
 
@@ -597,31 +599,41 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                 currentVersionName);
     }
 
+
     private void showNewFuncGuide() {
         mNewFuncPageViews = new ArrayList<View>();
         LayoutInflater inflater = getLayoutInflater();
         TextView tvTitle, tvContent;
         Button enterAppButton;
         ImageView bigImage = null;
-        mPageColors[3] = getResources().getColor(R.color.new_guide_page2_background_color);
+        int initColor = 0;
         mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
         mPageColors[5] = getResources().getColor(R.color.new_guide_page4_background_color);
         /*骚扰拦截引导*/
         mPageColors[6] = getResources().getColor(R.color.new_guide_page1_background_color);
 
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
-        mNewPageBackgroundView.initBackgroundColor(mPageColors[3]);
         /* 显示跳过按钮 */
         setSkipClickListener();
-        /* page1 */
-        ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page1.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.gd_leo_pic));
-        tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.gde_renm_title));
-        tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.gde_renm_content));
-        mNewFuncPageViews.add(page1);
+
+        //显示新名字引导处理
+        String language = Locale.getDefault().getLanguage();
+        if (!ZH.equalsIgnoreCase(language)) {
+            mPageColors[3] = getResources().getColor(R.color.new_guide_page2_background_color);
+            /* page1 */
+            ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+            bigImage = (ImageView) page1.findViewById(R.id.guide_image);
+            bigImage.setImageDrawable(getResources().getDrawable(R.drawable.gd_leo_pic));
+            tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
+            tvTitle.setText(getResources().getString(R.string.gde_renm_title));
+            tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
+            tvContent.setText(getResources().getString(R.string.gde_renm_content));
+            mNewFuncPageViews.add(page1);
+            initColor = 3;
+        }else{
+            initColor = 4;
+        }
+        mNewPageBackgroundView.initBackgroundColor(mPageColors[initColor]);
 
         /* page2 */
         ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
@@ -663,7 +675,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         mNewFuncViewPager.setAdapter(new GuidePageAdapter(mNewFuncPageViews));
         mIndicator = (CirclePageIndicator) mNewGuideMain.findViewById(R.id.new_splash_indicator);
         mIndicator.setViewPager(mNewFuncViewPager);
-        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 3));
+        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, initColor));
 
         enterAppButton = (Button) page4.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
