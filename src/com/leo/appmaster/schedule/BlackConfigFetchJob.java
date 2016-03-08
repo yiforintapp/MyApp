@@ -20,7 +20,7 @@ import org.json.JSONObject;
  */
 public class BlackConfigFetchJob extends FetchScheduleJob {
 
-    public static final boolean DBG = true;
+    public static final boolean DBG = false;
 
     /**
      * 骚扰拦截用户数量参数
