@@ -107,7 +107,8 @@
         <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_item_pow_sav"
             android:layout_width="match_parent"
-            android:layout_height="68dp"
+            android:layout_height="wrap_content"
+            android:minHeight="68dp"
             app:rippleAlpha="1"
             app:rippleColor="@color/home_tab_pressed"
             app:rippleDuration="250"
@@ -169,7 +170,8 @@
         <com.leo.appmaster.ui.RippleView
             android:id="@+id/rv_item_noti"
             android:layout_width="match_parent"
-            android:layout_height="68dp"
+            android:layout_height="wrap_content"
+            android:minHeight="68dp"
             app:rippleAlpha="1"
             app:rippleColor="@color/home_tab_pressed"
             app:rippleDuration="250"
