@@ -119,6 +119,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     //    private TextView mTvTime;
     private SelfScrollView mScrollView;
     private WaveView mBottleWater;
+    private ImageView mIvLight;
     private TextView mTvHideTime;
     private TextView mTvHideText;
     private View mSettingView;
@@ -454,6 +455,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
 
         mBottleWater = (WaveView) findViewById(R.id.bottle_water);
+        mIvLight = (ImageView) findViewById(R.id.iv_battery_light);
 //        mBottleWater.setPostInvalidateDelayMs(40);
         mBottleWater.setWaveColor(0xff0ad931);
         mBottleWater.setWave2Color(0xff0ab522);
@@ -1724,6 +1726,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (newState != null && mBottleWater != null) {
             int level = newState.level;
             mBottleWater.setPercent(level);
+            if (level >= 30) {
+                mIvLight.setVisibility(View.VISIBLE);
+            } else {
+                mIvLight.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

@@ -94,6 +94,7 @@
                 android:typeface="monospace" />
 
             <ImageView
+                android:id="@+id/iv_battery_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
