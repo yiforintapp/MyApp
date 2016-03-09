@@ -224,7 +224,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case MOVE_UP:
-                    if (mBossView.getVisibility() == View.VISIBLE && mArrowMoveContent.getVisibility() == View.VISIBLE) {
+                    if (mBossView != null && mBossView.getVisibility() == View.VISIBLE &&
+                            mArrowMoveContent.getVisibility() == View.VISIBLE) {
                         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_up");
                         mIvArrowMove.setBackgroundResource(R.drawable.bay_arrow_down);
                         mShowing = true;
@@ -334,9 +335,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private void reLocateMoveContent(int type) {
         LeoLog.d("locationP", "slideview Y : " + mSlideView.getY());
-        final int contentHeight = mBossView.getHeight();
+        int contentHeight = 0;
 
-        LeoLog.d("locationP", "mBossView.getHeight() : " + mBossView.getHeight());
+        if (mBossView != null) {
+            contentHeight = mBossView.getHeight();
+            LeoLog.d("locationP", "mBossView.getHeight() : " + mBossView.getHeight());
+        }
 
         setYplace(contentHeight, type);
     }
@@ -369,7 +373,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             }
 
-            int biggestDistance = mBossView.getHeight() / 3;
+            int biggestDistance = 0;
+            if (mBossView != null) {
+                biggestDistance = mBossView.getHeight() / 3;
+            }
             if (mMoveDisdance < biggestDistance) {
                 mMoveDisdance = biggestDistance;
                 LeoLog.d("locationP", "so high , reset");
@@ -401,7 +408,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         mCurrentClickType = 0;
                         shrinkRecommandContent(false);
                     }
-                    mBossView.setVisibility(View.VISIBLE);
+                    if (mBossView != null) {
+                        mBossView.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
@@ -783,9 +792,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mRecommandView.setVisibility(View.VISIBLE);
 
-        boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
-        if (isSlideContentShow) {
-            adDimissAnima();
+        if (mBossView != null) {
+            boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
+            if (isSlideContentShow) {
+                adDimissAnima();
+            }
         }
 
 
@@ -1418,9 +1429,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         shrink.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
-                if (isSlideContentShow && isShowAdAnima) {
-                    adShowAnima();
+                if (mBossView != null) {
+                    boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
+                    if (isSlideContentShow && isShowAdAnima) {
+                        adShowAnima();
+                    }
                 }
             }
 
@@ -2566,7 +2579,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     mRemainTimeContent.setVisibility(View.VISIBLE);
                     mRemainContent.setVisibility(View.VISIBLE);
                 }
-                mBossView.setVisibility(View.INVISIBLE);
+                if (mBossView != null) {
+                    mBossView.setVisibility(View.INVISIBLE);
+                }
                 popupWindow.dismiss();
 
                 showRecommandContent(RECOMMAND_TYPE_TWO);
