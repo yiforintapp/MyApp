@@ -504,10 +504,10 @@ public class MobvistaEngine {
                 } catch (Exception e) {
                 }
             }
-            //loadSingleMobAd(mUnitId);
-//            if(!Constants.UNIT_ID_59.equals(mUnitId)) {
-//                loadSingleMobAd(Constants.UNIT_ID_59);
-//            }
+            loadSingleMobAd(mUnitId);
+            if(!Constants.UNIT_ID_59.equals(mUnitId)) {
+                loadSingleMobAd(Constants.UNIT_ID_59);
+            }
         }
 		
 		
