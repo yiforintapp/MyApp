@@ -1537,7 +1537,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 if (mClickRunnable != null) {
                     mClickRunnable.run();
                     mClickRunnable = null;
-//                    mActivity.finish();
                 }
             }
         }
@@ -1600,7 +1599,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void setThreeRemainTime(int[] timeArr) {
-        if (timeArr == null && timeArr.length < 3) {
+        if (timeArr == null || timeArr.length < 3) {
             return;
         }
         int phoneTime = timeArr[0];
@@ -2211,7 +2210,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     fillShowContentData(recommandTypeThree);
                 }
             } else {
-                //TODO 展示内容替换
                 turnDark(recommandTypeThree);
                 fillShowContentData(recommandTypeThree);
             }
@@ -2244,7 +2242,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             // 没有锁或者默认浏览器不是chrome，直接跑
             mClickRunnable.run();
             mClickRunnable = null;
-//            mActivity.finish();
         }
     }
 
@@ -2297,7 +2294,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (mShouldLoadAd) {
             LeoLog.d(TAG, "release ad");
             ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, Constants.UNIT_ID_CHARGING);
-            //MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_CHARGING);
         }
     }
 
@@ -2327,9 +2323,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             if (loadedImage != null && fragment != null) {
                 try {
                     LeoLog.d(TAG, "load done: " + imageUri);
-
                     fragment.initAdLayout(fragment.mRootView, mCampaign, loadedImage);
-
                 } catch (Exception e) {
                     LeoLog.e(TAG, "[Impression]Catch exception happen inside Mobvista: ");
                     if (e != null) {
@@ -2360,7 +2354,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             ignoreBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO 用户点击了ignore右上角的菜单
                     LeoLog.d("stone_test_ignore", "ignore!");
                     showPopUp(ignoreBtn);
                 }
@@ -2429,23 +2422,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         boolean isContentEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
-
         boolean isImgUrlEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL));
-
         boolean isTypeEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TYPE));
-
         boolean isGpUrlEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_GP_URL));
-
         boolean isBrowserUrlEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_URL));
-
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (true) {
             mSwiftyView = viewStub.inflate();
 
             mSwiftyImg = (ImageView) mSwiftyView.findViewById(R.id.card_img);
@@ -2497,23 +2484,17 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         boolean isContentEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
-
         boolean isImgUrlEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL));
-
         boolean isTypeEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_TYPE));
-
         boolean isGpUrlEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_GP_URL));
-
         boolean isBrowserUrlEmpty = TextUtils.isEmpty(
                 preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_URL));
-
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-//        if (false) {
             mExtraView = viewStub.inflate();
             mExtraTitle = (TextView) mExtraView.findViewById(R.id.card_title);
             mExtraImg = (ImageView) mExtraView.findViewById(R.id.card_img);
