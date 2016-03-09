@@ -177,6 +177,15 @@ public class BatteryNotifyHelper {
 
     /* 3.3.2 充电屏保通知 */
     public void showNotificationForScreenSaver(int level, boolean onSystemLockScreen) {
+        NotificationManager mNotificationManager =
+                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        /* 充满后不显示屏保 - 直接去掉 */
+        if (level == 100) {
+            mNotificationManager.cancel(SAVER_NOTIFICATION_ID);
+            return;
+        }
+
         int remainSecond = mManager.getRemainChargingTime(level);
         int hours = remainSecond/(60*60);
         int minutes = (remainSecond%(60*60))/60;
@@ -184,8 +193,6 @@ public class BatteryNotifyHelper {
 
         LeoLog.d("BatteryNotifyHelper", "in showNotificationForScreenSaver, level = "
                 + level + "; onSystemLockScreen = " + onSystemLockScreen);
-        NotificationManager mNotificationManager =
-                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         RemoteViews view_custom;
         if (level == 100) {
