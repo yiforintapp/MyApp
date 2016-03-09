@@ -1063,7 +1063,7 @@
     <string name="battery_protect_view_remain_two_title">Internet</string>
     <string name="pri_pro_wifi_not_scan">Wi-Fiمستعمل غير الفحص</string>
     <string name="addto_blacklist_share_dialog_title">نجح الاضافة  !</string>
-    <string name="addto_blacklist_share_content">s$1%الازعاج و تضيفها الي  القائمة السوداء .انتبه ! تريد الا توجد الازعاج؟ تنزل:LEO Pravicy s$2%</string>
+    <string name="addto_blacklist_share_content">%1$sالازعاج و تضيفها الي  القائمة السوداء .انتبه ! تريد الا توجد الازعاج؟ تنزل:LEO Pravicy %2$s</string>
     <string name="toast_hide_ing">اخفاء الصور الآن</string>
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_content">اسم جديد، بداية جديدة </string>
