@@ -36,6 +36,8 @@
                 <TextView
                     android:id="@+id/tv_charge_tip"
                     android:textColor="@color/c2"
+                    android:singleLine="true"
+                    android:layout_marginRight="14dp"
                     android:textSize="@dimen/f1"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"

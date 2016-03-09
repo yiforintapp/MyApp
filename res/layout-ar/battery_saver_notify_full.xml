@@ -37,6 +37,7 @@
                     android:id="@+id/tv_charge_tip"
                     android:textColor="@color/c2"
                     android:gravity="center_vertical"
+                    android:singleLine="true"
                     android:textSize="@dimen/f1"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="17dp"

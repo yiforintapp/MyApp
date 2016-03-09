@@ -78,6 +78,8 @@
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f5"
                     android:text="@string/battery_saver_remain_charge_time"
+                    android:singleLine="true"
+                    android:layout_marginRight="14dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
