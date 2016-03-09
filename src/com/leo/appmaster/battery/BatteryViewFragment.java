@@ -569,13 +569,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 public void onBoostFinish() {
                     PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
                     checkingData(true);
-                    showViewAfterBoost();
+                    showViewAfterBoost(true);
                     timeTurnSmall();
                 }
             });
         } else {
             checkingData(false);
-            showViewAfterBoost();
+            showViewAfterBoost(false);
         }
     }
 
@@ -688,7 +688,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         set.start();
     }
 
-    private void showViewAfterBoost() {
+    private void showViewAfterBoost(boolean afterAnimation) {
         mRemainTimeContent.setVisibility(View.VISIBLE);
         mRemainContent.setVisibility(View.VISIBLE);
 
@@ -708,7 +708,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mMaskView = (GradientMaskView) findViewById(R.id.mask_view);
 
-        startRemindTimeAppearAnim();
+        if (afterAnimation) {
+            startRemindTimeAppearAnim();
+        } else {
+            expandRecommandContent(RECOMMAND_TYPE_TWO, true);
+        }
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -746,7 +750,22 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void startRemindTimeAppearAnim() {
-        expandRecommandContent(RECOMMAND_TYPE_TWO, true);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(mRemainContent, "alpha", 0f, 255f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(mRemainContent, "scaleX", 0.8f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(mRemainContent, "scaleY", 0.8f, 1f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(500);
+        animatorSet.playTogether(alpha, scaleX, scaleY);
+        animatorSet.start();
+
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                expandRecommandContent(RECOMMAND_TYPE_TWO, true);
+            }
+        });
     }
 
     private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
