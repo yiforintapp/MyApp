@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
@@ -42,7 +41,7 @@ public class BatteryBoostController extends RelativeLayout {
 
     private static final int BOOST_SIZE = 6;
     private static final int BOOST_ITEM_DURATION = 300;
-    private static final int MIN_BOOST_NUM = 5;
+    private static final int MIN_BOOST_NUM = 6;
     private ImageView mShieldIv;
     private CircleArroundView mShieldCircle;
     private BatteryBoostAnimView mBoostAnimView;
@@ -161,7 +160,7 @@ public class BatteryBoostController extends RelativeLayout {
                 cleaner.tryClean(getContext());
                 List<BatteryComsuption> afterBoost = batteryManager.getBatteryDrainApps();
 
-                mCleanedNum = afterBoost.size() - beforeBoost.size();
+                mCleanedNum = beforeBoost.size() - afterBoost.size();
             }
         });
     }
@@ -318,7 +317,7 @@ public class BatteryBoostController extends RelativeLayout {
                         @Override
                         public void onArroundFinish() {
                             ivShield.setVisibility(View.VISIBLE);
-                            int number = mCleanedNum <= 0 ? MIN_BOOST_NUM : mCleanedNum;
+                            int number = mCleanedNum <= MIN_BOOST_NUM ? MIN_BOOST_NUM : mCleanedNum;
                             double seed = Math.random();
                             int minites = (int) (number + ((float) number * seed));
                             String boostResult = getContext().getString(R.string.battery_boost_result, minites, number);

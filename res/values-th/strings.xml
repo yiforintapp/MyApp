@@ -960,7 +960,7 @@
     <string name="battery_protect_view_show_title">แนะนำให้ใช้</string>
     <string name="addto_blacklist_share_dialog_title">เพิ่มเติมสำเร็จ</string>
     <string name="addto_blacklist_share_dialog_content">แบ่งความสุขกับเพื่อน ให้ผู้ความลับส่วนตัวช่วยแยกแยะโทรศัพท์ก่อกวน</string>
-    <string name="addto_blacklist_share_content">%1sคือโทรศัพท์ก่อกวน รีบให้มันเดิมเข้าไปบัญชีดำ หลีกเลี่ยงโทรศัพท์ก่อกวนรักษความปลอดภัยส่วนตัว แนะนำใช้LEOผู้ความลับส่วนตัว  </string>
+    <string name="addto_blacklist_share_content">%1$sคือโทรศัพท์ก่อกวน รีบให้มันเดิมเข้าไปบัญชีดำ หลีกเลี่ยงโทรศัพท์ก่อกวนรักษความปลอดภัยส่วนตัว แนะนำใช้LEOผู้ความลับส่วนตัว%2$s</string>
     <string name="toast_hide_ing">กำลังแฝงรูปภาพ</string>
     <string name="battery_protect_show_num_contact">ติดต่อ</string>
     <string name="battery_protect_show_num_call">โทรศัพท์</string>
