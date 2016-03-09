@@ -334,7 +334,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private BatteryBoostController mBoostView;
 
     private void reLocateMoveContent(int type) {
-        LeoLog.d("locationP", "slideview Y : " + mSlideView.getY());
+        if (mSlideView != null) {
+            LeoLog.d("locationP", "slideview Y : " + mSlideView.getY());
+        }
         int contentHeight = 0;
 
         if (mBossView != null) {
@@ -396,6 +398,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
 
 
+            if (mSlideView != null) {
+                return;
+            }
             LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
             ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                     "y", contentHeight, mSlideView.getTop() + mMoveDisdance);
@@ -828,6 +833,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void adDimissAnima() {
+        if (mSlideView == null) {
+            return;
+        }
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop() + mSlideView.getHeight());
         animMoveY.addListener(new AnimatorListenerAdapter() {
@@ -847,6 +855,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void adShowAnima() {
+        if (mSlideView == null) {
+            return;
+        }
         mSlideView.setVisibility(View.VISIBLE);
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mSlideView.getHeight(), mSlideView.getTop() + mMoveDisdance);
@@ -1894,7 +1905,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveUp() {
-        if (mActivity == null) return;
+        if (mActivity == null || mSlideView == null) {
+            return;
+        }
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop());
 
@@ -1917,7 +1930,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showMoveDown() {
-        if (mActivity == null) return;
+        if (mActivity == null || mSlideView == null) {
+            return;
+        }
         ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                 "y", mSlideView.getTop(), mSlideView.getTop() + mMoveDisdance);
         animMoveY.setDuration(ANIMATION_TIME);
