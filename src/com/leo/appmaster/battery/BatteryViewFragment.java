@@ -398,7 +398,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     boolean isExpandContentShow = mRecommandView.getVisibility() == View.VISIBLE;
                     if (isExpandContentShow) {
                         mCurrentClickType = 0;
-                        shrinkRecommandContent();
+                        shrinkRecommandContent(false);
                     }
                     mBossView.setVisibility(View.VISIBLE);
                 }
@@ -775,10 +775,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mMaskView.hideMask();
 
         mRecommandView.setVisibility(View.VISIBLE);
+
         boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
         if (isSlideContentShow) {
-            mSlideView.setVisibility(View.INVISIBLE);
+            adDimissAnima();
         }
+
 
         mRecommandView.clearAnimation();
         mRecommandContentView.setVisibility(View.INVISIBLE);
@@ -806,6 +808,34 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         });
         mRecommandView.setAnimation(expand);
     }
+
+    private void adDimissAnima() {
+        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+                "y", mSlideView.getTop() + mMoveDisdance, mSlideView.getTop() + mSlideView.getHeight());
+        animMoveY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mSlideView.setVisibility(View.INVISIBLE);
+            }
+        });
+        animMoveY.setDuration(300);
+        animMoveY.start();
+    }
+
+    private void adShowAnima() {
+        mSlideView.setVisibility(View.VISIBLE);
+        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
+                "y", mSlideView.getTop() + mSlideView.getHeight(), mSlideView.getTop() + mMoveDisdance);
+        animMoveY.setDuration(300);
+        animMoveY.start();
+    }
+
 
     private void fillShowContentData(int recommandTypeThree) {
         if (mActivity == null) return;
@@ -1365,7 +1395,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         return pack;
     }
 
-    private void shrinkRecommandContent() {
+    private void shrinkRecommandContent(final boolean isShowAdAnima) {
         if (mActivity == null) return;
         turnLight();
         isClickable = false;
@@ -1381,16 +1411,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         shrink.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
+                if (isSlideContentShow && isShowAdAnima) {
+                    adShowAnima();
+                }
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 mRecommandView.setVisibility(View.INVISIBLE);
-
-                boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
-                if (isSlideContentShow) {
-                    mSlideView.setVisibility(View.VISIBLE);
-                }
                 isClickable = true;
             }
 
@@ -2011,7 +2040,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             case R.id.background_pic:
                 if (mRecommandView.getVisibility() == View.VISIBLE && isClickable) {
                     mCurrentClickType = 0;
-                    shrinkRecommandContent();
+                    shrinkRecommandContent(true);
                 }
                 break;
         }
@@ -2152,14 +2181,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void showRecommandContent(int recommandTypeThree) {
         if (mCurrentClickType == recommandTypeThree) {
             mCurrentClickType = 0;
-            shrinkRecommandContent();
+            shrinkRecommandContent(true);
         } else {
             if (mCurrentClickType == 0) {
                 expandRecommandContent(recommandTypeThree, false);
             } else if (mCurrentClickType == -1) {
                 if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
                     mCurrentClickType = 0;
-                    shrinkRecommandContent();
+                    shrinkRecommandContent(true);
                     return;
                 } else {
                     turnDark(recommandTypeThree);
