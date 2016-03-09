@@ -72,7 +72,8 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
         if (stats != null) {
             SortedMap<Long, UsageStats> runningTask = new TreeMap<Long, UsageStats>();
             for (UsageStats usageStats : stats) {
-                if (usageStats.mLastEvent != UsageEvents.Event.MOVE_TO_BACKGROUND) {
+                if (stats != null && usageStats.mLastEvent != UsageEvents.Event.MOVE_TO_BACKGROUND &&
+                        !"android".equals(usageStats.getPackageName())) {
                     runningTask.put(usageStats.getLastTimeUsed(), usageStats);
                 }
             }
