@@ -410,7 +410,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                     if (type != AD_TYPE_MSG || smallScreen || midScreen) {
                         mArrowMoveContent.setVisibility(View.VISIBLE);
-                        mMaskView.showMask();
+                        if (mMaskView != null) {
+                            mMaskView.showMask();
+                        }
                         isShowMask = true;
                     }
 
@@ -420,11 +422,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             animMoveY.start();
             isSetInitPlace = true;
             mArrowMoveContent.setVisibility(View.INVISIBLE);
-            mMaskView.hideMask();
+            if (mMaskView != null) {
+                mMaskView.hideMask();
+            }
         } else {
             if (nowSetType != type) {
                 mArrowMoveContent.setVisibility(View.VISIBLE);
-                mMaskView.showMask();
+                if (mMaskView != null) {
+                    mMaskView.showMask();
+                }
                 isShowMask = true;
             }
         }
@@ -529,9 +535,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else if (screenHeight <= 480) {
             midScreen = true;
         }
-
-
-        /*mMaskView = (GradientMaskView) findViewById(R.id.mask_view);*/
 
         mInitTime = System.currentTimeMillis();
 
@@ -774,7 +777,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (mActivity == null) return;
         turnDark(recommandTypeThree);
         isClickable = false;
-        mMaskView.hideMask();
+        if (mMaskView != null) {
+            mMaskView.hideMask();
+        }
 
         mRecommandView.setVisibility(View.VISIBLE);
 
@@ -1402,7 +1407,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         turnLight();
         isClickable = false;
 
-        if (isShowMask) {
+        if (isShowMask && mMaskView != null) {
             mMaskView.showMask();
         }
         mRecommandView.clearAnimation();
@@ -1890,7 +1895,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mShowing = false;
                 mScrollView.setScrollY(0);
                 mScrollView.setScrollEnabled(true);
-                mMaskView.setY(mMaskView.getTop() - DipPixelUtil.dip2px(mActivity, 8));
+                if (mMaskView != null) {
+                    mMaskView.setY(mMaskView.getTop() - DipPixelUtil.dip2px(mActivity, 8));
+                }
             }
         });
         animMoveY.start();
@@ -1906,7 +1913,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mMaskView.setY(mMaskView.getTop() + DipPixelUtil.dip2px(mActivity, 8));
+                if (mMaskView != null) {
+                    mMaskView.setY(mMaskView.getTop() + DipPixelUtil.dip2px(mActivity, 8));
+                }
                 mScrollView.setScrollEnabled(false);
             }
 
