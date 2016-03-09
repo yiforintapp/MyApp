@@ -577,18 +577,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void tryShowNoPermissionTip() {
-        if (Build.VERSION.SDK_INT >= 21 && TaskDetectService.sDetectSpecial && !BuildProperties.isLenoveModel()) {
-//        if (Build.VERSION.SDK_INT >= 21) {
+        LeoLog.i("Tip","try show");
+        LeoLog.i("Tip","Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT);
+        LeoLog.i("Tip","TaskDetectService.sDetectSpecial = " + TaskDetectService.sDetectSpecial);
+        LeoLog.i("Tip","BuildProperties.isLenoveModel() = " + BuildProperties.isLenoveModel());
+
+        if (Build.VERSION.SDK_INT >= 21  && !BuildProperties.isLenoveModel()) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
             if (!state.checkAvailable()) {
+                LeoLog.i("Tip","unAvailable");
                 if (mVPermissionTip == null) {
                     ViewStub vs = (ViewStub)findViewById(R.id.vs_permission_tip);
                     mVPermissionTip = vs.inflate();
                 }
                 mRlNoPermission = (RelativeLayout) mVPermissionTip.findViewById(R.id.rl_nopermission_tip);
                 mRlNoPermission.setOnClickListener(LockScreenActivity.this);
-                mTvPermissionTip = (TextView) mVPermissionTip.findViewById(R.id.tv_nopermission_tip);
                 mRlNoPermission.setVisibility(View.VISIBLE);
+                mTvPermissionTip = (TextView) mVPermissionTip.findViewById(R.id.tv_nopermission_tip);
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_show");
                 String tip = mPt.getString(PrefConst.KEY_APP_USAGE_STATE_GUIDE_STRING);
                 if(!TextUtils.isEmpty(tip)) {
