@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="lockscreen_permissiontip_marginbottom">20dp</dimen>
+    <dimen name="lockscreen_permissiontip_marginbottom">15dp</dimen>
     <dimen name="batteryscreen_slidearea_height">70dp</dimen>
     <dimen name="batteryscreen_bossview_height">300dp</dimen>
 	<dimen name="batterymanage_toplayout_height">183dp</dimen>

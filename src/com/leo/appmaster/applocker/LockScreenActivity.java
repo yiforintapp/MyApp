@@ -581,9 +581,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.i("Tip","Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT);
         LeoLog.i("Tip","TaskDetectService.sDetectSpecial = " + TaskDetectService.sDetectSpecial);
         LeoLog.i("Tip","BuildProperties.isLenoveModel() = " + BuildProperties.isLenoveModel());
-
-        if (Build.VERSION.SDK_INT >= 21  && !BuildProperties.isLenoveModel()) {
+//        if (1 == 1) {
+        int[] size = Utilities.getScreenSize(LockScreenActivity.this);
+//        Toast.makeText(LockScreenActivity.this, "size[1] = " + size[1], Toast.LENGTH_SHORT).show();
+        if (Build.VERSION.SDK_INT >= 21  && !BuildProperties.isLenoveModel() && size[1] >= 800) {
             ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
+//            if (2 == 2) {
             if (!state.checkAvailable()) {
                 LeoLog.i("Tip","unAvailable");
                 if (mVPermissionTip == null) {
