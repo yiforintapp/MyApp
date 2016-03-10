@@ -84,6 +84,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     // 3.2 advertise
     private static final String AD_AFTER_SCAN = Constants.UNIT_ID_243;
     private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
+    private boolean mDidLoadAd = false;
     private boolean mAdLoaded;
     private View mRootView;
     private View mAdLayout;
@@ -448,6 +449,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         LeoLog.d("AfterPrivacyScan", "" + amp.getADAfterScan());
         if (amp.getADAfterScan() == 1) {
             /* 3.3.2 封装Max与Mob SDK */
+            mDidLoadAd = true;
             ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, AD_AFTER_SCAN,
                     new ADEngineWrapper.WrappedAdListener() {
                         @Override
@@ -476,7 +478,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mAdLayout.setScaleY(0.0f);
         }
         /* 3.3.2 封装Max与Mob SDK */
-        ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, AD_AFTER_SCAN);
+        if (mDidLoadAd) {
+            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, AD_AFTER_SCAN);
+        }
     }
 
     public static class AdPreviewLoaderListener implements ImageLoadingListener {

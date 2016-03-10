@@ -280,7 +280,9 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_67);
+        if (mDidLoadAd) {
+            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_67);
+        }
         if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
             mAnimatorSet = null;
@@ -338,11 +340,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private static AdPreviewLoaderListener sAdImageListener;
-
+    private boolean mDidLoadAd = false;
     private void loadAd(final View view) {
         LeoLog.d(TAG, "loadAD with thread " + Thread.currentThread().getName());
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         if (amp.getIsADAfterPrivacyProtectionOpen() == 1) {
+            mDidLoadAd = true;
             ThreadManager.executeOnUiThread(new Runnable() {
                 @Override
                 public void run() {

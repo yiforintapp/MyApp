@@ -203,6 +203,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
     private final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2};
 	private boolean otherAdSwitcher = false;
+    private boolean mDidLoadAd = false;
     //private String[] mBannerAdids = {"12346_00001"};
 
     private RelativeLayout mPretendLayout;
@@ -587,8 +588,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void tryShowNoPermissionTip() {
         LeoLog.i("Tip","try show");
         LeoLog.i("Tip","Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT);
-        LeoLog.i("Tip","TaskDetectService.sDetectSpecial = " + TaskDetectService.sDetectSpecial);
-        LeoLog.i("Tip","BuildProperties.isLenoveModel() = " + BuildProperties.isLenoveModel());
+        LeoLog.i("Tip", "TaskDetectService.sDetectSpecial = " + TaskDetectService.sDetectSpecial);
+        LeoLog.i("Tip", "BuildProperties.isLenoveModel() = " + BuildProperties.isLenoveModel());
 //        if (1 == 1) {
         int[] size = Utilities.getScreenSize(LockScreenActivity.this);
 //        Toast.makeText(LockScreenActivity.this, "size[1] = " + size[1], Toast.LENGTH_SHORT).show();
@@ -1133,7 +1134,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 						LeoLog.d("LEOAdEngine", "id : =" + id);
 						//LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
 						/* 3.3.2 封装Max与Mob SDK */
-						ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id);
+                        if (mDidLoadAd) {
+						    ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id);
+                        }
 					}
                 }
             });
@@ -1253,7 +1256,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void loadAD() {
-
+        mDidLoadAd = true;
         mBannerContainer.setVisibility(View.VISIBLE);
         mAdUnitIdList.clear();
         mMobvistaListenerList.clear();

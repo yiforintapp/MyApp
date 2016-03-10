@@ -124,7 +124,9 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60);
+        if (mDidLoadAd) {
+            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60);
+        }
         ImageLoader.getInstance().clearMemoryCache();
         if (mFiveStarLayout != null) {
             mFiveStarLayout.stopAnim();
@@ -254,10 +256,11 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     }
 
     private static AdPreviewLoaderListener sAdImageListener;
-
+    private boolean mDidLoadAd = false;
     private void loadAd(final View rootView) {
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         if (amp.getADWifiScan() == 1) {
+            mDidLoadAd = true;
             LeoLog.d("MobvistaEngine", "Wifi result position start to load ad");
             MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, new MobvistaListener() {
 

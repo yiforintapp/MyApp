@@ -117,6 +117,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private final String TAG = "IntruderCatchedActivity";
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
+    private boolean mShouldLoadAd = false;
+
     private LinearLayout mFiveStarLayout;
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
@@ -152,7 +154,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mLayout != null) {
             mLayout.stopAnim();
         }
-        ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
+        if (mShouldLoadAd) {
+            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
+        }
     }
 
     @Override
@@ -340,7 +344,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     /* 3.2 advertise stuff - begin */
     private void loadAd() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        if (amp.getADIntruder() == 1) {
+        mShouldLoadAd = (amp.getADIntruder() == 1);
+        if (mShouldLoadAd) {
 			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, new ADEngineWrapper.WrappedAdListener() {
 				@Override
 				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
