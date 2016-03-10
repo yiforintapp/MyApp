@@ -22,12 +22,14 @@ public class MTKSendMsmHandler {
     public static final int BACKUP_SECUR_INSTRUCT_ID = 0;
     public static final int SEND_LOCAL_MSM_ID = 1;
     public static final int SIM_CHANAGE_ID = 2;
+    public static final int CPU_TYPE_MTK = 0;
+    public static final int CPU_TYPE_GT = 1;
 
-    public MTKSendMsmHandler(int flag) {
-        mtkSendMsmHandler(flag);
+    public MTKSendMsmHandler(int flag, int cpuType) {
+        mtkAndGtSendMsmHandler(flag, cpuType);
     }
 
-    private void mtkSendMsmHandler(int flag) {
+    private void mtkAndGtSendMsmHandler(int flag, final int typeCpu) {
         LeoLog.d(TAG, "send msm handler from:" + flag);
         if (BACKUP_SECUR_INSTRUCT_ID == flag) {
             ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -41,7 +43,7 @@ public class MTKSendMsmHandler {
                         if (number != null) {
                             String content = AppMasterApplication.getInstance().getResources().getString(R.string.secur_backup_msm);
                             if (!TextUtils.isEmpty(content) && !TextUtils.isEmpty(number[1])) {
-                                SimDetecter.sendMtkDoubleSim(number[1], content, SimDetecter.SIM_TYPE_1);
+                                sendMsmHandler(number[1], content, SimDetecter.SIM_TYPE_1, typeCpu);
                             }
                         }
                     }
@@ -63,9 +65,9 @@ public class MTKSendMsmHandler {
                         return;
                     }
                     String body = sb.toString();
-                    SimDetecter.sendMtkDoubleSim(sendNumber, body, SimDetecter.SIM_TYPE_1);
+                    sendMsmHandler(sendNumber, body, SimDetecter.SIM_TYPE_1, typeCpu);
                     PhoneSecurityManager.getInstance(AppMasterApplication.getInstance()).setLocalMsm(null);
-                    LeoLog.d(TAG,"MTKSendMsmHandler send body:"+body);
+                    LeoLog.d(TAG, "MTKSendMsmHandler send body:" + body);
                 }
             });
         } else if (SIM_CHANAGE_ID == flag) {
@@ -89,10 +91,25 @@ public class MTKSendMsmHandler {
                     if (TextUtils.isEmpty(body) || TextUtils.isEmpty(sendNumber)) {
                         return;
                     }
-                    SimDetecter.sendMtkDoubleSim(sendNumber, body, SimDetecter.SIM_TYPE_1);
+                    sendMsmHandler(sendNumber, body, SimDetecter.SIM_TYPE_1, typeCpu);
                 }
             });
         }
     }
 
+    //MTK和高通同双卡短信处理
+    private void sendMsmHandler(String number, String body, int simType, int cpuType) {
+        switch (cpuType) {
+            case CPU_TYPE_MTK:
+                SimDetecter.sendMtkDoubleSim(number, body, SimDetecter.SIM_TYPE_1);
+                break;
+            case CPU_TYPE_GT:
+                SimDetecter.sendGTDoubleSim(number, body, SimDetecter.SIM_TYPE_1);
+                break;
+            default:
+                break;
+        }
+
+
+    }
 }

@@ -31,6 +31,7 @@ import com.leo.appmaster.phoneSecurity.MTKSendMsmHandler;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.SimDetecter;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactReceiver extends BroadcastReceiver {
@@ -255,11 +256,14 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                         String failStr = mContext.getResources().getString(
                                 R.string.privacy_message_item_send_message_fail);
                         boolean isQiku = PhoneSecurityManager.getInstance(mContext).isQiKuSendFlag();
-                        if (!isQiku) {
+                        boolean isIsSonyMc = PhoneSecurityManager.getInstance(mContext).isIsSonyMc();
+                        if (!isQiku && !isIsSonyMc) {
+                            //不是奇酷，索尼M35c的机型情况
                             Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
+                        } else {
+                            mtkDoubleSimTrySend();
                         }
                         LeoLog.d("MTKSendMsmHandler", "动态，发送失败！");
-                        mtkDoubleSimTrySend();
                     }
                     break;
             }
@@ -271,13 +275,22 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
         PhoneSecurityManager pm = PhoneSecurityManager.getInstance(mContext);
         boolean isQiku = pm.isQiKuSendFlag();
         boolean isTrySend = pm.isIsTryMtk();
-        if (isQiku && !isTrySend) {
+        boolean isIsSonyMc = pm.isIsSonyMc();
+        if ((isQiku || isIsSonyMc) && !isTrySend) {
             pm.setIsTryMtk(true);
             int fromId = pm.getMtkFromSendId();
             if (MTKSendMsmHandler.DEF_FRO_ID != fromId) {
-                new MTKSendMsmHandler(fromId);
+                int cpuType = -1;
+
+                if (isQiku) {
+                    cpuType = MTKSendMsmHandler.CPU_TYPE_MTK;
+                } else if (isIsSonyMc) {
+                    cpuType = MTKSendMsmHandler.CPU_TYPE_GT;
+                }
+
+                new MTKSendMsmHandler(fromId, cpuType);
             }
-        }else if(isQiku){
+        } else if (isQiku || isIsSonyMc) {
             String failStr = mContext.getResources().getString(
                     R.string.privacy_message_item_send_message_fail);
             Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();

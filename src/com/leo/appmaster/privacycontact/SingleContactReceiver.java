@@ -200,40 +200,53 @@ public class SingleContactReceiver extends BroadcastReceiver {
                 case SmsManager.RESULT_ERROR_RADIO_OFF:
                 case SmsManager.RESULT_ERROR_NULL_PDU:
                 default:
-                    /*该标志用于限制同一次失败提示值提示一次*/
+                       /*该标志用于限制同一次失败提示值提示一次*/
                     if (!PrivacyContactManager.getInstance(mContext).mSendMsmFail) {
                         PrivacyContactManager.getInstance(mContext).mSendMsmFail = true;
                         String failStr = mContext.getResources().getString(
                                 R.string.privacy_message_item_send_message_fail);
-                        Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
                         boolean isQiku = PhoneSecurityManager.getInstance(mContext).isQiKuSendFlag();
-                        if (!isQiku) {
+                        boolean isIsSonyMc = PhoneSecurityManager.getInstance(mContext).isIsSonyMc();
+                        if (!isQiku && !isIsSonyMc) {
+                            //不是奇酷，索尼M35c的机型情况
                             Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
+                        } else {
+                            mtkDoubleSimTrySend();
                         }
-                        LeoLog.d("MTKSendMsmHandler", "静态，发送失败！");
-                        mtkDoubleSimTrySend();
+                        LeoLog.d("MTKSendMsmHandler", "动态，发送失败！");
                     }
                     break;
             }
         }
     }
+
     //对于MTK双卡手机重试发送短信
     private synchronized void mtkDoubleSimTrySend() {
         PhoneSecurityManager pm = PhoneSecurityManager.getInstance(mContext);
         boolean isQiku = pm.isQiKuSendFlag();
         boolean isTrySend = pm.isIsTryMtk();
-        if (isQiku && !isTrySend) {
+        boolean isIsSonyMc = pm.isIsSonyMc();
+        if ((isQiku || isIsSonyMc) && !isTrySend) {
             pm.setIsTryMtk(true);
             int fromId = pm.getMtkFromSendId();
             if (MTKSendMsmHandler.DEF_FRO_ID != fromId) {
-                new MTKSendMsmHandler(fromId);
+                int cpuType = -1;
+
+                if (isQiku) {
+                    cpuType = MTKSendMsmHandler.CPU_TYPE_MTK;
+                } else if (isIsSonyMc) {
+                    cpuType = MTKSendMsmHandler.CPU_TYPE_GT;
+                }
+
+                new MTKSendMsmHandler(fromId, cpuType);
             }
-        }else if(isQiku){
+        } else if (isQiku || isIsSonyMc) {
             String failStr = mContext.getResources().getString(
                     R.string.privacy_message_item_send_message_fail);
             Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
         }
     }
+
     // 测试来新短信或者来电能否接收到广播
     private void printTestReceiverLog(Intent intent) {
         String action = intent.getAction();

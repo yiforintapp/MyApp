@@ -57,7 +57,7 @@ public class PhoneSecurityManager {
     //MTK双卡是否尝试了重发
     private boolean mIsTryMtk;
     private StringBuilder mLocalMsm;
-
+    private boolean mIsSonyMc = false;
 
     private PhoneSecurityManager(Context context) {
         mContext = context;
@@ -76,6 +76,14 @@ public class PhoneSecurityManager {
             mInstance = new PhoneSecurityManager(context.getApplicationContext());
         }
         return mInstance;
+    }
+
+    public boolean isIsSonyMc() {
+        return mIsSonyMc;
+    }
+
+    public void setIsSonyMc(boolean isSonyMc) {
+        this.mIsSonyMc = isSonyMc;
     }
 
     public StringBuilder getLocalMsm() {

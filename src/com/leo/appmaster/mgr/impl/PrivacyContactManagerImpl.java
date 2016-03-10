@@ -411,6 +411,8 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         pm.setQiKuSendFlag(BuildProperties.isQiKu());
         pm.setMtkFromSendId(fromId);
         pm.setIsTryMtk(false);
+        pm.setIsSonyMc(BuildProperties.isSonyM35c());
+
 
         SmsManager sms = SmsManager.getDefault();
         if (!TextUtils.isEmpty(content)) {

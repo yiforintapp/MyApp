@@ -115,7 +115,7 @@ public class SimDetecter {
         ArrayList<String> contents = null;
         try {
             smsEx = Class.forName("com.mediatek.telephony.SmsManagerEx");
-            Method df = smsEx.getMethod("getDefault",  new Class[0]);
+            Method df = smsEx.getMethod("getDefault", new Class[0]);
             Object sim = df.invoke(smsEx);
 
             Class[] types_send = new Class[6];
@@ -134,6 +134,48 @@ public class SimDetecter {
 //                send = smsEx.getDeclaredMethod("sendDataMessage", types_send);
 //            }
 //          sendDataMessage(java.lang.String,java.lang.String,short,byte[],android.app.PendingIntent,android.app.PendingIntent,int)"
+
+            Object[] params = new Object[6];
+            params[0] = number;
+            params[1] = null;
+            params[2] = contents;
+            params[3] = null;
+            params[4] = null;
+            params[5] = simType;
+
+            send.invoke(sim, params);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //高通双卡发送短信
+    public static boolean sendGTDoubleSim(String number, String content, int simType) {
+
+        if (TextUtils.isEmpty(number) || TextUtils.isEmpty(content)) {
+            return false;
+        }
+
+        Class<?> smsEx = null;
+        ArrayList<String> contents = null;
+        try {
+            smsEx = Class.forName("android.telephony.MSimSmsManager");
+            Method df = smsEx.getMethod("getDefault", new Class[0]);
+            Object sim = df.invoke(smsEx);
+
+            Class[] types_send = new Class[6];
+            types_send[0] = Class.forName("java.lang.String");
+            types_send[1] = Class.forName("java.lang.String");
+            types_send[2] = Class.forName("java.util.ArrayList");
+            types_send[3] = Class.forName("java.util.ArrayList");
+            types_send[4] = Class.forName("java.util.ArrayList");
+            types_send[5] = int.class;
+            Method send = null;
+            SmsManager sm = SmsManager.getDefault();
+            contents = sm.divideMessage(content);
+            send = smsEx.getDeclaredMethod("sendMultipartTextMessage", types_send);
 
             Object[] params = new Object[6];
             params[0] = number;

@@ -494,4 +494,13 @@ public class BuildProperties {
         return false;
     }
 
+    public static boolean isSonyM35c(){
+        String phone = Build.DEVICE;
+        LeoLog.d(TAG, "brand:" + phone);
+        if ("M35c".equals(phone)) {
+            return true;
+        }
+        return false;
+    }
+
 }
