@@ -189,18 +189,6 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
         }
 
     }
-//
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-//            finishActiviytAnim();
-//            LeoLog.d("testActivityBack","按下了back键 onKeyDown()");
-//            return false;
-//        } else {
-//            return super.onKeyDown(keyCode, event);
-//        }
-//
-//    }
 
     private void initAll() {
         LeoEventBus.getDefaultBus().register(this);

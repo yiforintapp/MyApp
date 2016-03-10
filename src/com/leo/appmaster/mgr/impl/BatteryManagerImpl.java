@@ -224,7 +224,6 @@ public class BatteryManagerImpl extends BatteryManager {
         if (newState.plugged != UNPLUGGED && mPreviousState.plugged == UNPLUGGED) {
             /* 连接充电器事件 */
             if (isInApp()) {
-                Toast.makeText(mContext, "in APP", Toast.LENGTH_SHORT).show();
                 if (PrefTableHelper.showInsideApp()) {
                     handlePluginEvent(newState, false);
                 } else {
@@ -249,7 +248,6 @@ public class BatteryManagerImpl extends BatteryManager {
                     }
                 }
             } else {
-                Toast.makeText(mContext, "in LAUNCHER", Toast.LENGTH_SHORT).show();
                 handlePluginEvent(newState, false);
             }
             /* 如果屏保开关是打开的，则通知栏一定会出现 */
