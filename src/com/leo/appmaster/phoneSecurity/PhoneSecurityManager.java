@@ -56,6 +56,7 @@ public class PhoneSecurityManager {
     private int mMtkFromSendId = -1;
     //MTK双卡是否尝试了重发
     private boolean mIsTryMtk;
+    private StringBuilder mLocalMsm;
 
 
     private PhoneSecurityManager(Context context) {
@@ -77,6 +78,14 @@ public class PhoneSecurityManager {
         return mInstance;
     }
 
+    public StringBuilder getLocalMsm() {
+        return mLocalMsm;
+    }
+
+    public synchronized void setLocalMsm(StringBuilder localMsm) {
+        this.mLocalMsm = localMsm;
+    }
+
     public boolean isIsTryMtk() {
         return mIsTryMtk;
     }
@@ -89,7 +98,7 @@ public class PhoneSecurityManager {
         return mMtkFromSendId;
     }
 
-    public void setMtkFromSendId(int mMtkFromSendId) {
+    public synchronized void  setMtkFromSendId(int mMtkFromSendId) {
         this.mMtkFromSendId = mMtkFromSendId;
     }
 

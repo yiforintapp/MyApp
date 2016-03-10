@@ -463,6 +463,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                     locatePositionMsm = mContext.getResources().getString(R.string.secur_location_msm, googleMapUri);
                     LeoLog.i(TAG, "执行位置URL=" + locatePositionMsm);
                     try {
+                        PhoneSecurityManager.getInstance(mContext).setLocalMsm(new StringBuilder(locatePositionMsm));
                         PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
                         mgr.sendMessage(sendNumber, locatePositionMsm, MTKSendMsmHandler.SEND_LOCAL_MSM_ID);
                         LeoLog.d("getTime", "msm content：" + locatePositionMsm);
@@ -475,8 +476,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                         String noLocation = mContext.getResources().getString(R.string.secur_send_msm_no_location);
                         locatePositionMsm = noLocation;
                         try {
+                            PhoneSecurityManager.getInstance(mContext).setLocalMsm(new StringBuilder(noLocation));
                             PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-                            mgr.sendMessage(sendNumber, locatePositionMsm,MTKSendMsmHandler.SEND_LOCAL_MSM_ID);
+                            mgr.sendMessage(sendNumber, locatePositionMsm, MTKSendMsmHandler.SEND_LOCAL_MSM_ID);
                             LeoLog.d("getTime", "msm content：" + locatePositionMsm);
                             mIsLocation = false;
                             return true;

@@ -815,21 +815,29 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         String securNumber = lostMgr.getPhoneSecurityNumber();
         boolean isExistSecurNumber = false;
         if (mBottomNumber[0].equals(mCurrentProcNumber)) {
-            ThreadManager.executeOnAsyncThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (mCheckStatus) {
-                        PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-                        String numberNmae = lostMgr.getPhoneSecurityNumber();
-                        if (!Utilities.isEmpty(numberNmae)) {
-                            String[] number = numberNmae.split(":");
-                            if (number != null) {
-                                mgr.sendMessage(number[1], getSendMessageInstructs(),MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
+            LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            boolean isExistSim = mgr.getIsExistSim();
+            if (isExistSim) {
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCheckStatus) {
+                            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+                            String numberNmae = lostMgr.getPhoneSecurityNumber();
+                            if (!Utilities.isEmpty(numberNmae)) {
+                                String[] number = numberNmae.split(":");
+                                if (number != null) {
+                                    mgr.sendMessage(number[1], getSendMessageInstructs(), MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            } else {
+                String failStr = this.getResources().getString(
+                        R.string.privacy_message_item_send_message_fail);
+                Toast.makeText(this, failStr, Toast.LENGTH_SHORT).show();
+            }
         }
         if (!Utilities.isEmpty(securNumber)) {
             isExistSecurNumber = true;
@@ -888,23 +896,34 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mBackupInstrDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-                        PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-                        String numberNmae = lostMgr.getPhoneSecurityNumber();
-                        if (!Utilities.isEmpty(numberNmae)) {
-                            String[] number = numberNmae.split(":");
-                            if (number != null) {
-                                mgr.sendMessage(number[1], getSendMessageInstructs(),MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
+                LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                boolean isExistSim = mgr.getIsExistSim();
+                if (isExistSim) {
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+                            String numberNmae = lostMgr.getPhoneSecurityNumber();
+                            if (!Utilities.isEmpty(numberNmae)) {
+                                String[] number = numberNmae.split(":");
+                                if (number != null) {
+                                    mgr.sendMessage(number[1], getSendMessageInstructs(), MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
+                                }
+                            }
+                            if (mBackupInstrDialog != null) {
+                                mBackupInstrDialog.cancel();
                             }
                         }
-                        if (mBackupInstrDialog != null) {
-                            mBackupInstrDialog.cancel();
-                        }
+                    });
+                } else {
+                    String failStr = PhoneSecurityActivity.this.getResources().getString(
+                            R.string.privacy_message_item_send_message_fail);
+                    Toast.makeText(PhoneSecurityActivity.this, failStr, Toast.LENGTH_SHORT).show();
+                    if (mBackupInstrDialog != null) {
+                        mBackupInstrDialog.cancel();
                     }
-                });
+                }
             }
         });
         String content = getString(R.string.backup_instr_dialog_content);
@@ -1005,51 +1024,53 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     }
 
     private void showShareDialog() {
-       if (mPreference.getBoolean(PrefConst.PHONE_SECURITY_SHOW, false)) {
-           return;
-       }
-       if (mShareDialog == null) {
-           mShareDialog = new LEOAlarmDialog(PhoneSecurityActivity.this);
-           mShareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-               @Override
-               public void onDismiss(DialogInterface dialog) {
-                   if (mShareDialog != null) {
-                       mShareDialog = null;
-                   }
-               }
-           });
-       }
-       String content = getString(R.string.phone_share_dialog_content);
-       String shareButton = getString(R.string.share_dialog_btn_query);
-       String cancelButton = getString(R.string.share_dialog_query_btn_cancel);
-       mShareDialog.setContent(content);
-       mShareDialog.setLeftBtnStr(cancelButton);
-       mShareDialog.setRightBtnStr(shareButton);
-       mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
-           @Override
-           public void onClick(DialogInterface dialogInterface, int i) {
-               SDKWrapper.addEvent(PhoneSecurityActivity.this, SDKWrapper.P1, "theft", "theft_noShare");
-               if (mShareDialog != null && mShareDialog.isShowing()) {
-                   mShareDialog.dismiss();
-                   mShareDialog = null;
-               }
-           }
-       });
-       mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-           @Override
-           public void onClick(DialogInterface dialogInterface, int i) {
-               if (mShareDialog != null && mShareDialog.isShowing()) {
-                   mShareDialog.dismiss();
-                   mShareDialog = null;
-               }
-               shareApps();
-           }
-       });
-       mShareDialog.show();
-       mPreference.putBoolean(PrefConst.PHONE_SECURITY_SHOW, true);
+        if (mPreference.getBoolean(PrefConst.PHONE_SECURITY_SHOW, false)) {
+            return;
+        }
+        if (mShareDialog == null) {
+            mShareDialog = new LEOAlarmDialog(PhoneSecurityActivity.this);
+            mShareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mShareDialog != null) {
+                        mShareDialog = null;
+                    }
+                }
+            });
+        }
+        String content = getString(R.string.phone_share_dialog_content);
+        String shareButton = getString(R.string.share_dialog_btn_query);
+        String cancelButton = getString(R.string.share_dialog_query_btn_cancel);
+        mShareDialog.setContent(content);
+        mShareDialog.setLeftBtnStr(cancelButton);
+        mShareDialog.setRightBtnStr(shareButton);
+        mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SDKWrapper.addEvent(PhoneSecurityActivity.this, SDKWrapper.P1, "theft", "theft_noShare");
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+            }
+        });
+        mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+                shareApps();
+            }
+        });
+        mShareDialog.show();
+        mPreference.putBoolean(PrefConst.PHONE_SECURITY_SHOW, true);
     }
 
-    /** 分享应用 */
+    /**
+     * 分享应用
+     */
     private void shareApps() {
         SDKWrapper.addEvent(PhoneSecurityActivity.this, SDKWrapper.P1, "theft", "theft_share");
         mLockManager.filterSelfOneMinites();
@@ -1062,12 +1083,12 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         StringBuilder shareBuilder = new StringBuilder();
         if (!isContentEmpty && !isUrlEmpty) {
             shareBuilder.append(sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_CONTENT))
-                        .append(" ")
-                        .append(sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_URL));
+                    .append(" ")
+                    .append(sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_URL));
         } else {
             shareBuilder.append(getResources().getString(R.string.phone_share_content))
-                        .append(" ")
-                        .append(Constants.DEFAULT_SHARE_URL);
+                    .append(" ")
+                    .append(Constants.DEFAULT_SHARE_URL);
         }
         Utilities.toShareApp(shareBuilder.toString(), getTitle().toString(), PhoneSecurityActivity.this);
     }

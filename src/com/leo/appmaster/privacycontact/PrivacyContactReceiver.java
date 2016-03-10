@@ -254,9 +254,12 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                         PrivacyContactManager.getInstance(mContext).mSendMsmFail = true;
                         String failStr = mContext.getResources().getString(
                                 R.string.privacy_message_item_send_message_fail);
-                        Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
-
-//                        mtkDoubleSimTrySend();
+                        boolean isQiku = PhoneSecurityManager.getInstance(mContext).isQiKuSendFlag();
+                        if (!isQiku) {
+                            Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
+                        }
+                        LeoLog.d("MTKSendMsmHandler", "动态，发送失败！");
+                        mtkDoubleSimTrySend();
                     }
                     break;
             }
@@ -274,6 +277,10 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
             if (MTKSendMsmHandler.DEF_FRO_ID != fromId) {
                 new MTKSendMsmHandler(fromId);
             }
+        }else if(isQiku){
+            String failStr = mContext.getResources().getString(
+                    R.string.privacy_message_item_send_message_fail);
+            Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
         }
     }
 

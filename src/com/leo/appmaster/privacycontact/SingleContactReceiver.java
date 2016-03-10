@@ -206,8 +206,12 @@ public class SingleContactReceiver extends BroadcastReceiver {
                         String failStr = mContext.getResources().getString(
                                 R.string.privacy_message_item_send_message_fail);
                         Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
-
-//                        mtkDoubleSimTrySend();
+                        boolean isQiku = PhoneSecurityManager.getInstance(mContext).isQiKuSendFlag();
+                        if (!isQiku) {
+                            Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
+                        }
+                        LeoLog.d("MTKSendMsmHandler", "静态，发送失败！");
+                        mtkDoubleSimTrySend();
                     }
                     break;
             }
@@ -224,6 +228,10 @@ public class SingleContactReceiver extends BroadcastReceiver {
             if (MTKSendMsmHandler.DEF_FRO_ID != fromId) {
                 new MTKSendMsmHandler(fromId);
             }
+        }else if(isQiku){
+            String failStr = mContext.getResources().getString(
+                    R.string.privacy_message_item_send_message_fail);
+            Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
         }
     }
     // 测试来新短信或者来电能否接收到广播

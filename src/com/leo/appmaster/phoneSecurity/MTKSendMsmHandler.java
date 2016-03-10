@@ -40,7 +40,6 @@ public class MTKSendMsmHandler {
                         String[] number = numberNmae.split(":");
                         if (number != null) {
                             String content = AppMasterApplication.getInstance().getResources().getString(R.string.secur_backup_msm);
-                            mgr.sendMessage(number[1], content, MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
                             if (!TextUtils.isEmpty(content) && !TextUtils.isEmpty(number[1])) {
                                 SimDetecter.sendMtkDoubleSim(number[1], content, SimDetecter.SIM_TYPE_1);
                             }
@@ -49,8 +48,26 @@ public class MTKSendMsmHandler {
                 }
             });
         } else if (SEND_LOCAL_MSM_ID == flag) {
-
-
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    String sendNumber = null;
+                    LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                    String name_number = manager.getPhoneSecurityNumber();
+                    if (!Utilities.isEmpty(name_number)) {
+                        String[] numbers = name_number.split(":");
+                        sendNumber = numbers[1];
+                    }
+                    StringBuilder sb = PhoneSecurityManager.getInstance(AppMasterApplication.getInstance()).getLocalMsm();
+                    if (sb == null || TextUtils.isEmpty(sb.toString()) || TextUtils.isEmpty(sendNumber)) {
+                        return;
+                    }
+                    String body = sb.toString();
+                    SimDetecter.sendMtkDoubleSim(sendNumber, body, SimDetecter.SIM_TYPE_1);
+                    PhoneSecurityManager.getInstance(AppMasterApplication.getInstance()).setLocalMsm(null);
+                    LeoLog.d(TAG,"MTKSendMsmHandler send body:"+body);
+                }
+            });
         } else if (SIM_CHANAGE_ID == flag) {
              /*检测SIM是否更换发送短信失败后重新发送*/
             ThreadManager.executeOnAsyncThread(new Runnable() {

@@ -414,7 +414,7 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
 
         SmsManager sms = SmsManager.getDefault();
         if (!TextUtils.isEmpty(content)) {
-            LeoLog.d(TAG, "Send Msm content:" + content);
+            LeoLog.d("MTKSendMsmHandler", "Send Msm content:" + content);
         }
         try {
             if (content.length() > 70) {
