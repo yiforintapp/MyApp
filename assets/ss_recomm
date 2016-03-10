@@ -7,6 +7,7 @@ call---{"pkg":"com.icq.mobile.client","icon":"","name":"ICQ","url":""}
 call---{"pkg":"jp.naver.line.android","icon":"","name":"LINE","url":""}
 call---{"pkg":"com.jb.gosms","icon":"","name":"GO SMS Pro","url":""}
 call---{"pkg":"com.tencent.mm","icon":"","name":"WeChat","url":""}
+call---{"pkg":"com.tencent.mobileqq","icon":"","name":"QQ","url":""}
 net---{"pkg":"","icon":"","name":"Google","url":"http://www.google.com"}
 net---{"pkg":"","icon":"","name":"Amazon","url":"http://www.amazon.com"}
 net---{"pkg":"","icon":"","name":"Yahoo","url":"http://www.yahoo.com"}

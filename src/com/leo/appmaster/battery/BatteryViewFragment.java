@@ -101,15 +101,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private final String FACEBOOK = "Facebook";
     private final String TWITTER = "Twitter";
     private final String YOUTUBE = "YouTube";
-
-    private final String AIQIYI = "爱奇艺";
-    private final String BAIDUSHIPIN = "百度视频";
     private final String HULU = "hulu";
-    private final String SOUHU = "搜狐视频";
     private final String TED = "TED";
-    private final String TENGXUNSHIPIN = "腾讯视频";
     private final String VIMEO = "Vimeo";
-    private final String YOUKU = "优酷";
+
+    private final String AIQIYI = "com.qiyi.video";
+    private final String BAIDUSHIPIN = "com.baidu.video";
+    private final String SOUHU = "com.sohu.sohuvideo";
+    private final String TENGXUNSHIPIN = "com.tencent.qqlive";
+    private final String YOUKU = "com.youku.phone";
 
 
     public static boolean mShowing = false;
@@ -1346,14 +1346,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         }
 
-
         if (name != null && map != null) {
-
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
                     "batterypage",
                     "app_" + infoOne.pkg);
 
-            icon.setImageDrawable(map);
+            Drawable fitMap = getRightAppIcon(infoOne.pkg);
+            if (fitMap == null) {
+                icon.setImageDrawable(map);
+            } else {
+                icon.setImageDrawable(fitMap);
+            }
+
             title.setText(name);
             contentView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1381,6 +1385,25 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             });
         }
+    }
+
+    private Drawable getRightAppIcon(String pkg) {
+        Context ctx = AppMasterApplication.getInstance();
+        Drawable fitMap;
+        if (pkg.equals(AIQIYI)) {
+            fitMap = ctx.getResources().getDrawable(R.drawable.icon_time_aiqiyi);
+        } else if (pkg.equals(BAIDUSHIPIN)) {
+            fitMap = ctx.getResources().getDrawable(R.drawable.icon_time_baidu);
+        } else if (pkg.equals(SOUHU)) {
+            fitMap = ctx.getResources().getDrawable(R.drawable.icon_time_souhu);
+        } else if (pkg.equals(TENGXUNSHIPIN)) {
+            fitMap = ctx.getResources().getDrawable(R.drawable.icon_time_tengxun);
+        } else if (pkg.equals(YOUKU)) {
+            fitMap = ctx.getResources().getDrawable(R.drawable.icon_time_youku);
+        } else {
+            fitMap = null;
+        }
+        return fitMap;
     }
 
     private boolean isExist(String pkg) {
