@@ -985,7 +985,6 @@
     <string name="battery_protect_view_time_title">Remaining time available</string>
     <string name="battery_protect_view_remain_one_title">Call</string>
     <string name="battery_protect_view_remain_two_title">Internet</string>
-    <string name="battery_protect_view_remain_three_title">Use Apps</string>
     <string name="pri_pro_wifi_not_scan">Wi-Fi not detected</string>
     <string name="battery_protect_view_show_title">Recommended</string>
     <string name="addto_blacklist_share_dialog_title">Added successfully!</string>
@@ -1007,5 +1006,6 @@
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_title">LEO Privacy</string>
     <string name="gde_renm_content">New name, new start</string>
+    <string name="battery_protect_view_remain_three_title">Videos</string>
 
 </resources>

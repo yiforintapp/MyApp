@@ -1041,7 +1041,6 @@
     <string name="grant_permission_default_tip">فتح الأذن لاصلاح مشاكل قفل التطبيق</string>
     <string name="battery_protect_view_time_title">الوقت المتبقي</string>
     <string name="battery_protect_view_remain_one_title">مكالمة </string>
-    <string name="battery_protect_view_remain_three_title">استعمال تطبيق</string>
     <string name="battery_protect_view_show_title">توصية</string>
     <string name="addto_blacklist_share_dialog_content">شاركه مع الأصدقاء لمساعدتك علي منع الازعاج</string>
     <string name="battery_protect_show_num_contact">جهات الاتصال</string>
@@ -1067,4 +1066,5 @@
     <string name="toast_hide_ing">اخفاء الصور الآن</string>
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_content">اسم جديد، بداية جديدة </string>
+    <string name="battery_protect_view_remain_three_title">فيديو</string>
 </resources>

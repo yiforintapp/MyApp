@@ -963,7 +963,6 @@
     <string name="battery_protect_view_time_title">可用時間</string>
     <string name="battery_protect_view_remain_one_title">通話</string>
     <string name="battery_protect_view_remain_two_title">上網</string>
-    <string name="battery_protect_view_remain_three_title">玩應用</string>
     <string name="pri_pro_wifi_not_scan">當前連接Wi-Fi未檢測</string>
     <string name="battery_protect_view_show_title">推薦使用</string>
     <string name="addto_blacklist_share_dialog_title">添加成功！</string>
@@ -985,4 +984,5 @@
 
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_content">新名字，新起点</string>
+    <string name="battery_protect_view_remain_three_title">視頻</string>
 </resources>

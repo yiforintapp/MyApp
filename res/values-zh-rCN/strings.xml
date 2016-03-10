@@ -958,7 +958,6 @@
     <string name="battery_protect_view_time_title">可用时间</string>
     <string name="battery_protect_view_remain_one_title">通话</string>
     <string name="battery_protect_view_remain_two_title">上网</string>
-    <string name="battery_protect_view_remain_three_title">玩应用</string>
     <string name="pri_pro_wifi_not_scan">当前连接Wi-Fi未检测</string>
     <string name="battery_protect_view_show_title">推荐使用</string>
     <string name="addto_blacklist_share_dialog_title">添加成功！</string>
@@ -977,5 +976,5 @@
     <string name="battery_saver_remain_charge_time">剩余充电时间</string>
     <string name="feedback_tell_us_email_title">Email:</string>
     <string name="feedback_tell_us_email_url">support@leomaster.com</string>
-
+    <string name="battery_protect_view_remain_three_title">视频</string>
 </resources>

@@ -955,7 +955,6 @@
     <string name="battery_protect_view_time_title">เวลาใช้ได้</string>
     <string name="battery_protect_view_remain_one_title">พูดโทรศัพท์</string>
     <string name="battery_protect_view_remain_two_title">เข้าอินเตอร์เน็ต</string>
-    <string name="battery_protect_view_remain_three_title">เล่นประยุกต์การใช้</string>
     <string name="pri_pro_wifi_not_scan">wifiที่เชื่อมตอนนี้ยังไม่ได้ตรวจ</string>
     <string name="battery_protect_view_show_title">แนะนำให้ใช้</string>
     <string name="addto_blacklist_share_dialog_title">เพิ่มเติมสำเร็จ</string>
@@ -977,4 +976,5 @@
 
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_content">ชื่อไหม่ จุดเริ่มต้นไหม่</string>
+    <string name="battery_protect_view_remain_three_title">วีดีโอ</string>
 </resources>

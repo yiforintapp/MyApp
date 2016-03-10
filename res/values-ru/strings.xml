@@ -946,7 +946,6 @@
     <string name="battery_protect_view_time_title">Время</string>
     <string name="battery_protect_view_remain_one_title">Разговор</string>
     <string name="battery_protect_view_remain_two_title">Онлайн</string>
-    <string name="battery_protect_view_remain_three_title">Приложения</string>
     <string name="pri_pro_wifi_not_scan">Wi-Fi не проверить</string>
     <string name="battery_protect_view_show_title">Рекомендовать</string>
     <string name="addto_blacklist_share_dialog_title">Добавить успех!</string>
@@ -968,4 +967,5 @@
 
     <!--3.3.2新增引导页文案-->
     <string name="gde_renm_content">Новое имя,новое начало </string>
+    <string name="battery_protect_view_remain_three_title">Bидео</string>
 </resources>
