@@ -81,6 +81,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
 
+    private static final int LAYOUT_DEFAULT_HEIGHT = 70;
+    private static final int LAYOUT_DEFAULT_HEIGHT_AD = 160;
+
+    private int mMoveHeight = -1;
+
     // 3.2 advertise
     private static final String AD_AFTER_SCAN = Constants.UNIT_ID_243;
     private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
@@ -902,6 +907,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
 
         mNowHeight = mNowHeight + moveDistance;
+        LeoLog.e("layoutHeight", "moveDistance: " + moveDistance);
         if (mNowHeight > mBackViewHeight) {
             ViewGroup.LayoutParams params = mBackView.getLayoutParams();
             params.height = mNowHeight;
@@ -1178,6 +1184,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         } else {
             layoutHeight = normalTypeHeight;
         }
+        LeoLog.e("layoutHeight", "layoutHeight:" + layoutHeight);
+
+        mMoveHeight = layoutHeight;
         AnimatorSet animatorSet = new AnimatorSet();
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(layout, "translationY", -layoutHeight, layout.getTranslationY());
         objectAnimator.setDuration(300);
@@ -1303,4 +1312,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mMoveHeight == 0) {
+           mActivity.onExitScanning();
+        }
+    }
 }
