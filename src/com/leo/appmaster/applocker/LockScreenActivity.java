@@ -123,9 +123,11 @@ import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -494,16 +496,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mTipDialog.show();
     }
 
-    @Override
-    protected void onResume() {
-        LeoLog.d(TAG, "onResume...");
-        mCanTakePhoto = true;
-        whichTypeShow();
-        LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
-//        if (mHasClickGoGrantPermission) {
-//            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
-//        }
-        tryShowNoPermissionTip();
+    private void handleLoadAd () {
         //防止重新进入时图标透明度为0
         int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
@@ -541,6 +534,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         setMobvistaIcon();
+    }
+
+    @Override
+    protected void onResume() {
+        LeoLog.d(TAG, "onResume...");
+        mCanTakePhoto = true;
+        whichTypeShow();
+        LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
+//        if (mHasClickGoGrantPermission) {
+//            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
+//        }
+        tryShowNoPermissionTip();
+
+        // handleLoadAd();
+
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         // handlePretendLock(); 貌似oncreate里的init方法已经执行了，容易曹成内存泄露
@@ -763,14 +771,20 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } catch (Exception e) {
         }
     }
-	
-	
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LeoLog.d(TAG, "onStart...");
+        handleLoadAd();
+    }
 
     @Override
     protected void onPause() {
         PushUIHelper.getInstance(getApplicationContext())
                 .setIsLockScreen(false);
         super.onPause();
+        LeoLog.d(TAG, "onPause...");
     }
 
     /**
@@ -1101,6 +1115,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 	@Override
     protected void onStop() {
+
+        LeoLog.d(TAG, "onStop...");
+
         super.onStop();
         if (mLockFragment != null) {
             mLockFragment.onActivityStop();
@@ -1241,13 +1258,20 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAdUnitIdList.clear();
         mMobvistaListenerList.clear();
         mAdMap.clear();
+        for (String key : mAdBitmapMap.keySet()) {
+            Bitmap image = mAdBitmapMap.get(key);
+            if (!image.isRecycled()) {
+                image.recycle();
+            }
+        }
         mAdBitmapMap.clear();
         otherAdSwitcher = false;
         if (mAdapterCycle != null) {
-			mBannerContainer.removeAllViews();
+            mAdapterCycle.clearView();
 			mAdapterCycle = null;
 //            mAdapterCycle.getViews().clear();
         }
+        mBannerContainer.removeAllViews();
 		/*调用sdk前，明确是哪个sdk，mobvista or max ? */
 		AppMasterPreference sp = AppMasterPreference.getInstance(this.getApplicationContext());
 		mAdSource = sp.getLockBannerAdConfig();
@@ -1264,7 +1288,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             final String unitId = mBannerAdids[i];
 
 			final ADEngineWrapper  wrapperAdEngine = ADEngineWrapper.getInstance(this);
-			LeoLog.e("LockScreenActivity[AD_DEBUG]", "mAdSource " + mAdSource + "|"+unitId);
+			LeoLog.e("LockScreenActivity_AD_DEBUG", "mAdSource " + mAdSource + "|"+unitId);
 			ADEngineWrapper.getInstance(this).loadAd(mAdSource, unitId,  new ADEngineWrapper.WrappedAdListener(){
 
 				/**
@@ -1281,22 +1305,29 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     }
 					if (campaign != null && deleteRedundant(unitId, campaign)) {
 						/* 开始load 广告大图 */
-                        LeoLog.d("LockScreenActivity[AD_DEBUG]", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
-						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
+                        LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
+
+                        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                                .cacheInMemory(true)
+                                .cacheOnDisk(true)
+                                .bitmapConfig(Bitmap.Config.RGB_565)
+                                .build();
+
+						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), options, new ImageLoadingListener() {
 							@Override
 							public void onLoadingStarted(String imageUri, View view) {
-								LeoLog.d("LockScreenActivity[AD_DEBUG]", "start to load preview for: " + imageUri);
+								LeoLog.d("LockScreenActivity_AD_DEBUG", "["+unitId+"]start to load preview for: " + imageUri);
 							}
 
 							@Override
 							public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 								mAdMap.remove(unitId);
-								LeoLog.d("LockScreenActivity[AD_DEBUG]", "onLoadingFailed for: " + imageUri);
+								LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + imageUri);
 							}
 
 							@Override
 							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-								LeoLog.d("LockScreenActivity[AD_DEBUG]", "["+unitId+"]onLoadingComplete for: " + imageUri);
+								LeoLog.d("LockScreenActivity_AD_DEBUG", "["+unitId+"]onLoadingComplete for: " + imageUri);
                                 // AM-4043 加空指针保护
                                 if (loadedImage == null) {
                                     return;
@@ -2770,6 +2801,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 		
 		public void clearView() {
+            LeoLog.d(TAG, "adapter clearView called");
 			mViews.clear();
 			mList.clear();
 			notifyDataSetChanged();
