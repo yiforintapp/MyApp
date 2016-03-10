@@ -41,6 +41,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
+import com.leo.appmaster.phoneSecurity.MTKSendMsmHandler;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -232,7 +233,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                 if (TextUtils.isEmpty(mPhoneNumber)) {
                     return;
                 }
-                pm.sendMessage(mPhoneNumber, messageContent);
+                pm.sendMessage(mPhoneNumber, messageContent, MTKSendMsmHandler.DEF_FRO_ID);
                 mEditText.getText().clear();
                 if (!messageContent.equals("") && messageContent != null) {
                     MessageBean message = new MessageBean();
