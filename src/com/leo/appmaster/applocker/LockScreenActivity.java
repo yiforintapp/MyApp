@@ -202,7 +202,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
-    private final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2};
+    private static final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2};
 	private boolean otherAdSwitcher = false;
     private boolean mDidLoadAd = false;
     //private String[] mBannerAdids = {"12346_00001"};
@@ -1127,18 +1127,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         /* AM-3907 规避多次添加广告 */
         try {
-            ThreadManager.executeOnNetworkThread(new Runnable() {
+            ThreadManager.executeOnSubThread(new Runnable() {
                 @Override
                 public void run() {
                     // 避免产生anr，放到子线程
-					for (String id : mBannerAdids) {
-						LeoLog.d("LEOAdEngine", "id : =" + id);
-						//LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
-						/* 3.3.2 封装Max与Mob SDK */
+                    for (String id : mBannerAdids) {
+                        LeoLog.d("LEOAdEngine", "id : =" + id + "; mDidLoadAd = " + mDidLoadAd);
+                        //LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
+                        // 3.3.2 封装Max与Mob SDK
                         if (mDidLoadAd) {
-						    ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id);
+                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id);
                         }
-					}
+                    }
                 }
             });
 
@@ -1331,89 +1331,96 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 							}
 
 							@Override
-							public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-								LeoLog.d("LockScreenActivity_AD_DEBUG", "["+unitId+"]onLoadingComplete for: " + imageUri);
-                                // AM-4043 加空指针保护
-                                if (loadedImage == null) {
-                                    return;
-                                }
-                                WrappedCampaign wrappedCampaign =  mAdMap.get(unitId);
-                                if(wrappedCampaign == null
-                                        || wrappedCampaign.getAppName()== null
-                                        || wrappedCampaign.getAppName().equalsIgnoreCase("")) {
-                                    mAdMap.remove(unitId);
-                                    return;
-                                }
+							public void onLoadingComplete(final String imageUri, View view, final Bitmap loadedImage) {
+                                ThreadManager.executeOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        {
+                                            LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]onLoadingComplete for: " + imageUri);
+                                            // AM-4043 加空指针保护
+                                            if (loadedImage == null) {
+                                                return;
+                                            }
+                                            WrappedCampaign wrappedCampaign = mAdMap.get(unitId);
+                                            if (wrappedCampaign == null
+                                                    || wrappedCampaign.getAppName() == null
+                                                    || wrappedCampaign.getAppName().equalsIgnoreCase("")) {
+                                                mAdMap.remove(unitId);
+                                                return;
+                                            }
 
-                                if (mAdUnitIdList == null) {
-                                    mAdUnitIdList = new ArrayList<String>();
-                                }
-								if (unitId.equals(mBannerAdids[0])) {
-									mAdUnitIdList.add(0, unitId);
-								} else {
-									mAdUnitIdList.add(unitId);
-								}
+                                            if (mAdUnitIdList == null) {
+                                                mAdUnitIdList = new ArrayList<String>();
+                                            }
+                                            if (unitId.equals(mBannerAdids[0])) {
+                                                mAdUnitIdList.add(0, unitId);
+                                            } else {
+                                                mAdUnitIdList.add(unitId);
+                                            }
 
-                                if (mAdBitmapMap == null) {
-                                    mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
-                                }
-								mAdBitmapMap.put(unitId, loadedImage);
+                                            if (mAdBitmapMap == null) {
+                                                mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
+                                            }
+                                            mAdBitmapMap.put(unitId, loadedImage);
 
 								/*校验此广告是否用第一个id来申请的*/
-								if (unitId.equals(mBannerAdids[0])) {
-									/*如果是则将其他两个广告显示开光打开*/
-									otherAdSwitcher = true;
-								}
-								/* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 */
-								if (!unitId.equals(mBannerAdids[0])) {
+                                            if (unitId.equals(mBannerAdids[0])) {
+                                    /*如果是则将其他两个广告显示开光打开*/
+                                                otherAdSwitcher = true;
+                                            }
+                                /* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 */
+                                            if (!unitId.equals(mBannerAdids[0])) {
 									/*如果广告开关没有被打开，则直接退出*/
-									if (!otherAdSwitcher) {
-										return ;
-									}
+                                                if (!otherAdSwitcher) {
+                                                    return;
+                                                }
                                     /*if (isRedundant(unitId, campaign)) {
                                         *//* 与之前的广告重复了，不添加到UI而且去掉广告数据 *//*
                                         removeAdData(unitId);
                                         return;
                                     }*/
-								}
+                                            }
 
-                                if (mBannerContainer == null) {
-                                    mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
-                                }
-								if (mAdapterCycle == null) {
-									mBannerContainer.setVisibility(View.INVISIBLE);
+                                            if (mBannerContainer == null) {
+                                                mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
+                                            }
+                                            if (mAdapterCycle == null) {
+                                                mBannerContainer.setVisibility(View.INVISIBLE);
                                     /* 去除重复广告之后再填充UI */
-                                    removeRedundantAds();
-									mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
-									mBannerContainer.setAdapter(mAdapterCycle);
-									if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
+                                                removeRedundantAds();
+                                                mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
+                                                mBannerContainer.setAdapter(mAdapterCycle);
+                                                if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
 										/* 第一个广告直接出现 */
-                                        mBannerContainer.setCurrentItem(1, false);
-										mAdapterCycle.setLasterSlectedPage(1);
-										mBannerContainer.setVisibility(View.VISIBLE);
-										showAdAnimaiton(unitId);
-										delayBannerHideAnim();
-										hideIconAndPswTips();
-										
-									} else {
+                                                    mBannerContainer.setCurrentItem(1, false);
+                                                    mAdapterCycle.setLasterSlectedPage(1);
+                                                    mBannerContainer.setVisibility(View.VISIBLE);
+                                                    showAdAnimaiton(unitId);
+                                                    delayBannerHideAnim();
+                                                    hideIconAndPswTips();
+
+                                                } else {
                                         /* 广告隐藏在右边 */
-										mBannerContainer.setVisibility(View.VISIBLE);
-										mBannerContainer.setCurrentItem(0, false);
-										mAdapterCycle.setLasterSlectedPage(0);
-									}
-								} else {
+                                                    mBannerContainer.setVisibility(View.VISIBLE);
+                                                    mBannerContainer.setCurrentItem(0, false);
+                                                    mAdapterCycle.setLasterSlectedPage(0);
+                                                }
+                                            } else {
                                     /* AM-3907 规避多次添加广告 */
                                     /*if (mAdapterCycle.getCount() == mBannerAdids.length) {
                                         return;
                                     }*/
-                                    removeRedundantAds();
+                                                removeRedundantAds();
                                     /* 如果没被去重干掉，再加进来 */
-                                    if (mAdUnitIdList.contains(unitId)) {
-									    mAdapterCycle.addItem(unitId);
-                                    }
-								}
+                                                if (mAdUnitIdList.contains(unitId)) {
+                                                    mAdapterCycle.addItem(unitId);
+                                                }
+                                            }
 
-							}
+                                        }
+                                    }
+                                });
+                            }
 
 							@Override
 							public void onLoadingCancelled(String imageUri, View view) {
