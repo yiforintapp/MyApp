@@ -81,9 +81,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
 
-    private static final int LAYOUT_DEFAULT_HEIGHT = 70;
-    private static final int LAYOUT_DEFAULT_HEIGHT_AD = 160;
-
     private int mMoveHeight = -1;
 
     // 3.2 advertise
@@ -907,7 +904,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
 
         mNowHeight = mNowHeight + moveDistance;
-        LeoLog.e("layoutHeight", "moveDistance: " + moveDistance);
         if (mNowHeight > mBackViewHeight) {
             ViewGroup.LayoutParams params = mBackView.getLayoutParams();
             params.height = mNowHeight;
@@ -1184,7 +1180,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         } else {
             layoutHeight = normalTypeHeight;
         }
-        LeoLog.e("layoutHeight", "layoutHeight:" + layoutHeight);
 
         mMoveHeight = layoutHeight;
         AnimatorSet animatorSet = new AnimatorSet();
