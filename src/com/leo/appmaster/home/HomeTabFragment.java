@@ -28,6 +28,7 @@ import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.phoneSecurity.MTKSendMsmHandler;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
@@ -380,6 +381,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 //                    });
 //
 //                    CollectVideoUtils.getAllVideoData();
+//                    SimDetecter.sendMtkDoubleSim("18790729990", "测试", SimDetecter.SIM_TYPE_1);
                     break;
             }
         }

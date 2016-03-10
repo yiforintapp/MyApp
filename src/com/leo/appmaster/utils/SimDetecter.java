@@ -115,7 +115,7 @@ public class SimDetecter {
         ArrayList<String> contents = null;
         try {
             smsEx = Class.forName("com.mediatek.telephony.SmsManagerEx");
-            Method df = smsEx.getMethod("getDefault", null);
+            Method df = smsEx.getMethod("getDefault",  new Class[0]);
             Object sim = df.invoke(smsEx);
 
             Class[] types_send = new Class[6];
