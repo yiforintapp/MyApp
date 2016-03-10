@@ -395,6 +395,7 @@ public class Constants {
 
     // 一些重用时间
     public final static long TIME_ONE_DAY = 24 * 60 * 60 * 1000; // 一天
+    public final static long TIME_ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // 一周
 
     public static final String PRIVACY_ENTER_SCAN = "enter_scan";
     public static final String PRIVACY_ENTER_SCAN_TYPE = "enter_scan_type";

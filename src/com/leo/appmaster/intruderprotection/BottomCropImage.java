@@ -6,10 +6,12 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.leo.appmaster.ui.DrawSafelyImageView;
+
 /**
  * by linxiongzhou
  */
-public class BottomCropImage extends ImageView{
+public class BottomCropImage extends DrawSafelyImageView {
 
     public BottomCropImage(Context context) {
         super(context);

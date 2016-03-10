@@ -215,7 +215,7 @@
                 android:layout_marginTop="8dp"
                 android:background="#ffffff">
 
-                <ImageView
+                <com.leo.appmaster.ui.DrawSafelyImageView
                     android:id="@+id/iv_app_intruded"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
@@ -255,7 +255,7 @@
                         android:orientation="horizontal"
                         android:visibility="visible">
 
-                        <ImageView
+                        <com.leo.appmaster.ui.DrawSafelyImageView
                             android:id="@+id/iv_appicon"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
