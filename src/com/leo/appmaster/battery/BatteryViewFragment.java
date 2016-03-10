@@ -211,7 +211,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private ImageLoader mImageLoader;
 
-    private boolean mShowBoost = true;
+    //    private boolean mShowBoost = true;
     private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
     private List<PackageInfo> mPackages;
@@ -398,9 +398,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
 
 
-            if (mSlideView != null) {
+            if (mSlideView == null) {
                 return;
             }
+
             LeoLog.d("locationP", "mMoveDisdance : " + mMoveDisdance);
             ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mSlideView,
                     "y", contentHeight, mSlideView.getTop() + mMoveDisdance);
@@ -559,9 +560,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             process(mChangeType, newState, mRemainTime, mRemainTimeArr);
         }
 
-        if (mShowBoost) {
-            initBoostLayout();
-        }
+//        if (mShowBoost) {
+        initBoostLayout();
+//        }
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_USER_PRESENT);
