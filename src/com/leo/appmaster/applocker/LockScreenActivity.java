@@ -32,6 +32,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.ArraySet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -51,7 +52,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -127,7 +127,6 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
-import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -141,8 +140,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -1302,14 +1303,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				 * @param msg      请求失败sdk返回的描述，成功为null
 				 */
 				@Override
-				public synchronized void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+				public synchronized void onWrappedAdLoadFinished(int code, final WrappedCampaign campaign, String msg) {
                     if (code != MobvistaEngine.ERR_OK) {
                         return;
                     }
-					if (campaign != null && deleteRedundant(unitId, campaign)) {
+					if (campaign != null) {
+                        mAdMap.put(unitId, campaign);
+
 						/* 开始load 广告大图 */
                         LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
-
                         DisplayImageOptions options = new DisplayImageOptions.Builder()
                                 .cacheInMemory(true)
                                 .cacheOnDisk(true)
@@ -1368,6 +1370,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 									if (!otherAdSwitcher) {
 										return ;
 									}
+                                    /*if (isRedundant(unitId, campaign)) {
+                                        *//* 与之前的广告重复了，不添加到UI而且去掉广告数据 *//*
+                                        removeAdData(unitId);
+                                        return;
+                                    }*/
 								}
 
                                 if (mBannerContainer == null) {
@@ -1375,6 +1382,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 }
 								if (mAdapterCycle == null) {
 									mBannerContainer.setVisibility(View.INVISIBLE);
+                                    /* 去除重复广告之后再填充UI */
+                                    removeRedundantAds();
 									mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
 									mBannerContainer.setAdapter(mAdapterCycle);
 									if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
@@ -1397,7 +1406,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                     /*if (mAdapterCycle.getCount() == mBannerAdids.length) {
                                         return;
                                     }*/
-									mAdapterCycle.addItem(unitId);
+                                    removeRedundantAds();
+                                    /* 如果没被去重干掉，再加进来 */
+                                    if (mAdUnitIdList.contains(unitId)) {
+									    mAdapterCycle.addItem(unitId);
+                                    }
 								}
 
 							}
@@ -1449,13 +1462,35 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     }
 
+    private void removeRedundantAds () {
+        ArrayList<String> list = new ArrayList<String>();
+        for (String id : mAdUnitIdList) {
+            WrappedCampaign wc = mAdMap.get(id);
+            boolean found = false;
+            for (String newId: list) {
+                WrappedCampaign newWc = mAdMap.get(newId);
+                if (wc.getAppName().equalsIgnoreCase(newWc.getAppName())
+                        || wc.getImageUrl().equalsIgnoreCase(newWc.getImageUrl())
+                        || wc.getDescription().equalsIgnoreCase(newWc.getDescription())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                list.add(id);
+            }
+        }
+
+        mAdUnitIdList = list;
+    }
+
     /**
      * 去重添加
      * @param unitId
      * @param campaign
      * @return 是否添加新的数据
      */
-    /*private boolean deleteRedundant(String unitId, Campaign campaign) {
+    /*private boolean isRedundant(String unitId, Campaign campaign) {
         LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
         for (String key : mAdMap.keySet()) {
             Campaign data = mAdMap.get(key);
@@ -1474,20 +1509,31 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      *
      * @param unitId
      * @param campaign
-     * @return 是否添加新的数据
+     * @return 是否与之前的广告重复
      */
-    private boolean deleteRedundant(String unitId, WrappedCampaign campaign) {
-        LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
+    private boolean isRedundant(String unitId, WrappedCampaign campaign) {
         for (String key : mAdMap.keySet()) {
+            LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
+            if (key.equalsIgnoreCase(unitId)) {
+                continue;
+            }
 			WrappedCampaign data = mAdMap.get(key);
             if (data.getAppName().equals(campaign.getAppName())
                     || data.getImageUrl().equals(campaign.getImageUrl())
                     || data.getDescription().equals(campaign.getDescription())) {
-                return false;
+                return true;
             }
         }
-        mAdMap.put(unitId, campaign);
-        return true;
+        return false;
+    }
+
+    private void removeAdData(String unitId) {
+        if (mAdBitmapMap != null) {
+            mAdBitmapMap.remove(unitId);
+        }
+        if (mAdUnitIdList != null) {
+            mAdUnitIdList.remove(unitId);
+        }
     }
 	
     /*private void resistViewAllAd(LinkedHashMap<String, Campaign> adMap) {
@@ -2596,6 +2642,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mInflater = LayoutInflater.from(context);
             mViewPager = viewPager;
             mList = list;
+            LeoLog.d("remove_redundant", "[AdBannerAdapter] array: " + Arrays.toString(mList.toArray()));
 			mWrapperEngine = wrapperEngine;
             mViewPager.setOnPageChangeListener(this);
 			synchronized (mViewPager) {
@@ -2781,12 +2828,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         public void addItem(String unitId) {
 			/* 移除已经存在的unitid */
-			for (int i = 0; i < mList.size(); i++) {
-				if (mList.get(i) != null && mList.get(i).equals(unitId)) {
-					mList.remove(i);
-				}
-			}
-			mList.add(unitId);
+            LeoLog.d("remove_redundant", "add: "+ unitId + "; array=" + Arrays.toString(mList.toArray()));
 			RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
             view.setTag(mViews.size());
             setItemViewContent(view, unitId);
@@ -2796,6 +2838,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			} else {
 				mViews.add(view);
 			}
+            LeoLog.d("remove_redundant", "notifyDataSetChanged for: "+ unitId + "; array=" + Arrays.toString(mList.toArray()));
             notifyDataSetChanged();
         }
 
