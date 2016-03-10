@@ -10,28 +10,43 @@ call---{"pkg":"com.tencent.mm","icon":"","name":"WeChat","url":""}
 net---{"pkg":"","icon":"","name":"Google","url":"http://www.google.com"}
 net---{"pkg":"","icon":"","name":"Amazon","url":"http://www.amazon.com"}
 net---{"pkg":"","icon":"","name":"Yahoo","url":"http://www.yahoo.com"}
-video---{"pkg":"com.instagram.android","icon":"","name":"Instagram","url":""}
-video---{"pkg":"com.facebook.katana","icon":"","name":"Facebook","url":"http://www.facebook.com"}
-video---{"pkg":"com.snapchat.android","icon":"","name":"Snapchat","url":""}
-video---{"pkg":"com.twitter.android","icon":"","name":"Twitter","url":"http://www.twitter.com"}
-video---{"pkg":"com.mico","icon":"","name":"Mico","url":""}
-video---{"pkg":"com.badoo.mobile","icon":"","name":"Badoo","url":""}
-video---{"pkg":"com.facebook.lite","icon":"","name":"Facebook Lite","url":""}
-video---{"pkg":"com.rovio.angrybirds","icon":"","name":"Angry Birds","url":""}
-video---{"pkg":"com.imangi.templerun","icon":"","name":"Temple Run","url":""}
-video---{"pkg":"com.pinterest","icon":"","name":"Pinterest","url":""}
-video---{"pkg":"com.nfo.me.android","icon":"","name":"Me","url":""}
-video---{"pkg":"com.king.candycrushsaga","icon":"","name":"Candy Crush Saga","url":""}
-video---{"pkg":"com.nextwave.realcarrom","icon":"","name":"Real Carrom","url":""}
-video---{"pkg":"com.imangi.templerun2","icon":"","name":"Temple Run 2","url":""}
-video---{"pkg":"com.google.android.talk","icon":"","name":"Hangouts","url":""}
-video---{"pkg":"com.kiloo.subwaysurf","icon":"","name":"Subway Surfers","url":""}
-video---{"pkg":"com.outfit7.mytalkingtomfree","icon":"","name":"My Talking Tom","url":""}
-video---{"pkg":"com.cmplay.tiles2","icon":"","name":"Piano Tiles 2","url":""}
-video---{"pkg":"com.supercell.clashofclans","icon":"","name":"Clash of Clans","url":""}
-video---{"pkg":"me.pou.app","icon":"","name":"Pou","url":""}
-video---{"pkg":"com.ea.games.r3_row","icon":"","name":"Real Racing 3","url":""}
-video---{"pkg":"com.skgames.trafficrider","icon":"","name":"Traffic Rider","url":""}
-video---{"pkg":"com.miniclip.eightballpool","icon":"","name":"8 Ball Pool","url":""}
-video---{"pkg":"com.google.android.youtube","icon":"","name":"YouTube","url":"http://www.youtube.com"}
+video---{"pkg":"com.quvideo.xiaoying","icon":"","name":"VivaVideo","url":""}
+video---{"pkg":"co.triller.droid","icon":"","name":"Triller","url":""}
+video---{"pkg":"com.mxtech.videoplayer.ad","icon":"","name":"MX Player","url":""}
+video---{"pkg":"org.videolan.vlc","icon":"","name":"VLC for Android","url":""}
+video---{"pkg":"org.videolan.vlc","icon":"","name":"VLC for Android","url":""}
 video---{"pkg":"com.mobilemotion.dubsmash","icon":"","name":"Dubsmash","url":""}
+video---{"pkg":"com.asus.microfilm","icon":"","name":"MiniMovie","url":""}
+video---{"pkg":"com.multimedia.player","icon":"","name":"Video Player for Android","url":""}
+video---{"pkg":"com.zhiliaoapp.musically","icon":"","name":"musical.ly","url":""}
+video---{"pkg":"org.xbmc.kodi","icon":"","name":"Kodi","url":""}
+video---{"pkg":"com.google.android.youtube","icon":"","name":"YouTube","url":"http://www.youtube.com"}
+video---{"pkg":"com.turner.cnvideoapp","icon":"","name":"Cartoon Network App","url":""}
+video---{"pkg":"com.livestream.livestream","icon":"","name":"Livestream","url":""}
+video---{"pkg":"video.audio.mp3.player.editor","icon":"","name":"HD Video Player","url":""}
+video---{"pkg":"com.mobile.bizo.reverse","icon":"","name":"Reverse Movie FX","url":""}
+video---{"pkg":"com.xvideostudio.videoeditor","icon":"","name":"VideoShow","url":""}
+video---{"pkg":"ru.iptvremote.android.iptv","icon":"","name":"IPTV","url":""}
+video---{"pkg":"com.vnpkyo.videoslide","icon":"","name":"Make Videos Pictures And Music","url":""}
+video---{"pkg":"com.wondershare.player","icon":"","name":"Wondershare Player","url":""}
+video---{"pkg":"com.nexstreaming.app.kinemasterfree","icon":"","name":"KineMaster","url":""}
+video---{"pkg":"com.movisoftnew.videoeditor","icon":"","name":"Video Editor","url":""}
+video---{"pkg":"me.targa.iptvbr","icon":"","name":"PlaylisTV","url":""}
+video---{"pkg":"flv.mobile.android","icon":"","name":"FLV Player","url":""}
+video---{"pkg":"tv.albax.mexico","icon":"","name":"TV Channels Mexico","url":""}
+video---{"pkg":"com.cisco.android.megacable","icon":"","name":"Megacable Play","url":""}
+video---{"pkg":"com.octoshape.android.dishmovil","icon":"","name":"Dish Móvil","url":""}
+video---{"pkg":"com.megatv.player","icon":"","name":"MegaTV Player","url":""}
+video---{"pkg":"","icon":"","name":"TED","url":"http://www.ted.com"}
+video---{"pkg":"","icon":"","name":"Vimeo","url":"http://vimeo.com"}
+video---{"pkg":"","icon":"","name":"hulu","url":"http://http://www.hulu.com/welcome"}
+video---{"pkg":"com.storm.smart","icon":"","name":"暴风影音","url":""}
+video---{"pkg":"tv.pps.mobile","icon":"","name":"爱奇艺PPS","url":""}
+video---{"pkg":"com.baidu.video","icon":"","name":"百度视频","url":""}
+video---{"pkg":"com.pplive.androidphone","icon":"","name":"PPTV","url":""}
+video---{"pkg":"com.tudou.android","icon":"","name":"土豆","url":""}
+video---{"pkg":"com.hunantv.imgo.activity","icon":"","name":"芒果TV","url":""}
+video---{"pkg":"com.tencent.qqlive","icon":"","name":"腾讯视频","url":"http://v.qq.com"}
+video---{"pkg":"com.qiyi.video","icon":"","name":"爱奇艺","url":"http://www.iqiyi.com"}
+video---{"pkg":"com.youku.phone","icon":"","name":"优酷","url":"http://www.youku.com"}
+video---{"pkg":"com.sohu.sohuvideo","icon":"","name":"搜狐视频","url":"http://tv.sohu.com"}
