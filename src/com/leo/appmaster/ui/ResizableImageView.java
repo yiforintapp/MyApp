@@ -9,7 +9,7 @@ import android.widget.ImageView;
 /**
  * Created by stone on 16/1/20.
  */
-public class ResizableImageView extends ImageView {
+public class ResizableImageView extends DrawSafelyImageView {
 
     public ResizableImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
