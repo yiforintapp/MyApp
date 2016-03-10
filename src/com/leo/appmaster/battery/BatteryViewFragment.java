@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -2667,8 +2668,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onClick(View view) {
                 if (isExpand) {
-                    mRemainTimeContent.setVisibility(View.VISIBLE);
-                    mRemainContent.setVisibility(View.VISIBLE);
+                    theRestPartShow();
                 }
                 if (mBossView != null) {
                     mBossView.setVisibility(View.INVISIBLE);
