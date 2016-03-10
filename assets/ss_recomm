@@ -20,7 +20,6 @@ video---{"pkg":"com.asus.microfilm","icon":"","name":"MiniMovie","url":""}
 video---{"pkg":"com.multimedia.player","icon":"","name":"Video Player for Android","url":""}
 video---{"pkg":"com.zhiliaoapp.musically","icon":"","name":"musical.ly","url":""}
 video---{"pkg":"org.xbmc.kodi","icon":"","name":"Kodi","url":""}
-video---{"pkg":"com.google.android.youtube","icon":"","name":"YouTube","url":"http://www.youtube.com"}
 video---{"pkg":"com.turner.cnvideoapp","icon":"","name":"Cartoon Network App","url":""}
 video---{"pkg":"com.livestream.livestream","icon":"","name":"Livestream","url":""}
 video---{"pkg":"video.audio.mp3.player.editor","icon":"","name":"HD Video Player","url":""}
@@ -37,16 +36,17 @@ video---{"pkg":"tv.albax.mexico","icon":"","name":"TV Channels Mexico","url":""}
 video---{"pkg":"com.cisco.android.megacable","icon":"","name":"Megacable Play","url":""}
 video---{"pkg":"com.octoshape.android.dishmovil","icon":"","name":"Dish Móvil","url":""}
 video---{"pkg":"com.megatv.player","icon":"","name":"MegaTV Player","url":""}
-video---{"pkg":"","icon":"","name":"TED","url":"http://www.ted.com"}
-video---{"pkg":"","icon":"","name":"Vimeo","url":"http://vimeo.com"}
-video---{"pkg":"","icon":"","name":"hulu","url":"http://http://www.hulu.com/welcome"}
 video---{"pkg":"com.storm.smart","icon":"","name":"暴风影音","url":""}
 video---{"pkg":"tv.pps.mobile","icon":"","name":"爱奇艺PPS","url":""}
 video---{"pkg":"com.baidu.video","icon":"","name":"百度视频","url":""}
 video---{"pkg":"com.pplive.androidphone","icon":"","name":"PPTV","url":""}
 video---{"pkg":"com.tudou.android","icon":"","name":"土豆","url":""}
 video---{"pkg":"com.hunantv.imgo.activity","icon":"","name":"芒果TV","url":""}
-video---{"pkg":"com.tencent.qqlive","icon":"","name":"腾讯视频","url":"http://v.qq.com"}
-video---{"pkg":"com.qiyi.video","icon":"","name":"爱奇艺","url":"http://www.iqiyi.com"}
-video---{"pkg":"com.youku.phone","icon":"","name":"优酷","url":"http://www.youku.com"}
-video---{"pkg":"com.sohu.sohuvideo","icon":"","name":"搜狐视频","url":"http://tv.sohu.com"}
+video---{"pkg":"com.tencent.qqlive","icon":"","name":"腾讯视频","url":""}
+video---{"pkg":"com.qiyi.video","icon":"","name":"爱奇艺","url":""}
+video---{"pkg":"com.youku.phone","icon":"","name":"优酷","url":""}
+video---{"pkg":"com.sohu.sohuvideo","icon":"","name":"搜狐视频","url":""}
+video---{"pkg":"com.google.android.youtube","icon":"","name":"YouTube","url":"http://www.youtube.com"}
+video---{"pkg":"","icon":"","name":"TED","url":"http://www.ted.com"}
+video---{"pkg":"","icon":"","name":"Vimeo","url":"http://vimeo.com"}
+video---{"pkg":"","icon":"","name":"hulu","url":"http://http://www.hulu.com/welcome"}

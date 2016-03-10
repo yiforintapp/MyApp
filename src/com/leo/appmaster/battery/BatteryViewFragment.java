@@ -102,6 +102,15 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private final String TWITTER = "Twitter";
     private final String YOUTUBE = "YouTube";
 
+    private final String AIQIYI = "爱奇艺";
+    private final String BAIDUSHIPIN = "百度视频";
+    private final String HULU = "hulu";
+    private final String SOUHU = "搜狐视频";
+    private final String TED = "TED";
+    private final String TENGXUNSHIPIN = "腾讯视频";
+    private final String VIMEO = "Vimeo";
+    private final String YOUKU = "优酷";
+
 
     public static boolean mShowing = false;
     public static boolean isExpand = false;
@@ -1424,6 +1433,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             map = ctx.getResources().getDrawable(R.drawable.icon_time_youtube);
         } else if (info.name.equals(TWITTER)) {
             map = ctx.getResources().getDrawable(R.drawable.icon_time_twitter);
+        } else if (info.name.equals(HULU)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_hulu);
+        } else if (info.name.equals(TED)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_ted);
+        } else if (info.name.equals(VIMEO)) {
+            map = ctx.getResources().getDrawable(R.drawable.icon_time_vimeo);
         } else {
             map = ctx.getResources().getDrawable(R.drawable.default_user_avatar);
         }
