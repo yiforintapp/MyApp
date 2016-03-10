@@ -1,6 +1,9 @@
 
 package com.leo.appmaster.cleanmemory;
 
+import java.lang.ref.WeakReference;
+import java.util.Random;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,7 +11,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,9 +45,6 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-
-import java.lang.ref.WeakReference;
-import java.util.Random;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
@@ -503,7 +502,7 @@ public class HomeBoostActivity extends Activity {
         if (isClean) {           
             if (!isCleanFinish || mCleanMem < ProcessCleaner.MIN_CLEAN_SIZE) {
                 mToast = getString(R.string.home_app_manager_mem_clean,
-                        TextFormater.dataSizeFormat((mRandom.nextInt(120) + 10) * 1024 * 1024L));
+                        TextFormater.dataSizeFormat((mRandom.nextInt(150) + 10) * 1024 * 1024L));
             } else {
                 mToast = getString(R.string.home_app_manager_mem_clean,
                         TextFormater.dataSizeFormat(mCleanMem));

@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.util.Log;
 
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
@@ -34,7 +33,7 @@ public class ProcessCleaner {
 
     private static int CLEAN_INTERVAL = 30 * 1000;
     
-    public static long MIN_CLEAN_SIZE = 1024 * 1024 * 10;
+    public static long MIN_CLEAN_SIZE = 1024 * 1024 * 50;
 
     // private static int CLEAN_INTERVAL = 1000;
 
