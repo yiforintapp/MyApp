@@ -27,6 +27,7 @@ import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.phoneSecurity.MTKSendMsmHandler;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -254,8 +255,24 @@ public class PrivacyContactReceiver extends BroadcastReceiver {
                         String failStr = mContext.getResources().getString(
                                 R.string.privacy_message_item_send_message_fail);
                         Toast.makeText(mContext, failStr, Toast.LENGTH_SHORT).show();
+
+//                        mtkDoubleSimTrySend();
                     }
                     break;
+            }
+        }
+    }
+
+    //对于MTK双卡手机重试发送短信
+    private synchronized void mtkDoubleSimTrySend() {
+        PhoneSecurityManager pm = PhoneSecurityManager.getInstance(mContext);
+        boolean isQiku = pm.isQiKuSendFlag();
+        boolean isTrySend = pm.isIsTryMtk();
+        if (isQiku && !isTrySend) {
+            pm.setIsTryMtk(true);
+            int fromId = pm.getMtkFromSendId();
+            if (MTKSendMsmHandler.DEF_FRO_ID != fromId) {
+                new MTKSendMsmHandler(fromId);
             }
         }
     }

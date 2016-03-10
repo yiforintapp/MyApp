@@ -52,6 +52,10 @@ public class PhoneSecurityManager {
     private SecurLocateListener mLocationListener;
     private boolean mIsFromScan;
     private boolean mIsAdvOpenTip;
+    private boolean mQiKuSendFlag = false;
+    private int mMtkFromSendId = -1;
+    //MTK双卡是否尝试了重发
+    private boolean mIsTryMtk;
 
 
     private PhoneSecurityManager(Context context) {
@@ -71,6 +75,30 @@ public class PhoneSecurityManager {
             mInstance = new PhoneSecurityManager(context.getApplicationContext());
         }
         return mInstance;
+    }
+
+    public boolean isIsTryMtk() {
+        return mIsTryMtk;
+    }
+
+    public void setIsTryMtk(boolean isTryMtk) {
+        this.mIsTryMtk = isTryMtk;
+    }
+
+    public int getMtkFromSendId() {
+        return mMtkFromSendId;
+    }
+
+    public void setMtkFromSendId(int mMtkFromSendId) {
+        this.mMtkFromSendId = mMtkFromSendId;
+    }
+
+    public boolean isQiKuSendFlag() {
+        return mQiKuSendFlag;
+    }
+
+    public void setQiKuSendFlag(boolean qiKuSendFlag) {
+        this.mQiKuSendFlag = qiKuSendFlag;
     }
 
     public synchronized MediaPlayer getMediaPlayer() {

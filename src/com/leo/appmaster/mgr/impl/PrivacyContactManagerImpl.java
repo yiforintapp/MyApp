@@ -16,11 +16,13 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.MessageCallLogBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.text.SimpleDateFormat;
@@ -400,12 +402,19 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
     }
 
     @Override
-    public boolean sendMessage(String number, String content) {
+    public boolean sendMessage(String number, String content, int fromId) {
         /*有发送短信，恢复短信发送失败Toast标志值*/
         com.leo.appmaster.privacycontact.PrivacyContactManager.getInstance(mContext).mSendMsmFail = false;
+
+        //设置本次发送短信来自何处
+        PhoneSecurityManager pm = PhoneSecurityManager.getInstance(mContext);
+        pm.setQiKuSendFlag(BuildProperties.isQiKu());
+        pm.setMtkFromSendId(fromId);
+        pm.setIsTryMtk(false);
+
         SmsManager sms = SmsManager.getDefault();
-        if(!TextUtils.isEmpty(content)){
-            LeoLog.d(TAG,"Send Msm content:"+content);
+        if (!TextUtils.isEmpty(content)) {
+            LeoLog.d(TAG, "Send Msm content:" + content);
         }
         try {
             if (content.length() > 70) {

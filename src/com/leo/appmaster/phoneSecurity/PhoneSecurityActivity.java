@@ -824,7 +824,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                         if (!Utilities.isEmpty(numberNmae)) {
                             String[] number = numberNmae.split(":");
                             if (number != null) {
-                                mgr.sendMessage(number[1], getSendMessageInstructs());
+                                mgr.sendMessage(number[1], getSendMessageInstructs(),MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
                             }
                         }
                     }
@@ -897,7 +897,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                         if (!Utilities.isEmpty(numberNmae)) {
                             String[] number = numberNmae.split(":");
                             if (number != null) {
-                                mgr.sendMessage(number[1], getSendMessageInstructs());
+                                mgr.sendMessage(number[1], getSendMessageInstructs(),MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
                             }
                         }
                         if (mBackupInstrDialog != null) {

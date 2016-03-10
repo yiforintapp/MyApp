@@ -29,6 +29,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.phoneSecurity.MTKSendMsmHandler;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityUtils;
@@ -463,7 +464,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                     LeoLog.i(TAG, "执行位置URL=" + locatePositionMsm);
                     try {
                         PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-                        mgr.sendMessage(sendNumber, locatePositionMsm);
+                        mgr.sendMessage(sendNumber, locatePositionMsm, MTKSendMsmHandler.SEND_LOCAL_MSM_ID);
                         LeoLog.d("getTime", "msm content：" + locatePositionMsm);
                         mIsLocation = false;
                         return true;
@@ -475,7 +476,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                         locatePositionMsm = noLocation;
                         try {
                             PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-                            mgr.sendMessage(sendNumber, locatePositionMsm);
+                            mgr.sendMessage(sendNumber, locatePositionMsm,MTKSendMsmHandler.SEND_LOCAL_MSM_ID);
                             LeoLog.d("getTime", "msm content：" + locatePositionMsm);
                             mIsLocation = false;
                             return true;
@@ -758,7 +759,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                     LeoLog.i(TAG, "SIM卡更换发送短信！");
                     LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                     manager.setSimIMEI();
-                    boolean result = mgr.sendMessage(sendNumber, body);
+                    boolean result = mgr.sendMessage(sendNumber, body,MTKSendMsmHandler.SIM_CHANAGE_ID);
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_use_SIM");
                     return true;
                 }

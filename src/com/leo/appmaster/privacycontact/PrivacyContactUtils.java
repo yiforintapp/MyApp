@@ -1369,6 +1369,26 @@ public class PrivacyContactUtils {
                 while (cur.moveToFirst()) {
                     return cur.getLong(cur.getColumnIndex(Phone.CONTACT_ID));
                 }
+            } else {
+                //可能由于存储的号码是号码被分隔，如：“+86 185 7556 1740”，截取分隔的后4位查询
+                if (number.length() >= PrivacyContactUtils.NUM_LEGH) {
+                    number = PrivacyContactUtils.formatePhNumberFor4(number);
+                    numSelcts = " LIKE ? ";
+                    selArgs = "%" + number;
+                } else {
+                    numSelcts = " = ? ";
+                    selArgs = number;
+                }
+                String selectsTry = Phone.NUMBER + numSelcts;
+                String[] selectArgsTry = new String[]{selArgs};
+
+                cur = context.getContentResolver().query(uri, projection, selectsTry, selectArgsTry, sortOrder);
+                if (cur != null && cur.getCount() > 0) {
+                    while (cur.moveToFirst()) {
+                        return cur.getLong(cur.getColumnIndex(Phone.CONTACT_ID));
+                    }
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

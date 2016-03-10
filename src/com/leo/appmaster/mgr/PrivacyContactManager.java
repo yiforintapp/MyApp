@@ -178,9 +178,12 @@ public abstract class PrivacyContactManager extends Manager {
 
     /**
      * 发送短信
+     * @param number
+     * @param content
+     * @param fromId,该短信来自哪里可以不用设置默认值：-1
      * @return
      */
-    public abstract boolean sendMessage(String number,String content);
+    public abstract boolean sendMessage(String number,String content,int fromId);
     /*导入通话记录和短信记录*/
     public abstract boolean importCallAndMsms(MessageCallLogBean messageCall);
 }

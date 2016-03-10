@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
@@ -477,6 +478,18 @@ public class BuildProperties {
                     return true;
                 }
             }
+        }
+        return false;
+    }
+
+    /**
+     * 是否为QiKu
+     */
+    public static boolean isQiKu() {
+        String phone = Build.BRAND;
+        LeoLog.d(TAG, "brand:" + phone);
+        if ("QiKU".equals(phone)) {
+            return true;
         }
         return false;
     }
