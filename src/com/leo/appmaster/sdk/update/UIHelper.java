@@ -503,10 +503,20 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     @SuppressLint("NewApi")
     private boolean isActivityOnTop(Context context) {
-        if (!isAppOnTop(context)) {
+        if (!AppMasterApplication.getInstance().isForeground()) {
             return false;
         }
-        /* now our Application on top, check activity */
+
+        Activity activity = AppMasterApplication.getInstance().getTopActivity();
+        if (activity == null) {
+            return false;
+        }
+        return activity.getClass().getName().equalsIgnoreCase(UpdateActivity.class.getName());
+
+        /*if (!isAppOnTop(context)) {
+            return false;
+        }
+        *//* now our Application on top, check activity *//*
         if (Build.VERSION.SDK_INT > 19) {
             ActivityManager am = (ActivityManager) context
                     .getSystemService(Context.ACTIVITY_SERVICE);
@@ -537,15 +547,11 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 }
             }
             return false;
-        }
+        }*/
     }
 
     private boolean isAppOnTop(Context context) {
-        if (Build.VERSION.SDK_INT > 19) {
-            return isAppOnTopAfterLolipop(context);
-        } else {
-            return isAppOnTopBeforeLolipop(context);
-        }
+        return AppMasterApplication.getInstance().isForeground();
     }
 
     private boolean isAppOnTopBeforeLolipop(Context context) {
