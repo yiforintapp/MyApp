@@ -10,6 +10,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 
@@ -96,6 +99,7 @@ public class LEONativeAd {
     }
 
     private void loadMinorAd(){
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1, "max_request", "lock");
         mMinorAd.setAdListener(new BaseNativeAd.LEOInnerNativeAdListener() {
 
             @Override
