@@ -1438,29 +1438,32 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				 * @param campaign
 				 */
 				@Override
-				public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
-					if (unitID != null && unitID.equals(mBannerAdids[0])) {
-						otherAdSwitcher = false;
-					}
+				public void onWrappedAdClick(WrappedCampaign campaign, final String unitID) {
+                    ThreadManager.executeOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (unitID != null && unitID.equals(mBannerAdids[0])) {
+                                otherAdSwitcher = false;
+                            }
 
-					ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID);
-					mAdapterCycle.clearView();
-					mBannerContainer.removeAllViews();
-					new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							boolean cacheEmpty = ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).isADCacheEmpty(mAdSource);
-							if (cacheEmpty) {
-								loadAD();
-							}	
-						}
-					}, 500);
-					if (mAdapterCycle.getViews() == null) {
-						mBannerContainer.setVisibility(View.GONE);
-					}
-                    showIconAndPswTips();
-					
-
+                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID);
+                            mAdapterCycle.clearView();
+                            mBannerContainer.removeAllViews();
+                            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    boolean cacheEmpty = ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).isADCacheEmpty(mAdSource);
+                                    if (cacheEmpty) {
+                                        loadAD();
+                                    }
+                                }
+                            }, 500);
+                            if (mAdapterCycle.getViews() == null) {
+                                mBannerContainer.setVisibility(View.GONE);
+                            }
+                            showIconAndPswTips();
+                        }
+                    });
 				}
 			});
 			
