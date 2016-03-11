@@ -2540,8 +2540,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_URL));
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
-//        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
-        if (true) {
+        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+//        if (true) {
             mSwiftyView = viewStub.inflate();
 
             mSwiftyImg = (ImageView) mSwiftyView.findViewById(R.id.card_img);
