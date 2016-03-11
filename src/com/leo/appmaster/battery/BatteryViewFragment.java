@@ -2451,6 +2451,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void initAdLayout(View rootView, WrappedCampaign campaign, Bitmap previewImage) {
+        if (previewImage == null || previewImage.isRecycled()) {
+            return;
+        }
+
         View adView = rootView.findViewById(R.id.ad_content);
         mAdWrapper = (AdWrapperLayout) rootView.findViewById(R.id.ad_wrapper);
         mAdWrapper.setNeedIntercept(true);

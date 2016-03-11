@@ -24,7 +24,7 @@
         android:layout_marginLeft="@dimen/fragment_lock_large_banner_image_top"
         android:layout_marginRight="@dimen/fragment_lock_large_banner_image_top">
 
-        <ImageView
+        <com.leo.appmaster.ui.DrawSafelyImageView
             android:id="@+id/ad_image"
             android:layout_width="@dimen/fragment_lock_large_banner_image_width"
             android:layout_height="@dimen/fragment_lock_large_banner_image_height"

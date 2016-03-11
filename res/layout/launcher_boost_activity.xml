@@ -47,7 +47,7 @@
                 android:layout_gravity="left"
                 android:layout_marginTop="98dp">
 
-                <ImageView
+                <com.leo.appmaster.ui.DrawSafelyImageView
                     android:id="@+id/iv_ad_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

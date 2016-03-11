@@ -200,6 +200,10 @@ public class HomeBoostActivity extends Activity {
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void notifyAdLoadFinish(WrappedCampaign campaign, Bitmap previewBitmap){
+        if (previewBitmap == null || previewBitmap.isRecycled()) {
+            return;
+        }
+
         mIsADLoaded = true;
         LeoLog.e("poha", "loaded!");
         long currentTime = System.currentTimeMillis();

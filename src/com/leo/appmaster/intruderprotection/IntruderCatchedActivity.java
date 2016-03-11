@@ -429,6 +429,10 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void initAdLayout(View rootView, WrappedCampaign campaign, String unitId, Bitmap previewImage) {
+        if (previewImage == null || previewImage.isRecycled()) {
+            return;
+        }
+
         ViewParent vg = rootView.getParent();
         if (vg.getClass().equals(ViewGroup.class)) {
             ((ViewGroup) vg).setLayoutTransition(new LayoutTransition());

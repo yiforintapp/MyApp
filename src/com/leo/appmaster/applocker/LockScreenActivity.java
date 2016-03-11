@@ -2666,9 +2666,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					for (String unitId : mList) {
 						view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
 						view.setTag(mViews.size());
-						setItemViewContent(view, unitId);
-						SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
-						mViews.add(view);
+                        boolean done = setItemViewContent(view, unitId);
+                        if (done) {
+                            SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
+                            mViews.add(view);
+                        }
 					}
 
 				}
@@ -2718,11 +2720,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		public int getLasterSlectedPage() {
 			return lasterSlectedPage;
 		}
-		
-        private void setItemViewContent(RelativeLayout view, String unitId) {
+
+        /***
+         * 填充广告数据到VIEW中
+         * @param view
+         * @param unitId
+         * @return 是否成功填充
+         */
+        private boolean setItemViewContent(RelativeLayout view, String unitId) {
             WrappedCampaign campaign = mAdMap.get(unitId);
             if (campaign == null) {
-                return;
+                return false;
+            }
+
+            Bitmap bitmap = mAdBitmapMap.get(unitId);
+            if (bitmap == null || bitmap.isRecycled()) {
+                return false;
             }
 
 			int index = findTargetViewIndex(unitId);
@@ -2731,8 +2744,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				mAdapterCycle.setLasterSlectedPage(index);
 				
 			}
-			
-            ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
+
+            ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(bitmap);
             ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
 			view.findViewById(R.id.ad_title).setTag(unitId);
             ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
@@ -2758,7 +2771,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     snapforClick((ViewGroup) v.getParent());
                 }
             });
-			
+
+            return true;
         }
 
         private void snapforClick(View v) {
@@ -2840,8 +2854,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			/* 移除已经存在的unitid */
             LeoLog.d("remove_redundant", "add: "+ unitId + "; array=" + Arrays.toString(mList.toArray()));
 			RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
+            if(!setItemViewContent(view, unitId)){
+                return;
+            }
             view.setTag(mViews.size());
-            setItemViewContent(view, unitId);
             SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
 			if (!mViews.isEmpty() && unitId.equals(mBannerAdids[0])) {
 				mViews.add(1, view);				

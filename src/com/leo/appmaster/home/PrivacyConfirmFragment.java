@@ -714,6 +714,10 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void initAdLayout(Campaign campaign, View view, String unitId, Bitmap previewBitmap) {
+        if (previewBitmap == null || previewBitmap.isRecycled()) {
+            return;
+        }
+
         if (view != null) {
             ViewStub viewStub = (ViewStub) view.findViewById(R.id.advertise_security_stub);
 //            View include = view.findViewById(R.id.advertise_security);
