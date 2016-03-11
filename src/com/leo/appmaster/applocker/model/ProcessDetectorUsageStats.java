@@ -5,11 +5,13 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.util.Calendar;
@@ -72,8 +74,7 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
         if (stats != null) {
             SortedMap<Long, UsageStats> runningTask = new TreeMap<Long, UsageStats>();
             for (UsageStats usageStats : stats) {
-                if (stats != null && usageStats.mLastEvent != UsageEvents.Event.MOVE_TO_BACKGROUND &&
-                        !"android".equals(usageStats.getPackageName())) {
+                if (stats != null) {
                     runningTask.put(usageStats.getLastTimeUsed(), usageStats);
                 }
             }
@@ -85,6 +86,12 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
                 LeoLog.i(TAG, "there is no app found.");
             } else {
                 String pkg = runningTask.get(runningTask.lastKey()).getPackageName();
+
+                Context ctx = AppMasterApplication.getInstance();
+                if (!AppUtil.isInstallPkgName(ctx, pkg) || !hasLaunchIntent(pkg)) {
+                    LeoLog.d(TAG, "the pkg is not installed or has no launch intent, so retry again.");
+                    return getForegroundProcess();
+                }
                 if (DBG) {
                     Log.i(TAG, "pkg: " + pkg);
                 }
@@ -117,5 +124,16 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
             builder.append("}");
             Log.d(TAG, builder.toString());
         }
+    }
+
+    private boolean hasLaunchIntent(String pkgName) {
+        Context ctx = AppMasterApplication.getInstance();
+        Intent intent = null;
+        try {
+            intent = ctx.getPackageManager().getLaunchIntentForPackage(pkgName);
+        } catch (Exception e) {
+        }
+
+        return intent != null;
     }
 }
