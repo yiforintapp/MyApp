@@ -13,6 +13,7 @@ public class BatteryTestViewLayout extends RelativeLayout {
 
     private GestureDetector mDetector;
     private ScrollBottomListener scrollBottomListener;
+    public final static int maxScroolHeight = 2560;
 
     public interface ScrollBottomListener {
         public void scrollBottom();
@@ -53,6 +54,13 @@ public class BatteryTestViewLayout extends RelativeLayout {
                 LeoLog.d("testBatteryView", "distanceY : " + distanceY);
 //                if (e2.getY() < e1.getY()) {
                 //防止太灵敏 三星note出现此情况
+
+                if (BatteryViewFragment.mScreenHeight >= maxScroolHeight) {
+                    if (distanceY < 10) {
+                        return false;
+                    }
+                }
+
                 if (distanceY > 6) {
                     if (!BatteryViewFragment.isExpand) {
                         if (!BatteryViewFragment.mShowing) {
@@ -90,6 +98,15 @@ public class BatteryTestViewLayout extends RelativeLayout {
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 LeoLog.d("testBatteryView", "Big R onFling");
                 LeoLog.d("testBatteryView", "velocityY : " + velocityY);
+                int diff = (int) Math.abs(e2.getY() - e1.getY());
+                LeoLog.d("testBatteryView", "diff : " + diff);
+
+                if (BatteryViewFragment.mScreenHeight >= maxScroolHeight) {
+                    if (diff < 35) {
+                        return false;
+                    }
+                }
+
                 if (e2.getY() < e1.getY()) {
                     if (!BatteryViewFragment.isExpand) {
                         if (!BatteryViewFragment.mShowing) {

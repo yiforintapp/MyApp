@@ -177,6 +177,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     private View mBackGroundView;
 
+    public static int mScreenHeight;
+
     private long mInitTime;
     private int mCurrentClickType = -1;
 
@@ -554,10 +556,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         WindowManager windowManager = mActivity.getWindowManager();
         Display display = windowManager.getDefaultDisplay();
-        int screenHeight = display.getHeight();
-        if (screenHeight <= 320) {
+        mScreenHeight = display.getHeight();
+        LeoLog.d("testBatteryView", "screenHeight:" + mScreenHeight);
+        if (mScreenHeight <= 320) {
             smallScreen = true;
-        } else if (screenHeight <= 480) {
+        } else if (mScreenHeight <= 480) {
             midScreen = true;
         }
 
@@ -2537,7 +2540,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_URL));
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
-        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+//        if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
+        if (true) {
             mSwiftyView = viewStub.inflate();
 
             mSwiftyImg = (ImageView) mSwiftyView.findViewById(R.id.card_img);
