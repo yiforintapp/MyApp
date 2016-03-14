@@ -478,11 +478,9 @@ public class CallFilterUtils {
         }
         List<BlackListInfo> infos = new ArrayList<BlackListInfo>();
         BufferedReader br = null;
-        StringBuffer sb = null;
         try {
             br = new BufferedReader(new FileReader(file));
             String temp = null;
-            sb = new StringBuffer();
             temp = br.readLine();
             while (temp != null) {
                 String[] dates = temp.split(",");

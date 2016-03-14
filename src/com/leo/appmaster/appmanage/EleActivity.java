@@ -3,7 +3,6 @@ package com.leo.appmaster.appmanage;
 
 import java.util.List;
 
-import android.app.ActivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,9 +36,6 @@ public class EleActivity extends BaseFragmentActivity {
     private List<BatteryComsuption> mList;
     private ProgressBar pb_loading_ele;
     private RelativeLayout mEmptyBg;
-    private static final String Tag = "testCase";
-    private ActivityManager am;
-    private static final String SCHEME = "package";
 
     // private int mDeskType;
 
@@ -65,7 +61,6 @@ public class EleActivity extends BaseFragmentActivity {
 //        info = new BatteryInfoProvider(EleActivity.this);
 //        info.setMinPercentOfTotal(0.01);
 
-        am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         getBatteryStats();
     }
 

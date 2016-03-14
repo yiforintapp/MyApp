@@ -1,19 +1,16 @@
 package com.leo.appmaster.battery;
 
+import java.lang.reflect.Method;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.mgr.BatteryManager;
-import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-
-import java.lang.reflect.Method;
 
 /**
  * Created by stone on 16/3/7.

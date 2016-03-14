@@ -3,7 +3,6 @@ package com.leo.appmaster.backup;
 
 import java.util.ArrayList;
 
-import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

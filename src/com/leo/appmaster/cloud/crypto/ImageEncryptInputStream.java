@@ -12,7 +12,6 @@ import java.util.Arrays;
  * Created by Jasper on 2015/12/2.
  */
 public class ImageEncryptInputStream extends InputStream {
-    private static final String TAG = "ImageEncryptInputStream";
     private ImageEncryptor mImageEncryptor;
     private String mFilePath;
 

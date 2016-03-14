@@ -11,7 +11,6 @@ import android.os.Message;
 import android.view.View;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 

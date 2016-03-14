@@ -10,9 +10,6 @@ public class GestureLayout extends LinearLayout{
 
     private IGestureListener mListener;
     
-    /** down y */
-    private float mDownMotionX;
-    
     private int mSnapVelocity = 300; // SUPPRESS CHECKSTYLE
     /** v tracker */
     private VelocityTracker mVelocityTracker;
@@ -47,11 +44,8 @@ public class GestureLayout extends LinearLayout{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         final int action = event.getAction();
-        final float x = event.getX();
-
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mDownMotionX = event.getY();
                 break;
 
             case MotionEvent.ACTION_MOVE:

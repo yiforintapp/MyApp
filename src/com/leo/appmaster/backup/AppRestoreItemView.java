@@ -3,7 +3,6 @@ package com.leo.appmaster.backup;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.BackUpActivity;
-import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.model.AppItemInfo;
@@ -57,7 +55,6 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
     public void onClick(View v) {
         Context context = getContext();
         BackUpActivity activity = (BackUpActivity) context;
-        AppBackupRestoreManager backupManager = activity.getBackupManager();
         Object tag = getTag();
         if (tag instanceof AppItemInfo) {
             AppItemInfo app = (AppItemInfo) tag;

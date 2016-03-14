@@ -19,7 +19,6 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.appmaster.videohide.VideoGriActivity;
 
 public class BatterySettingActivity extends BaseActivity implements View.OnClickListener {
     private CommonToolbar mTitleBar;

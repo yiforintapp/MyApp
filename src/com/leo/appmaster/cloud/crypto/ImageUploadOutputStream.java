@@ -13,7 +13,6 @@ import java.io.OutputStream;
  * Created by Jasper on 2015/12/10.
  */
 public class ImageUploadOutputStream extends FilterOutputStream {
-    private FileInputStream mInputStream;
 
     /**
      * Constructs a new {@code FilterOutputStream} with {@code out} as its
@@ -34,7 +33,7 @@ public class ImageUploadOutputStream extends FilterOutputStream {
         }
 
         try {
-            mInputStream = new FileInputStream(path);
+            new FileInputStream(path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

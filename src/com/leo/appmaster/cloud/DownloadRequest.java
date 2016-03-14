@@ -1,8 +1,5 @@
 package com.leo.appmaster.cloud;
 
-import android.content.Context;
-import android.content.Intent;
-
 import java.net.MalformedURLException;
 
 /**

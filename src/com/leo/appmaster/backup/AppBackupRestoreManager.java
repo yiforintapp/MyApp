@@ -21,7 +21,6 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -56,7 +55,6 @@ public class AppBackupRestoreManager implements AppChangeListener {
     public static final int FAIL_TYPE_CANCELED = 4;
 
     public static final String BACKUP_PATH = "appmaster/backup/";
-    private static final String INSTALL_PACKAGE = "com.android.packageinstaller";
     private static final String PATH_ASSETMANAGER = "android.content.res.AssetManager";
     private static final String METHOD_ADD_ASSET = "addAssetPath";
     private static final String FILE_SCHEME = "file://";
@@ -418,7 +416,6 @@ public class AppBackupRestoreManager implements AppChangeListener {
         StatFs stat = new StatFs(path.getPath());
         long blockSize = stat.getBlockSize();
         long availableBlocks = stat.getAvailableBlocks();
-        long allBlocks = stat.getBlockCount();
         return availableBlocks * blockSize;
     }
 

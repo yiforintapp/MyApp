@@ -31,16 +31,15 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.HttpRequestAgent;
+import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.HttpRequestAgent;
-import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.extra.AppWallBean;
 import com.leo.appmaster.model.extra.AppWallUrlBean;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.appmaster.utils.TextFormater;
@@ -54,8 +53,6 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     private static final int MSG_LOAD_MORE_SUCCESSED = 2;
 //    private static final String DATAPATH = "/appmaster/appwall";
     public static final String GPPACKAGE = "com.android.vending";
-    private static final String CHARSETLOCAL = "utf-8";
-    private static final String CHARSETSERVICE = "utf-8";
     private static final String TAG = "GameAppFragment";
     private GameHandler mHandler;
     private ListView lv_game_app;
@@ -189,22 +186,22 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
      * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）
      *"zh":中文简体，”zh_(地区)“：繁体中文
      */
-        private String getPostLanguage() {
-            String requestLanguage;
-            String language = AppwallHttpUtil.getLanguage();
-            String country = AppwallHttpUtil.getCountry();
-            if ("zh".equalsIgnoreCase(language)) {
-                if ("CN".equalsIgnoreCase(country)) {
-                    requestLanguage = language;
-                } else {
-                    requestLanguage = language + "_" + country;
-                }
-            } else {
-                requestLanguage = language;
-            }
-//            Log.d(Constants.RUN_TAG, "sys_language:" +requestLanguage);
-            return requestLanguage;
-        }
+//        private String getPostLanguage() {
+//            String requestLanguage;
+//            String language = AppwallHttpUtil.getLanguage();
+//            String country = AppwallHttpUtil.getCountry();
+//            if ("zh".equalsIgnoreCase(language)) {
+//                if ("CN".equalsIgnoreCase(country)) {
+//                    requestLanguage = language;
+//                } else {
+//                    requestLanguage = language + "_" + country;
+//                }
+//            } else {
+//                requestLanguage = language;
+//            }
+////            Log.d(Constants.RUN_TAG, "sys_language:" +requestLanguage);
+//            return requestLanguage;
+//        }
     private void initUI() {
         all = new ArrayList<AppWallBean>();
         temp = new ArrayList<AppWallBean>();

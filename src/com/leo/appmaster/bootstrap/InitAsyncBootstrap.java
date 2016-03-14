@@ -1,13 +1,9 @@
 
 package com.leo.appmaster.bootstrap;
 
-import android.os.SystemClock;
-
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.db.PreferenceTable;
@@ -17,13 +13,11 @@ import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.schedule.FetchScheduleJob;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.CollectVideoUtils;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 

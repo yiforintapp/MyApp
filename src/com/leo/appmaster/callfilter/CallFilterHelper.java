@@ -42,13 +42,10 @@ import java.util.List;
  */
 public class CallFilterHelper {
     public static final String TAG = "CallFilterHelper";
-    private static final boolean DBG = false;
 
     private static CallFilterHelper mInstance;
     private Context mContext;
     private long mLastOffHookTime = 0;
-    private List<BlackListInfo> mBlackList;
-    private List<BlackListInfo> mSerBlackList;
     private CallFilterToast mTipToast;
     private long mCurrentCallTime = -1;
     private static String mPhoneNumber = "";
@@ -88,19 +85,7 @@ public class CallFilterHelper {
 
     private boolean mIsOffHook = false;
 
-    /**
-     * 是否加载过黑名单
-     */
-    private boolean mIsBlackLoad = false;
-
-    /**
-     * 是否执行“判断是否需要通话提示”
-     */
-    private boolean mIsCallFilterTip = false;
-
     private boolean mIsReceiver = false;
-
-    private boolean mReceiverHanl = false;
 
     /**
      * 本次通话的号码
@@ -112,10 +97,6 @@ public class CallFilterHelper {
      */
     private boolean mIsFilterTab = false;
 
-    /**
-     * 当前拦截时间
-     */
-    private long mFilterTime = 0;
     /**
      * 当前来电号码
      */

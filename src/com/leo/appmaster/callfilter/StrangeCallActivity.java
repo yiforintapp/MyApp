@@ -1,14 +1,18 @@
 
 package com.leo.appmaster.callfilter;
 
-import android.content.ContentResolver;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.provider.CallLog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -44,20 +48,12 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 public class StrangeCallActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private static final String TAG = "AddFromCallLogListActivity";
     private static final int MINUTE = 60;
-    private static final int HOUR = 60 * 60;
     private static final int STRA_MAX_COUNT = 100;
     private static final int HAVE_BLACK_LIST = -2;
     private static final int CUT_PROCESS = -3;
-    private static final int PAGE_SIZE = 100;
     private List<ContactCallLog> mCallLogList;
     private List<ContactCallLog> mSrcBackupList;
     private CommonToolbar mTitleBar;
@@ -67,7 +63,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private List<ContactCallLog> mAddPrivacyCallLog;
     private boolean mLogFlag = false;
     private ProgressBar mProgressBar;
-    private String mFrom;
     private ImageView mAddAll;
     private View mSelectAll;
     private View mEmptyView;
@@ -136,8 +131,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     }
 
     private void handleIntent() {
-        Intent intent = getIntent();
-        mFrom = intent.getStringExtra(CallFilterConstants.FROMWHERE);
     }
 
     private void initUI() {
@@ -437,7 +430,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
         class ViewHolder {
             ImageView contactIcon;
             TextView name, date, addnum, callduration;
-            ImageView checkImage, typeImage;
+            ImageView checkImage;
         }
 
         @Override
@@ -616,7 +609,6 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     int isExistLog = PrivacyContactUtils.NO_EXIST_LOG;
                     try {
                         int count = 0;
-                        ContentResolver cr = getContentResolver();
                         if (CallFilterConstants.ADD_BLACK_LIST_MODEL.equals(model)) {
                             for (ContactCallLog contact : mAddPrivacyCallLog) {
                                 if (!isCutProgress) {
@@ -779,14 +771,12 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
                     String[] selectionArgs = new String[]{String.valueOf(CallLog.Calls.INCOMING_TYPE),
                             String.valueOf(CallLog.Calls.MISSED_TYPE)};
                     String sortOrder = null;
-                    long start = SystemClock.elapsedRealtime();
                     List<ContactCallLog> callLogList = PrivacyContactUtils.
                             getSysCallLogNoContact(StrangeCallActivity.this, selection, selectionArgs, sortOrder, false, true);
                     // LeoLog.d(TAG, "zany, getSysCallLogNoContact: " + (SystemClock.elapsedRealtime() - start));
                     if (callLogList != null && callLogList.size() > 0) {
                         Collections.sort(callLogList, PrivacyContactUtils.mCallLogCamparator);
                         List<ContactCallLog> calls = new ArrayList<ContactCallLog>();
-                        long tStart = SystemClock.elapsedRealtime();
                         for (ContactCallLog call : callLogList) {
                             if (!mCallManger.isPrivacyConUse(call.getCallLogNumber())) {
 

@@ -307,83 +307,83 @@ public class AppBusinessManager {
         }
     }
 
-    private void syncOtherRecommend(final int type) {
-        HttpRequestAgent.getInstance(mContext).loadRecomApp(type,
-                new Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response, boolean noModify) {
-                        if (response != null) {
-                            try {
-                                if (response != null) {
-                                    List<BusinessItemInfo> list = BusinessJsonParser
-                                            .parserJsonObject(mContext,
-                                                    response, type);
-                                    if (!noModify) {
-                                        LeoLog.d("syncOtherRecommend",
-                                                list.toString());
-                                    } else {
-                                        LeoLog.d("syncOtherRecommend",
-                                                "noModify");
-                                    }
-                                    syncOtherRecommendData(type, list, noModify);
-                                }
-                            } catch (Exception e) {
-                                // e.printStackTrace();
-                                // LeoLog.e("syncServerData", e.getMessage());
-                                // TimerTask recheckTask = new TimerTask() {
-                                // @Override
-                                // public void run() {
-                                // syncOtherRecommend(type);
-                                // }
-                                // };
-                                // Timer timer = new Timer();
-                                // timer.schedule(recheckTask, DELAY_2_HOUR);
-                            } finally {
-                                TimerTask recheckTask = new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        syncOtherRecommend(type);
-                                    }
-                                };
-                                Timer timer = ThreadManager.getTimer();
-                                timer.schedule(recheckTask, DELAY_12_HOUR);
-                            }
-                        }
-                    }
+//    private void syncOtherRecommend(final int type) {
+//        HttpRequestAgent.getInstance(mContext).loadRecomApp(type,
+//                new Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response, boolean noModify) {
+//                        if (response != null) {
+//                            try {
+//                                if (response != null) {
+//                                    List<BusinessItemInfo> list = BusinessJsonParser
+//                                            .parserJsonObject(mContext,
+//                                                    response, type);
+//                                    if (!noModify) {
+//                                        LeoLog.d("syncOtherRecommend",
+//                                                list.toString());
+//                                    } else {
+//                                        LeoLog.d("syncOtherRecommend",
+//                                                "noModify");
+//                                    }
+//                                    syncOtherRecommendData(type, list, noModify);
+//                                }
+//                            } catch (Exception e) {
+//                                // e.printStackTrace();
+//                                // LeoLog.e("syncServerData", e.getMessage());
+//                                // TimerTask recheckTask = new TimerTask() {
+//                                // @Override
+//                                // public void run() {
+//                                // syncOtherRecommend(type);
+//                                // }
+//                                // };
+//                                // Timer timer = new Timer();
+//                                // timer.schedule(recheckTask, DELAY_2_HOUR);
+//                            } finally {
+//                                TimerTask recheckTask = new TimerTask() {
+//                                    @Override
+//                                    public void run() {
+//                                        syncOtherRecommend(type);
+//                                    }
+//                                };
+//                                Timer timer = ThreadManager.getTimer();
+//                                timer.schedule(recheckTask, DELAY_12_HOUR);
+//                            }
+//                        }
+//                    }
+//
+//                }, new ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        LeoLog.e("syncServerData", error.getMessage());
+//                        TimerTask recheckTask = new TimerTask() {
+//                            @Override
+//                            public void run() {
+//                                syncOtherRecommend(type);
+//                            }
+//                        };
+//                        Timer timer = ThreadManager.getTimer();
+//                        timer.schedule(recheckTask, DELAY_2_HOUR);
+//
+//                        // if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
+//                        // LoadFailUtils.sendLoadFail(mContext, "flow_apps");
+//                        // } else {
+//                        // LoadFailUtils.sendLoadFail(mContext, "space_apps");
+//                        // }
+//                    }
+//                });
+//    }
 
-                }, new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        LeoLog.e("syncServerData", error.getMessage());
-                        TimerTask recheckTask = new TimerTask() {
-                            @Override
-                            public void run() {
-                                syncOtherRecommend(type);
-                            }
-                        };
-                        Timer timer = ThreadManager.getTimer();
-                        timer.schedule(recheckTask, DELAY_2_HOUR);
-
-                        // if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-                        // LoadFailUtils.sendLoadFail(mContext, "flow_apps");
-                        // } else {
-                        // LoadFailUtils.sendLoadFail(mContext, "space_apps");
-                        // }
-                    }
-                });
-    }
-
-    private void syncOtherRecommendData(int type, List<BusinessItemInfo> list,
-            boolean noModify) {
-        List<BusinessItemInfo> removeList = new ArrayList<BusinessItemInfo>();
-        for (BusinessItemInfo businessItemInfo : mBusinessList) {
-            if (businessItemInfo.containType == type) {
-                removeList.add(businessItemInfo);
-            }
-        }
-        mBusinessList.removeAll(removeList);
-        mBusinessList.addAll(list);
-    }
+//    private void syncOtherRecommendData(int type, List<BusinessItemInfo> list,
+//            boolean noModify) {
+//        List<BusinessItemInfo> removeList = new ArrayList<BusinessItemInfo>();
+//        for (BusinessItemInfo businessItemInfo : mBusinessList) {
+//            if (businessItemInfo.containType == type) {
+//                removeList.add(businessItemInfo);
+//            }
+//        }
+//        mBusinessList.removeAll(removeList);
+//        mBusinessList.addAll(list);
+//    }
 
     protected void syncGestureData(final int containerType,
             final List<BusinessItemInfo> list) {

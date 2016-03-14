@@ -12,12 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.AppUtil;
 
 public class AppDeletetemView extends FrameLayout implements OnClickListener {
 

@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.callfilter;
 
+import java.util.List;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +24,6 @@ import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.DeskProxyActivity;
-import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -34,8 +35,6 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.utils.Utilities;
-
-import java.util.List;
 
 public class CallFilterMainActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {

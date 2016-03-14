@@ -15,7 +15,6 @@ import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;

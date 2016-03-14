@@ -1,11 +1,12 @@
 package com.leo.appmaster.appmanage;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppDeleteAdapter;
@@ -16,8 +17,6 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-
-import java.util.ArrayList;
 
 /**
  * Created by qili on 15-10-20.

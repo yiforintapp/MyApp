@@ -1,6 +1,9 @@
 package com.leo.appmaster.db;
 
-import android.accounts.ChooseAccountTypeActivity;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,10 +15,6 @@ import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 消息中心数据库表
@@ -214,9 +213,6 @@ public class MsgCenterTable extends BaseTable {
             for (Message message : delList) {
                 db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[]{message.msgId + ""});
                 if (list == null || !message.isCategoryUpdate()) continue;
-
-                if (list == null) continue;
-
                 for (Message msg : list) {
                     if (msg.msgId == message.msgId) {
                         // 如果url不一致了，需要把旧的缓存文件删掉

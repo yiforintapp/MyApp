@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.BackUpActivity;
-import com.leo.appmaster.backup.AppBackupAdapter;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.backup.AppRestoreAdapter;
@@ -25,7 +23,6 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
-import com.leo.appmaster.utils.DipPixelUtil;
 
 public class RestoreFragment extends BaseFragment implements AppBackupDataListener {
     public static final String MESSAGE_BACKUP_SUCCESS = "message_backup_success";

@@ -1,10 +1,5 @@
 package com.leo.appmaster.cloud;
 
-import android.os.Process;
-import android.text.TextUtils;
-
-import com.android.volley.ServerError;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -12,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
+
+import android.os.Process;
+import android.text.TextUtils;
 
 /**
  * Created by Jasper on 2015/12/16.

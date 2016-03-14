@@ -71,7 +71,6 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
                 mClearAll.setBackgroundResource(R.drawable.green_radius_btn_shape);
                 mClearAll.setEnabled(true);
                 if (isFirstLoadDone) {
-                    CallFilterMainActivity activity = (CallFilterMainActivity) mActivity;
 //                activity.moveToFilterFragment();
                 }
                 mRlBottomView.setVisibility(View.VISIBLE);

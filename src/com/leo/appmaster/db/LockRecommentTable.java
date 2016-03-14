@@ -15,7 +15,6 @@ import com.leo.imageloader.utils.IoUtils;
  * Created by qili on 15-10-16.
  */
 public class LockRecommentTable extends BaseTable {
-    private static final String TAG = "LockRecommentTable";
     protected static final String TABLE_NAME = "lock_recomment";
 
     protected static final String LOCK_REC_MSG_ID = "lock_id";
@@ -59,7 +58,6 @@ public class LockRecommentTable extends BaseTable {
         SQLiteDatabase db = getHelper().getWritableDatabase();
         if (db == null) return;
 
-        int count = 0;
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();

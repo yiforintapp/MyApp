@@ -17,10 +17,7 @@ public class AppRestoreAdapter extends BaseAdapter {
 
     private ArrayList<AppItemInfo> mRestoreList;
 
-    private AppBackupRestoreManager mBackupManager;
-
     public AppRestoreAdapter(AppBackupRestoreManager manager) {
-        mBackupManager = manager;
         mRestoreList = new ArrayList<AppItemInfo>();
     }
 

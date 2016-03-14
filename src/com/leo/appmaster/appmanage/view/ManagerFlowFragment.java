@@ -53,7 +53,6 @@ public class ManagerFlowFragment extends BaseFragment {
     private ArrayList<String> test;
     private ArrayList<Integer> dataList;
     private ArrayList<ArrayList<Integer>> dataLists;
-    private String today_ymd;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -208,7 +207,6 @@ public class ManagerFlowFragment extends BaseFragment {
             month = "0" + ManagerFlowUtils.getNowMonth();
         }
         days = ManagerFlowUtils.getCurrentMonthDay();
-        today_ymd = ManagerFlowUtils.getNowTime();
         // 流量图的日期列
         for (int i = 0; i < days; i++) {
             if (language.equals("zh")) {

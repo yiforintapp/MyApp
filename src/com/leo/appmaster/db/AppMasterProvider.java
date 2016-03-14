@@ -1,5 +1,7 @@
 package com.leo.appmaster.db;
 
+import java.util.ArrayList;
+
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
@@ -12,9 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import java.util.ArrayList;
-
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
 
 public class AppMasterProvider extends ContentProvider {

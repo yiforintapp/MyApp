@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Message;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,13 +35,6 @@ public class CallFilterToast {
     private int mToastY = 0;
     private static int currSDK_INT = Build.VERSION.SDK_INT;
 
-    private static Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-
-            }
-        }
-    };
 
     public static CallFilterToast makeText(final Context context, String title, int peopleNum, int toastType, int filterType) {
         final CallFilterToast result = new CallFilterToast(context);

@@ -12,8 +12,6 @@ import java.util.List;
 public class UploadService extends CloudService {
     public static final String NAMESPACE = "com.leo.appmaster";
 
-    private static final String ACTION_UPLOAD_SUFFIX = ".action.upload";
-
     protected static final String PARAM_ID = "id";
     protected static final String PARAM_URL = "url";
     protected static final String PARAM_METHOD = "method";

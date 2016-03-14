@@ -17,16 +17,11 @@ import com.leo.imageloader.utils.IoUtils;
  */
 public class InstalledAppTable extends BaseTable {
 
-    private static final String TAG = "MsgCenterTable";
-
     private static final byte[] LOCK = new byte[1];
     protected static final String TABLE_NAME = "installed_app";
 
     protected static final String COL_PKG = "pkg";
     protected static final String COL_IGNORED = "ignored";
-
-    private static final int IGNORED = 1;
-    private static final int UNIGNORED = 0;
 
     private static InstalledAppTable sInstance;
     private List<String> mPkgList;

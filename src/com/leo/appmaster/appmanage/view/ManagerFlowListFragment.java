@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -23,8 +22,6 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.TrafficsInfo;
-import com.leo.appmaster.ui.TrafficInfoPackage;
-import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class ManagerFlowListFragment extends BaseFragment {
 

@@ -3,7 +3,6 @@ package com.leo.appmaster.backup;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.BaseAdapter;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.ui.CommonToolbar;
 
 public class AppDeleteAdapter extends BaseAdapter {
 

@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,7 +15,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.view.BackUpFragment;
@@ -27,7 +25,6 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.utils.LeoLog;

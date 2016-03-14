@@ -1,13 +1,7 @@
 package com.leo.appmaster.cloud.crypto;
 
-import android.text.TextUtils;
-import android.util.Base64;
-
-import com.leo.appmaster.AppMasterApplication;
-
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -22,6 +16,11 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import android.text.TextUtils;
+import android.util.Base64;
+
+import com.leo.appmaster.AppMasterApplication;
 
 /**
  * 加密工具类

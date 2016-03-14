@@ -51,8 +51,6 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
     private LEOAlarmDialog mAlarmDialog;
     private LEOMessageDialog mMessageDialog;
     private RippleView mRvBackup;
-    private AppItemInfo mPendingDelApp;
-    private boolean isAllCheck = false;
 
     @Override
     protected int layoutResourceId() {
@@ -322,7 +320,6 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
                 mBackupAdapter.checkAll(checkAll);
                 iv_check_backup.setBackgroundResource(checkAll ? R.drawable.app_select
                         : R.drawable.app_unselect);
-                isAllCheck = checkAll ? true : false;
                 mBackupAdapter.setisAllCheck(checkAll ? true : false);
                 iv_check_backup.setTag(checkAll);
             }

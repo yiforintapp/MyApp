@@ -549,16 +549,6 @@ public class HomeBoostActivity extends Activity {
 
             toast.setView(view);
             toast.setDuration(Toast.LENGTH_SHORT);
-            int marginTop = 0;
-            if (mScreenH >= 1920) {
-                marginTop = 150;
-            } else if (mScreenH >= 1280) {
-                marginTop = 120;
-            } else if (mScreenH >= 800) {
-                marginTop = 80;
-            } else {
-                marginTop = 30;
-            }
 //            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
             toast.show();
             HomeBoostActivity.this.finish();

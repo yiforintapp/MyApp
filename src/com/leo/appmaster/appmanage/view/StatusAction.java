@@ -14,14 +14,11 @@ public class StatusAction implements DecorateAction {
 	private static final String TAG = "StatusAction";
 
 	private int mAlpha = 255;
-	private int mNewInstallPromptOffsetX, mNewInstallPromptOffsetY;
 
 	public void setNewInstallPromptOffsetX(int mNewInstallPromptOffsetX) {
-		this.mNewInstallPromptOffsetX = mNewInstallPromptOffsetX;
 	}
 
 	public void setNewInstallPromptOffsetY(int mNewInstallPromptOffsetY) {
-		this.mNewInstallPromptOffsetY = mNewInstallPromptOffsetY;
 	}
 
 	@Override
@@ -33,12 +30,9 @@ public class StatusAction implements DecorateAction {
 	public void draw(Canvas canvas, View view) {
 		Object info = view.getTag();
 		if (info instanceof BaseInfo) {
-			BaseInfo item = (BaseInfo) info;
-
 			// if (item.status == BaseItemInfo.STATUS_NORMAL)
 			// return;
 			//
-			int width = view.getWidth();
 			int transitionX = view.getScrollX();
 
 			LeoLog.i(TAG, "transitionX " + transitionX);

@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -21,11 +20,8 @@ import com.leo.appmaster.appmanage.view.ManagerFlowListFragment;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
-import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
-import com.leo.appmaster.wifiSecurity.WifiSettingActivity;
 
 public class FlowActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {

@@ -1,33 +1,25 @@
 package com.leo.appmaster.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
-import android.telecom.Call;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterConstants;
-import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.schedule.BlackListFileFetchJob;
 import com.leo.appmaster.utils.BuildProperties;
-import com.leo.appmaster.utils.DataUtils;
-import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jasper on 2016/1/14.
@@ -660,7 +652,6 @@ public class BlacklistTab extends BaseTable {
             LeoLog.d(TAG, "getBlackInfoByNumber, db is null.");
             return null;
         }
-        Uri uri = CallFilterConstants.BLACK_LIST_URI;
         String sortOrder = CallFilterConstants.COL_BLACK_ID + " " + CallFilterConstants.DESC;
         String numSelcts = null;
         String selArgs = null;

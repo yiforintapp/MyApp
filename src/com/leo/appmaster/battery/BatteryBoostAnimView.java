@@ -13,7 +13,6 @@ import com.leo.appmaster.R;
  * Created by Jasper on 2016/2/29.
  */
 public class BatteryBoostAnimView extends View {
-    private static final String TAG = "BatteryBoostAnimView";
     private static final int ROTATE_INTERVAL = 4;
 
     private Drawable mBgDrawable;

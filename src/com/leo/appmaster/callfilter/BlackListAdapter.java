@@ -30,7 +30,6 @@ import com.leo.appmaster.utils.Utilities;
  */
 public class BlackListAdapter extends BaseAdapter implements View.OnClickListener {
     private List<BlackListInfo> mList;
-    private String mFlag;
     private Context mContext;
     private LayoutInflater layoutInflater;
     private LEOWithSingleCheckboxDialog mDialog;
@@ -194,7 +193,6 @@ public class BlackListAdapter extends BaseAdapter implements View.OnClickListene
     }
 
     public void setFlag(String fromWhere) {
-        mFlag = fromWhere;
     }
 
 
