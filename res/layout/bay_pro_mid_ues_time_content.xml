@@ -265,7 +265,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.leo.appmaster.privacycontact.CircleImageView
+                    <com.leo.appmaster.privacycontact.CircleImageViewTwo
                         android:id="@+id/iv_show_one"
                         android:layout_width="@dimen/privacy_contact_icon_size"
                         android:layout_height="@dimen/privacy_contact_icon_size"
@@ -293,7 +293,7 @@
                     android:layout_marginLeft="25dp"
                     android:orientation="vertical">
 
-                    <com.leo.appmaster.privacycontact.CircleImageView
+                    <com.leo.appmaster.privacycontact.CircleImageViewTwo
                         android:id="@+id/iv_show_two"
                         android:layout_width="@dimen/privacy_contact_icon_size"
                         android:layout_height="@dimen/privacy_contact_icon_size"
@@ -321,7 +321,7 @@
                     android:layout_marginLeft="25dp"
                     android:orientation="vertical">
 
-                    <com.leo.appmaster.privacycontact.CircleImageView
+                    <com.leo.appmaster.privacycontact.CircleImageViewTwo
                         android:id="@+id/iv_show_three"
                         android:layout_width="@dimen/privacy_contact_icon_size"
                         android:layout_height="@dimen/privacy_contact_icon_size"
@@ -349,7 +349,7 @@
                     android:layout_marginLeft="25dp"
                     android:orientation="vertical">
 
-                    <com.leo.appmaster.privacycontact.CircleImageView
+                    <com.leo.appmaster.privacycontact.CircleImageViewTwo
                         android:id="@+id/iv_show_four"
                         android:layout_width="@dimen/privacy_contact_icon_size"
                         android:layout_height="@dimen/privacy_contact_icon_size"

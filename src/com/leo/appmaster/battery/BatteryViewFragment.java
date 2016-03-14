@@ -55,7 +55,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.privacycontact.CircleImageView;
+import com.leo.appmaster.privacycontact.CircleImageViewTwo;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.AdWrapperLayout;
@@ -159,10 +159,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private View mRecommandNumThree;
     private View mRecommandNumFour;
 
-    private CircleImageView mIvShowOne;
-    private CircleImageView mIvShowTwo;
-    private CircleImageView mIvShowThree;
-    private CircleImageView mIvShowFour;
+    private CircleImageViewTwo mIvShowOne;
+    private CircleImageViewTwo mIvShowTwo;
+    private CircleImageViewTwo mIvShowThree;
+    private CircleImageViewTwo mIvShowFour;
 
     private TextView mRecommandTvOne;
     private TextView mRecommandTvTwo;
@@ -508,10 +508,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mRecommandNumThree = findViewById(R.id.show_three);
         mRecommandNumFour = findViewById(R.id.show_four);
 
-        mIvShowOne = (CircleImageView) findViewById(R.id.iv_show_one);
-        mIvShowTwo = (CircleImageView) findViewById(R.id.iv_show_two);
-        mIvShowThree = (CircleImageView) findViewById(R.id.iv_show_three);
-        mIvShowFour = (CircleImageView) findViewById(R.id.iv_show_four);
+        mIvShowOne = (CircleImageViewTwo) findViewById(R.id.iv_show_one);
+        mIvShowTwo = (CircleImageViewTwo) findViewById(R.id.iv_show_two);
+        mIvShowThree = (CircleImageViewTwo) findViewById(R.id.iv_show_three);
+        mIvShowFour = (CircleImageViewTwo) findViewById(R.id.iv_show_four);
 
         mRecommandTvOne = (TextView) findViewById(R.id.tv_show_one);
         mRecommandTvTwo = (TextView) findViewById(R.id.tv_show_two);
@@ -890,7 +890,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
             LeoLog.d("testGetList", "-------------分割线---------------");
             //fill the local ,  size of : 3
-            mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_contacts));
+            mIvShowOne.setSelfImageDrawable(getResources().getDrawable(R.drawable.icon_time_contacts), false);
             mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_contact));
             mRecommandNumOne.setVisibility(View.VISIBLE);
             mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
@@ -909,7 +909,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             });
 
-            mIvShowTwo.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_phone));
+            mIvShowTwo.setSelfImageDrawable(getResources().getDrawable(R.drawable.icon_time_phone), false);
             mRecommandTvTwo.setText(getString(R.string.battery_protect_show_num_call));
             mRecommandNumTwo.setVisibility(View.VISIBLE);
             mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
@@ -926,7 +926,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             });
 
-            mIvShowThree.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_message));
+            mIvShowThree.setSelfImageDrawable(getResources().getDrawable(R.drawable.icon_time_message), false);
             mRecommandTvThree.setText(getString(R.string.battery_protect_show_num_msm));
             mRecommandNumThree.setVisibility(View.VISIBLE);
             mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
@@ -1073,7 +1073,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
                 if (name != null && map != null) {
                     mRecommandNumFour.setVisibility(View.VISIBLE);
-                    mIvShowFour.setImageDrawable(map);
+                    mIvShowFour.setSelfImageDrawable(map, true);
                     mRecommandTvFour.setText(name);
                     mRecommandNumFour.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -1122,7 +1122,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
             LeoLog.d("testGetList", "-------------分割线---------------");
             //fill the local ,  size of : 1
-            mIvShowOne.setImageDrawable(getResources().getDrawable(R.drawable.icon_time_browser));
+            mIvShowOne.setSelfImageDrawable(getResources().getDrawable(R.drawable.icon_time_browser), false);
             mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_browser));
             mRecommandNumOne.setVisibility(View.VISIBLE);
             mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
@@ -1189,13 +1189,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else {
             List<BatteryAppItem> playList = ScreenRecommentJob.getBatteryVideoList();
             LeoLog.d("testGetList", "玩应用 size is : " + playList.size());
-            for (int i = 0; i < playList.size(); i++) {
-                LeoLog.d("testGetList", "名字: " + playList.get(i).name);
-                LeoLog.d("testGetList", "包名: " + playList.get(i).pkg);
-                LeoLog.d("testGetList", "Url: " + playList.get(i).actionUrl);
-                LeoLog.d("testGetList", "iconUrl: " + playList.get(i).iconUrl);
-            }
-            LeoLog.d("testGetList", "-------------分割线---------------");
+//            for (int i = 0; i < playList.size(); i++) {
+//                LeoLog.d("testGetList", "名字: " + playList.get(i).name);
+//                LeoLog.d("testGetList", "包名: " + playList.get(i).pkg);
+//                LeoLog.d("testGetList", "Url: " + playList.get(i).actionUrl);
+//                LeoLog.d("testGetList", "iconUrl: " + playList.get(i).iconUrl);
+//            }
+//            LeoLog.d("testGetList", "-------------分割线---------------");
             List<BatteryAppItem> fitList = new ArrayList<BatteryAppItem>();
             for (int i = 0; i < playList.size(); i++) {
                 boolean isRightinfo = getRightInfo(playList, i);
@@ -1289,7 +1289,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    private void gotoBrowser(BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView, int type) {
+    private void gotoBrowser(BatteryAppItem infoOne, CircleImageViewTwo icon, TextView title, View contentView, int type) {
 
         if (type == RECOMMAND_TYPE_TWO) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
@@ -1304,9 +1304,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         final String urlFour = infoOne.actionUrl;
         if (!Utilities.isEmpty(infoOne.iconUrl)) {
+            LeoLog.d("testGotoBrowser", "iconUrl is not Empty");
             mImageLoader.displayImage(infoOne.iconUrl, icon, getOptions(R.drawable.default_user_avatar));
         } else {
-            icon.setImageDrawable(getRightIcon(infoOne));
+            LeoLog.d("testGotoBrowser", "iconUrl is Empty");
+            icon.setSelfImageDrawable(getRightIcon(infoOne), false);
         }
         title.setText(infoOne.name);
         contentView.setOnClickListener(new View.OnClickListener() {
@@ -1323,7 +1325,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         });
     }
 
-    private void gotoApp(final BatteryAppItem infoOne, CircleImageView icon, TextView title, View contentView) {
+    private void gotoApp(final BatteryAppItem infoOne, CircleImageViewTwo icon, TextView title, View contentView) {
         if (mActivity == null) return;
         String name = null;
         Drawable map = null;
@@ -1354,9 +1356,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
             Drawable fitMap = getRightAppIcon(infoOne.pkg);
             if (fitMap == null) {
-                icon.setImageDrawable(map);
+                icon.setSelfImageDrawable(map, true);
             } else {
-                icon.setImageDrawable(fitMap);
+                icon.setSelfImageDrawable(fitMap, false);
             }
 
             title.setText(name);
