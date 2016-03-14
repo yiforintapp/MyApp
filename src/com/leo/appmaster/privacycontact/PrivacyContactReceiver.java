@@ -4,14 +4,12 @@ package com.leo.appmaster.privacycontact;
 import java.text.SimpleDateFormat;
 
 import android.app.Activity;
-import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
@@ -25,13 +23,11 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterHelper;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.phoneSecurity.MTKSendMsmHandler;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.SimDetecter;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactReceiver extends BroadcastReceiver {

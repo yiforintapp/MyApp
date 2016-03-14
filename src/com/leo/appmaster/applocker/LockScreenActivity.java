@@ -1,5 +1,19 @@
 package com.leo.appmaster.applocker;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -32,7 +46,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.ArraySet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -134,21 +147,6 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
@@ -1476,18 +1474,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         ArrayList<String> list = new ArrayList<String>();
         for (String id : mAdUnitIdList) {
             WrappedCampaign wc = mAdMap.get(id);
-            boolean found = false;
-            for (String newId: list) {
-                WrappedCampaign newWc = mAdMap.get(newId);
-                if (wc.getAppName().equalsIgnoreCase(newWc.getAppName())
-                        || wc.getImageUrl().equalsIgnoreCase(newWc.getImageUrl())
-                        || wc.getDescription().equalsIgnoreCase(newWc.getDescription())) {
-                    found = true;
-                    break;
+            if(wc != null) {
+                boolean found = false;
+                for (String newId: list) {
+                    WrappedCampaign newWc = mAdMap.get(newId);
+                    if(newWc == null) {
+                        continue;
+                    }
+                    if (wc.getAppName().equalsIgnoreCase(newWc.getAppName())
+                            || wc.getImageUrl().equalsIgnoreCase(newWc.getImageUrl())
+                            || wc.getDescription().equalsIgnoreCase(newWc.getDescription())) {
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if (!found) {
-                list.add(id);
+                if (!found) {
+                    list.add(id);
+                }
             }
         }
 
@@ -1521,30 +1524,30 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      * @param campaign
      * @return 是否与之前的广告重复
      */
-    private boolean isRedundant(String unitId, WrappedCampaign campaign) {
-        for (String key : mAdMap.keySet()) {
-            LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
-            if (key.equalsIgnoreCase(unitId)) {
-                continue;
-            }
-			WrappedCampaign data = mAdMap.get(key);
-            if (data.getAppName().equals(campaign.getAppName())
-                    || data.getImageUrl().equals(campaign.getImageUrl())
-                    || data.getDescription().equals(campaign.getDescription())) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean isRedundant(String unitId, WrappedCampaign campaign) {
+//        for (String key : mAdMap.keySet()) {
+//            LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
+//            if (key.equalsIgnoreCase(unitId)) {
+//                continue;
+//            }
+//			WrappedCampaign data = mAdMap.get(key);
+//            if (data.getAppName().equals(campaign.getAppName())
+//                    || data.getImageUrl().equals(campaign.getImageUrl())
+//                    || data.getDescription().equals(campaign.getDescription())) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
-    private void removeAdData(String unitId) {
-        if (mAdBitmapMap != null) {
-            mAdBitmapMap.remove(unitId);
-        }
-        if (mAdUnitIdList != null) {
-            mAdUnitIdList.remove(unitId);
-        }
-    }
+//    private void removeAdData(String unitId) {
+//        if (mAdBitmapMap != null) {
+//            mAdBitmapMap.remove(unitId);
+//        }
+//        if (mAdUnitIdList != null) {
+//            mAdUnitIdList.remove(unitId);
+//        }
+//    }
 	
     /*private void resistViewAllAd(LinkedHashMap<String, Campaign> adMap) {
 

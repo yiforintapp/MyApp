@@ -387,14 +387,18 @@ public class GestureLockFragment extends LockFragment implements
         if (!TextUtils.equals(lockedPackage, mPackageName) && !TextUtils.isEmpty(lockedPackage)) {
             mPackageName = lockedPackage;
             mInputCount = 0;
-            mGestureTip.setText(R.string.please_input_gesture);
+            if(mGestureTip != null) {
+                mGestureTip.setText(R.string.please_input_gesture);
+            }
             if (mAppIcon == null) {
                 mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
             }
             mAppIcon.setImageDrawable(AppUtil.getAppIcon(
                     mActivity.getPackageManager(), mPackageName));
         }
-
+        if (mAppIcon == null) {
+            mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
+        }
         mAppIcon.setVisibility(View.VISIBLE);
     }
 
