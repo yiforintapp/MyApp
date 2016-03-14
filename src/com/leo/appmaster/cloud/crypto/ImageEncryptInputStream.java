@@ -12,14 +12,15 @@ import java.util.Arrays;
  * Created by Jasper on 2015/12/2.
  */
 public class ImageEncryptInputStream extends InputStream {
-    private ImageEncryptor mImageEncryptor;
+    private static final String TAG = "ImageEncryptInputStream";
+    private ImageCryptor mImageCryptor;
     private String mFilePath;
 
     public ImageEncryptInputStream(String path) throws FileNotFoundException {
-        this(path, new ImageEncryptor());
+        this(path, new ImageCryptor());
     }
 
-    public ImageEncryptInputStream(String path, ImageEncryptor encryptor) throws FileNotFoundException {
+    public ImageEncryptInputStream(String path, ImageCryptor encryptor) throws FileNotFoundException {
         if (TextUtils.isEmpty(path)) {
             throw new RuntimeException("path must not be null.");
         }
@@ -29,7 +30,7 @@ public class ImageEncryptInputStream extends InputStream {
         }
         mFilePath = path;
         encryptor.open(path);
-        mImageEncryptor = encryptor;
+        mImageCryptor = encryptor;
     }
 
     @Override
@@ -42,13 +43,13 @@ public class ImageEncryptInputStream extends InputStream {
     @Override
     public void close() throws IOException {
         super.close();
-        mImageEncryptor.close(mFilePath);
+        mImageCryptor.close(mFilePath);
     }
 
     @Override
     public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         Arrays.fill(buffer, (byte) 0);
-        int size = mImageEncryptor.read(buffer, byteOffset, byteCount);
+        int size = mImageCryptor.read(buffer, byteOffset, byteCount);
         return size;
     }
 }
