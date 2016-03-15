@@ -854,11 +854,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         float positionX = 0;
         float margeX = DipPixelUtil.dip2px(mActivity, 8);
         if (RECOMMAND_TYPE_ONE == type) {
-            positionX = mShowOne.getLeft() + mShowOne.getWidth() / 2 - margeX;;
+            positionX = mShowOne.getLeft() + mShowOne.getWidth() / 2 - margeX;
         } else if (RECOMMAND_TYPE_TWO == type) {
             positionX = mShowTwo.getLeft() + mShowTwo.getWidth() / 2 - margeX;
         } else if (RECOMMAND_TYPE_THREE == type) {
-            positionX = mShowThree.getLeft() + mShowThree.getWidth() / 2 - margeX;;
+            positionX = mShowThree.getLeft() + mShowThree.getWidth() / 2 - margeX;
         }
         if (positionX > 0) {  // 首次展开时positionX小于0,不需要手动设置指示器位置
             mFolderIndicator.setX(positionX);
@@ -871,20 +871,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         float endX = DipPixelUtil.dip2px(mActivity, 8);
         float currentX = mFolderIndicator.getX();
         if (RECOMMAND_TYPE_ONE == type) {
-            endX = mShowOne.getLeft() + mShowOne.getWidth() / 2 - endX;;
+            endX = mShowOne.getLeft() + mShowOne.getWidth() / 2 - endX;
         } else if (RECOMMAND_TYPE_TWO == type) {
             endX = mShowTwo.getLeft() + mShowTwo.getWidth() / 2 - endX;
         } else if (RECOMMAND_TYPE_THREE == type) {
             endX = mShowThree.getLeft() + mShowThree.getWidth() / 2 - endX;
         }
         moveAnim =ObjectAnimator.ofFloat(mFolderIndicator, "x", currentX, endX);
-        LeoLog.e("currentX", "currentX:" + currentX + ";;; endX: " + endX);
         final float  finalX = endX;
         moveAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mFolderIndicator.setX(finalX);
-                LeoLog.e("currentX", "finalX: " + finalX);
             }
         });
         moveAnim.setDuration(300);
