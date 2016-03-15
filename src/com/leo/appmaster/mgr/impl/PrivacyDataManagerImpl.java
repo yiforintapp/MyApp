@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.cloud.crypto.ImageCryptor;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.PhotoAibum;
@@ -71,6 +72,19 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     private int mScanAddPicNum = 0;
     private int mScanAddVidNum = 0;
 
+    private ImageCryptor mImageCryptor;
+
+    public PrivacyDataManagerImpl() {
+        mImageCryptor = new ImageCryptor();
+    }
+
+    private ImageCryptor getImageCryptor() {
+        if (mImageCryptor == null) {
+            mImageCryptor = new ImageCryptor();
+        }
+
+        return mImageCryptor;
+    }
 
     @Override
     public void onDestory() {
@@ -221,9 +235,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     @Override
     public String cancelHidePic(String mPicPath) {
         long totalSize = new File(mPicPath).length();
-        String newPaht = FileOperationUtil.unhideImageFile(
-                mContext, mPicPath, totalSize);
-        return newPaht;
+        String newPath = FileOperationUtil.unhideImageFile(mContext, mPicPath, totalSize);
+
+        // 解密
+//        getImageCryptor().decrypt(newPath);
+        return newPath;
     }
 
     @Override
@@ -241,12 +257,12 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         //mSuffix , 暂时用不上
         long totalSize = new File(mPicPath).length();
 
-        String newFileName = FileOperationUtil
-                .getNameFromFilepath(mPicPath);
+        String newFileName = FileOperationUtil.getNameFromFilepath(mPicPath);
         newFileName = newFileName + ".leotmi";
-        String newPath = FileOperationUtil.hideImageFile(mContext,
-                mPicPath, newFileName, totalSize);
+        String newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
 
+        // 加密
+//        getImageCryptor().encrypt(newPath);
         return newPath;
     }
 

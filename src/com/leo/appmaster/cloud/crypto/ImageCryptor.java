@@ -14,7 +14,7 @@ public class ImageCryptor {
         try {
             System.loadLibrary("LeoImage");
             nativeInit(AppMasterConfig.LOGGABLE ? 1 : 0);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
