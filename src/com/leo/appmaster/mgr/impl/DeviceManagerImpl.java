@@ -2,25 +2,35 @@ package com.leo.appmaster.mgr.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.battery.BatteryNotifyHelper;
-import com.leo.appmaster.battery.RemainingTimeEstimator;
+import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.MobileDataLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.mgr.DeviceManager;
@@ -29,24 +39,157 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.TrafficsInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.TrafficInfoPackage;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class DeviceManagerImpl extends DeviceManager {
+    private static final String TAG = "DeviceManagerImpl";
 
+    private final static long INIT_INTERVEL = 5 * 1000;
+
+    private LockManager mLockManager;
+    private WifiLockSwitch mWifiSwitch;
+    private BlueToothLockSwitch mBlueToothSwitch;
+    private MobileDataLockSwitch mMobileDataSwitch;
+
+    private boolean unlockOpenWifiDone = false;
+    private boolean isConnecting = false;
+
+    private WifiManager mWifimanager;
+    private long initTime;
 
     public DeviceManagerImpl() {
+        mWifiSwitch = new WifiLockSwitch();
+        mBlueToothSwitch = new BlueToothLockSwitch();
+        mMobileDataSwitch = new MobileDataLockSwitch();
 
+        mWifimanager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
     }
 
     public void init() {
+        LeoLog.d(TAG, "onCreate");
+        initTime = System.currentTimeMillis();
+    }
+
+    @Override
+    public void wifiChangeReceiver(Intent intent) {
+        LeoLog.d(TAG, "onReceive");
+
+        try {
+            String action = intent.getAction();
+            if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
+                NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+                NetworkInfo.State curState = info.getState();
+
+                if (curState == NetworkInfo.State.CONNECTING) {
+                    LeoLog.d(TAG, "[NETWORK_STATE_CHANGED_ACTION] broadcast, state=" + curState);
+
+                    long now = System.currentTimeMillis();
+                    if (now - initTime < INIT_INTERVEL) {
+                        LeoLog.d(TAG, "init Wifi Brocast yet , return");
+                        return;
+                    }
+
+                    if (unlockOpenWifiDone) {
+                        LeoLog.d(TAG, "unlock open wifi ,  return");
+                        return;
+                    }
+
+                    //connecting once .. doing ..
+                    if (!isConnecting && mWifiSwitch.isLockNow()) {
+                        LeoLog.d(TAG, "first connecting , show lock");
+                        isConnecting = true;
+
+                        //show LockScreen
+                        handleWifiOn();
+                    } else {
+                        LeoLog.d(TAG, "many connecting or not lockWifi, return");
+                        return;
+                    }
+                }
+
+                if (curState == NetworkInfo.State.CONNECTED) {
+                    LeoLog.d(TAG, "[NETWORK_STATE_CHANGED_ACTION] broadcast, state=" + curState);
+                    unlockOpenWifiDone = false;
+                    isConnecting = false;
+                }
+
+                if (curState == NetworkInfo.State.DISCONNECTED) {
+                    LeoLog.d(TAG, "[NETWORK_STATE_CHANGED_ACTION] broadcast, state=" + curState);
+                    unlockOpenWifiDone = false;
+                    isConnecting = false;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean getIsLockNow(String name) {
+        return false;
+    }
+
+    @Override
+    public boolean getLockNum(String name) {
+        return false;
+    }
+
+    @Override
+    public void setSwitch(String name, boolean lock) {
 
     }
+
 
     @Override
     public void onDestory() {
 
     }
 
+    private void handleWifiOn() {
+        //1
+        shutDownWifi();
+        //2
+        showLockScreen();
+    }
+
+    private void showLockScreen() {
+        mLockManager.applyLock(
+                LockManager.LOCK_MODE_FULL, mContext.getPackageName(),
+                false,
+                new LockManager.OnUnlockedListener() {
+                    @Override
+                    public void onUnlocked() {
+                        LeoLog.d(TAG, "onUnlocked");
+                        unlockOpenWifiDone = true;
+                        try {
+                            mWifimanager.setWifiEnabled(true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    public void onUnlockCanceled() {
+                        LeoLog.d(TAG, "onUnlockCanceled");
+                    }
+
+                    @Override
+                    public void onUnlockOutcount() {
+
+                    }
+                });
+    }
+
+    private void shutDownWifi() {
+        LeoLog.d(TAG, "shut down wifi");
+        try {
+            mWifimanager.setWifiEnabled(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public float getTodayUsed() {

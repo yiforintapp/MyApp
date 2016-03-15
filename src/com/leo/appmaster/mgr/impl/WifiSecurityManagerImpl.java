@@ -15,6 +15,9 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.ui.SelfDurationToast;
 import com.leo.appmaster.utils.LeoLog;
@@ -41,6 +44,8 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
     private boolean mLastScanState = false;
     private long lastTimeIn;
     private long wifiToastLastIn;
+
+    private DeviceManager mDeviceManager;
 
 
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -71,6 +76,8 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
         mContext.registerReceiver(new ConnectionChangeReceiver(), filter);
 
         lastTimeIn = System.currentTimeMillis();
+
+        mDeviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
     }
 
     @Override
@@ -237,6 +244,10 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
 
     }
 
+    private void deviceWifiReceiver(Intent intent) {
+        mDeviceManager.wifiChangeReceiver(intent);
+    }
+
     public void setWifiScanState(boolean isScan) {
         this.mLastScanState = isScan;
     }
@@ -244,6 +255,8 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
     public class ConnectionChangeReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            deviceWifiReceiver(intent);
+
             LeoLog.d("testwifiBor", "onReceive");
             mLastScanState = false;
             try {

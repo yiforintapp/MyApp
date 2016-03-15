@@ -1,6 +1,8 @@
 package com.leo.appmaster.mgr;
 
 
+import android.content.Intent;
+
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.model.TrafficsInfo;
 
@@ -18,6 +20,23 @@ public abstract class DeviceManager extends Manager {
     }
 
     public abstract void init();
+
+    public abstract void wifiChangeReceiver(Intent intent);
+
+    /**
+     * 是否加锁
+     */
+    public abstract boolean getIsLockNow(String name);
+
+    /**
+     * 加锁人数
+     */
+    public abstract boolean getLockNum(String name);
+
+    /**
+     * 设置开关
+     */
+    public abstract void setSwitch(String name, boolean lock);
 
     /**
      * 获取今日流量(单位B)

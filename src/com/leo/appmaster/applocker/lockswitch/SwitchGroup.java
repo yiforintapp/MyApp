@@ -1,9 +1,8 @@
 package com.leo.appmaster.applocker.lockswitch;
 
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.ThreadManager;
+
 
 /**
  * 应用锁开关抽象类
@@ -13,12 +12,24 @@ import com.leo.appmaster.ThreadManager;
 public abstract class SwitchGroup {
     private static final String TAG = "SwitchGroup";
 
-    protected AppMasterApplication mApp;
+    public final static String WIFI_SWITCH = "com.wifi.lock";
+    public final static String BLUE_TOOTH_SWITCH = "con.bluetooth.lock";
+    public final static String MOBILE_DATA_SWITCH = "com.mobiledata.lock";
+
+    protected AppMasterApplication mContext;
 
     SwitchGroup() {
-        mApp = AppMasterApplication.getInstance();
+        mContext = AppMasterApplication.getInstance();
     }
 
-    protected abstract boolean doStrap();
+    protected abstract void switchOn();
+
+    protected abstract void switchOff();
+
+    protected abstract int getLockNum();
+
+    protected abstract int setLockNum();
+
+    protected abstract boolean isLockNow();
 
 }
