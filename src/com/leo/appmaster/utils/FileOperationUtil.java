@@ -280,7 +280,7 @@ public class FileOperationUtil {
         String newPath;
         File file = new File(filePath);
         if (position == -1) {
-            newPath = filePath + ".leotmi";
+            newPath = filePath + Constants.CRYPTO_SUFFIX;
         } else {
             String p = paths[position];
             newPath = FileOperationUtil.makePath(paths[position],
@@ -358,15 +358,15 @@ public class FileOperationUtil {
 
     public static synchronized String unhideImageFile(Context ctx,
                                                       String filePath, long fileSize) {
-        if (filePath == null || (!filePath.endsWith(".leotmi") && !filePath.endsWith(".leotmp"))) {
+        if (filePath == null || (!filePath.endsWith(Constants.CRYPTO_SUFFIX) && !filePath.endsWith(Constants.CRYPTO_SUFFIX_OLD))) {
             LeoLog.e("RenameFile", "Rename: null parameter");
             return null;
         }
         String[] paths = getSdCardPaths(ctx);
         String replacedPath = filePath;
-        if (filePath.endsWith(".leotmp")) {
+        if (filePath.endsWith(Constants.CRYPTO_SUFFIX_OLD)) {
             StringBuilder stringBuilder = new StringBuilder(filePath);
-            replacedPath = stringBuilder.substring(0, stringBuilder.indexOf(".leotmp")) + ".leotmi";
+            replacedPath = stringBuilder.substring(0, stringBuilder.indexOf(Constants.CRYPTO_SUFFIX_OLD)) + Constants.CRYPTO_SUFFIX;
         }
 
         String newPath = null;
@@ -375,15 +375,15 @@ public class FileOperationUtil {
 
         if (filePath.contains(SDCARD_DIR_NAME)) {
             newHided = true;
-            newPath = replacedPath.replace(".leotmi", "").replace(
+            newPath = replacedPath.replace(Constants.CRYPTO_SUFFIX, "").replace(
                     SDCARD_DIR_NAME + File.separator, "");
         } else if (filePath.contains(OLD_SDCARD_DIR_NAME)) {
             newHided = true;
-            newPath = replacedPath.replace(".leotmi", "").replace(
+            newPath = replacedPath.replace(Constants.CRYPTO_SUFFIX, "").replace(
                     OLD_SDCARD_DIR_NAME + File.separator, "");
         } else {
             newHided = false;
-            newPath = replacedPath.replace(".leotmi", "");
+            newPath = replacedPath.replace(Constants.CRYPTO_SUFFIX, "");
         }
 
 
@@ -872,7 +872,7 @@ public class FileOperationUtil {
         String newPath;
         File path = new File(fromFile);
         if (position == -1) {
-            newPath = fromFile + ".leotmi";
+            newPath = fromFile + Constants.CRYPTO_SUFFIX;
         } else {
             newPath = paths[position] + File.separator + SDCARD_DIR_NAME
                     + FileOperationUtil.getDirPathFromFilepath(fromFile).replace(paths[1], "")
@@ -918,7 +918,7 @@ public class FileOperationUtil {
             FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
                 File imageFile = new File(newPath);
-                String rename = newPath + ".leotmi";
+                String rename = newPath + Constants.CRYPTO_SUFFIX;
                 boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
@@ -964,7 +964,7 @@ public class FileOperationUtil {
 
         String newPath = null;
         if (position == -1) {
-            String pathOther = fromFile.replace(".leotmi", "");
+            String pathOther = fromFile.replace(Constants.CRYPTO_SUFFIX, "");
             FileOperationUtil.saveFileMediaEntry(pathOther, ctx);
             FileOperationUtil.deleteFileMediaEntry(fromFile, ctx);
         } else {
@@ -1014,7 +1014,7 @@ public class FileOperationUtil {
             fosto.close();
             FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
-                String rename = newPath.replace(".leotmi", "");
+                String rename = newPath.replace(Constants.CRYPTO_SUFFIX, "");
 //                LeoLog.d("testRename", "rename:" + rename);
 //                File imageFile = new File(newPath);
 //                boolean ret = imageFile.renameTo(new File(rename));

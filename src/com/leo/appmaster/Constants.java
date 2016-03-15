@@ -514,4 +514,7 @@ public class Constants {
 
     //第一次点击按钮关闭屏幕保护
     public static final String CANCEL_BAY_FIRST_TIME = "first_cancel_bay_protect";
+
+    public static final String CRYPTO_SUFFIX = ".leotmi";
+    public static final String CRYPTO_SUFFIX_OLD = ".leotmp";
 }

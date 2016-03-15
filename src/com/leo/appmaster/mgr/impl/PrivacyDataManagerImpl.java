@@ -262,7 +262,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         long totalSize = new File(mPicPath).length();
 
         String newFileName = FileOperationUtil.getNameFromFilepath(mPicPath);
-        newFileName = newFileName + ".leotmi";
+        newFileName = newFileName + Constants.CRYPTO_SUFFIX;
         String newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
 
         // 加密

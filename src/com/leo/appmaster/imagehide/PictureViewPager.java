@@ -185,9 +185,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
     private void initImageLoader() {
         mOptions = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
-                .resetViewBeforeLoading(true).cacheOnDisk(true)
+                .showImageForEmptyUri(R.drawable.photo_bg_loding)
+                .showImageOnFail(R.drawable.photo_bg_loding)
+                .resetViewBeforeLoading(true).cacheOnDisk(false).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .displayer(new FadeInBitmapDisplayer(500)).build();
@@ -212,7 +212,13 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             PhotoView zoomImageView = (PhotoView) view.findViewById(R.id.zoom_image_view);
             final ImageView loadingImage = (ImageView) view.findViewById(R.id.image_loading);
 
-            String uri = ImageDownloader.Scheme.CRYPTO.wrap(mPicturesList.get(position));
+            String path = mPicturesList.get(position);
+            String uri = null;
+            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+            } else {
+                uri = ImageDownloader.Scheme.FILE.wrap(path);
+            }
             ImageLoader.getInstance().displayImage(uri, zoomImageView, mOptions, new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String imageUri, View view) {

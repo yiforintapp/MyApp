@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
@@ -44,8 +45,6 @@ import java.util.List;
 
 public class ImageHideMainActivity extends BaseActivity implements OnItemClickListener {
 
-    public final static int INIT_UI_DONE = 20;
-    public final static int LOAD_DATA_DONE = 21;
     private static final String TAG = "ImageHideMainActivity";
     private List<PhotoAibum> mAlbumList = null;
     private GridView mGridView;
@@ -64,19 +63,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     public static final int REQUEST_CODE_OPTION = 1001;
 
     private Toast mToast;
-
-    private android.os.Handler mHandler = new android.os.Handler() {
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case INIT_UI_DONE:
-                    asyncLoad();
-                    break;
-                case LOAD_DATA_DONE:
-                    loadDone();
-                    break;
-            }
-        }
-    };
 
     public void onBackPressed() {
         LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
@@ -140,9 +126,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void run() {
                 mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
                         getHidePicAlbum(PrivacyDataManagerImpl.CHECK_APART);
-                if (mHandler != null) {
-                    mHandler.sendEmptyMessage(LOAD_DATA_DONE);
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadDone();
+                    }
+                });
             }
         });
     }
@@ -205,6 +194,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .cacheInMemory(true)
+                .cacheOnDisk(false)
                 .displayer(new FadeInBitmapDisplayer(500))
                 .cacheOnDisk(true)
                 .considerExifParams(true)
@@ -217,10 +207,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mHandler != null) {
-            mHandler.removeCallbacksAndMessages(null);
-            mHandler = null;
-        }
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
@@ -232,8 +218,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     @Override
     protected void onResume() {
-        mHandler.sendEmptyMessage(INIT_UI_DONE);
         super.onResume();
+        asyncLoad();
     }
 
     @Override
@@ -320,7 +306,13 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             path = list.get(position).getBitList().get(0).getPath();
             viewHolder.txt.setText(list.get(position).getName() + "("
                     + list.get(position).getCount() + ")");
-            String uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+
+            String uri = null;
+            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+            } else {
+                uri = ImageDownloader.Scheme.FILE.wrap(path);
+            }
             mImageLoader.displayImage(uri, viewHolder.img, mOptions);
             return convertView;
         }

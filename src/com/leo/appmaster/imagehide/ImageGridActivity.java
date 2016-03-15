@@ -246,7 +246,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .displayer(new FadeInBitmapDisplayer(500))
-                .cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+                .cacheInMemory(true).cacheOnDisk(false).considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
 
         mImageLoader = ImageLoader.getInstance();
@@ -434,12 +434,10 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             final ViewHolder holder;
             View view = convertView;
             if (view == null) {
-                view = getLayoutInflater().inflate(R.layout.item_grid_image,
-                        parent, false);
+                view = getLayoutInflater().inflate(R.layout.item_grid_image, parent, false);
                 holder = new ViewHolder();
                 holder.imageView = (ImageView) view.findViewById(R.id.image);
-                holder.clickView = (ImageView) view
-                        .findViewById(R.id.photo_select);
+                holder.clickView = (ImageView) view.findViewById(R.id.photo_select);
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) view.getTag();
@@ -453,14 +451,17 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 } else {
                     holder.clickView.setVisibility(View.VISIBLE);
                     if (mClickList.contains(item)) {
-                        holder.clickView
-                                .setImageResource(R.drawable.ic_check_checked);
+                        holder.clickView.setImageResource(R.drawable.ic_check_checked);
                     } else {
-                        holder.clickView
-                                .setImageResource(R.drawable.ic_check_normal_n);
+                        holder.clickView.setImageResource(R.drawable.ic_check_normal_n);
                     }
                 }
-                String uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+                String uri = null;
+                if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+                    uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+                } else {
+                    uri = ImageDownloader.Scheme.FILE.wrap(path);
+                }
                 mImageLoader.displayImage(uri, holder.imageView, mOptions);
             }
             return view;
