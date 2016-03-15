@@ -146,6 +146,15 @@ public class IntruderprotectionActivity extends BaseActivity {
         // 标题栏
         mctb = (CommonToolbar) findViewById(R.id.ctb_at_intruder);
         mctb.setOptionImageResource(R.drawable.clean_intruder);
+        mctb.setSecOptionMenuVisible(true);
+        mctb.setSecOptionImageResource(R.drawable.ic_launcher);
+        mctb.setSecOptionClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IntruderprotectionActivity.this,IntruderSettingActivity.class);
+                startActivity(intent);
+            }
+        });
         mctb.setOptionMenuVisible(true);
         mctb.setToolbarTitle(R.string.home_tab_instruder);
         // 主listview

@@ -25,6 +25,7 @@ public class PrefConst {
     public final static String KEY_NEW_LAST_ADD_VID = "new_last_add_vid";
 
     //入侵者防护相关
+    public static final String KEY_NEED_TAKE_PICTURE_WHEN_USER_PRESENT = "need_take_picture_when_user_present";
     public static final String KEY_HAS_REQUEST_CAMERA = "has_request_camera";
     public static final String KEY_SWITCH_FOR_INTRUDER_PROTECTION = "switch_for_intruder_protection";
     public static final String KEY_TIMES_OF_CATCH_INTRUDER = "times_of_catch_intruder";
