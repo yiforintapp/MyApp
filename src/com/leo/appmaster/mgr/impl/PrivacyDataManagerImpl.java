@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -1002,6 +1003,24 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     }
 
     @Override
+    public int deletePicFromDatebase(String picUri) {
+        if (TextUtils.isEmpty(picUri)) {
+            LeoLog.e("deletePicFromDatebase", "path----NULL");
+            return -1;
+        }
+        LeoLog.e("deletePicFromDatebase", "path----:" + picUri);
+        String params[] = new String[]{
+                picUri
+        };
+        Uri uri = MediaStore.Files.getContentUri("external");
+        int result = mContext.getContentResolver().delete(uri,
+                MediaStore.MediaColumns.DATA + " LIKE ?", params);
+
+        LeoLog.e("deletePicFromDatebase", "result----:" + result);
+        return result;
+    }
+
+    @Override
     public int haveCheckedVid() {
         int i = getAddVidNum();
         int lastRecord = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);
@@ -1096,4 +1115,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public static boolean isFilterVideoType(String path, String videoType) {
         return path.endsWith(videoType);
     }
+
+
 }

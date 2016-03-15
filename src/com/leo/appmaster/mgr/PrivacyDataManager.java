@@ -189,4 +189,11 @@ public abstract class PrivacyDataManager extends Manager {
 
     public abstract int getVidShouldScore(int newVidNum);
 
+    /**
+     * 删除图片，来自图片媒体数据库
+     * @param picUri
+     * @return
+     */
+    public abstract int deletePicFromDatebase(String picUri);
+
 }

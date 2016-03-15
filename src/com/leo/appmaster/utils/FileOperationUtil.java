@@ -48,6 +48,18 @@ public class FileOperationUtil {
 
     public static final String SDCARD_DIR_NAME = ".DefaultGallery";
     public static final String OLD_SDCARD_DIR_NAME = "PravicyLock";
+    //在隐藏图片时内存不足
+    public static final String HIDE_PIC_NO_MEMERY = "4";
+    //在隐藏图片时复制隐藏成功
+    public static final String HIDE_PIC_COPY_SUCESS = "0";
+    // 复制隐藏失败
+    public static final String HIDE_PIC_COPY_RENAME_FAIL = "-2";
+    // 复制隐藏时复制失败
+    public static final String HIDE_PIC_COPY_FAIL = "-1";
+    //非复制情况下，隐藏图片图片成功
+    public static final String HIDE_PIC_SUCESS = "3";
+    //需要隐藏的图片uri为空时
+    public static final String HIDE_PIC_PATH_EMPTY = "2";
 
     public static final String[] STORE_IMAGES = {
             MediaStore.Images.Media.DISPLAY_NAME,
@@ -212,8 +224,9 @@ public class FileOperationUtil {
                     imagePath
             };
             Uri uri = Files.getContentUri("external");
-            context.getContentResolver().delete(uri,
+            int result = context.getContentResolver().delete(uri,
                     MediaColumns.DATA + " LIKE ?", params);
+            LeoLog.e("deleteFileMedia", "result----:" + result);
         }
     }
 
@@ -317,12 +330,14 @@ public class FileOperationUtil {
                 // return ret ? newPath : null;
                 if (!ret) {
                     boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0], 10);
-                    int returnValue = 4;
+                    String returnValue = HIDE_PIC_NO_MEMERY;
                     if (memeryFlag) {
                         returnValue = hideImageFileCopy(ctx, filePath, newName);
+                        LeoLog.d("testHidePic", "hide type:copy");
                     }
                     return String.valueOf(returnValue);
                 } else {
+                    LeoLog.d("testHidePic", "hide type:rename");
                     return newPath;
                 }
 
@@ -708,6 +723,7 @@ public class FileOperationUtil {
                                 if (f.exists()) {
                                     pa = countMap.get(dir_path);
                                     pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+                                    LeoLog.d("testGetAllPicFlie", "pic_path--:"+path);
                                     pa.getBitList().add(new PhotoItem(path));
                                 }
                             } else {
@@ -849,7 +865,7 @@ public class FileOperationUtil {
      * @return
      */
     @SuppressWarnings("deprecation")
-    public static int hideImageFileCopy(Context ctx, String fromFile, String newName) {
+    public static String hideImageFileCopy(Context ctx, String fromFile, String newName) {
         String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
         try {
             if (str.length() >= str.lastIndexOf("/") + 1) {
@@ -922,20 +938,13 @@ public class FileOperationUtil {
                 boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
-                // 复制隐藏成功
-                return 0;
+                return HIDE_PIC_COPY_SUCESS;
             } catch (Exception e) {
-                // 隐藏失败
-                return -2;
+                return HIDE_PIC_COPY_RENAME_FAIL;
             }
         } catch (Exception ex) {
-            // 复制失败
-            return -1;
+            return HIDE_PIC_COPY_FAIL;
         }
-        // } else {
-        // // 内存不足
-        // return 1;
-        // }
     }
 
     /**
@@ -1012,7 +1021,7 @@ public class FileOperationUtil {
             }
             fosfrom.close();
             fosto.close();
-            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
+//            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
                 String rename = newPath.replace(Constants.CRYPTO_SUFFIX, "");
 //                LeoLog.d("testRename", "rename:" + rename);

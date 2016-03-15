@@ -35,6 +35,7 @@ import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.home.HomeTabFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -57,6 +58,9 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
 public class ImageGridActivity extends BaseFragmentActivity implements OnClickListener, OnItemClickListener {
+
+    public static final String TAG = "ImageGridActivity";
+
     public final static int INIT_UI_DONE = 24;
     public final static int LOAD_DATA_DONE = 25;
     public final static int START_CANCEL_OR_HIDE_PIC = 26;
@@ -94,6 +98,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     private GuideFragment mGuideFragment;
     private boolean mPicGuide;
     private boolean isFristIn = true;
+    //通过拷贝方式隐藏图片的方式，删除源文件是否成功
+    private boolean mIsDeletSucFromDatebase = true;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -114,7 +120,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                     });
                     break;
                 case HIDE_FINISH:
-                    int isSuccess = (Integer) msg.obj;
+                    String isSuccess = (String) msg.obj;
                     onPostDo(isSuccess);
                     break;
             }
@@ -868,7 +874,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     private void startDoingBack(boolean isHide) {
         LeoLog.d("testnewLoad", "isHide:" + isHide);
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        int isSuccess = 3;
+        String isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
         try {
             if (mClickList != null && mClickList.size() > 0) {
                 ArrayList<PhotoItem> list = (ArrayList<PhotoItem>) mClickList.clone();
@@ -888,18 +894,29 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                         LeoLog.d("testHidePic", "result : " + newPath);
                         LeoLog.d("testHidePic", "---------------------------------------");
                         if (newPath != null) {
-                            if ("-2".equals(newPath)) {
-                                isSuccess = -2;
-                            } else if ("0".equals(newPath)) {
-                                isSuccess = 0;
+                            if (FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPath)) {
+                                isSuccess = FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL;
+                            } else if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPath)) {
+
+                                isSuccess = FileOperationUtil.HIDE_PIC_COPY_SUCESS;
                                 deleteList.add(item);
-                            } else if ("-1".equals(newPath)) {
-                                isSuccess = -1;
-                            } else if ("4".equals(newPath)) {
-                                isSuccess = 4;
+
+                                //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
+                                PrivacyDataManagerImpl pmi = (PrivacyDataManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                                String path = item.getPath();
+                                int result = pmi.deletePicFromDatebase(path);
+                                File file = new File(path);
+                                if (file.exists() && result < 1) {
+                                    mIsDeletSucFromDatebase = false;
+                                }
+
+                            } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)) {
+                                isSuccess = FileOperationUtil.HIDE_PIC_COPY_FAIL;
+                            } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)) {
+                                isSuccess = FileOperationUtil.HIDE_PIC_NO_MEMERY;
                                 break;
                             } else {
-                                isSuccess = 3;
+                                isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
                                 FileOperationUtil.saveFileMediaEntry(newPath,
                                         this);
                                 File file = new File(item.getPath());
@@ -912,7 +929,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             SDKWrapper.addEvent(this, SDKWrapper.P1,
                                     "hide_pic_operation",
                                     "pic_hid_fal");
-                            isSuccess = 2;
+                            isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
                         }
                     }
                     if (deleteList.size() > 0) {
@@ -937,20 +954,21 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             SDKWrapper.addEvent(this, SDKWrapper.P1,
                                     "hide_pic_operation",
                                     "pic_ccl_fal");
-                            isSuccess = 2;
-                        } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
-                            isSuccess = 2;
-                        } else if ("0".equals(newPaht)) {
-                            isSuccess = 3;
+                            isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
+                        } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPaht)
+                                || FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(newPaht)) {
+                            isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
+                        } else if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPaht)) {
+                            isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
                             ContentValues values = new ContentValues();
                             values.put("image_path", filepath);
                             getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
                             deleteList.add(item);
-                        } else if ("4".equals(newPaht)) {
-                            isSuccess = 4;
+                        } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPaht)) {
+                            isSuccess = FileOperationUtil.HIDE_PIC_NO_MEMERY;
                             break;
                         } else {
-                            isSuccess = 3;
+                            isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
                             FileOperationUtil.saveImageMediaEntry(newPaht, this);
                             FileOperationUtil.deleteFileMediaEntry(filepath, this);
                             deleteList.add(item);
@@ -975,7 +993,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         readyDoingDone(isSuccess);
     }
 
-    private void readyDoingDone(int isSuccess) {
+    private void readyDoingDone(String isSuccess) {
         if (mHandler != null) {
             Message msg = new Message();
             msg.obj = isSuccess;
@@ -984,19 +1002,24 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         }
     }
 
-    private void onPostDo(int isSuccess) {
+    private void onPostDo(String isSuccess) {
         LeoLog.d("testnewLoad", "onPostDo isSuccess:" + isSuccess);
         mClickList.clear();
-        if (isSuccess == 0) {
+        if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(isSuccess)
+                && !mIsDeletSucFromDatebase) {
             String title = getString(R.string.no_image_hide_dialog_title);
             String content = getString(R.string.no_image_hide_dialog_content);
             String rightBtn = getString(R.string.no_image_hide_dialog_button);
             float width = getResources().getDimension(R.dimen.memery_dialog_button_width);
             float height = getResources().getDimension(R.dimen.memery_dialog_button_height);
+            LeoLog.d(TAG, "");
             showMemeryAlarmDialog(title, content, null, rightBtn, false, true, width, height);
-        } else if (isSuccess == -1 || isSuccess == -2) {
-        } else if (isSuccess == 2) {
-        } else if (isSuccess == 4) {
+        } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(isSuccess)
+                || FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(isSuccess)) {
+
+        } else if (FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(isSuccess)) {
+
+        } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(isSuccess)) {
             if (mActicityMode == SELECT_HIDE_MODE) {
                 String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
                 String content = getString(R.string.image_hide_memery_insuficient_dialog_content);
@@ -1024,7 +1047,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             animateReorder();
             updateRightButton();
         } else {
-            if (isSuccess == 0) {
+            if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(isSuccess)) {
                 if (mImageAdapter != null) {
                     mImageAdapter.notifyDataSetChanged();
                 }
@@ -1032,6 +1055,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 finish();
             }
         }
+        mIsDeletSucFromDatebase = true;
     }
 
     private void doingBackGround(boolean isHidePic) {

@@ -68,14 +68,7 @@ public class InitAsyncBootstrap extends Bootstrap {
 
         BlacklistTab.getInstance().initEncryptList();
 
-        collectVideosData();
-
         return true;
-    }
-
-    //印度用户视频大小统计
-    private void collectVideosData() {
-        CollectVideoUtils.getAllVideoData();
     }
 
 
