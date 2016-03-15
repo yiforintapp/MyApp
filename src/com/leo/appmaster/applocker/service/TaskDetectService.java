@@ -87,7 +87,6 @@ public class TaskDetectService extends Service {
     private ScheduledExecutorService mScheduledExecutor;
     private ScheduledFuture<?> mDetectFuture;
     private TimerTask mDetectTask;
-    private ScheduledFuture<?> mStartThemeFuture;
     private TimerTask mStartThemeServer;
 
     // sony 5.1.1及Android M以上系统使用
@@ -127,7 +126,7 @@ public class TaskDetectService extends Service {
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, AppMasterConfig.TRAFFIC_INTERNAL,
                 TimeUnit.MILLISECONDS);
         mStartThemeServer = new StartThemeServerTask();
-        mStartThemeFuture = mScheduledExecutor.scheduleWithFixedDelay(mStartThemeServer, 0, AppMasterConfig.START_THEME_TIME,
+        mScheduledExecutor.scheduleWithFixedDelay(mStartThemeServer, 0, AppMasterConfig.START_THEME_TIME,
                 TimeUnit.MILLISECONDS);
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
@@ -222,7 +221,6 @@ public class TaskDetectService extends Service {
         if (mflowDatectFuture != null) {
             mflowDatectFuture.cancel(false);
             mStartThemeServer = null;
-            mStartThemeFuture = null;
         }
     }
 

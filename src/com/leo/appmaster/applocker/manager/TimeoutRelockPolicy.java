@@ -9,8 +9,6 @@ import com.leo.appmaster.AppMasterPreference;
 
 public class TimeoutRelockPolicy implements ILockPolicy {
 
-    private static final String TAG = "TimeoutRelockPolicy";
-
     Context mContext;
 
     private HashMap<String, UnlockTimeHolder> mLockapp = new HashMap<String, UnlockTimeHolder>();
@@ -65,10 +63,8 @@ public class TimeoutRelockPolicy implements ILockPolicy {
             holder = new UnlockTimeHolder();
             holder.lastUnlockTime = curTime;
             holder.secondUnlockTime = 0;
-            holder.firstUnlockTime = 0;
             mLockapp.put(pkg, holder);
         } else {
-            holder.firstUnlockTime = holder.secondUnlockTime;
             holder.secondUnlockTime = holder.lastUnlockTime;
             holder.lastUnlockTime = curTime;
         }
@@ -76,7 +72,6 @@ public class TimeoutRelockPolicy implements ILockPolicy {
     }
 
     private static class UnlockTimeHolder {
-        long firstUnlockTime;
         long secondUnlockTime;
         long lastUnlockTime;
     }

@@ -31,8 +31,8 @@ public class ADShowTypeRequestManager {
     private static final String TAG = "ADShowTypeRequestManager";
 
 //    private static final String AD_SHOW_TYPE = "a";// 广告的展示方式，如半屏广告，banner广告等等
-    private static final String UFO_ANIM_TYPE = "b";
-    private static final String THEME_CHANCE_AFTER_UFO = "c";
+//    private static final String UFO_ANIM_TYPE = "b";
+//    private static final String THEME_CHANCE_AFTER_UFO = "c";
 //    private static final String AD_AFTER_ACCELERATING = "d";
     private static final String AD_AFTER_PRIVACY_PROTECTION = "e";
     private static final String AD_AT_APPLOCK_FRAGMENT = "f";

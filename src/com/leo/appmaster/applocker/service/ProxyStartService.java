@@ -1,5 +1,13 @@
 package com.leo.appmaster.applocker.service;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,16 +21,6 @@ import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by runlee on 16-1-16.

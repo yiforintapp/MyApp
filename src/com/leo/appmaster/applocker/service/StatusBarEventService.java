@@ -9,7 +9,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.LockManager;

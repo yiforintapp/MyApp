@@ -51,7 +51,7 @@ public class ProcessDetector {
     protected String mPsCmd = PS;
 
     // 被孵化出的子进程，进程名跟主进程一样，oomadj为0，奇葩~~
-    private List<ProcessAdj> mSamePkgList;
+//    private List<ProcessAdj> mSamePkgList;
 
     public ProcessDetector() {
         mFilters = new ProcessFilter[] {
@@ -61,7 +61,7 @@ public class ProcessDetector {
         
         mHomeFilter = new HomeProcessFilter(AppMasterApplication.getInstance());
         mZygoteList = new ArrayList<ProcessAdj>();
-        mSamePkgList = new ArrayList<ProcessAdj>();
+//        mSamePkgList = new ArrayList<ProcessAdj>();
         mPsCmd = PS;
     }
     
@@ -379,34 +379,34 @@ public class ProcessDetector {
         return processAdj;
     }
     
-    private int getZygoteProcessId(String line) {
-        if (TextUtils.isEmpty(line) || !isZygoteProcess(line)) {
-            return 0;
-        }
-        
-        Pattern pattern = Pattern.compile(REGEX_SPACE);
-        Matcher matcher = pattern.matcher(line);
-        
-        if (matcher.find()) {
-            line = matcher.replaceAll(",");
-        }
-
-        String[] array = line.split(",");
-        if (array == null || array.length == 0) return 0;
-        
-        if (array.length <= INDEX_PID) return 0;
-        
-        String zygoteId = array[INDEX_PID];
-        
-        if (TextUtils.isEmpty(zygoteId)) return 0;
-        
-        try {
-            return Integer.parseInt(array[INDEX_PID]);
-        } catch (Exception e) {
-        }
-        
-        return 0;
-    }
+//    private int getZygoteProcessId(String line) {
+//        if (TextUtils.isEmpty(line) || !isZygoteProcess(line)) {
+//            return 0;
+//        }
+//        
+//        Pattern pattern = Pattern.compile(REGEX_SPACE);
+//        Matcher matcher = pattern.matcher(line);
+//        
+//        if (matcher.find()) {
+//            line = matcher.replaceAll(",");
+//        }
+//
+//        String[] array = line.split(",");
+//        if (array == null || array.length == 0) return 0;
+//        
+//        if (array.length <= INDEX_PID) return 0;
+//        
+//        String zygoteId = array[INDEX_PID];
+//        
+//        if (TextUtils.isEmpty(zygoteId)) return 0;
+//        
+//        try {
+//            return Integer.parseInt(array[INDEX_PID]);
+//        } catch (Exception e) {
+//        }
+//        
+//        return 0;
+//    }
     
     public int getOomScoreAdj(int pid) {
         String path = getProcessAdjPath(pid);
@@ -442,11 +442,11 @@ public class ProcessDetector {
         return false;
     }
     
-    private boolean isZygoteProcess(String cmdline) {
-        if (TextUtils.isEmpty(cmdline)) return false;
-        
-        return cmdline.endsWith("zygote");
-    }
+//    private boolean isZygoteProcess(String cmdline) {
+//        if (TextUtils.isEmpty(cmdline)) return false;
+//        
+//        return cmdline.endsWith("zygote");
+//    }
 
     /**
      * Usage是否可用

@@ -360,11 +360,6 @@ public class NumberPicker extends LinearLayout {
     private float mLastDownEventY;
 
     /**
-     * The time of the last down event.
-     */
-    private long mLastDownEventTime;
-
-    /**
      * The Y position of the last down or move event.
      */
     private float mLastDownOrMoveEventY;
@@ -815,7 +810,6 @@ public class NumberPicker extends LinearLayout {
                 removeAllCallbacks();
                 mInputText.setVisibility(View.INVISIBLE);
                 mLastDownOrMoveEventY = mLastDownEventY = event.getY();
-                mLastDownEventTime = event.getEventTime();
                 mIngonreMoveEvents = false;
                 mShowSoftInputOnTap = false;
                 // Handle pressed state before any state change.
@@ -1403,6 +1397,7 @@ public class NumberPicker extends LinearLayout {
 
     @Override
     protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
         removeAllCallbacks();
     }
 

@@ -10,7 +10,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.provider.Settings;
-import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -19,9 +18,6 @@ import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.showTrafficTip;
-import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
-import com.leo.appmaster.utils.LeoLog;
 
 public class showTrafficAlof extends BroadcastReceiver {
     private Context mContext;

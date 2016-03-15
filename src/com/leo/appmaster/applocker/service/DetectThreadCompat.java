@@ -37,7 +37,7 @@ public class DetectThreadCompat extends Thread {
     // 超时，找到lockapp之后，除了设置监听，另外高频去检查adj的值，防止被锁app启动较慢，或者启动或拉起了另外的activity
     private static final int WAIT_LOCK_APP_TIMEOUT = 1000;
     private static final int WAIT_DOUBLE_CHECK_TIMEOUT = 200;
-    private static final int WAIT_NOT_FOUND_TIMEOUT = 100;
+//    private static final int WAIT_NOT_FOUND_TIMEOUT = 100;
     private static final int MAX_DOUBLE_CHECK_COUNT = 10;
     private static final int WAIT_IGNORE_PKG = 200;
     
@@ -327,16 +327,16 @@ public class DetectThreadCompat extends Thread {
         }
     }
     
-    private String getHomePackage() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        
-        Context context = AppMasterApplication.getInstance();
-        ResolveInfo res = context.getPackageManager().resolveActivity(intent, 0);
-        if (res == null) return null;
-        
-        return res.resolvePackageName;
-    }
+//    private String getHomePackage() {
+//        Intent intent = new Intent(Intent.ACTION_MAIN);
+//        intent.addCategory(Intent.CATEGORY_HOME);
+//        
+//        Context context = AppMasterApplication.getInstance();
+//        ResolveInfo res = context.getPackageManager().resolveActivity(intent, 0);
+//        if (res == null) return null;
+//        
+//        return res.resolvePackageName;
+//    }
     
     private AdjFileObserver createAdjFileObserver(ProcessAdj processAdj) {
         String path = mDetector.getObservePath(processAdj);

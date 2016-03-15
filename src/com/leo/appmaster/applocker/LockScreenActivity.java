@@ -188,7 +188,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private PreferenceTable mPt;
     private BaseSelfDurationToast mPermissionGuideToast;
     private TextView mTvPermissionTip;
-    private ViewStub mVsPermissionTip;
     private View mVPermissionTip;
     /**
      * 大banner
@@ -576,13 +575,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
     }
 
-    private void tryHidePermissionGuideToast() {
-        if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing()) {
-//            Toast.makeText(LockScreenActivity.this, "hide when on resume", Toast.LENGTH_SHORT).show();
-            mHasClickGoGrantPermission = false;
-            mPermissionGuideToast.hide();
-        }
-    }
+//    private void tryHidePermissionGuideToast() {
+//        if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing()) {
+////            Toast.makeText(LockScreenActivity.this, "hide when on resume", Toast.LENGTH_SHORT).show();
+//            mHasClickGoGrantPermission = false;
+//            mPermissionGuideToast.hide();
+//        }
+//    }
 
     private void tryShowNoPermissionTip() {
         LeoLog.i("Tip","try show");
@@ -1185,8 +1184,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
-        mVsPermissionTip = (ViewStub) findViewById(R.id.vs_permission_tip);
-
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
             mTtileBar.setBackArrowVisibility(View.GONE);
@@ -2047,22 +2044,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		
     }
 
-    private String getfilterTarget(Intent intent) {
-        if (intent == null) {
-            return null;
-        }
-        List<ResolveInfo> resolveInfos = getPackageManager().queryIntentActivities(intent, 0);
-        String filterTarget = null;
-        if (resolveInfos != null && resolveInfos.size() == 1) {
-            for (ResolveInfo resolveInfo : resolveInfos) {
-                String pkgName = resolveInfo.activityInfo.applicationInfo.packageName;
-                if (!TextUtils.isEmpty(pkgName)) {
-                    filterTarget = pkgName;
-                }
-            }
-        }
-        return filterTarget;
-    }
+//    private String getfilterTarget(Intent intent) {
+//        if (intent == null) {
+//            return null;
+//        }
+//        List<ResolveInfo> resolveInfos = getPackageManager().queryIntentActivities(intent, 0);
+//        String filterTarget = null;
+//        if (resolveInfos != null && resolveInfos.size() == 1) {
+//            for (ResolveInfo resolveInfo : resolveInfos) {
+//                String pkgName = resolveInfo.activityInfo.applicationInfo.packageName;
+//                if (!TextUtils.isEmpty(pkgName)) {
+//                    filterTarget = pkgName;
+//                }
+//            }
+//        }
+//        return filterTarget;
+//    }
     
     @Override
     public void onClick(View v) {
@@ -2074,7 +2071,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                    startActivity(home);
                     Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    String filterTarget = getfilterTarget(intent);
                     startActivity(intent);
 //                    sHasClickGoGrantPermission = true;
                     mHasClickGoGrantPermission = true;
@@ -2336,9 +2332,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      * @param view
      * @param anim
      */
-    private void themeGuide(View view, Animation anim) {
-        view.startAnimation(anim);
-    }
+//    private void themeGuide(View view, Animation anim) {
+//        view.startAnimation(anim);
+//    }
 
     /**
      * check clean memory
@@ -2416,7 +2412,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
     }
 
-    private float top, width, height;
+    private float top, height;
     private LeoCircleView bgView;
     private ImageView modeIconOut;
     private ImageView modeIconIn;
@@ -2456,7 +2452,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             @Override
             public void onGlobalLayout() {
                 modeIconOut.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                width = modeIconOut.getWidth();
                 top = modeIconOut.getTop();
                 height = modeIconOut.getHeight();
                 activeAnimation();
@@ -2641,7 +2636,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     public class AdBannerAdapter extends PagerAdapter
             implements ViewPager.OnPageChangeListener {
-        private Context mContext;
         private LayoutInflater mInflater; //
         private LinkedList<View> mViews; //
         private ArrayList<String> mList; //
@@ -2651,7 +2645,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         public AdBannerAdapter(Context context, ViewPager viewPager,
                                ArrayList<String> list, ADEngineWrapper wrapperEngine) {
-            mContext = context;
             mInflater = LayoutInflater.from(context);
             mViewPager = viewPager;
             mList = list;

@@ -7,10 +7,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -111,18 +108,12 @@ public class LockPatternView extends ViewGroup {
     private float mSquareWidth;
     private float mSquareHeight;
 
-    private Bitmap mBitmapCircleDefault;
-    private Bitmap mBitmapCircleGreen;
-    private Bitmap mBitmapCircleRed;
-
     private final Path mCurrentPath = new Path();
     private final Rect mInvalidate = new Rect();
 
     private int mBitmapWidth;
-    private int mBitmapHeight;
 
     private int mAspect;
-    private final Matrix mCircleMatrix = new Matrix();
 
     private String mThemepkgName = AppMasterApplication.getSelectedTheme();
     private Resources mThemeRes = null;
@@ -299,28 +290,24 @@ public class LockPatternView extends ViewGroup {
         mPathPaint.setStrokeJoin(Paint.Join.ROUND);
         mPathPaint.setStrokeCap(Paint.Cap.ROUND);
 
-        mBitmapCircleDefault = getBitmapFor(R.drawable.gesture_point_bg);
-        mBitmapCircleGreen = getBitmapFor(R.drawable.gesture_point);
-        mBitmapCircleRed = getBitmapFor(R.drawable.gesture_pattern_selected_wrong);
         // for (Bitmap bitmap : bitmaps) {
         // mBitmapWidth = Math.max(mBitmapWidth, bitmap.getWidth());
         // mBitmapHeight = Math.max(mBitmapHeight, bitmap.getHeight());
         // }
         mBitmapWidth = (int) mContext.getResources()
                 .getDimension(R.dimen.lock_pattern_button_width);
-        mBitmapHeight = mBitmapWidth;
         a.recycle();
 
         initChildView();
     }
 
-    private Bitmap getBitmapFor(int resId) {
-        try {
-            return BitmapFactory.decodeResource(getContext().getResources(), resId);
-        } catch (Throwable t) {
-        }
-        return null;
-    }
+//    private Bitmap getBitmapFor(int resId) {
+//        try {
+//            return BitmapFactory.decodeResource(getContext().getResources(), resId);
+//        } catch (Throwable t) {
+//        }
+//        return null;
+//    }
 
     /**
      * @return Whether the view is in stealth mode.
