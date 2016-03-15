@@ -1,13 +1,5 @@
 package com.leo.appmaster.battery;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -75,6 +67,14 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
@@ -202,6 +202,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private boolean smallScreen = false;
     private boolean midScreen = false;
 
+    private View mFolderIndicator;
 
     /**
      * 第一个推广位
@@ -566,6 +567,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mRecommandView = findViewById(R.id.three_show_content);
         mRecommandContentView = findViewById(R.id.show_small_content);
+        mFolderIndicator = findViewById(R.id.folder_indicator);
+        LeoLog.e("currentX", "currentX:" + mFolderIndicator.getX());
+
 
         if (newState != null) {
             process(mChangeType, newState, mRemainTime, mRemainTimeArr);
@@ -841,6 +845,50 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
         });
         mRecommandView.setAnimation(expand);
+        setTheIndicatorX(recommandTypeThree);
+
+    }
+
+    /** 设置指示器位置 */
+    private void setTheIndicatorX(int type) {
+        float positionX = 0;
+        float margeX = DipPixelUtil.dip2px(mActivity, 8);
+        if (RECOMMAND_TYPE_ONE == type) {
+            positionX = mShowOne.getLeft() + mShowOne.getWidth() / 2 - margeX;;
+        } else if (RECOMMAND_TYPE_TWO == type) {
+            positionX = mShowTwo.getLeft() + mShowTwo.getWidth() / 2 - margeX;
+        } else if (RECOMMAND_TYPE_THREE == type) {
+            positionX = mShowThree.getLeft() + mShowThree.getWidth() / 2 - margeX;;
+        }
+        if (positionX > 0) {  // 首次展开时positionX小于0,不需要手动设置指示器位置
+            mFolderIndicator.setX(positionX);
+        }
+    }
+
+    /** 指示器动画 */
+    private void  showIndicatorAnim(int type) {
+        ObjectAnimator moveAnim;
+        float endX = DipPixelUtil.dip2px(mActivity, 8);
+        float currentX = mFolderIndicator.getX();
+        if (RECOMMAND_TYPE_ONE == type) {
+            endX = mShowOne.getLeft() + mShowOne.getWidth() / 2 - endX;;
+        } else if (RECOMMAND_TYPE_TWO == type) {
+            endX = mShowTwo.getLeft() + mShowTwo.getWidth() / 2 - endX;
+        } else if (RECOMMAND_TYPE_THREE == type) {
+            endX = mShowThree.getLeft() + mShowThree.getWidth() / 2 - endX;
+        }
+        moveAnim =ObjectAnimator.ofFloat(mFolderIndicator, "x", currentX, endX);
+        LeoLog.e("currentX", "currentX:" + currentX + ";;; endX: " + endX);
+        final float  finalX = endX;
+        moveAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mFolderIndicator.setX(finalX);
+                LeoLog.e("currentX", "finalX: " + finalX);
+            }
+        });
+        moveAnim.setDuration(300);
+        moveAnim.start();
     }
 
     private void adDimissAnima() {
@@ -2290,10 +2338,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 } else {
                     turnDark(recommandTypeThree);
                     fillShowContentData(recommandTypeThree);
+                    showIndicatorAnim(recommandTypeThree);
                 }
             } else {
                 turnDark(recommandTypeThree);
                 fillShowContentData(recommandTypeThree);
+                showIndicatorAnim(recommandTypeThree);
             }
             mCurrentClickType = recommandTypeThree;
         }

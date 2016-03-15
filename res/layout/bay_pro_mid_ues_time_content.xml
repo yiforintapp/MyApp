@@ -1,9 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/use_time_content"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/remain_time"
-    android:layout_marginTop="5dp">
+<RelativeLayout android:id="@+id/use_time_content"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/remain_time"
+                android:layout_marginTop="5dp">
 
     <LinearLayout
         android:id="@+id/three_remain_content"
@@ -34,7 +34,7 @@
                     android:text="8"
                     android:textColor="@color/white"
                     android:textSize="22dp"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"/>
 
                 <TextView
                     android:id="@+id/tv_one_time_two"
@@ -45,7 +45,7 @@
                     android:layout_toRightOf="@id/tv_one_time_one"
                     android:text="h"
                     android:textColor="@color/green_back_normal"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"/>
 
                 <TextView
                     android:id="@+id/tv_one_time_three"
@@ -56,7 +56,7 @@
                     android:text="8"
                     android:textColor="@color/white"
                     android:textSize="22dp"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"/>
 
                 <TextView
                     android:id="@+id/tv_one_time_four"
@@ -67,7 +67,7 @@
                     android:layout_toRightOf="@id/tv_one_time_three"
                     android:text="m"
                     android:textColor="@color/green_back_normal"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"/>
             </RelativeLayout>
 
             <TextView
@@ -78,7 +78,7 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/battery_protect_view_remain_one_title"
                 android:textColor="@color/white"
-                android:textSize="11dp" />
+                android:textSize="11dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -104,7 +104,7 @@
                     android:text="8"
                     android:textColor="@color/white"
                     android:textSize="22dp"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"/>
 
                 <TextView
                     android:id="@+id/tv_two_time_two"
@@ -115,7 +115,7 @@
                     android:layout_toRightOf="@id/tv_two_time_one"
                     android:text="h"
                     android:textColor="@color/blue_back_normal"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"/>
 
                 <TextView
                     android:id="@+id/tv_two_time_three"
@@ -126,7 +126,7 @@
                     android:text="8"
                     android:textColor="@color/white"
                     android:textSize="22dp"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"/>
 
                 <TextView
                     android:id="@+id/tv_two_time_four"
@@ -137,7 +137,7 @@
                     android:layout_toRightOf="@id/tv_two_time_three"
                     android:text="m"
                     android:textColor="@color/blue_back_normal"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"/>
             </RelativeLayout>
 
             <TextView
@@ -148,7 +148,7 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/battery_protect_view_remain_two_title"
                 android:textColor="@color/white"
-                android:textSize="11dp" />
+                android:textSize="11dp"/>
 
         </LinearLayout>
 
@@ -175,7 +175,7 @@
                     android:text="8"
                     android:textColor="@color/white"
                     android:textSize="22dp"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"/>
 
                 <TextView
                     android:id="@+id/tv_three_time_two"
@@ -186,7 +186,7 @@
                     android:layout_toRightOf="@id/tv_three_time_one"
                     android:text="h"
                     android:textColor="@color/yellow_back_normal"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"/>
 
                 <TextView
                     android:id="@+id/tv_three_time_three"
@@ -197,7 +197,7 @@
                     android:text="8"
                     android:textColor="@color/white"
                     android:textSize="22dp"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"/>
 
                 <TextView
                     android:id="@+id/tv_three_time_four"
@@ -208,7 +208,7 @@
                     android:layout_toRightOf="@id/tv_three_time_three"
                     android:text="m"
                     android:textColor="@color/yellow_back_normal"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"/>
             </RelativeLayout>
 
             <TextView
@@ -219,7 +219,7 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/battery_protect_view_remain_three_title"
                 android:textColor="@color/white"
-                android:textSize="11dp" />
+                android:textSize="11dp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -230,148 +230,163 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/three_remain_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/frame_time_new"
         android:paddingBottom="14dp"
         android:visibility="invisible">
 
-        <LinearLayout
-            android:id="@+id/show_small_content"
+        <ImageView
+            android:id="@+id/folder_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/folder_indicator"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"/>
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_below="@+id/folder_indicator"
+            android:background="@drawable/frame_time_new">
 
-            <TextView
-                android:id="@+id/show_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="15dp"
-                android:drawableLeft="@drawable/icon_folder_recommend"
-                android:drawablePadding="5dp"
-                android:text="@string/battery_protect_view_show_title"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/show_small_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="14dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/show_one"
+                <TextView
+                    android:id="@+id/show_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.leo.appmaster.privacycontact.CircleImageViewTwo
-                        android:id="@+id/iv_show_one"
-                        android:layout_width="@dimen/privacy_contact_icon_size"
-                        android:layout_height="@dimen/privacy_contact_icon_size"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/default_user_avatar" />
-
-                    <TextView
-                        android:id="@+id/tv_show_one"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="7dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:maxWidth="70dp"
-                        android:text="@string/battery_protect_view_remain_three_title"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/icon_folder_recommend"
+                    android:drawablePadding="5dp"
+                    android:text="@string/battery_protect_view_show_title"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"/>
 
                 <LinearLayout
-                    android:id="@+id/show_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:orientation="vertical">
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
 
-                    <com.leo.appmaster.privacycontact.CircleImageViewTwo
-                        android:id="@+id/iv_show_two"
-                        android:layout_width="@dimen/privacy_contact_icon_size"
-                        android:layout_height="@dimen/privacy_contact_icon_size"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/default_user_avatar" />
-
-                    <TextView
-                        android:id="@+id/tv_show_two"
+                    <LinearLayout
+                        android:id="@+id/show_one"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="7dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:maxWidth="70dp"
-                        android:text="@string/battery_protect_view_remain_three_title"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
+                        android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/show_three"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:orientation="vertical">
+                        <com.leo.appmaster.privacycontact.CircleImageViewTwo
+                            android:id="@+id/iv_show_one"
+                            android:layout_width="@dimen/privacy_contact_icon_size"
+                            android:layout_height="@dimen/privacy_contact_icon_size"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/default_user_avatar"/>
 
-                    <com.leo.appmaster.privacycontact.CircleImageViewTwo
-                        android:id="@+id/iv_show_three"
-                        android:layout_width="@dimen/privacy_contact_icon_size"
-                        android:layout_height="@dimen/privacy_contact_icon_size"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/default_user_avatar" />
+                        <TextView
+                            android:id="@+id/tv_show_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="70dp"
+                            android:text="@string/battery_protect_view_remain_three_title"
+                            android:textColor="@color/white"
+                            android:textSize="10dp"/>
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_show_three"
+                    <LinearLayout
+                        android:id="@+id/show_two"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="7dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:maxWidth="70dp"
-                        android:text="@string/battery_protect_view_remain_three_title"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/show_four"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:orientation="vertical">
+                        <com.leo.appmaster.privacycontact.CircleImageViewTwo
+                            android:id="@+id/iv_show_two"
+                            android:layout_width="@dimen/privacy_contact_icon_size"
+                            android:layout_height="@dimen/privacy_contact_icon_size"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/default_user_avatar"/>
 
-                    <com.leo.appmaster.privacycontact.CircleImageViewTwo
-                        android:id="@+id/iv_show_four"
-                        android:layout_width="@dimen/privacy_contact_icon_size"
-                        android:layout_height="@dimen/privacy_contact_icon_size"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/default_user_avatar" />
+                        <TextView
+                            android:id="@+id/tv_show_two"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="70dp"
+                            android:text="@string/battery_protect_view_remain_three_title"
+                            android:textColor="@color/white"
+                            android:textSize="10dp"/>
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_show_four"
+                    <LinearLayout
+                        android:id="@+id/show_three"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="7dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:maxWidth="70dp"
-                        android:text="@string/battery_protect_view_remain_three_title"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical">
+
+                        <com.leo.appmaster.privacycontact.CircleImageViewTwo
+                            android:id="@+id/iv_show_three"
+                            android:layout_width="@dimen/privacy_contact_icon_size"
+                            android:layout_height="@dimen/privacy_contact_icon_size"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/default_user_avatar"/>
+
+                        <TextView
+                            android:id="@+id/tv_show_three"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="70dp"
+                            android:text="@string/battery_protect_view_remain_three_title"
+                            android:textColor="@color/white"
+                            android:textSize="10dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/show_four"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="vertical">
+
+                        <com.leo.appmaster.privacycontact.CircleImageViewTwo
+                            android:id="@+id/iv_show_four"
+                            android:layout_width="@dimen/privacy_contact_icon_size"
+                            android:layout_height="@dimen/privacy_contact_icon_size"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/default_user_avatar"/>
+
+                        <TextView
+                            android:id="@+id/tv_show_four"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="7dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="70dp"
+                            android:text="@string/battery_protect_view_remain_three_title"
+                            android:textColor="@color/white"
+                            android:textSize="10dp"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
     <!-- 推荐使用 -->
 </RelativeLayout>
-
