@@ -39,9 +39,10 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
-import com.mobvista.sdk.m.core.entity.Campaign;
+import com.mobvista.msdk.out.Campaign;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 /**
  * Created by qili on 15-10-27.
@@ -94,6 +95,8 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     private RelativeLayout mGradeLayout;
 
     private FiveStarsLayout mFiveStarLayout;
+	
+	private View mAdView;
 
     @Override
     public void onAttach(Activity activity) {
@@ -125,7 +128,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     public void onDestroyView() {
         super.onDestroyView();
         if (mDidLoadAd) {
-            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60);
+            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60, mAdView);
         }
         ImageLoader.getInstance().clearMemoryCache();
         if (mFiveStarLayout != null) {
@@ -265,11 +268,11 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, new MobvistaListener() {
 
                 @Override
-                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
+                public void onMobvistaFinished(int code, final List<Campaign> campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
                         LeoLog.d("MobvistaEngine", "Wifi result position ad data ready");
-                        sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                        sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaign.get(0));
+                        ImageLoader.getInstance().loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
                     }
                 }
 
@@ -298,6 +301,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         LeoLog.d("stone_ad_debug", "preview image size: " + previewImage.getWidth() + "x" + previewImage.getHeight());
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
+		mAdView = adView;
         MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, adView);
     }
 

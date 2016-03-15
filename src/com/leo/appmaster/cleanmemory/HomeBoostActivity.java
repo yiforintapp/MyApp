@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.cleanmemory;
 
-import java.lang.ref.WeakReference;
-import java.util.Random;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -46,6 +43,10 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
+import java.lang.ref.WeakReference;
+import java.util.List;
+import java.util.Random;
+
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
     private View mStatusBar;
@@ -70,6 +71,8 @@ public class HomeBoostActivity extends Activity {
     private AnimatorSet mAdAnim;
     
     private Random mRandom = new Random();
+	
+	private View mAdView;
 
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
@@ -111,10 +114,10 @@ public class HomeBoostActivity extends Activity {
 			 * @param msg      请求失败sdk返回的描述，成功为null
 			 */
 			@Override
-			public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+			public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
 				if (code == MobvistaEngine.ERR_OK  && campaign != null) {
-					sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaign);
-					ImageLoader.getInstance().loadImage(campaign.getImageUrl(),
+					sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaign.get(0));
+					ImageLoader.getInstance().loadImage(campaign.get(0).getImageUrl(),
 							new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 262),
 									DipPixelUtil.dip2px(HomeBoostActivity.this, 130)),
 							sAdImageListener);
@@ -231,6 +234,7 @@ public class HomeBoostActivity extends Activity {
         Button call = (Button) findViewById(R.id.btn_ad_appcall);
         if(call != null) {
             call.setText(campaign.getAdCall());
+			mAdView = mRlResultWithAD;
             mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
         }
     }
@@ -641,7 +645,7 @@ public class HomeBoostActivity extends Activity {
         super.onDestroy();
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
         if(mAdEngine!=null){
-            mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62);
+            mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, mAdView);
         }
         if (mAdAnim != null) {
             mAdAnim.cancel();

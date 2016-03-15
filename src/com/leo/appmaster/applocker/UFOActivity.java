@@ -1,11 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONObject;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.CountDownTimer;
@@ -46,7 +41,12 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.Animator.AnimatorListener;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
-import com.mobvista.sdk.m.core.entity.Campaign;
+import com.mobvista.msdk.out.Campaign;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
@@ -82,6 +82,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private float mWindowW;
     private float mWindowH;
     private int RANDOM_NUMERATOR=1;
+	
+	private View adView;
 
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -269,25 +271,26 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mAdEngine = MobvistaEngine.getInstance(this);
         mAdEngine.loadMobvista(Constants.UNIT_ID_58, new MobvistaListener() {
             @Override
-            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+            public void onMobvistaFinished(int code, List<Campaign> campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK&&campaign!=null) {
                     mIsADLoaded = true;
                     LeoLog.e("poha","ad loaded!");
-                    loadADPic(campaign.getIconUrl(),
+                    loadADPic(campaign.get(0).getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
                                     .dip2px(UFOActivity.this, 48)),
                             (ImageView) mDialog.findViewById(R.id.iv_ufo_ad_icon));
-                    loadADPic(campaign.getImageUrl(),
+                    loadADPic(campaign.get(0).getImageUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 302), DipPixelUtil
                                     .dip2px(UFOActivity.this, 158)),
                             (ImageView) mDialog.findViewById(R.id.iv_appbg_ufo));
 
                     TextView appname = (TextView) mDialog.findViewById(R.id.tv_appname_ufo);
-                    appname.setText(campaign.getAppName());
+                    appname.setText(campaign.get(0).getAppName());
                     TextView appdesc = (TextView) mDialog.findViewById(R.id.tv_appdesc_ufo);
-                    appdesc.setText(campaign.getAppDesc());
+                    appdesc.setText(campaign.get(0).getAppDesc());
                     Button call = (Button) mDialog.findViewById(R.id.btn_ufo_dialog_install);
-                    call.setText(campaign.getAdCall());
+                    call.setText(campaign.get(0).getAdCall());
+					adView = call;
                     mAdEngine.registerView(Constants.UNIT_ID_58, call);
                 }
             }
@@ -685,7 +688,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     protected void onDestroy() {
         super.onDestroy();
         if(mAdEngine!=null){
-        mAdEngine.release(Constants.UNIT_ID_58);
+        mAdEngine.release(Constants.UNIT_ID_58, adView);
         }
 //        LockScreenActivity.interupAinimation = false;
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);

@@ -1,19 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -146,7 +132,20 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
-import com.mobvista.sdk.m.core.MobvistaAdWall;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
@@ -195,7 +194,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //    private FrameLayout mBannerParent;
     private ViewPager mBannerContainer;
     private AdBannerAdapter mAdapterCycle;
-    private LinkedHashMap<String, WrappedCampaign> mAdMap = new LinkedHashMap<String, WrappedCampaign>();
+    private LinkedHashMap<String, List<WrappedCampaign>> mAdMap = new LinkedHashMap<String, List<WrappedCampaign>>();
     private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
@@ -222,7 +221,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public int mQuiclModeId;
     private RelativeLayout mLockLayout;
     private boolean mMissingDialogShowing;
-    private MobvistaAdWall wallAd;
     public static boolean sLockFilterFlag = false;
     private static AnimationDrawable adAnimation;
     public static boolean interupAinimation = false;
@@ -238,6 +236,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static boolean mIsPicSaved = false;
 
     public static boolean mHasTakePic = false;
+	
+	private View adView;
 	
 	
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
@@ -329,11 +329,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
         // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
-        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+        /*wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
         if (wallAd != null) {
             // preload the wall data
             wallAd.preloadWall();
-        }
+        }*/
+		
+		MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
     }
 
     public void takePicture(final CameraSurfacePreview view, final String packagename) {
@@ -1098,13 +1100,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg = null;
         }
 
-        try {
+        /*try {
             if (wallAd != null) {
                 wallAd.release();
                 wallAd = null;
             }
         } catch (Exception e) {
-        }
+        }*/
         LeoLog.d(TAG, "onDestroy...");
         LeoEventBus.getDefaultBus().unregister(this);
         mLockFragment.setShowText(false);
@@ -1133,7 +1135,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         //LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
                         // 3.3.2 封装Max与Mob SDK
                         if (mDidLoadAd) {
-                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id);
+                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id, adView);
                         }
                     }
                 }
@@ -1294,26 +1296,26 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				 * 广告请求回调
 				 *
 				 * @param code     返回码，如ERR_PARAMS_NULL
-				 * @param campaign 请求成功的广告结构体，失败为null
+				 * @param campaigns 请求成功的广告结构体集合，失败为null
 				 * @param msg      请求失败sdk返回的描述，成功为null
 				 */
 				@Override
-				public synchronized void onWrappedAdLoadFinished(int code, final WrappedCampaign campaign, String msg) {
+				public synchronized void onWrappedAdLoadFinished(int code, final List<WrappedCampaign> campaigns, String msg) {
                     if (code != MobvistaEngine.ERR_OK) {
                         return;
                     }
-					if (campaign != null) {
-                        mAdMap.put(unitId, campaign);
+					if (campaigns != null && campaigns.size() > 0) {
+                        mAdMap.put(unitId, campaigns);
 
 						/* 开始load 广告大图 */
-                        LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
+                        LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for ["+ unitId +"] ready: " + campaigns.get(0).getAppName());
                         DisplayImageOptions options = new DisplayImageOptions.Builder()
                                 .cacheInMemory(true)
                                 .cacheOnDisk(true)
                                 .bitmapConfig(Bitmap.Config.RGB_565)
                                 .build();
 
-						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), options, new ImageLoadingListener() {
+						ImageLoader.getInstance().loadImage(campaigns.get(0).getImageUrl(), options, new ImageLoadingListener() {
 							@Override
 							public void onLoadingStarted(String imageUri, View view) {
 								LeoLog.d("LockScreenActivity_AD_DEBUG", "["+unitId+"]start to load preview for: " + imageUri);
@@ -1336,13 +1338,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                             if (loadedImage == null) {
                                                 return;
                                             }
-                                            WrappedCampaign wrappedCampaign = mAdMap.get(unitId);
-                                            if (wrappedCampaign == null
-                                                    || wrappedCampaign.getAppName() == null
-                                                    || wrappedCampaign.getAppName().equalsIgnoreCase("")) {
-                                                mAdMap.remove(unitId);
-                                                return;
-                                            }
+											
+											if (mAdMap.get(unitId) != null) {
+												WrappedCampaign wrappedCampaign = mAdMap.get(unitId).get(0);
+												if (wrappedCampaign == null
+														|| wrappedCampaign.getAppName() == null
+														|| wrappedCampaign.getAppName().equalsIgnoreCase("")) {
+													mAdMap.remove(unitId);
+													return;
+												}
+											}
 
                                             if (mAdUnitIdList == null) {
                                                 mAdUnitIdList = new ArrayList<String>();
@@ -1358,22 +1363,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                             }
                                             mAdBitmapMap.put(unitId, loadedImage);
 
-								/*校验此广告是否用第一个id来申请的*/
+											/*校验此广告是否用第一个id来申请的*/
                                             if (unitId.equals(mBannerAdids[0])) {
-                                    /*如果是则将其他两个广告显示开光打开*/
+                                    		/*如果是则将其他两个广告显示开光打开*/
                                                 otherAdSwitcher = true;
                                             }
-                                /* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 */
+											/* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 */
                                             if (!unitId.equals(mBannerAdids[0])) {
-									/*如果广告开关没有被打开，则直接退出*/
+												/*如果广告开关没有被打开，则直接退出*/
                                                 if (!otherAdSwitcher) {
                                                     return;
                                                 }
-                                    /*if (isRedundant(unitId, campaign)) {
-                                        *//* 与之前的广告重复了，不添加到UI而且去掉广告数据 *//*
-                                        removeAdData(unitId);
-                                        return;
-                                    }*/
+											/*if (isRedundant(unitId, campaign)) {
+												*//* 与之前的广告重复了，不添加到UI而且去掉广告数据 *//*
+												removeAdData(unitId);
+												return;
+											}*/
                                             }
 
                                             if (mBannerContainer == null) {
@@ -1381,12 +1386,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                             }
                                             if (mAdapterCycle == null) {
                                                 mBannerContainer.setVisibility(View.INVISIBLE);
-                                    /* 去除重复广告之后再填充UI */
+                                    			/* 去除重复广告之后再填充UI */
                                                 removeRedundantAds();
                                                 mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
                                                 mBannerContainer.setAdapter(mAdapterCycle);
                                                 if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
-										/* 第一个广告直接出现 */
+													/* 第一个广告直接出现 */
                                                     mBannerContainer.setCurrentItem(1, false);
                                                     mAdapterCycle.setLasterSlectedPage(1);
                                                     mBannerContainer.setVisibility(View.VISIBLE);
@@ -1395,18 +1400,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                                     hideIconAndPswTips();
 
                                                 } else {
-                                        /* 广告隐藏在右边 */
+                                        			/* 广告隐藏在右边 */
                                                     mBannerContainer.setVisibility(View.VISIBLE);
                                                     mBannerContainer.setCurrentItem(0, false);
                                                     mAdapterCycle.setLasterSlectedPage(0);
                                                 }
                                             } else {
-                                    /* AM-3907 规避多次添加广告 */
-                                    /*if (mAdapterCycle.getCount() == mBannerAdids.length) {
-                                        return;
-                                    }*/
+												/* AM-3907 规避多次添加广告 */
+												/*if (mAdapterCycle.getCount() == mBannerAdids.length) {
+													return;
+												}*/
                                                 removeRedundantAds();
-                                    /* 如果没被去重干掉，再加进来 */
+                                    			/* 如果没被去重干掉，再加进来 */
                                                 if (mAdUnitIdList.contains(unitId)) {
                                                     mAdapterCycle.addItem(unitId);
                                                 }
@@ -1441,7 +1446,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 otherAdSwitcher = false;
                             }
 
-                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID);
+                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID, adView);
                             mAdapterCycle.clearView();
                             mBannerContainer.removeAllViews();
                             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -1470,11 +1475,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void removeRedundantAds () {
         ArrayList<String> list = new ArrayList<String>();
         for (String id : mAdUnitIdList) {
-            WrappedCampaign wc = mAdMap.get(id);
+            WrappedCampaign wc = mAdMap.get(id).get(0);
             if(wc != null) {
                 boolean found = false;
                 for (String newId: list) {
-                    WrappedCampaign newWc = mAdMap.get(newId);
+                    WrappedCampaign newWc = mAdMap.get(newId).get(0);
                     if(newWc == null) {
                         continue;
                     }
@@ -1518,7 +1523,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      * 去重添加
      *
      * @param unitId
-     * @param campaign
      * @return 是否与之前的广告重复
      */
 //    private boolean isRedundant(String unitId, WrappedCampaign campaign) {
@@ -2167,9 +2171,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 try {
 //                    Intent mWallIntent = wallAd.getWallIntent();
 //                    startActivity(mWallIntent);
-                    wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+                    /*wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
                     wallAd.preloadWall();
-                    wallAd.clickWall();
+                    wallAd.clickWall();*/
+					MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
                 } catch (Exception e) {
                 }
                 if (!mHaveNewThings && !clickShakeIcon) {
@@ -2724,7 +2729,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
          * @return 是否成功填充
          */
         private boolean setItemViewContent(RelativeLayout view, String unitId) {
-            WrappedCampaign campaign = mAdMap.get(unitId);
+            WrappedCampaign campaign = mAdMap.get(unitId).get(0);
             if (campaign == null) {
                 return false;
             }
@@ -2742,12 +2747,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			}
 
             ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(bitmap);
-            ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
+            ((TextView) view.findViewById(R.id.ad_title)).setText(unitId + campaign.getAppName());
 			view.findViewById(R.id.ad_title).setTag(unitId);
             ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
             ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
             final View clickArea = view.findViewById(R.id.click_area);
 
+			adView = clickArea;
+			
             if (mWrapperEngine != null) {
                 mWrapperEngine.registerView(mAdSource, clickArea, unitId);
             }

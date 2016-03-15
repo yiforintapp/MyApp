@@ -122,6 +122,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private LinearLayout mFiveStarLayout;
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
+	
+	private View mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +157,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLayout.stopAnim();
         }
         if (mShouldLoadAd) {
-            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
+            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID, mAdView);
         }
     }
 
@@ -348,11 +350,11 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mShouldLoadAd) {
 			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, new ADEngineWrapper.WrappedAdListener() {
 				@Override
-				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+				public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
 					if (code == MobvistaEngine.ERR_OK) {
-						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
-						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
-						mImageLoader.loadImage(campaign.getImageUrl(), sAdImageListener);
+						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.get(0).getAppName());
+						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign.get(0));
+						mImageLoader.loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
 					}
 				}
 
@@ -447,6 +449,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         btnCTA.setText(campaign.getAdCall());
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
+		mAdView = adView;
 		ADEngineWrapper.getInstance(this).registerView(mAdSource, adView, INTRUDER_AD_ID);
         //MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,

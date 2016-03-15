@@ -1,24 +1,7 @@
 
 package com.leo.appmaster.lockertheme;
 
-import java.util.List;
-
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.model.ThemeItemInfo;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FadeInBitmapDisplayer;
-import com.leo.imageloader.core.FailReason;
-import com.leo.imageloader.core.ImageLoadingListener;
-import com.leo.imageloader.core.ImageScaleType;
-import com.leo.imageloader.core.ImageSize;
-import com.mobvista.sdk.m.core.entity.Campaign;
-
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory.Options;
 import android.view.LayoutInflater;
@@ -28,6 +11,16 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.model.ThemeItemInfo;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageScaleType;
+
+import java.util.List;
 
 public class LockerThemeAdapter extends BaseAdapter {
     private List<ThemeItemInfo> themes;

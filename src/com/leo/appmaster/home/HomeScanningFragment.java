@@ -178,6 +178,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private boolean mIsInsAvaliable = true;
 
     private View mWifiScanBottomLine;
+	private View mAdView;
 
     private Handler mHandler = new Handler() {
 
@@ -455,11 +456,11 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, AD_AFTER_SCAN,
                     new ADEngineWrapper.WrappedAdListener() {
                         @Override
-                        public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+                        public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
                             if (code == MobvistaEngine.ERR_OK) {
-                                LeoLog.d("AfterPrivacyScan", "Ad data loaded: " + campaign.getAppName());
-                                sAdImageListener = new AdPreviewLoaderListener(HomeScanningFragment.this, campaign);
-                                ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                                LeoLog.d("AfterPrivacyScan", "Ad data loaded: " + campaign.get(0).getAppName());
+                                sAdImageListener = new AdPreviewLoaderListener(HomeScanningFragment.this, campaign.get(0));
+                                ImageLoader.getInstance().loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
                             }
                         }
 
@@ -481,7 +482,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
         /* 3.3.2 封装Max与Mob SDK */
         if (mDidLoadAd) {
-            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, AD_AFTER_SCAN);
+            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, AD_AFTER_SCAN, mAdView);
         }
     }
 
@@ -542,6 +543,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
         /* 3.3.2 封装Max与Mob SDK */
+		mAdView = adView;
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, adView, AD_AFTER_SCAN);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
     }

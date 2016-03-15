@@ -6,7 +6,9 @@ import android.view.View;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.utils.LeoLog;
-import com.mobvista.sdk.m.core.entity.Campaign;
+import com.mobvista.msdk.out.Campaign;
+
+import java.util.List;
 
 /**
  * Created by stone on 16/2/26.
@@ -26,10 +28,10 @@ public class ADEngineWrapper {
         /**
          * 广告请求回调
          * @param code 返回码，如ERR_PARAMS_NULL
-         * @param campaign 请求成功的广告结构体，失败为null
+         * @param campaigns 请求成功的广告结构体，失败为null
          * @param msg 请求失败sdk返回的描述，成功为null
          */
-        public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg);
+        public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaigns, String msg);
         /**
          * 广告点击回调
          * @param campaign
@@ -60,20 +62,39 @@ public class ADEngineWrapper {
                 @Override
                 public void onLeoAdLoadFinished(int code, LEONativeAdData campaign, String msg) {
                     LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
-                    WrappedCampaign wrappedCampaign = null;
+                    List<WrappedCampaign> wrappedCampaignList = null;
                     if (code == LEOAdEngine.ERR_OK) {
-                        wrappedCampaign = WrappedCampaign.fromMaxSDK(campaign);
+						wrappedCampaignList = WrappedCampaign.fromMaxSDK(campaign);
                     }
-                    listener.onWrappedAdLoadFinished(code, wrappedCampaign, msg);
+                    listener.onWrappedAdLoadFinished(code, wrappedCampaignList, msg);
                 }
 
                 @Override
                 public void onLeoAdClick(LEONativeAdData campaign, String unitID) {
-                    listener.onWrappedAdClick(WrappedCampaign.fromMaxSDK(campaign), unitID);
+                    listener.onWrappedAdClick(WrappedCampaign.converCampaignFromMax(campaign), unitID);
                 }
             });
         } else {
-            mMobEngine.loadMobvista(unitId, new MobvistaEngine.MobvistaListener() {
+			
+			mMobEngine.loadMobvista(unitId, new MobvistaEngine.MobvistaListener() {
+				@Override
+				public void onMobvistaFinished(int code, List<Campaign> campaigns, String msg) {
+					LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
+					List<WrappedCampaign> wrappedCampaignList = null;
+					if (code == MobvistaEngine.ERR_OK) {
+						wrappedCampaignList = WrappedCampaign.fromMabVistaSDK(campaigns);
+					}
+					listener.onWrappedAdLoadFinished(code, wrappedCampaignList, msg);
+				}
+
+				@Override
+				public void onMobvistaClick(com.mobvista.msdk.out.Campaign campaign, String unitID) {
+					
+					listener.onWrappedAdClick(WrappedCampaign.converCampaignFromMob(campaign), unitID);
+				}
+			});
+			
+            /*mMobEngine.loadMobvista(unitId, new MobvistaEngine.MobvistaListener() {
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                     LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
@@ -90,7 +111,7 @@ public class ADEngineWrapper {
                 }
 				
 				
-            });
+            });*/
         }
     }
 
@@ -103,19 +124,19 @@ public class ADEngineWrapper {
         }
     }
 
-    public void releaseAd (int source, String unitId) {
+    public void releaseAd (int source, String unitId, View view) {
         if (source == SOURCE_MAX) {
             mMaxEngine.release(unitId);
         } else {
-            mMobEngine.release(unitId);
+            mMobEngine.release(unitId, view);
         }
     }
 	
-	public void removeMobAdData(int source, String unitId) {
+	public void removeMobAdData(int source, String unitId, View view) {
 		if (source == SOURCE_MAX) {
 			mMaxEngine.removeMobAdData(unitId);
 		} else {
-			mMobEngine.removeMobAdData(unitId);
+			mMobEngine.removeMobAdData(unitId, view);
 		}
 	}
 	
