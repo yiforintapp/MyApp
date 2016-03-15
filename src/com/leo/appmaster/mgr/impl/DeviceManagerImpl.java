@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.TrafficsInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.SelfDurationToast;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
@@ -50,7 +52,11 @@ public class DeviceManagerImpl extends DeviceManager {
     private final static int BLUETOOTH_TURN_ON = 2;
     private final static int MOBILEDATA_TURN_ON = 3;
 
-    private final static long DELAY_DISABL = 800;
+    private final static int WIFI_SHUT_DOWN = 1;
+    private final static int BLUETOOTH_SHUT_DOWN = 2;
+    private final static int MOBILEDATA_SHUT_DOWN = 3;
+
+    private final static long DELAY_DISABL = 1000;
 
     private LockManager mLockManager;
     private WifiLockSwitch mWifiSwitch;
@@ -63,6 +69,25 @@ public class DeviceManagerImpl extends DeviceManager {
 
     private WifiManager mWifimanager;
     private BluetoothAdapter mBluetoothAdapter;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case WIFI_SHUT_DOWN:
+                    LeoLog.d(TAG, "shut down wifi");
+                    mWifimanager.setWifiEnabled(false);
+                    break;
+                case BLUETOOTH_SHUT_DOWN:
+                    LeoLog.d(TAG, "shut down bluetooth");
+                    mBluetoothAdapter.disable();
+                    break;
+
+                case MOBILEDATA_SHUT_DOWN:
+
+                    break;
+            }
+        }
+    };
 
     public DeviceManagerImpl() {
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
@@ -134,12 +159,7 @@ public class DeviceManagerImpl extends DeviceManager {
     }
 
     private void shutDownWifi() {
-        LeoLog.d(TAG, "shut down wifi");
-        try {
-            mWifimanager.setWifiEnabled(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mHandler.sendEmptyMessageDelayed(WIFI_SHUT_DOWN, DELAY_DISABL);
     }
 
     private void showLockScreen(final int showType) {
@@ -206,12 +226,7 @@ public class DeviceManagerImpl extends DeviceManager {
     };
 
     private void shutDownBlueTooth() {
-        LeoLog.d(TAG, "shut down bluetooth");
-        try {
-            mBluetoothAdapter.disable();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mHandler.sendEmptyMessageDelayed(BLUETOOTH_SHUT_DOWN, DELAY_DISABL);
     }
 
     @Override
