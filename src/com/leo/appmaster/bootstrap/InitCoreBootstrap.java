@@ -36,6 +36,7 @@ import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
+import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -131,7 +132,9 @@ public class InitCoreBootstrap extends Bootstrap {
         MobvistaEngine.getInstance(mApp);
         LeoLog.d(TAG, "MobvistaEngine init cost: " + (SystemClock.elapsedRealtime() - start));
 
-
+        //init DeviceImp
+        DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
+        deviceManager.init();
         return true;
     }
 
@@ -215,10 +218,10 @@ public class InitCoreBootstrap extends Bootstrap {
         }
     }
 
-    private void removeDeviceAdmin(){
+    private void removeDeviceAdmin() {
         AppMasterApplication mApp = AppMasterApplication.getInstance();
-        ComponentName component = new ComponentName(mApp,DeviceReceiver.class);
-        DevicePolicyManager dpm = (DevicePolicyManager)mApp.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        ComponentName component = new ComponentName(mApp, DeviceReceiver.class);
+        DevicePolicyManager dpm = (DevicePolicyManager) mApp.getSystemService(Context.DEVICE_POLICY_SERVICE);
         dpm.removeActiveAdmin(component);
         LeoLog.i("stone_admin", "removeDeviceAdmin for first install");
     }
@@ -309,8 +312,7 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void tryRemoveUnlockAllShortcut(Context ctx) {
-        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag())
-        {
+        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
             // remove unlock all shortcut
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -338,16 +340,16 @@ public class InitCoreBootstrap extends Bootstrap {
 //        PreferenceTable preferenceTable = PreferenceTable.getInstance();
 //        preferenceTable.putBoolean(PrefConst.IS_BOOST_CREAT, isInstalllIswipe);
 //        if (!isInstalllIswipe) {
-            Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
-            ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
-                    R.drawable.qh_speedup_icon);
-            Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-            shortcut.putExtra("duplicate", false);
-            shortcut.putExtra("from_shortcut", true);
-            mApp.sendBroadcast(shortcut);
+        Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
+        ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
+                R.drawable.qh_speedup_icon);
+        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+        shortcut.putExtra("duplicate", false);
+        shortcut.putExtra("from_shortcut", true);
+        mApp.sendBroadcast(shortcut);
 //        }
     }
 
@@ -360,8 +362,8 @@ public class InitCoreBootstrap extends Bootstrap {
         Intent intent;
         AlarmManager am = (AlarmManager) mApp.getSystemService(Context.ALARM_SERVICE);
         if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(mApp))) { // is
-                                                                             // new
-                                                                             // version
+            // new
+            // version
             pref.setHaveEverAppLoaded(false);
             intent = new Intent(mApp, LockReceiver.class);
             intent.setAction(LockReceiver.ALARM_LOCK_ACTION);

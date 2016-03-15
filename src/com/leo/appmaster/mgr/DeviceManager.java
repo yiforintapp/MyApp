@@ -17,6 +17,8 @@ public abstract class DeviceManager extends Manager {
         return MgrContext.MGR_DEVICE;
     }
 
+    public abstract void init();
+
     /**
      * 获取今日流量(单位B)
      */

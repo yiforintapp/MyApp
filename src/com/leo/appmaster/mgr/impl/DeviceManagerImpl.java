@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -14,18 +15,33 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.battery.BatteryNotifyHelper;
+import com.leo.appmaster.battery.RemainingTimeEstimator;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.TrafficsInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class DeviceManagerImpl extends DeviceManager {
+
+
+    public DeviceManagerImpl() {
+
+    }
+
+    public void init() {
+
+    }
+
     @Override
     public void onDestory() {
 
@@ -40,8 +56,8 @@ public class DeviceManagerImpl extends DeviceManager {
         try {
             cursor = mContext.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
                     "daytime=?",
-                    new String[] {
-                        today_ymd
+                    new String[]{
+                            today_ymd
                     }, null);
             if (cursor != null && cursor.moveToNext()) {
                 today_flow = cursor.getFloat(2);
@@ -105,7 +121,7 @@ public class DeviceManagerImpl extends DeviceManager {
                 }
             }
         } catch (Exception e) {
-            
+
         } finally {
             if (cursor != null) {
                 cursor.close();
