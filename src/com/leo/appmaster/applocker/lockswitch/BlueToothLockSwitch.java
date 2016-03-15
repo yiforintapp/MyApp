@@ -13,28 +13,28 @@ public class BlueToothLockSwitch extends SwitchGroup {
     }
 
     @Override
-    protected void switchOn() {
+    public void switchOn() {
 
     }
 
     @Override
-    protected void switchOff() {
+    public void switchOff() {
 
     }
 
     @Override
-    protected int getLockNum() {
+    public int getLockNum() {
         return 0;
     }
 
     @Override
-    protected int setLockNum() {
+    public int setLockNum() {
         return 0;
     }
 
     @Override
-    protected boolean isLockNow() {
-        return false;
+    public boolean isLockNow() {
+        return true;
     }
 
 }
