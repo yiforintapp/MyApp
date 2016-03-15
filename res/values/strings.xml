@@ -1057,4 +1057,8 @@
     <string name="battery_protect_setting_pow_sav_title">Auto power save optimization</string>
     <!--3.5西安团队审校修改文案 end-->
 
+    <string name="intruder_setting_title_1">系统锁屏拍照</string>
+    <string name="intruder_setting_summarty_1">在解锁手机时输错密码自动拍照</string>
+    <string name="intruder_setting_title_2">应用锁拍照</string>
+    <string name="intruder_setting_summarty_2">在解锁应用时输错密码自动拍照</string>
 </resources>

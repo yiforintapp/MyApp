@@ -609,7 +609,7 @@ public class IntruderprotectionActivity extends BaseActivity {
      */
     private void updateAll() {
         // 头布局——防护开关
-        updateSwtch();
+//        updateSwtch();
         // 拍照所需的解锁失败次数的文本提示
         updateTimesToCatch();
         // 更改拍照所需的解锁失败次数
@@ -754,98 +754,98 @@ public class IntruderprotectionActivity extends BaseActivity {
     }
 
     // 更新入侵者防护的开关
-    private void updateSwtch() {
-        LeoLog.i("poha_catch", "updateSwitch!!");
-        final ImageView needle = (ImageView) mHeader.findViewById(R.id.iv_switch_needle);
-        final ImageView red = (ImageView) mHeader.findViewById(R.id.iv_redlight);
-        final ImageView green = (ImageView) mHeader.findViewById(R.id.iv_greenlight);
-        final ImageView button = (ImageView) mHeader.findViewById(R.id.iv_switch_button);
-        if (mImanager.getIntruderMode()) {
-            needle.setImageResource(R.drawable.intruder_catch_switch_needle_right);
-            green.setImageResource(R.drawable.intruder_catch_switch_green);
-            red.setImageResource(R.drawable.intruder_catch_switch_grey);
-        } else {
-            needle.setImageResource(R.drawable.intruder_catch_switch_needle);
-            green.setImageResource(R.drawable.intruder_catch_switch_grey);
-            red.setImageResource(R.drawable.intruder_catch_switch_red);
-        }
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mImanager.getIsIntruderSecurityAvailable()) {
-                    showForbitDialog();
-                    // Toast.makeText(IntruderprotectionActivity.this,
-                    // getResources().getString(R.string.unavailable),
-                    // Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (mImanager.getIntruderMode()) {
-                    mImanager.switchIntruderMode(false);
-                    Toast.makeText(IntruderprotectionActivity.this,
-                            getString(R.string.intruder_close), Toast.LENGTH_SHORT).show();
-                    final RotateAnimation animation = new RotateAnimation(0f, -180f,
-                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    animation.setDuration(300);
-                    needle.setAnimation(animation);
-                    animation.setAnimationListener(new AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            button.setClickable(false);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            needle.clearAnimation();
-                            needle.setImageResource(R.drawable.intruder_catch_switch_needle);
-                            green.setImageResource(R.drawable.intruder_catch_switch_grey);
-                            red.setImageResource(R.drawable.intruder_catch_switch_red);
-                            button.setClickable(true);
-                        }
-                    });
-                    needle.startAnimation(animation);
-                } else {
-                    mImanager.switchIntruderMode(true);
-                    if (mIsFromScan) {
-//                    if (true) {
-                        ShowToast.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE,
-                                IntruderprotectionActivity.this);
-                        mIsFromScan = false;
-                    } else {
-                        Toast.makeText(IntruderprotectionActivity.this, getString(R.string.intruder_open), Toast.LENGTH_SHORT).show();
-                    }
-                    final RotateAnimation animation = new RotateAnimation(0f, 180f,
-                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    animation.setDuration(300);
-                    // animation.setFillAfter(true);
-                    needle.setAnimation(animation);
-                    animation.setAnimationListener(new AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            button.setClickable(false);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            needle.clearAnimation();
-                            needle.setImageResource(R.drawable.intruder_catch_switch_needle_right);
-                            green.setImageResource(R.drawable.intruder_catch_switch_green);
-                            red.setImageResource(R.drawable.intruder_catch_switch_grey);
-                            button.setClickable(true);
-                        }
-                    });
-                    needle.startAnimation(animation);
-                }
-            }
-        });
-    }
+//    private void updateSwtch() {
+//        LeoLog.i("poha_catch", "updateSwitch!!");
+//        final ImageView needle = (ImageView) mHeader.findViewById(R.id.iv_switch_needle);
+//        final ImageView red = (ImageView) mHeader.findViewById(R.id.iv_redlight);
+//        final ImageView green = (ImageView) mHeader.findViewById(R.id.iv_greenlight);
+//        final ImageView button = (ImageView) mHeader.findViewById(R.id.iv_switch_button);
+//        if (mImanager.getIntruderMode()) {
+//            needle.setImageResource(R.drawable.intruder_catch_switch_needle_right);
+//            green.setImageResource(R.drawable.intruder_catch_switch_green);
+//            red.setImageResource(R.drawable.intruder_catch_switch_grey);
+//        } else {
+//            needle.setImageResource(R.drawable.intruder_catch_switch_needle);
+//            green.setImageResource(R.drawable.intruder_catch_switch_grey);
+//            red.setImageResource(R.drawable.intruder_catch_switch_red);
+//        }
+//        button.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!mImanager.getIsIntruderSecurityAvailable()) {
+//                    showForbitDialog();
+//                    // Toast.makeText(IntruderprotectionActivity.this,
+//                    // getResources().getString(R.string.unavailable),
+//                    // Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                if (mImanager.getIntruderMode()) {
+//                    mImanager.switchIntruderMode(false);
+//                    Toast.makeText(IntruderprotectionActivity.this,
+//                            getString(R.string.intruder_close), Toast.LENGTH_SHORT).show();
+//                    final RotateAnimation animation = new RotateAnimation(0f, -180f,
+//                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//                    animation.setDuration(300);
+//                    needle.setAnimation(animation);
+//                    animation.setAnimationListener(new AnimationListener() {
+//                        @Override
+//                        public void onAnimationStart(Animation animation) {
+//                            button.setClickable(false);
+//                        }
+//
+//                        @Override
+//                        public void onAnimationRepeat(Animation animation) {
+//                        }
+//
+//                        @Override
+//                        public void onAnimationEnd(Animation animation) {
+//                            needle.clearAnimation();
+//                            needle.setImageResource(R.drawable.intruder_catch_switch_needle);
+//                            green.setImageResource(R.drawable.intruder_catch_switch_grey);
+//                            red.setImageResource(R.drawable.intruder_catch_switch_red);
+//                            button.setClickable(true);
+//                        }
+//                    });
+//                    needle.startAnimation(animation);
+//                } else {
+//                    mImanager.switchIntruderMode(true);
+//                    if (mIsFromScan) {
+////                    if (true) {
+//                        ShowToast.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE,
+//                                IntruderprotectionActivity.this);
+//                        mIsFromScan = false;
+//                    } else {
+//                        Toast.makeText(IntruderprotectionActivity.this, getString(R.string.intruder_open), Toast.LENGTH_SHORT).show();
+//                    }
+//                    final RotateAnimation animation = new RotateAnimation(0f, 180f,
+//                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//                    animation.setDuration(300);
+//                    // animation.setFillAfter(true);
+//                    needle.setAnimation(animation);
+//                    animation.setAnimationListener(new AnimationListener() {
+//                        @Override
+//                        public void onAnimationStart(Animation animation) {
+//                            button.setClickable(false);
+//                        }
+//
+//                        @Override
+//                        public void onAnimationRepeat(Animation animation) {
+//                        }
+//
+//                        @Override
+//                        public void onAnimationEnd(Animation animation) {
+//                            needle.clearAnimation();
+//                            needle.setImageResource(R.drawable.intruder_catch_switch_needle_right);
+//                            green.setImageResource(R.drawable.intruder_catch_switch_green);
+//                            red.setImageResource(R.drawable.intruder_catch_switch_grey);
+//                            button.setClickable(true);
+//                        }
+//                    });
+//                    needle.startAnimation(animation);
+//                }
+//            }
+//        });
+//    }
 
     protected void showForbitDialog() {
         if (mOpenForbinDialog == null) {

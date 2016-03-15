@@ -1,15 +1,224 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/cbg">
 
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/ctb_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cb" />
+
+    <ScrollView
+        android:layout_below="@id/ctb_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/intruder_setting_content1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="11dp"
+                android:background="@color/white">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_intruder_setting_content1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="68dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_intruder_setting_title1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:text="@string/intruder_setting_title_1"
+                            android:textColor="@color/c2"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/tv_intruder_setting_summary1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_intruder_setting_title1"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:maxLines="3"
+                            android:text="@string/intruder_setting_summarty_1"
+                            android:textColor="@color/c4"
+                            android:textSize="10dp" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_intruder_setting_switch1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="26dp" />
+
+                    <View style="@style/priAppItem" />
+                </com.leo.appmaster.ui.RippleView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/intruder_setting_content2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/intruder_setting_content1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@color/white">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_intruder_setting_content2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="68dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch2"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_intruder_setting_title2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:text="@string/intruder_setting_title_2"
+                            android:textColor="@color/c2"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/tv_intruder_setting_summary2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_intruder_setting_title2"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:maxLines="3"
+                            android:text="@string/intruder_setting_summarty_2"
+                            android:textColor="@color/c4"
+                            android:textSize="10dp" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_intruder_setting_switch2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="26dp" />
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/intruder_setting_content3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/intruder_setting_content2"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_item_noti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="68dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch3"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/intruder_setting_title3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:text="@string/ask_for_times_for_catch"
+                            android:textColor="@color/c2"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/tv_intruder_setting_summary3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/intruder_setting_title3"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:maxLines="3"
+                            android:textColor="@color/c4"
+                            android:textSize="10dp" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_intruder_setting_switch3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="26dp"
+                        android:visibility="gone"/>
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/bt_t1"
-        android:text="请求设备管理器权限"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="请求设备管理器权限" />
 </RelativeLayout>
+
+

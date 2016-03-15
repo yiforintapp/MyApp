@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/cb">
 
-        <TextView
+      <!--  <TextView
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:layout_marginRight="8dp"
@@ -30,10 +30,26 @@
             android:gravity="left"
             android:text="on"
             android:textColor="#ffffff"
-            android:textSize="15dp" />
+            android:textSize="15dp" />-->
 
         <!-- 开关跟布局 -->
+
         <RelativeLayout
+            android:id="@+id/rl_switch"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/intruder_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+        <!--RelativeLayout
             android:id="@+id/rl_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,7 +102,7 @@
                 android:src="@drawable/intruder_catch_switch_button" />
 
 
-            <!--  <RelativeLayout
+            &lt;!&ndash;  <RelativeLayout
                  android:id="@+id/rl_bg"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
@@ -130,8 +146,8 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_centerInParent="true"
-                 android:src="@drawable/intruder_catch_switch_button" /> -->
-        </RelativeLayout>
+                 android:src="@drawable/intruder_catch_switch_button" /> &ndash;&gt;
+        </RelativeLayout>-->
         <!-- 开关跟布局结束 -->
 
         <TextView
@@ -140,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/rl_switch"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="17dp"
             android:gravity="center_horizontal"
             android:text="@string/intruderprotection_desc_title"
             android:textColor="#ffffff"

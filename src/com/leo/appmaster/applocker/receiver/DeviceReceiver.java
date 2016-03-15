@@ -156,6 +156,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 			} finally {
 				if (mFlRoot != null && mWm != null) {
 					mWm.removeView(mFlRoot);
+					mFlRoot = null;
 				}
 			}
 		}
@@ -170,8 +171,12 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 
 	}
 
-	public static final boolean isActive(Context context) {
+	public static boolean isActive(Context context) {
 		return ((DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE)).isAdminActive(getComponentName(context));
+	}
+
+	public static boolean isActivePasswordSufficient(Context context) {
+		return ((DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE)).isActivePasswordSufficient();
 	}
 
 	private File getPhotoSavePath() {
