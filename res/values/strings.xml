@@ -870,8 +870,8 @@
     <string name="traffic_over_text">Data limit exceeded</string>
     <string name="lock_line_hide">Unlock track has been hidden</string>
     <string name="lock_line_visiable">Unlock track  has been displayed</string>
-    <string name="guide_more_text">guide_More_text</string>
-    <string name="guide_skip_text">guide_Skip_text</string>
+    <string name="guide_more_text">More</string>
+    <string name="guide_skip_text">Skip</string>
     <string name="zipper_too_fast">Oops!Pull down slowly</string>
     <string name="zipper_too_slow">Oops!Pull down quickly</string>
     <string name="theme_apply_title">Apply this unlock theme %1$s?</string>
