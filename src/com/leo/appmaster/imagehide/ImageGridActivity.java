@@ -50,6 +50,7 @@ import com.leo.appmaster.videohide.VideoGriActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageDownloader;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -459,8 +460,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                                 .setImageResource(R.drawable.ic_check_normal_n);
                     }
                 }
-                mImageLoader.displayImage("file://" + path, holder.imageView,
-                        mOptions);
+                String uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+                mImageLoader.displayImage(uri, holder.imageView, mOptions);
             }
             return view;
         }

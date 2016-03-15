@@ -37,6 +37,7 @@ import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageDownloader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -319,7 +320,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             path = list.get(position).getBitList().get(0).getPath();
             viewHolder.txt.setText(list.get(position).getName() + "("
                     + list.get(position).getCount() + ")");
-            mImageLoader.displayImage("file://" + path, viewHolder.img, mOptions);
+            String uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+            mImageLoader.displayImage(uri, viewHolder.img, mOptions);
             return convertView;
         }
     }

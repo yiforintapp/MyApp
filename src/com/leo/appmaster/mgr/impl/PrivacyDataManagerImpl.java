@@ -238,7 +238,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String newPath = FileOperationUtil.unhideImageFile(mContext, mPicPath, totalSize);
 
         // 解密
-//        getImageCryptor().decrypt(newPath);
+        try {
+            getImageCryptor().decrypt(newPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return newPath;
     }
 
@@ -262,7 +266,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
 
         // 加密
-//        getImageCryptor().encrypt(newPath);
+        try {
+            getImageCryptor().encrypt(newPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return newPath;
     }
 

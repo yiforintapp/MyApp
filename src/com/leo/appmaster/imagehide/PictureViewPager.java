@@ -42,6 +42,7 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
 
@@ -208,13 +209,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         public Object instantiateItem(ViewGroup container, int position) {
             View view = getLayoutInflater().inflate(R.layout.item_pager_img,
                     null);
-            PhotoView zoomImageView = (PhotoView) view
-                    .findViewById(R.id.zoom_image_view);
-            final ImageView loadingImage = (ImageView) view
-                    .findViewById(R.id.image_loading);
-            ImageLoader.getInstance().displayImage(
-                    "file://" + mPicturesList.get(position), zoomImageView,
-                    mOptions, new ImageLoadingListener() {
+            PhotoView zoomImageView = (PhotoView) view.findViewById(R.id.zoom_image_view);
+            final ImageView loadingImage = (ImageView) view.findViewById(R.id.image_loading);
+
+            String uri = ImageDownloader.Scheme.CRYPTO.wrap(mPicturesList.get(position));
+            ImageLoader.getInstance().displayImage(uri, zoomImageView, mOptions, new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String imageUri, View view) {
                             /**
