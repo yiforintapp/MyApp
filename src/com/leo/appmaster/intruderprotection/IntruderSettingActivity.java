@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.sdk.BaseActivity;
 
 /**
@@ -26,7 +27,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 DevicePolicyManager dm = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
-                ComponentName mAdminName = new ComponentName(IntruderSettingActivity.this, SystLockAdminReceiver.class);
+                ComponentName mAdminName = new ComponentName(IntruderSettingActivity.this, DeviceReceiver.class);
                 if (dm != null) {
                     if (!dm.isAdminActive(mAdminName)) {
                         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);

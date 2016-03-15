@@ -28,6 +28,7 @@ public class PrefConst {
     public static final String KEY_NEED_TAKE_PICTURE_WHEN_USER_PRESENT = "need_take_picture_when_user_present";
     public static final String KEY_HAS_REQUEST_CAMERA = "has_request_camera";
     public static final String KEY_SWITCH_FOR_INTRUDER_PROTECTION = "switch_for_intruder_protection";
+    public static final String KEY_SWITCH_FOR_SYST_INTRUDER_PROTECTION = "switch_for_system_intruder_protection";
     public static final String KEY_TIMES_OF_CATCH_INTRUDER = "times_of_catch_intruder";
     public static final String KEY_FAILURE_TIMES_TO_CATCH = "failure_times_to_catch";
     public static final String KEY_AD_TYPE_IN_INTRUDER_VIEW = "ad_type_in_intruder_view";

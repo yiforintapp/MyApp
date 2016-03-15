@@ -58,6 +58,32 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
     }
 
     @Override
+    public void setSystIntruderProtectionSwitch(boolean isOpen) {
+        boolean current = getSystIntruderProtecionSwitch();
+        if(current!=isOpen){
+            pt.putBoolean(PrefConst.KEY_SWITCH_FOR_INTRUDER_PROTECTION, isOpen);
+//            if(isOpen){
+//                SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,
+//                        "intruder", "intruder_enable");
+//            }else{
+//                SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,
+//                        "intruder", "intruder_close");
+//            }
+//            notifySecurityChange();
+        }
+    }
+
+    @Override
+    public boolean getSystIntruderProtecionSwitch() {
+        boolean isIntruderSecurityAvailable = getIsIntruderSecurityAvailable();
+        if(isIntruderSecurityAvailable) {
+            return pt.getBoolean(PrefConst.KEY_SWITCH_FOR_SYST_INTRUDER_PROTECTION, true);
+        } else {
+            return pt.getBoolean(PrefConst.KEY_SWITCH_FOR_SYST_INTRUDER_PROTECTION, false);
+        }
+    }
+
+    @Override
     public void switchIntruderMode(boolean flag) {
         boolean current = getIntruderMode();
         if(current!=flag){

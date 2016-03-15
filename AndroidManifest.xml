@@ -729,7 +729,9 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".applocker.receiver.DeviceReceiver">
+        <receiver android:name=".applocker.receiver.DeviceReceiver"
+            android:enabled="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
                 android:resource="@xml/my_admin" />
@@ -737,10 +739,12 @@
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
                 <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+                <action android:name="android.app.action.ACTION_PASSWORD_FAILED"/>
             </intent-filter>
         </receiver>
 
-        <receiver
+
+ <!--       <receiver
             android:name=".intruderprotection.SystLockAdminReceiver"
             android:enabled="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN" >
@@ -754,10 +758,9 @@
                 <action android:name="android.app.action.ACTION_PASSWORD_CHANGED" />
                 <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
-        <!--<action android:name="com.leo.appmaster.action.FAILED_PASSWORD_ATTEMPTS_OUT_OF_LIMITS"/>-->
-        <receiver
+       <!-- <receiver
             android:name=".intruderprotection.SystLockStatusReceiver"
             android:exported="true">
             <intent-filter android:priority="2147483647">
@@ -765,7 +768,7 @@
                 <action android:name="android.intent.action.SCREEN_OFF"/>
                 <action android:name="android.intent.action.SCREEN_ON"/>
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <receiver
             android:name="com.leo.appmaster.privacycontact.SingleContactReceiver"

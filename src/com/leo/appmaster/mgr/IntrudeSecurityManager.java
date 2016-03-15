@@ -36,6 +36,17 @@ public abstract class IntrudeSecurityManager extends Manager {
      * @return
      */
     public abstract void deletePhotoInfo(String path);
+
+    /**
+     * 设置系统入侵者防护开关
+     */
+    public abstract void setSystIntruderProtectionSwitch(boolean isOpen);
+
+    /**
+     * 获取当前系统入侵者防护的开关状态
+     */
+    public abstract boolean getSystIntruderProtecionSwitch();
+
     /**
      * 设置入侵者防护
      * @return
