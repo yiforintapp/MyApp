@@ -241,10 +241,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String newPath = FileOperationUtil.unhideImageFile(mContext, mPicPath, totalSize);
         if (!TextUtils.isEmpty(newPath)
                 && !FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)
-                && !FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPath)
                 && !FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPath)
                 && !FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)
-                && !FileOperationUtil.HIDE_PIC_SUCESS.equals(newPath)
                 && !FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(newPath)) {
             LeoLog.d("testHidePic", "encrypt,cacel hide result: " + newPath);
             // 解密
@@ -278,10 +276,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
         if (!TextUtils.isEmpty(newPath)
                 && !FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)
-                && !FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPath)
                 && !FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPath)
                 && !FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)
-                && !FileOperationUtil.HIDE_PIC_SUCESS.equals(newPath)
                 && !FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(newPath)) {
             LeoLog.d("testHidePic", "encrypt, hide result: " + newPath);
             // 加密
@@ -1016,24 +1012,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             vidScore = newVidNum * SPA_VID;
         }
         return vidScore;
-    }
-
-    @Override
-    public int deletePicFromDatebase(String picUri) {
-        if (TextUtils.isEmpty(picUri)) {
-            LeoLog.e("deletePicFromDatebase", "path----NULL");
-            return -1;
-        }
-        LeoLog.e("deletePicFromDatebase", "path----:" + picUri);
-        String params[] = new String[]{
-                picUri
-        };
-        Uri uri = MediaStore.Files.getContentUri("external");
-        int result = mContext.getContentResolver().delete(uri,
-                MediaStore.MediaColumns.DATA + " LIKE ?", params);
-
-        LeoLog.e("deletePicFromDatebase", "result----:" + result);
-        return result;
     }
 
     @Override

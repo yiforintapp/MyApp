@@ -35,6 +35,7 @@ import android.provider.MediaStore.MediaColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.imagehide.PhotoAibum;
@@ -269,7 +270,6 @@ public class FileOperationUtil {
      */
     public static synchronized String hideImageFile(Context ctx,
                                                     String filePath, String newName, long fileSize) {
-        String[] result = new String[2];
         String str = FileOperationUtil.getDirPathFromFilepath(filePath);
         String fileName = FileOperationUtil.getNameFromFilepath(filePath);
 
@@ -924,16 +924,25 @@ public class FileOperationUtil {
             }
         }
         try {
-            File copyFile = new File(newPath);
-            InputStream fosfrom = new FileInputStream(fromFile);
-            OutputStream fosto = new FileOutputStream(newPath, true);
-            byte bt[] = new byte[1024 * 8];
-            int c;
-            while ((c = fosfrom.read(bt)) > 0) {
-                fosto.write(bt, 0, c);
+            InputStream fosfrom = null;
+            OutputStream fosto = null;
+            try {
+                File copyFile = new File(newPath);
+                fosfrom = new FileInputStream(fromFile);
+                fosto = new FileOutputStream(newPath, true);
+                byte bt[] = new byte[1024 * 8];
+                int c;
+                while ((c = fosfrom.read(bt)) > 0) {
+                    fosto.write(bt, 0, c);
+                }
+            } finally {
+                if (fosfrom != null) {
+                    fosfrom.close();
+                }
+                if (fosto != null) {
+                    fosto.close();
+                }
             }
-            fosfrom.close();
-            fosto.close();
             FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
                 File imageFile = new File(newPath);
@@ -943,8 +952,7 @@ public class FileOperationUtil {
                 FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
 
                 //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
-                PrivacyDataManagerImpl pmi = (PrivacyDataManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                int result = pmi.deletePicFromDatebase(fromFile);
+                int result = deletePicFromDatebase(fromFile);
                 File fileDe = new File(fromFile);
                 String resultVa = null;
                 if (fileDe.exists() && result < 1) {
@@ -1025,17 +1033,24 @@ public class FileOperationUtil {
             }
         }
         try {
-//            LeoLog.d("testRename", "fromFile:" + fromFile);
-//            LeoLog.d("testRename", "newPath:" + newPath);
-            InputStream fosfrom = new FileInputStream(fromFile);
-            OutputStream fosto = new FileOutputStream(newPath);
-            byte bt[] = new byte[1024 * 8];
-            int c;
-            while ((c = fosfrom.read(bt)) > 0) {
-                fosto.write(bt, 0, c);
+            InputStream fosfrom = null;
+            OutputStream fosto = null;
+            try {
+                fosfrom = new FileInputStream(fromFile);
+                fosto = new FileOutputStream(newPath);
+                byte bt[] = new byte[1024 * 8];
+                int c;
+                while ((c = fosfrom.read(bt)) > 0) {
+                    fosto.write(bt, 0, c);
+                }
+            } finally {
+                if (fosfrom != null) {
+                    fosfrom.close();
+                }
+                if (fosto != null) {
+                    fosto.close();
+                }
             }
-            fosfrom.close();
-            fosto.close();
 //            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
                 String rename = newPath.replace(Constants.CRYPTO_SUFFIX, "");
@@ -1046,8 +1061,7 @@ public class FileOperationUtil {
                 FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
 
                 //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
-                PrivacyDataManagerImpl pmi = (PrivacyDataManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                int result = pmi.deletePicFromDatebase(fromFile);
+                int result = deletePicFromDatebase(fromFile);
                 File fileDe = new File(fromFile);
                 String resultVa = null;
                 if (fileDe.exists() && result < 1) {
@@ -1129,4 +1143,21 @@ public class FileOperationUtil {
         return bitmap.getRowBytes() * bitmap.getHeight();
     }
 
+    //删除图片，来自图片媒体数据库
+    public static int deletePicFromDatebase(String picUri) {
+        if (TextUtils.isEmpty(picUri)) {
+            LeoLog.e("deletePicFromDatebase", "path----NULL");
+            return -1;
+        }
+        LeoLog.e("deletePicFromDatebase", "path----:" + picUri);
+        String params[] = new String[]{
+                picUri
+        };
+        Uri uri = MediaStore.Files.getContentUri("external");
+        int result = AppMasterApplication.getInstance().getContentResolver().delete(uri,
+                MediaStore.MediaColumns.DATA + " LIKE ?", params);
+
+        LeoLog.e("deletePicFromDatebase", "result----:" + result);
+        return result;
+    }
 }
