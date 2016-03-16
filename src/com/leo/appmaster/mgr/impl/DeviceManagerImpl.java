@@ -115,6 +115,7 @@ public class DeviceManagerImpl extends DeviceManager {
     public void wifiChangeReceiver(Intent intent) {
         LeoLog.d(TAG, "wifi onReceive");
         String action = intent.getAction();
+        LeoLog.d(TAG, "wifi action : " + action);
         if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {// 这个监听wifi的打开与关闭，与wifi的连接无关
             int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
             switch (wifiState) {
