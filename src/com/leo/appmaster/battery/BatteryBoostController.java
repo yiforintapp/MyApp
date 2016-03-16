@@ -44,9 +44,9 @@ import java.util.List;
 public class BatteryBoostController extends RelativeLayout {
     private static final String TAG = "BatteryBoostController";
 
-    private static final int BOOST_SIZE = 3;
+    private static final int BOOST_SIZE = 6;
     private static final int BOOST_ITEM_DURATION = 300;
-    private static final int MIN_BOOST_NUM = 3;
+    private static final int MIN_BOOST_NUM = 6;
     private ImageView mShieldIv;
     private CircleArroundView mShieldCircle;
     private BatteryBoostAnimView mBoostAnimView;
