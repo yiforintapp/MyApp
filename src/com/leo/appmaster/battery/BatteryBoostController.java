@@ -196,9 +196,8 @@ public class BatteryBoostController extends RelativeLayout {
 
     private void startBoostAnim(List<AppItemInfo> list) {
 
-        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(mAnimCenterImg, "rotation", 0f, 360f);
-        rotateAnim.setRepeatCount(10);
-        rotateAnim.setDuration(208);
+        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(mAnimCenterImg, "rotation", 0f, 3600f);
+        rotateAnim.setDuration(2080);
         rotateAnim.setInterpolator(new AccelerateInterpolator());
 
         ObjectAnimator scaleXAnim = ObjectAnimator.ofFloat(mAnimCenterImg, "scaleX", 1f, 0f);
@@ -475,17 +474,15 @@ public class BatteryBoostController extends RelativeLayout {
     }
 
     private void startBoostDismissAnim() {
-        ObjectAnimator shieldAlpha = ObjectAnimator.ofFloat(mShieldRootView, "alpha", 0f, 255f);
+        ObjectAnimator shieldAlpha = ObjectAnimator.ofFloat(mShieldRootView, "alpha", 0f, 1f);
         ObjectAnimator shieldScaleX = ObjectAnimator.ofFloat(mShieldRootView, "scaleX", 0.8f, 1f);
         ObjectAnimator shieldScaleY = ObjectAnimator.ofFloat(mShieldRootView, "scaleY", 0.8f, 1f);
 
-        ObjectAnimator boostAlpha = ObjectAnimator.ofFloat(mBoostAnimView, "alpha", 255f, 0f);
-        ObjectAnimator boostScaleX = ObjectAnimator.ofFloat(mBoostAnimView, "scaleX", 1f, 0.8f);
-        ObjectAnimator boostScaleY = ObjectAnimator.ofFloat(mBoostAnimView, "scaleY", 1f, 0.8f);
+        ObjectAnimator boostAlpha = ObjectAnimator.ofFloat(mBoostAnimView, "alpha", 1f, 0f);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(shieldAlpha, shieldScaleX, shieldScaleY, boostAlpha, boostScaleX, boostScaleY);
-        animatorSet.setDuration(400);
+        animatorSet.setDuration(780);
+        animatorSet.playTogether(shieldAlpha, shieldScaleX, shieldScaleY, boostAlpha);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

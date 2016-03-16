@@ -53,16 +53,16 @@ public class BatteryBoostAnimView extends View {
             mBgDrawable.draw(canvas);
         }
         canvas.save();
-        canvas.rotate(mRotateAngel, getWidth() / 2, getHeight() / 2);
+//        canvas.rotate(mRotateAngel, getWidth() / 2, getHeight() / 2);
         if(mCircleDrawable != null) {
             mCircleDrawable.draw(canvas);
         }
         canvas.restore();
 
-        mRotateAngel += ROTATE_INTERVAL;
-        if (mRotateAngel > 360) {
-            mRotateAngel = 0;
-        }
+//        mRotateAngel += ROTATE_INTERVAL;
+//        if (mRotateAngel > 360) {
+//            mRotateAngel = 0;
+//        }
 
         invalidate();
     }
