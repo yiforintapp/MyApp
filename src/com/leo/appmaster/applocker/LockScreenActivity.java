@@ -384,10 +384,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 FileOutputStream fos = new FileOutputStream(photoSavePath);
                                 fos.write(finalBytes);
                                 fos.close();
+                                LeoLog.i("poha", "saved!!!");
                                 // 隐藏图片
                                 finalPicPath = mPDManager.onHidePic(photoSavePath.getPath(), null);
+                                LeoLog.i("poha", "hiden!!!");
                                 FileOperationUtil.saveFileMediaEntry(finalPicPath, ama);
                                 FileOperationUtil.deleteImageMediaEntry(photoSavePath.getPath(), ama);
+                                LeoLog.i("poha", "finally!!!");
                                 mIsPicSaved = true;
                                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
                                 pdm.notifySecurityChange();

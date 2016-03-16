@@ -61,7 +61,7 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
     public void setSystIntruderProtectionSwitch(boolean isOpen) {
         boolean current = getSystIntruderProtecionSwitch();
         if(current!=isOpen){
-            pt.putBoolean(PrefConst.KEY_SWITCH_FOR_INTRUDER_PROTECTION, isOpen);
+            pt.putBoolean(PrefConst.KEY_SWITCH_FOR_SYST_INTRUDER_PROTECTION, isOpen);
 //            if(isOpen){
 //                SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,
 //                        "intruder", "intruder_enable");

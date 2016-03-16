@@ -106,8 +106,6 @@ public class IntruderprotectionActivity extends BaseActivity {
             SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                     "assistant", "intruder_cnts");
         }
-//        Intent i = new Intent(this,LockScreenActivity.class);
-//        startActivity(i);
 
         mImanager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         mPDManager = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
@@ -115,12 +113,6 @@ public class IntruderprotectionActivity extends BaseActivity {
         init();
         SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_enter");
-//        long totalMemory2 = PropertyInfoUtil.getTotalMemory2(this);
-//        long availMemory = PropertyInfoUtil.getAvailMemory(this);
-//        Toast.makeText(this, "availMemory = "+availMemory+"       totalMemory = "+totalMemory2, 1).show()
-//        CallFIlterUIHelper.getInstance().showReceiveCallNotification("13510261550");
-//        Intent i = new Intent(this, BatteryMainActivity.class);
-//        startActivity(i);
     }
 
     /**
