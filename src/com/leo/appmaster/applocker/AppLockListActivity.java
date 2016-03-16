@@ -123,7 +123,7 @@ public class AppLockListActivity extends BaseActivity implements
         mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
-            mLockAdapter.setData(mResaultList);
+            mLockAdapter.setData(mResaultList, true);
         }
 
         mProgressBar.setVisibility(View.GONE);

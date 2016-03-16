@@ -177,10 +177,12 @@ public class ListAppLockAdapter extends BaseAdapter {
 
     List<AppInfo> switchList;
 
-    public void setData(ArrayList<AppInfo> resault) {
+    public void setData(ArrayList<AppInfo> resault, boolean showSwitch) {
         mList.clear();
-        switchList = getSwitchList(true);
-        mList.addAll(switchList);
+        if (showSwitch) {
+            switchList = getSwitchList(true);
+            mList.addAll(switchList);
+        }
         mList.addAll(resault);
         notifyDataSetChanged();
     }

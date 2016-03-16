@@ -183,7 +183,7 @@ public class LockModeEditActivity extends BaseActivity implements
         LockMode mode = new LockMode();
         mode.modeName = mModeName;
         mListAdapter.setMode(mode, mNewMode);
-        mListAdapter.setData(resault);
+        mListAdapter.setData(resault, true);
         switchList = mListAdapter.getSwitchList(false);
     }
 
