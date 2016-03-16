@@ -8,11 +8,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -33,12 +36,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.callfilter.CallFIlterUIHelper;
 import com.leo.appmaster.callfilter.CallFilterToast;
@@ -69,7 +76,8 @@ public class IntruderprotectionActivity extends BaseActivity {
     private ArrayList<IntruderPhotoInfo> mInfosSorted;
     private IntrudeSecurityManager mImanager;
     private List<Integer> mCurrentDayFirstPhotoIndex;
-    private LEOAlarmDialog mOpenForbinDialog;
+//    private LEOAlarmDialog mOpenForbinDialog;
+    private LEOAlarmDialog mAskOpenDeviceAdminDialog;
     private LEOAlarmDialog mCleanConfirmDialog;
     private boolean mHasAddHeader = false;
     private View mHeader;
@@ -90,6 +98,13 @@ public class IntruderprotectionActivity extends BaseActivity {
     private final int TIMES_2 = 2;
     private final int TIMES_3 = 3;
     private final int TIMES_4 = 5;
+    private RippleView mRvOpenSystLockProt;
+    private RelativeLayout mRlTipContent;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +129,9 @@ public class IntruderprotectionActivity extends BaseActivity {
 //        CallFIlterUIHelper.getInstance().showReceiveCallNotification("13510261550");
 //        Intent i = new Intent(this, BatteryMainActivity.class);
 //        startActivity(i);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
@@ -147,11 +165,11 @@ public class IntruderprotectionActivity extends BaseActivity {
         mctb = (CommonToolbar) findViewById(R.id.ctb_at_intruder);
         mctb.setOptionImageResource(R.drawable.clean_intruder);
         mctb.setSecOptionMenuVisible(true);
-        mctb.setSecOptionImageResource(R.drawable.ic_launcher);
+        mctb.setSecOptionImageResource(R.drawable.setup_icon);
         mctb.setSecOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IntruderprotectionActivity.this,IntruderSettingActivity.class);
+                Intent intent = new Intent(IntruderprotectionActivity.this, IntruderSettingActivity.class);
                 startActivity(intent);
             }
         });
@@ -167,6 +185,8 @@ public class IntruderprotectionActivity extends BaseActivity {
             LeoLog.i("poha", "headerView  add");
             mHasAddHeader = true;
             mLvPhotos.addHeaderView(mHeader);
+            mRvOpenSystLockProt = (RippleView) mHeader.findViewById(R.id.rv_open);
+            mRlTipContent = (RelativeLayout) mHeader.findViewById(R.id.rl_intrudercatch_tip);
         }
         // 初始化imageloader
         mImageLoader = ImageLoader.getInstance();
@@ -234,16 +254,56 @@ public class IntruderprotectionActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Intruderprotection Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.leo.appmaster.intruderprotection/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Intruderprotection Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.leo.appmaster.intruderprotection/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
     /**
      * 更新抓拍到入侵者XX次的显示
      */
-    private void updateTimesToCatch() {
-        mTvTimes = (TextView) mHeader.findViewById(R.id.tv_fail_times_to_catch);
-        String failtimesTipsS = getResources().getString(
-                R.string.intruder_to_catch_fail_times_tip);
-        String failtimesTipsD = String.format(failtimesTipsS, mImanager.getTimesForTakePhoto());
-        mTvTimes.setText(Html.fromHtml(failtimesTipsD));
-    }
+//    private void updateTimesToCatch() {
+//        mTvTimes = (TextView) mHeader.findViewById(R.id.tv_fail_times_to_catch);
+//        String failtimesTipsS = getResources().getString(
+//                R.string.intruder_to_catch_fail_times_tip);
+//        String failtimesTipsD = String.format(failtimesTipsS, mImanager.getTimesForTakePhoto());
+//        mTvTimes.setText(Html.fromHtml(failtimesTipsD));
+//    }
 
     /**
      * @author chenfs 带时间戳的listView子项布局的holder类
@@ -443,7 +503,7 @@ public class IntruderprotectionActivity extends BaseActivity {
 
     /**
      * 将数据库记录的timestamp字段内容转为“年/月/日”这样的形式的字符串
-     * 
+     *
      * @param timestamp
      * @return
      */
@@ -479,15 +539,15 @@ public class IntruderprotectionActivity extends BaseActivity {
         mctb.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
                 SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_clear");
-                
-                if(mInfosSorted !=null && mInfosSorted.size() == 0) {
+
+                if (mInfosSorted != null && mInfosSorted.size() == 0) {
                     Toast.makeText(IntruderprotectionActivity.this, R.string.intruder_nobody_tips, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                
+
                 if (mCleanConfirmDialog == null) {
                     mCleanConfirmDialog = new LEOAlarmDialog(IntruderprotectionActivity.this);
                 }
@@ -608,25 +668,33 @@ public class IntruderprotectionActivity extends BaseActivity {
      * 每次进入界面需要重新刷新的操作(与数据库无关)
      */
     private void updateAll() {
+
+        updateTipStatus();
+//        RippleView open = (RippleView) mHeader.findViewById(R.id.rv_open);
+//        open.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mRvOpenSystLockProt
+//            }
+//        });
         // 头布局——防护开关
 //        updateSwtch();
-        // 拍照所需的解锁失败次数的文本提示
-        updateTimesToCatch();
+//        // 拍照所需的解锁失败次数的文本提示
+//        updateTimesToCatch();
         // 更改拍照所需的解锁失败次数
-        RippleView btChangeTimes = (RippleView) mHeader.findViewById(R.id.rv_change_times);
-        if (!mImanager.getIsIntruderSecurityAvailable()) {
-            btChangeTimes.setEnabled(false);
-            return;
-        } else {
-            btChangeTimes.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
-                            "intruder", "intruder_modify");
-                    showChangeTimesDialog();
-                }
-            });
-        }
+//        if (!mImanager.getIsIntruderSecurityAvailable()) {
+//            btChangeTimes.setEnabled(false);
+//            return;
+//        } else {
+//            btChangeTimes.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+//                            "intruder", "intruder_modify");
+////                    showChangeTimesDialog();
+//                }
+//            });
+//        }
         // btChangeTimes.setOnRippleCompleteListener(new
         // OnRippleCompleteListener() {
         // @Override
@@ -638,78 +706,127 @@ public class IntruderprotectionActivity extends BaseActivity {
         // });
     }
 
-    // 显示改变失败XX次拍照的对话框
-    private void showChangeTimesDialog() {
-        if (mDialog == null) {
-            mDialog = new LEOChoiceDialog(IntruderprotectionActivity.this);
-        }
-        mDialog.setTitle(getResources().getString(R.string.ask_for_times_for_catch));
-        String times = getResources().getString(R.string.times_choose);
-        List<String> timesArray = new ArrayList<String>();
-        for (int i = 0; i < mTimes.length; i++) {
-            timesArray.add(String.format(times, mTimes[i]));
-        }
-
-        int currentTimes = mImanager.getTimesForTakePhoto();
-        int currentIndex = -1;
-        switch (currentTimes) {
-            case TIMES_1:
-                currentIndex = 0;
-                break;
-            case TIMES_2:
-                currentIndex = 1;
-                break;
-            case TIMES_3:
-                currentIndex = 2;
-                break;
-            case TIMES_4:
-                currentIndex = 3;
-                break;
-            default:
-                break;
-        }
-        mDialog.setItemsWithDefaultStyle(timesArray, currentIndex);
-        mDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        mImanager.setTimesForTakePhoto(TIMES_1);
-                        SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
-                                "intruder", "intruder_times_" + TIMES_1);
-                        updateTimesToCatch();
-                        break;
-                    case 1:
-                        mImanager.setTimesForTakePhoto(TIMES_2);
-                        SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
-                                "intruder", "intruder_times_" + TIMES_2);
-                        updateTimesToCatch();
-                        break;
-                    case 2:
-                        mImanager.setTimesForTakePhoto(TIMES_3);
-                        SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
-                                "intruder", "intruder_times_" + TIMES_3);
-                        updateTimesToCatch();
-                        break;
-                    case 3:
-                        mImanager.setTimesForTakePhoto(TIMES_4);
-                        SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
-                                "intruder", "intruder_times_" + TIMES_4);
-                        updateTimesToCatch();
-                        break;
-                    default:
-                        break;
+    private void updateTipStatus() {
+        if (!mImanager.getSystIntruderProtecionSwitch()) {
+            mRvOpenSystLockProt.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (DeviceReceiver.isActive(IntruderprotectionActivity.this)) {
+                        changeToGuideFinishedLayout();
+                    } else {
+                        showAskOpenDeviceAdminDialog();
+                    }
                 }
-                mDialog.dismiss();
+            });
+        } else {
+            mRlTipContent.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void showAskOpenDeviceAdminDialog() {
+        if (mAskOpenDeviceAdminDialog == null) {
+            mAskOpenDeviceAdminDialog = new LEOAlarmDialog(IntruderprotectionActivity.this);
+        }
+        if (mAskOpenDeviceAdminDialog.isShowing()) {
+            return;
+        }
+        mAskOpenDeviceAdminDialog.setTitle(R.string.intruder_setting_title_1);
+        mAskOpenDeviceAdminDialog.setContent(getString(R.string.intruder_device_admin_guide_content));
+        mAskOpenDeviceAdminDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                requestDeviceAdmin();
+                mAskOpenDeviceAdminDialog.dismiss();
             }
         });
-        mDialog.show();
+        mAskOpenDeviceAdminDialog.show();
     }
+
+    private void requestDeviceAdmin() {
+        ComponentName mAdminName = new ComponentName(IntruderprotectionActivity.this, DeviceReceiver.class);
+        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
+        startActivity(intent);
+        mAskOpenDeviceAdminDialog.dismiss();
+    }
+
+    private void changeToGuideFinishedLayout() {
+        Toast.makeText(IntruderprotectionActivity.this,"change to guide finished tip",Toast.LENGTH_SHORT).show();
+    }
+
+    // 显示改变失败XX次拍照的对话框
+//    private void showChangeTimesDialog() {
+//        if (mDialog == null) {
+//            mDialog = new LEOChoiceDialog(IntruderprotectionActivity.this);
+//        }
+//        mDialog.setTitle(getResources().getString(R.string.ask_for_times_for_catch));
+//        String times = getResources().getString(R.string.times_choose);
+//        List<String> timesArray = new ArrayList<String>();
+//        for (int i = 0; i < mTimes.length; i++) {
+//            timesArray.add(String.format(times, mTimes[i]));
+//        }
+//
+//        int currentTimes = mImanager.getTimesForTakePhoto();
+//        int currentIndex = -1;
+//        switch (currentTimes) {
+//            case TIMES_1:
+//                currentIndex = 0;
+//                break;
+//            case TIMES_2:
+//                currentIndex = 1;
+//                break;
+//            case TIMES_3:
+//                currentIndex = 2;
+//                break;
+//            case TIMES_4:
+//                currentIndex = 3;
+//                break;
+//            default:
+//                break;
+//        }
+//        mDialog.setItemsWithDefaultStyle(timesArray, currentIndex);
+//        mDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                switch (position) {
+//                    case 0:
+//                        mImanager.setTimesForTakePhoto(TIMES_1);
+//                        SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+//                                "intruder", "intruder_times_" + TIMES_1);
+//                        updateTimesToCatch();
+//                        break;
+//                    case 1:
+//                        mImanager.setTimesForTakePhoto(TIMES_2);
+//                        SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+//                                "intruder", "intruder_times_" + TIMES_2);
+//                        updateTimesToCatch();
+//                        break;
+//                    case 2:
+//                        mImanager.setTimesForTakePhoto(TIMES_3);
+//                        SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+//                                "intruder", "intruder_times_" + TIMES_3);
+//                        updateTimesToCatch();
+//                        break;
+//                    case 3:
+//                        mImanager.setTimesForTakePhoto(TIMES_4);
+//                        SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+//                                "intruder", "intruder_times_" + TIMES_4);
+//                        updateTimesToCatch();
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                mDialog.dismiss();
+//            }
+//        });
+//        mDialog.show();
+//    }
 
     /**
      * 将时间轴转化为XX：XXAM/PM的形式
-     * 
+     *
      * @param timeStamp
      * @return
      */
@@ -847,26 +964,26 @@ public class IntruderprotectionActivity extends BaseActivity {
 //        });
 //    }
 
-    protected void showForbitDialog() {
-        if (mOpenForbinDialog == null) {
-            mOpenForbinDialog = new LEOAlarmDialog(this);
-        }
-        mOpenForbinDialog.setContent(getResources().getString(
-                R.string.intruderprotection_forbit_content));
-        mOpenForbinDialog.setRightBtnStr(getResources().getString(
-                R.string.secur_help_feedback_tip_button));
-        mOpenForbinDialog.setLeftBtnStr(getResources().getString(
-                R.string.no_image_hide_dialog_button));
-        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(IntruderprotectionActivity.this, FeedbackActivity.class);
-                intent.putExtra("isFromIntruderProtectionForbiden", true);
-                startActivity(intent);
-                mOpenForbinDialog.dismiss();
-            }
-        });
-        mOpenForbinDialog.show();
-    }
+//    protected void showForbitDialog() {
+//        if (mOpenForbinDialog == null) {
+//            mOpenForbinDialog = new LEOAlarmDialog(this);
+//        }
+//        mOpenForbinDialog.setContent(getResources().getString(
+//                R.string.intruderprotection_forbit_content));
+//        mOpenForbinDialog.setRightBtnStr(getResources().getString(
+//                R.string.secur_help_feedback_tip_button));
+//        mOpenForbinDialog.setLeftBtnStr(getResources().getString(
+//                R.string.no_image_hide_dialog_button));
+//        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Intent intent = new Intent(IntruderprotectionActivity.this, FeedbackActivity.class);
+//                intent.putExtra("isFromIntruderProtectionForbiden", true);
+//                startActivity(intent);
+//                mOpenForbinDialog.dismiss();
+//            }
+//        });
+//        mOpenForbinDialog.show();
+//    }
 }

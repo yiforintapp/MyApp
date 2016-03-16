@@ -75,12 +75,7 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
 
     @Override
     public boolean getSystIntruderProtecionSwitch() {
-        boolean isIntruderSecurityAvailable = getIsIntruderSecurityAvailable();
-        if(isIntruderSecurityAvailable) {
-            return pt.getBoolean(PrefConst.KEY_SWITCH_FOR_SYST_INTRUDER_PROTECTION, true);
-        } else {
-            return pt.getBoolean(PrefConst.KEY_SWITCH_FOR_SYST_INTRUDER_PROTECTION, false);
-        }
+        return pt.getBoolean(PrefConst.KEY_SWITCH_FOR_SYST_INTRUDER_PROTECTION, false);
     }
 
     @Override

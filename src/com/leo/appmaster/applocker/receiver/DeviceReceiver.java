@@ -175,9 +175,9 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 		return ((DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE)).isAdminActive(getComponentName(context));
 	}
 
-	public static boolean isActivePasswordSufficient(Context context) {
-		return ((DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE)).isActivePasswordSufficient();
-	}
+//	public static boolean isActivePasswordSufficient(Context context) {
+//		return ((DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE)).isActivePasswordSufficient();
+//	}
 
 	private File getPhotoSavePath() {
 		File picDir = new File(Environment.getExternalStorageDirectory()
