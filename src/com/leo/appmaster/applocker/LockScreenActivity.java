@@ -1063,18 +1063,26 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             mTtileBar.getTitleContainer().removeView(mLockAppTitleView);
             mLockAppTitleView = null;
-            mTtileBar.getTitleView().setAlpha(1);
+            TextView tv = mTtileBar.getTitleView();
+            if(tv != null) {
+                tv.setAlpha(1);
+            }
         }
     }
 
     private void setLockAppInfoViewVisible(boolean visible) {
         if (mLockAppTitleView != null) {
+            TextView tv = mTtileBar.getTitleView();
             if (visible) {
-                mTtileBar.getTitleView().setAlpha(0);
                 mLockAppTitleView.setAlpha(1);
+                if(tv != null) {
+                    tv.setAlpha(0);
+                }
             } else {
-                mTtileBar.getTitleView().setAlpha(1);
                 mLockAppTitleView.setAlpha(0);
+                if(tv != null) {
+                    tv.setAlpha(1);
+                }
             }
         }
     }
@@ -1619,10 +1627,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         //隐藏图标和密码提示
         int type = AppMasterPreference.getInstance(this).getLockType();
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
-            ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
-            ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(0.0f);
+            View icon = ((PasswdLockFragment) mLockFragment).getIconView();
+            if(icon != null) {
+                icon.setAlpha(0.0f);
+            }
+            View hint = ((PasswdLockFragment) mLockFragment).getPasswdHint();
+            if(hint != null) {
+                hint.setAlpha(0.0f);
+            }
         } else {
-            ((GestureLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+            View icon = ((GestureLockFragment) mLockFragment).getIconView();
+            if(icon != null) {
+                icon.setAlpha(0.0f);
+            }
         }
     }
 
@@ -2804,7 +2821,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         ((GestureLockFragment) mLockFragment).getIconView().setAlpha(alpha);
                     }
                     if (mLockAppTitleView != null) {
-                        mTtileBar.getTitleView().setAlpha(alpha);
+                        TextView tv = mTtileBar.getTitleView();
+                        if(tv != null) {
+                            tv.setAlpha(alpha);
+                        }
                         mLockAppTitleView.setAlpha(1 - alpha);
                     }
                 } else {
