@@ -29,6 +29,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -95,7 +96,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private Drawable[] mDigitalBgActiveDrawables = new Drawable[10];
 
     private IntrudeSecurityManager mISManager;
-    
+
     private boolean mCameraReleased = false;
 
     private static String TAG = "PasswdLockFragment";
@@ -117,16 +118,16 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     public void onResume() {
         super.onResume();
     }
-    
+
     public void removeCamera() {
-        try{
-            if(mCameraSurPreview != null) {
+        try {
+            if (mCameraSurPreview != null) {
                 mCameraSurPreview.release();
-                if(mFlPreview != null){
+                if (mFlPreview != null) {
                     mFlPreview.removeView(mCameraSurPreview);
                 }
-            }       
-        }catch(Exception e){
+            }
+        } catch (Exception e) {
         }
         mCameraSurPreview = null;
         mCameraReleased = true;
@@ -137,7 +138,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         return R.layout.fragment_lock_passwd;
     }
 
-    
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onInitUI() {
@@ -250,8 +251,12 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                             mActivity.getPackageManager(), mActivity.getPackageName()));
                 }
             } else if (mPackageName != null) {
-                mAppIcon.setImageDrawable(AppUtil.getAppIcon(
-                        mActivity.getPackageManager(), mPackageName));
+                //wifi && blueTooth lock
+                Drawable bd = getBd(mPackageName);
+                mAppIcon.setImageDrawable(bd);
+
+//                mAppIcon.setImageDrawable(AppUtil.getAppIcon(
+//                        mActivity.getPackageManager(), mPackageName));
             }
             if (needChangeTheme()) {
                 mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
@@ -283,7 +288,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         if (mAppIcon == null) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
         }
-        if(mAppIcon == null) {
+        if (mAppIcon == null) {
             return;
         }
         if (lsa != null && lsa.mQuickLockMode) {
@@ -305,8 +310,10 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             }
         } else {
             if (!TextUtils.isEmpty(mPackageName)) {
-                mAppIcon.setImageDrawable(AppUtil.getAppIcon(
-                        mActivity.getPackageManager(), mPackageName));
+                Drawable bd = getBd(mPackageName);
+                mAppIcon.setImageDrawable(bd);
+//                mAppIcon.setImageDrawable(AppUtil.getAppIcon(
+//                        mActivity.getPackageManager(), mPackageName));
             } else {
                 mAppIcon.setImageDrawable(AppUtil.getAppIcon(
                         mActivity.getPackageManager(), mActivity.getPackageName()));
@@ -635,14 +642,14 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 if (mNeedIntruderProtection) {
                     mIsIntruded = true;
                     if (mActivity instanceof LockScreenActivity) {
-                        if(mCameraSurPreview == null && !mCameraReleased) {
+                        if (mCameraSurPreview == null && !mCameraReleased) {
                             mCameraSurPreview = new CameraSurfacePreview(mActivity);
                             mFlPreview.addView(mCameraSurPreview);
                         }
-                        if(mCameraSurPreview != null) {
+                        if (mCameraSurPreview != null) {
                             ((LockScreenActivity) mActivity).mHasTakePic = true;
                             ((LockScreenActivity) mActivity).mIsPicSaved = false;
-                            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
+                            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false);
                             ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                                 @Override
                                 public void run() {
@@ -986,7 +993,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 bottomView = tv0Bottom;
                 return;
         }
-        
+
         if (state == BUTTON_STATE_PRESS) {
             bottomView.setImageResource(R.drawable.digital_bg_active);
         } else if (state == BUTTON_STATE_NORMAL) {
@@ -1028,17 +1035,20 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mPackageName = lockedPackage;
             mInputCount = 0;
             mPasswdTip.setText(R.string.passwd_hint);
-            mAppIcon.setImageDrawable(AppUtil.getAppIcon(
-                    mActivity.getPackageManager(), mPackageName));
+            Drawable bd = getBd(mPackageName);
+            mAppIcon.setImageDrawable(bd);
+//            mAppIcon.setImageDrawable(AppUtil.getAppIcon(
+//                    mActivity.getPackageManager(), mPackageName));
         }
 
         mAppIcon.setVisibility(View.VISIBLE);
 
     }
-    
+
     public View getIconView() {
         return mIconLayout;
     }
+
     public View getPasswdHint() {
         return mPasswdHint;
     }
@@ -1046,7 +1056,26 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     @Override
     public void onActivityStop() {
         removeCamera();
-       // Activity stopped, reset camera state
+        // Activity stopped, reset camera state
         mCameraReleased = false;
+    }
+
+    private Drawable getBd(String mPackageName) {
+        //wifi && blueTooth lock
+        Drawable bd;
+        if (mPackageName.equals(SwitchGroup.WIFI_SWITCH)) {
+            bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
+        } else if (mPackageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+            bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
+        } else {
+            bd = AppUtil.getAppIcon(
+                    mActivity.getPackageManager(), mPackageName);
+        }
+
+        if (bd == null) {
+            bd = AppUtil.getAppIcon(
+                    mActivity.getPackageManager(), mActivity.getPackageName());
+        }
+        return bd;
     }
 }

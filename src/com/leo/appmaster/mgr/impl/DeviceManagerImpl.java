@@ -23,6 +23,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
@@ -145,8 +146,18 @@ public class DeviceManagerImpl extends DeviceManager {
     }
 
     private void showLockScreen(final int showType) {
+
+        String pck;
+        if (showType == WIFI_TURN_ON) {
+            pck = SwitchGroup.WIFI_SWITCH;
+        } else if (showType == BLUETOOTH_TURN_ON) {
+            pck = SwitchGroup.BLUE_TOOTH_SWITCH;
+        } else {
+            pck = mContext.getPackageName();
+        }
+
         mLockManager.applyLock(
-                LockManager.LOCK_MODE_FULL, mContext.getPackageName(),
+                LockManager.LOCK_MODE_FULL, pck,
                 false,
                 new LockManager.OnUnlockedListener() {
                     @Override
