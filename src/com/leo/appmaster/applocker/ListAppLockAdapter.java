@@ -17,6 +17,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -161,11 +162,24 @@ public class ListAppLockAdapter extends BaseAdapter {
         }
     }
 
+
+    private Boolean mIsNewMode;
+    private LockMode mMode;
+
+    public void setMode(LockMode mode, boolean isNewMode) {
+        if (mode == null) {
+            mMode = mLockManager.getCurLockMode();
+        } else {
+            mMode = mode;
+        }
+        mIsNewMode = isNewMode;
+    }
+
     List<AppInfo> switchList;
 
     public void setData(ArrayList<AppInfo> resault) {
         mList.clear();
-        switchList = getSwitchList();
+        switchList = getSwitchList(true);
         mList.addAll(switchList);
         mList.addAll(resault);
         notifyDataSetChanged();
@@ -183,20 +197,27 @@ public class ListAppLockAdapter extends BaseAdapter {
         mFlag = fromDefaultRecommentActivity;
     }
 
-    public List<AppInfo> getSwitchList() {
+    public List<AppInfo> getSwitchList(boolean isNeedLabel) {
         List<AppInfo> switchList = new ArrayList<AppInfo>();
         WifiLockSwitch wifiSwitch = new WifiLockSwitch();
         BlueToothLockSwitch blueToothSwitch = new BlueToothLockSwitch();
 
-        AppInfo labelInfo = new AppInfo();
-        labelInfo.label = Constants.LABLE_LIST;
-        switchList.add(labelInfo);
+        if (isNeedLabel) {
+            AppInfo labelInfo = new AppInfo();
+            labelInfo.label = Constants.LABLE_LIST;
+            switchList.add(labelInfo);
+        }
 
         AppInfo wifiInfo = new AppInfo();
         wifiInfo.label = mContext.getString(R.string.app_lock_list_switch_wifi);
         wifiInfo.packageName = SwitchGroup.WIFI_SWITCH;
         wifiInfo.icon = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
-        wifiInfo.isLocked = wifiSwitch.isLockNow(mLockManager.getCurLockMode());
+        if (mIsNewMode) {
+            wifiInfo.isLocked = false;
+        } else {
+            wifiInfo.isLocked = wifiSwitch.isLockNow(mMode);
+
+        }
         wifiInfo.topPos = wifiSwitch.getLockNum();
         switchList.add(wifiInfo);
 
@@ -204,13 +225,21 @@ public class ListAppLockAdapter extends BaseAdapter {
         bluetoothInfo.label = mContext.getString(R.string.app_lock_list_switch_bluetooth);
         bluetoothInfo.packageName = SwitchGroup.BLUE_TOOTH_SWITCH;
         bluetoothInfo.icon = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
-        bluetoothInfo.isLocked = blueToothSwitch.isLockNow(mLockManager.getCurLockMode());
+        if (mIsNewMode) {
+            bluetoothInfo.isLocked = false;
+        } else {
+            bluetoothInfo.isLocked = blueToothSwitch.isLockNow(mMode);
+        }
+
         bluetoothInfo.topPos = blueToothSwitch.getLockNum();
         switchList.add(bluetoothInfo);
 
-        AppInfo labelInfo2 = new AppInfo();
-        labelInfo2.label = Constants.LABLE_LIST;
-        switchList.add(labelInfo2);
+        if (isNeedLabel) {
+            AppInfo labelInfo2 = new AppInfo();
+            labelInfo2.label = Constants.LABLE_LIST;
+            switchList.add(labelInfo2);
+        }
+
         return switchList;
     }
 }

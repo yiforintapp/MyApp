@@ -26,6 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
@@ -56,6 +59,7 @@ public class LockModeEditActivity extends BaseActivity implements
     private List<AppInfo> mUnlockList;
     private List<AppInfo> mUnlockRecommendList;
     private List<AppInfo> mUnlockNormalList;
+    private List<AppInfo> switchList;
 
     private LockMode mEditMode;
     private String mModeName;
@@ -74,14 +78,21 @@ public class LockModeEditActivity extends BaseActivity implements
     private View mIvBack, mIvDone;
     private TextView mTvName;
 
+    private WifiLockSwitch wifiSwitch;
+    private BlueToothLockSwitch blueToothSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_lock_mode_edit);
 
+        wifiSwitch = new WifiLockSwitch();
+        blueToothSwitch = new BlueToothLockSwitch();
+
         handleIntent();
         initUI();
         loadData();
+
     }
 
     private void initUI() {
@@ -168,7 +179,12 @@ public class LockModeEditActivity extends BaseActivity implements
         resault.addAll(mUnlockList);
 
         mListAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
+
+        LockMode mode = new LockMode();
+        mode.modeName = mModeName;
+        mListAdapter.setMode(mode, mNewMode);
         mListAdapter.setData(resault);
+        switchList = mListAdapter.getSwitchList(false);
     }
 
     private int fixPosEqules(AppInfo info) {
@@ -261,10 +277,11 @@ public class LockModeEditActivity extends BaseActivity implements
                 try {
                     saveMode();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 break;
             case R.id.iv_edit_mode_name:
-                
+
                 if (mEditMode != null && mEditMode.defaultFlag == 1) {
                     Toast.makeText(this, R.string.cont_edit_visitor_name, Toast.LENGTH_SHORT)
                             .show();
@@ -335,11 +352,20 @@ public class LockModeEditActivity extends BaseActivity implements
                 return;
             }
             ListLockItem lockImageView = (ListLockItem) view.findViewById(R.id.content_item_all);
-            if(lockImageView == null) {
+            if (lockImageView == null) {
                 return;
             }
+
+
             AppInfo mLastSelectApp = lockImageView.getInfo();
             if (mLastSelectApp == null) {
+                return;
+            }
+
+            //switch
+            if (mLastSelectApp.packageName.equals(SwitchGroup.WIFI_SWITCH) ||
+                    mLastSelectApp.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                switchClick(mLastSelectApp, lockImageView);
                 return;
             }
 
@@ -364,7 +390,7 @@ public class LockModeEditActivity extends BaseActivity implements
 
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock: "
                         + mLastSelectApp.packageName);
-            } else if (mLastSelectApp != null){
+            } else if (mLastSelectApp != null) {
                 mLastSelectApp.isLocked = true;
                 for (AppInfo baseInfo : mUnlockList) {
                     if (baseInfo.packageName != null && baseInfo.packageName.equals(mLastSelectApp.packageName)) {
@@ -387,6 +413,55 @@ public class LockModeEditActivity extends BaseActivity implements
             long end = System.currentTimeMillis();
             LeoLog.d("testItemClick", "time delay : " + (end - start));
         } catch (Exception e) {
+        }
+    }
+
+    private void switchClick(AppInfo appInfo, ListLockItem lockImageView) {
+        if (appInfo.isLocked) {
+            appInfo.isLocked = false;
+            if (lockImageView != null) {
+                lockImageView.setLockView(false);
+                lockImageView.setDescEx(appInfo, false);
+            }
+            String toast = this.getString(R.string.unlock_app_action, appInfo.label);
+            showTextToast(toast);
+
+            if (appInfo.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                for (AppInfo info : switchList) {
+                    if (info.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                        info.isLocked = false;
+                    }
+                }
+            } else {
+                for (AppInfo info : switchList) {
+                    if (info.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                        info.isLocked = false;
+                    }
+                }
+            }
+
+        } else {
+            appInfo.isLocked = true;
+            if (lockImageView != null) {
+                lockImageView.setLockView(true);
+                lockImageView.setDescEx(appInfo, true);
+            }
+            String toast = this.getString(R.string.lock_app_action, appInfo.label);
+            showTextToast(toast);
+
+            if (appInfo.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                for (AppInfo info : switchList) {
+                    if (info.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                        info.isLocked = true;
+                    }
+                }
+            } else {
+                for (AppInfo info : switchList) {
+                    if (info.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                        info.isLocked = true;
+                    }
+                }
+            }
         }
     }
 
@@ -415,7 +490,7 @@ public class LockModeEditActivity extends BaseActivity implements
         if (toast != null) {
             toast.cancel();
         }
-        if(mMakeSureChange != null) {
+        if (mMakeSureChange != null) {
             try {
                 mMakeSureChange.dismiss();
             } catch (Exception e) {
@@ -456,6 +531,7 @@ public class LockModeEditActivity extends BaseActivity implements
                         try {
                             saveMode();
                         } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         Toast.makeText(LockModeEditActivity.this, R.string.save_successful, Toast.LENGTH_SHORT)
                                 .show();
@@ -578,6 +654,9 @@ public class LockModeEditActivity extends BaseActivity implements
                                 return;
                             }
                             mSaveDialogClick = true;
+
+                            saveSwitchList();
+
                             mEditMode.modeName = mModeName;
                             List<String> changedList = Collections.synchronizedList(new LinkedList<String>());
                             for (AppInfo appInfo : mLockedList) {
@@ -620,6 +699,7 @@ public class LockModeEditActivity extends BaseActivity implements
             mModeNameDiglog.show();
             return;
         } else {
+            saveSwitchList();
             mEditMode.modeName = mModeName;
             List<String> changedList = Collections.synchronizedList(new LinkedList<String>());
             for (AppInfo appInfo : mLockedList) {
@@ -652,6 +732,29 @@ public class LockModeEditActivity extends BaseActivity implements
             }, 400);
         }
 
+    }
+
+    private void saveSwitchList() {
+        if (switchList != null) {
+            LockMode mode = new LockMode();
+            mode.modeName = mModeName;
+            //switch
+            for (AppInfo info : switchList) {
+                if (info.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                    if (info.isLocked) {
+                        wifiSwitch.switchOn(mode);
+                    } else {
+                        wifiSwitch.switchOff(mode);
+                    }
+                } else if (info.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                    if (info.isLocked) {
+                        blueToothSwitch.switchOn(mode);
+                    } else {
+                        blueToothSwitch.switchOff(mode);
+                    }
+                }
+            }
+        }
     }
 
     private void shakeView(View v) {

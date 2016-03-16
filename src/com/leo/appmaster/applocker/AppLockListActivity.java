@@ -122,6 +122,7 @@ public class AppLockListActivity extends BaseActivity implements
         //Flag is Recomment list
         mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
         if (mResaultList != null) {
+            mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList);
         }
 
