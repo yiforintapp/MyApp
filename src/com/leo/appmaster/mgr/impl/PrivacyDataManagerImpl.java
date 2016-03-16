@@ -239,13 +239,21 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public String cancelHidePic(String mPicPath) {
         long totalSize = new File(mPicPath).length();
         String newPath = FileOperationUtil.unhideImageFile(mContext, mPicPath, totalSize);
-
-        // 解密
-        try {
-            getImageCryptor().decrypt(newPath);
-            LeoLog.d(E_TAG, "decrypt, path: " + newPath);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!TextUtils.isEmpty(newPath)
+                && !FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_SUCESS.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(newPath)) {
+            LeoLog.d("testHidePic", "encrypt,cacel hide result: " + newPath);
+            // 解密
+            try {
+                getImageCryptor().decrypt(newPath);
+                LeoLog.d(E_TAG, "decrypt, path: " + newPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return newPath;
     }
@@ -267,18 +275,24 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
         String newFileName = FileOperationUtil.getNameFromFilepath(mPicPath);
         newFileName = newFileName + Constants.CRYPTO_SUFFIX;
-        String[] newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
-
-        // 加密
-        if (!TextUtils.isEmpty(newPath[0])) {
+        String newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
+        if (!TextUtils.isEmpty(newPath)
+                && !FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_SUCESS.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(newPath)) {
+            LeoLog.d("testHidePic", "encrypt, hide result: " + newPath);
+            // 加密
             try {
-                getImageCryptor().encrypt(newPath[0]);
+                getImageCryptor().encrypt(newPath);
                 LeoLog.d(E_TAG, "encrypt, path: " + newPath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return newPath[1];
+        return newPath;
     }
 
     @Override

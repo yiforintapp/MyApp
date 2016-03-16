@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
+import android.os.SystemClock;
 import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
@@ -266,8 +267,8 @@ public class FileOperationUtil {
      * @param newName
      * @return String[0]:返回加密后地址，String[1]:隐藏后返回值
      */
-    public static synchronized String[] hideImageFile(Context ctx,
-                                                      String filePath, String newName, long fileSize) {
+    public static synchronized String hideImageFile(Context ctx,
+                                                    String filePath, String newName, long fileSize) {
         String[] result = new String[2];
         String str = FileOperationUtil.getDirPathFromFilepath(filePath);
         String fileName = FileOperationUtil.getNameFromFilepath(filePath);
@@ -330,27 +331,17 @@ public class FileOperationUtil {
                 // return ret ? newPath : null;
                 if (!ret) {
                     boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0], 10);
-                    String[] returnValue = null;
+                    String returnValue = HIDE_PIC_NO_MEMERY;
 //
                     if (memeryFlag) {
                         returnValue = hideImageFileCopy(ctx, filePath, newName);
                         LeoLog.d("testHidePic", "hide type:copy");
                     }
 
-                    if (returnValue == null) {
-                        returnValue = new String[]{"", HIDE_PIC_NO_MEMERY};
-                    }
-                    if (TextUtils.isEmpty(returnValue[1])) {
-                        returnValue[1] = HIDE_PIC_NO_MEMERY;
-                    }
-                    result[0] = returnValue[0];
-                    result[1] = returnValue[1];
-                    return result;
+                    return returnValue;
                 } else {
                     LeoLog.d("testHidePic", "hide type:rename");
-                    result[0] = newPath;
-                    result[1] = newPath;
-                    return result;
+                    return newPath;
                 }
 
             } else {
@@ -465,7 +456,7 @@ public class FileOperationUtil {
                     + " to " + newPath);
             if (!ret) {
                 boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0], 10);
-                int returnValue = 4;
+                String returnValue = HIDE_PIC_NO_MEMERY;
                 if (memeryFlag) {
                     returnValue = unHideImageFileCopy(ctx, filePath);
                 }
@@ -877,8 +868,7 @@ public class FileOperationUtil {
      * @return
      */
     @SuppressWarnings("deprecation")
-    public static String[] hideImageFileCopy(Context ctx, String fromFile, String newName) {
-        String[] result = new String[2];
+    public static String hideImageFileCopy(Context ctx, String fromFile, String newName) {
         String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
         try {
             if (str.length() >= str.lastIndexOf("/") + 1) {
@@ -951,18 +941,24 @@ public class FileOperationUtil {
                 boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
-                result[0] = newPath;
-                result[1] = HIDE_PIC_COPY_SUCESS;
-                return result;
+
+                //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
+                PrivacyDataManagerImpl pmi = (PrivacyDataManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                int result = pmi.deletePicFromDatebase(fromFile);
+                File fileDe = new File(fromFile);
+                String resultVa = null;
+                if (fileDe.exists() && result < 1) {
+                    resultVa = HIDE_PIC_COPY_SUCESS;
+                } else {
+                    resultVa = rename;
+                }
+
+                return resultVa;
             } catch (Exception e) {
-                result[0] = newPath;
-                result[1] = HIDE_PIC_COPY_RENAME_FAIL;
-                return result;
+                return HIDE_PIC_COPY_RENAME_FAIL;
             }
         } catch (Exception ex) {
-            result[0] = newPath;
-            result[1] = HIDE_PIC_COPY_FAIL;
-            return result;
+            return HIDE_PIC_COPY_FAIL;
         }
     }
 
@@ -972,7 +968,7 @@ public class FileOperationUtil {
      * @param fromFile
      * @return
      */
-    public static int unHideImageFileCopy(Context ctx, String fromFile) {
+    public static String unHideImageFileCopy(Context ctx, String fromFile) {
         String fileName = FileOperationUtil.getNameFromFilepath(fromFile);
 
         File file = new File(fromFile);
@@ -1048,15 +1044,27 @@ public class FileOperationUtil {
 //                boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
+
+                //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
+                PrivacyDataManagerImpl pmi = (PrivacyDataManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                int result = pmi.deletePicFromDatebase(fromFile);
+                File fileDe = new File(fromFile);
+                String resultVa = null;
+                if (fileDe.exists() && result < 1) {
+                    resultVa = HIDE_PIC_COPY_SUCESS;
+                } else {
+                    resultVa = rename;
+                }
+
                 // 复制取消隐藏成功
-                return 0;
+                return resultVa;
             } catch (Exception e) {
                 // 取消隐藏失败
-                return -2;
+                return HIDE_PIC_COPY_RENAME_FAIL;
             }
         } catch (Exception ex) {
             // 复制失败
-            return -1;
+            return HIDE_PIC_COPY_FAIL;
         }
     }
 
