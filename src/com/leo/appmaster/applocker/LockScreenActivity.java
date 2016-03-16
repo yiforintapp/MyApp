@@ -77,6 +77,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.LEOAdManager;
+import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -196,7 +197,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private ViewPager mBannerContainer;
     private AdBannerAdapter mAdapterCycle;
     private LinkedHashMap<String, WrappedCampaign> mAdMap = new LinkedHashMap<String, WrappedCampaign>();
-    private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
     private static final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2};
@@ -1139,13 +1139,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             });
 
-            for (String key : mAdBitmapMap.keySet()) {
-                Bitmap image = mAdBitmapMap.get(key);
-				if (!image.isRecycled()) {
-					image.recycle();
-				}
+            if (mImageFetcher != null) {
+                mImageFetcher.destroy();
             }
-            mAdBitmapMap.clear();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1257,13 +1253,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAdUnitIdList.clear();
         mMobvistaListenerList.clear();
         mAdMap.clear();
-        for (String key : mAdBitmapMap.keySet()) {
-            Bitmap image = mAdBitmapMap.get(key);
-            if (!image.isRecycled()) {
-                image.recycle();
-            }
+
+        if (mImageFetcher != null) {
+            mImageFetcher.destroy();
         }
-        mAdBitmapMap.clear();
+
         otherAdSwitcher = false;
         if (mAdapterCycle != null) {
             mAdapterCycle.clearView();
@@ -1282,7 +1276,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     /**
      * 异步加载广告，等到图片loading结束后才显示处理
      */
+    private PreviewImageFetcher mImageFetcher;
     private void asyncLoadAd() {
+        if (mImageFetcher == null) {
+            mImageFetcher = new PreviewImageFetcher();
+        }
+
         for (int i = 0; i < mBannerAdids.length; i++) {
             final String unitId = mBannerAdids[i];
 
@@ -1305,33 +1304,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					if (campaign != null) {
                         mAdMap.put(unitId, campaign);
 
-						/* 开始load 广告大图 */
-                        LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for ["+ unitId +"] ready: " + campaign.getAppName());
-                        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                                .cacheInMemory(true)
-                                .cacheOnDisk(true)
-                                .bitmapConfig(Bitmap.Config.RGB_565)
-                                .build();
+                        /* 开始load 广告大图 */
+                        LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for [" + unitId + "] ready: " + campaign.getAppName());
+                        mImageFetcher.loadBitmap(campaign.getImageUrl(), new PreviewImageFetcher.ImageFetcherListener() {
+                            @Override
+                            public void onBitmapLoadStarted(String url) {
+                                LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]start to load preview for: " + url);
+                            }
 
-						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), options, new ImageLoadingListener() {
-							@Override
-							public void onLoadingStarted(String imageUri, View view) {
-								LeoLog.d("LockScreenActivity_AD_DEBUG", "["+unitId+"]start to load preview for: " + imageUri);
-							}
-
-							@Override
-							public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-								mAdMap.remove(unitId);
-								LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + imageUri);
-							}
-
-							@Override
-							public void onLoadingComplete(final String imageUri, View view, final Bitmap loadedImage) {
+                            @Override
+                            public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
                                 ThreadManager.executeOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         {
-                                            LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]onLoadingComplete for: " + imageUri);
+                                            LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]onLoadingComplete for: " + url);
                                             // AM-4043 加空指针保护
                                             if (loadedImage == null) {
                                                 return;
@@ -1352,11 +1339,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                             } else {
                                                 mAdUnitIdList.add(unitId);
                                             }
-
-                                            if (mAdBitmapMap == null) {
-                                                mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
-                                            }
-                                            mAdBitmapMap.put(unitId, loadedImage);
 
 								/*校验此广告是否用第一个id来申请的*/
                                             if (unitId.equals(mBannerAdids[0])) {
@@ -1417,12 +1399,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 });
                             }
 
-							@Override
-							public void onLoadingCancelled(String imageUri, View view) {
-								mAdMap.remove(unitId);
-							}
-						});
+                            @Override
+                            public void onBitmapLoadFailed(String url) {
+                                LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + url);
+                            }
 
+                            @Override
+                            public void onBitmapLoadCancelled(String url) {
+                                LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "] onBitmapLoadCancelled for: " + url);
+                            }
+                        });
 
 					}
 				}
@@ -2729,7 +2715,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 return false;
             }
 
-            Bitmap bitmap = mAdBitmapMap.get(unitId);
+            Bitmap bitmap = mImageFetcher.getBitmap(campaign.getImageUrl());
             if (bitmap == null || bitmap.isRecycled()) {
                 return false;
             }
