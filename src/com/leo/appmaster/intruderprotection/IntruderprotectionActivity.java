@@ -63,6 +63,7 @@ import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.PauseOnScrollListener;
 
 public class IntruderprotectionActivity extends BaseActivity {
@@ -316,7 +317,8 @@ public class IntruderprotectionActivity extends BaseActivity {
         // 显示照片
         String filePath = mInfosSorted.get(position).getFilePath();
         final ImageView pic2 = holder2.ivIntruderPic;
-        mImageLoader.displayImage("file:///" + filePath, pic2, mImageOptions);
+        String uri = ImageDownloader.Scheme.CRYPTO.wrap(filePath);
+        mImageLoader.displayImage(uri, pic2, mImageOptions);
         pic2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
