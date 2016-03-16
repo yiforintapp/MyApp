@@ -517,4 +517,6 @@ public class Constants {
 
     public static final String CRYPTO_SUFFIX = ".leotmi";
     public static final String CRYPTO_SUFFIX_OLD = ".leotmp";
+
+    public static final String LABLE_LIST = "lable_list";
 }

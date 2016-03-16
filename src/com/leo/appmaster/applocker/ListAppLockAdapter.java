@@ -9,9 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 
@@ -23,11 +31,13 @@ public class ListAppLockAdapter extends BaseAdapter {
     private String mFlag;
     private Context mContext;
     private LayoutInflater layoutInflater;
+    private LockManager mLockManager;
 
     public ListAppLockAdapter(Context mContext) {
         this.mContext = mContext;
         mList = new ArrayList<AppInfo>();
         layoutInflater = LayoutInflater.from(mContext);
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
     }
 
     @Override
@@ -47,35 +57,43 @@ public class ListAppLockAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        MaterialRippleLayout headView = (MaterialRippleLayout) view;
-        if (headView == null) {
-            headView = (MaterialRippleLayout) layoutInflater.inflate(R.layout.item_lock_app, null);
-        } else {
-            headView = (MaterialRippleLayout) view;
-        }
-        ListLockItem itemView = (ListLockItem) headView.findViewById(R.id.content_item_all);
-        if (mFlag.equals("applocklist_activity")) {
-            AppInfo info = mList.get(i);
-            itemView.setIcon(info.icon);
-            itemView.setTitle(info.label);
-            itemView.setDescEx(info, info.isLocked);
-            itemView.setLockView(info.isLocked);
-            itemView.setInfo(info);
-            return headView;
-        } else {
-            AppInfo info = mList.get(i);
-            itemView.setIcon(info.icon);
-            itemView.setTitle(info.label);
-            if (info.topPos > -1) {
-                String infoTopPos = makePosRight(info);
-                String text = mContext.getString(R.string.lock_app_item_desc_cb_color, infoTopPos);
-                itemView.setText(Html.fromHtml(text));
+
+        AppInfo info = mList.get(i);
+        if (info.label.equals(Constants.LABLE_LIST)) {
+            view = layoutInflater.inflate(R.layout.home_more_label_item, null);
+            TextView textView = (TextView) view.findViewById(R.id.more_label_tv);
+            String text;
+            if (i == 0) {
+                text = mContext.getString(R.string.app_lock_list_switch_title_one);
             } else {
-                itemView.setText("");
+                text = mContext.getString(R.string.app_lock_list_switch_title_two);
             }
-            itemView.setDefaultRecommendApp(info.isLocked);
-            itemView.setInfo(info);
-            return headView;
+            textView.setText(text);
+            return view;
+        } else {
+            view = layoutInflater.inflate(R.layout.item_lock_app, null);
+            ListLockItem itemView = (ListLockItem) view.findViewById(R.id.content_item_all);
+            if (mFlag.equals(AppLockListActivity.FROM_DEFAULT_RECOMMENT_ACTIVITY)) {
+                itemView.setIcon(info.icon);
+                itemView.setTitle(info.label);
+                itemView.setDescEx(info, info.isLocked);
+                itemView.setLockView(info.isLocked);
+                itemView.setInfo(info);
+                return view;
+            } else {
+                itemView.setIcon(info.icon);
+                itemView.setTitle(info.label);
+                if (info.topPos > -1) {
+                    String infoTopPos = makePosRight(info);
+                    String text = mContext.getString(R.string.lock_app_item_desc_cb_color, infoTopPos);
+                    itemView.setText(Html.fromHtml(text));
+                } else {
+                    itemView.setText("");
+                }
+                itemView.setDefaultRecommendApp(info.isLocked);
+                itemView.setInfo(info);
+                return view;
+            }
         }
     }
 
@@ -143,14 +161,56 @@ public class ListAppLockAdapter extends BaseAdapter {
         }
     }
 
+    List<AppInfo> switchList;
 
     public void setData(ArrayList<AppInfo> resault) {
-        mList = resault;
+        mList.clear();
+        switchList = getSwitchList();
+        mList.addAll(switchList);
+        mList.addAll(resault);
         notifyDataSetChanged();
+    }
+
+    public List<AppInfo> getSwitchs() {
+        if (switchList != null) {
+            return switchList;
+        } else {
+            return null;
+        }
     }
 
     public void setFlag(String fromDefaultRecommentActivity) {
         mFlag = fromDefaultRecommentActivity;
     }
 
+    public List<AppInfo> getSwitchList() {
+        List<AppInfo> switchList = new ArrayList<AppInfo>();
+        WifiLockSwitch wifiSwitch = new WifiLockSwitch();
+        BlueToothLockSwitch blueToothSwitch = new BlueToothLockSwitch();
+
+        AppInfo labelInfo = new AppInfo();
+        labelInfo.label = Constants.LABLE_LIST;
+        switchList.add(labelInfo);
+
+        AppInfo wifiInfo = new AppInfo();
+        wifiInfo.label = mContext.getString(R.string.app_lock_list_switch_wifi);
+        wifiInfo.packageName = SwitchGroup.WIFI_SWITCH;
+        wifiInfo.icon = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
+        wifiInfo.isLocked = wifiSwitch.isLockNow(mLockManager.getCurLockMode());
+        wifiInfo.topPos = wifiSwitch.getLockNum();
+        switchList.add(wifiInfo);
+
+        AppInfo bluetoothInfo = new AppInfo();
+        bluetoothInfo.label = mContext.getString(R.string.app_lock_list_switch_bluetooth);
+        bluetoothInfo.packageName = SwitchGroup.BLUE_TOOTH_SWITCH;
+        bluetoothInfo.icon = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
+        bluetoothInfo.isLocked = blueToothSwitch.isLockNow(mLockManager.getCurLockMode());
+        bluetoothInfo.topPos = blueToothSwitch.getLockNum();
+        switchList.add(bluetoothInfo);
+
+        AppInfo labelInfo2 = new AppInfo();
+        labelInfo2.label = Constants.LABLE_LIST;
+        switchList.add(labelInfo2);
+        return switchList;
+    }
 }

@@ -2,6 +2,9 @@
 package com.leo.appmaster.applocker.lockswitch;
 
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.applocker.model.LockMode;
+
 /**
  * @author nic
  */
@@ -13,28 +16,31 @@ public class WifiLockSwitch extends SwitchGroup {
     }
 
     @Override
-    public void switchOn() {
-
+    public void switchOn(LockMode mode) {
+        String modeName = mode.modeName;
+        mPreTable.putBoolean(modeName + "_" + WIFI_SWITCH, true);
     }
 
     @Override
-    public void switchOff() {
-
+    public void switchOff(LockMode mode) {
+        String modeName = mode.modeName;
+        mPreTable.putBoolean(modeName + "_" + WIFI_SWITCH, false);
     }
 
     @Override
     public int getLockNum() {
-        return 0;
+        return mPreTable.getInt(WIFI_SWITCH, 500000);
     }
 
     @Override
-    public int setLockNum() {
-        return 0;
+    public void setLockNum(int num) {
+        mPreTable.getInt(WIFI_SWITCH, num);
     }
 
     @Override
-    public boolean isLockNow() {
-        return true;
+    public boolean isLockNow(LockMode mode) {
+        String modeName = mode.modeName;
+        return mPreTable.getBoolean(modeName + "_" + WIFI_SWITCH, false);
     }
 
 }
