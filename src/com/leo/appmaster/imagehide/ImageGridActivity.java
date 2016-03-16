@@ -246,7 +246,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .displayer(new FadeInBitmapDisplayer(500))
-                .cacheInMemory(true).cacheOnDisk(false).considerExifParams(true)
+                .cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
 
         mImageLoader = ImageLoader.getInstance();

@@ -194,7 +194,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .cacheInMemory(true)
-                .cacheOnDisk(false)
+                .cacheOnDisk(true)
                 .displayer(new FadeInBitmapDisplayer(500))
                 .cacheOnDisk(true)
                 .considerExifParams(true)
