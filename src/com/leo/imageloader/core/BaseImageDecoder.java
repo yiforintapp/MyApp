@@ -25,6 +25,7 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 
+import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
 import com.leo.imageloader.core.ImageDownloader.Scheme;
 import com.leo.imageloader.utils.ImageSizeUtils;
 import com.leo.imageloader.utils.IoUtils;
@@ -186,6 +187,10 @@ public class BaseImageDecoder implements ImageDecoder {
 
     protected InputStream resetStream(InputStream imageStream, ImageDecodingInfo decodingInfo)
             throws IOException {
+        if (Scheme.ofUri(decodingInfo.getImageUri()).equals(Scheme.CRYPTO)) {
+            IoUtils.closeSilently(imageStream);
+            return new ImageEncryptInputStream(Scheme.CRYPTO.crop(decodingInfo.getImageUri()));
+        }
         try {
             imageStream.reset();
         } catch (IOException e) {

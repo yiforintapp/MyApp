@@ -173,7 +173,7 @@ public class BaseImageDownloader implements ImageDownloader {
     protected InputStream getStreamFromEncrypto(String imageUri) {
         String path = Scheme.CRYPTO.crop(imageUri);
         try {
-            InputStream is = new ImageEncryptInputStream(path);
+            InputStream is = new BufferedInputStream(new ImageEncryptInputStream(path), BUFFER_SIZE);
             return is;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
