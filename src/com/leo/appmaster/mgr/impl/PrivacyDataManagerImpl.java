@@ -267,16 +267,18 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
         String newFileName = FileOperationUtil.getNameFromFilepath(mPicPath);
         newFileName = newFileName + Constants.CRYPTO_SUFFIX;
-        String newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
+        String[] newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
 
         // 加密
-        try {
-            getImageCryptor().encrypt(newPath);
-            LeoLog.d(E_TAG, "encrypt, path: " + newPath);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!TextUtils.isEmpty(newPath[0])) {
+            try {
+                getImageCryptor().encrypt(newPath[0]);
+                LeoLog.d(E_TAG, "encrypt, path: " + newPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return newPath;
+        return newPath[1];
     }
 
     @Override

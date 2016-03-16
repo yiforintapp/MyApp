@@ -14,6 +14,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -887,7 +889,10 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                         item = iterator.next();
                         if (!mIsBackgoundRunning)
                             break;
-                        LeoLog.d("testHidePic", "path : " + item.getPath());
+                        long cu1 = SystemClock.elapsedRealtime();
+                        if (!TextUtils.isEmpty(item.getPath())) {
+                            LeoLog.d("testHidePic", "size:"+new File(item.getPath()).length() + ",path : " + item.getPath());
+                        }
                         String newPath = ((PrivacyDataManager) MgrContext.
                                 getManager(MgrContext.MGR_PRIVACY_DATA)).
                                 onHidePic(item.getPath(), "");
@@ -900,6 +905,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 
                                 isSuccess = FileOperationUtil.HIDE_PIC_COPY_SUCESS;
                                 deleteList.add(item);
+                                LeoLog.d("testHidePic", "hide time : " + (SystemClock.elapsedRealtime() - cu1));
 
                                 //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
                                 PrivacyDataManagerImpl pmi = (PrivacyDataManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
@@ -909,7 +915,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                                 if (file.exists() && result < 1) {
                                     mIsDeletSucFromDatebase = false;
                                 }
-
+                                LeoLog.d("testHidePic", "delete image hide time : " + (SystemClock.elapsedRealtime() - cu1));
                             } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)) {
                                 isSuccess = FileOperationUtil.HIDE_PIC_COPY_FAIL;
                             } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)) {

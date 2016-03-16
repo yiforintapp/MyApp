@@ -264,11 +264,11 @@ public class FileOperationUtil {
      *
      * @param filePath
      * @param newName
-     * @return
+     * @return String[0]:返回加密后地址，String[1]:隐藏后返回值
      */
-    public static synchronized String hideImageFile(Context ctx,
-                                                    String filePath, String newName, long fileSize) {
-
+    public static synchronized String[] hideImageFile(Context ctx,
+                                                      String filePath, String newName, long fileSize) {
+        String[] result = new String[2];
         String str = FileOperationUtil.getDirPathFromFilepath(filePath);
         String fileName = FileOperationUtil.getNameFromFilepath(filePath);
 
@@ -330,15 +330,27 @@ public class FileOperationUtil {
                 // return ret ? newPath : null;
                 if (!ret) {
                     boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0], 10);
-                    String returnValue = HIDE_PIC_NO_MEMERY;
+                    String[] returnValue = null;
+//
                     if (memeryFlag) {
                         returnValue = hideImageFileCopy(ctx, filePath, newName);
                         LeoLog.d("testHidePic", "hide type:copy");
                     }
-                    return String.valueOf(returnValue);
+
+                    if (returnValue == null) {
+                        returnValue = new String[]{"", HIDE_PIC_NO_MEMERY};
+                    }
+                    if (TextUtils.isEmpty(returnValue[1])) {
+                        returnValue[1] = HIDE_PIC_NO_MEMERY;
+                    }
+                    result[0] = returnValue[0];
+                    result[1] = returnValue[1];
+                    return result;
                 } else {
                     LeoLog.d("testHidePic", "hide type:rename");
-                    return newPath;
+                    result[0] = newPath;
+                    result[1] = newPath;
+                    return result;
                 }
 
             } else {
@@ -723,7 +735,7 @@ public class FileOperationUtil {
                                 if (f.exists()) {
                                     pa = countMap.get(dir_path);
                                     pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                                    LeoLog.d("testGetAllPicFlie", "pic_path--:"+path);
+                                    LeoLog.d("testGetAllPicFlie", "pic_path--:" + path);
                                     pa.getBitList().add(new PhotoItem(path));
                                 }
                             } else {
@@ -865,7 +877,8 @@ public class FileOperationUtil {
      * @return
      */
     @SuppressWarnings("deprecation")
-    public static String hideImageFileCopy(Context ctx, String fromFile, String newName) {
+    public static String[] hideImageFileCopy(Context ctx, String fromFile, String newName) {
+        String[] result = new String[2];
         String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
         try {
             if (str.length() >= str.lastIndexOf("/") + 1) {
@@ -938,12 +951,18 @@ public class FileOperationUtil {
                 boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
-                return HIDE_PIC_COPY_SUCESS;
+                result[0] = newPath;
+                result[1] = HIDE_PIC_COPY_SUCESS;
+                return result;
             } catch (Exception e) {
-                return HIDE_PIC_COPY_RENAME_FAIL;
+                result[0] = newPath;
+                result[1] = HIDE_PIC_COPY_RENAME_FAIL;
+                return result;
             }
         } catch (Exception ex) {
-            return HIDE_PIC_COPY_FAIL;
+            result[0] = newPath;
+            result[1] = HIDE_PIC_COPY_FAIL;
+            return result;
         }
     }
 
