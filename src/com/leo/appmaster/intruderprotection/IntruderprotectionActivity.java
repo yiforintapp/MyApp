@@ -88,13 +88,13 @@ public class IntruderprotectionActivity extends BaseActivity {
     private LEOChoiceDialog mDialog;
     private static final int VIEW_TYPE_ACCOUNT = 2;
     private boolean mIsFromScan = false;
-    private int[] mTimes = {
-            1, 2, 3, 5
-    };
-    private final int TIMES_1 = 1;
-    private final int TIMES_2 = 2;
-    private final int TIMES_3 = 3;
-    private final int TIMES_4 = 5;
+//    private int[] mTimes = {
+//            1, 2, 3, 5
+//    };
+//    private final int TIMES_1 = 1;
+//    private final int TIMES_2 = 2;
+//    private final int TIMES_3 = 3;
+//    private final int TIMES_4 = 5;
     private RippleView mRvOpenSystLockProt;
     private RelativeLayout mRlTipContent;
 

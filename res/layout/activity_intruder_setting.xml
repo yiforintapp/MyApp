@@ -159,7 +159,7 @@
                 android:background="@color/white">
 
                 <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_item_noti"
+                    android:id="@+id/rv_intruder_setting_content3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="68dp"
@@ -212,13 +212,6 @@
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/bt_t1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="请求设备管理器权限" />
 </RelativeLayout>
 
 
