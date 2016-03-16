@@ -46,6 +46,62 @@
         android:layout_height="193dp"
         android:layout_centerInParent="true" />
 
+    <ImageView
+        android:id="@+id/boost_center_img"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/boost_center_icon"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_marginLeft="27dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="166dp"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_marginRight="27dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="166dp"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img3"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_marginLeft="88dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="81dp"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img4"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_marginRight="88dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="81dp"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img5"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="124dp"/>
+
     <RelativeLayout
         android:id="@+id/rl_shield"
         android:layout_width="213dp"

@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 
 import com.leo.appmaster.R;
@@ -330,7 +329,12 @@ public class HomeAnimShieldLayer extends AnimLayer {
             drawShieldScore(canvas);
             drawShieldWave(canvas);
         } else {
-            drawPercent(canvas);
+            if (mShieldAlpha < 255) {
+                drawPercent(canvas);
+            } else {
+                drawShieldScore(canvas);
+                drawShieldWave(canvas);
+            }
         }
 
     }
