@@ -354,6 +354,12 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        mImageLoader.stop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mHandler != null) {

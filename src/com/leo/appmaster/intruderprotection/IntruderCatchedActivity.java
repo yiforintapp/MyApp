@@ -35,6 +35,7 @@ import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageGridActivity;
@@ -58,10 +59,14 @@ import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
+import com.leo.imageloader.utils.IoUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -569,7 +574,20 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 public void run() {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inPreferredConfig = Bitmap.Config.RGB_565;
-                    final Bitmap bitmap = BitmapFactory.decodeFile(mInfosSorted.get(0).getFilePath(), options);
+                    final Bitmap bitmap;
+                    InputStream inputStream = null;
+                    try {
+                        String path = mInfosSorted.get(0).getFilePath();
+//                        String uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+                        inputStream = new ImageEncryptInputStream(path);
+                        bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+//                        bitmap = BitmapFactory.decodeFile(mInfosSorted.get(0).getFilePath(), options);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        return;
+                    } finally {
+                        IoUtils.closeSilently(inputStream);
+                    }
                     runOnUiThread(new Runnable() {
                         
                         @Override
@@ -717,11 +735,23 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     public void run() {
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
-                        final Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
+
+                        Bitmap bitmap = null;
+                        InputStream inputStream = null;
+                        try {
+                            inputStream = new ImageEncryptInputStream(filePath);
+                            bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                            return;
+                        } finally {
+                            IoUtils.closeSilently(inputStream);
+                        }
+                        final Bitmap imgBitmap = bitmap;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ivv.setImageBitmap(bitmap);
+                                ivv.setImageBitmap(imgBitmap);
                                 ivv.setOnClickListener(new OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
