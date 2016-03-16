@@ -2,7 +2,6 @@
 package com.leo.appmaster.sdk;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 
@@ -17,6 +16,8 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.push.IPushStatHelper;
 import com.leo.push.PushManager;
 import com.tendcloud.tenddata.TCAgent;
+
+import java.util.Map;
 
 
 public class SDKWrapper {
@@ -254,6 +255,20 @@ public class SDKWrapper {
         // TalkingData
         TCAgent.onEvent(ctx, id, description);
     }
+
+	/**
+	 * add an event that we will push to skyfill server
+	 * and use extra channel
+	 * @param context activity context
+	 * @param exName extra name
+	 * @param level log level for leoSDK, can be LeoStat.P0 ~ LeoStat.P4
+	 * @param id event type of this event
+	 * @param description detail of this event
+	 * @param extra detail of this extra data
+	 */
+	public static void addEvent(Context context, String exName, int level, String id, String description, Map<String, String> extra) {
+		com.leo.stat.StatService.onExtraEvent(context, exName, id, description, level, extra);
+	}
 
     public static void endSession(Context ctx) {
         // LeoStat.endSession();

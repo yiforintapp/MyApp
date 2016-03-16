@@ -3,10 +3,14 @@ package com.leo.appmaster.ad;
 import android.content.Context;
 import android.view.View;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.mobvista.sdk.m.core.entity.Campaign;
+
+import java.util.TreeMap;
 
 /**
  * Created by stone on 16/2/26.
@@ -55,7 +59,13 @@ public class ADEngineWrapper {
      */
     public void loadAd (final int source, final String unitId, final WrappedAdListener listener) {
 		LeoLog.e(TAG, "AD TYPE :" + source + " AD ID: " + unitId);
-        if (source == SOURCE_MAX) {
+		
+		String sdk = (source == 2) ? "Max" : "Mobvista";
+		TreeMap<String, String> map = new TreeMap<String, String>();
+		map.put("engine type", sdk);
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "loadad", SDKWrapper.P1, "start_to_loadad", sdk, map);
+        
+		if (source == SOURCE_MAX) {
             mMaxEngine.loadMobvista(unitId, new LEOAdEngine.LeoListener() {
                 @Override
                 public void onLeoAdLoadFinished(int code, LEONativeAdData campaign, String msg) {
