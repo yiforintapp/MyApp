@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PrivacyDataManagerImpl extends PrivacyDataManager {
+
+    private static final String E_TAG = "PhotoCryptor";
     private static final int API_LEVEL_19 = 19;
     public final static String CHECK_APART = "check_apart";
     public final static int MAX_NUM = 802;
@@ -240,6 +242,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         // 解密
         try {
             getImageCryptor().decrypt(newPath);
+            LeoLog.d(E_TAG, "decrypt, path: " + newPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -268,6 +271,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         // 加密
         try {
             getImageCryptor().encrypt(newPath);
+            LeoLog.d(E_TAG, "encrypt, path: " + newPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
