@@ -242,7 +242,10 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
                 loadedFrom = LoadedFrom.NETWORK;
 
                 String imageUriForDecoding = uri;
-                if (options.isCacheOnDisk() && tryCacheImageOnDisk() && !isEncryptUri()) {
+                if (isEncryptUri()) {
+                    imageUriForDecoding = Scheme.FILE.crop(uri);
+                }
+                if (options.isCacheOnDisk() && tryCacheImageOnDisk()) {
                     imageFile = configuration.diskCache.get(uri);
                     if (imageFile != null) {
                         imageUriForDecoding = Scheme.FILE.wrap(imageFile.getAbsolutePath());
