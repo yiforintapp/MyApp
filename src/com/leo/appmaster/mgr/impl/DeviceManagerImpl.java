@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -38,14 +41,22 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.TrafficsInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.SelfDurationToast;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class DeviceManagerImpl extends DeviceManager {
-    private static final String TAG = "DeviceManagerImpl";
+    private final static String TAG = "DeviceManagerImpl";
+    private final static int WIFI_TURN_ON = 1;
+    private final static int BLUETOOTH_TURN_ON = 2;
+    private final static int MOBILEDATA_TURN_ON = 3;
 
-    private final static long INIT_INTERVEL = 5 * 1000;
+    private final static int WIFI_SHUT_DOWN = 1;
+    private final static int BLUETOOTH_SHUT_DOWN = 2;
+    private final static int MOBILEDATA_SHUT_DOWN = 3;
+
+    private final static long DELAY_DISABL = 1000;
 
     private LockManager mLockManager;
     private WifiLockSwitch mWifiSwitch;
@@ -53,78 +64,169 @@ public class DeviceManagerImpl extends DeviceManager {
     private MobileDataLockSwitch mMobileDataSwitch;
 
     private boolean unlockOpenWifiDone = false;
-    private boolean isConnecting = false;
+    private boolean unlockOpenBlueToothDone = false;
+    private boolean unlockOpenMobileDataDone = false;
 
     private WifiManager mWifimanager;
-    private long initTime;
+    private BluetoothAdapter mBluetoothAdapter;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case WIFI_SHUT_DOWN:
+                    LeoLog.d(TAG, "shut down wifi");
+                    mWifimanager.setWifiEnabled(false);
+                    break;
+                case BLUETOOTH_SHUT_DOWN:
+                    LeoLog.d(TAG, "shut down bluetooth");
+                    mBluetoothAdapter.disable();
+                    break;
+
+                case MOBILEDATA_SHUT_DOWN:
+
+                    break;
+            }
+        }
+    };
 
     public DeviceManagerImpl() {
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+
         mWifiSwitch = new WifiLockSwitch();
         mBlueToothSwitch = new BlueToothLockSwitch();
         mMobileDataSwitch = new MobileDataLockSwitch();
 
         mWifimanager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
     }
 
     public void init() {
         LeoLog.d(TAG, "onCreate");
-        initTime = System.currentTimeMillis();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        mContext.registerReceiver(mBlueToothChangeReceiver, filter);
+
     }
 
     @Override
     public void wifiChangeReceiver(Intent intent) {
-        LeoLog.d(TAG, "onReceive");
+        LeoLog.d(TAG, "wifi onReceive");
+        String action = intent.getAction();
+        if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {// 这个监听wifi的打开与关闭，与wifi的连接无关
+            int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
+            switch (wifiState) {
+                case WifiManager.WIFI_STATE_ENABLING:
+                    LeoLog.d(TAG, "WIFI_STATE_ENABLING");
+                    readyShowLock(WIFI_TURN_ON);
+                    break;
+                case WifiManager.WIFI_STATE_ENABLED:
+                    LeoLog.d(TAG, "WIFI_STATE_ENABLED");
+                    unlockOpenWifiDone = false;
+                    break;
+                case WifiManager.WIFI_STATE_DISABLING:
+                    LeoLog.d(TAG, "WIFI_STATE_DISABLING");
+                    break;
+                case WifiManager.WIFI_STATE_DISABLED:
+                    LeoLog.d(TAG, "WIFI_STATE_DISABLED");
+                    unlockOpenWifiDone = false;
+                    break;
+            }
+        }
+    }
 
-        try {
+    private void readyShowLock(int type) {
+        switch (type) {
+            case WIFI_TURN_ON:
+                if (mWifiSwitch.isLockNow() && !unlockOpenWifiDone) {
+                    //show LockScreen
+                    shutDownWifi();
+                    showLockScreen(type);
+                }
+                break;
+            case BLUETOOTH_TURN_ON:
+                if (mBlueToothSwitch.isLockNow() && !unlockOpenBlueToothDone) {
+                    shutDownBlueTooth();
+                    showLockScreen(type);
+                }
+                break;
+            case MOBILEDATA_TURN_ON:
+
+                break;
+        }
+    }
+
+    private void shutDownWifi() {
+        mHandler.sendEmptyMessageDelayed(WIFI_SHUT_DOWN, DELAY_DISABL);
+    }
+
+    private void showLockScreen(final int showType) {
+        mLockManager.applyLock(
+                LockManager.LOCK_MODE_FULL, mContext.getPackageName(),
+                false,
+                new LockManager.OnUnlockedListener() {
+                    @Override
+                    public void onUnlocked() {
+                        LeoLog.d(TAG, "onUnlocked");
+
+                        if (showType == WIFI_TURN_ON) {
+                            unlockOpenWifiDone = true;
+                            mWifimanager.setWifiEnabled(true);
+                        } else if (showType == BLUETOOTH_TURN_ON) {
+                            unlockOpenBlueToothDone = true;
+                            mBluetoothAdapter.enable();
+                        } else {
+
+                        }
+
+                    }
+
+                    public void onUnlockCanceled() {
+                        LeoLog.d(TAG, "onUnlockCanceled");
+                    }
+
+                    @Override
+                    public void onUnlockOutcount() {
+
+                    }
+                });
+    }
+
+    public BroadcastReceiver mBlueToothChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LeoLog.d(TAG, "bluetooth onReceive");
             String action = intent.getAction();
-            if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
-                NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-                NetworkInfo.State curState = info.getState();
 
-                if (curState == NetworkInfo.State.CONNECTING) {
-                    LeoLog.d(TAG, "[NETWORK_STATE_CHANGED_ACTION] broadcast, state=" + curState);
-
-                    long now = System.currentTimeMillis();
-                    if (now - initTime < INIT_INTERVEL) {
-                        LeoLog.d(TAG, "init Wifi Brocast yet , return");
-                        return;
-                    }
-
-                    if (unlockOpenWifiDone) {
-                        LeoLog.d(TAG, "unlock open wifi ,  return");
-                        return;
-                    }
-
-                    //connecting once .. doing ..
-                    if (!isConnecting && mWifiSwitch.isLockNow()) {
-                        LeoLog.d(TAG, "first connecting , show lock");
-                        isConnecting = true;
-
-                        //show LockScreen
-                        handleWifiOn();
-                    } else {
-                        LeoLog.d(TAG, "many connecting or not lockWifi, return");
-                        return;
-                    }
-                }
-
-                if (curState == NetworkInfo.State.CONNECTED) {
-                    LeoLog.d(TAG, "[NETWORK_STATE_CHANGED_ACTION] broadcast, state=" + curState);
-                    unlockOpenWifiDone = false;
-                    isConnecting = false;
-                }
-
-                if (curState == NetworkInfo.State.DISCONNECTED) {
-                    LeoLog.d(TAG, "[NETWORK_STATE_CHANGED_ACTION] broadcast, state=" + curState);
-                    unlockOpenWifiDone = false;
-                    isConnecting = false;
+            if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR);
+                switch (state) {
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        LeoLog.d(TAG, "BluetoothAdapter.STATE_TURNING_ON");
+                        readyShowLock(BLUETOOTH_TURN_ON);
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        unlockOpenBlueToothDone = false;
+                        LeoLog.d(TAG, "BluetoothAdapter.STATE_ON");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        LeoLog.d(TAG, "BluetoothAdapter.STATE_TURNING_OFF");
+                        break;
+                    case BluetoothAdapter.STATE_OFF:
+                        unlockOpenBlueToothDone = false;
+                        LeoLog.d(TAG, "BluetoothAdapter.STATE_OFF");
+                        break;
                 }
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+    };
+
+    private void shutDownBlueTooth() {
+        mHandler.sendEmptyMessageDelayed(BLUETOOTH_SHUT_DOWN, DELAY_DISABL);
     }
 
     @Override
@@ -148,48 +250,6 @@ public class DeviceManagerImpl extends DeviceManager {
 
     }
 
-    private void handleWifiOn() {
-        //1
-        shutDownWifi();
-        //2
-        showLockScreen();
-    }
-
-    private void showLockScreen() {
-        mLockManager.applyLock(
-                LockManager.LOCK_MODE_FULL, mContext.getPackageName(),
-                false,
-                new LockManager.OnUnlockedListener() {
-                    @Override
-                    public void onUnlocked() {
-                        LeoLog.d(TAG, "onUnlocked");
-                        unlockOpenWifiDone = true;
-                        try {
-                            mWifimanager.setWifiEnabled(true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    public void onUnlockCanceled() {
-                        LeoLog.d(TAG, "onUnlockCanceled");
-                    }
-
-                    @Override
-                    public void onUnlockOutcount() {
-
-                    }
-                });
-    }
-
-    private void shutDownWifi() {
-        LeoLog.d(TAG, "shut down wifi");
-        try {
-            mWifimanager.setWifiEnabled(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public float getTodayUsed() {
