@@ -90,12 +90,12 @@
                 app:rippleDuration="250"
                 app:rippleHover="true"
                 app:rippleOverlay="true">
-
+                <!--android:background="@drawable/orange_radius_btn_shape"-->
                 <Button
+                    android:background="@drawable/orange_radius_btn_shape"
                     android:id="@+id/bt_change_times"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/orange_radius_btn_shape"
                     android:maxWidth="90dp"
                     android:minWidth="71dp"
                     android:paddingLeft="10dp"
