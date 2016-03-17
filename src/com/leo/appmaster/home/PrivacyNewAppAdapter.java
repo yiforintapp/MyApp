@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.ListAppLockAdapter;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.model.AppItemInfo;
 
 import java.util.List;
@@ -32,6 +33,13 @@ public class PrivacyNewAppAdapter extends PrivacyNewAdaper<AppItemInfo> {
                 for (int i = 0; i < dataList.size(); i++) {
                     AppItemInfo itemInfo = dataList.get(i);
                     if (itemInfo.topPos != -1) {
+
+                        //wifi && blue not select
+                        if (itemInfo.packageName.equals(SwitchGroup.WIFI_SWITCH) ||
+                                itemInfo.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                            continue;
+                        }
+
                         toggle(i);
                     }
                 }
