@@ -1,18 +1,14 @@
 
 package com.leo.appmater.globalbroadcast;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.schedule.BlackListFileFetchJob;
-import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.utils.LeoLog;
 
 public class ScreenOnOffListener extends BroadcastListener {

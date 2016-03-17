@@ -14,7 +14,6 @@ import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -82,29 +81,29 @@ public class StatusBarEventService extends IntentService {
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (eventType == EVENT_BUSINESS_QUICK_GUESTURE) {
-            boolean installIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(this);
-            if (installIswipe) {
-                if (DBG) {
-                    LeoLog.i(TAG, "存在Iswipe请点击Iswipe图标");
-                }
-                /* 进入iswipe主页 */
-                targetIntent = new Intent();
-                targetIntent.setAction(Intent.ACTION_MAIN);
-                ComponentName cn = new
-                        ComponentName(Constants.ISWIPE_PACKAGE,
-                        "com.leo.iswipe.activity.SplashActivity");
-                targetIntent.setComponent(cn);
-                targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            }
+//            boolean installIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(this);
+//            if (installIswipe) {
+//                if (DBG) {
+//                    LeoLog.i(TAG, "存在Iswipe请点击Iswipe图标");
+//                }
+//                /* 进入iswipe主页 */
+//                targetIntent = new Intent();
+//                targetIntent.setAction(Intent.ACTION_MAIN);
+//                ComponentName cn = new
+//                        ComponentName(Constants.ISWIPE_PACKAGE,
+//                        "com.leo.iswipe.activity.SplashActivity");
+//                targetIntent.setComponent(cn);
+//                targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            }
         } else if (eventType == EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION) {
 
         } else if (eventType == EVENT_ISWIPE_UPDATE_NOTIFICATION) {
-            LeoLog.i(TAG, "来自iswipe升级通知，启动主页！");
-            targetIntent = new Intent(this, HomeActivity.class);
-            targetIntent.putExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME,
-                    ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
-            targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            LeoLog.i(TAG, "来自iswipe升级通知，启动主页！");
+//            targetIntent = new Intent(this, HomeActivity.class);
+//            targetIntent.putExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME,
+//                    ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+//            targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+//                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (eventType == EVENT_PRIVACY_STATUS) {
             targetIntent = new Intent(this, HomeActivity.class);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
