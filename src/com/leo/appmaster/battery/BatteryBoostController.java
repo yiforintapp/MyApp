@@ -499,7 +499,7 @@ public class BatteryBoostController extends RelativeLayout {
         final float centerX = ivShield.getWidth() / 2.0f;
         final float centerY = ivShield.getHeight() / 2.0f;
         if (centerX != 0f && centerY != 0f) {
-            final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(180, 0,
+            final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(0, -180,
                     centerX, centerY, 0.0f, true);
             rotation.setDuration(680);
             rotation.setAnimationListener(new Animation.AnimationListener() {
@@ -532,7 +532,7 @@ public class BatteryBoostController extends RelativeLayout {
                     ivShield.setVisibility(View.VISIBLE);
                 }
             });
-            rotation.setFillAfter(false);
+            rotation.setFillAfter(true);
             ivShield.startAnimation(rotation);
         }
     }
