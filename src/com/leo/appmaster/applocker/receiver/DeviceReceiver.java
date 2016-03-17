@@ -118,7 +118,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 										bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth(), bitmapt.getHeight(), m, true);
 										String timeStamp = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT).format(new Date());
 										//添加水印
-										bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp, "com.leo.appmaster", ctx);
+										bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp, WaterMarkUtils.ICON_SYSTEM, ctx);
 										//将bitmap压缩并保存
 										ByteArrayOutputStream baos = new ByteArrayOutputStream();
 										bitmapt.compress(Bitmap.CompressFormat.JPEG, 80, baos);

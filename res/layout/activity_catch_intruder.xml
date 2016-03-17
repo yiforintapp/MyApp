@@ -117,47 +117,133 @@
                 android:src="@drawable/man_in_catch" />
         </RelativeLayout>
 
-        <LinearLayout
+
+
+        <RelativeLayout
+            android:id="@+id/rl_intrudercatch_tip"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_below="@id/rl_header">
 
-            <TextView
-                android:id="@+id/tv_times_to_catch"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:visibility="invisible"
+                android:id="@+id/ll_guide_finished"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="12dp"
-                android:layout_weight="1"
+                android:background="@color/white"
                 android:gravity="center_vertical"
-                android:text="@string/intruder_to_catch_fail_times_tip"
-                android:textColor="#333333"
-                android:textSize="15dp" />
+                android:orientation="horizontal">
 
-            <com.leo.appmaster.ui.RippleView
-                android:id="@+id/rv_change_times"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="12dp"
-                android:maxWidth="90dp"
-                android:minWidth="52dp"
-                app:rippleColor="@color/button_blue_stroke_ripple"
-                app:rippleDuration="250"
-                app:rippleHover="true"
-                app:rippleOverlay="true">
+                <ImageView
+                    android:layout_marginLeft="14dp"
+                    android:src="@drawable/icon_intruder_complete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-                <Button
-                    android:id="@+id/bt_change_times"
+                <TextView
+                    android:textColor="@color/c2"
+                    android:textSize="@dimen/f4"
+                    android:gravity="center_vertical"
+                    android:text="@string/intruder_systemlock_finished"
+                    android:layout_marginLeft="7dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_guide_tip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:visibility="visible"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_systemlock_antiintruder_tip"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:text="@string/intruder_systemlock_tip"
+                    android:textColor="#ff7900"
+                    android:textSize="@dimen/f4" />
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_open"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:background="@drawable/while_bg_blue_line"
+                    android:layout_marginRight="12dp"
+                    android:maxWidth="90dp"
+                    android:minWidth="71dp"
+                    app:rippleColor="@color/button_blue_stroke_ripple"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="true">
+                    <!--android:background="@drawable/orange_radius_btn_shape"-->
+                    <Button
+                        android:id="@+id/bt_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/orange_radius_btn_shape"
+                        android:maxWidth="90dp"
+                        android:minWidth="71dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/secur_instr_open_bt"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp" />
+                </com.leo.appmaster.ui.RippleView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_change_times"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_times_to_catch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="12dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/intruder_to_catch_fail_times_tip"
+                    android:textColor="#333333"
+                    android:textSize="15dp" />
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_change_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
                     android:maxWidth="90dp"
                     android:minWidth="52dp"
-                    android:text="@string/change_times_to_catch"
-                    android:textColor="#2674f6" />
-            </com.leo.appmaster.ui.RippleView>
-        </LinearLayout>
+                    app:rippleColor="@color/button_blue_stroke_ripple"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="true">
+
+                    <Button
+                        android:id="@+id/bt_change_times"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@drawable/while_bg_blue_line"
+                        android:maxWidth="90dp"
+                        android:minWidth="52dp"
+                        android:text="@string/change_times_to_catch"
+                        android:textColor="#2674f6" />
+                </com.leo.appmaster.ui.RippleView>
+            </LinearLayout>
+
+        </RelativeLayout>
+
 
         <FrameLayout
             android:id="@+id/share_layout"

@@ -42,6 +42,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     private LEOAlarmDialog mAskOpenDeviceAdminDialog;
     private LEOAlarmDialog mOpenForbinDialog;
     private LEOAnimationDialog mMessageDialog;
+    private LEOAlarmDialog mConfirmCloseDialog;
     private int[] mTimes = {
             1, 2, 3, 5
     };
@@ -88,6 +89,24 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         mRvItem3.setOnClickListener(this);
     }
 
+    private void showConfirmCloseDialog() {
+        if (mConfirmCloseDialog == null) {
+            mConfirmCloseDialog = new LEOAlarmDialog(IntruderSettingActivity.this);
+        }
+        if (mConfirmCloseDialog.isShowing()) {
+            return;
+        }
+        mConfirmCloseDialog.setTitle(R.string.intruder_setting_title_1);
+        mConfirmCloseDialog.setContent(getString(R.string.intruder_systemlock_alarm));
+        mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mISManager.setSystIntruderProtectionSwitch(false);
+                mIvSwitchSyst.setImageResource(R.drawable.switch_off);
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -128,8 +147,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
 
     private void turnSwitch1() {
         if (mISManager.getSystIntruderProtecionSwitch()) {
-            mISManager.setSystIntruderProtectionSwitch(false);
-            mIvSwitchSyst.setImageResource(R.drawable.switch_off);
+            showConfirmCloseDialog();
         } else {
             if (DeviceReceiver.isActive(IntruderSettingActivity.this)) {
                 mISManager.setSystIntruderProtectionSwitch(true);
