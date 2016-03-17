@@ -469,6 +469,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                         public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                             LeoLog.d("AfterPrivacyScan", "onMobvistaClick");
                             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_cli", "adv_cnts_scan");
+							SDKWrapper.addEvent(HomeScanningFragment.this.getActivity().getApplicationContext(), "max_ad_click", SDKWrapper.P1, "timeOfClick", unitID + " click", null);
                             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                             lm.filterSelfOneMinites();
                         }
@@ -499,12 +500,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", AD_AFTER_SCAN + "prepare for load image", null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", AD_AFTER_SCAN +"load image failed", null);
         }
 
         @Override
@@ -512,6 +513,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             final HomeScanningFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 fragment.mAdLoaded = true;
+				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", AD_AFTER_SCAN + "image size: " + loadedImage.getByteCount(), null);
                 LeoLog.d("AfterPrivacyScan", "[HomeScanningFragment] onLoadingComplete -> " + imageUri);
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
@@ -546,6 +548,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         /* 3.3.2 封装Max与Mob SDK */
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, adView, AD_AFTER_SCAN);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", AD_AFTER_SCAN + " adShow", null);
     }
     /* 3.2 advertise end */
 

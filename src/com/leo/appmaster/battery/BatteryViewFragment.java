@@ -2325,6 +2325,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 @Override
                 public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
+					SDKWrapper.addEvent(BatteryViewFragment.this.getActivity().getApplicationContext(), "max_ad_click", SDKWrapper.P1, "timeOfClick", unitID + " click", null);
                     LeoLog.d(TAG, "Ad clicked");
                 }
             });
@@ -2366,17 +2367,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", Constants.UNIT_ID_CHARGING + "prepare for load image", null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
             LeoLog.e(TAG, "failed to load AD preview!");
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", Constants.UNIT_ID_CHARGING +"load image failed", null);
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             LeoLog.d(TAG, "Ad preview image ready");
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", Constants.UNIT_ID_CHARGING + "image size: " + loadedImage.getByteCount(), null);
             BatteryViewFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 try {
@@ -2469,6 +2472,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         //MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING);
         mAdWrapper.setOnClickListener(this);
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", Constants.UNIT_ID_CHARGING + " adShow", null);
     }
     /* 广告相关 - 结束 */
 

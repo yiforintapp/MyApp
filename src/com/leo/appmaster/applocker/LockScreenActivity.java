@@ -1,19 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -138,10 +124,6 @@ import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.imageloader.DisplayImageOptions;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FailReason;
-import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -149,6 +131,20 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
@@ -1359,12 +1355,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]start to load preview for: " + url);
 
 						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
-								"max_ad_load_image", SDKWrapper.P1, "fetchImage", "prepare for load image", null);
+								"max_ad_load_image", SDKWrapper.P1, "fetchImage", unitId + "prepare for load image", null);
                     }
 
                     @Override
                     public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
-						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), "max_ad_load_image", 
+						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), unitId + "max_ad_load_image", 
 								SDKWrapper.P1, "fetchImage", "image size: " + loadedImage.getByteCount(), null);
 						
                         ThreadManager.executeOnUiThread(new Runnable() {
@@ -1456,7 +1452,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     public void onBitmapLoadFailed(String url) {
                         LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + url);
 						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
-								"max_ad_load_image", SDKWrapper.P1, "fetchImage", "load image failed", null);
+								"max_ad_load_image", SDKWrapper.P1, "fetchImage", unitId + "load image failed", null);
                     }
 
                     @Override
@@ -1476,7 +1472,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         @Override
         public void onWrappedAdClick(WrappedCampaign campaign, final String unitID) {
 			SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
-					"max_ad_click", SDKWrapper.P1, "timeOfClick", "click", null);
+					"max_ad_click", SDKWrapper.P1, "timeOfClick", unitID + "click", null);
             ThreadManager.executeOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -1575,7 +1571,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      * 去重添加
      *
      * @param unitId
-     * @param campaign
      * @return 是否与之前的广告重复
      */
 //    private boolean isRedundant(String unitId, WrappedCampaign campaign) {
@@ -2842,7 +2837,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     snapforClick((ViewGroup) v.getParent());
                 }
             });
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", "adShow", null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", unitId + " adShow", null);
             return true;
         }
 

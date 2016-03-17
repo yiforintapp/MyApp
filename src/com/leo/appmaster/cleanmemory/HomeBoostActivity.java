@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.cleanmemory;
 
-import java.lang.ref.WeakReference;
-import java.util.Random;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -45,6 +42,9 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+
+import java.lang.ref.WeakReference;
+import java.util.Random;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
@@ -130,7 +130,7 @@ public class HomeBoostActivity extends Activity {
 			@Override
 			public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
 				HomeBoostActivity.this.finish();
-
+				SDKWrapper.addEvent(HomeBoostActivity.this.getApplicationContext(), "max_ad_click", SDKWrapper.P1, "timeOfClick", unitID + " click", null);
 				SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1, "ad_cli",
 						"adv_cnts_bst");
 			}
@@ -173,12 +173,12 @@ public class HomeBoostActivity extends Activity {
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", Constants.UNIT_ID_62 + "prepare for load image", null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", Constants.UNIT_ID_62 +"load image failed", null);
         }
 
         @Override
@@ -186,6 +186,7 @@ public class HomeBoostActivity extends Activity {
             HomeBoostActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
                 LeoLog.d("MobvistaEngine", "[HomeBoostActivity]onLoadingComplete -> " + imageUri);
+				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", Constants.UNIT_ID_62 + "image size: " + loadedImage.getByteCount(), null);
                 activity.notifyAdLoadFinish(mCampaign, loadedImage);
                 SDKWrapper.addEvent(activity, SDKWrapper.P1, "ad_act",
                         "adv_shws_bst");
@@ -233,6 +234,7 @@ public class HomeBoostActivity extends Activity {
             call.setText(campaign.getAdCall());
             mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
         }
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", Constants.UNIT_ID_62 + " adShow", null);
     }
 
     private void loadADPic(String url, ImageSize size, final ImageView v) {

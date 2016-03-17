@@ -135,14 +135,14 @@ public class ADEngineWrapper {
                         wrappedCampaign = WrappedCampaign.fromMaxSDK(campaign);
 						
 						if (wrappedCampaign != null) {
-							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "state is suc and campaign is ready", null);
+							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", unitId + "state is suc and campaign is ready", null);
 						} else {
-							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "state is suc and campaign is null", null);
+							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", unitId + "state is suc and campaign is null", null);
 						}
 						
 					} else {
 
-						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "state is faild code: " + code, null);
+						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", unitId + "state is faild code: " + code, null);
 					}
 					
 					
