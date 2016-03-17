@@ -138,6 +138,8 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         if (mISManager.getIntruderMode()) {
             mISManager.switchIntruderMode(false);
             mIvSwitchNormal.setImageResource(R.drawable.switch_off);
+            Toast.makeText(IntruderSettingActivity.this,
+                            getString(R.string.intruder_close), Toast.LENGTH_SHORT).show();
         } else {
             mISManager.switchIntruderMode(true);
             mIvSwitchNormal.setImageResource(R.drawable.switch_on);
