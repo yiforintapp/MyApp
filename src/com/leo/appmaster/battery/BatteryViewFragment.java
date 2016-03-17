@@ -683,16 +683,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     ObjectAnimator anim22 = ObjectAnimator.ofFloat(mBatteryIconView,
                             "alpha", 0f, 1f);
 
-
-//                    animMoveY.setDuration(500);
-//                    animMoveY.start();
-
                     AnimatorSet set = new AnimatorSet();
                     set.setDuration(500);
-                    set.play(animMoveY).with(anim20);
-                    set.play(anim20).with(anim21);
-                    set.play(anim21).with(anim22);
-                    set.play(anim22).with(animMove);
+                    set.playTogether(anim20, anim21, anim22, animMove, animMoveY);
                     set.start();
                 }
             });
@@ -726,32 +719,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    private void bayIconTurnBig() {
-        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIconView,
-                "x", mBatteryIconView.getLeft(), mBatteryIconView.getLeft() +
-                        mBatteryIconView.getWidth() / 2 + DipPixelUtil.dip2px(mActivity, 5));
-        animMoveY.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mBatteryIconView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mBatteryIconView,
-                "scaleX", 0f, 1.0f);
-        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mBatteryIconView,
-                "scaleY", 0f, 1.0f);
-        ObjectAnimator anim22 = ObjectAnimator.ofFloat(mBatteryIconView,
-                "alpha", 0f, 1f);
-
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(500);
-        set.play(animMoveY).before(anim20);
-        set.play(anim20).with(anim21);
-        set.play(anim21).with(anim22);
-        set.start();
-    }
 
     private void showViewAfterBoost(boolean afterAnimation) {
 //        mRemainTimeContent.setVisibility(View.VISIBLE);
