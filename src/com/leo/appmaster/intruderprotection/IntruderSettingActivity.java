@@ -22,6 +22,7 @@ import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
@@ -43,6 +44,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     private LEOAlarmDialog mOpenForbinDialog;
     private LEOAnimationDialog mMessageDialog;
     private LEOAlarmDialog mConfirmCloseDialog;
+    private CommonToolbar mCtbMain;
     private int[] mTimes = {
             1, 2, 3, 5
     };
@@ -78,6 +80,8 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     }
 
     private void initUI() {
+        mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
+        mCtbMain.setToolbarTitle(R.string.home_tab_instruder);
         mTvFailTimesToCatch = (TextView) findViewById(R.id.tv_intruder_setting_summary3);
         mIvSwitchSyst = (ImageView) findViewById(R.id.iv_intruder_setting_switch1);
         mIvSwitchNormal = (ImageView) findViewById(R.id.iv_intruder_setting_switch2);

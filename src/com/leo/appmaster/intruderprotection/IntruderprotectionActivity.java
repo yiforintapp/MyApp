@@ -690,6 +690,8 @@ public class IntruderprotectionActivity extends BaseActivity {
                     }
                 }
             });
+        } else {
+            mRlTipContent.setVisibility(View.GONE);
         }
 
     }

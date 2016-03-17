@@ -239,6 +239,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
             }
 
             mUpArrow.showRedTip(true);
+            mUpArrow.startUpAnimation();
 //            mAdapter.notifyDataSetInvalidated();
             mAdapter.notifyDataSetChanged();
         } else {
