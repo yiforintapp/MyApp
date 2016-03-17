@@ -28,6 +28,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.WrappedCampaign;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -70,14 +73,14 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private static final int MAX_HEIGHT_FOUR_LINE = 87;
     private static final int MAX_HEIGHT_OTHERS_LINE = 102;
     private static final int MIN_HEIGHT_DP = 35;
-    private static final int TEXT_NO_CONTENT_SCORE  = 0;
-    private static final int TEXT_HAVE_CONTENT_ONLY  = 1;
+    private static final int TEXT_NO_CONTENT_SCORE = 0;
+    private static final int TEXT_HAVE_CONTENT_ONLY = 1;
     private static final int TEXT_HAVE_CONTENT_SCORE = 2;
     private static final int ONE_LINE = 20;
     private static final int TWO_LINE = 37;
     private static final int THREE_LINE = 55;
     private static final int FOUR_LINE = 71;
-    private static final int OTHERS_LINE  = 88;
+    private static final int OTHERS_LINE = 88;
     private static final String TAG = "HomeScanningFragment";
     private static final byte[] LOCK = new byte[1];
 
@@ -201,7 +204,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (AppMasterPreference.getInstance(mActivity).getIsNeedCutBackupUninstallAndPrivacyContact()) {
             mIsNeedContractVisible = false;
         }
-        
+
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -294,7 +297,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initAppLayout(View parent) {
         ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_app_layout);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         View view = viewStub.inflate();
@@ -314,7 +317,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initPicLayout(View parent) {
         ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_pic_layout);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         View view = viewStub.inflate();
@@ -334,7 +337,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initVidLayout(View parent) {
         ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_vid_layout);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         View view = viewStub.inflate();
@@ -348,7 +351,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initLostLayout(View parent) {
         ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_lost_layout);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         View view = viewStub.inflate();
@@ -361,7 +364,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initInstructLayout(View parent) {
         ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_instruct_layout);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         View view = viewStub.inflate();
@@ -374,7 +377,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initWifiLayout(View parent) {
         ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_wifi_layout);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         View view = viewStub.inflate();
@@ -386,7 +389,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     private void initContactLayout(View parent) {
         ViewStub viewStub = (ViewStub) parent.findViewById(R.id.scan_new_contact_layout);
-        if(viewStub == null) {
+        if (viewStub == null) {
             return;
         }
         View view = viewStub.inflate();
@@ -424,7 +427,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         ThreadManager.executeOnSubThread(mContactRunnable);
         ThreadManager.executeOnAsyncThread(mPhotoRunnable);
     }
-
 
 
     @Override
@@ -547,12 +549,26 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
     /* 3.2 advertise end */
 
+    private List<AppItemInfo> switchList;
     private WeakRunnable mAppRunnable = new WeakRunnable(this, new Runnable() {
         @Override
         public void run() {
             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             long start = SystemClock.elapsedRealtime();
             mAppList = lm.getNewAppList();
+
+
+            //first time , show wifi && bluetooth
+            WifiLockSwitch wifiSwitch = new WifiLockSwitch();
+            BlueToothLockSwitch blueToothLockSwitch = new BlueToothLockSwitch();
+            boolean isShowed = wifiSwitch.getScreenShowed();
+            if (!isShowed) {
+                switchList = getSwitchList(wifiSwitch, blueToothLockSwitch);
+                if (switchList != null && switchList.size() > 0) {
+                    mAppList.addAll(0, switchList);
+                }
+            }
+
             try {
                 mScanAppName = DataUtils.getThreeRandomAppName(mAppList, mActivity).get(0);
                 mScanAppNameStep = DataUtils.getThreeRandomAppName(mAppList, mActivity).get(1);
@@ -561,6 +577,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 mScanAppName = "";
             }
             mAppScanFinish = true;
+
+            //wifi && blue
+
             mAppScore = lm.getSecurityScore(mAppList);
             mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, mAppScore);
 //            updateNewAppList();
@@ -705,7 +724,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                     (!mIsInsAvaliable && currentPosit != 5)) {
                 return;
             }
-            currentPosit ++;
+            currentPosit++;
             LeoLog.e("theDipHeight", "enterlayout: mNewAppLayout");
             final int needLongHeight = updateNewAppList();
             if (!mContactScanFinish) {
@@ -745,7 +764,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                     (!mIsInsAvaliable && currentPosit != 4)) {
                 return;
             }
-            currentPosit ++;
+            currentPosit++;
             LeoLog.e("theDipHeight", "enterlayout: mNewPicLayout");
             final int needLongHeight = updateNewPicList();
             if (mIsInsAvaliable) {
@@ -764,7 +783,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                     (!mIsInsAvaliable && currentPosit != 3)) {
                 return;
             }
-            currentPosit ++;
+            currentPosit++;
             LeoLog.e("theDipHeight", "enterlayout: mNewVidLayout");
             final int needLongHeight = updateNewVidList();
             if (mIsInsAvaliable) {
@@ -782,7 +801,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             if (currentPosit != 2) {
                 return;
             }
-            currentPosit ++;
+            currentPosit++;
             LeoLog.e("theDipHeight", "enterlayout: mNewInstructLayout");
             final int needLongHeight = updateNewInstructList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
@@ -796,7 +815,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             if (currentPosit != 1) {
                 return;
             }
-            currentPosit ++;
+            currentPosit++;
             LeoLog.e("theDipHeight", "enterlayout: mNewWifiLayout");
             final int needLongHeight = updateNewWifiList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
@@ -811,9 +830,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         } else if (layout == mNewLostLayout) {
             if ((mIsInsAvaliable && currentPosit != 3) ||
                     (!mIsInsAvaliable && currentPosit != 2)) {
-                 return;
+                return;
             }
-            currentPosit ++;
+            currentPosit++;
             LeoLog.e("theDipHeight", "enterlayout: mNewLostLayout");
             final int needLongHeight = updateNewLostList();
             if (mIsInsAvaliable) {
@@ -833,7 +852,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             if (currentPosit != 0) {
                 return;
             }
-            currentPosit ++;
+            currentPosit++;
             LeoLog.e("theDipHeight", "enterlayout: mNewContactLayout");
             final int needLongHeight = updateNewContactList();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
@@ -855,29 +874,29 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                 if (isNeedLongHeight == TEXT_HAVE_CONTENT_ONLY) {
                     moveDistance = DipPixelUtil.dip2px(mActivity, MIN_HEIGHT_DP);
                 } else if (isNeedLongHeight == TEXT_HAVE_CONTENT_SCORE) {
-                   if (nowLayout == mNewAppLayout) {
-                       moveDistance = getContentHeight(mNewAppContent);
-                   } else if (nowLayout == mNewPicLayout) {
-                       moveDistance = getContentHeight(mNewPicContent);
-                   } else if (nowLayout == mNewVidLayout) {
-                       moveDistance = getContentHeight(mNewVidContent);
-                   } else if (nowLayout == mNewLostLayout) {
-                       moveDistance = getContentHeight(mNewLostContent);
-                   } else if (nowLayout == mNewInstructLayout) {
-                       moveDistance = getContentHeight(mNewInstructContent);
-                   }
+                    if (nowLayout == mNewAppLayout) {
+                        moveDistance = getContentHeight(mNewAppContent);
+                    } else if (nowLayout == mNewPicLayout) {
+                        moveDistance = getContentHeight(mNewPicContent);
+                    } else if (nowLayout == mNewVidLayout) {
+                        moveDistance = getContentHeight(mNewVidContent);
+                    } else if (nowLayout == mNewLostLayout) {
+                        moveDistance = getContentHeight(mNewLostContent);
+                    } else if (nowLayout == mNewInstructLayout) {
+                        moveDistance = getContentHeight(mNewInstructContent);
+                    }
                 }
                 LeoLog.e("theDipHeight", "== height;mNewAppLayout:" + position + ";" + moveDistance);
             } else {
                 moveDistance = nowLayout.getHeight() - height;
-                LeoLog.e("theDipHeight", "!!= height;mNewAppLayout:"  + position + ";" + moveDistance);
+                LeoLog.e("theDipHeight", "!!= height;mNewAppLayout:" + position + ";" + moveDistance);
             }
         } else {
             if (isNeedLongHeight == TEXT_NO_CONTENT_SCORE) {
                 moveDistance = 0;
             } else if (isNeedLongHeight == TEXT_HAVE_CONTENT_ONLY) {
                 moveDistance = DipPixelUtil.dip2px(mActivity, MIN_HEIGHT_DP);
-            }  else if (isNeedLongHeight == TEXT_HAVE_CONTENT_SCORE) {
+            } else if (isNeedLongHeight == TEXT_HAVE_CONTENT_SCORE) {
                 if (nowLayout == mNewAppLayout) {
                     moveDistance = getContentHeight(mNewAppContent);
                 } else if (nowLayout == mNewPicLayout) {
@@ -890,7 +909,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                     moveDistance = getContentHeight(mNewInstructContent);
                 }
             }
-            LeoLog.e("theDipHeight", "else;mNewAppLayout:"  + nowLayout + moveDistance);
+            LeoLog.e("theDipHeight", "else;mNewAppLayout:" + nowLayout + moveDistance);
         }
         if (lists.size() > position) {
 
@@ -957,7 +976,13 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         int count = mAppList == null ? 0 : mAppList.size();
         if (count > 0) {
             mNewAppImg.setImageResource(R.drawable.ic_scan_error);
-            mNewAppTitle.setText(mActivity.getResources().getString(R.string.scan_app_title, count));
+            String text;
+            if (switchList.size() > 0) {
+                text = mActivity.getResources().getString(R.string.scan_app_title_switch, count);
+            } else {
+                text = mActivity.getResources().getString(R.string.scan_app_title, count);
+            }
+            mNewAppTitle.setText(text);
             mNewAppContent.setText(mScanAppName);
             mNewAppContent.setVisibility(View.VISIBLE);
             isNeedLongHeight = TEXT_HAVE_CONTENT_ONLY;
@@ -1295,15 +1320,15 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private int getContentHeight(View v) {
         int theDipHeight = Utilities.getScanContentHeight(v, mActivity);
         if (theDipHeight <= ONE_LINE) {
-             return DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_ONE_LINE);
+            return DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_ONE_LINE);
         } else if (theDipHeight <= TWO_LINE) {
-             return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_TWO_LINE);
+            return DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_TWO_LINE);
         } else if (theDipHeight <= THREE_LINE) {
-             return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_THREE_LINE);
+            return DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_THREE_LINE);
         } else if (theDipHeight <= FOUR_LINE) {
-            return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_FOUR_LINE);
+            return DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_FOUR_LINE);
         } else {
-            return  DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_OTHERS_LINE);
+            return DipPixelUtil.dip2px(mActivity, MAX_HEIGHT_OTHERS_LINE);
         }
     }
 
@@ -1311,7 +1336,37 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         if (mMoveHeight == 0) {
-           mActivity.onExitScanning();
+            mActivity.onExitScanning();
         }
     }
+
+    public List<AppItemInfo> getSwitchList(WifiLockSwitch wifiSwitch, BlueToothLockSwitch blueToothLockSwitch) {
+        List<AppItemInfo> switchList = new ArrayList<AppItemInfo>();
+        LockManager mLockMgr = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+
+        boolean isWifiLock = wifiSwitch.isLockNow(mLockMgr.getCurLockMode());
+        if (!isWifiLock) {
+            AppItemInfo wifiInfo = new AppItemInfo();
+            wifiInfo.label = AppMasterApplication.getInstance().getResources().getString(R.string.app_lock_list_switch_wifi);
+            wifiInfo.packageName = SwitchGroup.WIFI_SWITCH;
+            wifiInfo.icon = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
+            wifiInfo.isLocked = false;
+            wifiInfo.topPos = wifiSwitch.getLockNum();
+            switchList.add(wifiInfo);
+        }
+
+        boolean isBlueToothLock = blueToothLockSwitch.isLockNow(mLockMgr.getCurLockMode());
+        if (!isBlueToothLock) {
+            AppItemInfo bluetoothInfo = new AppItemInfo();
+            bluetoothInfo.label = AppMasterApplication.getInstance().getString(R.string.app_lock_list_switch_bluetooth);
+            bluetoothInfo.packageName = SwitchGroup.BLUE_TOOTH_SWITCH;
+            bluetoothInfo.icon = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
+            bluetoothInfo.isLocked = false;
+            bluetoothInfo.topPos = blueToothLockSwitch.getLockNum();
+            switchList.add(bluetoothInfo);
+        }
+
+        return switchList;
+    }
+
 }
