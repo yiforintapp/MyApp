@@ -849,7 +849,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     }
 
-    /** 设置指示器位置 */
+    /**
+     * 设置指示器位置
+     */
     private void setTheIndicatorX(int type) {
         float positionX = 0;
         float margeX = DipPixelUtil.dip2px(mActivity, 8);
@@ -865,8 +867,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    /** 指示器动画 */
-    private void  showIndicatorAnim(int type) {
+    /**
+     * 指示器动画
+     */
+    private void showIndicatorAnim(int type) {
         ObjectAnimator moveAnim;
         float endX = DipPixelUtil.dip2px(mActivity, 8);
         float currentX = mFolderIndicator.getX();
@@ -877,8 +881,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else if (RECOMMAND_TYPE_THREE == type) {
             endX = mShowThree.getLeft() + mShowThree.getWidth() / 2 - endX;
         }
-        moveAnim =ObjectAnimator.ofFloat(mFolderIndicator, "x", currentX, endX);
-        final float  finalX = endX;
+        moveAnim = ObjectAnimator.ofFloat(mFolderIndicator, "x", currentX, endX);
+        final float finalX = endX;
         moveAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -926,6 +930,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void fillShowContentData(int recommandTypeThree) {
         if (mActivity == null) return;
         if (recommandTypeThree == RECOMMAND_TYPE_ONE) {
+
+
+            cancelDisplay(mIvShowOne, mIvShowTwo, mIvShowThree, mIvShowFour);
+
             List<BatteryAppItem> phoneList = ScreenRecommentJob.getBatteryCallList();
             LeoLog.d("testGetList", "3G通话 size is : " + phoneList.size());
             for (int i = 0; i < phoneList.size(); i++) {
@@ -1158,10 +1166,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
 
         } else if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
+            cancelDisplay(mIvShowOne, mIvShowTwo, mIvShowThree, mIvShowFour);
             twoContentFill();
         } else {
+            cancelDisplay(mIvShowOne, mIvShowTwo, mIvShowThree, mIvShowFour);
             threeContentFill();
         }
+    }
+
+    private void cancelDisplay(CircleImageViewTwo mIvShowOne, CircleImageViewTwo mIvShowTwo, CircleImageViewTwo mIvShowThree, CircleImageViewTwo mIvShowFour) {
+        ImageLoader.getInstance().cancelDisplayTask(mIvShowOne);
+        ImageLoader.getInstance().cancelDisplayTask(mIvShowTwo);
+        ImageLoader.getInstance().cancelDisplayTask(mIvShowThree);
+        ImageLoader.getInstance().cancelDisplayTask(mIvShowFour);
     }
 
     private void twoContentFill() {
