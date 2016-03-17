@@ -603,7 +603,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 public void onBoostFinish() {
                     PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
                     checkingData(true);
-                    showViewAfterBoost(true);
+                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showViewAfterBoost(true);
+                        }
+                    }, 600);
                     timeTurnSmall();
                 }
             });
@@ -657,12 +662,38 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            bayIconTurnBig();
+//                            bayIconTurnBig();
+                        }
+                    });
+                    ObjectAnimator animMove = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "x", mBatteryIconView.getLeft(), mBatteryIconView.getLeft() +
+                                    mBatteryIconView.getWidth() / 2 + DipPixelUtil.dip2px(mActivity, 5));
+                    animMove.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            mBatteryIconView.setVisibility(View.VISIBLE);
                         }
                     });
 
-                    animMoveY.setDuration(500);
-                    animMoveY.start();
+                    ObjectAnimator anim20 = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "scaleX", 0f, 1.0f);
+                    ObjectAnimator anim21 = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "scaleY", 0f, 1.0f);
+                    ObjectAnimator anim22 = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "alpha", 0f, 1f);
+
+
+//                    animMoveY.setDuration(500);
+//                    animMoveY.start();
+
+                    AnimatorSet set = new AnimatorSet();
+                    set.setDuration(500);
+                    set.play(animMoveY).with(anim20);
+                    set.play(anim20).with(anim21);
+                    set.play(anim21).with(anim22);
+                    set.play(anim22).with(animMove);
+                    set.start();
                 }
             });
         } else {
@@ -723,8 +754,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void showViewAfterBoost(boolean afterAnimation) {
-        mRemainTimeContent.setVisibility(View.VISIBLE);
-        mRemainContent.setVisibility(View.VISIBLE);
+//        mRemainTimeContent.setVisibility(View.VISIBLE);
+//        mRemainContent.setVisibility(View.VISIBLE);
 
         ViewStub viewStub = (ViewStub) findViewById(R.id.bay_advertise_stub);
         mBossView = viewStub.inflate();
@@ -745,6 +776,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         if (afterAnimation) {
             startRemindTimeAppearAnim();
         } else {
+            mRemainTimeContent.setVisibility(View.VISIBLE);
+            mRemainContent.setVisibility(View.VISIBLE);
             expandRecommandContent(RECOMMAND_TYPE_TWO, true);
         }
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -784,13 +817,45 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void startRemindTimeAppearAnim() {
+        ObjectAnimator shieldAlpha = null;
+        ObjectAnimator shieldScaleX = null;
+        ObjectAnimator shieldScaleY = null;
+        if (mBoostView != null) {
+            shieldAlpha = ObjectAnimator.ofFloat(mBoostView, "alpha", 1f, 0f);
+            shieldScaleX = ObjectAnimator.ofFloat(mBoostView, "scaleX", 1f, 1.2f);
+            shieldScaleY = ObjectAnimator.ofFloat(mBoostView, "scaleY", 1f, 1.2f);
+            shieldAlpha.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (mBoostView != null) {
+                        mBoostView.setVisibility(View.INVISIBLE);
+                        mBoostView.setAlpha(1f);
+                    }
+                }
+            });
+        }
         ObjectAnimator alpha = ObjectAnimator.ofFloat(mRemainContent, "alpha", 0f, 255f);
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(mRemainContent, "scaleX", 0.8f, 1f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(mRemainContent, "scaleY", 0.8f, 1f);
+        ObjectAnimator remainTimeAlpha = ObjectAnimator.ofFloat(mRemainTimeContent, "alpha", 0f, 255f);
+        ObjectAnimator remainTimeScaleX = ObjectAnimator.ofFloat(mRemainTimeContent, "scaleX", 0.8f, 1f);
+        ObjectAnimator remainTimeScaleY = ObjectAnimator.ofFloat(mRemainTimeContent, "scaleY", 0.8f, 1f);
+        alpha.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if (mRemainTimeContent != null) {
+                    mRemainTimeContent.setVisibility(View.VISIBLE);
+                }
+                if (mRemainContent != null) {
+                    mRemainContent.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(500);
-        animatorSet.playTogether(alpha, scaleX, scaleY);
+        animatorSet.playTogether(alpha, scaleX, scaleY, shieldAlpha, shieldScaleX, shieldScaleY,
+                                remainTimeAlpha, remainTimeScaleX, remainTimeScaleY);
         animatorSet.start();
 
         animatorSet.addListener(new AnimatorListenerAdapter() {
