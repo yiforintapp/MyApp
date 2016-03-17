@@ -938,7 +938,7 @@
     <string name="batterymanage_boosting">Optimizing</string>
     <string name="pri_pro_process">Optimize</string>
     <string name="screen_protect_charing_text_one">Please connect a charger</string>
-    <string name="scan_done_pic">Hiden images piece</string>
+    <string name="scan_done_pic">Hiden images</string>
     <string name="grant_permission_guide">Authorize LEO Privacy to lock app.</string>
     <string name="addto_blacklist_share_dialog_content">Wanna help your friends to block this crank call? Share it and let LEO Privacy to protect them too!</string>
     <string name="battery_protect_setting_pow_sav_title">Auto power save optimization</string>
