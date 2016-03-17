@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -138,7 +139,9 @@ public class InitCoreBootstrap extends Bootstrap {
         deviceManager.init();
 
         // start a protection JobScheduler service
-        TaskProtectService.scheduleService(mApp);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            TaskProtectService.scheduleService(mApp);
+        }
 
         return true;
     }
