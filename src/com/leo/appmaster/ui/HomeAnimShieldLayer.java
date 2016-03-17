@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.MotionEvent;
 
@@ -87,6 +88,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     private Rect mShieldBounds;
 
+    private Paint mScorePaint;
     private Paint mTextPaint;
     private float[] mText0Pos;
     private float[] mText1Pos;
@@ -136,6 +138,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         Resources res = mParent.getResources();
         mPercentPaint = new Paint();
         mPercentPaint.setAntiAlias(true);
+        mPercentPaint.setTypeface(Typeface.create(LightTextView.getLightFace(view.getContext()), Typeface.BOLD));
         mPercentPaint.setColor(res.getColor(R.color.white));
         mPercentPaint.setTextSize(res.getDimensionPixelSize(R.dimen.scan_percent));
         mPercentPaint.setTextAlign(Paint.Align.CENTER);
@@ -156,6 +159,10 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
         mScoreSize = res.getDimensionPixelSize(R.dimen.home_shield_score);
         mStatusSize = res.getDimensionPixelSize(R.dimen.home_shield_status);
+        mScorePaint = new Paint();
+        mScorePaint.setAntiAlias(true);
+        mScorePaint.setTypeface(Typeface.create(LightTextView.getLightFace(view.getContext()), Typeface.BOLD));
+
         mTextPaint = new Paint();
         mTextPaint.setAntiAlias(true);
 
@@ -272,16 +279,16 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private float[] getPointOfText(RectF src, String text, int textSize) {
         RectF areaRect = new RectF(src);
         RectF bounds = new RectF(src);
-        mTextPaint.setTextSize(textSize);
+        mScorePaint.setTextSize(textSize);
         // measure text width
-        bounds.right = mTextPaint.measureText(text, 0, text.length());
+        bounds.right = mScorePaint.measureText(text, 0, text.length());
         // measure text height
-        bounds.bottom = mTextPaint.descent() - mTextPaint.ascent();
+        bounds.bottom = mScorePaint.descent() - mScorePaint.ascent();
 
         bounds.left += (areaRect.width() - bounds.right) / 2.0f;
         bounds.top += (areaRect.height() - bounds.bottom) / 2.0f;
 
-        return new float[]{bounds.left, bounds.top - mTextPaint.ascent()};
+        return new float[]{bounds.left, bounds.top - mScorePaint.ascent()};
     }
 
     @Override
@@ -432,10 +439,11 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mShieldMatrix.postTranslate(-shieldOffsetX, -shieldOffsetY);
         canvas.setMatrix(mShieldMatrix);
 
+        mScorePaint.setColor(textColor);
         mTextPaint.setColor(textColor);
         if (shieldAlpha > 0) {
             if (shieldOffsetY <= 0) {
-                canvas.drawCircle(mCirclePx, mCirclePy, mShieldBgRadius, mTextPaint);
+                canvas.drawCircle(mCirclePx, mCirclePy, mShieldBgRadius, mScorePaint);
             }
             mShieldDrawable.getPaint().setAlpha(shieldAlpha);
             mShieldDrawable.draw(canvas);
@@ -455,9 +463,9 @@ public class HomeAnimShieldLayer extends AnimLayer {
         } else {
             pointer = mText1Pos;
         }
-        mTextPaint.setTextSize(mScoreSize);
+        mScorePaint.setTextSize(mScoreSize);
         
-        canvas.drawText(score + "", pointer[0], pointer[1], mTextPaint);
+        canvas.drawText(score + "", pointer[0], pointer[1], mScorePaint);
 
         if (shieldAlpha > 0) {
             canvas.setMatrix(mShieldMatrix);
