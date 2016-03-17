@@ -39,4 +39,8 @@ public abstract class SwitchGroup {
     public boolean getScreenShowed() {
         return mPreTable.getBoolean(SCREEN_SHOWED, false);
     }
+
+    public void setScreenShowed() {
+        mPreTable.putBoolean(SCREEN_SHOWED, true);
+    }
 }

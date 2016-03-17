@@ -48,6 +48,8 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
     private AppItemInfo wifiInfo;
     private AppItemInfo blueToothInfo;
     private List<AppItemInfo> switchList;
+    private WifiLockSwitch wifiSwitch;
+    private BlueToothLockSwitch blueToothLockSwitch;
 
     public static PrivacyNewAppFragment newInstance() {
         PrivacyNewAppFragment fragment = new PrivacyNewAppFragment();
@@ -79,6 +81,9 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         Collections.sort(mDataList, new RecommentAppLockListActivity.DefalutAppComparator());
 
         //add wifi && bluetooth
+        wifiSwitch = new WifiLockSwitch();
+        blueToothLockSwitch = new BlueToothLockSwitch();
+
         switchList = new ArrayList<AppItemInfo>();
         if (wifiInfo != null) {
             switchList.add(wifiInfo);
@@ -127,8 +132,21 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
             public void run() {
                 List<AppItemInfo> list = mAdaper.getSelectedList();
 
+                //wifi && blueTooth
+                mLockMgr = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                wifiSwitch.setScreenShowed();
+
                 List<String> pkgList = new ArrayList<String>(list.size());
                 for (AppItemInfo info : list) {
+
+                    if (info.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                        wifiSwitch.switchOn(mLockMgr.getCurLockMode());
+                    }
+
+                    if (info.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                        blueToothLockSwitch.switchOn(mLockMgr.getCurLockMode());
+                    }
+
                     pkgList.add(info.packageName);
                 }
 
@@ -153,6 +171,9 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
 
     @Override
     protected void onIgnoreClick(boolean direct) {
+        //wifi && blueTooth
+        wifiSwitch.setScreenShowed();
+
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         int incScore = lm.ignore();
         mActivity.onIgnoreClick(incScore, MgrContext.MGR_APPLOCKER);
