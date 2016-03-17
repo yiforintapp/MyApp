@@ -13,6 +13,12 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -29,6 +35,8 @@ public class ADEngineWrapper {
 
     private LEOAdEngine mMaxEngine;
     private MobvistaEngine mMobEngine;
+
+    private Map<String, Iterator<Integer>> mRandomMap = new HashMap<String, Iterator<Integer>>();
 
     public static interface WrappedAdListener {
         /**
@@ -160,12 +168,43 @@ public class ADEngineWrapper {
      * @return
      */
     private boolean isHitProbability(String unitId) {
-        int local = new Random().nextInt(ADShowTypeRequestManager.AD_PROBABILITY_MAX + 1);
+        int local = nextRandomInt(unitId);
         int server = PrefTableHelper.getAdProbability();
 
-        boolean hit = local <= server;
+        boolean hit = local < server;
         LeoLog.d(TAG, "[" + unitId + "] probability hit: " + hit + "; localRandom = " + local + "; server = " + server);
         return hit;
+    }
+
+    /**
+     * 精准的随机，10次，0 ~ 9 每个数字都会被随机到
+     * @param unitId
+     * @return
+     */
+    private int nextRandomInt(String unitId) {
+        synchronized (mRandomMap) {
+            int max = ADShowTypeRequestManager.AD_PROBABILITY_MAX;
+            Iterator<Integer> randomList = mRandomMap.get(unitId);
+            if (randomList == null || !randomList.hasNext()) {
+                List<Integer> list = new ArrayList<Integer>(max);
+                for (int i = 0; i < max; i++) {
+                    list.add(i);
+                }
+                // 随机打乱
+                Collections.shuffle(list);
+                StringBuilder stringBuilder = new StringBuilder();
+                for (Integer integer : list) {
+                    stringBuilder.append(integer).append(",");
+                }
+                LeoLog.d(TAG, "gen random list: " + stringBuilder.toString());
+                randomList = list.iterator();
+                mRandomMap.put(unitId, randomList);
+            }
+
+            int result = randomList.next();
+            randomList.remove();
+            return result;
+        }
     }
 
     public void registerView (int source, View view, String unitId) {
