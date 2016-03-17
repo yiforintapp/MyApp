@@ -169,6 +169,9 @@ public class IntruderprotectionActivity extends BaseActivity {
             mLvPhotos.addHeaderView(mHeader);
             mRvOpenSystLockProt = (RippleView) mHeader.findViewById(R.id.rv_open);
             mRlTipContent = (RelativeLayout) mHeader.findViewById(R.id.rl_intrudercatch_tip);
+            if (mImanager.getSystIntruderProtecionSwitch()) {
+                mRlTipContent.setVisibility(View.GONE);
+            }
             mLlGuide = (LinearLayout) mHeader.findViewById(R.id.ll_guide_tip);
             mLlGuideFinished = (LinearLayout) mHeader.findViewById(R.id.ll_guide_finished);
         }
@@ -674,6 +677,9 @@ public class IntruderprotectionActivity extends BaseActivity {
 
     private void updateTipStatus() {
         if (!mImanager.getSystIntruderProtecionSwitch()) {
+            mRlTipContent.setVisibility(View.VISIBLE);
+            mLlGuideFinished.setVisibility(View.INVISIBLE);
+            mLlGuide.setVisibility(View.VISIBLE);
             mRvOpenSystLockProt.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -684,8 +690,6 @@ public class IntruderprotectionActivity extends BaseActivity {
                     }
                 }
             });
-        } else {
-            mRlTipContent.setVisibility(View.GONE);
         }
 
     }
@@ -695,7 +699,7 @@ public class IntruderprotectionActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiver.isActive(IntruderprotectionActivity.this)) {
             mImanager.setSystIntruderProtectionSwitch(true);
-            updateTipStatus();
+            changeToGuideFinishedLayout();
             openAdvanceProtectDialogHandler();
         }
     }
@@ -760,6 +764,7 @@ public class IntruderprotectionActivity extends BaseActivity {
 
     private void changeToGuideFinishedLayout() {
         mImanager.setSystIntruderProtectionSwitch(true);
+        mRlTipContent.setVisibility(View.VISIBLE);
         mLlGuide.setVisibility(View.INVISIBLE);
         mLlGuideFinished.setVisibility(View.VISIBLE);
     }

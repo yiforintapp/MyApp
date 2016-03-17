@@ -66,6 +66,16 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 	}
 
 	@Override
+	public void onDisabled(Context context, Intent intent) {
+		super.onDisabled(context, intent);
+		if (mISManager == null) {
+			mISManager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+		}
+		mISManager.setSystIntruderProtectionSwitch(false);
+	}
+
+
+	@Override
 	public void onPasswordFailed(final Context context, Intent intent) {
 		IntrudeSecurityManager.sFailTimesAtSystLock ++;
 		LeoLog.d("poha_admin", "sFailTimesAtSystLock = " + IntrudeSecurityManager.sFailTimesAtSystLock);

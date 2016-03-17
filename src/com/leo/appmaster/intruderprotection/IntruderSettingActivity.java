@@ -103,7 +103,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
             public void onClick(DialogInterface dialog, int which) {
                 mISManager.setSystIntruderProtectionSwitch(false);
                 mIvSwitchSyst.setImageResource(R.drawable.switch_off);
-                mConfirmCloseDialog.show();
+                mConfirmCloseDialog.dismiss();
             }
         });
         mConfirmCloseDialog.show();

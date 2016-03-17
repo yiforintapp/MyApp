@@ -176,7 +176,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mShouldLoadAd) {
             ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
         }
-        finish();
+//        finish();
     }
 
     @Override
@@ -223,7 +223,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiver.isActive(IntruderCatchedActivity.this)) {
             mISManager.setSystIntruderProtectionSwitch(true);
-            updateTipStatus();
+            changeToGuideFinishedLayout();
             openAdvanceProtectDialogHandler();
         }
     }
