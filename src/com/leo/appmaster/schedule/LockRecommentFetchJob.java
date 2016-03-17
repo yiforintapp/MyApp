@@ -62,8 +62,8 @@ public class LockRecommentFetchJob extends FetchScheduleJob {
                         int num = Integer.valueOf(listNum.getString(i));
                         LeoLog.d("LockRecomment", "wifi num : " + num);
 
-                        if (num < 1000) {
-                            num = 1000;
+                        if (num < 5000) {
+                            num = 5000;
                         }
 
                         WifiLockSwitch wifiSwithch = new WifiLockSwitch();
@@ -74,8 +74,8 @@ public class LockRecommentFetchJob extends FetchScheduleJob {
                         int num = Integer.valueOf(listNum.getString(i));
                         LeoLog.d("LockRecomment", "blue num : " + num);
 
-                        if (num < 1000) {
-                            num = 1000;
+                        if (num < 5000) {
+                            num = 5000;
                         }
 
                         BlueToothLockSwitch blueToothLockSwitch = new BlueToothLockSwitch();
