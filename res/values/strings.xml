@@ -680,14 +680,8 @@
     <!--3.5西安团队审校修改文案 start-->
     <string name="passwd_hint">Enter a 4 digit passcode</string>
     <string name="tip_no_the_same_pswd">Password did not match.Try again.</string>
-    <string name="use_passwd">Change to PIN Code</string>
     <string name="find_passwd">Forgot password?</string>
-    <string name="used_mem">Storage Used</string>
-    <string name="passwd_protect_setting">Security Question</string>
     <string name="input_qusetion">Please enter a question</string>
-    <string name="compeletely">Done</string>
-    <string name="clean_result">Clear memory</string>
-    <string name="best_mem">It’s already been the best status. There is no need to boost again.</string>
     <string name="switch_passwd">Change to PIN Code</string>
     <string name="set_protect_message">Create a security question to help us verify your identity should you forget password. </string>
     <string name="find_gesture">Forgot password?</string>
@@ -700,9 +694,6 @@
     <string name="app_setting_about">About us</string>
     <string name="forbid_uninstall">Advanced Protection</string>
     <string name="change_lock_time">Change Auto-Lock Time</string>
-    <string name="feedback_commit">Submit</string>
-    <string name="category_hide_image">Hide Images</string>
-    <string name="category_hide_video">Hide Videos</string>
     <string name="category_other">Others</string>
     <string name="feedback_success_title">Submitted successfully</string>
     <string name="feedback_success_content">Thank you for your feedback, we will strive to improve your experience.</string>
@@ -730,8 +721,6 @@
     <string name="lock_help_lock_setting_content">Tap Lock Settings to set a locking time</string>
     <string name="lock_help_lock_theme_content">Try more free and beautiful themes.</string>
     <string name="lock_help_lock_setting_button">Lock Settings</string>
-    <string name="lock_setting_button">Lock Settings</string>
-    <string name="help_setting_guide">Tips</string>
     <string name="privacy_contact_calllog">Call logs</string>
     <string name="privacy_contact_activity_input_checkbox_normal">Accept</string>
     <string name="privacy_contact_notification_title_big">Notifications</string>
@@ -762,7 +751,6 @@
     <string name="battery_history_minutes"><xliff:g id="MINUTES">%1$d</xliff:g> min<xliff:g id="SECONDS">%2$d</xliff:g> sec</string>
     <string name="battery_history_seconds"><xliff:g id="SECONDS">%1$d</xliff:g> sec</string>
     <string name="battery_info_status_discharging">Battery consuming</string>
-    <string name="traff_first_page_small_set_month_used">Monthly Usage(MB)</string>
     <string name="traff_first_page_small_set_low">Enter your data limit and add current data usage</string>
     <string name="traffic_used_lot_text">You\'ve used %1$s%% of your monthly allowance.Addtional data charges will apply for additional usage.</string>
     <string name="traffic_used_finish_text">You have used 100% of your data plan. Please shut off the Moblie Data.</string>
@@ -771,7 +759,6 @@
     <string name="flow_settting_dialog">Monthly Data Usage</string>
     <string name="flow_settting_dialog_remain">Your phone will enable alerts once your monthly data reaches the limit you set.</string>
     <string name="flow_settting_thrid">Settlement Date</string>
-    <string name="flow_settting_thrid_first_tv">Settlement Date</string>
     <string name="flow_settting_thrid_month_used_data">Monthly Usage(MB)</string>
     <string name="app_elec_aca">Battery</string>
     <string name="app_flow">Data</string>
@@ -780,7 +767,6 @@
     <string name="month_triffic">Monthly Usage</string>
     <string name="home_app_manager_apps_delete">Uninstall</string>
     <string name="home_app_manager_mem_clean">Cleaned  <Data><![CDATA[<font color="#00eaff">%1$s</font>]]></Data> </string>
-    <string name="home_app_manager_mem_clean_one">Cleaned 1MB</string>
     <string name="time_lock_save_hint">Save Time Lock</string>
     <string name="location_lock_save_hint">Save Position Lock</string>
     <string name="select_mode">Select a Mode</string>
@@ -825,11 +811,8 @@
     <string name="zipper_too_slow">Oops!Pull down quickly</string>
     <string name="theme_apply_title">Apply this unlock theme %1$s?</string>
     <string name="video_delete_fail">Can not delete the file</string>
-    <string name="video_cancel_hide_fail">Can not unhide the file</string>
     <string name="beauty_mode_ok">Enabled Beauty Cover successfully</string>
     <string name="auto_start_guide_tip_content">Start LEO Privacy for your protection.</string>
-    <string name="auto_start_guide_tip_left_button">Not now</string>
-    <string name="auto_start_guide_tip_right_button">Set now</string>
     <string name="msg_center_empty">No New Messages</string>
     <string name="msg_center_empty_say">Any questions and suggestions?</string>
     <string name="msg_center_load_fail">Server is not responding. Try later.</string>
@@ -837,7 +820,6 @@
     <string name="ufo_theme_title">Applock themes</string>
     <string name="menue_item_delete_pg">Uninstall LEO Privacy </string>
     <string name="advace_protect_dialog_right_text">Go to Settings</string>
-    <string name="advance_protect_open_success_tip_title">Enabled successfully</string>
     <string name="auto_start_tip_xiaomi4_and_letv">Click "Autostart Manager" and allow LEO Privacy to be added in the auto-start list.</string>
     <string name="auto_start_tip_redmi">Click "Autostart Manager" and allow LEO Privacy to be added in the auto-start list.</string>
     <string name="auto_start_tip_huawei">Go to "Protected Apps" and add LEO Privacy to the list of Protected apps</string>
@@ -845,9 +827,7 @@
     <string name="applock_guide_tip_title">Permissions required to run normally</string>
     <string name="applock_guide_tip_security_text">Give LEO Privacy permissions to monitor the use of apps</string>
     <string name="auto_start_tip_text_huawei_plus">Please give LEO Privacy the "Autostart" permission to keep protecting your apps after your phone restart</string>
-    <string name="background_tip_default_text">Please keep LEO Privacy running in the background for privacy protection</string>
     <string name="applock_guide_set_finish">Done</string>
-    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">Enable</string>
     <string name="home_tab_wifi">Wi-Fi Security</string>
     <string name="home_tab_lost">Anti Theft</string>
     <string name="home_menu_privacy">Privacy Monitor</string>
@@ -862,11 +842,9 @@
     <string name="pri_pro_wifi_safe">Your curren Wi-Fi network: Secured</string>
     <string name="pri_pro_contact_summary">Favorite Contacts</string>
     <string name="pri_pro_complete">Done</string>
-    <string name="pri_contact_empty">Select contacts</string>
     <string name="pri_contact_succ">Contacts added successfully </string>
     <string name="pri_pro_wifi_warn">Your current Wi-Fi network is unsecured</string>
     <string name="scan_notify_pic"> %1$d new images found, click to hide now</string>
-    <string name="lock_app_item_desc">%1$s people chose to lock</string>
     <string name="lock_app_action">%1$s were locked</string>
     <string name="unlock_app_action">%1$s were unlocked</string>
     <string name="wifi_title_name">Wi-Fi Security Scanning</string>
@@ -877,8 +855,6 @@
     <string name="wifi_scan_result_no_safe">You are about to connect to an unsecure Wi-Fi network.It\'s possible that your messages will be read</string>
     <string name="wifi_scan_result_no_safe_advice">Suggest to connect to another Wi-Fi network</string>
     <string name="wifi_scan_result_use_now">Join the network now</string>
-    <string name="over_traffic_toast_unsafe">Wi-Fi: %1$s is an unsecure network</string>
-    <string name="over_traffic_toast_safe">Wi-Fi: %1$s is secured</string>
     <string name="phone_security_no_add_number_text">Add another phone number to remote control the stolen phone by sending it the messages</string>
     <string name="security_guide_button_text">Enable now</string>
     <string name="phone_security_add_number_title">Friend\'s number：</string>
@@ -890,7 +866,6 @@
     <string name="phone_security_instruct_formatedata">Wipe data: #formatdata</string>
     <string name="phone_security_instruct_lock">Lock apps: #lockmobile</string>
     <string name="phone_security_instruct_lock_description">Lock all apps</string>
-    <string name="no_open_instr_fromatedata">Delete all the data in mobile phone</string>
     <string name="quick_helper_pic_hide">Hide Images</string>
     <string name="quick_helper_app_uninstall">App Uninstall</string>
     <string name="quick_helper_app_backup">App Backup</string>
@@ -910,13 +885,11 @@
     <string name="sure_delete_one">Delete this intruder\'s photo?</string>
     <string name="secur_suc_instr_tip">Send orders to the stolen mobile</string>
     <string name="sim_change_msm_tip">Warning! Your mobile phone type is <xliff:g id="sim_chanage">%1$s</xliff:g>, the SIM card has been changed. If operated by yourself, please ignore this notification.【LEOMASTER】</string>
-    <string name="input_fren_number">Input Friend\'s number</string>
     <string name="secur_add_number_title">Add preset number</string>
     <string name="no_add_secur_number_toast_tip">Preset number</string>
     <string name="secur_advan_title">Advanced Features</string>
     <string name="secur_protect_time_tip">Enable advanced protection</string>
     <string name="backup_instr_dialog_content">Orders will be sent to friend’s phone via SMS, send now? </string>
-    <string name="send_msm_suce">The message was successfully sent!</string>
     <string name="secur_finish_no_complate_tip">You can use basic function now, for advance function, go to Device Manager</string>
     <string name="secur_backup_msm">You have selected to backup control orders via SMS: 1. lock mobile: #lockmobile 2. locate mobile position: #locateposition 3. send alarm: #alert 4. clear data: #formatdata 5. enable lock; tracking&amp;alarm&amp;erase: #onekey. If the mobile is lost, send corresponding orders to it. If you forget the orders, click "Backup remote control orders" to send this SMS again. [LEOMASTER]</string>
     <string name="secur_add_self_number_tip">The number you input is your mobile number, please input again</string>
@@ -927,7 +900,6 @@
     <string name="mi_op_tip">Please choose "Permissions" item in the permissions and select LEO Privacy, enable "Send SMS messages"and"Read SMS messages".</string>
     <string name="change_wifi_toast_safe">safety</string>
     <string name="intruderprotection_forbit_content">Due to the limitation of Android, the intruder prevention function could not work properly.</string>
-    <string name="adv_prot_open_suc_tip_cnt">LEO Privacy cannot be uninstalled under advanced protection,please disable"Advanced Protection" under "App Lock" settings.</string>
     <string name="home_guide_txt">Hide Images, Hide Videos, more functions here!</string>
     <string name="pic_video_guide_txt">Click the edit button and tick the images, then unhide images available.</string>
     <string name="call_filter_remove_from_blacklist_checkbox_title">You\'ll receive calls from this number, are you sure to delete it from blacklist?</string>
@@ -965,8 +937,6 @@
     <string name="batterymanage_scaning">Scanning</string>
     <string name="batterymanage_boosting">Optimizing</string>
     <string name="pri_pro_process">Optimize</string>
-    <string name="screen_protect_type_pop_two">Sufficient charged,keep the charging current stable to protect the battery</string>
-    <string name="screen_protect_type_pop_three">Nearly full, reduce the charging current to prolong the battery life</string>
     <string name="screen_protect_charing_text_one">Please connect a charger</string>
     <string name="scan_done_pic">Hiden images piece</string>
     <string name="grant_permission_guide">Authorize LEO Privacy to lock app.</string>
@@ -974,22 +944,13 @@
     <string name="battery_protect_setting_pow_sav_title">Auto power save optimization</string>
     <!--文案超长替换-->
     <string name="reinput_anwser">Wrong answer.Try again</string>
-    <string name="please_input_pswd">Enter password</string>
-    <string name="please_input_pswd_again">Verify password</string>
-    <string name="passwd_set_passwd_tip">Create a password </string>
-    <string name="use_gesture">Change to pattern </string>
     <string name="not_set">Unset</string>
-    <string name="lock_screen_auto_lock">Auto-Lock after screen locked</string>
-    <string name="clean_memory">Boost</string>
-    <string name="please_input_gesture_again">Confirm your pattern</string>
     <string name="first_set_passwd_hint">Create a password</string>
     <string name="app_setting_update">Check for updates</string>
     <string name="auto_lock">Auto-Lock after screen locked</string>
     <string name="new_app_lock_tip">Reminder of new apps</string>
-    <string name="app_setting_has_update">Check for updates</string>
     <string name="question_charsize_tip">Enter less than 60 characters.</string>
     <string name="anwser_charsize_tip">Enter less than 40 characters.</string>
-    <string name="feedback_content_tip">How can we help?</string>
     <string name="feedback_category_tip">Select a Question</string>
     <string name="app_no_image_hide">Click \"Add\" to select images</string>
     <string name="app_no_image">No image available</string>
@@ -1051,7 +1012,6 @@
     <string name="gud_page_call_fil">Auto recognise phone number，keep harassment away</string>
     <string name="ad_blk_fail">Failed</string>
     <string name="batterymanage_switch_noti_summary">Notify power consumption of apps</string>
-    <string name="recom_rgt_txt">Try</string>
     <string name="batterymanage_boosted_number">%1$s items were optimized</string>
     <!--3.5西安团队审校修改文案 end-->
 
