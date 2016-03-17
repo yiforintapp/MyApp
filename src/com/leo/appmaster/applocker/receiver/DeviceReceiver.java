@@ -4,17 +4,21 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
+import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.intruderprotection.WaterMarkUtils;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
@@ -40,12 +44,13 @@ import java.util.Locale;
 public class DeviceReceiver extends DeviceAdminReceiver {
 	private PrivacyDataManager mPDManager;
 	private IntrudeSecurityManager mISManager;
+	private LockManager mLockManager;
 	private FrameLayout mFlRoot = null;
 	private WindowManager mWm = null;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		super.onReceive(context,intent);
+		super.onReceive(context, intent);
 	    String action = intent.getAction();
 	    LeoLog.d("STONE_ADMIN", intent.getAction());
 	    if(action.equals(DeviceAdminReceiver.ACTION_DEVICE_ADMIN_ENABLED)){
@@ -61,7 +66,9 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 	}
 
 	@Override
-	public void onPasswordFailed(Context context, Intent intent) {
+	public void onPasswordFailed(final Context context, Intent intent) {
+		IntrudeSecurityManager.sFailTimesAtSystLock ++;
+		LeoLog.d("poha_admin", "sFailTimesAtSystLock = " + IntrudeSecurityManager.sFailTimesAtSystLock);
 		if (mPDManager == null) {
 			mPDManager = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
 		}
@@ -69,19 +76,24 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 			mISManager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
 		}
 		boolean isOpen = mISManager.getSystIntruderProtecionSwitch();
-//        PreferenceTable pt = PreferenceTable.getInstance();
-		int failedPswAttempts = 9999;
-		try {
-			DevicePolicyManager mgr = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-			failedPswAttempts = mgr.getCurrentFailedPasswordAttempts();
-//            mgr.isActivePasswordSufficient();
-		} catch (Exception e) {
+
+		int finalJudgeTimes = getFailTimesByApi(context);
+		LeoLog.d("poha_admin", "getFailTimesByApi = " + finalJudgeTimes);
+		if (getFailTimesByApi(context) == -1) {
+			finalJudgeTimes = IntrudeSecurityManager.sFailTimesAtSystLock;
+			LeoLog.d("poha_admin", "use value accumulated by myself = " + finalJudgeTimes);
 		}
 
-		if (isOpen && failedPswAttempts >= mISManager.getTimesForTakePhoto()) {
+
+		LeoLog.d("poha_admin", "IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = " + IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock);
+		LeoLog.d("poha_admin", "isOpen = " + isOpen);
+		LeoLog.d("poha_admin", "finalJudgeTimes = " + finalJudgeTimes);
+
+		if (!IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && isOpen && finalJudgeTimes >= mISManager.getTimesForTakePhoto()) {
 			try {
+				LeoLog.d("poha_admin", "to take pic");
+				IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = true;
 				final Context ctx = AppMasterApplication.getInstance();
-				Toast.makeText(ctx, "to add view 2", Toast.LENGTH_SHORT).show();
 				final CameraSurfacePreview cfp = new CameraSurfacePreview(ctx);
 				final WindowManager mWM = (WindowManager) AppMasterApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
 				if (mFlRoot == null) {
@@ -118,7 +130,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 										bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth(), bitmapt.getHeight(), m, true);
 										String timeStamp = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT).format(new Date());
 										//添加水印
-										bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp, WaterMarkUtils.ICON_SYSTEM, ctx);
+										bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp, IntrudeSecurityManager.ICON_SYSTEM, ctx);
 										//将bitmap压缩并保存
 										ByteArrayOutputStream baos = new ByteArrayOutputStream();
 										bitmapt.compress(Bitmap.CompressFormat.JPEG, 80, baos);
@@ -128,8 +140,9 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 											return;
 										}
 										String finalPicPath = "";
+										FileOutputStream fos = null;
 										try {
-											FileOutputStream fos = new FileOutputStream(photoSavePath);
+											fos = new FileOutputStream(photoSavePath);
 											fos.write(finalBytes);
 											fos.close();
 											// 隐藏图片
@@ -142,8 +155,17 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 											return;
 										}
 
-										IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath, "com.leo.appmaster", timeStamp);
+										IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath, IntrudeSecurityManager.ICON_SYSTEM, timeStamp);
 										mISManager.insertInfo(info);
+										PreferenceTable.getInstance().putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
+										Intent intent = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
+										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										intent.putExtra("pkgname", "from_systemlock");
+										if (mLockManager == null) {
+											mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+										}
+										mLockManager.filterPackage(context.getPackageName(), 1000);
+										context.startActivity(intent);
 									}
 								});
 							}
@@ -152,7 +174,6 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 				}, 500);
 
 			} catch (Throwable e) {
-				Toast.makeText(AppMasterApplication.getInstance(), e.toString(), Toast.LENGTH_SHORT).show();
 			} finally {
 				if (mFlRoot != null && mWm != null) {
 					mWm.removeView(mFlRoot);
@@ -178,6 +199,14 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 //	public static boolean isActivePasswordSufficient(Context context) {
 //		return ((DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE)).isActivePasswordSufficient();
 //	}
+
+	public static int getFailTimesByApi(Context context) {
+		try{
+			return ((DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE)).getCurrentFailedPasswordAttempts();
+		} catch (Throwable e) {
+			return -1;
+		}
+	}
 
 	private File getPhotoSavePath() {
 		File picDir = new File(Environment.getExternalStorageDirectory()

@@ -2,6 +2,7 @@ package com.leo.appmaster.intruderprotection;
 
 import android.animation.LayoutTransition;
 import android.app.admin.DevicePolicyManager;
+import android.app.trust.ITrustManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,6 +56,7 @@ import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -81,6 +83,8 @@ import java.util.Date;
 import java.util.List;
 
 public class IntruderCatchedActivity extends BaseActivity implements View.OnClickListener {
+    private final int REQUEST_CODE_TO_REQUEST_ADMIN = 1;
+    private LEOAnimationDialog mMessageDialog;
     private List<PhotoAibum> mAlbumList = null;
     private ImageLoader mImageLoader;
     private String mPkgName;
@@ -194,8 +198,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             startActivity(intent);
+        } else if ("from_systemlock".equals(mPkgName)) {
+            finish();
         } else {
-
             mLockManager.filterPackage(mPkgName, 2000);
         }
         finish();
@@ -211,6 +216,44 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         updateTimesToCatch();
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiver.isActive(IntruderCatchedActivity.this)) {
+            mISManager.setSystIntruderProtectionSwitch(true);
+            updateTipStatus();
+            openAdvanceProtectDialogHandler();
+        }
+    }
+
+    private void openAdvanceProtectDialogHandler() {
+        boolean isTip = AppMasterPreference.getInstance(this)
+                .getAdvanceProtectOpenSuccessDialogTip();
+        if (isTip) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
+            openAdvanceProtectDialogTip();
+        }
+    }
+
+    private void openAdvanceProtectDialogTip() {
+        if (mMessageDialog == null) {
+            mMessageDialog = new LEOAnimationDialog(this);
+            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mMessageDialog != null) {
+                        mMessageDialog = null;
+                    }
+                    AppMasterPreference.getInstance(IntruderCatchedActivity.this)
+                            .setAdvanceProtectOpenSuccessDialogTip(false);
+                }
+            });
+        }
+        String content = getString(R.string.prot_open_suc_tip_cnt);
+        mMessageDialog.setContent(content);
+        mMessageDialog.show();
+    }
 
     /**
      * 更新总的抓拍次数
@@ -245,36 +288,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    // 先别删 如果以后需要广告 直接打开注释就可以了
-    // private void loadAD() {
-    // LeoLog.e("poha", "loading ad...");
-    // mAdEngine = MobvistaEngine.getInstance(this);
-    // mAdEngine.loadMobvista(Constants.UNIT_ID_58, new MobvistaListener() {
-    // @Override
-    // public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-    // if (code == MobvistaEngine.ERR_OK && campaign != null) {
-    // ImageView admain = (ImageView)
-    // mADLayout.findViewById(R.id.iv_ad_mainpic);
-    // mImageLoader.displayImage(campaign.getImageUrl(), admain);
-    // ImageView adicon = (ImageView)
-    // mADLayout.findViewById(R.id.iv_ad_iconpic);
-    // mImageLoader.displayImage(campaign.getIconUrl(), adicon);
-    // TextView appname = (TextView) mADLayout.findViewById(R.id.tv_appname);
-    // appname.setText(campaign.getAppName());
-    // TextView appdesc = (TextView) mADLayout.findViewById(R.id.tv_appdesc);
-    // appdesc.setText(campaign.getAppDesc());
-    // TextView appcall = (TextView) mADLayout.findViewById(R.id.tv_ad_call);
-    // appcall.setText(campaign.getAdCall());
-    // mAdEngine.registerView(Constants.UNIT_ID_58, appcall);
-    // mLlFiveStars.setVisibility(View.GONE);
-    // mADLayout.setVisibility(View.VISIBLE);
-    // }
-    // }
-    // @Override
-    // public void onMobvistaClick(Campaign campaign) {
-    // }
-    // });
-    // }.
     private String timeStampToAMPM(String timeStamp) {
         SimpleDateFormat sdf = new SimpleDateFormat(
                 Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
@@ -830,7 +843,12 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         try {
             PackageManager pm = getPackageManager();
             String packageName = mInfosSorted.get(0).getFromAppPackage();
-            Drawable applicationIcon = AppUtil.getAppIcon(pm, packageName);
+            Drawable applicationIcon;
+            if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+            } else {
+                applicationIcon = AppUtil.getAppIcon(pm, packageName);
+            }
             mIvAppIntruded.setImageDrawable(applicationIcon);
             String label = AppUtil.getAppLabel(pm, packageName);
             String newestCatchTipsS = getResources().getString(R.string.newest_catch_tip);
@@ -954,11 +972,12 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     }
 
     private void requestDeviceAdmin() {
+        mLockManager.filterSelfOneMinites();
+        mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
         ComponentName mAdminName = new ComponentName(IntruderCatchedActivity.this, DeviceReceiver.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
-        startActivity(intent);
-        mAskOpenDeviceAdminDialog.dismiss();
+        startActivityForResult(intent, REQUEST_CODE_TO_REQUEST_ADMIN);
     }
 
     @Override

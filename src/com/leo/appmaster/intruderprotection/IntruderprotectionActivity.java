@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -50,6 +51,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -61,6 +63,8 @@ import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.PauseOnScrollListener;
 
 public class IntruderprotectionActivity extends BaseActivity {
+    private final int REQUEST_CODE_TO_REQUEST_ADMIN = 1;
+    private LEOAnimationDialog mMessageDialog;
     private ListView mLvPhotos;
     private CommonToolbar mctb;
     private BaseAdapter mAdapter;
@@ -279,8 +283,9 @@ public class IntruderprotectionActivity extends BaseActivity {
         holder1.tvTimeStamp.setText(ymdFomatString);
         // 加载照片
         String filePath = mInfosSorted.get(position).getFilePath();
+        String uri = ImageDownloader.Scheme.CRYPTO.wrap(filePath);
         final ImageView pic1 = holder1.ivIntruderPic;
-        mImageLoader.displayImage("file:///" + filePath, pic1, mImageOptions);
+        mImageLoader.displayImage(uri, pic1, mImageOptions);
         pic1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,9 +300,14 @@ public class IntruderprotectionActivity extends BaseActivity {
         });
         // 图片加入显示图标和应用名的UI
         PackageManager pm = getPackageManager();
+        String packageName = mInfosSorted.get(position).getFromAppPackage();
+        Drawable applicationIcon;
         try {
-            Drawable applicationIcon = AppUtil.getAppIcon(pm,
-                    mInfosSorted.get(position).getFromAppPackage());
+            if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+            } else {
+                applicationIcon = AppUtil.getAppIcon(pm, packageName);
+            }
             ImageView iv2 = (ImageView) (holder1.rlMask
                     .findViewById(R.id.iv_intruder_appicon));
             iv2.setImageDrawable(applicationIcon);
@@ -331,9 +341,14 @@ public class IntruderprotectionActivity extends BaseActivity {
         });
         // 图标和应用名
         PackageManager pm = getPackageManager();
+        String packageName = mInfosSorted.get(position).getFromAppPackage();
+        Drawable applicationIcon;
         try {
-            Drawable applicationIcon = AppUtil.getAppIcon(pm,
-                    mInfosSorted.get(position).getFromAppPackage());
+            if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+            } else {
+                applicationIcon = AppUtil.getAppIcon(pm, packageName);
+            }
             ImageView iv2 = (ImageView) (holder2.rlMask
                     .findViewById(R.id.iv_intruder_appicon));
             iv2.setImageDrawable(applicationIcon);
@@ -675,6 +690,46 @@ public class IntruderprotectionActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiver.isActive(IntruderprotectionActivity.this)) {
+            mImanager.setSystIntruderProtectionSwitch(true);
+            updateTipStatus();
+            openAdvanceProtectDialogHandler();
+        }
+    }
+
+    private void openAdvanceProtectDialogHandler() {
+        boolean isTip = AppMasterPreference.getInstance(this)
+                .getAdvanceProtectOpenSuccessDialogTip();
+        if (isTip) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
+            openAdvanceProtectDialogTip();
+        }
+    }
+
+
+
+    private void openAdvanceProtectDialogTip() {
+        if (mMessageDialog == null) {
+            mMessageDialog = new LEOAnimationDialog(this);
+            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mMessageDialog != null) {
+                        mMessageDialog = null;
+                    }
+                    AppMasterPreference.getInstance(IntruderprotectionActivity.this)
+                            .setAdvanceProtectOpenSuccessDialogTip(false);
+                }
+            });
+        }
+        String content = getString(R.string.prot_open_suc_tip_cnt);
+        mMessageDialog.setContent(content);
+        mMessageDialog.show();
+    }
+
     private void showAskOpenDeviceAdminDialog() {
         if (mAskOpenDeviceAdminDialog == null) {
             mAskOpenDeviceAdminDialog = new LEOAlarmDialog(IntruderprotectionActivity.this);
@@ -695,11 +750,12 @@ public class IntruderprotectionActivity extends BaseActivity {
     }
 
     private void requestDeviceAdmin() {
+        mLockManager.filterSelfOneMinites();
+        mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
         ComponentName mAdminName = new ComponentName(IntruderprotectionActivity.this, DeviceReceiver.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
-        startActivity(intent);
-        mAskOpenDeviceAdminDialog.dismiss();
+        startActivityForResult(intent,REQUEST_CODE_TO_REQUEST_ADMIN);
     }
 
     private void changeToGuideFinishedLayout() {

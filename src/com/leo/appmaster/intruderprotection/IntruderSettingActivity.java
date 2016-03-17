@@ -103,8 +103,10 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
             public void onClick(DialogInterface dialog, int which) {
                 mISManager.setSystIntruderProtectionSwitch(false);
                 mIvSwitchSyst.setImageResource(R.drawable.switch_off);
+                mConfirmCloseDialog.show();
             }
         });
+        mConfirmCloseDialog.show();
     }
 
     @Override
@@ -178,11 +180,12 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     }
 
     private void requestDeviceAdmin() {
+        mLockManager.filterSelfOneMinites();
+        mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
         ComponentName mAdminName = new ComponentName(IntruderSettingActivity.this, DeviceReceiver.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
         startActivityForResult(intent, REQUEST_CODE_TO_REQUEST_ADMIN);
-        mAskOpenDeviceAdminDialog.dismiss();
 
     }
 

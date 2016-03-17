@@ -21,10 +21,10 @@ import android.graphics.drawable.Drawable;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.utils.AppUtil;
 
 public class WaterMarkUtils {
-    public static final String ICON_SYSTEM = "icon_system";
 
     /**
      * 将源bitmap打上透明的水印，包含时间 入侵的应用的图标 pg的logo
@@ -81,7 +81,7 @@ public class WaterMarkUtils {
         }
         //获得并画出入侵的应用的水印
         float fitRate = photoBitmap.getWidth() / 240f;
-        if (ICON_SYSTEM.equals(packageName)) {
+        if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
             appIcon = context.getResources().getDrawable(R.drawable.intruder_system_icon);
         } else {
             try {
