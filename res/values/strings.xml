@@ -624,6 +624,7 @@
 
     <!-- 3.3.1 -->
 
+
     <string-array name="default_psw_protect_entrys_new">
         <item>What\'s my lucky number?</item>
         <item>What\'s my favorite movie?</item>
