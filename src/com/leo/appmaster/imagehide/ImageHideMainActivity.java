@@ -245,7 +245,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     @Override
     protected void onStop() {
         super.onStop();
-        mImageLoader.stop();
     }
 
     @Override
