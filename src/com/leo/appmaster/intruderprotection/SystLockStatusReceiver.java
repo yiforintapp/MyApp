@@ -40,6 +40,12 @@ public class SystLockStatusReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context,"failtimes reset!!",Toast.LENGTH_LONG);
+        String action = intent.getAction();
+        if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_USER_PRESENT.equals(action)) {
+            IntrudeSecurityManager.sFailTimesAtSystLock = 0;
+        }
+//        }
 //        if (mPDManager == null) {
 //            mPDManager = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
 //        }

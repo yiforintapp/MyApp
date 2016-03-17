@@ -11,6 +11,7 @@ import com.leo.appmaster.applocker.IntruderPhotoInfo;
  */
 public abstract class IntrudeSecurityManager extends Manager {
     public final static int VALUE_SCORE = 4;
+    public static int sFailTimesAtSystLock = 0;
     
     @Override
     public String description() {

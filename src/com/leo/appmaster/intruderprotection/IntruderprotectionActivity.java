@@ -30,23 +30,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
-import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
-import com.leo.appmaster.battery.BatteryMainActivity;
-import com.leo.appmaster.callfilter.CallFIlterUIHelper;
-import com.leo.appmaster.callfilter.CallFilterToast;
-import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -59,7 +54,6 @@ import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PropertyInfoUtil;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -98,6 +92,8 @@ public class IntruderprotectionActivity extends BaseActivity {
 //    private final int TIMES_4 = 5;
     private RippleView mRvOpenSystLockProt;
     private RelativeLayout mRlTipContent;
+    private LinearLayout mLlGuide;
+    private LinearLayout mLlGuideFinished;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +165,8 @@ public class IntruderprotectionActivity extends BaseActivity {
             mLvPhotos.addHeaderView(mHeader);
             mRvOpenSystLockProt = (RippleView) mHeader.findViewById(R.id.rv_open);
             mRlTipContent = (RelativeLayout) mHeader.findViewById(R.id.rl_intrudercatch_tip);
+            mLlGuide = (LinearLayout) mHeader.findViewById(R.id.ll_guide_tip);
+            mLlGuideFinished = (LinearLayout) mHeader.findViewById(R.id.ll_guide_finished);
         }
         // 初始化imageloader
         mImageLoader = ImageLoader.getInstance();
@@ -705,7 +703,9 @@ public class IntruderprotectionActivity extends BaseActivity {
     }
 
     private void changeToGuideFinishedLayout() {
-        Toast.makeText(IntruderprotectionActivity.this,"change to guide finished tip",Toast.LENGTH_SHORT).show();
+        mImanager.setSystIntruderProtectionSwitch(true);
+        mLlGuide.setVisibility(View.INVISIBLE);
+        mLlGuideFinished.setVisibility(View.VISIBLE);
     }
 
     // 显示改变失败XX次拍照的对话框

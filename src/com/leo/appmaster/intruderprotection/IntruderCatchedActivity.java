@@ -110,6 +110,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private static final int TIMES_TO_CATCH_4 = 5;
     private boolean mNeedIntoHomeWhenFinish = false;
     private FiveStarsLayout mLayout;
+    private RippleView mRvSetting;
 
     private FrameLayout mShareLayout; // 分享layout
     private TextView mShareText;  //分享按钮
@@ -184,7 +185,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             startActivity(intent);
         } else {
-            
+
             mLockManager.filterPackage(mPkgName, 2000);
         }
         finish();
@@ -308,6 +309,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
      * create时的初始化(不需要变化的UI)
      */
     private void init() {
+        mRvSetting = (RippleView) findViewById(R.id.rv_setting);
         mRvHeader = (RelativeLayout) findViewById(R.id.rl_header);
         mSvMain = (ScrollView) findViewById(R.id.sv_intrudercatch_main);
         mRlNopic = (RelativeLayout) findViewById(R.id.rl_nopic);
@@ -407,7 +409,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            
+
         }
 
         @Override
@@ -553,7 +555,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         LeoLog.i("IntruderCatchedActivity", "is lastestValid : preference last one hashCode = "+savedHash);
         LeoLog.i("IntruderCatchedActivity", "is lastestValid : index 0's photoInf hashCode = "+photoInfo.getFilePath().hashCode());
         return savedHash == photoInfo.getFilePath().hashCode();
-        
+
     }
 
     /**
@@ -589,7 +591,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                         IoUtils.closeSilently(inputStream);
                     }
                     runOnUiThread(new Runnable() {
-                        
+
                         @Override
                         public void run() {
                             mIvNewestPhoto.setImageBitmap(bitmap);
@@ -618,8 +620,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     });
                 }
             });
-            
-            
+
+
 //            ThreadManager.getUiThreadHandler().post(new Runnable() {
 //                @Override
 //                public void run() {
@@ -898,6 +900,10 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_capture_quit");
                 onBackPressed();
+                break;
+            case R.id.rv_setting:
+                Intent intent2 = new Intent(IntruderCatchedActivity.this,IntruderSettingActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.rv_change_times:
                 showChangeTimesDialog();

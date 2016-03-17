@@ -62,6 +62,26 @@
                     android:src="@drawable/close_in_catch" />
             </com.leo.appmaster.ui.RippleView>
 
+            <com.leo.appmaster.ui.RippleView
+                android:layout_alignParentRight="true"
+                android:id="@+id/rv_setting"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="12dp"
+                app:rippleColor="@color/button_blue_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
+
+                <ImageView
+                    android:id="@+id/iv_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/setup_icon" />
+            </com.leo.appmaster.ui.RippleView>
+
             <TextView
                 android:id="@+id/tv_times_of_catch"
                 android:layout_width="match_parent"
