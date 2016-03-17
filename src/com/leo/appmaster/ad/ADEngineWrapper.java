@@ -5,11 +5,15 @@ import android.view.View;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.db.PrefTableHelper;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
+import java.util.Random;
 import java.util.TreeMap;
 
 /**
@@ -54,18 +58,65 @@ public class ADEngineWrapper {
         return sInstance;
     }
 
+    /**
+     * 批量加载广告，目前仅仅用于Lock页三个大图, 一次概率控制三个广告展示
+     * @param sources
+     * @param unitIds
+     * @param listeners
+     * @param forceLoad 不管概率如何，强制加载
+     */
+    public void loadAdBatch(int[] sources, String[] unitIds, WrappedAdListener[] listeners, boolean forceLoad) {
+        if (sources == null || sources.length <= 0 || unitIds == null || unitIds.length <=0 || sources.length != unitIds.length) {
+            return;
+        }
+        if (!forceLoad && !isHitProbability(unitIds[0])) {
+            // 未命中显示概率，不显示广告
+            if (listeners != null) {
+                for (int i = 0; i < listeners.length; i++) {
+                    WrappedAdListener listener = listeners[i];
+                    if (listener == null) {
+                        continue;
+                    }
+                    listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, "probability is not hit.");
+                }
+            }
+            return;
+        }
+        for (int i = 0; i < sources.length; i++) {
+            WrappedAdListener listener = null;
+            try {
+                listener = listeners[i];
+            } catch (Exception e) {
+                // 可以不用传listener进来，catch住所有异常忽略掉
+            }
+            loadAdForce(sources[i], unitIds[i], listener);
+        }
+    }
+
+
     /***
      * 请求广告数据
      */
     public void loadAd (final int source, final String unitId, final WrappedAdListener listener) {
-		LeoLog.e(TAG, "AD TYPE :" + source + " AD ID: " + unitId);
-		
-		String sdk = (source == 2) ? "Max" : "Mobvista";
-		TreeMap<String, String> map = new TreeMap<String, String>();
-		map.put("engine type", sdk);
-		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "loadad", SDKWrapper.P1, "start_to_loadad", sdk, map);
-        
-		if (source == SOURCE_MAX) {
+        if (!isHitProbability(unitId)) {
+            // 未命中显示概率，不显示广告
+            if (listener != null) {
+                listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, "probability is not hit.");
+            }
+            return;
+        }
+
+        loadAdForce(source, unitId, listener);
+    }
+
+    private void loadAdForce(final int source, final String unitId, final WrappedAdListener listener) {
+        LeoLog.e(TAG, "AD TYPE :" + source + " AD ID: " + unitId);
+
+        String sdk = (source == 2) ? "Max" : "Mobvista";
+        TreeMap<String, String> map = new TreeMap<String, String>();
+        map.put("engine type", sdk);
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "loadad", SDKWrapper.P1, "start_to_loadad", sdk, map);
+        if (source == SOURCE_MAX) {
             mMaxEngine.loadMobvista(unitId, new LEOAdEngine.LeoListener() {
                 @Override
                 public void onLeoAdLoadFinished(int code, LEONativeAdData campaign, String msg) {
@@ -98,10 +149,23 @@ public class ADEngineWrapper {
                 public void onMobvistaClick(Campaign campaign, String unitID) {
                     listener.onWrappedAdClick(WrappedCampaign.fromMabVistaSDK(campaign), unitID);
                 }
-				
-				
+
+
             });
         }
+    }
+
+    /**
+     * 此次随机是否命中展示概率
+     * @return
+     */
+    private boolean isHitProbability(String unitId) {
+        int local = new Random().nextInt(ADShowTypeRequestManager.AD_PROBABILITY_MAX + 1);
+        int server = PrefTableHelper.getAdProbability();
+
+        boolean hit = local <= server;
+        LeoLog.d(TAG, "[" + unitId + "] probability hit: " + hit + "; localRandom = " + local + "; server = " + server);
+        return hit;
     }
 
     public void registerView (int source, View view, String unitId) {
