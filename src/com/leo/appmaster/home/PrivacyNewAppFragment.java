@@ -15,9 +15,13 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.ListAppLockAdapter;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.XHeaderView;
@@ -37,11 +41,8 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
 
     private ListView mAppList;
     private LockManager mLockMgr;
-
     private List<AppItemInfo> mDataList;
-
     private String mAppString;
-
     private HomeActivity mMianActivity;
 
     public static PrivacyNewAppFragment newInstance() {
@@ -61,8 +62,17 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
 
         //change the topPos
         mDataList = changeTopPos(mDataList);
-
         Collections.sort(mDataList, new RecommentAppLockListActivity.DefalutAppComparator());
+
+        //first time , show wifi && bluetooth
+        WifiLockSwitch wifiSwitch = new WifiLockSwitch();
+        BlueToothLockSwitch blueToothLockSwitch = new BlueToothLockSwitch();
+        boolean isShowed = wifiSwitch.getScreenShowed();
+//        if (!isShowed) {
+//            List<AppItemInfo> switchList = getSwitchList(wifiSwitch, blueToothLockSwitch);
+//            mDataList.addAll(0, switchList);
+//        }
+
 
         if (mAdaper != null) {
             mAdaper.setList(list);
@@ -224,4 +234,25 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         }
     }
 
+    public List<AppItemInfo> getSwitchList(WifiLockSwitch wifiSwitch, BlueToothLockSwitch blueToothLockSwitch) {
+        List<AppItemInfo> switchList = new ArrayList<AppItemInfo>();
+
+        AppItemInfo wifiInfo = new AppItemInfo();
+        wifiInfo.label = AppMasterApplication.getInstance().getResources().getString(R.string.app_lock_list_switch_wifi);
+        wifiInfo.packageName = SwitchGroup.WIFI_SWITCH;
+        wifiInfo.icon = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
+//        wifiInfo.isLocked = wifiSwitch.isLockNow(mLockMgr.getCurLockMode());
+        wifiInfo.topPos = wifiSwitch.getLockNum();
+        switchList.add(wifiInfo);
+
+        AppItemInfo bluetoothInfo = new AppItemInfo();
+        bluetoothInfo.label = AppMasterApplication.getInstance().getString(R.string.app_lock_list_switch_bluetooth);
+        bluetoothInfo.packageName = SwitchGroup.BLUE_TOOTH_SWITCH;
+        bluetoothInfo.icon = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
+//        bluetoothInfo.isLocked = blueToothLockSwitch.isLockNow(mLockMgr.getCurLockMode());
+        wifiInfo.topPos = blueToothLockSwitch.getLockNum();
+        switchList.add(bluetoothInfo);
+
+        return switchList;
+    }
 }

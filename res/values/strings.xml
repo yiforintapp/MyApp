@@ -1068,4 +1068,5 @@
     <string name="app_lock_list_switch_title_one">开关</string>
     <string name="app_lock_list_switch_title_two">应用</string>
     <string name="intruder_intruduction">在解锁应用/手机时，输错密码将会自动拍照</string>
+    <string name="scan_app_title_switch">发现%1$s个应用和开关</string>
 </resources>

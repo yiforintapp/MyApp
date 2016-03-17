@@ -16,7 +16,7 @@ public abstract class SwitchGroup {
 
     public final static String WIFI_SWITCH = "com.wifi.lock";
     public final static String BLUE_TOOTH_SWITCH = "con.bluetooth.lock";
-
+    public final static String SCREEN_SHOWED = "screen_showed";
 
     public AppMasterApplication mContext;
     public PreferenceTable mPreTable;
@@ -36,4 +36,7 @@ public abstract class SwitchGroup {
 
     protected abstract boolean isLockNow(LockMode mode);
 
+    public boolean getScreenShowed() {
+        return mPreTable.getBoolean(SCREEN_SHOWED, false);
+    }
 }
