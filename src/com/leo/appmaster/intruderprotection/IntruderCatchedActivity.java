@@ -636,8 +636,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                             mLlMainMask.setVisibility(View.VISIBLE);
                             ImageView mainIcon = (ImageView) mLlMainMask
                                     .findViewById(R.id.iv_appicon);
-                            Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
-                                    .get(0).getFromAppPackage());
+                            String pkg = mInfosSorted.get(0).getFromAppPackage();
+                            Drawable applicationIcon = null;
+                            if (IntrudeSecurityManager.ICON_SYSTEM.equals(pkg)) {
+                                applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+                            } else {
+                                applicationIcon = AppUtil.getAppIcon(pm, pkg);
+                            }
                             if (applicationIcon != null) {
                                 mainIcon.setImageDrawable(applicationIcon);
                             }
@@ -799,8 +804,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
                 PackageManager pm = getPackageManager();
                 try {
-                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
-                            .get(position + 1).getFromAppPackage());
+                    String pkg = mInfosSorted.get(position + 1).getFromAppPackage();
+                    Drawable applicationIcon = null;
+                    if (IntrudeSecurityManager.ICON_SYSTEM.equals(pkg)) {
+                        applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+                    } else {
+                        applicationIcon = AppUtil.getAppIcon(pm, pkg);
+                    }
                     ImageView iv2 = (ImageView) (llMask.findViewById(R.id.iv_appicon));
                     iv2.setImageDrawable(applicationIcon);
                     // TextView tv2 = (TextView)
@@ -846,15 +856,18 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         try {
             PackageManager pm = getPackageManager();
             String packageName = mInfosSorted.get(0).getFromAppPackage();
+            String label;
             Drawable applicationIcon;
             if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
                 applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+                label = getString(R.string.mobile_phone);
             } else {
                 applicationIcon = AppUtil.getAppIcon(pm, packageName);
+                label = AppUtil.getAppLabel(pm, packageName);
             }
             mIvAppIntruded.setImageDrawable(applicationIcon);
-            String label = AppUtil.getAppLabel(pm, packageName);
             String newestCatchTipsS = getResources().getString(R.string.newest_catch_tip);
+
             String newestCatchTipsD = String.format(newestCatchTipsS, label);
             mTvNewestCatchTip.setText(newestCatchTipsD);
         } catch (Exception e) {

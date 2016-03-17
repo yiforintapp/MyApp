@@ -110,8 +110,8 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 					mFlRoot = new FrameLayout(ctx);
 				}
 				WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams();
-				localLayoutParams.height = 100;
-				localLayoutParams.width = 100;
+				localLayoutParams.height = 1;
+				localLayoutParams.width = 1;
 				localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
 				localLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
 				mFlRoot.addView(cfp);
