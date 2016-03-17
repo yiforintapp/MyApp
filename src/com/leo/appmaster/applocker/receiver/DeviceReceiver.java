@@ -167,6 +167,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 
 										IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath, IntrudeSecurityManager.ICON_SYSTEM, timeStamp);
 										mISManager.insertInfo(info);
+										mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
 										PreferenceTable.getInstance().putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
 										Intent intent = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
 										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
