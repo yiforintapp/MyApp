@@ -56,6 +56,7 @@ public class DeviceManagerImpl extends DeviceManager {
 
     private WifiManager mWifimanager;
     private BluetoothAdapter mBluetoothAdapter;
+    private boolean isEnableIng = false;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -106,11 +107,20 @@ public class DeviceManagerImpl extends DeviceManager {
             switch (wifiState) {
                 case WifiManager.WIFI_STATE_ENABLING:
                     LeoLog.d(TAG, "WIFI_STATE_ENABLING");
+                    isEnableIng = true;
                     readyShowLock(WIFI_TURN_ON);
                     break;
                 case WifiManager.WIFI_STATE_ENABLED:
                     LeoLog.d(TAG, "WIFI_STATE_ENABLED");
+
+                    //fix bug , some will not go ENABLING
+                    if (!isEnableIng) {
+                        readyShowLock(WIFI_TURN_ON);
+                    }
+
+                    isEnableIng = false;
                     unlockOpenWifiDone = false;
+
                     break;
                 case WifiManager.WIFI_STATE_DISABLING:
                     LeoLog.d(TAG, "WIFI_STATE_DISABLING");
