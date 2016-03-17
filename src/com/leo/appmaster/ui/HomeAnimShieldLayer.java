@@ -332,6 +332,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             if (mShieldAlpha < 255) {
                 drawPercent(canvas);
             } else {
+                mScanningPercent = -1;
                 drawShieldScore(canvas);
                 drawShieldWave(canvas);
             }

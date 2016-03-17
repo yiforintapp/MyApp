@@ -2,30 +2,19 @@
 package com.leo.appmaster.privacycontact;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.widget.ImageView;
-
-import com.leo.appmaster.R;
-import com.leo.appmaster.utils.LeoLog;
 
 public class CircleImageViewTwo extends ImageView {
     /**
@@ -112,7 +101,7 @@ public class CircleImageViewTwo extends ImageView {
 //         * 长度如果不一致，按小的值进行压缩
 //         */
         int moreBig = max / 8;
-        mSrc = Bitmap.createScaledBitmap(mSrc, max + moreBig, max + moreBig, false);
+        mSrc = Bitmap.createScaledBitmap(mSrc, max + moreBig, max + moreBig, true);
 //        canvas.drawBitmap(mSrc, -mSrc.getWidth() / 2, -mSrc.getHeight() / 2, null);
         canvas.drawBitmap(createCircleImage(mSrc, max, moreBig), 0, 0, null);
 
@@ -129,6 +118,7 @@ public class CircleImageViewTwo extends ImageView {
     private Bitmap createCircleImage(Bitmap source, int max, int more) {
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
+        paint.setDither(true);
         paint.setColor(Color.WHITE);
         Bitmap target = Bitmap.createBitmap(max, max, Bitmap.Config.ARGB_8888);
         /**
