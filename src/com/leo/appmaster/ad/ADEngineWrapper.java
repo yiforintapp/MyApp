@@ -8,10 +8,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.db.PrefTableHelper;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +17,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
 /**
@@ -118,21 +115,38 @@ public class ADEngineWrapper {
     }
 
     private void loadAdForce(final int source, final String unitId, final WrappedAdListener listener) {
-        LeoLog.e(TAG, "AD TYPE :" + source + " AD ID: " + unitId);
-
-        String sdk = (source == 2) ? "Max" : "Mobvista";
-        TreeMap<String, String> map = new TreeMap<String, String>();
-        map.put("engine type", sdk);
-        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "loadad", SDKWrapper.P1, "start_to_loadad", sdk, map);
-        if (source == SOURCE_MAX) {
+		LeoLog.e(TAG, "AD TYPE :" + source + " AD ID: " + unitId);
+		
+		String sdk = (source == 2) ? "Max" : "Mobvista";
+		final TreeMap<String, String> map = new TreeMap<String, String>();
+		map.put("engineType", sdk);
+		map.put("unitId", unitId);
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "start_to_loadad", sdk, map);
+        
+		if (source == SOURCE_MAX) {
             mMaxEngine.loadMobvista(unitId, new LEOAdEngine.LeoListener() {
                 @Override
                 public void onLeoAdLoadFinished(int code, LEONativeAdData campaign, String msg) {
                     LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
                     WrappedCampaign wrappedCampaign = null;
-                    if (code == LEOAdEngine.ERR_OK) {
+					
+                    
+					if (code == LEOAdEngine.ERR_OK) {
                         wrappedCampaign = WrappedCampaign.fromMaxSDK(campaign);
-                    }
+						
+						if (wrappedCampaign != null) {
+							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "state is suc and campaign is ready", null);
+						} else {
+							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "state is suc and campaign is null", null);
+						}
+						
+					} else {
+
+						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "state is faild code: " + code, null);
+					}
+					
+					
+					
                     listener.onWrappedAdLoadFinished(code, wrappedCampaign, msg);
                 }
 
@@ -144,7 +158,7 @@ public class ADEngineWrapper {
         } else {
             mMobEngine.loadMobvista(unitId, new MobvistaEngine.MobvistaListener() {
                 @Override
-                public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                public void onMobvistaFinished(int code, com.mobvista.sdk.m.core.entity.Campaign campaign, String msg) {
                     LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
                     WrappedCampaign wrappedCampaign = null;
                     if (code == MobvistaEngine.ERR_OK) {
@@ -154,7 +168,7 @@ public class ADEngineWrapper {
                 }
 
                 @Override
-                public void onMobvistaClick(Campaign campaign, String unitID) {
+                public void onMobvistaClick(com.mobvista.sdk.m.core.entity.Campaign campaign, String unitID) {
                     listener.onWrappedAdClick(WrappedCampaign.fromMabVistaSDK(campaign), unitID);
                 }
 

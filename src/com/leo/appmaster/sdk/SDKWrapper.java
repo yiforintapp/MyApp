@@ -4,6 +4,7 @@ package com.leo.appmaster.sdk;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
+import android.provider.Settings;
 
 import com.baidu.mobstat.StatService;
 import com.leo.analytics.LeoAgent;
@@ -18,6 +19,7 @@ import com.leo.push.PushManager;
 import com.tendcloud.tenddata.TCAgent;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 
 public class SDKWrapper {
@@ -237,10 +239,10 @@ public class SDKWrapper {
     /**
      * add an event that we will push to log service
      *
-     * @param ctx              activity context
+     * @param context              activity context
      * @param level            log level for leoSDK, can be LeoStat.P0 ~ LeoStat.P4
-     * @param eventID          event type of this event
-     * @param eventDescription detail of this event
+     * @param id          event type of this event
+     * @param description detail of this event
      */
     public static void addEvent(Context context, int level, String id, String description) {
         // AM-727
@@ -267,9 +269,17 @@ public class SDKWrapper {
 	 * @param extra detail of this extra data
 	 */
 	public static void addEvent(Context context, String exName, int level, String id, String description, Map<String, String> extra) {
+		//只是针对max 广告发起的extra 的范畴才要主动加上android_id
+		if (id != null && id.startsWith("max_ad")) {
+			if (extra == null) {
+				extra = new TreeMap<String, String>();
+			}
+			String android_id = Settings.Secure.getString(AppMasterApplication.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);
+			extra.put("android_id", android_id);
+		}
 		com.leo.stat.StatService.onExtraEvent(context, exName, id, description, level, extra);
 	}
-
+	
     public static void endSession(Context ctx) {
         // LeoStat.endSession();
     }

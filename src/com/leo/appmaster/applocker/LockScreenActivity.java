@@ -1357,10 +1357,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     @Override
                     public void onBitmapLoadStarted(String url) {
                         LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]start to load preview for: " + url);
+
+						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
+								"max_ad_load_image", SDKWrapper.P1, "fetchImage", "prepare for load image", null);
                     }
 
                     @Override
                     public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
+						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), "max_ad_load_image", 
+								SDKWrapper.P1, "fetchImage", "image size: " + loadedImage.getByteCount(), null);
+						
                         ThreadManager.executeOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -1449,6 +1455,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     @Override
                     public void onBitmapLoadFailed(String url) {
                         LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + url);
+						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
+								"max_ad_load_image", SDKWrapper.P1, "fetchImage", "load image failed", null);
                     }
 
                     @Override
@@ -1467,6 +1475,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
          */
         @Override
         public void onWrappedAdClick(WrappedCampaign campaign, final String unitID) {
+			SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
+					"max_ad_click", SDKWrapper.P1, "timeOfClick", "click", null);
             ThreadManager.executeOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -2832,7 +2842,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     snapforClick((ViewGroup) v.getParent());
                 }
             });
-
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", "adShow", null);
             return true;
         }
 

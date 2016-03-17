@@ -2,16 +2,20 @@ package com.leo.appmaster.ad;
 
 import android.content.Context;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.leoadlib.MaxSdk;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 //import com.mobvista.sdk.m.core.MobvistaAd;
 //import com.mobvista.sdk.m.core.MobvistaAdWall;
@@ -343,7 +347,14 @@ public class LEOAdEngine {
 
 		// 广告过时则需要重新拉取
 		LeoCompositeData cData = mLEOLoadedNatives.get(unitId);
+		
+		TreeMap<String, String> map = new TreeMap<String, String>();
+		map.put("androidid", Settings.Secure.getString(AppMasterApplication.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID));
 		if (isOutOfDate(cData)) {
+			
+			map.put("unitId", unitId);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "adFrom", "ad is out of date, prepare to load", null);
+			
 			if (cData != null) {
 				loadSingleMobAd(unitId, cData.nativeAd);
 			} else {
@@ -351,6 +362,9 @@ public class LEOAdEngine {
 			}
 			LeoLog.i(TAG, "data out ofdate: reload new one.");
 			return;
+		} else {
+			map.put("unitId", unitId);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "adFrom", "from cache, ad is not out of date", null);
 		}
 
 		boolean loading = mLeoLoadingNatives.get(unitId) != null;
