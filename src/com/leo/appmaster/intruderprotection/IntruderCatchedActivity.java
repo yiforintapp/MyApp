@@ -176,6 +176,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mShouldLoadAd) {
             ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
         }
+        finish();
     }
 
     @Override
@@ -742,6 +743,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mRvHeader.setFocusableInTouchMode(true);
         mRvHeader.requestFocus();
     }
+
+
 
     /**
      * 显示下方更多照片部分的操作
