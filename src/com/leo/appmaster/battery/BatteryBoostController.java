@@ -86,11 +86,11 @@ public class BatteryBoostController extends RelativeLayout {
     private static final float DEGREE_4 = 1.5f;
     private static final int SHAKE_DURATION = 30; //振动频率
     private int mCount = 0;
-    private AnimatorSet imageAnim1;
-    private AnimatorSet imageAnim2;
-    private AnimatorSet imageAnim3;
-    private AnimatorSet imageAnim4;
-    private AnimatorSet imageAnim5;
+    private AnimatorSet mImageAnim1;
+    private AnimatorSet mImageAnim2;
+    private AnimatorSet mImageAnim3;
+    private AnimatorSet mImageAnim4;
+    private AnimatorSet mImageAnim5;
 
 
 
@@ -222,23 +222,23 @@ public class BatteryBoostController extends RelativeLayout {
         for (int i = 0; i < list.size() ; i++) {
             appInfo = list.get(i);
             if (i == 0) {
-                imageAnim1 = getIconAnim(mAnimImg1);
+                mImageAnim1 = getIconAnim(mAnimImg1);
                 mAnimImg1.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
                 mAnimImg1.setVisibility(View.VISIBLE);
             } else if (i == 1) {
-                imageAnim2 = getIconAnim(mAnimImg2);
+                mImageAnim2 = getIconAnim(mAnimImg2);
                 mAnimImg2.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
                 mAnimImg2.setVisibility(View.VISIBLE);
             } else if (i == 2) {
-                imageAnim3 = getIconAnim(mAnimImg3);
+                mImageAnim3 = getIconAnim(mAnimImg3);
                 mAnimImg3.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
                 mAnimImg3.setVisibility(View.VISIBLE);
             } else if (i == 3) {
-                imageAnim4 = getIconAnim(mAnimImg4);
+                mImageAnim4 = getIconAnim(mAnimImg4);
                 mAnimImg4.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
                 mAnimImg4.setVisibility(View.VISIBLE);
             } else if (i == 4) {
-                imageAnim5 = getIconAnim(mAnimImg5);
+                mImageAnim5 = getIconAnim(mAnimImg5);
                 mAnimImg5.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
                 mAnimImg5.setVisibility(View.VISIBLE);
             }
@@ -246,20 +246,20 @@ public class BatteryBoostController extends RelativeLayout {
 
         AnimatorSet boostAnimatorSet = new AnimatorSet();
         boostAnimatorSet.play(rotateAnim).with(scaleAnimatorSet);
-        if (imageAnim1 != null) {
-            boostAnimatorSet.play(scaleAnimatorSet).with(imageAnim1);
+        if (mImageAnim1 != null) {
+            boostAnimatorSet.play(scaleAnimatorSet).with(mImageAnim1);
         }
-        if (imageAnim2 != null) {
-            boostAnimatorSet.play(imageAnim1).with(imageAnim2);
+        if (mImageAnim2 != null) {
+            boostAnimatorSet.play(mImageAnim1).with(mImageAnim2);
         }
-        if (imageAnim3 != null) {
-            boostAnimatorSet.play(imageAnim2).with(imageAnim3);
+        if (mImageAnim3 != null) {
+            boostAnimatorSet.play(mImageAnim2).with(mImageAnim3);
         }
-        if (imageAnim4 != null) {
-            boostAnimatorSet.play(imageAnim3).with(imageAnim4);
+        if (mImageAnim4 != null) {
+            boostAnimatorSet.play(mImageAnim3).with(mImageAnim4);
         }
-        if (imageAnim5 != null) {
-            boostAnimatorSet.play(imageAnim4).with(imageAnim5);
+        if (mImageAnim5 != null) {
+            boostAnimatorSet.play(mImageAnim4).with(mImageAnim5);
         }
         boostAnimatorSet.start();
 
@@ -276,8 +276,8 @@ public class BatteryBoostController extends RelativeLayout {
                         - (view.getLeft() + view.getWidth() / 2);
         float centerY = mAnimCenterImg.getTop() + mAnimCenterImg.getHeight() / 2
                         - (view.getTop() + view.getHeight() / 2);
-        ObjectAnimator moveXAnim =ObjectAnimator.ofFloat(view, "translationX", centerX);
-        ObjectAnimator moveYAnim =ObjectAnimator.ofFloat(view, "translationY", centerY);
+        ObjectAnimator moveXAnim =  ObjectAnimator.ofFloat(view, "translationX", centerX);
+        ObjectAnimator moveYAnim =  ObjectAnimator.ofFloat(view, "translationY", centerY);
         ObjectAnimator scaleXAnim = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.6f);
         ObjectAnimator scaleYAnim = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.6f);
         ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
