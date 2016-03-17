@@ -66,7 +66,6 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.schedule.PhoneSecurityFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -663,9 +662,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mMoreFragment.closePanel();
             return;
         }
-        if (mShowIswipeFromNotfi) {
-            getIntent().removeExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
-        }
+
         if (mDrawerLayout.isDrawerOpen(mMenuList)) {
             mDrawerLayout.closeDrawer(mMenuList);
             return;
@@ -809,8 +806,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         super.onResume();
         LeoLog.d(TAG, "onResume...");
         judgeShowGradeTip();
-        /* 获取是否从iswipe通知进入 */
-        checkIswipeNotificationTo();
         /* 分析是否需要升级红点显示 */
         if (SDKWrapper.isUpdateAvailable()) {
             mToolbar.showMenuRedTip(true);
@@ -886,16 +881,16 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    private void checkIswipeNotificationTo() {
-        String fromPrivacyFlag = getIntent()
-                .getStringExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
-        LeoLog.i(TAG, "来自iswipe：" + fromPrivacyFlag);
-        if (ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME
-                .equals(fromPrivacyFlag)) {
-            ISwipUpdateRequestManager.getInstance(getApplicationContext());
-            mShowIswipeFromNotfi = true;
-        }
-    }
+//    private void checkIswipeNotificationTo() {
+//        String fromPrivacyFlag = getIntent()
+//                .getStringExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+//        LeoLog.i(TAG, "来自iswipe：" + fromPrivacyFlag);
+//        if (ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME
+//                .equals(fromPrivacyFlag)) {
+//            ISwipUpdateRequestManager.getInstance(getApplicationContext());
+//            mShowIswipeFromNotfi = true;
+//        }
+//    }
 
 //    public void setAdIconVisible() {
 //        if (mAdIcon != null) {
