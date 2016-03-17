@@ -46,7 +46,7 @@ public class BatteryBoostController extends RelativeLayout {
 
     private static final int BOOST_SIZE = 6;
     private static final int BOOST_ITEM_DURATION = 300;
-    private static final int MIN_BOOST_NUM = 6;
+    private static final int MIN_BOOST_NUM = 5;
     private ImageView mShieldIv;
     private CircleArroundView mShieldCircle;
     private BatteryBoostAnimView mBoostAnimView;
