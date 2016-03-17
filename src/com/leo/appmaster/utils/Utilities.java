@@ -2,6 +2,7 @@
 package com.leo.appmaster.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.ComponentName;
@@ -965,5 +966,129 @@ public final class Utilities {
         } catch (Exception e) {
             return data;
         }
+    }
+
+    public static void launchMmsAndFinish(Activity activity) {
+        try {
+            Intent intentM = new Intent(Intent.ACTION_VIEW);
+            intentM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnM = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationList");
+            intentM.setComponent(cnM);
+            activity.startActivity(intentM);
+            activity.finish();
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            //努比亚短信列表
+            Intent intentN = new Intent(Intent.ACTION_VIEW);
+            intentN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnN = new ComponentName("com.android.contacts", "com.android.contacts.MmsConversationActivity");
+            intentN.setComponent(cnN);
+            activity.startActivity(intentN);
+            activity.finish();
+            return;
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        //三星
+        try {
+            Intent intentS = new Intent(Intent.ACTION_VIEW);
+            intentS.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnS = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationComposer");
+            intentS.setComponent(cnS);
+            activity.startActivity(intentS);
+            activity.finish();
+            return;
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+        //qiku
+        try {
+            Intent intentQiku = new Intent(Intent.ACTION_VIEW);
+            intentQiku.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnQiku = new ComponentName("com.android.mms", "com.yulong.android.mms.ui.MmsConversationListActivity");
+            intentQiku.setComponent(cnQiku);
+            activity.startActivity(intentQiku);
+            activity.finish();
+            return;
+        } catch (Exception e3) {
+            e3.printStackTrace();
+        }
+        //huawei p8
+        try {
+            Intent intentHwP8 = new Intent(Intent.ACTION_MAIN);
+            intentHwP8.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnHwP8 = new ComponentName("com.android.contacts", "com.android.mms.ui.ConversationList");
+            intentHwP8.setComponent(cnHwP8);
+            activity.startActivity(intentHwP8);
+            activity.finish();
+            return;
+        } catch (Exception e4) {
+            e4.printStackTrace();
+        }
+        //sony
+        try {
+            Intent intentSony = new Intent(Intent.ACTION_MAIN);
+            intentSony.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnSony = new ComponentName("com.sonyericsson.conversations", "com.sonyericsson.conversations.ui.ConversationListActivity");
+            intentSony.setComponent(cnSony);
+            activity.startActivity(intentSony);
+            activity.finish();
+            return;
+        } catch (Exception e5) {
+            e5.printStackTrace();
+        }
+        try {
+            // ASUS
+            Intent intentAsus = new Intent(Intent.ACTION_MAIN);
+            intentAsus.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnAsus = new ComponentName("com.asus.message", "com.android.mms.ui.ConversationList");
+            intentAsus.setComponent(cnAsus);
+            activity.startActivity(intentAsus);
+            activity.finish();
+            return;
+        } catch (Exception e6) {
+            e6.printStackTrace();
+        }
+        try {
+            //lenovo
+            Intent intentLenovo = new Intent(Intent.ACTION_MAIN);
+            intentLenovo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnLenovo = new ComponentName("com.lenovo.ideafriend", "com.lenovo.ideafriend.alias.MmsActivity");
+            intentLenovo.setComponent(cnLenovo);
+            activity.startActivity(intentLenovo);
+            activity.finish();
+            return;
+        } catch (Exception e7) {
+            e7.printStackTrace();
+        }
+        //Nexus 6
+        try {
+            Intent intentNexus6 = new Intent(Intent.ACTION_MAIN);
+            intentNexus6.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cnNexus6 = new ComponentName("com.google.android.apps.messaging", "com.google.android.apps.messaging.ui.ConversationListActivity");
+            intentNexus6.setComponent(cnNexus6);
+            activity.startActivity(intentNexus6);
+            activity.finish();
+            return;
+        } catch (Exception e8) {
+            e8.printStackTrace();
+        }
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.setType("vnd.android-dir/mms-sms");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            activity.startActivity(intent);
+            activity.finish();
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        activity.finish();
     }
 }
