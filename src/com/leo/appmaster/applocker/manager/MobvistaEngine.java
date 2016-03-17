@@ -222,6 +222,7 @@ public class MobvistaEngine {
 			LeoLog.i(TAG, "loadSingleMobAd -> ad[" + unitId + "], cost time = "
 					+ (SystemClock.elapsedRealtime() - start));
 			mMobVistaLoadingNative.put(unitId, new MobVistaLoadingNative(nativeHandler, SystemClock.elapsedRealtime()));
+			nativeHandler.setMustBrowser(true);
 			nativeHandler.load();
 		} catch (Throwable thr) {
 			return;
