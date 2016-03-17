@@ -832,6 +832,12 @@
             android:name="com.leo.push.PushService"
             android:exported="true" />
 
+        <!-- 3.5 Android 5.0+ 守护Service -->
+        <service
+            android:name="com.leo.appmaster.applocker.service.TaskProtectService"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+        </service>
+
         <!-- for LEO update sdk -->
         <receiver
             android:name=".sdk.update.UIHelper"

@@ -29,6 +29,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
+import com.leo.appmaster.applocker.service.TaskProtectService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
@@ -135,6 +136,10 @@ public class InitCoreBootstrap extends Bootstrap {
         //init DeviceImp
         DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
         deviceManager.init();
+
+        // start a protection JobScheduler service
+        TaskProtectService.scheduleService(mApp);
+
         return true;
     }
 
