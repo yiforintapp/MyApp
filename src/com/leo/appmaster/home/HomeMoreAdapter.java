@@ -282,6 +282,10 @@ public class HomeMoreAdapter extends BaseAdapter {
             PreferenceTable preferenceTable = PreferenceTable.getInstance();
             boolean vidReddotExist = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
             holder.readTip.setVisibility(vidReddotExist ? View.VISIBLE : View.GONE);
+        } else if (drawableId == ID_RES_PHONE_LOST) {
+            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+            boolean consumed = preferenceTable.getBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED, false);
+            holder.readTip.setVisibility(consumed ? View.GONE : View.VISIBLE);
         } else {
             holder.readTip.setVisibility(View.GONE);
         }

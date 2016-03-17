@@ -220,7 +220,8 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
         boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
         boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-        if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver) {
+        boolean intruderReddot = preferenceTable.getBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED, false);
+        if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver ||!intruderReddot) {
 
             if (!pulledEver) {
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_rp");
@@ -371,11 +372,12 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "home_gameboost");
                     break;*/
                 case R.string.home_tab_instruder:
-                    // 手机防盗
+                    // 手机入侵者
                     LeoLog.i(TAG, "start i");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
                     intent = new Intent(getActivity(), IntruderprotectionActivity.class);
                     startActivity(intent);
+                    table.putBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED,true);
                     break;
             }
         }
