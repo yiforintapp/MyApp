@@ -33,7 +33,7 @@ public class BlueToothLockSwitch extends SwitchGroup {
 
     @Override
     public void setLockNum(int num) {
-        mPreTable.getInt(BLUE_TOOTH_SWITCH, num);
+        mPreTable.putInt(BLUE_TOOTH_SWITCH, num);
     }
 
     @Override

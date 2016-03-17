@@ -4,6 +4,7 @@ package com.leo.appmaster.applocker.lockswitch;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * @author nic
@@ -34,7 +35,7 @@ public class WifiLockSwitch extends SwitchGroup {
 
     @Override
     public void setLockNum(int num) {
-        mPreTable.getInt(WIFI_SWITCH, num);
+        mPreTable.putInt(WIFI_SWITCH, num);
     }
 
     @Override
