@@ -221,7 +221,7 @@ public class ListAppLockAdapter extends BaseAdapter {
 
         }
         wifiInfo.topPos = wifiSwitch.getLockNum();
-        switchList.add(wifiInfo);
+
 
         AppInfo bluetoothInfo = new AppInfo();
         bluetoothInfo.label = mContext.getString(R.string.app_lock_list_switch_bluetooth);
@@ -234,7 +234,23 @@ public class ListAppLockAdapter extends BaseAdapter {
         }
 
         bluetoothInfo.topPos = blueToothSwitch.getLockNum();
-        switchList.add(bluetoothInfo);
+
+        if (wifiInfo.isLocked) {
+            switchList.add(wifiInfo);
+            switchList.add(bluetoothInfo);
+        } else if (bluetoothInfo.isLocked) {
+            switchList.add(bluetoothInfo);
+            switchList.add(wifiInfo);
+        } else {
+            if (wifiInfo.topPos >= bluetoothInfo.topPos) {
+                switchList.add(wifiInfo);
+                switchList.add(bluetoothInfo);
+            } else {
+                switchList.add(bluetoothInfo);
+                switchList.add(wifiInfo);
+            }
+        }
+
 
         if (isNeedLabel) {
             AppInfo labelInfo2 = new AppInfo();
