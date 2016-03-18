@@ -43,6 +43,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -63,6 +64,7 @@ import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.PauseOnScrollListener;
 
 public class IntruderprotectionActivity extends BaseActivity {
+    private LEOAlarmDialog mOpenForbinDialog;
     private final int REQUEST_CODE_TO_REQUEST_ADMIN = 1;
     private LEOAnimationDialog mMessageDialog;
     private ListView mLvPhotos;
@@ -761,15 +763,43 @@ public class IntruderprotectionActivity extends BaseActivity {
         ComponentName mAdminName = new ComponentName(IntruderprotectionActivity.this, DeviceReceiver.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
-        startActivityForResult(intent,REQUEST_CODE_TO_REQUEST_ADMIN);
+        startActivityForResult(intent, REQUEST_CODE_TO_REQUEST_ADMIN);
     }
 
     private void changeToGuideFinishedLayout() {
-        mImanager.setSystIntruderProtectionSwitch(true);
-        mRlTipContent.setVisibility(View.VISIBLE);
-        mLlGuide.setVisibility(View.INVISIBLE);
-        mLlGuideFinished.setVisibility(View.VISIBLE);
+        if (mImanager.getIsIntruderSecurityAvailable()) {
+            mImanager.setSystIntruderProtectionSwitch(true);
+            mRlTipContent.setVisibility(View.VISIBLE);
+            mLlGuide.setVisibility(View.INVISIBLE);
+            mLlGuideFinished.setVisibility(View.VISIBLE);
+        } else {
+            showForbitDialog();
+        }
     }
+
+    protected void showForbitDialog() {
+        if (mOpenForbinDialog == null) {
+            mOpenForbinDialog = new LEOAlarmDialog(this);
+        }
+        mOpenForbinDialog.setContent(getResources().getString(
+                R.string.intruderprotection_forbit_content));
+        mOpenForbinDialog.setRightBtnStr(getResources().getString(
+                R.string.secur_help_feedback_tip_button));
+        mOpenForbinDialog.setLeftBtnStr(getResources().getString(
+                R.string.no_image_hide_dialog_button));
+        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(IntruderprotectionActivity.this, FeedbackActivity.class);
+                intent.putExtra("isFromIntruderProtectionForbiden", true);
+                startActivity(intent);
+                mOpenForbinDialog.dismiss();
+            }
+        });
+        mOpenForbinDialog.show();
+    }
+
 
     // 显示改变失败XX次拍照的对话框
 //    private void showChangeTimesDialog() {

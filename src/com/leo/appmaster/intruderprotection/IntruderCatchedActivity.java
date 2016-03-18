@@ -42,6 +42,7 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageGridActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -104,6 +105,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private LEOChoiceDialog mDialog;
     private RelativeLayout mRvHeader;
     private RippleView mRvRating;
+    private LEOAlarmDialog mOpenForbinDialog;
     private int[] mTimes = {
             1, 2, 3, 5
     };
@@ -963,10 +965,37 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     }
 
     private void changeToGuideFinishedLayout() {
-        mISManager.setSystIntruderProtectionSwitch(true);
-        mLlGuide.setVisibility(View.GONE);
-        mLlGuideFinished.setVisibility(View.VISIBLE);
-        mLlChangeTimes.setVisibility(View.GONE);
+        if (mISManager.getIsIntruderSecurityAvailable()) {
+            mISManager.setSystIntruderProtectionSwitch(true);
+            mLlGuide.setVisibility(View.GONE);
+            mLlGuideFinished.setVisibility(View.VISIBLE);
+            mLlChangeTimes.setVisibility(View.GONE);
+        } else {
+            showForbitDialog();
+        }
+    }
+
+    protected void showForbitDialog() {
+        if (mOpenForbinDialog == null) {
+            mOpenForbinDialog = new LEOAlarmDialog(this);
+        }
+        mOpenForbinDialog.setContent(getResources().getString(
+                R.string.intruderprotection_forbit_content));
+        mOpenForbinDialog.setRightBtnStr(getResources().getString(
+                R.string.secur_help_feedback_tip_button));
+        mOpenForbinDialog.setLeftBtnStr(getResources().getString(
+                R.string.no_image_hide_dialog_button));
+        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(IntruderCatchedActivity.this, FeedbackActivity.class);
+                intent.putExtra("isFromIntruderProtectionForbiden", true);
+                startActivity(intent);
+                mOpenForbinDialog.dismiss();
+            }
+        });
+        mOpenForbinDialog.show();
     }
 
     private void showAskOpenDeviceAdminDialog() {
