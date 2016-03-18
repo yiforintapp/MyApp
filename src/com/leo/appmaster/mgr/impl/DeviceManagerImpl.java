@@ -134,6 +134,7 @@ public class DeviceManagerImpl extends DeviceManager {
     }
 
     private void readyShowLock(int type) {
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         switch (type) {
             case WIFI_TURN_ON:
                 if (mWifiSwitch.isLockNow(mLockManager.getCurLockMode()) && !unlockOpenWifiDone) {

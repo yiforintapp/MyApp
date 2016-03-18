@@ -30,7 +30,7 @@ public class WifiLockSwitch extends SwitchGroup {
 
     @Override
     public int getLockNum() {
-        return mPreTable.getInt(WIFI_SWITCH, 500000);
+        return mPreTable.getInt(WIFI_SWITCH, 5000000);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class BlueToothLockSwitch extends SwitchGroup {
 
     @Override
     public int getLockNum() {
-        return mPreTable.getInt(BLUE_TOOTH_SWITCH, 500000);
+        return mPreTable.getInt(BLUE_TOOTH_SWITCH, 4000000);
     }
 
     @Override
