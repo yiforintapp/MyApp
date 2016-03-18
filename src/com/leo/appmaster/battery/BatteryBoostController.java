@@ -529,7 +529,7 @@ public class BatteryBoostController extends RelativeLayout {
                     mListener.onBoostFinish();
                 }
             }
-        }, 1000);
+        }, 2000);
     }
 
     private int getTranslation() {

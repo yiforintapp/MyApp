@@ -805,6 +805,30 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(500);
+
+        turnDark(RECOMMAND_TYPE_TWO);
+        isClickable = false;
+        if (mMaskView != null) {
+            mMaskView.hideMask();
+        }
+
+        mRecommandView.setVisibility(View.VISIBLE);
+
+        if (mBossView != null) {
+            boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
+            if (isSlideContentShow) {
+                adDimissAnima();
+            }
+        }
+
+
+        mRecommandView.clearAnimation();
+        fillShowContentData(RECOMMAND_TYPE_TWO);
+        initThreeContent();
+        mRecommandContentView.setVisibility(View.VISIBLE);
+        setTheIndicatorX(RECOMMAND_TYPE_TWO);
+        isClickable = true;
+
         if (isShieldExist) {
             ObjectAnimator shieldAlpha = null;
             ObjectAnimator shieldScaleX = null;
@@ -833,11 +857,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                expandRecommandContent(RECOMMAND_TYPE_TWO, true);
+//                expandRecommandContent(RECOMMAND_TYPE_TWO, true);
             }
         });
         animatorSet.start();
     }
+
 
     private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
         if (mActivity == null) return;
