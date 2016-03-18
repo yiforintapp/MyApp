@@ -1,5 +1,6 @@
 package com.leo.appmaster.intruderprotection;
 
+import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -40,14 +41,12 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     private ImageView mIvSwitchNormal;
     private IntrudeSecurityManager mISManager;
     private LEOChoiceDialog mDialog;
-    private LEOAlarmDialog mAskOpenDeviceAdminDialog;
-    private LEOAlarmDialog mOpenForbinDialog;
     private LEOAnimationDialog mMessageDialog;
-    private LEOAlarmDialog mConfirmCloseDialog;
     private CommonToolbar mCtbMain;
     private int[] mTimes = {
             1, 2, 3, 5
     };
+    private Dialog mMultiUsesDialog;
     private final int REQUEST_CODE_TO_REQUEST_ADMIN = 1;
     private final int TIMES_1 = 1;
     private final int TIMES_2 = 2;
@@ -62,9 +61,28 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intruder_setting);
-        mISManager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        initManager();
         initUI();
         handleIntent();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateSwitch();
+        updateSwitchummary();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mMultiUsesDialog != null) {
+            mMultiUsesDialog.dismiss();
+        }
+    }
+
+    private void initManager() {
+        mISManager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
     }
 
     private void handleIntent() {
@@ -93,26 +111,6 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         mRvItem3.setOnClickListener(this);
     }
 
-    private void showConfirmCloseDialog() {
-        if (mConfirmCloseDialog == null) {
-            mConfirmCloseDialog = new LEOAlarmDialog(IntruderSettingActivity.this);
-        }
-        if (mConfirmCloseDialog.isShowing()) {
-            return;
-        }
-        mConfirmCloseDialog.setTitle(R.string.intruder_setting_title_1);
-        mConfirmCloseDialog.setContent(getString(R.string.intruder_systemlock_alarm));
-        mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mISManager.setSystIntruderProtectionSwitch(false);
-                mIvSwitchSyst.setImageResource(R.drawable.switch_off);
-                mConfirmCloseDialog.dismiss();
-            }
-        });
-        mConfirmCloseDialog.show();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -132,20 +130,26 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
 
     private void turnSwitch2() {
         if (!mISManager.getIsIntruderSecurityAvailable()) {
-            showForbitDialog();
+            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(IntruderSettingActivity.this, FeedbackActivity.class);
+                    intent.putExtra("isFromIntruderProtectionForbiden", true);
+                    startActivity(intent);
+                    mMultiUsesDialog.dismiss();
+                }
+            });
             return;
         }
         if (mISManager.getIntruderMode()) {
             mISManager.switchIntruderMode(false);
             mIvSwitchNormal.setImageResource(R.drawable.switch_off);
-            Toast.makeText(IntruderSettingActivity.this,
-                            getString(R.string.intruder_close), Toast.LENGTH_SHORT).show();
+            Toast.makeText(IntruderSettingActivity.this,getString(R.string.intruder_close), Toast.LENGTH_SHORT).show();
         } else {
             mISManager.switchIntruderMode(true);
             mIvSwitchNormal.setImageResource(R.drawable.switch_on);
             if (mIsFromScan) {
-                ShowToast.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE,
-                        IntruderSettingActivity.this);
+                ShowToast.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE,IntruderSettingActivity.this);
                 mIsFromScan = false;
             } else {
                 Toast.makeText(IntruderSettingActivity.this, getString(R.string.intruder_open), Toast.LENGTH_SHORT).show();
@@ -154,36 +158,44 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     }
 
     private void turnSwitch1() {
+        if (!mISManager.getIsIntruderSecurityAvailable()) {
+            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(IntruderSettingActivity.this, FeedbackActivity.class);
+                    intent.putExtra("isFromIntruderProtectionForbiden", true);
+                    startActivity(intent);
+                    mMultiUsesDialog.dismiss();
+                }
+            });
+            return;
+        }
+
         if (mISManager.getSystIntruderProtecionSwitch()) {
-            showConfirmCloseDialog();
+            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showConfirmCloseSysDialog(this, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mISManager.setSystIntruderProtectionSwitch(false);
+                    mIvSwitchSyst.setImageResource(R.drawable.switch_off);
+                    mMultiUsesDialog.dismiss();
+                }
+            });
         } else {
             if (DeviceReceiver.isActive(IntruderSettingActivity.this)) {
                 mISManager.setSystIntruderProtectionSwitch(true);
                 mIvSwitchSyst.setImageResource(R.drawable.switch_on);
             } else {
-                showAskOpenDeviceAdminDialog();
+                mMultiUsesDialog = ShowAboutIntruderDialogHelper.showAskOpenDeviceAdminDialog(this, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestDeviceAdmin();
+                        mMultiUsesDialog.dismiss();
+                    }
+                });
             }
         }
     }
 
-    private void showAskOpenDeviceAdminDialog() {
-        if (mAskOpenDeviceAdminDialog == null) {
-            mAskOpenDeviceAdminDialog = new LEOAlarmDialog(IntruderSettingActivity.this);
-        }
-        if (mAskOpenDeviceAdminDialog.isShowing()) {
-            return;
-        }
-        mAskOpenDeviceAdminDialog.setTitle(R.string.intruder_setting_title_1);
-        mAskOpenDeviceAdminDialog.setContent(getString(R.string.intruder_device_admin_guide_content));
-        mAskOpenDeviceAdminDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                requestDeviceAdmin();
-                mAskOpenDeviceAdminDialog.dismiss();
-            }
-        });
-        mAskOpenDeviceAdminDialog.show();
-    }
 
     private void requestDeviceAdmin() {
         mLockManager.filterSelfOneMinites();
@@ -233,39 +245,6 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         mMessageDialog.show();
     }
 
-
-
-
-    protected void showForbitDialog() {
-        if (mOpenForbinDialog == null) {
-            mOpenForbinDialog = new LEOAlarmDialog(this);
-        }
-        mOpenForbinDialog.setContent(getResources().getString(
-                R.string.intruderprotection_forbit_content));
-        mOpenForbinDialog.setRightBtnStr(getResources().getString(
-                R.string.secur_help_feedback_tip_button));
-        mOpenForbinDialog.setLeftBtnStr(getResources().getString(
-                R.string.no_image_hide_dialog_button));
-        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(IntruderSettingActivity.this, FeedbackActivity.class);
-                intent.putExtra("isFromIntruderProtectionForbiden", true);
-                startActivity(intent);
-                mOpenForbinDialog.dismiss();
-            }
-        });
-        mOpenForbinDialog.show();
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateSwitch();
-        updateSwitchummary();
-    }
 
     private void updateSwitchummary() {
         String times = getResources().getString(R.string.times_choose);
