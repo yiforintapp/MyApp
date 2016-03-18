@@ -17,6 +17,7 @@ package com.leo.imageloader;
 
 import android.graphics.Bitmap;
 
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.core.BitmapDisplayer;
 import com.leo.imageloader.core.ImageAware;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -68,6 +69,7 @@ final class DisplayBitmapTask implements Runnable {
 			listener.onLoadingCancelled(imageUri, imageAware.getWrappedView());
 		} else {
 			L.d(LOG_DISPLAY_IMAGE_IN_IMAGEAWARE, loadedFrom, memoryCacheKey);
+			LeoLog.d(ImageLoader.TAG, "display bitmap. bitmap: " + bitmap);
 			displayer.display(bitmap, imageAware, loadedFrom);
 			engine.cancelDisplayTaskFor(imageAware);
 			listener.onLoadingComplete(imageUri, imageAware.getWrappedView(), bitmap);
@@ -77,6 +79,9 @@ final class DisplayBitmapTask implements Runnable {
 	/** Checks whether memory cache key (image URI) for current ImageAware is actual */
 	private boolean isViewWasReused() {
 		String currentCacheKey = engine.getLoadingUriForView(imageAware);
+        if (currentCacheKey == null || memoryCacheKey == null) {
+            return false;
+        }
 		return !memoryCacheKey.equals(currentCacheKey);
 	}
 }

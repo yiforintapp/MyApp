@@ -140,8 +140,10 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
             checkTaskNotActual();
 
             bmp = configuration.memoryCache.get(memoryCacheKey);
+            LeoLog.d(ImageLoader.TAG, "load mem bmp: " + bmp + " | memoryCacheKey: " + memoryCacheKey);
             if (bmp == null || bmp.isRecycled()) {
                 bmp = tryLoadBitmap();
+                LeoLog.d(ImageLoader.TAG, "try load bmp: " + bmp + " | memoryCacheKey: " + memoryCacheKey);
                 if (bmp == null)
                     return; // listener callback already was fired
                 checkTaskNotActual();
@@ -486,6 +488,9 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
         // actual.
         // If ImageAware is reused for another task then current task should be
         // cancelled.
+        if (currentCacheKey == null || memoryCacheKey == null) {
+            return false;
+        }
         boolean imageAwareWasReused = !memoryCacheKey.equals(currentCacheKey);
         if (imageAwareWasReused) {
             L.d(LOG_TASK_CANCELLED_IMAGEAWARE_REUSED, memoryCacheKey);
