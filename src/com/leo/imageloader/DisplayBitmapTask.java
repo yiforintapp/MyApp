@@ -69,7 +69,6 @@ final class DisplayBitmapTask implements Runnable {
 			listener.onLoadingCancelled(imageUri, imageAware.getWrappedView());
 		} else {
 			L.d(LOG_DISPLAY_IMAGE_IN_IMAGEAWARE, loadedFrom, memoryCacheKey);
-			LeoLog.d(ImageLoader.TAG, "display bitmap. bitmap: " + bitmap);
 			displayer.display(bitmap, imageAware, loadedFrom);
 			engine.cancelDisplayTaskFor(imageAware);
 			listener.onLoadingComplete(imageUri, imageAware.getWrappedView(), bitmap);

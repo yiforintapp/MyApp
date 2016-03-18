@@ -104,7 +104,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     //通过拷贝方式隐藏图片的方式，删除源文件是否成功
     private boolean mIsDeletSucFromDatebase = true;
 
-    private int mImageSize;
+    private ImageSize mImageSize;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -252,13 +252,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     }
 
     private void initImageLoder() {
-        mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.photo_bg_loding)
-                .showImageForEmptyUri(R.drawable.photo_bg_loding)
-                .showImageOnFail(R.drawable.photo_bg_loding)
-                .displayer(new FadeInBitmapDisplayer(500))
-                .cacheInMemory(true).cacheOnDisk(false).considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565).build();
+        mOptions = ImagePreviewUtil.getPreviewOptions();
+        mImageSize = ImagePreviewUtil.getPreviewSize();
 
         mImageLoader = ImageLoader.getInstance();
     }
@@ -332,7 +327,6 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             }
         }
 
-        mImageSize = getResources().getDimensionPixelSize(R.dimen.hide_grid_image_width);
     }
 
     private void cancelGuide() {
@@ -480,7 +474,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 } else {
                     uri = ImageDownloader.Scheme.FILE.wrap(path);
                 }
-                mImageLoader.displayImage(uri, holder.imageView, mOptions, new ImageSize(mImageSize, mImageSize));
+                mImageLoader.displayImage(uri, holder.imageView, mOptions, mImageSize);
             }
             return view;
         }

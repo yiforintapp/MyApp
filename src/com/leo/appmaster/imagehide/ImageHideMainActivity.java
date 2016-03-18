@@ -4,7 +4,6 @@ package com.leo.appmaster.imagehide;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +36,6 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageSize;
 
@@ -65,7 +63,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private Toast mToast;
 
-    private int mImageSize;
+    private ImageSize mImageSize;
 
     public void onBackPressed() {
         LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
@@ -189,22 +187,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
-
-        mImageSize = getResources().getDimensionPixelSize(R.dimen.hide_album_image_frame_width);
     }
 
     private void initImageLoder() {
-        mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.photo_bg_loding)
-                .showImageForEmptyUri(R.drawable.photo_bg_loding)
-                .showImageOnFail(R.drawable.photo_bg_loding)
-                .cacheInMemory(true)
-                .cacheOnDisk(false)
-                .displayer(new FadeInBitmapDisplayer(500))
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-
+        mOptions = ImagePreviewUtil.getPreviewOptions();
+        mImageSize = ImagePreviewUtil.getPreviewSize();
         mImageLoader = ImageLoader.getInstance();
     }
 
@@ -307,7 +294,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
-            mImageLoader.displayImage(uri, viewHolder.img, mOptions, new ImageSize(mImageSize, mImageSize));
+            mImageLoader.displayImage(uri, viewHolder.img, mOptions, mImageSize);
             return convertView;
         }
     }

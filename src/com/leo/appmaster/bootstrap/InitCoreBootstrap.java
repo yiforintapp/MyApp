@@ -162,9 +162,9 @@ public class InitCoreBootstrap extends Bootstrap {
         builder.threadPriority(Thread.NORM_PRIORITY);
         builder.memoryCacheSizePercentage(8);
         builder.defaultDisplayImageOptions(options);
-        if (AppMasterConfig.LOGGABLE) {
-            builder.writeDebugLogs();
-        }
+//        if (AppMasterConfig.LOGGABLE) {
+//            builder.writeDebugLogs();
+//        }
         builder.diskCacheSize(Constants.MAX_DISK_CACHE_SIZE); // 100 Mb
         builder.denyCacheImageMultipleSizesInMemory();
         ImageLoader.getInstance().init(builder.build());

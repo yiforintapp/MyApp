@@ -59,7 +59,7 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             }
         }
     };
-    private int mImageSize;
+    private ImageSize mImageSize;
 
     private void loadDone() {
         if (mAlbumList != null) {
@@ -108,8 +108,6 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
         mGridView.setAdapter(mAlbumAdapt);
         mNoPictureHint = (RelativeLayout) findViewById(R.id.no_picture);
         loadingBar = (ProgressBar) findViewById(R.id.pb_loading_hide_pic);
-
-        mImageSize = getResources().getDimensionPixelSize(R.dimen.hide_album_image_frame_width);
     }
 
     @Override
@@ -152,17 +150,8 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void initImageLoder() {
-        mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.photo_bg_loding)
-                .showImageForEmptyUri(R.drawable.photo_bg_loding)
-                .showImageOnFail(R.drawable.photo_bg_loding)
-                .cacheInMemory(true)
-                .cacheOnDisk(false)
-                .displayer(new FadeInBitmapDisplayer(500))
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-
+        mOptions = ImagePreviewUtil.getPreviewOptions();
+        mImageSize = ImagePreviewUtil.getPreviewSize();
         mImageLoader = ImageLoader.getInstance();
     }
 
@@ -232,7 +221,7 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             viewHolder.txt.setText(list.get(position).getName() + "("
                     + list.get(position).getCount() + ")");
             mImageLoader.displayImage(ImageDownloader.Scheme.FILE.wrap(path),
-                    viewHolder.img, mOptions, new ImageSize(mImageSize, mImageSize));
+                    viewHolder.img, mOptions, mImageSize);
             return convertView;
         }
     }
