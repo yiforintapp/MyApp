@@ -88,7 +88,7 @@
             android:id="@+id/ll_guide_tip"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="#ff9000"
             android:gravity="center_vertical"
             android:visibility="visible"
             android:orientation="horizontal">
@@ -102,7 +102,7 @@
                 android:gravity="center_vertical"
                 android:maxLines="2"
                 android:text="@string/intruder_systemlock_tip"
-                android:textColor="#ff7900"
+                android:textColor="#ffffff"
                 android:textSize="@dimen/f4" />
 
             <com.leo.appmaster.ui.RippleView
@@ -127,7 +127,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="@string/secur_instr_open_bt"
-                    android:textColor="#ffffff"
+                    android:textColor="#ff9000"
                     android:textSize="14dp" />
             </com.leo.appmaster.ui.RippleView>
         </LinearLayout>

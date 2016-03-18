@@ -41,20 +41,25 @@ public class SystLockStatusReceiver extends BroadcastReceiver {
 private LockManager mLockManager;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_USER_PRESENT.equals(action)) {
+            if (mLockManager == null) {
+                mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            }
             if (IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved) {
                 IntrudeSecurityManager.sHasPicShowedWhenUserPresent = true;
-                Intent intent2 = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
+                final Intent intent2 = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent2.putExtra("pkgname", "from_systemlock");
-                if (mLockManager == null) {
-                    mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                }
-                mLockManager.filterPackage(context.getPackageName(), 5000);
-                context.startActivity(intent2);
                 IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
+                ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLockManager.filterPackage(context.getPackageName(), 1000);
+                        context.startActivity(intent2);
+                    }
+                }, 1000);
             } else if(IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && !IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved){
                 IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
             }
