@@ -57,11 +57,6 @@ public class BatteryBoostController extends RelativeLayout {
         public void onBoostFinish();
     }
 
-    private ImageView mAnimIv1;
-    private ImageView mAnimIv2;
-    private ImageView mAnimIv3;
-    private ImageView mAnimIv4;
-
     private TextView mBoostToastTv;
 
     private View mBoostRl;
@@ -104,10 +99,6 @@ public class BatteryBoostController extends RelativeLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mAnimIv1 = (ImageView) findViewById(R.id.boost_anim_iv1);
-        mAnimIv2 = (ImageView) findViewById(R.id.boost_anim_iv2);
-        mAnimIv3 = (ImageView) findViewById(R.id.boost_anim_iv3);
-        mAnimIv4 = (ImageView) findViewById(R.id.boost_anim_iv4);
         mBoostRl = findViewById(R.id.boost_anim_rl);
         if (Build.VERSION.SDK_INT < 21) {
             mBoostRl.setBackgroundResource(R.drawable.battery_boost_shape_below21);
@@ -345,20 +336,6 @@ public class BatteryBoostController extends RelativeLayout {
         });
     }
 
-    private ImageView getNextImage(ImageView target) {
-        if (mAnimImg1 == target) {
-            return mAnimImg2;
-        } else if (mAnimImg2 == target) {
-            return mAnimImg3;
-        } else if (mAnimImg3 == target) {
-            return mAnimImg4;
-        } else if (mAnimImg4 == target) {
-            return mAnimImg5;
-        } else if (mAnimImg5 == target) {
-            return  mAnimImg1;
-        }
-        return mAnimImg1;
-    }
 
     public void setBoostFinishListener(OnBoostFinishListener listener) {
         mListener = listener;
@@ -454,16 +431,17 @@ public class BatteryBoostController extends RelativeLayout {
     }
 
     private ImageView getNext(ImageView target) {
-        if (mAnimIv1 == target) {
-            return mAnimIv2;
-        } else if (mAnimIv2 == target) {
-            return mAnimIv3;
-        } else if (mAnimIv3 == target) {
-            return mAnimIv4;
-        } else if (mAnimIv4 == target) {
-            return mAnimIv1;
-        }
-        return mAnimIv1;
+//        if (mAnimIv1 == target) {
+//            return mAnimIv2;
+//        } else if (mAnimIv2 == target) {
+//            return mAnimIv3;
+//        } else if (mAnimIv3 == target) {
+//            return mAnimIv4;
+//        } else if (mAnimIv4 == target) {
+//            return mAnimIv1;
+//        }
+//        return mAnimIv1;
+        return target;
     }
 
     private void onBoostFinish() {

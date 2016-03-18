@@ -10,34 +10,6 @@
         android:layout_height="193dp"
         android:layout_centerInParent="true"
         android:padding="@dimen/battery_boost_padding">
-
-        <ImageView
-            android:id="@+id/boost_anim_iv1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/boost_anim_iv2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/boost_anim_iv3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/boost_anim_iv4"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
     </RelativeLayout>
 
     <com.leo.appmaster.battery.BatteryBoostAnimView
