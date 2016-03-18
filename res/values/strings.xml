@@ -1014,20 +1014,20 @@
     <string name="batterymanage_switch_noti_summary">Notify power consumption of apps</string>
     <string name="batterymanage_boosted_number">%1$s items were optimized</string>
     <!--3.5西安团队审校修改文案 end-->
-
-    <string name="intruder_setting_title_1">系统锁屏拍照</string>
-    <string name="intruder_setting_summarty_1">在解锁手机时输错密码自动拍照</string>
-    <string name="intruder_setting_title_2">应用锁拍照</string>
-    <string name="intruder_setting_summarty_2">在解锁应用时输错密码自动拍照</string>
-    <string name="intruder_systemlock_tip">建议开启系统锁屏拍照</string>
-    <string name="intruder_systemlock_finished">系统锁屏拍照已开启</string>
-    <string name="intruder_device_admin_guide_content">开启该功能需要先开启高级保护，若你需要卸载LEO Privacy，需先关闭高级保护，您确定要开启吗？</string>
-    <string name="intruder_systemlock_alarm">关闭功能后，将无法拍下想偷看你手机的人</string>
-    <string name="app_lock_list_switch_wifi">WiFi</string>
-    <string name="app_lock_list_switch_bluetooth">蓝牙</string>
-    <string name="app_lock_list_switch_title_one">开关</string>
-    <string name="app_lock_list_switch_title_two">应用</string>
-    <string name="intruder_intruduction">在解锁应用/手机时，输错密码将会自动拍照</string>
-    <string name="mobile_phone">手机</string>
-    <string name="scan_app_title_switch">发现%1$s个应用和开关</string>
+    <!--3.5-->
+    <string name="intruder_setting_title_1">Auto-photo of  snoopers breaking into Home Screen Lock</string>
+    <string name="intruder_setting_summarty_1">Auto-photo when unlocking phone with the wrong password</string>
+    <string name="intruder_setting_title_2">Auto-photo  of  snoopers breaking into App Lock</string>
+    <string name="intruder_setting_summarty_2">Auto-photo when unlocking apps with the wrong password</string>
+    <string name="intruder_systemlock_tip">Recommend to enable the Home Screen Lock function</string>
+    <string name="intruder_systemlock_finished">Camera access of Home Screen Lock has been activated</string>
+    <string name="intruder_device_admin_guide_content">Enable the \"Advanced Protection\" before you activate this function, please disable the \"Advanced Protection\" before you uninstall \"LEO Privacy\", are you sure you want to continue? </string>
+    <string name="intruder_systemlock_alarm">It won\'t be able to take photos of snoopers peeking into your phone  when you disable this function</string>
+    <string name="app_lock_list_switch_wifi">Wi-Fi</string>
+    <string name="app_lock_list_switch_bluetooth">Bluetooth</string>
+    <string name="app_lock_list_switch_title_one">Switch</string>
+    <string name="app_lock_list_switch_title_two">Application</string>
+    <string name="intruder_intruduction">Take photos automatically when unlocking the applications or phone with the wrong password</string>
+    <string name="scan_app_title_switch">%1$s applications and switches were detected</string>
+    <string name="mobile_phone">Phone</string>
 </resources>

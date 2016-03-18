@@ -985,4 +985,22 @@
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_content">新名字，新起点</string>
     <string name="battery_protect_view_remain_three_title">視頻</string>
+
+    <!--3.5-->
+    <string name="intruder_setting_title_1">系統鎖屏拍照</string>
+    <string name="intruder_setting_summarty_1">在解鎖手機時輸錯密碼自動拍照</string>
+    <string name="intruder_setting_title_2">應用鎖拍照</string>
+    <string name="intruder_setting_summarty_2">在解鎖應用時輸錯密碼自動拍照</string>
+    <string name="intruder_systemlock_tip">建議開啟系統鎖屏拍照</string>
+    <string name="intruder_systemlock_finished">系統鎖屏拍照已開啟</string>
+    <string name="intruder_device_admin_guide_content">開啟該功能需要先開啟高級保護，若你需要卸載LEO Privacy，需先關閉高級保護，您確定要開啟嗎？</string>
+    <string name="intruder_systemlock_alarm">關閉功能後，將無法拍下想偷看你手機的人</string>
+    <string name="app_lock_list_switch_wifi">Wi-Fi</string>
+    <string name="app_lock_list_switch_bluetooth">藍牙</string>
+    <string name="app_lock_list_switch_title_one">開關</string>
+    <string name="app_lock_list_switch_title_two">應用</string>
+    <string name="intruder_intruduction">在解鎖應用或手機時，輸錯密碼將會自動拍照</string>
+    <string name="scan_app_title_switch">發現%1個應用和開關</string>
+    <string name="mobile_phone">手機</string>
+
 </resources>

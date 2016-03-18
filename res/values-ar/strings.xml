@@ -1067,4 +1067,21 @@
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_content">اسم جديد، بداية جديدة </string>
     <string name="battery_protect_view_remain_three_title">فيديو</string>
+
+    <!--3.5-->
+    <string name="intruder_setting_title_1">التقاط صور من اقتحم  قفل الشاشة الرئيسية</string>
+    <string name="intruder_setting_summarty_1">التقاط صورعندما دخل كلمة المرور الخاطئة في فتح التلفون</string>
+    <string name="intruder_setting_title_2">التقاط صور من اقتحم  قفل التطبيق</string>
+    <string name="intruder_setting_summarty_2">التقاط صورعندما دخل كلمة المرور الخاطئة في فتح التطبيق</string>
+    <string name="intruder_systemlock_tip">اقتراح تمكين التقاط صور من اقتحم  قفل الشاشة </string>
+    <string name="intruder_systemlock_finished">قد تمكين التقاط صور من اقتحم  قفل الشاشة</string>
+    <string name="intruder_device_admin_guide_content">لا بد منك أن تفتح الحماية المتقدمة قبل تمكين هذه الوظيفة.اذا تريد الغاء التثبيتLEO Privacy ،فيجب عليك اغلاقها.يفتح؟</string>
+    <string name="intruder_systemlock_alarm">لا يمكن التقاط صور المتطفل عندما أغلق هذه  الوظيفة</string>
+    <string name="app_lock_list_switch_wifi">Wi-Fi</string>
+    <string name="app_lock_list_switch_bluetooth">Bluetooth</string>
+    <string name="app_lock_list_switch_title_one">تحول</string>
+    <string name="app_lock_list_switch_title_two">التطبيق</string>
+    <string name="intruder_intruduction">التقاط صور تلقائيا عندما دخل كلمة المرور الخاطئة في فتح التطبيق او التلفول</string>
+    <string name="scan_app_title_switch">توجد %1$s تطبيق و تحول</string>
+    <string name="mobile_phone">التلفون</string>
 </resources>

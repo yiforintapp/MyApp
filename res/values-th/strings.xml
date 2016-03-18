@@ -977,4 +977,21 @@
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_content">ชื่อไหม่ จุดเริ่มต้นไหม่</string>
     <string name="battery_protect_view_remain_three_title">วีดีโอ</string>
+    <!--3.5-->
+    <string name="intruder_setting_title_1">ถ่ายรูประบบล็อคหน้าจอ</string>
+    <string name="intruder_setting_summarty_1">ถ่ายรูปอัตโนมัติเมื่อรหัสลับผิดขณะที่ปลดล็อคโทรศัพท์มือถือ</string>
+    <string name="intruder_setting_title_2">ถ่ายรูปล็อคการประยุกต์ใช้</string>
+    <string name="intruder_setting_summarty_2">ถ่ายรูปอัตโนมัติเมื่อรหัสลับผิดขณะที่ปลดล็อคการประยุกต์ใช้</string>
+    <string name="intruder_systemlock_tip">เสนอเปิดถ่ายรูประบบล็อคหน้าจอ</string>
+    <string name="intruder_systemlock_finished">ถ่ายรูประบบล็อคหน้าจอเปิดแล้ว</string>
+    <string name="intruder_device_admin_guide_content">เปิดสมรรถนะนี้ต้องเปิดการรักษาระดับสูงก่อน หากคุณต้องการถอนการติดตั้งLEO Privacy จะปิดการรักษาระดับสูง คุณตกลงเปิดไหม </string>
+    <string name="intruder_systemlock_alarm">หลังปิดสมรรถนะ จะไม่สามารถถ่ายผู้ที่อยากแอบดูโทรศัพท์ของคุณ</string>
+    <string name="app_lock_list_switch_wifi">ไวไฟ</string>
+    <string name="app_lock_list_switch_bluetooth">บลูทูธ</string>
+    <string name="app_lock_list_switch_title_one">สวิตช์</string>
+    <string name="app_lock_list_switch_title_two">การประยุกต์ใช้</string>
+    <string name="intruder_intruduction">ถ่ายรูปอัตโนมัติเมื่อรหัสลับผิดขณะที่ปลดล็อคการประยุกต์ใช้หรือโทรศัพท์มือถือ</string>
+    <string name="scan_app_title_switch">เจอการประยุกต์ใช้และสวิตช์%1$sตัว</string>
+    <string name="mobile_phone">โทรศัพท์มือถือ</string>
+
 </resources>
