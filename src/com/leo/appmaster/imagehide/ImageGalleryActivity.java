@@ -28,6 +28,8 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageSize;
 
 /**
  * @author linxiongzhou
@@ -57,6 +59,7 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             }
         }
     };
+    private int mImageSize;
 
     private void loadDone() {
         if (mAlbumList != null) {
@@ -105,6 +108,8 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
         mGridView.setAdapter(mAlbumAdapt);
         mNoPictureHint = (RelativeLayout) findViewById(R.id.no_picture);
         loadingBar = (ProgressBar) findViewById(R.id.pb_loading_hide_pic);
+
+        mImageSize = getResources().getDimensionPixelSize(R.dimen.hide_album_image_frame_width);
     }
 
     @Override
@@ -152,7 +157,7 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .cacheInMemory(true)
-                .cacheOnDisk(true)
+                .cacheOnDisk(false)
                 .displayer(new FadeInBitmapDisplayer(500))
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
@@ -226,7 +231,8 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             path = list.get(position).getBitList().get(0).getPath();
             viewHolder.txt.setText(list.get(position).getName() + "("
                     + list.get(position).getCount() + ")");
-            mImageLoader.displayImage("file://" + path, viewHolder.img, mOptions);
+            mImageLoader.displayImage(ImageDownloader.Scheme.FILE.wrap(path),
+                    viewHolder.img, mOptions, new ImageSize(mImageSize, mImageSize));
             return convertView;
         }
     }

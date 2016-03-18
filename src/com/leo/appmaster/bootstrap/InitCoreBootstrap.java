@@ -21,6 +21,7 @@ import android.text.TextUtils;
 
 import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
@@ -154,16 +155,19 @@ public class InitCoreBootstrap extends Bootstrap {
 
     private void initImageLoader() {
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mApp)
-                .taskExecutor(ThreadManager.getNetworkExecutor())
-                .taskExecutorForCachedImages(ThreadManager.getAsyncExecutor())
-                .threadPoolSize(Constants.MAX_THREAD_POOL_SIZE)
-                .threadPriority(Thread.NORM_PRIORITY)
-                .memoryCacheSizePercentage(8)
-                .defaultDisplayImageOptions(options)
-                .diskCacheSize(Constants.MAX_DISK_CACHE_SIZE) // 100 Mb
-                .denyCacheImageMultipleSizesInMemory().build();
-        ImageLoader.getInstance().init(config);
+        ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(mApp);
+        builder.taskExecutor(ThreadManager.getNetworkExecutor());
+        builder.taskExecutorForCachedImages(ThreadManager.getAsyncExecutor());
+        builder.threadPoolSize(Constants.MAX_THREAD_POOL_SIZE);
+        builder.threadPriority(Thread.NORM_PRIORITY);
+        builder.memoryCacheSizePercentage(8);
+        builder.defaultDisplayImageOptions(options);
+        if (AppMasterConfig.LOGGABLE) {
+            builder.writeDebugLogs();
+        }
+        builder.diskCacheSize(Constants.MAX_DISK_CACHE_SIZE); // 100 Mb
+        builder.denyCacheImageMultipleSizesInMemory();
+        ImageLoader.getInstance().init(builder.build());
     }
 
     private void registerPackageChangedBroadcast() {

@@ -54,6 +54,7 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageSize;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -102,6 +103,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     private boolean isFristIn = true;
     //通过拷贝方式隐藏图片的方式，删除源文件是否成功
     private boolean mIsDeletSucFromDatebase = true;
+
+    private int mImageSize;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -254,7 +257,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .displayer(new FadeInBitmapDisplayer(500))
-                .cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+                .cacheInMemory(true).cacheOnDisk(false).considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
 
         mImageLoader = ImageLoader.getInstance();
@@ -328,6 +331,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 });
             }
         }
+
+        mImageSize = getResources().getDimensionPixelSize(R.dimen.hide_grid_image_width);
     }
 
     private void cancelGuide() {
@@ -475,7 +480,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 } else {
                     uri = ImageDownloader.Scheme.FILE.wrap(path);
                 }
-                mImageLoader.displayImage(uri, holder.imageView, mOptions);
+                mImageLoader.displayImage(uri, holder.imageView, mOptions, new ImageSize(mImageSize, mImageSize));
             }
             return view;
         }

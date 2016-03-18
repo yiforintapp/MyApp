@@ -7,8 +7,8 @@
 
     <FrameLayout
         android:id="@+id/fralay_top"
-        android:layout_width="109dp"
-        android:layout_height="109dp">
+        android:layout_width="@dimen/hide_grid_image_width"
+        android:layout_height="@dimen/hide_grid_image_width">
 
         <ImageView
             android:id="@+id/image"

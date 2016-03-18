@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.FailReason.FailType;
 import com.leo.imageloader.core.ImageAware;
@@ -143,7 +144,6 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
                 bmp = tryLoadBitmap();
                 if (bmp == null)
                     return; // listener callback already was fired
-
                 checkTaskNotActual();
                 checkTaskInterrupted();
 
@@ -242,7 +242,7 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
                 loadedFrom = LoadedFrom.NETWORK;
 
                 String imageUriForDecoding = uri;
-                if (!isEncryptUri() && options.isCacheOnDisk() && tryCacheImageOnDisk()) {
+                if (options.isCacheOnDisk() && tryCacheImageOnDisk() && !isEncryptUri()) {
                     imageFile = configuration.diskCache.get(uri);
                     if (imageFile != null) {
                         imageUriForDecoding = Scheme.FILE.wrap(imageFile.getAbsolutePath());
@@ -457,6 +457,7 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
      */
     private boolean isViewCollected() {
         if (imageAware.isCollected()) {
+            LeoLog.d("ImageLoader", "isCollected..key: " + memoryCacheKey);
             L.d(LOG_TASK_CANCELLED_IMAGEAWARE_COLLECTED, memoryCacheKey);
             return true;
         }
@@ -468,6 +469,11 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
         if (isViewReused()) {
             throw new TaskCancelledException();
         }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
     /**

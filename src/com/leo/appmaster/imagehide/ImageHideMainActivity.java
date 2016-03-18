@@ -39,6 +39,7 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     public static final int REQUEST_CODE_OPTION = 1001;
 
     private Toast mToast;
+
+    private int mImageSize;
 
     public void onBackPressed() {
         LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
@@ -186,6 +189,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
+
+        mImageSize = getResources().getDimensionPixelSize(R.dimen.hide_album_image_frame_width);
     }
 
     private void initImageLoder() {
@@ -194,9 +199,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 .showImageForEmptyUri(R.drawable.photo_bg_loding)
                 .showImageOnFail(R.drawable.photo_bg_loding)
                 .cacheInMemory(true)
-                .cacheOnDisk(true)
+                .cacheOnDisk(false)
                 .displayer(new FadeInBitmapDisplayer(500))
-                .cacheOnDisk(true)
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
@@ -230,21 +234,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     @Override
     protected void onRestart() {
         super.onRestart();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-
-        if (mImageLoader != null) {
-            mImageLoader.stop();
-        }
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -318,7 +307,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
-            mImageLoader.displayImage(uri, viewHolder.img, mOptions);
+            mImageLoader.displayImage(uri, viewHolder.img, mOptions, new ImageSize(mImageSize, mImageSize));
             return convertView;
         }
     }
