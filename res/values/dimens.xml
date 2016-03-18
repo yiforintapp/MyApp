@@ -351,4 +351,7 @@
     <dimen name="battery_boost_padding">31dp</dimen>
 
     <dimen name="battery_clean_result_margingTop">33dp</dimen>
+    <!--3.5-->
+    <dimen name="lock_tip_margin">20dp</dimen>
+    <dimen name="filter_record_title_margin">60dp</dimen>
 </resources>

@@ -26,6 +26,7 @@
         android:layout_below="@+id/tv_gesture_tip"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
+        android:layout_margin="@dimen/lock_tip_margin"
         android:text="@string/digital_passwd_function_hint"
         android:textColor="#ffffff"
         android:textSize="@dimen/fragment_lock_password_setting_tv_passwd_function_tip_textsize" />

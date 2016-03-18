@@ -897,9 +897,8 @@
     <string name="up_list_swifty_title">Повышение эффективности</string>
 
     <string name="screen_protect_time">Оставшееся время </string>
-    <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
-    <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
-
+    <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>ч.<Data><![CDATA[<font color="#0ad931">%2$s</font>]]> м.</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>м.</string>-->
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы LEO Privacy требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить LEO Privacy</string>
     <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>
 

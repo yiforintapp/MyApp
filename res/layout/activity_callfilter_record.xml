@@ -14,12 +14,12 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/filter_record_title_margin">
 
             <TextView
                 android:id="@+id/tv_callfilter_record_title_name"
                 android:layout_width="wrap_content"
-                android:maxWidth="150dp"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:layout_height="wrap_content"
@@ -33,6 +33,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_callfilter_record_title_name"
                 android:layout_centerHorizontal="true"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:layout_marginTop="6dp"
                 android:textColor="@color/c150"
                 android:textSize="13dp" />

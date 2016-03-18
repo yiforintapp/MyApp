@@ -10,13 +10,14 @@
     <RelativeLayout
         android:id="@+id/instr_RT"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
         <FrameLayout
             android:id="@+id/image_FT"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
 
             <ImageView
                 android:id="@+id/image"
@@ -48,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="3"
                 android:text="@string/phone_security_instruct_onkey"
                 android:textColor="#333333"
                 android:textSize="12dp" />
@@ -60,7 +60,6 @@
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:singleLine="true"
                 android:text="@string/phone_security_instruct_onkey_description"
                 android:textColor="#999999"
                 android:textSize="12dp" />

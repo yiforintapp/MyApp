@@ -999,8 +999,8 @@
     <string name="batterymanage_boosted_number">%1$d هي الأمثل البنود</string>
 
     <string name="screen_protect_time"> وقت الباقية</string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color=""#0ad931"">%1$s</font>]]></Data> h<Data><![CDATA[<font color=""#0ad931"">%2$s</font>]]></Data>m</string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>m</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h<Data><![CDATA[<font color="#0ad931">%2$s</font>]]>min</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>min</string>
 
     <string name="oppo_rom_tip_txt">،الخصوصية حارس تشغيل بعد عادية الصلاحية تعمل النظام قيد بنسبة  اجازة بعد الخافية التطبيقات تشغيل ، البرنامج اختر اضافة اضافة التشغيل الخصوصية حارس خطوة ، اضافة</string>
 
