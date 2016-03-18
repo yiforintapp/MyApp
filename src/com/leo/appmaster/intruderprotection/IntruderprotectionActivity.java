@@ -703,7 +703,10 @@ public class IntruderprotectionActivity extends BaseActivity {
                 }
             });
         } else {
-            mRlTipContent.setVisibility(View.GONE);
+            if (mRlTipContent.getVisibility() == View.VISIBLE) {
+                mLlGuideFinished.setVisibility(View.VISIBLE);
+                mLlGuide.setVisibility(View.INVISIBLE);
+            }
         }
 
     }
@@ -768,7 +771,7 @@ public class IntruderprotectionActivity extends BaseActivity {
     }
 
     private void requestDeviceAdmin() {
-//        mLockManager.filterSelfOneMinites();
+        mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
         ComponentName mAdminName = new ComponentName(IntruderprotectionActivity.this, DeviceReceiver.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
