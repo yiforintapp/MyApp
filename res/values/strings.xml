@@ -612,7 +612,7 @@
     <string name="up_list_swifty_title">Efficiency promotion</string>
 
     <string name="screen_protect_time">Remaining time </string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>m</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h<Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>m</string>
     <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>m</string>
 
 
@@ -623,7 +623,6 @@
     <string name="today">Today</string>
 
     <!-- 3.3.1 -->
-
 
     <string-array name="default_psw_protect_entrys_new">
         <item>What\'s my lucky number?</item>
