@@ -685,11 +685,16 @@ public class IntruderprotectionActivity extends BaseActivity {
             mRvOpenSystLockProt.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (DeviceReceiver.isActive(IntruderprotectionActivity.this)) {
-                        changeToGuideFinishedLayout();
+                    if (!mImanager.getIsIntruderSecurityAvailable()) {
+                        showForbitDialog();
                     } else {
-                        showAskOpenDeviceAdminDialog();
+                        if (DeviceReceiver.isActive(IntruderprotectionActivity.this)) {
+                            changeToGuideFinishedLayout();
+                        } else {
+                            showAskOpenDeviceAdminDialog();
+                        }
                     }
+
                 }
             });
         } else {
@@ -772,9 +777,10 @@ public class IntruderprotectionActivity extends BaseActivity {
             mRlTipContent.setVisibility(View.VISIBLE);
             mLlGuide.setVisibility(View.INVISIBLE);
             mLlGuideFinished.setVisibility(View.VISIBLE);
-        } else {
-            showForbitDialog();
         }
+//        else {
+//            showForbitDialog();
+//        }
     }
 
     protected void showForbitDialog() {
