@@ -21,6 +21,7 @@ import android.graphics.drawable.Drawable;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.utils.AppUtil;
 
@@ -83,6 +84,10 @@ public class WaterMarkUtils {
         float fitRate = photoBitmap.getWidth() / 240f;
         if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
             appIcon = context.getResources().getDrawable(R.drawable.intruder_system_icon);
+        } else if(SwitchGroup.BLUE_TOOTH_SWITCH.equals(packageName)) {
+            appIcon = context.getResources().getDrawable(R.drawable.lock_bluetooth);
+        } else if(SwitchGroup.WIFI_SWITCH.equals(packageName)) {
+            appIcon = context.getResources().getDrawable(R.drawable.lock_wifi);
         } else {
             try {
                 List<PackageInfo> installedPackages = pm.getInstalledPackages(0);

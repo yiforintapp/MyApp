@@ -41,6 +41,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
@@ -814,6 +815,10 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     Drawable applicationIcon = null;
                     if (IntrudeSecurityManager.ICON_SYSTEM.equals(pkg)) {
                         applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+                    } else if (SwitchGroup.WIFI_SWITCH.equals(pkg)) {
+                        applicationIcon = getResources().getDrawable(R.drawable.lock_wifi);
+                    } else if (SwitchGroup.BLUE_TOOTH_SWITCH.equals(pkg)) {
+                        applicationIcon = getResources().getDrawable(R.drawable.lock_bluetooth);
                     } else {
                         applicationIcon = AppUtil.getAppIcon(pm, pkg);
                     }
@@ -867,6 +872,12 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
                 applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
                 label = getString(R.string.mobile_phone);
+            } else if (SwitchGroup.BLUE_TOOTH_SWITCH.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.lock_bluetooth);
+                label = getString(R.string.app_lock_list_switch_bluetooth);
+            } else if (SwitchGroup.WIFI_SWITCH.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.lock_wifi);
+                label = getString(R.string.app_lock_list_switch_wifi);
             } else {
                 applicationIcon = AppUtil.getAppIcon(pm, packageName);
                 label = AppUtil.getAppLabel(pm, packageName);

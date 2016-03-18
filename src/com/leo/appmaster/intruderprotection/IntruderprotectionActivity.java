@@ -42,6 +42,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -310,6 +311,10 @@ public class IntruderprotectionActivity extends BaseActivity {
         try {
             if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
                 applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+            } else if (SwitchGroup.WIFI_SWITCH.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.lock_wifi);
+            } else if (SwitchGroup.BLUE_TOOTH_SWITCH.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.lock_bluetooth);
             } else {
                 applicationIcon = AppUtil.getAppIcon(pm, packageName);
             }
