@@ -2,9 +2,12 @@ package com.leo.appmaster.intruderprotection;
 
 import android.animation.LayoutTransition;
 import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -127,7 +130,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private RippleView mRvOpen;
     private FrameLayout mShareLayout; // 分享layout
     private TextView mShareText;  //分享按钮
-
     private LinearLayout mSwiftylayout; //swifty卡片
     private TextView mSwiftyTitle;
     private ImageView mSwiftyImg;
@@ -216,6 +218,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         // 更新抓拍所需的解锁失败次数
         updateTimesToCatch();
     }
+
 
 
     @Override
@@ -883,7 +886,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
-
     }
 
     private void initSwiftyLayout() {
@@ -1157,4 +1159,5 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLayout.startAnim();
         }
     }
+
 }

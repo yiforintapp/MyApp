@@ -17,6 +17,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.utils.BitmapUtils;
@@ -37,14 +38,29 @@ import java.util.Locale;
 public class SystLockStatusReceiver extends BroadcastReceiver {
 //    private PrivacyDataManager mPDManager;
 //    private IntrudeSecurityManager mISManager;
+private LockManager mLockManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_USER_PRESENT.equals(action)) {
+            if (IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved) {
+                IntrudeSecurityManager.sHasPicTakenAtSystemLockShowedWhenUserPresent = true;
+                Intent intent2 = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent2.putExtra("pkgname", "from_systemlock");
+                if (mLockManager == null) {
+                    mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                }
+                mLockManager.filterPackage(context.getPackageName(), 5000);
+                context.startActivity(intent2);
+            } else if(IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && !IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved){
+                IntrudeSecurityManager.sHasPicTakenAtSystemLockShowedWhenUserPresent = false;
+            }
             IntrudeSecurityManager.sFailTimesAtSystLock = 0;
             IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
         }
+
     }
 
 }

@@ -14,6 +14,8 @@ public abstract class IntrudeSecurityManager extends Manager {
     public static int sFailTimesAtSystLock = 0;
     public static boolean sHasTakenWhenUnlockSystemLock = false;
     public static final String ICON_SYSTEM = "icon_system";
+    public static boolean sHasPicTakenAtSystemLockSaved = false;
+    public static boolean sHasPicTakenAtSystemLockShowedWhenUserPresent = false;
     
     @Override
     public String description() {

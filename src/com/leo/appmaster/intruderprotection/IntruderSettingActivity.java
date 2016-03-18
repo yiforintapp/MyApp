@@ -99,7 +99,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
 
     private void initUI() {
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
-        mCtbMain.setToolbarTitle(R.string.home_tab_instruder);
+        mCtbMain.setToolbarTitle(R.string.setting);
         mTvFailTimesToCatch = (TextView) findViewById(R.id.tv_intruder_setting_summary3);
         mIvSwitchSyst = (ImageView) findViewById(R.id.iv_intruder_setting_switch1);
         mIvSwitchNormal = (ImageView) findViewById(R.id.iv_intruder_setting_switch2);
@@ -263,7 +263,6 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
             mIvSwitchSyst.setImageResource(R.drawable.switch_off);
         }
     }
-
 
     private void showChangeTimesDialog() {
         if (mDialog == null) {

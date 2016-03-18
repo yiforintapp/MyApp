@@ -102,7 +102,6 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 		if (!IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && isOpen && finalJudgeTimes >= mISManager.getTimesForTakePhoto() && mISManager.getIsIntruderSecurityAvailable()) {
 			try {
 				LeoLog.d("poha_admin", "to take pic");
-				IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = true;
 				final Context ctx = AppMasterApplication.getInstance();
 				final CameraSurfacePreview cfp = new CameraSurfacePreview(ctx);
 				final WindowManager mWM = (WindowManager) AppMasterApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
@@ -125,6 +124,8 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 						cfp.takePicture(new Camera.PictureCallback() {
 							@Override
 							public void onPictureTaken(final byte[] data, Camera camera) {
+								IntrudeSecurityManager.sHasPicTakenAtSystemLockShowedWhenUserPresent = false;
+								IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = true;
 								ThreadManager.executeOnAsyncThread(new Runnable() {
 									@Override
 									public void run() {
@@ -169,14 +170,17 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 										mISManager.insertInfo(info);
 										mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
 										PreferenceTable.getInstance().putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
-										Intent intent = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
-										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										intent.putExtra("pkgname", "from_systemlock");
-										if (mLockManager == null) {
-											mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+										IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved = true;
+										if (!IntrudeSecurityManager.sHasPicTakenAtSystemLockShowedWhenUserPresent) {
+											Intent intent = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
+											intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+											intent.putExtra("pkgname", "from_systemlock");
+											if (mLockManager == null) {
+												mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+											}
+											mLockManager.filterPackage(context.getPackageName(), 5000);
+											context.startActivity(intent);
 										}
-										mLockManager.filterPackage(context.getPackageName(), 1000);
-										context.startActivity(intent);
 									}
 								});
 							}
