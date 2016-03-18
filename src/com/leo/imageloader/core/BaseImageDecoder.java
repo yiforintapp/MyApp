@@ -89,6 +89,7 @@ public class BaseImageDecoder implements ImageDecoder {
             IoUtils.closeSilently(imageStream);
         }
 
+        L.d("decoded bitmap: " + decodedBitmap);
         if (decodedBitmap == null) {
             L.e(ERROR_CANT_DECODE_IMAGE, decodingInfo.getImageKey());
         } else {
