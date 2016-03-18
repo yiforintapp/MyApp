@@ -588,13 +588,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void initBoostLayout() {
         BatteryManager btrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
         boolean isBatteryPowSavOpen = btrManager.getBatteryPowSavStatus();
+        mRemainTimeContent.setVisibility(View.INVISIBLE);
+        mRemainContent.setVisibility(View.INVISIBLE);
         if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_save");
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
 
-            mRemainTimeContent.setVisibility(View.INVISIBLE);
-            mRemainContent.setVisibility(View.INVISIBLE);
 
             timeTurnBig();
 
@@ -614,7 +614,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             });
         } else {
             checkingData(false);
-            showViewAfterBoost(false);
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showViewAfterBoost(false);
+                }
+            }, 600);
         }
     }
 
@@ -740,13 +745,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mMaskView = (GradientMaskView) findViewById(R.id.mask_view);
 
-        if (afterAnimation) {
-            startRemindTimeAppearAnim();
-        } else {
-            mRemainTimeContent.setVisibility(View.VISIBLE);
-            mRemainContent.setVisibility(View.VISIBLE);
-            expandRecommandContent(RECOMMAND_TYPE_TWO, true);
-        }
+        startRemindTimeAppearAnim(afterAnimation);
+
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -783,24 +783,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    private void startRemindTimeAppearAnim() {
-        ObjectAnimator shieldAlpha = null;
-        ObjectAnimator shieldScaleX = null;
-        ObjectAnimator shieldScaleY = null;
-        if (mBoostView != null) {
-            shieldAlpha = ObjectAnimator.ofFloat(mBoostView, "alpha", 1f, 0f);
-            shieldScaleX = ObjectAnimator.ofFloat(mBoostView, "scaleX", 1f, 1.2f);
-            shieldScaleY = ObjectAnimator.ofFloat(mBoostView, "scaleY", 1f, 1.2f);
-            shieldAlpha.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    if (mBoostView != null) {
-                        mBoostView.setVisibility(View.INVISIBLE);
-                        mBoostView.setAlpha(1f);
-                    }
-                }
-            });
-        }
+    private void startRemindTimeAppearAnim(boolean isShieldExist) {
+
         ObjectAnimator alpha = ObjectAnimator.ofFloat(mRemainContent, "alpha", 0f, 255f);
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(mRemainContent, "scaleX", 0.8f, 1f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(mRemainContent, "scaleY", 0.8f, 1f);
@@ -821,10 +805,30 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(500);
-        animatorSet.playTogether(alpha, scaleX, scaleY, shieldAlpha, shieldScaleX, shieldScaleY,
-                                remainTimeAlpha, remainTimeScaleX, remainTimeScaleY);
-        animatorSet.start();
+        if (isShieldExist) {
+            ObjectAnimator shieldAlpha = null;
+            ObjectAnimator shieldScaleX = null;
+            ObjectAnimator shieldScaleY = null;
+            if (mBoostView != null) {
+                shieldAlpha = ObjectAnimator.ofFloat(mBoostView, "alpha", 1f, 0f);
+                shieldScaleX = ObjectAnimator.ofFloat(mBoostView, "scaleX", 1f, 1.2f);
+                shieldScaleY = ObjectAnimator.ofFloat(mBoostView, "scaleY", 1f, 1.2f);
+                shieldAlpha.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (mBoostView != null) {
+                            mBoostView.setVisibility(View.INVISIBLE);
+                            mBoostView.setAlpha(1f);
+                        }
+                    }
+                });
+            }
 
+            animatorSet.playTogether(alpha, scaleX, scaleY, shieldAlpha, shieldScaleX, shieldScaleY,
+                    remainTimeAlpha, remainTimeScaleX, remainTimeScaleY);
+        } else {
+            animatorSet.playTogether(alpha, scaleX, scaleY, remainTimeAlpha, remainTimeScaleX, remainTimeScaleY);
+        }
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -832,6 +836,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 expandRecommandContent(RECOMMAND_TYPE_TWO, true);
             }
         });
+        animatorSet.start();
     }
 
     private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
