@@ -396,7 +396,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 				@Override
 				public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
 					LeoLog.d("IntruderAd", "onMobvistaClick");
-					SDKWrapper.addEvent(IntruderCatchedActivity.this, "max_ad_click", SDKWrapper.P1, "timeOfClick", unitID + " click", null);
+					SDKWrapper.addEvent(IntruderCatchedActivity.this, "max_ad_click", SDKWrapper.P1, "timeOfClick", "ad pos: " + unitID + " click", null);
 					SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
 							"ad_cli", "adv_cnts_capture");
 					LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
@@ -440,19 +440,19 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", INTRUDER_AD_ID + "prepare for load image", null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + INTRUDER_AD_ID + " prepare for load image", null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", INTRUDER_AD_ID +"load image failed", null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + INTRUDER_AD_ID + " load image failed", null);
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             IntruderCatchedActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
-				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", INTRUDER_AD_ID + "image size: " + loadedImage.getByteCount(), null);
+				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + INTRUDER_AD_ID + " image size: " + loadedImage.getByteCount(), null);
                 LeoLog.d("IntruderAd", "[IntruderCatchedActivity] onLoadingComplete -> " + imageUri);
                 activity.initAdLayout(activity.findViewById(R.id.ad_content),
                         mCampaign, INTRUDER_AD_ID, loadedImage);
@@ -490,7 +490,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         //MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
                 "ad_act", "adv_shws_capture");
-		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", INTRUDER_AD_ID + " adShow", null);
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", "ad pos: " + INTRUDER_AD_ID + " adShow", null);
     }
     /* 3.2 advertise stuff - end */
 

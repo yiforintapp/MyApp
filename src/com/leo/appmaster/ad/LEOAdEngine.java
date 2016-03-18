@@ -2,7 +2,6 @@ package com.leo.appmaster.ad;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -347,13 +346,12 @@ public class LEOAdEngine {
 
 		// 广告过时则需要重新拉取
 		LeoCompositeData cData = mLEOLoadedNatives.get(unitId);
-		
+
 		TreeMap<String, String> map = new TreeMap<String, String>();
-		map.put("androidid", Settings.Secure.getString(AppMasterApplication.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID));
+		map.put("unitId", unitId);
 		if (isOutOfDate(cData)) {
 			
-			map.put("unitId", unitId);
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "adFrom", "ad is out of date, prepare to load", null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "adFrom", "ad is out of date, prepare to load", map);
 			
 			if (cData != null) {
 				loadSingleMobAd(unitId, cData.nativeAd);
@@ -363,8 +361,7 @@ public class LEOAdEngine {
 			LeoLog.i(TAG, "data out ofdate: reload new one.");
 			return;
 		} else {
-			map.put("unitId", unitId);
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "adFrom", "from cache, ad is not out of date", null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "adFrom", "from cache, ad is not out of date", map);
 		}
 
 		boolean loading = mLeoLoadingNatives.get(unitId) != null;

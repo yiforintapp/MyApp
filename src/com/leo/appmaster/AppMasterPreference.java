@@ -3231,7 +3231,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * @return 1外部第三方sdk广告源, 2为max
 	 */
 	public int getLockBannerAdConfig() {
-		return mPref.getInt(AD_IN_LOCK_SCREEN_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
+//		return mPref.getInt(AD_IN_LOCK_SCREEN_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
+		return AD_SDK_SOURCE_USE_MAX;//FOR TEST mPref.getInt(AD_IN_LOCK_SCREEN_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 	
 
