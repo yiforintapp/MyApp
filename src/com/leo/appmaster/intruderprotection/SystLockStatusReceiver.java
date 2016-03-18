@@ -45,7 +45,7 @@ private LockManager mLockManager;
         String action = intent.getAction();
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_USER_PRESENT.equals(action)) {
             if (IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved) {
-                IntrudeSecurityManager.sHasPicTakenAtSystemLockShowedWhenUserPresent = true;
+                IntrudeSecurityManager.sHasPicShowedWhenUserPresent = true;
                 Intent intent2 = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent2.putExtra("pkgname", "from_systemlock");
@@ -54,11 +54,11 @@ private LockManager mLockManager;
                 }
                 mLockManager.filterPackage(context.getPackageName(), 5000);
                 context.startActivity(intent2);
+                IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
             } else if(IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && !IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved){
-                IntrudeSecurityManager.sHasPicTakenAtSystemLockShowedWhenUserPresent = false;
+                IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
             }
             IntrudeSecurityManager.sFailTimesAtSystLock = 0;
-            IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
         }
 
     }

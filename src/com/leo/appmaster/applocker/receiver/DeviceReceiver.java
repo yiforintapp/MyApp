@@ -124,7 +124,8 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 						cfp.takePicture(new Camera.PictureCallback() {
 							@Override
 							public void onPictureTaken(final byte[] data, Camera camera) {
-								IntrudeSecurityManager.sHasPicTakenAtSystemLockShowedWhenUserPresent = false;
+								IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
+								IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved = false;
 								IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = true;
 								ThreadManager.executeOnAsyncThread(new Runnable() {
 									@Override
@@ -171,7 +172,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 										mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
 										PreferenceTable.getInstance().putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
 										IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved = true;
-										if (!IntrudeSecurityManager.sHasPicTakenAtSystemLockShowedWhenUserPresent) {
+										if (!IntrudeSecurityManager.sHasPicShowedWhenUserPresent) {
 											Intent intent = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
 											intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 											intent.putExtra("pkgname", "from_systemlock");
@@ -179,14 +180,17 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 												mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 											}
 											mLockManager.filterPackage(context.getPackageName(), 5000);
+											IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
 											context.startActivity(intent);
+										} else {
+											IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
 										}
 									}
 								});
 							}
 						});
 					}
-				}, 500);
+				}, 1000);
 
 			} catch (Throwable e) {
 			} finally {
