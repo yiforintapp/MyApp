@@ -1020,7 +1020,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     }
 
     private void requestDeviceAdmin() {
-        mLockManager.filterSelfOneMinites();
+//        mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
         ComponentName mAdminName = new ComponentName(IntruderCatchedActivity.this, DeviceReceiver.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
