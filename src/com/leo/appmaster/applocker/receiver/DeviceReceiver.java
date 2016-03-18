@@ -1,9 +1,22 @@
 package com.leo.appmaster.applocker.receiver;
 
+import android.app.admin.DeviceAdminReceiver;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.hardware.Camera;
+import android.os.Environment;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.battery.BatteryViewFragment;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
@@ -19,20 +32,6 @@ import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-
-import android.app.admin.DeviceAdminReceiver;
-import android.app.admin.DevicePolicyManager;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.hardware.Camera;
-import android.os.Environment;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -180,13 +179,18 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 												mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 											}
 											IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
+											long delayTime = 1000;
+											if (BatteryViewFragment.mEnterBrowser) {
+												delayTime = 2000;
+											}
 											ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
 												@Override
 												public void run() {
 													mLockManager.filterPackage(context.getPackageName(), 1000);
 													context.startActivity(intent);
 												}
-											}, 1000);
+											}, delayTime);
+											LeoLog.e("delayTime", "" + delayTime);
 //											context.startActivity(intent);
 										} else {
 											IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;

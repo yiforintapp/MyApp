@@ -230,6 +230,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public static String[] days = AppMasterApplication.getInstance().getResources()
             .getStringArray(R.array.days_of_week);
 
+    public static boolean mEnterBrowser; //是否点击打开浏览器
+
     //开始首页动画
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -1017,6 +1019,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     intent.setData(Contacts.People.CONTENT_URI);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
+                        mEnterBrowser = false;
                         startActivity(intent);
                         mActivity.finish();
                     } catch (Exception e) {
@@ -1034,6 +1037,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
+                        mEnterBrowser = false;
                         startActivity(intent);
                         mActivity.finish();
                     } catch (Exception e) {
@@ -1048,6 +1052,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mEnterBrowser = false;
                     Utilities.launchMmsAndFinish(mActivity);
                 }
             });
@@ -1090,6 +1095,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 ComponentName cn = new ComponentName(infoCopy.pkg, className);
                                 intent.setComponent(cn);
                                 try {
+                                    mEnterBrowser = false;
                                     startActivity(intent);
                                     mActivity.finish();
                                 } catch (Exception e) {
@@ -1150,9 +1156,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 ComponentName cn = new ComponentName(browserPack, className);
                                 intent.setComponent(cn);
                                 try {
+                                    mEnterBrowser = true;
                                     startActivity(intent);
                                     mActivity.finish();
                                 } catch (Exception e) {
+                                    mEnterBrowser = false;
                                     e.printStackTrace();
                                 }
                             }
@@ -1262,9 +1270,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         Uri content_url = Uri.parse(url);
         intent.setData(content_url);
         try {
+            mEnterBrowser = true;
             startActivity(intent);
             mActivity.finish();
         } catch (Exception e) {
+            mEnterBrowser = false;
             e.printStackTrace();
         }
     }
@@ -1357,6 +1367,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         ComponentName cn = new ComponentName(infoOne.pkg, className);
                         intent.setComponent(cn);
                         try {
+                            mEnterBrowser = false;
                             startActivity(intent);
                             mActivity.finish();
                         } catch (Exception e) {
