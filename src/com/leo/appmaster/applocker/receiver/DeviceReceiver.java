@@ -99,7 +99,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 		LeoLog.d("poha_admin", "isOpen = " + isOpen);
 		LeoLog.d("poha_admin", "finalJudgeTimes = " + finalJudgeTimes);
 
-		if (!IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && isOpen && finalJudgeTimes >= mISManager.getTimesForTakePhoto()) {
+		if (!IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && isOpen && finalJudgeTimes >= mISManager.getTimesForTakePhoto() && mISManager.getIsIntruderSecurityAvailable()) {
 			try {
 				LeoLog.d("poha_admin", "to take pic");
 				IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = true;
