@@ -16,7 +16,6 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
-import com.leo.appmaster.battery.BatteryViewFragment;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
@@ -180,7 +179,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 											}
 											IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
 											long delayTime = 1000;
-											if (BatteryViewFragment.mEnterBrowser) {
+											if (IntrudeSecurityManager.sEnterBrowser) {
 												delayTime = 2000;
 											}
 											ThreadManager.executeOnAsyncThreadDelay(new Runnable() {

@@ -1,9 +1,8 @@
 package com.leo.appmaster.mgr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+
+import java.util.ArrayList;
 
 /**
  * 入侵者防护
@@ -26,6 +25,8 @@ public abstract class IntrudeSecurityManager extends Manager {
     //在user present时是否已经展示过抓拍界面，如果user present时照片已经保存完了，将会置为true并进入抓拍界面，用于判断异步保存线程在
     //保存完成后是否需要展示抓拍界面，（false表示：在user present时图片还没有保存完，因此没有展示，需要做保存操作的线程自己在保存完成后进入），在用于判断后置为false
     public static boolean sHasPicShowedWhenUserPresent = false;
+
+    public static boolean sEnterBrowser = false; // 是否进入浏览器
     
     @Override
     public String description() {
