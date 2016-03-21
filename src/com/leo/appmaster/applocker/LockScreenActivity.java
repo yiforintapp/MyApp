@@ -242,7 +242,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //    public boolean mIs
 
     // 记录广告是否点击，onStart后重置为false
-    private boolean mAdClicked;
+    private boolean mForceLoad;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -525,7 +525,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (AppMasterPreference.getInstance(this).getLockBannerADShowProbability() > 0
                 && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mBannerContainer != null
                 && mLockMode == LockManager.LOCK_MODE_FULL && getWindowWidth() > 240) {
-            loadAD(mAdClicked);
+            loadAD(mForceLoad);
         } else if (AppMasterPreference.getInstance(this).getADShowType() == 3
                 && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mADAnimalEntry != null
                 && mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -780,7 +780,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.d(TAG, "onStart...");
         handleLoadAd();
 
-        mAdClicked = false;
+        mForceLoad = false;
     }
 
     @Override
@@ -1476,7 +1476,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             ThreadManager.executeOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mAdClicked = true;
+                    mForceLoad = true;
                     if (unitID != null && unitID.equals(mBannerAdids[0])) {
                         otherAdSwitcher = false;
                     }
