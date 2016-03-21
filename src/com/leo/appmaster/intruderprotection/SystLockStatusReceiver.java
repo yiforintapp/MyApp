@@ -54,12 +54,13 @@ private LockManager mLockManager;
                 final Intent intent2 = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent2.putExtra("pkgname", "from_systemlock");
-                IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
                 ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                     @Override
                     public void run() {
                         mLockManager.filterPackage(context.getPackageName(), 1000);
                         context.startActivity(intent2);
+                        IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
+                        LeoLog.d("poha_admin", "set sHasTakenWhenUnlockSystemLock false 2");
                     }
                 }, DeviceReceiver.NORMAL_TIME);
             } else if(IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && !IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved){
