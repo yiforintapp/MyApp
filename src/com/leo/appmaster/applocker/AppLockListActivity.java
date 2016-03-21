@@ -8,12 +8,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +86,13 @@ public class AppLockListActivity extends BaseActivity implements
     private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL;
     private TextView mAutoText, mBackGroudText;
     private View mGuideTip;
+
+    @Nullable
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
+    }
+
     private ListView mLockList;
     private CommonToolbar mTtileBar;
     private ListAppLockAdapter mLockAdapter;

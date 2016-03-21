@@ -179,7 +179,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
                 AppMasterPreference.getInstance(mActivity).setLocationLockModeGuideClicked(true);
                 removeGuidePage();
                 /** set the help tip action **/
-                mTitleBar.setOptionImage(R.drawable.tips_icon);
+                mTitleBar.setOptionImage(R.drawable.help_icon_n);
                 mTitleBar.setOptionImageVisibility(View.VISIBLE);
                 Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
                 mTitleBar.setOptionAnimation(animation);
