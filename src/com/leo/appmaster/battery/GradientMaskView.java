@@ -67,6 +67,13 @@ public class GradientMaskView extends View {
         g = (int) (midColorG + (bottomColorG - midColorG) * ratio);
         b = (int) (midColorB + (bottomColorB - midColorB) * ratio);
         int fromColor = Color.argb(0, r, g, b);
+
+//        ratio = ((float)(midToBottom - marginBottom)) / (float)midToBottom;
+//        int r = (int) (midColorR + (bottomColorR - midColorR) * ratio);
+//        int g = (int) (midColorG + (bottomColorG - midColorG) * ratio);
+//        int b = (int) (midColorB + (bottomColorB - midColorB) * ratio);
+//        int toColor = Color.argb(255, r, g, b);
+
         // from->to 从下往上
         mMaskRect = new Rect(0, maskTop, getRight() - getLeft(), maskBottom);
         mMaskShader = new LinearGradient(getLeft(), maskTop, getLeft(), maskBottom, fromColor, toColor, Shader.TileMode.REPEAT);

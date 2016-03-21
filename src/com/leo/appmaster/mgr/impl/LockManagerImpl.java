@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -37,6 +38,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.WaitActivity;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.ILockPolicy;
 import com.leo.appmaster.applocker.manager.LockModeDao;
 import com.leo.appmaster.applocker.manager.TimeoutRelockPolicy;
@@ -70,6 +72,8 @@ import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 public class LockManagerImpl extends LockManager {
     private static final String TAG = "LockManager";
 
+    public static final String SAMSUNG = "samsung";
+    public static final String SAMSUNG_SETTINGS = "com.android.settings";
 
     private static final int NO_CACHE = -9999;
 
@@ -1079,6 +1083,8 @@ public class LockManagerImpl extends LockManager {
         return ((TimeoutRelockPolicy) mLockPolicy).inRelockTime(pkg);
     }
 
+    private String lastPck = "";
+
     @Override
     public boolean applyLock(int lockMode, String lockedPkg, boolean restart, OnUnlockedListener listener) {
         if (mFilterAll) {
@@ -1086,6 +1092,20 @@ public class LockManagerImpl extends LockManager {
             LeoLog.d(TAG, "mFilterAll");
             return false;
         }
+
+        LeoLog.d("testApplyLock", "applyLock");
+        LeoLog.d("testApplyLock", "applyLock lastPck : " + lastPck);
+        LeoLog.d("testApplyLock", "applyLock lockedPkg : " + lockedPkg);
+        //samsung when open wifi or bluetooth , show lockScreen , then com.android.settings will show immediately
+        String phoneBrand = Build.BRAND;
+        if (lockedPkg.equals(SAMSUNG_SETTINGS) && phoneBrand.contains(SAMSUNG)) {
+            if ((lastPck.equals(SwitchGroup.WIFI_SWITCH) || lastPck.equals(SwitchGroup.BLUE_TOOTH_SWITCH))) {
+                lastPck = "";
+                return false;
+            }
+        }
+
+        lastPck = lockedPkg;
 
         if (TextUtils.equals(mContext.getPackageName(), lockedPkg)) {
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
