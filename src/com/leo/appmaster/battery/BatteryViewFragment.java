@@ -1115,6 +1115,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         } else if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
             cancelDisplay(mIvShowOne, mIvShowTwo, mIvShowThree, mIvShowFour);
+            if (getActivity() == null || isDetached() || isRemoving()) return;
             twoContentFill();
         } else {
             cancelDisplay(mIvShowOne, mIvShowTwo, mIvShowThree, mIvShowFour);

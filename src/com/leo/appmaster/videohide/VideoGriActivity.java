@@ -1,10 +1,6 @@
 
 package com.leo.appmaster.videohide;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
@@ -41,10 +37,11 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -63,6 +60,10 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseFragmentActivity implements OnItemClickListener, OnClickListener {
@@ -832,10 +833,12 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         "hide_fail");
             }
         } else {
-            LeoLog.d("testcancelHide", "onPostDo success");
+            LeoLog.d("testcancelHide", "onPostDo success::" + mActivityMode);
             if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                 SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb ",
                         "unhide_done");
+            } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
+                LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_VID));
             }
         }
         dismissProgressDialog();

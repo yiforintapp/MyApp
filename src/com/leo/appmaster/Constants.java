@@ -519,4 +519,7 @@ public class Constants {
     public static final String CRYPTO_SUFFIX_OLD = ".leotmp";
 
     public static final String LABLE_LIST = "lable_list";
+
+    // 两次评分弹窗间隔时间 单位: 小时
+    public static final long GRADE_DEFAULT_TIME = 72;
 }

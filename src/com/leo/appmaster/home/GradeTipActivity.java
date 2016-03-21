@@ -4,6 +4,7 @@ package com.leo.appmaster.home;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -12,11 +13,13 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.PrefConst;
 
 public class GradeTipActivity extends BaseActivity implements OnClickListener {
 
@@ -25,6 +28,11 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
     private View mTvMakeSureClick;
     private View mFeedbackSureClick;
     private FiveStarsLayout mLayout;
+
+    private String mContent;
+    private String mUrl;
+    private TextView mText;
+    private PreferenceTable mPt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +46,19 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         mTvMakeSureClick = findViewById(R.id.tv_make_click);
         mFeedbackSureClick = findViewById(R.id.tv_feedback_click);
         mLayout = (FiveStarsLayout) findViewById(R.id.fsl_fivestars);
+        mText = (TextView) findViewById(R.id.textView3);
 
         mLayout.setOnClickListener(this);
         mTvMakeSureClick.setOnClickListener(this);
         mFeedbackSureClick.setOnClickListener(this);
-    }
+
+        mPt = PreferenceTable.getInstance();
+        mContent = getIntent().getStringExtra("content");
+        mUrl = getIntent().getStringExtra("url");
+        if (!TextUtils.isEmpty(mContent)) {
+            mText.setText(mContent);
+        }
+     }
 
     @Override
     protected void onResume() {
@@ -75,10 +91,13 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             }
         }
         if (!showGP) {
+            String url = Constants.RATING_ADDRESS_BROWSER;
+            if (!TextUtils.isEmpty(mUrl)) {
+                url = mUrl;
+            }
             mLockManager.filterSelfOneMinites();
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri
-                    .parse(Constants.RATING_ADDRESS_BROWSER);
+            Uri uri = Uri.parse(url);
             intent.setData(uri);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
@@ -92,6 +111,9 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
         if (v == mTvMakeSureClick) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
+            if (!TextUtils.isEmpty(mContent)) {
+                mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
+            }
             openShowGoogleGuide();
             finish();
         } else if (v == mFeedbackSureClick) {
@@ -101,6 +123,9 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             finish();
         } else if (v == mLayout) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
+            if (!TextUtils.isEmpty(mContent)) {
+                mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
+            }
             openShowGoogleGuide();
             finish();
         }

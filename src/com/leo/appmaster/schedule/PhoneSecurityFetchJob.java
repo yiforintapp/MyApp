@@ -124,6 +124,16 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             } else {
                 LeoLog.i(TAG, "没有-屏保省电动画的内存阀值");
             }
+
+            boolean isGradeTimesNull = resp.isNull("grade_time"); // 判断key是否存在
+            if (!isCallFilterShareTimesNull) {
+                int gradeTimes = resp.getInt("grade_time");
+                LeoLog.i(TAG, "评分弹窗间隔小时:" + gradeTimes);
+                preferenceTable.putInt(PrefConst.KEY_GRADE_TIME, gradeTimes);
+            } else {
+                preferenceTable.putInt(PrefConst.KEY_GRADE_TIME, 72); // 获取不到默认72小时
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

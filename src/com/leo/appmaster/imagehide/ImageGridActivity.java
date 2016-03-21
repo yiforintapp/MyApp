@@ -1,16 +1,9 @@
 package com.leo.appmaster.imagehide;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
@@ -33,12 +26,11 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
-import com.leo.appmaster.home.HomeTabFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
-import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -49,16 +41,20 @@ import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-import com.leo.appmaster.videohide.VideoGriActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageSize;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ImageGridActivity extends BaseFragmentActivity implements OnClickListener, OnItemClickListener {
 
@@ -937,6 +933,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             mAllListPath.remove(photoItem.getPath());
                         }
                     }
+
                 } else {
                     while (iterator.hasNext()) {
                         item = iterator.next();
@@ -1040,6 +1037,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
                         width, height);
             }
+        } else if (FileOperationUtil.HIDE_PIC_SUCESS.equals(isSuccess)) {
+            LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_PIC));
         }
         dismissProgressDialog();
         if (mPicturesList.size() > 0) {

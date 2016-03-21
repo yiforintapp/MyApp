@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.view.Gravity;
@@ -55,6 +56,7 @@ import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
+import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
@@ -144,6 +146,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private int mLockAppNum = 0;
     private int mHidePicNum = 0;
     private int mHideVidNum = 0;
+
+    private boolean mAppLockSuccess;
+    private boolean mPicHideSuccess;
+    private boolean mVidHideSuccess;
+
 
     private boolean mHidePicFinish = true;
 
@@ -313,6 +320,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 onShieldClick();
                 mEnterScan = false;
             }
+
         }
         // TODO: 2015/9/30 检查是否必要
 //        String msg = event.eventMsg;
@@ -324,6 +332,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //                mPagerTab.notifyDataSetChanged();
 //            }
 //        }
+    }
+
+    public void onEvent(final GradeEvent event) {
+        LeoLog.e(TAG, "GradeEvent");
+        if (GradeEvent.FROM_APP == event.mFromWhere) {
+            mAppLockSuccess = true;
+        } else if (GradeEvent.FROM_PIC == event.mFromWhere) {
+            mPicHideSuccess = true;
+        } else if (GradeEvent.FROM_VID == event.mFromWhere) {
+            mVidHideSuccess = true;
+        }
     }
 
 
@@ -805,6 +824,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
+        showGradeDialog();
         judgeShowGradeTip();
         /* 分析是否需要升级红点显示 */
         if (SDKWrapper.isUpdateAvailable()) {
@@ -828,6 +848,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (!LeoEventBus.getDefaultBus().isRegistered(this)) {
             LeoEventBus.getDefaultBus().register(this);
         }
+
     }
 
     private void addUninstallPgTOMenueItem() {
@@ -1560,6 +1581,56 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
             preferenceTable.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
             GuideFragment.setHomeGuideShowStatus(true);
+        }
+    }
+
+
+    private void showGradeDialog() {
+        long time = mPt.getLong(PrefConst.KEY_GRADE_TIME, Constants.GRADE_DEFAULT_TIME) * 60 * 60 * 1000;
+        long storeTime = mPt.getLong(PrefConst.STORE_GRADE_TIME, 0);
+        boolean mShow = mPt.getBoolean(PrefConst.KEY_HAS_GRADE, false);
+        LeoLog.e(TAG, "time: " + time + ";;;storetime: " + storeTime + ";;;mshow: " + mShow + "extra: " + (System.currentTimeMillis() - storeTime));
+        if (!mShow && (System.currentTimeMillis() - storeTime >= time)) {
+            Intent intent = new Intent(this, GradeTipActivity.class);
+            if (mAppLockSuccess) {
+                boolean isAppContentEmpty = TextUtils.isEmpty(
+                        mPt.getString(PrefConst.KEY_APP_GRADE_CONTENT));
+                boolean isAppUrlEmpty = TextUtils.isEmpty(
+                        mPt.getString(PrefConst.KEY_APP_GRADE_URL));
+                if (!isAppContentEmpty && !isAppUrlEmpty) {
+                    intent.putExtra("content", mPt.getString(PrefConst.KEY_APP_GRADE_CONTENT));
+                    intent.putExtra("url", mPt.getString(PrefConst.KEY_APP_GRADE_URL));
+                    mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
+                    startActivity(intent);
+                }
+            }
+            if (mPicHideSuccess) {
+                boolean isPicContentEmpty = TextUtils.isEmpty(
+                        mPt.getString(PrefConst.KEY_PICTURE_GRADE_CONTENT));
+                boolean isPicUrlEmpty = TextUtils.isEmpty(
+                        mPt.getString(PrefConst.KEY_PICTURE_GRADE_URL));
+                if (!isPicContentEmpty && !isPicUrlEmpty) {
+                    intent.putExtra("content", mPt.getString(PrefConst.KEY_PICTURE_GRADE_CONTENT));
+                    intent.putExtra("url", mPt.getString(PrefConst.KEY_PICTURE_GRADE_URL));
+                    mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
+                    startActivity(intent);
+                }
+            }
+            if (mVidHideSuccess) {
+                boolean isVidContentEmpty = TextUtils.isEmpty(
+                        mPt.getString(PrefConst.KEY_VIDEO_GRADE_CONTENT));
+                boolean isVidUrlEmpty = TextUtils.isEmpty(
+                        mPt.getString(PrefConst.KEY_VIDEO_GRADE_URL));
+                if (!isVidContentEmpty && !isVidUrlEmpty) {
+                    intent.putExtra("content", mPt.getString(PrefConst.KEY_VIDEO_GRADE_CONTENT));
+                    intent.putExtra("url", mPt.getString(PrefConst.KEY_VIDEO_GRADE_URL));
+                    mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
+                    startActivity(intent);
+                }
+            }
+            mAppLockSuccess = false;
+            mPicHideSuccess = false;
+            mVidHideSuccess = false;
         }
     }
 
