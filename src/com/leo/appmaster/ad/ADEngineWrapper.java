@@ -142,7 +142,7 @@ public class ADEngineWrapper {
 						
 					} else {
 
-						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ad pos: " + unitId + " state is faild code: " + code, null);
+						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ad pos: " + unitId + " state is failed code: " + code, null);
 					}
 					
 					
