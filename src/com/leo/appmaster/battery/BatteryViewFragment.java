@@ -93,7 +93,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private final int EXTRA_TYPE_MSG = 3;
 
     private static final int AD_LOAD_TIME = 3000;
-    private final int DELAY_SHOW_AD = 2000;
+    private final int DELAY_SHOW_AD = 3500;
 
     private final String GOOGLE = "Google";
     private final String AMAZON = "Amazon";
@@ -565,7 +565,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             midScreen = true;
         }
 
-        mInitTime = System.currentTimeMillis();
 
         mRecommandView = findViewById(R.id.three_show_content);
         mRecommandContentView = findViewById(R.id.show_small_content);
@@ -603,6 +602,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
                 @Override
                 public void onBoostFinish() {
+                    mInitTime = System.currentTimeMillis();
                     PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
                     checkingData(true);
                     ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -615,6 +615,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             });
         } else {
+            mInitTime = System.currentTimeMillis();
             checkingData(false);
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
@@ -2366,7 +2367,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 @Override
                 public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
-					SDKWrapper.addEvent(BatteryViewFragment.this.getActivity().getApplicationContext(), "max_ad_click", SDKWrapper.P1, "timeOfClick",  "ad pos: " + unitID + " click", null);
+                    SDKWrapper.addEvent(BatteryViewFragment.this.getActivity().getApplicationContext(), "max_ad_click", SDKWrapper.P1, "timeOfClick", "ad pos: " + unitID + " click", null);
                     LeoLog.d(TAG, "Ad clicked");
                 }
             });
@@ -2408,19 +2409,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
             LeoLog.e(TAG, "failed to load AD preview!");
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + Constants.UNIT_ID_CHARGING + " load image failed", null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + Constants.UNIT_ID_CHARGING + " load image failed", null);
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             LeoLog.d(TAG, "Ad preview image ready");
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + Constants.UNIT_ID_CHARGING + " image size: " + loadedImage.getByteCount(), null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad_load_image", SDKWrapper.P1, "fetchImage", "ad pos: " + Constants.UNIT_ID_CHARGING + " image size: " + loadedImage.getByteCount(), null);
             BatteryViewFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 try {
@@ -2513,7 +2514,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         //MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING);
         mAdWrapper.setOnClickListener(this);
-		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow",  "ad pos: " + Constants.UNIT_ID_CHARGING + " adShow", null);
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_ad_show", SDKWrapper.P1, "timeToAdShow", "ad pos: " + Constants.UNIT_ID_CHARGING + " adShow", null);
     }
     /* 广告相关 - 结束 */
 
