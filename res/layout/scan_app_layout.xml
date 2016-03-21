@@ -57,7 +57,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:includeFontPadding="false"
-            android:singleLine="true"
             android:text="@string/scan_app_start"
             android:textColor="@color/c2"
             android:textSize="@dimen/f3" />
