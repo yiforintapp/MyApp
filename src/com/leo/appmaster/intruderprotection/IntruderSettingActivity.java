@@ -85,7 +85,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (getIntent().getBooleanExtra("isPgInner",false)) {
+        if (intent.getBooleanExtra("isPgInner",false)) {
             mNeedApplyLockWhenRequestDeviceAdmin = false;
         } else {
             mNeedApplyLockWhenRequestDeviceAdmin = true;

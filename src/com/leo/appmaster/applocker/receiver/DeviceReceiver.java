@@ -191,7 +191,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 													mLockManager.filterPackage(context.getPackageName(), 1000);
 													context.startActivity(intent);
 												}
-											}, delayTime);
+											}, 3000);
 											LeoLog.e("delayTime", "" + delayTime);
 //											context.startActivity(intent);
 										} else {
