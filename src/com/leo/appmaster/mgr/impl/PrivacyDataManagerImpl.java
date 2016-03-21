@@ -248,7 +248,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             // 解密
             try {
                 getImageCryptor().decrypt(newPath);
-                LeoLog.d(E_TAG, "decrypt, path: " + newPath);
+                LeoLog.i(E_TAG, "decrypt, path: " + newPath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -283,7 +283,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             // 加密
             try {
                 getImageCryptor().encrypt(newPath);
-                LeoLog.d(E_TAG, "encrypt, path: " + newPath);
+                LeoLog.i(E_TAG, "encrypt, path: " + newPath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
