@@ -150,6 +150,8 @@ public class IntruderprotectionActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(IntruderprotectionActivity.this, IntruderSettingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("isPgInner",true);
                 startActivity(intent);
             }
         });

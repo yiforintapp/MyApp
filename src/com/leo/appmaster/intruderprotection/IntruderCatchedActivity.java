@@ -1069,6 +1069,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.rv_setting:
                 Intent intent2 = new Intent(IntruderCatchedActivity.this,IntruderSettingActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent2.putExtra("isPgInner",false);
                 startActivity(intent2);
                 break;
             case R.id.rv_change_times:

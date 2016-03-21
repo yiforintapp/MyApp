@@ -59,7 +59,7 @@ private LockManager mLockManager;
                         mLockManager.filterPackage(context.getPackageName(), 1000);
                         context.startActivity(intent2);
                     }
-                }, 1000);
+                }, 3000);
             } else if(IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && !IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved){
                 IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
             }

@@ -319,7 +319,7 @@
                 android:layout_height="290dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:background="#ffffff">
 
                 <com.leo.appmaster.ui.DrawSafelyImageView
@@ -346,7 +346,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:layout_marginTop="40dp">
+                    android:layout_marginTop="44dp">
 
                     <com.leo.appmaster.intruderprotection.BottomCropImage
                         android:id="@+id/iv_newest_photo"

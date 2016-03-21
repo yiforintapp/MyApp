@@ -56,6 +56,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     private RelativeLayout mRvItem2;
     private RelativeLayout mRvItem3;
     private boolean mIsFromScan = false;
+    private boolean mNeedApplyLockWhenRequestDeviceAdmin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,17 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (getIntent().getBooleanExtra("isPgInner",false)) {
+            mNeedApplyLockWhenRequestDeviceAdmin = false;
+        } else {
+            mNeedApplyLockWhenRequestDeviceAdmin = true;
+        }
+
+    }
+
     private void initManager() {
         mISManager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
     }
@@ -94,6 +106,11 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
             }
         } catch (Exception e) {
 
+        }
+        if (getIntent().getBooleanExtra("isPgInner",false)) {
+            mNeedApplyLockWhenRequestDeviceAdmin = false;
+        } else {
+            mNeedApplyLockWhenRequestDeviceAdmin = true;
         }
     }
 
@@ -197,7 +214,9 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
 
 
     private void requestDeviceAdmin() {
-//        mLockManager.filterSelfOneMinites();
+        if (!mNeedApplyLockWhenRequestDeviceAdmin) {
+        mLockManager.filterSelfOneMinites();
+        }
         mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
         ComponentName mAdminName = new ComponentName(IntruderSettingActivity.this, DeviceReceiver.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);

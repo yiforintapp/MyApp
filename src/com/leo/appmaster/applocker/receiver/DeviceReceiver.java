@@ -47,7 +47,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 	private WindowManager mWm = null;
 
 	private final static long NORMAL_TIME = 1000; // 默认打开入侵者防护界面时间
-	private final static long LONG_TIME = 2000; // 增长打开入侵者防护界面时间
+	private final static long LONG_TIME = 3000; // 增长打开入侵者防护界面时间
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
