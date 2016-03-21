@@ -118,7 +118,7 @@
                             android:id="@+id/tv_intruder_setting_title2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLines="2"
+                            android:maxLines="3"
                             android:text="@string/intruder_setting_title_2"
                             android:textColor="@color/c2"
                             android:textSize="16dp" />

@@ -194,5 +194,5 @@
     <dimen name="home_more_empty_height">93dp</dimen>
     <!-- AM-3880 -->
     <dimen name="pas_four_icon_m_top">25dp</dimen>
-
+    <dimen name="hide_grid_image_width">109dp</dimen>
 </resources>

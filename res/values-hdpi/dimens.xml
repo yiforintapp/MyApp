@@ -413,4 +413,5 @@
 
 
     <dimen name="battery_clean_result_margingTop">0dp</dimen>
+    <dimen name="hide_grid_image_width">109dp</dimen>
 </resources>
