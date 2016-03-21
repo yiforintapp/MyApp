@@ -83,9 +83,11 @@
             </com.leo.appmaster.ui.RippleView>
 
             <TextView
+                android:includeFontPadding="false"
                 android:id="@+id/tv_times_of_catch"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:paddingBottom="1dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="12dp"
