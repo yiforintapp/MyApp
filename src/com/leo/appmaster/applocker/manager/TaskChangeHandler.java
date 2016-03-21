@@ -32,6 +32,7 @@ public class TaskChangeHandler {
     public static final String WAITNAME = "WaitActivity";
     public static final String WEBVIEW = "WebViewActivity";
     public static final String UPDATE = "UpdateActivity";
+    public static final String INTRUDERCATCH = "IntruderCatchedActivity";
     public static final String BLACK_LIST = "AskAddToBlacklistActivity";
     // public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
@@ -162,6 +163,7 @@ public class TaskChangeHandler {
                         || activity.contains(PROXYNAME)
                         || activity.contains(WAITNAME)
                         || activity.contains(UPDATE)
+                        || activity.contains(INTRUDERCATCH)
                         || activity.contains(WEBVIEW)
                         || activity.contains(BLACK_LIST)
                         // 如果锁屏前的pkg是联想的屏保，则不过滤掉webviewActivity
@@ -183,6 +185,7 @@ public class TaskChangeHandler {
                         || activity.contains(SPLASHNAME)
                         || activity.contains(PROXYNAME)
                         || activity.contains(UPDATE)
+                        || activity.contains(INTRUDERCATCH)
                         || activity.contains(WAITNAME)
                         || activity.contains(BLACK_LIST)
                         || (activity.contains(WEBVIEW)

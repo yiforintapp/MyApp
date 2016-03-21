@@ -15,6 +15,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -60,7 +61,7 @@ private LockManager mLockManager;
                         mLockManager.filterPackage(context.getPackageName(), 1000);
                         context.startActivity(intent2);
                     }
-                }, 3500);
+                }, DeviceReceiver.NORMAL_TIME);
             } else if(IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && !IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved){
                 IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
             }

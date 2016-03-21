@@ -46,8 +46,8 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 	private FrameLayout mFlRoot = null;
 	private WindowManager mWm = null;
 
-	private final static long NORMAL_TIME = 3000; // 默认打开入侵者防护界面时间
-	private final static long LONG_TIME = 3500; // 增长打开入侵者防护界面时间
+	public final static long NORMAL_TIME = 2000; // 默认打开入侵者防护界面时间
+	public final static long LONG_TIME = 3500; // 增长打开入侵者防护界面时间
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -64,6 +64,15 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 	        LeoEventBus.getDefaultBus().post(
 	                new DeviceAdminEvent(EventId.EVENT_DEVICE_ADMIN_DISABLE, "useless"));
 	    }
+	}
+
+	@Override
+	public void onEnabled(Context context, Intent intent) {
+		super.onEnabled(context, intent);
+		if (mISManager == null) {
+			mISManager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+		}
+		mISManager.setSystIntruderProtectionSwitch(true);
 	}
 
 	@Override
