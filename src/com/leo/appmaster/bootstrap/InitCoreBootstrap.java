@@ -42,6 +42,8 @@ import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.WifiSecurityManager;
+import com.leo.appmaster.mgr.impl.WifiSecurityManagerImpl;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -136,6 +138,7 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.d(TAG, "MobvistaEngine init cost: " + (SystemClock.elapsedRealtime() - start));
 
         //init DeviceImp
+        WifiSecurityManager wifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
         deviceManager.init();
 

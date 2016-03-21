@@ -28,6 +28,7 @@ import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
+import com.leo.appmaster.imagehide.ImageGridActivity;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -39,6 +40,7 @@ import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class DeviceManagerImpl extends DeviceManager {
     private final static String TAG = "DeviceManagerImpl";
+    private final static int RESTART_SHOW = 5000;
     private final static int WIFI_TURN_ON = 1;
     private final static int BLUETOOTH_TURN_ON = 2;
 
@@ -58,6 +60,7 @@ public class DeviceManagerImpl extends DeviceManager {
     private WifiManager mWifimanager;
     private BluetoothAdapter mBluetoothAdapter;
     private boolean isEnableIng = false;
+    private long mInitTime;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -92,10 +95,23 @@ public class DeviceManagerImpl extends DeviceManager {
     public void init() {
         LeoLog.d(TAG, "onCreate");
 
+        mInitTime = System.currentTimeMillis();
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         mContext.registerReceiver(mBlueToothChangeReceiver, filter);
+
+//        IntentFilter sdFilter = new IntentFilter();
+//        sdFilter.addAction(Intent.ACTION_MEDIA_SHARED);//如果SDCard未安装,并通过USB大容量存储共享返回
+//        sdFilter.addAction(Intent.ACTION_MEDIA_MOUNTED);//表明sd对象是存在并具有读/写权限
+//        sdFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);//SDCard已卸掉,如果SDCard是存在但没有被安装
+//        sdFilter.addAction(Intent.ACTION_MEDIA_CHECKING);  //表明对象正在磁盘检查
+//        sdFilter.addAction(Intent.ACTION_MEDIA_EJECT);  //物理的拔出 SDCARD
+//        sdFilter.addAction(Intent.ACTION_MEDIA_REMOVED);  //完全拔出
+//        sdFilter.addDataScheme("file"); // 必须要有此行，否则无法收到广播
+//        sdFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+//        mContext.registerReceiver(mSdcardReceiver, sdFilter);
 
     }
 
@@ -139,7 +155,11 @@ public class DeviceManagerImpl extends DeviceManager {
         LockMode mode = mLockManager.getCurLockMode();
         switch (type) {
             case WIFI_TURN_ON:
-                if (mWifiSwitch.isLockNow(mode) && !unlockOpenWifiDone) {
+
+                long show = System.currentTimeMillis();
+
+                if (mWifiSwitch.isLockNow(mode) && !unlockOpenWifiDone
+                        && (show - mInitTime > RESTART_SHOW)) {
                     //show LockScreen
                     shutDownWifi();
                     showLockScreen(type);
@@ -250,7 +270,7 @@ public class DeviceManagerImpl extends DeviceManager {
 
     @Override
     public void onDestory() {
-
+        mContext.unregisterReceiver(mBlueToothChangeReceiver);
     }
 
 
@@ -491,5 +511,24 @@ public class DeviceManagerImpl extends DeviceManager {
             }
         }
     }
+
+//    public BroadcastReceiver mSdcardReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            LeoLog.d(TAG, "mSdcardReceiver onReceive");
+//            String action = intent.getAction();
+//
+//            if ("android.intent.action.MEDIA_MOUNTED".equals(action)) {
+//                LeoLog.d(TAG, "action : " + action);
+////                ImageGridActivity.mIsBackgoundRunning = false;
+//            }
+//
+//            if ("action : android.intent.action.MEDIA_UNMOUNTED".equals(action)) {
+//                LeoLog.d(TAG, "action : " + action);
+////                ImageGridActivity.mIsBackgoundRunning = false;
+//            }
+//
+//        }
+//    };
 
 }
