@@ -10,6 +10,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -27,9 +28,13 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
 
     private static final boolean DBG = false;
 
+    private static final int MAX_RETYR = 5;
+
     private static final int WAIT_TIMEOUT = 200;
 
     private Object mStatsManager;
+
+    private int mRetryCount;
 
     public ProcessDetectorUsageStats() {
         AppMasterApplication context = AppMasterApplication.getInstance();
@@ -85,10 +90,13 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
                 String pkg = runningTask.get(runningTask.lastKey()).getPackageName();
 
                 Context ctx = AppMasterApplication.getInstance();
-                if (!AppUtil.isInstallPkgName(ctx, pkg) || !hasLaunchIntent(pkg)) {
+                if (mRetryCount < MAX_RETYR && !AppUtil.isInstallPkgName(ctx, pkg) ||
+                        (!hasLaunchIntent(pkg) && !isHome(pkg))) {
                     LeoLog.d(TAG, "the pkg is not installed or has no launch intent, so retry again.");
+                    mRetryCount++;
                     return getForegroundProcess();
                 }
+                mRetryCount = 0;
                 if (DBG) {
                     Log.i(TAG, "pkg: " + pkg);
                 }
@@ -132,5 +140,24 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
         }
 
         return intent != null;
+    }
+
+    private boolean isHome(String pkgName) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+
+        Context ctx = AppMasterApplication.getInstance();
+        List<ResolveInfo> homeList = ctx.getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo resolveInfo : homeList) {
+            if (resolveInfo == null || resolveInfo.activityInfo == null || resolveInfo.activityInfo.packageName == null) {
+                continue;
+            }
+
+            if (resolveInfo.activityInfo.packageName.equals(pkgName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
