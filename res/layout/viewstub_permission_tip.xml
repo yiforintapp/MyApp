@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="7dp"
         android:layout_toRightOf="@id/iv_nopermission_tip"
-        android:gravity="left||center_vertical"
+        android:gravity="left|center_vertical"
         android:text="@string/grant_permission_default_tip"
         android:textColor="@color/c1"
         android:textSize="@dimen/f5" />
