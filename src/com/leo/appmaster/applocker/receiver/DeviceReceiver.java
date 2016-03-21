@@ -185,7 +185,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 											if (IntrudeSecurityManager.sEnterBrowser) {
 												delayTime = LONG_TIME;
 											}
-											ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+											ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 												@Override
 												public void run() {
 													mLockManager.filterPackage(context.getPackageName(), 1000);
