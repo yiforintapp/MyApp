@@ -46,6 +46,9 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 	private FrameLayout mFlRoot = null;
 	private WindowManager mWm = null;
 
+	private final static long NORMAL_TIME = 1000; // 默认打开入侵者防护界面时间
+	private final static long LONG_TIME = 2000; // 增长打开入侵者防护界面时间
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
@@ -178,9 +181,9 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 												mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 											}
 											IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
-											long delayTime = 1000;
+											long delayTime = NORMAL_TIME;
 											if (IntrudeSecurityManager.sEnterBrowser) {
-												delayTime = 2000;
+												delayTime = LONG_TIME;
 											}
 											ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
 												@Override
