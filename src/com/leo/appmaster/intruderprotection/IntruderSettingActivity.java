@@ -129,23 +129,23 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     }
 
     private void turnSwitch2() {
-        if (!mISManager.getIsIntruderSecurityAvailable()) {
-            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(IntruderSettingActivity.this, FeedbackActivity.class);
-                    intent.putExtra("isFromIntruderProtectionForbiden", true);
-                    startActivity(intent);
-                    mMultiUsesDialog.dismiss();
-                }
-            });
-            return;
-        }
         if (mISManager.getIntruderMode()) {
             mISManager.switchIntruderMode(false);
             mIvSwitchNormal.setImageResource(R.drawable.switch_off);
             Toast.makeText(IntruderSettingActivity.this,getString(R.string.intruder_close), Toast.LENGTH_SHORT).show();
         } else {
+            if (!mISManager.getIsIntruderSecurityAvailable()) {
+                mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(IntruderSettingActivity.this, FeedbackActivity.class);
+                        intent.putExtra("isFromIntruderProtectionForbiden", true);
+                        startActivity(intent);
+                        mMultiUsesDialog.dismiss();
+                    }
+                });
+                return;
+            }
             mISManager.switchIntruderMode(true);
             mIvSwitchNormal.setImageResource(R.drawable.switch_on);
             if (mIsFromScan) {
@@ -158,19 +158,6 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     }
 
     private void turnSwitch1() {
-        if (!mISManager.getIsIntruderSecurityAvailable()) {
-            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(IntruderSettingActivity.this, FeedbackActivity.class);
-                    intent.putExtra("isFromIntruderProtectionForbiden", true);
-                    startActivity(intent);
-                    mMultiUsesDialog.dismiss();
-                }
-            });
-            return;
-        }
-
         if (mISManager.getSystIntruderProtecionSwitch()) {
             mMultiUsesDialog = ShowAboutIntruderDialogHelper.showConfirmCloseSysDialog(this, new DialogInterface.OnClickListener() {
                 @Override
@@ -181,6 +168,18 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
                 }
             });
         } else {
+            if (!mISManager.getIsIntruderSecurityAvailable()) {
+                mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(IntruderSettingActivity.this, FeedbackActivity.class);
+                        intent.putExtra("isFromIntruderProtectionForbiden", true);
+                        startActivity(intent);
+                        mMultiUsesDialog.dismiss();
+                    }
+                });
+                return;
+            }
             if (DeviceReceiver.isActive(IntruderSettingActivity.this)) {
                 mISManager.setSystIntruderProtectionSwitch(true);
                 mIvSwitchSyst.setImageResource(R.drawable.switch_on);

@@ -1,6 +1,7 @@
 package com.leo.appmaster.intruderprotection;
 
 import android.animation.LayoutTransition;
+import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -138,7 +139,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private RippleView mSwiftyBtnLt;
     private final String TAG = "IntruderCatchedActivity";
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
-
+    private Dialog mMultiUsesDialog;
     private boolean mShouldLoadAd = false;
 
     private LinearLayout mFiveStarLayout;
@@ -897,6 +898,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
+        if (mMultiUsesDialog != null) {
+            mMultiUsesDialog.dismiss();
+        }
     }
 
     private void initSwiftyLayout() {
@@ -964,7 +968,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private void updateTipStatus() {
         boolean isOpen = mISManager.getSystIntruderProtecionSwitch();
         boolean isDeviceAdmin = DeviceReceiver.isActive(IntruderCatchedActivity.this);
-
         if (isOpen) {
             mLlChangeTimes.setVisibility(View.VISIBLE);
             mLlGuide.setVisibility(View.GONE);
@@ -974,7 +977,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLlChangeTimes.setVisibility(View.GONE);
             mLlGuideFinished.setVisibility(View.GONE);
         }
-
     }
 
     private void changeToGuideFinishedLayout() {
@@ -984,51 +986,59 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLlGuideFinished.setVisibility(View.VISIBLE);
             mLlChangeTimes.setVisibility(View.GONE);
         } else {
-            showForbitDialog();
+            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(IntruderCatchedActivity.this, FeedbackActivity.class);
+                    intent.putExtra("isFromIntruderProtectionForbiden", true);
+                    startActivity(intent);
+                    mMultiUsesDialog.dismiss();
+                }
+            });
         }
     }
 
-    protected void showForbitDialog() {
-        if (mOpenForbinDialog == null) {
-            mOpenForbinDialog = new LEOAlarmDialog(this);
-        }
-        mOpenForbinDialog.setContent(getResources().getString(
-                R.string.intruderprotection_forbit_content));
-        mOpenForbinDialog.setRightBtnStr(getResources().getString(
-                R.string.secur_help_feedback_tip_button));
-        mOpenForbinDialog.setLeftBtnStr(getResources().getString(
-                R.string.no_image_hide_dialog_button));
-        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+//    protected void showForbitDialog() {
+//        if (mOpenForbinDialog == null) {
+//            mOpenForbinDialog = new LEOAlarmDialog(this);
+//        }
+//        mOpenForbinDialog.setContent(getResources().getString(
+//                R.string.intruderprotection_forbit_content));
+//        mOpenForbinDialog.setRightBtnStr(getResources().getString(
+//                R.string.secur_help_feedback_tip_button));
+//        mOpenForbinDialog.setLeftBtnStr(getResources().getString(
+//                R.string.no_image_hide_dialog_button));
+//        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Intent intent = new Intent(IntruderCatchedActivity.this, FeedbackActivity.class);
+//                intent.putExtra("isFromIntruderProtectionForbiden", true);
+//                startActivity(intent);
+//                mOpenForbinDialog.dismiss();
+//            }
+//        });
+//        mOpenForbinDialog.show();
+//    }
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(IntruderCatchedActivity.this, FeedbackActivity.class);
-                intent.putExtra("isFromIntruderProtectionForbiden", true);
-                startActivity(intent);
-                mOpenForbinDialog.dismiss();
-            }
-        });
-        mOpenForbinDialog.show();
-    }
-
-    private void showAskOpenDeviceAdminDialog() {
-        if (mAskOpenDeviceAdminDialog == null) {
-            mAskOpenDeviceAdminDialog = new LEOAlarmDialog(IntruderCatchedActivity.this);
-        }
-        if (mAskOpenDeviceAdminDialog.isShowing()) {
-            return;
-        }
-        mAskOpenDeviceAdminDialog.setTitle(R.string.intruder_setting_title_1);
-        mAskOpenDeviceAdminDialog.setContent(getString(R.string.intruder_device_admin_guide_content));
-        mAskOpenDeviceAdminDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                requestDeviceAdmin();
-                mAskOpenDeviceAdminDialog.dismiss();
-            }
-        });
-        mAskOpenDeviceAdminDialog.show();
-    }
+//    private void showAskOpenDeviceAdminDialog() {
+//        if (mAskOpenDeviceAdminDialog == null) {
+//            mAskOpenDeviceAdminDialog = new LEOAlarmDialog(IntruderCatchedActivity.this);
+//        }
+//        if (mAskOpenDeviceAdminDialog.isShowing()) {
+//            return;
+//        }
+//        mAskOpenDeviceAdminDialog.setTitle(R.string.intruder_setting_title_1);
+//        mAskOpenDeviceAdminDialog.setContent(getString(R.string.intruder_device_admin_guide_content));
+//        mAskOpenDeviceAdminDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                requestDeviceAdmin();
+//                mAskOpenDeviceAdminDialog.dismiss();
+//            }
+//        });
+//        mAskOpenDeviceAdminDialog.show();
+//    }
 
     private void requestDeviceAdmin() {
 //        mLockManager.filterSelfOneMinites();
@@ -1046,7 +1056,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 if (DeviceReceiver.isActive(IntruderCatchedActivity.this)) {
                     changeToGuideFinishedLayout();
                 } else {
-                    showAskOpenDeviceAdminDialog();
+                    mMultiUsesDialog = ShowAboutIntruderDialogHelper.showAskOpenDeviceAdminDialog(IntruderCatchedActivity.this, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestDeviceAdmin();
+                            mMultiUsesDialog.dismiss();
+                        }
+                    });
                 }
                 break;
             case R.id.rv_close:
