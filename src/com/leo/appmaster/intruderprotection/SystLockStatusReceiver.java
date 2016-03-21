@@ -47,6 +47,7 @@ private LockManager mLockManager;
             if (mLockManager == null) {
                 mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             }
+//            mLockManager.filterPackage(context.getPackageName(),1000);
             if (IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved) {
                 IntrudeSecurityManager.sHasPicShowedWhenUserPresent = true;
                 final Intent intent2 = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
@@ -59,7 +60,7 @@ private LockManager mLockManager;
                         mLockManager.filterPackage(context.getPackageName(), 1000);
                         context.startActivity(intent2);
                     }
-                }, 3000);
+                }, 3500);
             } else if(IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && !IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved){
                 IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
             }

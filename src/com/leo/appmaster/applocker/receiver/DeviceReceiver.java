@@ -46,8 +46,8 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 	private FrameLayout mFlRoot = null;
 	private WindowManager mWm = null;
 
-	private final static long NORMAL_TIME = 1000; // 默认打开入侵者防护界面时间
-	private final static long LONG_TIME = 3000; // 增长打开入侵者防护界面时间
+	private final static long NORMAL_TIME = 3000; // 默认打开入侵者防护界面时间
+	private final static long LONG_TIME = 3500; // 增长打开入侵者防护界面时间
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -191,7 +191,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 													mLockManager.filterPackage(context.getPackageName(), 1000);
 													context.startActivity(intent);
 												}
-											}, 3000);
+											}, delayTime);
 											LeoLog.e("delayTime", "" + delayTime);
 //											context.startActivity(intent);
 										} else {

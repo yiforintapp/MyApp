@@ -62,7 +62,7 @@
             android:visibility="invisible"
             android:id="@+id/ll_guide_finished"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="52dp"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -87,7 +87,7 @@
         <LinearLayout
             android:id="@+id/ll_guide_tip"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="52dp"
             android:background="#ff9000"
             android:gravity="center_vertical"
             android:visibility="visible"
