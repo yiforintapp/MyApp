@@ -865,6 +865,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             boolean showPretend = !mPrivateLockPck.equals(mLockedPackage);
             if (mPretendFragment != null && showPretend) { // ph
+
+
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction tans;
                 mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
@@ -1354,15 +1356,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     public void onBitmapLoadStarted(String url) {
                         LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]start to load preview for: " + url);
 
-						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
-								"max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " prepare for load image", null);
+                        SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
+                                "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " prepare for load image", null);
                     }
 
                     @Override
                     public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
-						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
-								"max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " image size: " + loadedImage.getByteCount(), null);
-						
+                        SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
+                                "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " image size: " + loadedImage.getByteCount(), null);
+
                         ThreadManager.executeOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -1451,8 +1453,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     @Override
                     public void onBitmapLoadFailed(String url) {
                         LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + url);
-						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
-								"max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " load image failed", null);
+                        SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
+                                "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " load image failed", null);
                     }
 
                     @Override
@@ -1471,8 +1473,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
          */
         @Override
         public void onWrappedAdClick(WrappedCampaign campaign, final String unitID) {
-			SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(), 
-					"max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", null);
+            SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
+                    "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", null);
             ThreadManager.executeOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -1750,6 +1752,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private PretendFragment getPretendFragment() {
         if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
+
+
+            if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
+                    mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                return null;
+            }
+
+
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
@@ -2837,7 +2847,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     snapforClick((ViewGroup) v.getParent());
                 }
             });
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + unitId + " adShow", null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + unitId + " adShow", null);
             return true;
         }
 
