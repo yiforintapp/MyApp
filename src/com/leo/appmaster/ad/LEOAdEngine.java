@@ -278,15 +278,22 @@ public class LEOAdEngine {
 				LeoLog.i(TAG, "onAdLoaded ["+mUnitId+"] iconURL: " + adData.getIconUrl());
 			} catch (Exception e) {
 			}
+            LeoListener listener = mLeoListeners.get(mUnitId);
+
 			LeoCompositeData mobvista = new LeoCompositeData();
 			// 将load成功的 MobvistaAdNative 对象移动到 LeoCompositeData 中
             LeoLoadingNative loadingNative = mLeoLoadingNatives.remove(mUnitId);
+            if (loadingNative == null) {
+                // FIXME: 2016/3/21 AM-4123 空指针崩溃
+                if (listener != null) {
+                    listener.onLeoAdLoadFinished(ERR_MOBVISTA_RESULT_NULL, null, "NativeAd is null.");
+                }
+                return;
+            }
 			mobvista.nativeAd = loadingNative.nativeAd;
             mobvista.campaign = adData;
             mobvista.requestTimeMs = System.currentTimeMillis();
             mLEOLoadedNatives.put(mUnitId, mobvista);
-
-            LeoListener listener = mLeoListeners.get(mUnitId);
 
             if (listener != null) {
                 listener.onLeoAdLoadFinished((adData == null) ? ERR_MOBVISTA_RESULT_NULL : ERR_OK, adData, null);
