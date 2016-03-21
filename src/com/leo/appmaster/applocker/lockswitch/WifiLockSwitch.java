@@ -18,12 +18,18 @@ public class WifiLockSwitch extends SwitchGroup {
 
     @Override
     public void switchOn(LockMode mode) {
+        if (mode == null) {
+            return;
+        }
         String modeName = mode.modeName;
         mPreTable.putBoolean(modeName + "_" + WIFI_SWITCH, true);
     }
 
     @Override
     public void switchOff(LockMode mode) {
+        if (mode == null) {
+            return;
+        }
         String modeName = mode.modeName;
         mPreTable.putBoolean(modeName + "_" + WIFI_SWITCH, false);
     }
@@ -40,6 +46,9 @@ public class WifiLockSwitch extends SwitchGroup {
 
     @Override
     public boolean isLockNow(LockMode mode) {
+        if (mode == null) {
+            return false;
+        }
         String modeName = mode.modeName;
         return mPreTable.getBoolean(modeName + "_" + WIFI_SWITCH, false);
     }

@@ -16,12 +16,18 @@ public class BlueToothLockSwitch extends SwitchGroup {
 
     @Override
     public void switchOn(LockMode mode) {
+        if (mode == null) {
+            return;
+        }
         String modeName = mode.modeName;
         mPreTable.putBoolean(modeName + "_" + BLUE_TOOTH_SWITCH, true);
     }
 
     @Override
     public void switchOff(LockMode mode) {
+        if (mode == null) {
+            return;
+        }
         String modeName = mode.modeName;
         mPreTable.putBoolean(modeName + "_" + BLUE_TOOTH_SWITCH, false);
     }
@@ -38,6 +44,9 @@ public class BlueToothLockSwitch extends SwitchGroup {
 
     @Override
     public boolean isLockNow(LockMode mode) {
+        if (mode == null) {
+            return false;
+        }
         String modeName = mode.modeName;
         return mPreTable.getBoolean(modeName + "_" + BLUE_TOOTH_SWITCH, false);
     }

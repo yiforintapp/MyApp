@@ -25,6 +25,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.mgr.DeviceManager;
@@ -135,16 +136,17 @@ public class DeviceManagerImpl extends DeviceManager {
 
     private void readyShowLock(int type) {
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        LockMode mode = mLockManager.getCurLockMode();
         switch (type) {
             case WIFI_TURN_ON:
-                if (mWifiSwitch.isLockNow(mLockManager.getCurLockMode()) && !unlockOpenWifiDone) {
+                if (mWifiSwitch.isLockNow(mode) && !unlockOpenWifiDone) {
                     //show LockScreen
                     shutDownWifi();
                     showLockScreen(type);
                 }
                 break;
             case BLUETOOTH_TURN_ON:
-                if (mBlueToothSwitch.isLockNow(mLockManager.getCurLockMode()) && !unlockOpenBlueToothDone) {
+                if (mBlueToothSwitch.isLockNow(mode) && !unlockOpenBlueToothDone) {
                     shutDownBlueTooth();
                     showLockScreen(type);
                 }
