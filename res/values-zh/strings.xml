@@ -1000,7 +1000,7 @@
     <string name="app_lock_list_switch_title_one">開關</string>
     <string name="app_lock_list_switch_title_two">應用</string>
     <string name="intruder_intruduction">在解鎖應用或手機時，輸錯密碼將會自動拍照</string>
-    <string name="scan_app_title_switch">發現%1個應用和開關</string>
+    <string name="scan_app_title_switch">發現%1$s個應用和開關</string>
     <string name="mobile_phone">手機</string>
 
 </resources>

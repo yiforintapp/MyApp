@@ -981,6 +981,6 @@
     <string name="app_lock_list_switch_title_one">Ключ</string>
     <string name="app_lock_list_switch_title_two">Приложение</string>
     <string name="intruder_intruduction">Авто-фото при разблокировке телефона или приложения  с неправильным паролем</string>
-    <string name="scan_app_title_switch">Обнаруживать%$s приложения и ключи</string>
+    <string name="scan_app_title_switch">Обнаруживать%1$s приложения и ключи</string>
     <string name="mobile_phone">Мобильник</string>
 </resources>
