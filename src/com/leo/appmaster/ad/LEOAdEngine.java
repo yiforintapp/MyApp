@@ -351,7 +351,7 @@ public class LEOAdEngine {
 		map.put("unitId", unitId);
 		if (isOutOfDate(cData)) {
 			
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "adFrom", "ad is out of date, prepare to load", map);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "ad is out of date, prepare to load", map);
 			
 			if (cData != null) {
 				loadSingleMobAd(unitId, cData.nativeAd);
@@ -361,7 +361,7 @@ public class LEOAdEngine {
 			LeoLog.i(TAG, "data out ofdate: reload new one.");
 			return;
 		} else {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "adFrom", "from cache, ad is not out of date", map);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "from cache, ad is not out of date", map);
 		}
 
 		boolean loading = mLeoLoadingNatives.get(unitId) != null;

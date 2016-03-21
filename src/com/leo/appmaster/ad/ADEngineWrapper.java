@@ -121,7 +121,7 @@ public class ADEngineWrapper {
 		final TreeMap<String, String> map = new TreeMap<String, String>();
 		map.put("engineType", sdk);
 		map.put("unitId", unitId);
-		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_loadad", SDKWrapper.P1, "start_to_loadad", sdk, map);
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "start_to_loadad", sdk, map);
         
 		if (source == SOURCE_MAX) {
             mMaxEngine.loadMobvista(unitId, new LEOAdEngine.LeoListener() {
@@ -135,14 +135,14 @@ public class ADEngineWrapper {
                         wrappedCampaign = WrappedCampaign.fromMaxSDK(campaign);
 						
 						if (wrappedCampaign != null) {
-							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "ad pos: " + unitId + " state is suc and campaign is ready", null);
+							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ad pos: " + unitId + " state is suc and campaign is ready", null);
 						} else {
-							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "ad pos: " + unitId + " state is suc and campaign is null", null);
+							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ad pos: " + unitId + " state is suc and campaign is null", null);
 						}
 						
 					} else {
 
-						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad_onLoadFinished", SDKWrapper.P1, "campaignState", "ad pos: " + unitId + " state is faild code: " + code, null);
+						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ad pos: " + unitId + " state is faild code: " + code, null);
 					}
 					
 					
