@@ -138,4 +138,5 @@
     <dimen name="home_tab_height">225dp</dimen>
     <dimen name="wifi_result_trans_content">165dp</dimen>
     <!-- 3.0 end -->
+    <dimen name="hide_grid_image_width">129dp</dimen>
 </resources>
