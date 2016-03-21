@@ -104,7 +104,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             super.onBackPressed();
         }
     };
-    
+
     private void loadDone() {
         if (mAlbumList != null) {
             if (mAlbumList.size() > 0) {
@@ -116,8 +116,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 loadingBar.setVisibility(View.GONE);
                 mGridView.setVisibility(View.GONE);
             }
-            mHideAlbumAdapt.setDataList(mAlbumList);
-            mHideAlbumAdapt.notifyDataSetChanged();
+            if (mHideAlbumAdapt != null) {
+                mHideAlbumAdapt.setDataList(mAlbumList);
+                mHideAlbumAdapt.notifyDataSetChanged();
+            }
         }
     }
 
@@ -228,9 +230,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         Intent intent = new Intent(ImageHideMainActivity.this,
                 ImageGridActivity.class);
         Bundle bundle = new Bundle();
-
-        PhotoAibum photoAibum = mAlbumList.get(position);
-        int size = photoAibum.getBitList().size();
+        int size = 0;
+        PhotoAibum photoAibum = null;
+        if (mAlbumList != null && mAlbumList.size() > 0) {
+            photoAibum = mAlbumList.get(position);
+            size = photoAibum.getBitList().size();
+        }
         if (size < 800) {
             bundle.putSerializable("data", photoAibum);
         }
