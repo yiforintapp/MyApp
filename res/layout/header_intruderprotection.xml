@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/rl_switch"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="12dp"
             android:gravity="center_horizontal"
             android:text="@string/intruderprotection_desc_title"
             android:textColor="#ffffff"
