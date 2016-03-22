@@ -115,6 +115,8 @@ public class AppLockListActivity extends BaseActivity implements
     private WifiLockSwitch wifiSwitch;
     private BlueToothLockSwitch blueToothSwitch;
 
+    private int mWifiAndBluetoothLockCount;
+
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -224,6 +226,12 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList = new ArrayList<AppInfo>();
         mUnlockRecommendList = new ArrayList<AppInfo>();
         mUnlockNormalList = new ArrayList<AppInfo>();
+        if(wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            mWifiAndBluetoothLockCount ++;
+        }
+        if(blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            mWifiAndBluetoothLockCount ++;
+        }
 
         mGuideTip = findViewById(R.id.guide_tip_layout);
         mSecurityGuideBt = (TextView) findViewById(R.id.security_guide_button);
@@ -917,7 +925,14 @@ public class AppLockListActivity extends BaseActivity implements
             startActivity(intent);
         }
         LeoLog.e("HomeActivity", mLockedList.size() + "");
-        if (mLockedList.size() > 0) {
+        int count = 0;
+        if (wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            count ++;
+        }
+        if (blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            count ++;
+        }
+        if (mLockedList.size() > 0 ||  count > mWifiAndBluetoothLockCount) {
             LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP));
         }
         super.onBackPressed();

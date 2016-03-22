@@ -1628,10 +1628,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     startActivity(intent);
                 }
             }
-            mAppLockSuccess = false;
-            mPicHideSuccess = false;
-            mVidHideSuccess = false;
         }
+        mAppLockSuccess = false;
+        mPicHideSuccess = false;
+        mVidHideSuccess = false;
     }
 
     public void onMemoryLessScanCancel() {
