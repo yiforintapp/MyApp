@@ -150,7 +150,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mAppLockSuccess;
     private boolean mPicHideSuccess;
     private boolean mVidHideSuccess;
-    private boolean mHasGradeDialogShow;
 
 
     private boolean mHidePicFinish = true;
@@ -316,7 +315,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mAppLockSuccess = false;
         mPicHideSuccess = false;
         mVidHideSuccess = false;
-        mHasGradeDialogShow = false;
     }
 
     public void onEventMainThread(AppUnlockEvent event) {
@@ -899,7 +897,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @SuppressWarnings("deprecation")
     private void judgeShowGradeTip() {
-        if (!mAppLockSuccess && !mPicHideSuccess && !mVidHideSuccess && !mHasGradeDialogShow) {
+        if (!mAppLockSuccess && !mPicHideSuccess && !mVidHideSuccess) {
             AppMasterPreference pref = AppMasterPreference.getInstance(this);
             ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
             ActivityManager.RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
@@ -914,8 +912,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     startActivity(intent);
                 }
             }
+        } else {
+            AppMasterPreference.getInstance(this).setGoogleTipShowed(true);
         }
-        mHasGradeDialogShow = false;
     }
 
 //    private void checkIswipeNotificationTo() {
@@ -1620,7 +1619,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "lock_rank");
                     startActivity(intent);
-                    mHasGradeDialogShow = true;
                 }
             }
             if (mPicHideSuccess) {
@@ -1635,7 +1633,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "hidepic_rank");
                     startActivity(intent);
-                    mHasGradeDialogShow = true;
                 }
             }
             if (mVidHideSuccess) {
@@ -1650,7 +1647,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "hidevid_rank");
                     startActivity(intent);
-                    mHasGradeDialogShow = true;
                 }
             }
         }
