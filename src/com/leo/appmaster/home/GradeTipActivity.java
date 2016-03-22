@@ -62,7 +62,9 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onResume() {
-        AppMasterPreference.getInstance(this).setGoogleTipShowed(true);
+        if (TextUtils.isEmpty(mContent)) {
+            AppMasterPreference.getInstance(this).setGoogleTipShowed(true);
+        }
         super.onResume();
     }
 
@@ -118,6 +120,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             finish();
         } else if (v == mFeedbackSureClick) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_later");
+            mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
             Intent intent = new Intent(GradeTipActivity.this, FeedbackActivity.class);
             startActivity(intent);
             finish();

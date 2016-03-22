@@ -150,6 +150,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mAppLockSuccess;
     private boolean mPicHideSuccess;
     private boolean mVidHideSuccess;
+    private boolean mHasGradeDialogShow;
 
 
     private boolean mHidePicFinish = true;
@@ -312,6 +313,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         PrivacyHelper.getInstance(this).resetDecScore();
         ImageLoader.getInstance().clearMemoryCache();
         unregisterReceiver(mLocaleReceiver);
+        mAppLockSuccess = false;
+        mPicHideSuccess = false;
+        mVidHideSuccess = false;
+        mHasGradeDialogShow = false;
     }
 
     public void onEventMainThread(AppUnlockEvent event) {
@@ -824,8 +829,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
-        showGradeDialog();
         judgeShowGradeTip();
+        showGradeDialog();
         /* 分析是否需要升级红点显示 */
         if (SDKWrapper.isUpdateAvailable()) {
             mToolbar.showMenuRedTip(true);
@@ -886,20 +891,23 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @SuppressWarnings("deprecation")
     private void judgeShowGradeTip() {
-        AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        ActivityManager.RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
-        String pkg = getPackageName();
-        if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
-            long count = pref.getUnlockCount();
-            boolean haveTip = pref.getGoogleTipShowed();
-            if (count >= 25 && !haveTip) {
+        if (!mAppLockSuccess && !mPicHideSuccess && !mVidHideSuccess && !mHasGradeDialogShow) {
+            AppMasterPreference pref = AppMasterPreference.getInstance(this);
+            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            ActivityManager.RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
+            String pkg = getPackageName();
+            if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
+                long count = pref.getUnlockCount();
+                boolean haveTip = pref.getGoogleTipShowed();
+                if (count >= 25 && !haveTip) {
                         /* google play 评分提示 */
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank");
-                Intent intent = new Intent(this, GradeTipActivity.class);
-                startActivity(intent);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank");
+                    Intent intent = new Intent(this, GradeTipActivity.class);
+                    startActivity(intent);
+                }
             }
         }
+        mHasGradeDialogShow = false;
     }
 
 //    private void checkIswipeNotificationTo() {
@@ -1602,6 +1610,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent.putExtra("url", mPt.getString(PrefConst.KEY_APP_GRADE_URL));
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     startActivity(intent);
+                    mHasGradeDialogShow = true;
                 }
             }
             if (mPicHideSuccess) {
@@ -1614,6 +1623,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent.putExtra("url", mPt.getString(PrefConst.KEY_PICTURE_GRADE_URL));
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     startActivity(intent);
+                    mHasGradeDialogShow = true;
                 }
             }
             if (mVidHideSuccess) {
@@ -1626,6 +1636,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent.putExtra("url", mPt.getString(PrefConst.KEY_VIDEO_GRADE_URL));
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     startActivity(intent);
+                    mHasGradeDialogShow = true;
                 }
             }
         }
