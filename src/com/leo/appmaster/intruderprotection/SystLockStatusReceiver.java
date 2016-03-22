@@ -54,15 +54,21 @@ private LockManager mLockManager;
                 final Intent intent2 = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent2.putExtra("pkgname", "from_systemlock");
+                long delayTime = DeviceReceiver.NORMAL_TIME;
+                if (IntrudeSecurityManager.sEnterBrowser) {
+                    delayTime = DeviceReceiver.LONG_TIME;
+                }
                 ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                     @Override
                     public void run() {
                         mLockManager.filterPackage(context.getPackageName(), 1000);
                         context.startActivity(intent2);
+                        IntrudeSecurityManager.sEnterBrowser = false;
                         IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
                         LeoLog.d("poha_admin", "set sHasTakenWhenUnlockSystemLock false 2");
                     }
-                }, DeviceReceiver.NORMAL_TIME);
+                }, delayTime);
+                LeoLog.i("delayTime", " 11 " + delayTime);
             } else if(IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && !IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved){
                 IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
             }
