@@ -67,10 +67,16 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
             return null;
         }
         UsageStatsManager statsManager = (UsageStatsManager) mStatsManager;
-        long currentTs = System.currentTimeMillis();
-        long startTs = currentTs - Constants.TIME_ONE_DAY;
+//        long currentTs = System.currentTimeMillis();
+//        long startTs = currentTs - Constants.TIME_ONE_WEEK;
+//        long endTs = currentTs + Constants.TIME_ONE_WEEK;
+
+        Calendar calendar = Calendar.getInstance();
+        long endTs = calendar.getTimeInMillis();
+        calendar.add(Calendar.YEAR, -1);
+        long startTs = calendar.getTimeInMillis();
         startTs = startTs < 0 ? 0 : startTs;
-        List<UsageStats> stats = statsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTs, currentTs);
+        List<UsageStats> stats = statsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTs, endTs);
 
         ProcessAdj processAdj = null;
         if (stats != null) {
