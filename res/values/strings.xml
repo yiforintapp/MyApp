@@ -133,13 +133,12 @@
     <string name="lock_help_password_setting_content_password">Click Settings to enter password or reset password.</string>
 
     <string-array name="lock_help_setting_title">
-        <!--        <item>How to change password?</item>-->
+        <item>How to change password?</item>
         <item>Locking too frequently?</item>
-        <item>Lock too fast?</item>
         <item>Change a theme</item>
     </string-array>
 
-    <string name="lock_help_password_setting_button">Settings</string>
+    <string name="lock_help_password_setting_button">Go to Settings</string>
     <string name="lock_help_lock_theme_setting_button">Change a theme</string>
 
     <!-- v2.0 -->
@@ -871,7 +870,7 @@
     <string name="quick_helper_app_backup">App Backup</string>
     <string name="quick_helper_flow_manage">Data Monitor</string>
     <string name="quick_helper_elec_manage">Power Management</string>
-    <string name="class_privacy_protection">Privacy protection</string>
+    <string name="class_privacy_protection">Privacy Protection</string>
     <string name="quick_helper_desc_pic_hide">Hide private Images</string>
     <string name="quick_helper_desc_video_hide">Hide private Videos</string>
     <string name="quick_helper_desc_call">Protect Call Record</string>
