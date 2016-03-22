@@ -46,8 +46,8 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 	private FrameLayout mFlRoot = null;
 	private WindowManager mWm = null;
 
-	public final static long NORMAL_TIME = 2000; // 默认打开入侵者防护界面时间
-	public final static long LONG_TIME = 3500; // 增长打开入侵者防护界面时间
+	public final static long NORMAL_TIME = 1800; // 默认打开入侵者防护界面时间
+	public final static long LONG_TIME = 3200; // 增长打开入侵者防护界面时间
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -201,6 +201,7 @@ public class DeviceReceiver extends DeviceAdminReceiver {
 												public void run() {
 													mLockManager.filterPackage(context.getPackageName(), 1000);
 													context.startActivity(intent);
+													IntrudeSecurityManager.sEnterBrowser = false;
 													LeoLog.d("poha_admin", "set sHasTakenWhenUnlockSystemLock false 1");
 													IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
 												}
