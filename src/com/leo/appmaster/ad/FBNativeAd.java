@@ -9,6 +9,7 @@ import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.NativeAd;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.lang.ref.WeakReference;
@@ -226,8 +227,14 @@ public class FBNativeAd extends BaseNativeAd implements AdListener {
     @Override
     protected void release() {
         if(mNativeAd != null){
-            mNativeAd.unregisterView();
-            mNativeAd.destroy();
+            ThreadManager.executeOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // FIXME: 2016/3/22 AM-4143 在子线程操作UI，抛到主线程执行
+                    mNativeAd.unregisterView();
+                    mNativeAd.destroy();
+                }
+            });
         }
     }
 
