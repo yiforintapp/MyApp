@@ -224,7 +224,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private ImageLoader mImageLoader;
 
     //    private boolean mShowBoost = true;
-    private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
+    private static int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
     private List<PackageInfo> mPackages;
 
@@ -2368,7 +2368,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 @Override
                 public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
-                    SDKWrapper.addEvent(BatteryViewFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", null);
+                    SDKWrapper.addEvent(BatteryViewFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
                     LeoLog.d(TAG, "Ad clicked");
                 }
             });
@@ -2410,19 +2410,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", mAdSource,  null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
             LeoLog.e(TAG, "failed to load AD preview!");
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " load image failed", null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " load image failed", mAdSource, null);
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             LeoLog.d(TAG, "Ad preview image ready");
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " image size: " + loadedImage.getByteCount(), null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " image size: " + loadedImage.getByteCount(), mAdSource, null);
             BatteryViewFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 try {
@@ -2515,7 +2515,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         //MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING);
         mAdWrapper.setOnClickListener(this);
-        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + Constants.UNIT_ID_CHARGING + " adShow", null);
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + Constants.UNIT_ID_CHARGING + " adShow", mAdSource, null);
     }
     /* 广告相关 - 结束 */
 

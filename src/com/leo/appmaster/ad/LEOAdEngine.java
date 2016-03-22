@@ -341,6 +341,7 @@ public class LEOAdEngine {
 	 */
 	public void loadMobvista(String unitId, LeoListener listener) {
 		LeoLog.i(TAG, "["+unitId+"]Attach to Native Ad");
+		final int source = AppMasterPreference.AD_SDK_SOURCE_USE_MAX;
 		if (listener == null) return;
 
 		if (TextUtils.isEmpty(unitId)) {
@@ -358,7 +359,7 @@ public class LEOAdEngine {
 		map.put("unitId", unitId);
 		if (isOutOfDate(cData)) {
 			
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "ad is out of date, prepare to load", map);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "ad is out of date, prepare to load", source, map);
 			
 			if (cData != null) {
 				loadSingleMobAd(unitId, cData.nativeAd);
@@ -368,7 +369,7 @@ public class LEOAdEngine {
 			LeoLog.i(TAG, "data out ofdate: reload new one.");
 			return;
 		} else {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "from cache, ad is not out of date", map);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "from cache, ad is not out of date", source, map);
 		}
 
 		boolean loading = mLeoLoadingNatives.get(unitId) != null;

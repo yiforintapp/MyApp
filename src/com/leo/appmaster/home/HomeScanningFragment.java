@@ -88,7 +88,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
     // 3.2 advertise
     private static final String AD_AFTER_SCAN = Constants.UNIT_ID_243;
-    private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
+    private static int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
     private boolean mDidLoadAd = false;
     private boolean mAdLoaded;
     private View mRootView;
@@ -469,7 +469,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                         public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                             LeoLog.d("AfterPrivacyScan", "onMobvistaClick");
                             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_cli", "adv_cnts_scan");
-                            SDKWrapper.addEvent(HomeScanningFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", null);
+                            SDKWrapper.addEvent(HomeScanningFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
                             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                             lm.filterSelfOneMinites();
                         }
@@ -500,12 +500,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " prepare for load image", null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " prepare for load image", mAdSource, null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " load image failed", null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " load image failed", mAdSource, null);
         }
 
         @Override
@@ -513,7 +513,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             final HomeScanningFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 fragment.mAdLoaded = true;
-                SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " image size: " + loadedImage.getByteCount(), null);
+                SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " image size: " + loadedImage.getByteCount(), mAdSource, null);
                 LeoLog.d("AfterPrivacyScan", "[HomeScanningFragment] onLoadingComplete -> " + imageUri);
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
@@ -548,7 +548,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         /* 3.3.2 封装Max与Mob SDK */
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, adView, AD_AFTER_SCAN);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
-        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + AD_AFTER_SCAN + " adShow", null);
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + AD_AFTER_SCAN + " adShow",  mAdSource, null);
     }
     /* 3.2 advertise end */
 
