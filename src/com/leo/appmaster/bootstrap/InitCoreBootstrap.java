@@ -40,6 +40,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
@@ -270,6 +271,12 @@ public class InitCoreBootstrap extends Bootstrap {
                     R.integer.guide_page_version);
             pref.setLastGuideVersion(currentGuideVersion);
         } else {
+            if(DeviceReceiver.isActive(AppMasterApplication.getInstance()) && (!pref.getHasAutoSwitch()) && (Integer.parseInt(lastVercode) < 70)) {
+                IntrudeSecurityManager m = (IntrudeSecurityManager)MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+                m.setSystIntruderProtectionSwitch(true);
+                pref.setHasAutoSwitch(true);
+            }
+
             int lastCode = Integer.parseInt(lastVercode);
             if (lastCode < versionCode) {
                 // hit update
