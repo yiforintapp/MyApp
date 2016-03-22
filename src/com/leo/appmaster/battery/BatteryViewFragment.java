@@ -993,7 +993,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
 
     private void fillShowContentData(int recommandTypeThree) {
-        if (mActivity == null) return;
+        if (getActivity() == null) return;
         if (recommandTypeThree == RECOMMAND_TYPE_ONE) {
 
 
@@ -1010,7 +1010,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             LeoLog.d("testGetList", "-------------分割线---------------");
             //fill the local ,  size of : 3
             mIvShowOne.setSelfImageDrawable(mActivity.getResources().getDrawable(R.drawable.icon_time_contacts), false);
-            mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_contact));
+            mRecommandTvOne.setText(mActivity.getString(R.string.battery_protect_show_num_contact));
             mRecommandNumOne.setVisibility(View.VISIBLE);
             mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1030,7 +1030,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             });
 
             mIvShowTwo.setSelfImageDrawable(mActivity.getResources().getDrawable(R.drawable.icon_time_phone), false);
-            mRecommandTvTwo.setText(getString(R.string.battery_protect_show_num_call));
+            mRecommandTvTwo.setText(mActivity.getString(R.string.battery_protect_show_num_call));
             mRecommandNumTwo.setVisibility(View.VISIBLE);
             mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1048,7 +1048,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             });
 
             mIvShowThree.setSelfImageDrawable(mActivity.getResources().getDrawable(R.drawable.icon_time_message), false);
-            mRecommandTvThree.setText(getString(R.string.battery_protect_show_num_msm));
+            mRecommandTvThree.setText(mActivity.getString(R.string.battery_protect_show_num_msm));
             mRecommandNumThree.setVisibility(View.VISIBLE);
             mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1131,10 +1131,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     }
 
     private void twoContentFill() {
+        if (getActivity() == null) {
+            return;
+        }
         List<BatteryAppItem> netList = ScreenRecommentJob.getBatteryNetList();
         LeoLog.d("testGetList", "上网 size is : " + netList.size());
         mIvShowOne.setSelfImageDrawable(mActivity.getResources().getDrawable(R.drawable.icon_time_browser), false);
-        mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_browser));
+        mRecommandTvOne.setText(mActivity.getString(R.string.battery_protect_show_num_browser));
         mRecommandNumOne.setVisibility(View.VISIBLE);
         mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
             @Override
