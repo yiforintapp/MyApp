@@ -1081,6 +1081,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_capture_rank");
                 mLockManager.filterSelfOneMinites();
+                mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
                 Utilities.goFiveStar(IntruderCatchedActivity.this, false, false);
                 break;
             case R.id.rv_more:
