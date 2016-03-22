@@ -357,7 +357,7 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void goToBlackListTab1(int type) {
-        mLockManager.filterPackage(this.getPackageName(), 1000);
+        mLockManager.filterPackage(this.getPackageName(), 1200);
         Intent intent = new Intent(this, CallFilterMainActivity.class);
 //        intent.putExtra("needMoveToTab2", true);
         intent.putExtra("needToHomeWhenFinish", true);
@@ -385,7 +385,7 @@ public class DeskProxyActivity extends Activity {
             SDKWrapper.addEvent(this, SDKWrapper.P1,
                     "assistant", "wifi_cnts");
         }
-        mLockManager.filterPackage(this.getPackageName(), 1000);
+        mLockManager.filterPackage(this.getPackageName(), 1200);
         Intent intent = new Intent(this, WifiSecurityActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
