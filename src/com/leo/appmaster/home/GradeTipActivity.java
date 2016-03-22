@@ -34,6 +34,8 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
     private TextView mText;
     private PreferenceTable mPt;
 
+    private String mFromWhere; // 用于打点
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         mPt = PreferenceTable.getInstance();
         mContent = getIntent().getStringExtra("content");
         mUrl = getIntent().getStringExtra("url");
+        mFromWhere = getIntent().getStringExtra("fromWhere");
         if (!TextUtils.isEmpty(mContent)) {
             mText.setText(mContent);
         }
@@ -112,24 +115,49 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == mTvMakeSureClick) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
             if (!TextUtils.isEmpty(mContent)) {
                 mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
+                if ("app".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "lock_rank_yes");
+                } else if ("picture".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "hidepic_rank_yes");
+                } else if ("video".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "hidevid_rank_yes");
+                }
+            } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
             }
             openShowGoogleGuide();
             finish();
         } else if (v == mFeedbackSureClick) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_later");
+
             if (!TextUtils.isEmpty(mContent)) {
                 mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
+                if ("app".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "lock_rank_fb");
+                } else if ("picture".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "hidepic_rank_fb");
+                } else if ("video".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "hidevid_rank_fb");
+                }
+            } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_later");
             }
             Intent intent = new Intent(GradeTipActivity.this, FeedbackActivity.class);
             startActivity(intent);
             finish();
         } else if (v == mLayout) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
             if (!TextUtils.isEmpty(mContent)) {
                 mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
+                if ("app".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "lock_rank_yes");
+                } else if ("picture".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "hidepic_rank_yes");
+                } else if ("video".equals(mFromWhere)) {
+                    SDKWrapper.addEvent(GradeTipActivity.this, SDKWrapper.P1, "GP_rank", "hidevid_rank_yes");
+                }
+            } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
             }
             openShowGoogleGuide();
             finish();

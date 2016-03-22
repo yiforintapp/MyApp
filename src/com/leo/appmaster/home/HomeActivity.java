@@ -1608,7 +1608,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 if (!isAppContentEmpty && !isAppUrlEmpty) {
                     intent.putExtra("content", mPt.getString(PrefConst.KEY_APP_GRADE_CONTENT));
                     intent.putExtra("url", mPt.getString(PrefConst.KEY_APP_GRADE_URL));
+                    intent.putExtra("fromWhere", "app");
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "lock_rank");
                     startActivity(intent);
                     mHasGradeDialogShow = true;
                 }
@@ -1621,7 +1623,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 if (!isPicContentEmpty && !isPicUrlEmpty) {
                     intent.putExtra("content", mPt.getString(PrefConst.KEY_PICTURE_GRADE_CONTENT));
                     intent.putExtra("url", mPt.getString(PrefConst.KEY_PICTURE_GRADE_URL));
+                    intent.putExtra("fromWhere", "picture");
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "hidepic_rank");
                     startActivity(intent);
                     mHasGradeDialogShow = true;
                 }
@@ -1634,7 +1638,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 if (!isVidContentEmpty && !isVidUrlEmpty) {
                     intent.putExtra("content", mPt.getString(PrefConst.KEY_VIDEO_GRADE_CONTENT));
                     intent.putExtra("url", mPt.getString(PrefConst.KEY_VIDEO_GRADE_URL));
+                    intent.putExtra("fromWhere", "video");
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "hidevid_rank");
                     startActivity(intent);
                     mHasGradeDialogShow = true;
                 }
