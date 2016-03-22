@@ -16,6 +16,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -54,9 +55,9 @@ private LockManager mLockManager;
                 final Intent intent2 = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent2.putExtra("pkgname", "from_systemlock");
-                long delayTime = DeviceReceiver.NORMAL_TIME;
+                long delayTime = DeviceReceiverNewOne.NORMAL_TIME;
                 if (IntrudeSecurityManager.sEnterBrowser) {
-                    delayTime = DeviceReceiver.LONG_TIME;
+                    delayTime = DeviceReceiverNewOne.LONG_TIME;
                 }
                 ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                     @Override

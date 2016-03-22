@@ -731,12 +731,13 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".applocker.receiver.DeviceReceiver"
+
+        <receiver android:name=".applocker.receiver.DeviceReceiverNewOne"
             android:enabled="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/my_admin" />
+                android:resource="@xml/my_admin_new_1" />
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
@@ -745,22 +746,16 @@
             </intent-filter>
         </receiver>
 
-
- <!--       <receiver
-            android:name=".intruderprotection.SystLockAdminReceiver"
-            android:enabled="true"
-            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+        <receiver android:name=".applocker.receiver.DeviceReceiver">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_permission" />
-            <intent-filter
-                android:priority="2147483647">
+                android:resource="@xml/my_admin" />
+
+            <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_FAILED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_CHANGED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
             </intent-filter>
-        </receiver>-->
+        </receiver>
 
        <receiver
             android:name=".intruderprotection.SystLockStatusReceiver"

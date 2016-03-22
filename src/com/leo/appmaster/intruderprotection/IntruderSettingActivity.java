@@ -3,6 +3,7 @@ package com.leo.appmaster.intruderprotection;
 import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -197,7 +199,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
                 });
                 return;
             }
-            if (DeviceReceiver.isActive(IntruderSettingActivity.this)) {
+            if (DeviceReceiverNewOne.isActive(IntruderSettingActivity.this)) {
                 mISManager.setSystIntruderProtectionSwitch(true);
                 mIvSwitchSyst.setImageResource(R.drawable.switch_on);
             } else {
@@ -218,7 +220,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         mLockManager.filterSelfOneMinites();
         }
         mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
-        ComponentName mAdminName = new ComponentName(IntruderSettingActivity.this, DeviceReceiver.class);
+        ComponentName mAdminName = new ComponentName(IntruderSettingActivity.this, DeviceReceiverNewOne.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
         startActivityForResult(intent, REQUEST_CODE_TO_REQUEST_ADMIN);
@@ -228,7 +230,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiver.isActive(IntruderSettingActivity.this)) {
+        if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiverNewOne.isActive(IntruderSettingActivity.this)) {
             mISManager.setSystIntruderProtectionSwitch(true);
             mIvSwitchSyst.setImageResource(R.drawable.switch_on);
             openAdvanceProtectDialogHandler();

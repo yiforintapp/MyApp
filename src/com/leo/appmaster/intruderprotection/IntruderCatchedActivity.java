@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,6 +43,7 @@ import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
@@ -223,7 +225,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiver.isActive(IntruderCatchedActivity.this)) {
+        if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this)) {
             mISManager.setSystIntruderProtectionSwitch(true);
             changeToGuideFinishedLayout();
             openAdvanceProtectDialogHandler();
@@ -964,7 +966,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
     private void updateTipStatus() {
         boolean isOpen = mISManager.getSystIntruderProtecionSwitch();
-        boolean isDeviceAdmin = DeviceReceiver.isActive(IntruderCatchedActivity.this);
+        boolean isDeviceAdmin = DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this);
         if (isOpen) {
             mLlChangeTimes.setVisibility(View.VISIBLE);
             mLlGuide.setVisibility(View.GONE);
@@ -1040,7 +1042,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private void requestDeviceAdmin() {
 //        mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
-        ComponentName mAdminName = new ComponentName(IntruderCatchedActivity.this, DeviceReceiver.class);
+        ComponentName mAdminName = new ComponentName(IntruderCatchedActivity.this, DeviceReceiverNewOne.class);
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
         startActivityForResult(intent, REQUEST_CODE_TO_REQUEST_ADMIN);
@@ -1050,7 +1052,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rv_open:
-                if (DeviceReceiver.isActive(IntruderCatchedActivity.this)) {
+                if (DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this)) {
                     changeToGuideFinishedLayout();
                 } else {
                     mMultiUsesDialog = ShowAboutIntruderDialogHelper.showAskOpenDeviceAdminDialog(IntruderCatchedActivity.this, new DialogInterface.OnClickListener() {

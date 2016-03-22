@@ -51,6 +51,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.db.PreferenceTable;
@@ -991,7 +992,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean isAdminActive() {
         DevicePolicyManager manager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
         ComponentName mAdminName = new ComponentName(this, DeviceReceiver.class);
-        if (manager.isAdminActive(mAdminName)) {
+        ComponentName mAdminName2 = new ComponentName(this, DeviceReceiverNewOne.class);
+        if (manager.isAdminActive(mAdminName) || manager.isAdminActive(mAdminName2)) {
             return true;
         } else {
             return false;
@@ -1253,6 +1255,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mDrawerLayout.closeDrawer(Gravity.START);
         }
         try {
+            if (DeviceReceiver.isActive(this)) {
+                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiver.getComponentName(this));
+            }
+            if (DeviceReceiverNewOne .isActive(this)) {
+                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiverNewOne.getComponentName(this));
+            }
             Uri uri = Uri.fromParts("package", this.getPackageName(), null);
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_DELETE);

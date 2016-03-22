@@ -30,6 +30,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.TaskProtectService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
@@ -271,11 +272,11 @@ public class InitCoreBootstrap extends Bootstrap {
                     R.integer.guide_page_version);
             pref.setLastGuideVersion(currentGuideVersion);
         } else {
-            if(DeviceReceiver.isActive(AppMasterApplication.getInstance()) && (!pref.getHasAutoSwitch()) && (Integer.parseInt(lastVercode) < 70)) {
-                IntrudeSecurityManager m = (IntrudeSecurityManager)MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-                m.setSystIntruderProtectionSwitch(true);
-                pref.setHasAutoSwitch(true);
-            }
+//            if(DeviceReceiverNewOne.isActive(AppMasterApplication.getInstance()) && (!pref.getHasAutoSwitch()) && (Integer.parseInt(lastVercode) < 70)) {
+//                IntrudeSecurityManager m = (IntrudeSecurityManager)MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+//                m.setSystIntruderProtectionSwitch(true);
+//                pref.setHasAutoSwitch(true);
+//            }
 
             int lastCode = Integer.parseInt(lastVercode);
             if (lastCode < versionCode) {
