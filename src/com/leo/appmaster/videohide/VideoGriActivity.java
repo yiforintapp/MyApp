@@ -838,7 +838,9 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                 SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb ",
                         "unhide_done");
             } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-                LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_VID));
+                if (!VideoHideMainActivity.mIsFromConfirm) {
+                    LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_VID));
+                }
             }
         }
         dismissProgressDialog();

@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.videohide;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +26,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -45,6 +42,8 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
+
+import java.util.List;
 
 @SuppressLint("NewApi")
 public class VideoHideMainActivity extends BaseActivity implements OnItemClickListener {
@@ -72,6 +71,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private AppMasterPreference mSpSaveDir;
     private ProgressBar loadingBar;
     private PreferenceTable mPt;
+
+    public static boolean mIsFromConfirm;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -186,6 +187,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private void handleIntent() {
         Intent intent = this.getIntent();
+        mIsFromConfirm = intent.getBooleanExtra(Constants.FROM_CONFIRM_FRAGMENT, false);
         if (intent.getBooleanExtra("from_quickhelper", false)) {
             SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1,
                     "assistant", "hidevid_cnts");

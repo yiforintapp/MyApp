@@ -65,6 +65,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private ImageSize mImageSize;
 
+    public static boolean mIsFromConfirm;
+
     public void onBackPressed() {
         LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
         LeoLog.d(TAG, "mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0) = " + mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0));
@@ -163,6 +165,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             }
             mToast.show();
         }
+        mIsFromConfirm = getIntent().getBooleanExtra(Constants.FROM_CONFIRM_FRAGMENT, false);
     }
 
     private void initUI() {

@@ -1038,7 +1038,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                         width, height);
             }
         } else if (FileOperationUtil.HIDE_PIC_SUCESS.equals(isSuccess)) {
-            LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_PIC));
+            if (!ImageHideMainActivity.mIsFromConfirm) {
+                LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_PIC));
+            }
         }
         dismissProgressDialog();
         if (mPicturesList.size() > 0) {

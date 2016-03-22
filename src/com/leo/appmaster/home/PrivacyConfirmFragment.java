@@ -1416,6 +1416,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
         Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
         intent.putExtra("hidePicFinish", mActivity.getHidePicFinish());
+        intent.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
         mActivity.startActivity(intent);
     }
 
@@ -1424,6 +1425,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
         table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count+1);
         Intent intent = new Intent(mActivity, VideoHideMainActivity.class);
+        intent.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
         mActivity.startActivity(intent);
     }
 

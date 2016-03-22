@@ -932,7 +932,7 @@ public class AppLockListActivity extends BaseActivity implements
         if (blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
             count ++;
         }
-        if (mLockedList.size() > 0 ||  count > mWifiAndBluetoothLockCount) {
+        if ((mLockedList.size() > 0 ||  count > mWifiAndBluetoothLockCount) && !isFromConfrim) {
             LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP));
         }
         super.onBackPressed();
