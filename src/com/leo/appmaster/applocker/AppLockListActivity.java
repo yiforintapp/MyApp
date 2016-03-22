@@ -116,6 +116,8 @@ public class AppLockListActivity extends BaseActivity implements
     private BlueToothLockSwitch blueToothSwitch;
 
     private int mWifiAndBluetoothLockCount;
+    private int mLockListCount;
+    private int mFromSuccessListCount; // 首次进入页面加锁应用个数
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -181,6 +183,7 @@ public class AppLockListActivity extends BaseActivity implements
             }
 
             isFromConfrim = intent.getBooleanExtra(Constants.FROM_CONFIRM_FRAGMENT, false);
+            mFromSuccessListCount = intent.getIntExtra("first_lock_size", 0);
         }
     }
 
@@ -355,7 +358,7 @@ public class AppLockListActivity extends BaseActivity implements
             Collections.sort(mUnlockNormalList, new DefalutAppComparator());
         } catch (Exception e) {
         }
-
+        mLockListCount =mLockedList.size();
         ArrayList<AppInfo> resaultUnlock = new ArrayList<AppInfo>(mUnlockRecommendList);
         resaultUnlock.addAll(mUnlockNormalList);
         mUnlockList = resaultUnlock;
@@ -932,7 +935,10 @@ public class AppLockListActivity extends BaseActivity implements
         if (blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
             count ++;
         }
-        if ((mLockedList.size() > 0 ||  count > mWifiAndBluetoothLockCount) && !isFromConfrim) {
+        if (((mFromSuccessListCount != 0 && mLockedList.size() >= mFromSuccessListCount)
+                || (mFromSuccessListCount == 0 && mLockedList.size() > mLockListCount)
+                ||  count > mWifiAndBluetoothLockCount)
+                && !isFromConfrim) {
             LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP, true));
         }
         super.onBackPressed();

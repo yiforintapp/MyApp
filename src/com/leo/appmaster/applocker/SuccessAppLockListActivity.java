@@ -1,11 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +17,12 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.RippleView;
+
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by qili on 15-10-11.
@@ -132,6 +132,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                     intent = new Intent(SuccessAppLockListActivity.this,
                             AppLockListActivity.class);
                     intent.putExtra("from_lock_more", true);
+                    intent.putExtra("first_lock_size", mLockList.size());
 //                    intent.putExtra("enter_from_lockmode", true);
                     this.startActivity(intent);
                 } else if (target == 1) {
@@ -144,6 +145,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                         intent = new Intent(SuccessAppLockListActivity.this,
                                 AppLockListActivity.class);
                         intent.putExtra("from_lock_more", true);
+                        intent.putExtra("first_lock_size", mLockList.size());
                         this.startActivity(intent);
                     } else {
                         intent = new Intent(this,
@@ -216,6 +218,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         Intent intent;
         if (target == 0) {
             intent = new Intent(this, AppLockListActivity.class);
+            intent.putExtra("first_lock_size", mLockList.size());
             try {
                 this.startActivity(intent);
             } catch (Exception e) {
