@@ -154,6 +154,11 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (mConfirmCloseDialog != null && mConfirmCloseDialog.isShowing()) {
+            mConfirmCloseDialog.dismiss();
+            mConfirmCloseDialog = null;
+        }
     }
 
     @Override
@@ -202,7 +207,9 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                             mConfirmCloseDialog.dismiss();
                         }
                     });
-                    mConfirmCloseDialog.show();
+                    if (!isFinishing()) {
+                        mConfirmCloseDialog.show();
+                    }
                 }
                 break;
             case R.id.rv_item_noti:
