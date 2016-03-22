@@ -981,4 +981,20 @@
     <string name="feedback_tell_us_email_title">Email:</string>
     <string name="feedback_tell_us_email_url">support@leomaster.com</string>
     <string name="battery_protect_view_remain_three_title">Video</string>
+    <!--3.5-->
+    <string name="intruder_setting_title_1">Selfie d\'intrus entrant dans Verrou d\'écran</string>
+    <string name="intruder_setting_summarty_1">Prendre une photo si un MDP incorrect est entré</string>
+    <string name="intruder_setting_title_2">Selfie d\'intrus entrant dans App Verrou</string>
+    <string name="intruder_setting_summarty_2">Prendre une photo si un MDP incorrect est entré</string>
+    <string name="intruder_systemlock_tip">Recommander d\'activer Verrou d\'écran d\'accueil</string>
+    <string name="intruder_systemlock_finished">Selfie d\'intrus a été activé</string>
+    <string name="intruder_device_admin_guide_content">Activez la \"Protection Avancée\" avant d\'activer cette fonction, si vous voulez désinstaller \"LEO Privacy\", vous devez d\'abord la désactiver, activer cette fonction?</string>
+    <string name="intruder_systemlock_alarm">Impossible de prendre les selfies des intrus qui veux entrer dans votre portable après avoir déactivé cette fonction</string>
+    <string name="app_lock_list_switch_wifi">Wi-Fi</string>
+    <string name="app_lock_list_switch_bluetooth">Bluetooth</string>
+    <string name="app_lock_list_switch_title_one">Interrupteur</string>
+    <string name="app_lock_list_switch_title_two">Application</string>
+    <string name="intruder_intruduction">Prendre un selfie si un MDP incorrect est entré quand vous déverrouillez les Apps</string>
+    <string name="scan_app_title_switch">%1$s applications et interrupteurs ont été trouvés</string>
+    <string name="mobile_phone">Portable</string>
 </resources>
