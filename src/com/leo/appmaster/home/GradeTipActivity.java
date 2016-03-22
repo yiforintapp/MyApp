@@ -120,7 +120,9 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             finish();
         } else if (v == mFeedbackSureClick) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_later");
-            mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
+            if (!TextUtils.isEmpty(mContent)) {
+                mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
+            }
             Intent intent = new Intent(GradeTipActivity.this, FeedbackActivity.class);
             startActivity(intent);
             finish();
