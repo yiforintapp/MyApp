@@ -595,10 +595,20 @@ public class FileOperationUtil {
         ContentResolver c = context.getContentResolver();
         Uri uri = Files.getContentUri("external");
         Uri result = null;
+        String params[] = new String[]{
+                imagePath
+        };
+        try {
+            int rows = c.update(uri, v, Images.Media.DATA + " = ?", params);
+            if (rows > 0) {
+                LeoLog.d(TAG, "saveFileMediaEntry, update successful.");
+                return null;
+            }
+        } catch (Exception e) {
+        }
         try {
             result = c.insert(uri, v);
         } catch (Exception e) {
-
         }
         return result;
     }
