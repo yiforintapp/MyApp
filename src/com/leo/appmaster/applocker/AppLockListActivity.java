@@ -933,7 +933,7 @@ public class AppLockListActivity extends BaseActivity implements
             count ++;
         }
         if ((mLockedList.size() > 0 ||  count > mWifiAndBluetoothLockCount) && !isFromConfrim) {
-            LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP));
+            LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP, true));
         }
         super.onBackPressed();
     }

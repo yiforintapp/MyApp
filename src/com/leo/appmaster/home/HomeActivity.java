@@ -344,9 +344,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (GradeEvent.FROM_APP == event.mFromWhere) {
             mAppLockSuccess = true;
         } else if (GradeEvent.FROM_PIC == event.mFromWhere) {
-            mPicHideSuccess = true;
+            if (event.mShow) {
+                mPicHideSuccess = true;
+            } else {
+                mPicHideSuccess = false;
+            }
         } else if (GradeEvent.FROM_VID == event.mFromWhere) {
-            mVidHideSuccess = true;
+            if (event.mShow) {
+                mVidHideSuccess = true;
+            } else {
+                mVidHideSuccess = false;
+            }
         }
     }
 
@@ -899,7 +907,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
                 long count = pref.getUnlockCount();
                 boolean haveTip = pref.getGoogleTipShowed();
-                if (count >= 1 && !haveTip) {  // 封包改为25
+                if (count >= 25 && !haveTip) {  // 封包改为25
                         /* google play 评分提示 */
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank");
                     Intent intent = new Intent(this, GradeTipActivity.class);

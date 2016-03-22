@@ -839,7 +839,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         "unhide_done");
             } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
                 if (!VideoHideMainActivity.mIsFromConfirm) {
-                    LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_VID));
+                    LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_VID, true));
                 }
             }
         }

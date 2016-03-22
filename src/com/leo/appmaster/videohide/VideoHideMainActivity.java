@@ -26,6 +26,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -165,6 +167,9 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             });
             mDialogAskCreateShotcut.show();
         } else {
+            if (hideVideos.size() == 0 && !mIsFromConfirm) {
+                LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_VID, false));
+            }
             super.onBackPressed();
         }
     

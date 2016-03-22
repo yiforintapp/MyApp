@@ -12,13 +12,15 @@ public class GradeEvent extends BaseEvent {
     public static final int FROM_VID = 3;
 
     public int mFromWhere;
+    public boolean mShow;
 
     private GradeEvent() {
 
     }
 
-    public GradeEvent(int fromWhere) {
+    public GradeEvent(int fromWhere, boolean show) {
         this.mFromWhere = fromWhere;
+        this.mShow = show;
     }
 
 }
