@@ -103,6 +103,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             });
             mDialogAskCreateShotcut.show();
         } else {
+            PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
             super.onBackPressed();
         }
     };
