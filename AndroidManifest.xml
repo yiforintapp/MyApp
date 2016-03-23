@@ -184,7 +184,6 @@
         <activity
             android:name=".intruderprotection.IntruderCatchedActivity"
             android:excludeFromRecents="true"
-            android:launchMode="singleTask"
             android:taskAffinity="com.leo.appmaster.intrudercatch"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
