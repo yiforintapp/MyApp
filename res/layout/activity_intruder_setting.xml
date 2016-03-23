@@ -32,8 +32,7 @@
                 android:background="@color/white">
 
                 <com.leo.appmaster.ui.RippleView
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
+                    android:paddingTop="5dp"
                     android:id="@+id/rv_intruder_setting_content1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,6 +55,7 @@
                             android:id="@+id/tv_intruder_setting_title1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
                             android:maxLines="2"
                             android:text="@string/intruder_setting_title_1"
                             android:textColor="@color/c2"
@@ -66,7 +66,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv_intruder_setting_title1"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="3dp"
                             android:ellipsize="end"
                             android:gravity="top"
                             android:maxLines="3"
@@ -95,8 +95,6 @@
                 android:layout_below="@id/intruder_setting_content1"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
                 android:background="@color/white">
 
                 <com.leo.appmaster.ui.RippleView
@@ -104,6 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="68dp"
+                    android:paddingTop="5dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -122,6 +121,7 @@
                             android:id="@+id/tv_intruder_setting_title2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
                             android:maxLines="3"
                             android:text="@string/intruder_setting_title_2"
                             android:textColor="@color/c2"
@@ -132,7 +132,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv_intruder_setting_title2"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="3dp"
                             android:ellipsize="end"
                             android:gravity="top"
                             android:maxLines="3"
@@ -167,8 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="68dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
+                    android:paddingTop="5dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -209,10 +208,11 @@
                         android:id="@+id/iv_intruder_setting_switch3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:src="@drawable/icn_settings_arrow"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="26dp"
-                        android:visibility="gone"/>
+                        android:visibility="visible"/>
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
