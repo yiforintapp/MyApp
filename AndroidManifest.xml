@@ -181,10 +181,12 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+
+       <!-- android:taskAffinity="com.leo.appmaster.intrudercatch"-->
+
         <activity
             android:name=".intruderprotection.IntruderCatchedActivity"
             android:excludeFromRecents="true"
-            android:taskAffinity="com.leo.appmaster.intrudercatch"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
         <activity

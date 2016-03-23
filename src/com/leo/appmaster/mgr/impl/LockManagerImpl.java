@@ -59,6 +59,7 @@ import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.home.ProxyActivity;
+import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -1711,6 +1712,7 @@ public class LockManagerImpl extends LockManager {
         final String lastRunningPkg = service.getLastRunningPackage();
         final String lastRunningActivity = service.getLastRunningActivity();
         if (list.contains(lastRunningPkg)
+                && !IntruderCatchedActivity.class.getName().contains(lastRunningActivity)
                 && !LockScreenActivity.class.getName().contains(lastRunningActivity)
                 && !WaitActivity.class.getName().contains(lastRunningActivity)
                 && !ProxyActivity.class.getName().contains(lastRunningActivity)
