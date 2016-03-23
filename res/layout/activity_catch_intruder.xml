@@ -88,11 +88,12 @@
                 android:id="@+id/tv_times_of_catch"
                 android:layout_width="match_parent"
                 android:paddingBottom="1dp"
+                android:maxLines="4"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="155dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:text="@string/intruder_times_of_catch"
                 android:textColor="#c6dbff"
                 android:textSize="14dp" />
