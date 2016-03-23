@@ -1088,7 +1088,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             if (resolveinfo != null) {
                                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
                                         "batterypage",
-                                        "call_" + infoCopy.pkg);
+                                        "call1_" + infoCopy.pkg);
                                 String className = resolveinfo.activityInfo.name;
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -1303,11 +1303,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         if (type == RECOMMAND_TYPE_TWO) {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
                                     "batterypage",
-                                    "inter_" + infoOne.name);
+                                    "inter1_" + infoOne.name);
                         } else if (type == RECOMMAND_TYPE_THREE) {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
                                     "batterypage",
-                                    "app_" + infoOne.name);
+                                    "video1_" + infoOne.name);
                         }
 
                         startBrowser(urlFour);
@@ -1356,7 +1356,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
                             "batterypage",
-                            "app_" + infoOne.pkg);
+                            "video1_" + infoOne.pkg);
 
                     Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
                     resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
