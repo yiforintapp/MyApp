@@ -32,6 +32,8 @@
                 android:background="@color/white">
 
                 <com.leo.appmaster.ui.RippleView
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:id="@+id/rv_intruder_setting_content1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,7 +59,7 @@
                             android:maxLines="2"
                             android:text="@string/intruder_setting_title_1"
                             android:textColor="@color/c2"
-                            android:textSize="16dp" />
+                            android:textSize="15dp" />
 
                         <TextView
                             android:id="@+id/tv_intruder_setting_summary1"
@@ -93,6 +95,8 @@
                 android:layout_below="@id/intruder_setting_content1"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
                 android:background="@color/white">
 
                 <com.leo.appmaster.ui.RippleView
@@ -121,7 +125,7 @@
                             android:maxLines="3"
                             android:text="@string/intruder_setting_title_2"
                             android:textColor="@color/c2"
-                            android:textSize="16dp" />
+                            android:textSize="15dp" />
 
                         <TextView
                             android:id="@+id/tv_intruder_setting_summary2"
@@ -163,6 +167,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="68dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -184,7 +190,7 @@
                             android:maxLines="2"
                             android:text="@string/ask_for_times_for_catch"
                             android:textColor="@color/c2"
-                            android:textSize="16dp" />
+                            android:textSize="15dp" />
 
                         <TextView
                             android:id="@+id/tv_intruder_setting_summary3"

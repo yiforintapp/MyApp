@@ -173,7 +173,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
             @Override
             public void run() {
-                if (isAdminActive()) {
+                if (isAdminActive() || isNewAdminActive()) {
                     mForbidUninstall.setChecked(true);
                     mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
                 } else {
