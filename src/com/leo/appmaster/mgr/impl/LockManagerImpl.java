@@ -1097,8 +1097,11 @@ public class LockManagerImpl extends LockManager {
         LeoLog.d("testApplyLock", "applyLock lastPck : " + lastPck);
         LeoLog.d("testApplyLock", "applyLock lockedPkg : " + lockedPkg);
         //samsung when open wifi or bluetooth , show lockScreen , then com.android.settings will show immediately
-        String phoneBrand = Build.BRAND;
-        if (lockedPkg.equals(SAMSUNG_SETTINGS) && phoneBrand.contains(SAMSUNG)) {
+        //new Ps: not only Samsung s6 will , but also Huawei p6
+
+//        String phoneBrand = Build.BRAND;
+//        if (lockedPkg.equals(SAMSUNG_SETTINGS) && phoneBrand.contains(SAMSUNG)) {
+        if (lockedPkg.equals(SAMSUNG_SETTINGS)) {
             if ((lastPck.equals(SwitchGroup.WIFI_SWITCH) || lastPck.equals(SwitchGroup.BLUE_TOOTH_SWITCH))) {
                 lastPck = "";
                 return false;
