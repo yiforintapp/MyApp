@@ -863,6 +863,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // 解决Fragment内存泄露
                 mPretendFragment = getPretendFragment();
             }
+
+            if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
+                    mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                mPretendFragment = null;
+            }
+
             boolean showPretend = !mPrivateLockPck.equals(mLockedPackage);
             if (mPretendFragment != null && showPretend) { // ph
 
@@ -1737,6 +1743,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mPretendFragment = getPretendFragment();
         }
 
+        if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
+                mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+            mPretendFragment = null;
+        }
+
         if (mPretendFragment != null && !mRestartForThemeChanged) {
             mLockLayout.setVisibility(View.GONE);
             mPretendLayout.setVisibility(View.VISIBLE);
@@ -1754,10 +1765,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
 
 
-            if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
-                    mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
-                return null;
-            }
+//            LeoLog.d("testLockName", "mLockedPackage : " + mLockedPackage);
+//            if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
+//                    mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+//                return null;
+//            }
 
 
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
@@ -2847,7 +2859,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     snapforClick((ViewGroup) v.getParent());
                 }
             });
-            SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + unitId + " adShow",  mAdSource, null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + unitId + " adShow", mAdSource, null);
             return true;
         }
 
