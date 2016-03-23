@@ -41,7 +41,7 @@
             style="@style/dlg_content_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fadeScrollbars="false"
+            android:fadeScrollbars="true"
             android:gravity="center"
             android:maxLines="4"
             android:scrollbars="vertical"

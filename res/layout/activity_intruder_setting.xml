@@ -56,7 +56,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
-                            android:maxLines="2"
+                            android:maxLines="4"
                             android:text="@string/intruder_setting_title_1"
                             android:textColor="@color/c2"
                             android:textSize="15dp" />
@@ -122,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
-                            android:maxLines="3"
+                            android:maxLines="4"
                             android:text="@string/intruder_setting_title_2"
                             android:textColor="@color/c2"
                             android:textSize="15dp" />

@@ -72,6 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="1"
+                    android:ellipsize="end"
                     android:textColor="@color/c1"
                     android:textSize="@dimen/f5a"
                     android:textStyle="bold" />
@@ -81,6 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="1"
+                    android:ellipsize="end"
                     android:textColor="@color/c1"
                     android:textSize="@dimen/f6" />
 
@@ -88,7 +90,7 @@
 
             <Button
                 android:id="@+id/ad_result_cta"
-                android:layout_width="72dp"
+                android:layout_width="wrap_content"
                 android:layout_height="26dp"
                 android:layout_marginRight="7dp"
                 android:layout_marginTop="5dp"
@@ -96,6 +98,8 @@
                 android:background="@drawable/green_radius_btn_shape"
                 android:clickable="false"
                 android:textColor="@color/white"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:textSize="13dp" />
 
         </LinearLayout>
