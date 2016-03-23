@@ -717,7 +717,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private int currentPosit = 0;
 
     public void updateUIOnAnimationEnd(final LinearLayout layout) {
-        if (isDetached() || isRemoving() || getActivity() == null) return;
+        if (isDetached() || isRemoving() || getActivity() == null || layout == null) return;
 
         final int firLocation = layout.getHeight();
         Context context = AppMasterApplication.getInstance();
@@ -870,6 +870,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     }
 
     public void setItemPlace(View nowLayout, int position, int height, int isNeedLongHeight) {
+        if (null == nowLayout) {
+            return;
+        }
         int moveDistance = 0;
 
         if (nowLayout.getHeight() != 0 && height != 0) {
