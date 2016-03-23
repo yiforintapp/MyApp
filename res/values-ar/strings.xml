@@ -53,10 +53,33 @@
     <string name="digital_passwd_function_hint">أدخل أربعة أحرف</string>
     <string name="gesture_start_hint">خفف الأصبع بعد الرسم</string>
     <string name="lock_right_now">يغلق فورا</string>
+    <string name="lock_15_sec">15 ثانية</string>
+    <string name="lock_30_sec">30 ثانية</string>
+    <string name="lock_1_min">1 دقيقة</string>
+    <string name="lock_3_min">3 دقائق</string>
+    <string name="lock_5_min">5 دقائق</string>
+
+    <!-- TODO -->
+    <!--
+    <string name="app_version">版本: %1$s</string>
+    <string name="backuping">正在备份: %1$s</string>
+    -->
+    <string name="app_version">نسخة: <xliff:g>%1$s</xliff:g></string>
     <string name="backuping">جاري حفظ: <xliff:g>%1$s</xliff:g></string>
+    <!--  -->
+
     <string name="no_application_selected">لم تختر أي تطبيق</string>
     <string name="backup_finish">تم حفظ!</string>
     <string name="delete_fail">فشل حذف!</string>
+
+    <!-- TODO -->
+    <!--
+    <string name="deleting_app">正在删除: %1$s</string>
+    <string name="installed_app_size">已安装应用: %1$d</string>
+    <string name="apk_size">大小: %1$s</string>
+    <string name="storage_size">剩余存储空间: %1$s</string>
+    <string name="use_storage_size">已用空间: %1$s</string>
+    -->
     <string name="deleting_app"> جاري حذف:<xliff:g>%1$s</xliff:g></string>
     <string name="installed_app_size"> تطبيق مثبت:<xliff:g>%1$d</xliff:g></string>
     <string name="storage_size"> حيز التخزبن الباقي: <xliff:g>%1$s</xliff:g></string>
@@ -222,7 +245,7 @@
 
     <string-array name="lock_help_setting_title">
         <item> كيف تعدل كلمة؟</item>
-        <item> تعرف القفل متكرر؟ </item>
+        <item>هل قفل متكرر؟</item>
         <item> تعديل قفل</item>
     </string-array>
 
@@ -310,14 +333,38 @@
     <string name="cont_edit_visitor_name">لا يمكن تعديل اسم وضع زيارة</string>
     <string name="choose_mode">خيار وضع ظروف</string>
     <string name="create_mode_shortcut_title">إقامة طريق سريع</string>
+
+    <!-- TODO -->
+    <!-- <string name="create_mode_shortcut_tip">添加%1$s到桌面快捷方式</string> -->
+    <string name="create_mode_shortcut_tip">إضافة <xliff:g>%1$s</xliff:g> إلى   </string>
+    <!--  -->
+
     <string name="create_mode_shortcut_content">إقامة طريق سريع، أي يمكن تشغيل هذا وضع في سطح المكتب وينشأ طريق سريع نقر موافق</string>
+
+    <!-- TODO -->
+    <!--
+    <string name="mode_change">已启用<xliff:g id="mode">%1$s</xliff:g></string>
+    <string name="lock_change">已启用<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
+    -->
     <string name="mode_change">تم تشغيل <xliff:g id="mode">%1$s</xliff:g></string>
     <string name="lock_change">تم تشغيل<xliff:g id="mode">%2$s</xliff:g><xliff:g>%1$s</xliff:g></string>
+    <!--  -->
+
     <string name="position_lock_no_wifi">قائمة دون واي فاي</string>
+
+    <!-- TODO -->
+    <!--
+         <string name="battery_history_days"><xliff:g id="DAYS">%1$d</xliff:g> 天 <xliff:g id="HOURS">%2$d</xliff:g> 小时 <xliff:g id="MINUTES">%3$d</xliff:g> 分 <xliff:g id="SECONDS">%4$d</xliff:g> 秒</string>
+    <string name="battery_history_hours"><xliff:g id="HOURS">%1$d</xliff:g> 小时 <xliff:g id="MINUTES">%2$d</xliff:g> 分 <xliff:g id="SECONDS">%3$d</xliff:g> 秒</string>
+    <string name="battery_history_minutes"><xliff:g id="MINUTES">%1$d</xliff:g> 分 <xliff:g id="SECONDS">%2$d</xliff:g> 秒</string>
+    <string name="battery_history_seconds"><xliff:g id="SECONDS">%1$d</xliff:g> 秒</string>
+    -->
     <string name="battery_history_days"><xliff:g id="DAYS">%1$d</xliff:g><xliff:g id="HOURS">%2$d</xliff:g> يوم<xliff:g id="MINUTES">%3$d</xliff:g>سعة <xliff:g id="SECONDS">%4$d</xliff:g>دقيقةثانية </string>
     <string name="battery_history_hours"><xliff:g id="HOURS">%1$d</xliff:g> <xliff:g id="MINUTES">%2$d</xliff:g> ساعة  <xliff:g id="SECONDS">%3$d</xliff:g> دقيقةثانية</string>
     <string name="battery_history_minutes"><xliff:g id="MINUTES">%1$d</xliff:g><xliff:g id="SECONDS">%2$d</xliff:g>دقيقةثانية</string>
     <string name="battery_history_seconds"><xliff:g id="SECONDS">%1$d</xliff:g>ثانية</string>
+    <!--  -->
+
     <string name="battery_info_status_charging_ac">(تيار متبادل)</string>
     <string name="battery_info_status_charging_usb">(يوسبي)</string>
     <string name="battery_info_status_discharging">جاري استهلاك الكهرباء</string>
@@ -430,6 +477,8 @@
     <string name="lock_mode_delete_tip_time">الوضع المختار في قفل زمان، احذف هذا الوضع لحذف الإعداد</string>
     <string name="lock_mode_delete_tip_location">الوضع المختار في قفل مكان، احذف هذا الوضع لحذف الإعداد</string>
     <string name="please_input_name">أدخل الاسم</string>
+    <string name="please_selset_wifi">اختر واي فاي</string>
+
     <!-- TODO -->
     <!-- <string name="cur_mode_delete_tip">%1$s正在使用，删除后会使用访客模式, 确定删除该模式？</string> -->
     <string name="cur_mode_delete_tip">جاري استعمال <xliff:g>%1$s</xliff:g>، بعد الحذف، يستعمل وضع زيارة، هل توافق حذف هذا الوضع؟</string>
@@ -476,6 +525,7 @@
 
     <!-- TODO -->
     <!-- <string name="pretend_app_error">抱歉，\" %1$s \"已停止使用</string> -->
+    <string name="pretend_app_error">عفوا، تم توقف استعمال \"<xliff:g>%1$s</xliff:g>\"</string>
     <!--  -->
 
 
@@ -622,6 +672,7 @@
     <string name="pri_pro_folder_summary">(%1$d)</string>
     <string name="pri_pro_lost_summary">تمكين مكافحة السرقة</string>
     <string name="pri_pro_lost_fixed_title">تحت الحماية</string>
+    <string name="pri_pro_lost_fixed_pattern"><xliff:g>%1$d</xliff:g> يوم <xliff:g>%2$d</xliff:g> ساعة</string>
     <string name="pri_intruder_fixed_title">تحت الحماية</string>
     <string name="pri_intruder_fixed_pattern"><xliff:g>%1$s</xliff:g> مرة</string>
     <string name="pri_pro_intruder_summary">تمكين حماية الاختراق لاكتشاف المخترقين</string>
@@ -643,6 +694,7 @@
     <string name="pri_pro_cancel">إلغاء</string>
     <string name="pri_pro_process">قم بالحل الآن</string>
     <string name="pri_pro_wifi_warn">شبكة واي فاي المتصلة في خطر</string>
+    <string name="pri_pro_wifi_connect">متصل بشبكة واي فاي: <xliff:g>%1$s</xliff:g></string>
     <string name="scan_notify">انخفضت خصوصيتك</string>
     <string name="scan_notify_app">تم العثور على <xliff:g>%1$d</xliff:g> تطبيق جديد، انقر للمعالجة الآن</string>
     <string name="scan_notify_pic">تم العثور على <xliff:g>%1$d</xliff:g> صورة جديدة، انقر للمعالجة الآن</string>
@@ -702,6 +754,8 @@
     <string name="secur_bottom_bt_text">التالي</string>
     <string name="open_secur_text">تمكين خاصية مكافحة السرقة</string>
     <string name="no_secur_text">يمكنك استخدام الوظائف التالية:</string>
+    <string name="open_secur_checkbox_text">تمكين الحماية المتقدمة، أضف LEO Privacy لمدير الجهاز</string>
+
     <string name="quick_helper_pic_hide">إخفاء صورة</string>
     <string name="quick_helper_video_hide">إخفاء فيديو</string>
     <string name="quick_helper_intruder">تنبيه باقتحام</string>
@@ -729,9 +783,11 @@
     <string name="intruder_to_catch_fail_times_tip">التقاط صورة إذا تم إدخال كلمة مرور خاطئة <xliff:g>%1$s</xliff:g> مرات</string>
     <string name="intruder_times_of_catch">تم اكتشاف <Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data> محاولات اقتحام</string>
     <string name="change_times_to_catch">تغيير</string>
+    <string name="newest_catch_tip">هذا الشخصص رغب في رؤية <xliff:g>%1$s</xliff:g> الخاصة بك</string>
     <string name="intruder_more">بعض الاقتحامات الأخرى لهاتفك</string>
     <string name="intruder_nobody_tips">لم يتم اكتشاف دخيل</string>
     <string name="intruder_pic_more">المزيد</string>
+    <string name="times_choose"><xliff:g>%1$s</xliff:g> مرات</string>
     <string name="intruderprotection_desc">التقاط صورة إذا تم إدخال كلمة مرور خاطئة</string>
     <string name="intruder_open">تمكين تنبيه الاقتحام</string>
     <string name="intruder_close">تعطيل تنبيه الاقتحام</string>
@@ -750,6 +806,7 @@
     <string name="secur_suc_hour">ساعات</string>
     <string name="secur_suc_number_tip">التحكم بالهاتف المفقود عبر هاتف العائلة</string>
     <string name="secur_suc_instr_tip">إرسال أمر للهاتف المسروق</string>
+    <string name="call_duration">وقت الاتصال: <xliff:g>%1$s</xliff:g> دقائق <xliff:g>%2$s</xliff:g> ثواني</string>
     <string name="sim_change_msm_tip">[LEOMASTER] تنبيه، تم تغيير بطاقة SIM بهاتفك المحمول والذي نوعه <xliff:g id="sim_chanage">%1$s</xliff:g>. إذا كان أنت من قام بذلك، يرجى تجاهل هذا الإشعار. </string>
     <string name="no_sim_tip">لم يتم إدخال بطاقة SIM، لا يمكن إرسال رسالة نصية</string>
     <string name="secur_input_number">إدخال الرقم يدويا</string>
@@ -770,12 +827,14 @@
     <string name="secur_open_bt">النسخ الاحتياطي لأوامر التحكم عن بعد</string>
     <string name="secur_instr_open_bt">تمكين</string>
     <string name="backup_instr_dialog_content">سيتم إرسال الأوامر لرقم العائلة عبر رسالة نصية، إرسال الآن؟</string>
+    <string name="secur_finish_no_complate_tip">يمكنك استخدام الوظائف الأساسية الآن، للوظائف المتقدمة، اذهب إلى مدير الجهاز</string>
     <string name="secur_help_tip_txt">ستقوم هذه الخاصية بحماية خصوصيتك ومساعدتك في العثور على هاتفك المفقود. لاستخدامها، يجب تعيين رقم هاتف مسبقا، وعند فقدان الهاتف، ترسل رسالة نصية عبر الرقم المعد مسبقا.</string>
     <string name="secur_help_bt">موافق</string>
     <string name="advan_secur_text">يمكنك استخدام الوظائف التالية:</string>
     <string name="secur_backup_msm">[LEOMASTER] لقد قمت باختيار النسخ الاحتياطي لأوامر التحكم عبر الرسائل النصية: 1. قفل الهاتف: #lockmobile 2. تحديد موقع الهاتف:  #locateposition 3. إرسال تنبيه: #alert  4. الانذار:#alertoff 5. مسح البيانات: formatdata# 6. تمكين القفل، التعقب؛ المنبه؛ المسح: #onekey. إذت تعرض الهاتف للضياع، ارسل الأوامر المطابقة لما تريد. إذا نسيت الأوامر، انقر على "النسخ الاحتياطي لأوامر التحكم عن بعد" لإرسال هذه الرسالة النصية مرة أخرى. http://www.leomaster.com</string>
     <string name="secur_location_msm">[LEOMASTER] تم تحديد موقع الهاتف المفقود، انقر لترى: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">هل أنت متأكد من تجاهل النتائج؟ للقيام بذلك، لن تحصل على الدرجة</string>
+    <string name="secur_add_self_number_tip">لقد قمت بإدخال رقم هذا الهاتف، يرجى الإدخال مرة أخرى</string>
     <string name="privacy_scan">فحص الخصوصية</string>
     <string name="one_key_confirm_privacy">نقرة لإنهاء حماية الخصوصية</string>
     <string name="secur_feedbk_type">مكافحة السرقة</string>
@@ -915,6 +974,7 @@
     <string name="batterymanage_result_ad_wifi_content"> غير السالم يخطر أمان خصوصيتكم فى أى وقت Wifi</string>
     <string name="batterymanage_result_ad_callfilter_title">حظر الإزعاج</string>
     <string name="batterymanage_result_ad_callfilter_content">تبيين هذه المكالمات المزعاجة لكم واعتراضها</string>
+    <string name="batterymanage_label"> سر في الكهرباء استهلاك جاري تطبيق &#160;</string>
     <string name="batterymanage_label_old"> سر في الكهرباء استهلاك جاري تطبيق  <Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data></string>
     <string name="batterymanage_boost">تحسين توفير الكهرباء</string>
     <string name="batterymanage_boost_finished">تم التحسين</string>
@@ -934,10 +994,16 @@
     <string name="share_dialog_query_btn_cancel">الغاء</string>
     <string name="phone_share_content">أهلا ـ جارى أن استخدم وظيفة وقاية من السرق لحارس الخصوصية. باحتاج الى ارسال رسالة قصيرة ، يمكننى أن أتحكم فى جوالي ، ما أسهل ، أرغب فى أن تجرب هذا البرنامج .</string>
     <string name="callfilter_share_content">أهلا، جارى أن أستخدم وظيفة اعتراض المكالمة هاتفيا بحارس الخصوصية. وأمنع هؤلاء البائعين، المهم : يتبين المكالمات الواردة تلقائيا، بمجرد البسيط . أرغب فى أن تستخدمه معا .</string>
+    <string name="intruder_share_content"> قد.الغزاة من لوقاية الخصوصية حارس وظييفة أستخدم أن جاري %1$s يتصفحوا أن هؤلاء عرفت الآن جوالي لتصفح شخص لتصوير ساعدني  بسرعة اجرب جوالي</string>
     <string name="up_list_swifty_title">ترقية الفعالية</string>
     <string name="batterymanage_boosted_number">%1$d هي الأمثل البنود</string>
+
     <string name="screen_protect_time"> وقت الباقية</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h<Data><![CDATA[<font color="#0ad931">%2$s</font>]]>min</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>min</string>
+
     <string name="oppo_rom_tip_txt">،الخصوصية حارس تشغيل بعد عادية الصلاحية تعمل النظام قيد بنسبة  اجازة بعد الخافية التطبيقات تشغيل ، البرنامج اختر اضافة اضافة التشغيل الخصوصية حارس خطوة ، اضافة</string>
+
     <string name="screen_protect_charing_text_one">صل شاحن الكهرباء</string>
     <string name="screen_protect_charing_text_two">جارى شحن الكهرباء</string>
     <string name="screen_protect_charing_text_four">قد تم الشحن</string>
@@ -1018,28 +1084,4 @@
     <string name="intruder_intruduction">التقاط صور تلقائيا عندما دخل كلمة المرور الخاطئة في فتح التطبيق او التلفول</string>
     <string name="scan_app_title_switch">توجد %1$s تطبيق و تحول</string>
     <string name="mobile_phone">التلفون</string>
-    <!--3.5文案2次翻译-->
-    <string name="lock_15_sec">15 ثانية</string>
-    <string name="lock_30_sec">30 ثانية</string>
-    <string name="lock_1_min">1 دقيقة</string>
-    <string name="lock_3_min">3 دقائق</string>
-    <string name="lock_5_min">5 دقائق</string>
-    <string name="app_version"> نسخة:<xliff:g>%1$s</xliff:g></string>
-    <string name="create_mode_shortcut_tip">ضافة <xliff:g>%1$s</xliff:g>الي الطريق السريع في السطح </string>
-    <string name="please_selset_wifi">اختر Wi-Fi</string>
-    <string name="pretend_app_error">عفوا،”/ %1$s/“ تم توقف استعمال</string>
-    <string name="pri_pro_lost_fixed_pattern"><xliff:g>%1$s</xliff:g> يوم <xliff:g>%2$s</xliff:g> ساعة</string>
-    <string name="pri_pro_wifi_connect">Wi-Fi المتصلة :%1$s</string>
-    <string name="open_secur_checkbox_text">فتح حماية متقدمة، أضف LEO Privacyالي مدير الجهاز</string>
-    <string name="newest_catch_tip">الشخص رغب في رؤية <xliff:g>%1$s</xliff:g></string>
-    <string name="times_choose">s$1%مرات</string>
-    <string name="call_duration">وقت الاتصال: %1$s دقائق %2$s ثوانية</string>
-    <string name="secur_finish_no_complate_tip">يمكنك استخدام الوظائف الأساسية الآن ، اذهب إلى مدير الجهاز للوظائف المتقدمة.</string>
-    <string name="secur_add_self_number_tip"> قمت بدخل رقم هذا الهاتف، ادخل مرة أخرى</string>
-    <string name="mi_op_tip">يأذن "إرسال الرسائل " و"قراءة الرسائل"لLEO Privacy</string>
-    <string name="batterymanage_label">s$1% تطبيق جاري استهلاك  الكهرباء  في سر&#160;</string>
-    <string name="intruder_share_content">جاري أن أستخدم وظيفة وقاية  من الغزاة.قد ساعدني علي التقاط صور%1$s الناس تصفح جوالي.الآن قد عرفت هؤلاء يتصفحون جوالي.تحاول بسرعة</string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h<Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>min</string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>min</string>
-
 </resources>

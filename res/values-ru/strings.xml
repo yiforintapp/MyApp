@@ -307,6 +307,7 @@
     <string name="traffic_progress_bar">месячный трафик</string>
     <string name="traff_first_page_small_set_low">Вы можете ввести ваш пакет услуг трафика и уже пользоваемый трафик в этой месяц</string>
     <string name="traff_first_page_small_set">настроить пакет</string>
+    <string name="no_used_traffic">пока не данных рейтинга для трафика,проверите дальше</string>
     <string name="traffic_used_lot_stop_network">закрыть сеть</string>
     <string name="traffic_used_lot_cancel">продолжать</string>
     <string name="traffic_used_lot_text">расходы трафика этого месяца перекрывали %1$s%%</string>
@@ -336,8 +337,8 @@
     <string-array name="default_psw_protect_entrys">
         <item>Как зовут маме?</item>
         <item>Как зовут папе?</item>
-        <item>Имя моего любимого учителя?</item>
-        <item>Номер моего паспорта?</item>
+        <item>Как зовут учителю?</item>
+        <item>номер поспорта</item>
     </string-array>
 
     <string name="mode_save_hint">сохранить</string>
@@ -435,11 +436,14 @@
 
     <!-- version 2.5 huangqili part -->
 
+    <string name="forbid_uninstall_off">откройте высшую защиту, чтобы караула не злостно отгрузить и лучше сохранить ваши личные данные.  </string>
     <string name="forbid_uninstall_on">успешно открыта высшая защита!</string>
     <string name="setting_hide_lockline">скройте след отмыкания</string>
     <string name="change_to_gesture">переключите на код жеста</string>
     <string name="change_to_password">переключите на код цифры</string>
     <string name="summary_newapp_lock">при новой установке применения кнопкой быстро запереть</string>
+    <string name="summary_aacelerate_after_unlock">при применении отмыкания устранить память и самостоятельно ускорить</string>
+    <string name="summary_autolock_after_lockscreen">после замка экрана все применения заново заперты</string>
     <string name="summary_setting_locker">выберите заарретированную установку</string>
     <string name="summary_hide_lockline">скройте след отмыкания</string>
 
@@ -608,8 +612,10 @@
     <string name="wifi_scan_result_traffic_text">Контролировать использование данных, в случае превышения</string>
     <string name="wifi_scan_result_use_now">Сейчас</string>
     <string name="wifi_scan_result_scan">WiFi автоскан.</string>
+    <string name="wifi_scan_result_scan_desc">После подключения WiFi автоматически сканирует</string>
     <string name="ten_new_app_toast">Много нов. прил. для копии</string>
     <string name="ten_new_app_toast_content">Нажмите для копии</string>
+    <string name="over_traffic_toast">Сегодня расх. трафика более%1$sMB</string>
     <string name="over_traffic_toast_content">Нажмите для смотра подробностей</string>
 
     <string name="phone_security_no_add_number_text">Доб. ном. близких,отправитьСМС для уп. украд. тел.</string>
@@ -654,9 +660,13 @@
 
     <string name="quick_helper_desc_pic_hide">Скрыть личные фото</string>
     <string name="quick_helper_desc_video_hide">Скрыть личное видео</string>
+    <string name="quick_helper_desc_intruder">Возьмите фото,если пароль неверный</string>
     <string name="quick_helper_desc_call">Защ. запись разговоров от разглашения</string>
+    <string name="quick_helper_desc_wifi">Проверьте безопасности подкл.WiFi</string>
     <string name="quick_helper_desc_uninstall">Разгрузить установл. прил.</string>
     <string name="quick_helper_desc_backup">Копить установл. прил.</string>
+    <string name="quick_helper_desc_flow">Мониторинг состояние трафика данных</string>
+    <string name="quick_helper_desc_elec">Выключите элетрорасходные прил.</string>
     <string name="quick_helper_desc_boost">Очистка памяти для ускорения</string>
     <string name="quick_helper_desc_appjoy">Более интересной</string>
 
@@ -666,6 +676,7 @@
     <string name="intruder_to_catch_fail_times_tip">Ошибочно вводить %1$d разовый пароль будет фотографировать хэкера</string>
     <string name="intruder_times_of_catch"> Статья  <Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data>  раз  поймал  заглянуть  вам  телефон</string>
     <string name="change_times_to_catch">Изменять</string>
+    <string name="newest_catch_tip">Этот человек хотел увидеть вашего %1$s в</string>
     <string name="intruder_more">Другие люди заглянут ваш с.т.</string>
     <string name="intruder_nobody_tips">Теперь не найден хэйкер</string>
     <string name="intruder_pic_more">более</string>
@@ -678,6 +689,7 @@
     <string name="beg_five_star">Дайте пять звёзд!</string>
     <string name="ask_like_app">Нравится эта функция?</string>
     <string name="sure_clean">Определить ли удалить все фото хэкера?</string>
+    <string name="ask_for_times_for_catch">Сколько раз ошибочно вводить будет фографир.</string>
     <string name="intruder_gallery_title">Альбом хэкера</string>
     <string name="intruderprotection_desc_title">Что такое защ. от хэкера</string>
     <string name="sure_delete_one">Определить ли удалить все фото хэкера?</string>
@@ -691,6 +703,7 @@
     <string name="secur_suc_number_tip">Уп.вашим потерянным тел. по с.т. близких</string>
     <string name="secur_suc_instr_tip">Отправить следующий приказ в украд. с.т.</string>
     <string name="call_duration">Время разговора: <xliff:g id="call_dur_m">%1$s</xliff:g> минут <xliff:g id="call_dur_s">%2$s</xliff:g>секунд </string>
+    <string name="sim_change_msm_tip"> [LEOMASTER] Внимание! Ваша текущая модель <xliff:g id="sim_chanage">%1$s</xliff:g>. </string>
     <string name="no_sim_tip">SIM не вставлена, отправкаСМС удалась</string>
     <string name="secur_input_number">Введите номер вручно</string>
     <string name="secur_input_add_bt">Добавить</string>
@@ -708,6 +721,7 @@
     <string name="alert_name">Звук тревоги</string>
     <string name="lock_name">Блокир. При.</string>
     <string name="formate_name">Стереть данные</string>
+    <string name="secur_open_bt">Копить команды дистанц. управл.</string>
     <string name="secur_instr_open_bt">Открыть</string>
     <string name="backup_instr_dialog_content">Копить команды дистанционного управления, команда будет отправить СМС в с.т. близких,отправить ли?</string>
     <string name="secur_finish_no_complate_tip">Функцию антиугона может использовать,вышая функция требуют разрешения</string>
@@ -752,16 +766,19 @@
     <string name="intruderprotection_forbit_content">Из-за ограничений системы, защита от агрессора не может нормально работать</string>
     <string name="pri_pro_btn">Включить (+%1$d балл)</string>
     <string name="uninstall_empty_page">No any apps could uninstall</string>
+
     <!--3.11-->
     <string name="pri_result_wifimaster_title">WifiMaster</string>
     <string name="home_guide_txt">Скрыть фото, скрыть видео, больше функций здесь</string>
     <string name="pic_video_guide_txt">Для отмены скрытия нажмите кнопку редактирования и отметьте галочкойизображение </string>
     <string name="prot_open_suc_tip_cnt">Расширенная защита включена. Удаление защиты конфиденциальности можно выполнить с помощью боковой панели</string>
     <string name="wifi_result_swifty_title">Удобная кнопка трафика данных</string>
+    <string name="wifi_result_swifty_content">Быстрый расход трафика  данных? Не волнуйтесь, с помощью Swifty возможно включение сотовых данных и WiFi в один клик, экономьте трафика  данных прямо сейчас! </string>
     <string name="samsung_tip_txt">Для нормальной работы замка для приложений необходимо в «Оптимизация прикладных программ» → «Подробно» нажать кнопкузащиты конфиденциальности и выбрать «Запретить». Вы также можете сделать настройки в замкедля приложений.</string>
     <string name="pri_result_wifimaster_content">Профессиональное иулучшенное средство для тестирования скорости поможет сделать Ваш WiFi быстрее и стабильнееи найти больше качественных и бесплатных WiFi соединений.</string>
     <string name="wifi_result_wifimaster_content">Начать тестирование скорости WiFi прямо сейчас и выбрать самое быстрое WiFi подключение!</string>
     <string name="video_guide_txt">Для отмены скрытия нажмитекнопку редактирования и отметьте галочкой видео</string>
+
     <!--3.2-->
     <string name="call_filter_remove_from_blacklist_checkbox_title">Вам могут поступать звонки от этого номера, уверены, что хотите переместить из черного списка?</string>
     <string name="call_filter_remove_from_blacklist_checkbox_text">Вернуть журнал блокировки в журнал звонков?</string>
@@ -797,6 +814,7 @@
     <string name="mark_number_from_list">Номер отмечен</string>
     <string name="number_toast_text_black">%1$s пользователей уже внесли</string>
     <string name="number_toast_text_mark">%1$s пользователей уже отметили</string>
+    <string name="number_call_duration_s">%1$s секунд</string>
     <string name="scan_score">Обработано +%1$s баллов </string>
     <string name="scan_app_title">Обнаружено %1$s приложений</string>
     <string name="scan_app_content_less_three">Заметить секретное приложение %1$s</string>
@@ -837,11 +855,16 @@
     <string name="str_noti_content_txt">%1$s незнакомые звонки</string>
     <string name="pri_pro_ignore2">пропуск</string>
     <string name="miss_noti_tit">Пропущенные вызовы</string>
+    <string name="miss_noti_content">%2$s пользователей добавили %1$s в черный список, рекомендуем добавить в черный список</string>
     <string name="fil_noti_bt">Просмотр </string>
     <string name="strange_call_empty">Незнакомый звонок нету</string>
+
     <string name="call_filter_add_to_blacklist_people_tips">%1$s пользователей уже заблокировали</string>
     <string name="call_filter_marked_and_add_tips">отметка %1$s, Добавить в черный список</string>
     <string name="call_filter_confirm_ask_mark_summary">%1$s пользователи отмечен как %2$s</string>
+
+    <string name="number_call_duration_h_m">%1$sчасов %2$sминут</string>
+    <string name="number_call_duration_m_s">%1$sминут %2$sсекунд</string>
     <string name="gud_page_call_fil">Добавляйте нежелательные номера в черный список, будьте вдали от беспокойств!</string>
     <string name="ad_blk_fail">Не смогли</string>
 
@@ -858,6 +881,7 @@
     <string name="batterymanage_tip_nothing_to_boost">Нет app, которые можно оптимизировать</string>
     <string name="batterymanage_switch_screen">Заставка с индикатором зарядки</string>
     <string name="batterymanage_switch_screen_summary">предотвращает лишнюю зарядку и увеличивает скорость зарядки</string>
+    <string name="batterymanage_switch_noti">Уведомления о потреблении питания приложениями</string>
     <string name="batterymanage_switch_noti_summary">Проверка потребления питания приложениями</string>
     <string name="batterymanage_setting_title">Настройка </string>
     <string name="quick_helper_callfilter">Блокировка нежелательных звонков</string>
@@ -871,17 +895,23 @@
     <string name="callfilter_share_content">Привет, я пользуюсь функцией блокировки звонков LEO Privacy. Я заблокировал этих надоедливых торговых агентов, а самое главное – эта функция автоматически распознает входящие звонки, это очень удобно. Я хочу, чтобы ты тоже попробовал эту функцию.</string>
     <string name="intruder_share_content">Привет, я пользуюсь функцией защиты от захватчиков LEO Privacy. Она помогла мне сфотографировать %1$s человек, которые подглядывали в мой телефон. Теперь я знаю, кто подглядывал в мой телефон. Попробуй и ты эту функцию!</string>
     <string name="up_list_swifty_title">Повышение эффективности</string>
+
     <string name="screen_protect_time">Оставшееся время </string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>м.</string>
+    <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>ч.<Data><![CDATA[<font color="#0ad931">%2$s</font>]]> м.</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>м.</string>-->
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы LEO Privacy требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить LEO Privacy</string>
     <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>
+
     <string name="screen_protect_charing_text_one">Подключите зарядное устройство</string>
     <string name="screen_protect_charing_text_two">Идет подзарядка</string>
     <string name="screen_protect_charing_text_four">Зарядка завершена</string>
     <string name="batterymanage_scaning">сканирование</string>
     <string name="batterymanage_boosting">обработка</string>
     <string name="batterymanage_notif_process">обработка</string>
+
+
     <!-- 3.3.1 !-->
+
     <string-array name="default_psw_protect_entrys_new">
         <item>Что мое счастливое число?</item>
         <item>Что мой самый любимый фильм?</item>
@@ -892,6 +922,7 @@
         <item>Кто мой самый любимый учитель?</item>
         <item>Что последние шесть номер моего паспорта?</item>
     </string-array>
+
     <string name="scan_result_title">Результат процесса</string>
     <string name="scan_done_app">Блокировать приложение</string>
     <string name="scan_done_pic">Скрыть фото</string>
@@ -952,35 +983,4 @@
     <string name="intruder_intruduction">Авто-фото при разблокировке телефона или приложения  с неправильным паролем</string>
     <string name="scan_app_title_switch">Обнаруживать%1$s приложения и ключи</string>
     <string name="mobile_phone">Мобильник</string>
-
-    <!--3.5文案2次校对-->
-  <!--  <string-array name="sort_type">
-        <item>默认排序</item>
-        <item>应用名称排序</item>
-        <item>Время приложения рейтинг</item>
-    </string-array>-->
-    <string name="no_used_traffic">Пока не рейтинг для трафика</string>
-    <string name="flow_settting_second">Остаточный трафик</string>
-    <string name="forbid_uninstall_off">Откройте высшую защиту, чтобы не удалить приложения</string>
-    <string name="summary_aacelerate_after_unlock">Увеличить время разблокировки приложений</string>
-    <string name="summary_autolock_after_lockscreen">После замка экрана все заперты</string>
-    <string name="wifi_scan_result_scan_desc">После Wi-Fi автоматическо сканирует безопасность</string>
-    <string name="over_traffic_toast">Расх. трафика более%1$sMB</string>
-    <string name="quick_helper_desc_intruder">Возьмите фото,если пароль непрово</string>
-    <string name="quick_helper_desc_wifi">Проверьте безопасности Wi-Fi</string>
-    <string name="quick_helper_desc_flow">Мониторинг состояние трафика</string>
-    <string name="quick_helper_desc_elec">Выключите элетрорасходные</string>
-    <string name="newest_catch_tip">Он хотел увидеть%1$s в</string>
-    <string name="ask_for_times_for_catch">Раз вводить фото</string>
-    <string name="sim_change_msm_tip">Внимание! Екущая модель<xliff:g id="sim_chanage">%1$s</xliff:g>.</string>
-    <string name="secur_open_bt">Копия инструкции дистанционного</string>
-    <string name="adv_prot_open_suc_tip_cnt">Под вышую защиту никто не может удалить LEO Privacy.Если хотите удалить, нужно отменять вышую защиту</string>
-    <string name="wifi_result_swifty_content">Быстрый расход трафика? Не волнуйтесь, с помощью Swifty возможно включение сотовых и Wi-Fi в один клик</string>
-    <string name="number_call_duration_s">Разговор: %1$sс.</string>
-    <string name="number_call_duration_m">Разговор: %1$sм.</string>
-    <string name="number_call_duration_h">Разговор: %1$sч.</string>
-    <string name="number_call_duration_h_m">Разговор: %1$sч.%2$sм.</string>
-    <string name="number_call_duration_m_s">Разговор: %1$sм.%2$sс.</string>
-    <string name="miss_noti_content">%2$s пользователи добавили %1$s в черный список, добавить в чёрный список</string>
-    <string name="batterymanage_switch_noti">Уведомления о потреблении питания</string>
 </resources>
