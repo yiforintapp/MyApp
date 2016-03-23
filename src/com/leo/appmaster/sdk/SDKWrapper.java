@@ -273,7 +273,7 @@ public class SDKWrapper {
 	public static void addEvent(Context context, String exName, int level, String id, String description, int source, Map<String, String> extra) {
 		
 		//只是针对max 广告发起的extra 的范畴才要主动加上android_id
-		if (id != null && id.startsWith("max_ad")) {
+		if (exName != null && exName.startsWith("max_ad")) {
 			if (source != AppMasterPreference.AD_SDK_SOURCE_USE_MAX) {
 				return;
 			}
