@@ -23,6 +23,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.LockManager;
@@ -362,7 +363,8 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     public boolean isOpenAdvanceProtect() {
         DevicePolicyManager manager = (DevicePolicyManager) mContext.getSystemService(Context.DEVICE_POLICY_SERVICE);
         ComponentName mAdminName = new ComponentName(mContext, DeviceReceiver.class);
-        if (manager.isAdminActive(mAdminName)) {
+        ComponentName mAdminName2 = new ComponentName(mContext, DeviceReceiverNewOne.class);
+        if (manager.isAdminActive(mAdminName) || manager.isAdminActive(mAdminName2)) {
             return true;
         } else {
             return false;

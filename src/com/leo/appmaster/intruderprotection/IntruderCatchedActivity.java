@@ -42,7 +42,6 @@ import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
-import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
 import com.leo.appmaster.db.PreferenceTable;
