@@ -982,19 +982,19 @@
     <string name="feedback_tell_us_email_url">support@leomaster.com</string>
     <string name="battery_protect_view_remain_three_title">Video</string>
     <!--3.5-->
-    <string name="intruder_setting_title_1">Selfie d\'intrus entrant dans Verrou d\'écran</string>
-    <string name="intruder_setting_summarty_1">Prendre une photo si un MDP incorrect est entré</string>
-    <string name="intruder_setting_title_2">Selfie d\'intrus entrant dans App Verrou</string>
-    <string name="intruder_setting_summarty_2">Prendre une photo si un MDP incorrect est entré</string>
-    <string name="intruder_systemlock_tip">Recommander d\'activer Verrou d\'écran d\'accueil</string>
-    <string name="intruder_systemlock_finished">Selfie d\'intrus a été activé</string>
-    <string name="intruder_device_admin_guide_content">Activez la \"Protection Avancée\" avant d\'activer cette fonction, si vous voulez désinstaller \"LEO Privacy\", vous devez d\'abord la désactiver, activer cette fonction?</string>
-    <string name="intruder_systemlock_alarm">Impossible de prendre les selfies des intrus qui veux entrer dans votre portable après avoir déactivé cette fonction</string>
+    <string name="intruder_setting_title_1">Sistem kilit ekranı fotoğraf çek</string>
+    <string name="intruder_setting_summarty_1">Telefon  açarken yanlış şifre girince  fotoğraf  otomatik çekilecek</string>
+    <string name="intruder_setting_title_2">App kilidini fotoğraf çek</string>
+    <string name="intruder_setting_summarty_2">App açarken yanlış şifre girince  fotoğraf otomatik çekilecek</string>
+    <string name="intruder_systemlock_tip">Sistem kilit ekranı kamera çevirmek önerilir</string>
+    <string name="intruder_systemlock_finished">Sistem kilit ekranı fotoğraf çekmesi açıldı</string>
+    <string name="intruder_device_admin_guide_content">Bu fonksiyon açmak için ilk önce yüksek koruma açılmalı.Eğer LEO Privacy kaldırmanız gerekiyorsa,yüksek düzey koruma kapatılmalı,ister misin?</string>
+    <string name="intruder_systemlock_alarm">Bu fonksiyonu kapattıktan sonra telefonunu gözetleme isteyenlerini fotoğraf çekilemez</string>
     <string name="app_lock_list_switch_wifi">Wi-Fi</string>
     <string name="app_lock_list_switch_bluetooth">Bluetooth</string>
-    <string name="app_lock_list_switch_title_one">Interrupteur</string>
-    <string name="app_lock_list_switch_title_two">Application</string>
-    <string name="intruder_intruduction">Prendre un selfie si un MDP incorrect est entré quand vous déverrouillez les Apps</string>
-    <string name="scan_app_title_switch">%1$s applications et interrupteurs ont été trouvés</string>
-    <string name="mobile_phone">Portable</string>
+    <string name="app_lock_list_switch_title_one">Açma kapatma tuşu</string>
+    <string name="app_lock_list_switch_title_two">App</string>
+    <string name="intruder_intruduction">Telefon veya App kilidini açmak için yanlış şifre girince otomatik fotoğraf çekilecek</string>
+    <string name="scan_app_title_switch">%1$s tane uygulamayı ve anahtarı bulundu</string>
+    <string name="mobile_phone">Telefonu</string>
 </resources>
