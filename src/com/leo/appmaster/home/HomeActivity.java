@@ -908,7 +908,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
                 long count = pref.getUnlockCount();
                 boolean haveTip = pref.getGoogleTipShowed();
-                if (count >= 25 && !haveTip) {  // 封包改为25
+                if (count >= 1 && !haveTip) {  // 封包改为25
                         /* google play 评分提示 */
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank");
                     Intent intent = new Intent(this, GradeTipActivity.class);
