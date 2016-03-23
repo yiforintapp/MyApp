@@ -291,8 +291,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             } else if (isNewAdminActive()) {
                 DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
                 dpm.removeActiveAdmin(component2);
-            }
-            else {
+            }else {
                 mLockManager.filterSelfOneMinites();
                 mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);

@@ -54,16 +54,17 @@ public class DeviceReceiverNewOne extends DeviceAdminReceiver {
 		super.onReceive(context, intent);
 	    String action = intent.getAction();
 	    LeoLog.d("STONE_ADMIN", intent.getAction());
-//	    if(action.equals(DeviceAdminReceiver.ACTION_DEVICE_ADMIN_ENABLED)){
-//	        LeoLog.d("stone_admin", "ACTION_DEVICE_ADMIN_ENABLED");
-//	        LeoEventBus.getDefaultBus().post(
-//	                new DeviceAdminEvent(EventId.EVENT_DEVICE_ADMIN_ENABLE, "useless"));
-//	    }
-//	    if(action.equals(DeviceAdminReceiver.ACTION_DEVICE_ADMIN_DISABLED)){
-//	        LeoLog.d("stone_admin", "ACTION_DEVICE_ADMIN_DISABLED");
-//	        LeoEventBus.getDefaultBus().post(
-//	                new DeviceAdminEvent(EventId.EVENT_DEVICE_ADMIN_DISABLE, "useless"));
-//	    }
+
+	    if(action.equals(DeviceAdminReceiver.ACTION_DEVICE_ADMIN_ENABLED)){
+	        LeoLog.d("stone_admin", "ACTION_DEVICE_ADMIN_ENABLED");
+	        LeoEventBus.getDefaultBus().post(
+	                new DeviceAdminEvent(EventId.EVENT_DEVICE_ADMIN_ENABLE, "useless"));
+	    }
+	    if(action.equals(DeviceAdminReceiver.ACTION_DEVICE_ADMIN_DISABLED)){
+	        LeoLog.d("stone_admin", "ACTION_DEVICE_ADMIN_DISABLED");
+	        LeoEventBus.getDefaultBus().post(
+	                new DeviceAdminEvent(EventId.EVENT_DEVICE_ADMIN_DISABLE, "useless"));
+	    }
 	}
 
 	@Override
