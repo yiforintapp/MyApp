@@ -139,6 +139,4 @@
     <dimen name="wifi_result_trans_content">165dp</dimen>
     <!-- 3.0 end -->
     <dimen name="hide_grid_image_width">129dp</dimen>
-
-    <dimen name="home_shield_score">60dp</dimen>
 </resources>

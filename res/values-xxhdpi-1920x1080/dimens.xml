@@ -197,6 +197,4 @@
 
     <!-- 3.3.1 -->
     <dimen name="home_more_empty_height">115dp</dimen>
-
-    <dimen name="home_shield_score">60dp</dimen>
 </resources>

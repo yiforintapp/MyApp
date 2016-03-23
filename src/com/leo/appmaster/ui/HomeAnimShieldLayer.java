@@ -142,6 +142,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mPercentPaint.setColor(res.getColor(R.color.white));
         mPercentPaint.setTextSize(res.getDimensionPixelSize(R.dimen.scan_percent));
         mPercentPaint.setTextAlign(Paint.Align.CENTER);
+        mPercentPaint.setFakeBoldText(true);
 
         mLabelPaint = new Paint();
         mLabelPaint.setAntiAlias(true);
@@ -162,6 +163,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
         mScorePaint = new Paint();
         mScorePaint.setAntiAlias(true);
         mScorePaint.setTypeface(Typeface.create(LightTextView.getLightFace(view.getContext()), Typeface.BOLD));
+        mScorePaint.setFakeBoldText(true);
 
         mTextPaint = new Paint();
         mTextPaint.setAntiAlias(true);
