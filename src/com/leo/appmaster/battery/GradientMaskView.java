@@ -17,7 +17,7 @@ import com.leo.appmaster.R;
  * Created by Jasper on 2016/2/24.
  */
 public class GradientMaskView extends View {
-    private static final int MASK_LEN = 100;
+    private static final int MASK_LEN = 150;
 
     private Rect mMaskRect;
     private Shader mMaskShader;
