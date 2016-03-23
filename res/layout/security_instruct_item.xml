@@ -84,8 +84,10 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/green_btn_selector"
                 android:gravity="center"
-                android:maxWidth="90dp"
+                android:maxWidth="110dp"
                 android:minWidth="58dp"
+                android:paddingRight="4dp"
+                android:paddingLeft="4dp"
                 android:text="@string/secur_instr_open_bt"
                 android:textColor="#15c937"
                 android:textSize="14dp" />
