@@ -37,6 +37,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
@@ -691,11 +692,18 @@ public class IntruderprotectionActivity extends BaseActivity {
     private void updateTipStatus() {
         if (!mImanager.getSystIntruderProtecionSwitch()) {
             mRlTipContent.setVisibility(View.VISIBLE);
+
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_screen_sh");
+
             mLlGuideFinished.setVisibility(View.INVISIBLE);
             mLlGuide.setVisibility(View.VISIBLE);
+
             mRvOpenSystLockProt.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1, "intruder", "intruder_screen_cli");
+
                     if (!mImanager.getIsIntruderSecurityAvailable()) {
                         mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(IntruderprotectionActivity.this, new DialogInterface.OnClickListener() {
                             @Override
@@ -800,6 +808,9 @@ public class IntruderprotectionActivity extends BaseActivity {
 
     private void changeToGuideFinishedLayout() {
         if (mImanager.getIsIntruderSecurityAvailable()) {
+
+            SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1, "intruder", "intruder_screen_on");
+
             mImanager.setSystIntruderProtectionSwitch(true);
             mRlTipContent.setVisibility(View.VISIBLE);
             mLlGuide.setVisibility(View.INVISIBLE);

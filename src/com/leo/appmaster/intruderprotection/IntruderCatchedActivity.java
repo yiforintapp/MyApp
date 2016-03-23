@@ -973,12 +973,14 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLlGuideFinished.setVisibility(View.GONE);
         } else {
             mLlGuide.setVisibility(View.VISIBLE);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_cap_scr_sh");
             mLlChangeTimes.setVisibility(View.GONE);
             mLlGuideFinished.setVisibility(View.GONE);
         }
     }
 
     private void changeToGuideFinishedLayout() {
+        SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1, "intruder", "intruder_cap_scr_on");
         if (mISManager.getIsIntruderSecurityAvailable()) {
             mISManager.setSystIntruderProtectionSwitch(true);
             mLlGuide.setVisibility(View.GONE);
@@ -1052,6 +1054,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rv_open:
+                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,"intruder", "intruder_cap_scr_cli");
                 if (DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this)) {
                     changeToGuideFinishedLayout();
                 } else {
@@ -1070,6 +1073,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 onBackPressed();
                 break;
             case R.id.rv_setting:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_cap_setting");
                 Intent intent2 = new Intent(IntruderCatchedActivity.this,IntruderSettingActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent2.putExtra("isPgInner",false);

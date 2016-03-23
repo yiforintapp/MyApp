@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.feedback.FeedbackActivity;
@@ -67,6 +68,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         initManager();
         initUI();
         handleIntent();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_setting");
     }
 
     @Override
@@ -182,11 +184,13 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     mISManager.setSystIntruderProtectionSwitch(false);
+                    SDKWrapper.addEvent(IntruderSettingActivity.this, SDKWrapper.P1, "intruder", "intruder_set_scr_off");
                     mIvSwitchSyst.setImageResource(R.drawable.switch_off);
                     mMultiUsesDialog.dismiss();
                 }
             });
         } else {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_set_scr_cli");
             if (!mISManager.getIsIntruderSecurityAvailable()) {
                 mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
                     @Override
@@ -201,6 +205,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
             }
             if (DeviceReceiverNewOne.isActive(IntruderSettingActivity.this)) {
                 mISManager.setSystIntruderProtectionSwitch(true);
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_set_scr_on");
                 mIvSwitchSyst.setImageResource(R.drawable.switch_on);
             } else {
                 mMultiUsesDialog = ShowAboutIntruderDialogHelper.showAskOpenDeviceAdminDialog(this, new DialogInterface.OnClickListener() {
@@ -232,6 +237,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiverNewOne.isActive(IntruderSettingActivity.this)) {
             mISManager.setSystIntruderProtectionSwitch(true);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_set_scr_on");
             mIvSwitchSyst.setImageResource(R.drawable.switch_on);
             openAdvanceProtectDialogHandler();
         }

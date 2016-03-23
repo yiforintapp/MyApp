@@ -377,6 +377,9 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
                     intent = new Intent(getActivity(), IntruderprotectionActivity.class);
                     startActivity(intent);
+                    if (table.getBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED,false)) {
+                        SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "intruder_rp_cnts");
+                    }
                     table.putBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED,true);
                     break;
             }
