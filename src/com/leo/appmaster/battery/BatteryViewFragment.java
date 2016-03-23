@@ -1087,7 +1087,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             ResolveInfo resolveinfo = resolveinfoList.iterator().next();
                             if (resolveinfo != null) {
                                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                                        "batterypage",
+                                        "screen_click",
                                         "call1_" + infoCopy.pkg);
                                 String className = resolveinfo.activityInfo.name;
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -1302,11 +1302,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                         if (type == RECOMMAND_TYPE_TWO) {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                                    "batterypage",
+                                    "screen_click",
                                     "inter1_" + infoOne.name);
                         } else if (type == RECOMMAND_TYPE_THREE) {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                                    "batterypage",
+                                    "screen_click",
                                     "video1_" + infoOne.name);
                         }
 
@@ -1355,7 +1355,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 public void onClick(View view) {
 
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                            "batterypage",
+                            "screen_click",
                             "video1_" + infoOne.pkg);
 
                     Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
