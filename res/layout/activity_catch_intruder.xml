@@ -83,26 +83,26 @@
             </com.leo.appmaster.ui.RippleView>
 
             <TextView
+                android:layout_alignParentBottom="true"
                 android:includeFontPadding="false"
                 android:id="@+id/tv_times_of_catch"
                 android:layout_width="match_parent"
                 android:paddingBottom="1dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginBottom="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="155dp"
+                android:layout_marginBottom="2dp"
                 android:text="@string/intruder_times_of_catch"
                 android:textColor="#c6dbff"
                 android:textSize="14dp" />
 
             <TextView
+                android:layout_above="@id/tv_times_of_catch"
+                android:id="@+id/tv_ttt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginBottom="46dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="158dp"
                 android:maxLines="2"
