@@ -47,6 +47,7 @@ public class DeviceManagerImpl extends DeviceManager {
     private final static int WIFI_SHUT_DOWN = 1;
     private final static int BLUETOOTH_SHUT_DOWN = 2;
     private final static int WIFI_ENABLED = 3;
+    private final static int BLUETOOTH_ENABLED = 4;
 
     private final static long DELAY_DISABL = 1000;
 
@@ -76,6 +77,10 @@ public class DeviceManagerImpl extends DeviceManager {
                 case WIFI_ENABLED:
                     unlockOpenWifiDone = true;
                     mWifimanager.setWifiEnabled(true);
+                    break;
+                case BLUETOOTH_ENABLED:
+                    unlockOpenBlueToothDone = true;
+                    mBluetoothAdapter.enable();
                     break;
             }
         }
@@ -201,8 +206,7 @@ public class DeviceManagerImpl extends DeviceManager {
                             //delay 1s
                             mHandler.sendEmptyMessageDelayed(WIFI_ENABLED, DELAY_DISABL);
                         } else if (showType == BLUETOOTH_TURN_ON) {
-                            unlockOpenBlueToothDone = true;
-                            mBluetoothAdapter.enable();
+                            mHandler.sendEmptyMessageDelayed(BLUETOOTH_ENABLED, DELAY_DISABL);
                         }
                     }
 
