@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/ct_back_rl0"
+        android:layout_toLeftOf="@+id/ct_option_layout"
         android:ellipsize="end"
         android:gravity="left"
         android:includeFontPadding="false"

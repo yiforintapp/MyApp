@@ -53,7 +53,7 @@
     <dimen name="fragment_lock_password_tv_passwd_m_l">35dp</dimen>
     <dimen name="fragment_lock_password_tv_passwd_m_r">35dp</dimen>
     <dimen name="fragment_lock_password_setting_layout_passwd_height">40dp</dimen>
-    <dimen name="fragment_lock_password_setting_passwd_input_tip_textsize">26dp</dimen>
+    <dimen name="fragment_lock_password_setting_passwd_input_tip_textsize">22dp</dimen>
     <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">14dp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
