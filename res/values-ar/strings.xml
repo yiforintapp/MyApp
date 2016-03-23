@@ -1026,16 +1026,13 @@
     <string name="lock_5_min">5 دقائق</string>
     <string name="app_version"> نسخة:<xliff:g>%1$s</xliff:g></string>
     <string name="create_mode_shortcut_tip">ضافة <xliff:g>%1$s</xliff:g>الي الطريق السريع في السطح </string>
-    <string name="traff_first_page_small_set_month_used">استهلاك شهري(MB)</string>
     <string name="please_selset_wifi">اختر Wi-Fi</string>
     <string name="pretend_app_error">عفوا،”/ %1$s/“ تم توقف استعمال</string>
     <string name="pri_pro_lost_fixed_pattern"><xliff:g>%1$s</xliff:g> يوم <xliff:g>%2$s</xliff:g> ساعة</string>
-    <string name="pri_lost_privacy">محمي %1$s يوما %2$s ساعة</string>
     <string name="pri_pro_wifi_connect">Wi-Fi المتصلة :%1$s</string>
     <string name="open_secur_checkbox_text">فتح حماية متقدمة، أضف LEO Privacyالي مدير الجهاز</string>
     <string name="newest_catch_tip">الشخص رغب في رؤية <xliff:g>%1$s</xliff:g></string>
     <string name="times_choose">s$1%مرات</string>
-    <string name="secur_finish_no_complate_text">لم يفتح حماية متقدمة ،الوظائف التالية لا يمكن استخدام</string>
     <string name="call_duration">وقت الاتصال: %1$s دقائق %2$s ثوانية</string>
     <string name="secur_finish_no_complate_tip">يمكنك استخدام الوظائف الأساسية الآن ، اذهب إلى مدير الجهاز للوظائف المتقدمة.</string>
     <string name="secur_add_self_number_tip"> قمت بدخل رقم هذا الهاتف، ادخل مرة أخرى</string>

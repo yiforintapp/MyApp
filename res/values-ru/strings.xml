@@ -872,7 +872,7 @@
     <string name="intruder_share_content">Привет, я пользуюсь функцией защиты от захватчиков LEO Privacy. Она помогла мне сфотографировать %1$s человек, которые подглядывали в мой телефон. Теперь я знаю, кто подглядывал в мой телефон. Попробуй и ты эту функцию!</string>
     <string name="up_list_swifty_title">Повышение эффективности</string>
     <string name="screen_protect_time">Оставшееся время </string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>м.</string>-->
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>м.</string>
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы LEO Privacy требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить LEO Privacy</string>
     <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>
     <string name="screen_protect_charing_text_one">Подключите зарядное устройство</string>
@@ -972,7 +972,6 @@
     <string name="quick_helper_desc_elec">Выключите элетрорасходные</string>
     <string name="newest_catch_tip">Он хотел увидеть%1$s в</string>
     <string name="ask_for_times_for_catch">Раз вводить фото</string>
-    <string name="secur_finish_no_complate_text">Защита не открыта,не использовать следующие функции</string>
     <string name="sim_change_msm_tip">Внимание! Екущая модель<xliff:g id="sim_chanage">%1$s</xliff:g>.</string>
     <string name="secur_open_bt">Копия инструкции дистанционного</string>
     <string name="adv_prot_open_suc_tip_cnt">Под вышую защиту никто не может удалить LEO Privacy.Если хотите удалить, нужно отменять вышую защиту</string>
