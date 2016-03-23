@@ -99,6 +99,7 @@
             android:layout_below="@id/fsl_fivestars"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:gravity="center"
             android:paddingLeft="34dp"
             android:paddingRight="34dp"
             android:text="@string/dialog_fivestars_content_text"
