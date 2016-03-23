@@ -772,7 +772,7 @@
     <string name="toast_getscore_text">恭喜您！您的分數增加啦</string>
     <string name="feedback_tell_us_content">如果您有其他的問題或需要，歡迎隨時聯繫我們！我們的facebook、whatsapp群組也隨時在線哦！</string>
     <string name="feedback_tell_us_contact_type_title">聯繫方式</string>
-    <string name="dialog_fivestars_content_text">覺得還不錯？請給我們5星吧！</string>
+    <string name="dialog_fivestars_content_text">喜歡隱私衛士嗎？</string>
     <string name="elect_empty_content">抱歉，暫未獲取到電池信息</string>
     <string name="swifty_item_btn">去開啟</string>
     <string name="grade_item_title">喜歡隱私衛士嗎？</string>

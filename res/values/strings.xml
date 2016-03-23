@@ -513,7 +513,7 @@
     <string name="toast_getscore_text">Congratulations!Score has increased</string>
     <string name="feedback_tell_us_content">If you have any further questions or requirements, please do not hesitate to contact us and follow us on Facebook &amp; Whatsapp.</string>
     <string name="feedback_tell_us_contact_type_title">Contacts:</string>
-    <string name="dialog_fivestars_content_text">Enjoying LEO Privacy? 5-Star ratings from you to help us provide better services!</string>
+    <string name="dialog_fivestars_content_text">Enjoying LEO Privacy? Please take a moment to rate us in Google Play Store, thanks for your support!</string>
     <string name="elect_empty_content">Sorry, the battery information is temporarily unavailable </string>
     <string name="swifty_item_btn">Enable</string>
     <string name="grade_item_title">Like us?</string>
@@ -689,7 +689,7 @@
     <string name="set_passwd">Enter a 4 digit passcode</string>
     <string name="digital_passwd_function_hint">Enter a 4 digit passcode</string>
     <string name="feedback">Feedback</string>
-    <string name="grade">Rate us 5 stars</string>
+    <string name="grade">I Love It!</string>
     <string name="app_setting_about">About us</string>
     <string name="forbid_uninstall">Advanced Protection</string>
     <string name="change_lock_time">Change Auto-Lock Time</string>

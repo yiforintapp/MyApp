@@ -86,7 +86,7 @@
 
     <string name="app_setting_update">проверить обновление</string>
     <string name="feedback">мнения абонента</string>
-    <string name="grade">оценить маркета Google</string>
+    <string name="grade">Нравится</string>
     <string name="app_setting_about">в отношении</string>
     <string name="forbid_uninstall">предотвращать удаление</string>
     <string name="auto_lock">автоблокировка при блокировании экрана</string>
@@ -428,7 +428,7 @@
 
     <!-- version 2.4 start -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty наиб.попул. инстр.на Google рынке,касание,ярлык,люб. прил. сообщ. под рукой.</string>
-    <string name="grade_tip_feedback">Проблемы</string>
+    <string name="grade_tip_feedback">Дать совет</string>
     <string name="quick_first_tip_dialog_left_bt">позже</string>
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -753,7 +753,7 @@
     <string name="toast_getscore_text">Поздравляем! Ваши баллы увеличились</string>
     <string name="feedback_tell_us_content">Если у вас есть другие вопросы или потребности, пожалуйста, не стесняйтесь обращаться к нам! Наши группы на facebook , WhatsApp поддерживают он-лайн в любое время!</string>
     <string name="feedback_tell_us_contact_type_title">Контакты</string>
-    <string name="dialog_fivestars_content_text">Наслаждайтесь LEO Privacy?Пожалуйста, дайте нам 5 звезд сейчас!</string>
+    <string name="dialog_fivestars_content_text">Нравится LEO Privacy?Пожалуйста,оцените нас в Google Play магазине,спасибо за вашу поддержку.</string>
     <string name="elect_empty_content">К сожалению, информация о батареи пока не была получена</string>
     <string name="swifty_item_btn">Выполнять запуск</string>
     <string name="grade_item_title">Вам нравится LEO Privacy?</string>

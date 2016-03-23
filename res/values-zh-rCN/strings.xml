@@ -767,7 +767,7 @@
     <string name="toast_getscore_text">恭喜您！您的分数增加啦</string>
     <string name="feedback_tell_us_content">如果您有其他的问题或需要，欢迎随时联系我们！我们的facebook、whatsapp群组也随时在线哦！</string>
     <string name="feedback_tell_us_contact_type_title">联系方式</string>
-    <string name="dialog_fivestars_content_text">觉得还不错？请给我们5星吧！</string>
+    <string name="dialog_fivestars_content_text">喜欢隐私卫士吗？</string>
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
     <string name="elect_empty_content">抱歉，暂未获取到电池信息</string>
     <string name="swifty_item_btn">去开启</string>
