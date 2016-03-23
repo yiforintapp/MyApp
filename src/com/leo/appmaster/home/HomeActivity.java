@@ -1257,12 +1257,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mDrawerLayout.closeDrawer(Gravity.START);
         }
         try {
-            if (DeviceReceiver.isActive(this)) {
-                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiver.getComponentName(this));
-            }
-            if (DeviceReceiverNewOne .isActive(this)) {
-                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiverNewOne.getComponentName(this));
-            }
+//            if (DeviceReceiver.isActive(this)) {
+//                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiver.getComponentName(this));
+//            }
+//            if (DeviceReceiverNewOne .isActive(this)) {
+//                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiverNewOne.getComponentName(this));
+//            }
             Uri uri = Uri.fromParts("package", this.getPackageName(), null);
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_DELETE);
