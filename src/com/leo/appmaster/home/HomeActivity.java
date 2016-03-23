@@ -151,6 +151,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mAppLockSuccess;
     private boolean mPicHideSuccess;
     private boolean mVidHideSuccess;
+    private boolean mNeedDialogShow = true;
 
 
     private boolean mHidePicFinish = true;
@@ -316,6 +317,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mAppLockSuccess = false;
         mPicHideSuccess = false;
         mVidHideSuccess = false;
+        mNeedDialogShow = true;
     }
 
     public void onEventMainThread(AppUnlockEvent event) {
@@ -836,8 +838,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
-        judgeShowGradeTip();
         showGradeDialog();
+        judgeShowGradeTip();
         /* 分析是否需要升级红点显示 */
         if (SDKWrapper.isUpdateAvailable()) {
             mToolbar.showMenuRedTip(true);
@@ -898,7 +900,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @SuppressWarnings("deprecation")
     private void judgeShowGradeTip() {
-        if (!mAppLockSuccess && !mPicHideSuccess && !mVidHideSuccess) {
+        if (mNeedDialogShow) {
             AppMasterPreference pref = AppMasterPreference.getInstance(this);
             ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
             ActivityManager.RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
@@ -1626,6 +1628,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent.putExtra("fromWhere", "app");
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "lock_rank");
+                    mNeedDialogShow = false;
                     startActivity(intent);
                 }
             }
@@ -1640,6 +1643,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent.putExtra("fromWhere", "picture");
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "hidepic_rank");
+                    mNeedDialogShow = false;
                     startActivity(intent);
                 }
             }
@@ -1654,6 +1658,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     intent.putExtra("fromWhere", "video");
                     mPt.putLong(PrefConst.STORE_GRADE_TIME, System.currentTimeMillis());
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "GP_rank", "hidevid_rank");
+                    mNeedDialogShow = false;
                     startActivity(intent);
                 }
             }
