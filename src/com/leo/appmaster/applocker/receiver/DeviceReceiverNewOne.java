@@ -46,7 +46,7 @@ public class DeviceReceiverNewOne extends DeviceAdminReceiver {
 	private FrameLayout mFlRoot = null;
 	private WindowManager mWm = null;
 
-	public final static long NORMAL_TIME = 1500; // 默认打开入侵者防护界面时间
+	public final static long NORMAL_TIME = 1200; // 默认打开入侵者防护界面时间
 	public final static long LONG_TIME = 3000; // 增长打开入侵者防护界面时间
 
 	@Override
