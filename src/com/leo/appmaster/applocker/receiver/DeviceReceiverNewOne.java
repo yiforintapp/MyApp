@@ -107,11 +107,11 @@ public class DeviceReceiverNewOne extends DeviceAdminReceiver {
 		}
 
 
-		LeoLog.d("poha_admin", "IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = " + IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock);
+		LeoLog.d("poha_admin", "IntrudeSecurityManager.sHasTakenAtLock = " + IntrudeSecurityManager.sHasTakenAtLock);
 		LeoLog.d("poha_admin", "isOpen = " + isOpen);
 		LeoLog.d("poha_admin", "finalJudgeTimes = " + finalJudgeTimes);
 
-		if (!IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && isOpen && finalJudgeTimes >= mISManager.getTimesForTakePhoto() && mISManager.getIsIntruderSecurityAvailable()) {
+		if (!IntrudeSecurityManager.sHasTakenAtLock && isOpen && finalJudgeTimes >= mISManager.getTimesForTakePhoto() && mISManager.getIsIntruderSecurityAvailable()) {
 			try {
 				LeoLog.d("poha_admin", "to take pic");
 				final Context ctx = AppMasterApplication.getInstance();
@@ -136,9 +136,9 @@ public class DeviceReceiverNewOne extends DeviceAdminReceiver {
 						cfp.takePicture(new Camera.PictureCallback() {
 							@Override
 							public void onPictureTaken(final byte[] data, Camera camera) {
-								IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
-								IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved = false;
-								IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = true;
+								IntrudeSecurityManager.sHasShowedWhenUnlock = false;
+								IntrudeSecurityManager.sHasPicSaved = false;
+								IntrudeSecurityManager.sHasTakenAtLock = true;
 								ThreadManager.executeOnAsyncThread(new Runnable() {
 									@Override
 									public void run() {
@@ -183,11 +183,11 @@ public class DeviceReceiverNewOne extends DeviceAdminReceiver {
 										mISManager.insertInfo(info);
 										mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
 										PreferenceTable.getInstance().putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
-										IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved = true;
+										IntrudeSecurityManager.sHasPicSaved = true;
 
 										//这里判断的第二个参数实际不用考虑其意思，因为这个参数只有在经过解开系统锁后才会重置为0,所以可以用来判断是否已经经过系统解锁阶段
 										//只有已经经过系统解锁，此处的跳转抓拍界面的操作才有可能需要执行
-										if (!IntrudeSecurityManager.sHasPicShowedWhenUserPresent && IntrudeSecurityManager.sFailTimesAtSystLock == 0) {
+										if (!IntrudeSecurityManager.sHasShowedWhenUnlock && IntrudeSecurityManager.sFailTimesAtSystLock == 0) {
 											final Intent intent = new Intent(AppMasterApplication.getInstance(), IntruderCatchedActivity.class);
 											intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 											intent.putExtra("pkgname", "from_systemlock");
@@ -195,23 +195,20 @@ public class DeviceReceiverNewOne extends DeviceAdminReceiver {
 												mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 											}
 											long delayTime = NORMAL_TIME;
-											if (IntrudeSecurityManager.sEnterBrowser) {
-												delayTime = LONG_TIME;
-											}
 											ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 												@Override
 												public void run() {
 													mLockManager.filterPackage(context.getPackageName(), 1000);
 													context.startActivity(intent);
 													IntrudeSecurityManager.sEnterBrowser = false;
-													LeoLog.d("poha_admin", "set sHasTakenWhenUnlockSystemLock false 1");
-													IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock = false;
+													LeoLog.d("poha_admin", "set sHasTakenAtLock false 1");
+													IntrudeSecurityManager.sHasTakenAtLock = false;
 												}
 											}, delayTime);
 											LeoLog.i("delayTime", " 00 " + delayTime);
 //											context.startActivity(intent);
 										} else {
-											IntrudeSecurityManager.sHasPicShowedWhenUserPresent = false;
+											IntrudeSecurityManager.sHasShowedWhenUnlock = false;
 										}
 									}
 								});
