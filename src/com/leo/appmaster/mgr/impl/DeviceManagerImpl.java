@@ -129,11 +129,25 @@ public class DeviceManagerImpl extends DeviceManager {
             switch (wifiState) {
                 case WifiManager.WIFI_STATE_ENABLING:
                     LeoLog.d(TAG, "WIFI_STATE_ENABLING");
+
+                    if (unlockOpenWifiDone) {
+                        Toast.makeText(mContext, "ENABLING + unlockOpenWifiDone", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext, "ENABLING + !!!unlockOpenWifiDone", Toast.LENGTH_SHORT).show();
+                    }
+
                     isEnableIng = true;
                     readyShowLock(WIFI_TURN_ON);
                     break;
                 case WifiManager.WIFI_STATE_ENABLED:
                     LeoLog.d(TAG, "WIFI_STATE_ENABLED");
+
+                    if (unlockOpenWifiDone) {
+                        Toast.makeText(mContext, "ENABLED + unlockOpenWifiDone", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext, "ENABLED + !!!unlockOpenWifiDone", Toast.LENGTH_SHORT).show();
+                    }
+
 
                     //fix bug , some will not go ENABLING
                     if (!isEnableIng) {
@@ -160,9 +174,7 @@ public class DeviceManagerImpl extends DeviceManager {
         LockMode mode = mLockManager.getCurLockMode();
         switch (type) {
             case WIFI_TURN_ON:
-
                 long show = System.currentTimeMillis();
-
                 if (mWifiSwitch.isLockNow(mode) && !unlockOpenWifiDone
                         && (show - mInitTime > RESTART_SHOW)) {
                     //show LockScreen
