@@ -18,6 +18,10 @@ import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
+import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.UserPresentEvent;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -46,9 +50,13 @@ private LockManager mLockManager;
     public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_USER_PRESENT.equals(action)) {
+
+            LeoEventBus.getDefaultBus().post(new UserPresentEvent(EventId.EVENT_USER_PRESENT_ID, "user_present_or_boost"));
+
             if (mLockManager == null) {
                 mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             }
+
 //            mLockManager.filterPackage(context.getPackageName(),1000);
             if (IntrudeSecurityManager.sHasTakenWhenUnlockSystemLock && IntrudeSecurityManager.sHasPicTakenAtSystemLockSaved) {
                 IntrudeSecurityManager.sHasPicShowedWhenUserPresent = true;

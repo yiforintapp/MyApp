@@ -51,4 +51,6 @@ public interface EventId {
 
     /* 3.3 电池状态信息 */
     public static final int EVENT_BATTERY_CHANGE_ID = 1098;
+
+    public static final int EVENT_USER_PRESENT_ID = 1099;
 }

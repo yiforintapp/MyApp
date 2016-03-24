@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -45,6 +46,10 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
+import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.UserPresentEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageGridActivity;
@@ -140,6 +145,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 	private static int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
     private Dialog mMultiUsesDialog;
     private boolean mShouldLoadAd = false;
+    private boolean mIsUserPresent = false;
 
     private LinearLayout mFiveStarLayout;
     // 3.2 add advertise
@@ -158,7 +164,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         init();
 
 		mAdSource = AppMasterPreference.getInstance(this).getInvaderAdConfig();
-
+        LeoEventBus.getDefaultBus().register(this);
 //        Intent i = new Intent(this, GradeTipActivity.class);
 //        startActivity(i);
     }
@@ -197,15 +203,30 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        if (getPackageName().equals(mPkgName) && mNeedIntoHomeWhenFinish) {
+        if (mIsUserPresent) {
+            try {
+                Intent intent=new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            } catch (Exception e) {
+                finish();
+            }
+        } else if (getPackageName().equals(mPkgName) && mNeedIntoHomeWhenFinish) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             mLockManager.filterPackage(mPkgName, 1000);
             startActivity(intent);
-        } else if ("from_systemlock".equals(mPkgName)) {
-            finish();
-        } else {
+        }
+//        else if (mIsUserPresent) {
+//            Intent intent=new Intent(Intent.ACTION_MAIN);
+//            intent.addCategory(Intent.CATEGORY_HOME);
+//            startActivity(intent);
+//        }
+//        else if ("from_systemlock".equals(mPkgName)) {
+//            finish();
+//        }
+        else {
             mLockManager.filterPackage(mPkgName, 2000);
         }
         finish();
@@ -894,6 +915,12 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         }
     }
 
+    public void onEventMainThread(UserPresentEvent event) {
+        if (event.getEventId() == EventId.EVENT_USER_PRESENT_ID) {
+            mIsUserPresent = true;
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -903,6 +930,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mMultiUsesDialog != null) {
             mMultiUsesDialog.dismiss();
         }
+        LeoEventBus.getDefaultBus().unregister(this);
     }
 
     private void initSwiftyLayout() {
