@@ -855,6 +855,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     }
 
     private void startGallery(int position) {
+        mLockManager.filterPackage(getPackageName(),1000);
         Intent intent = new Intent(IntruderCatchedActivity.this, IntruderGalleryActivity.class);
         intent.putExtra("current_position", position);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
@@ -1083,6 +1084,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 Intent intent2 = new Intent(IntruderCatchedActivity.this,IntruderSettingActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent2.putExtra("isPgInner",false);
+                mLockManager.filterPackage(getPackageName(),1000);
                 startActivity(intent2);
                 break;
             case R.id.rv_change_times:
