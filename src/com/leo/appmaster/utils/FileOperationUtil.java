@@ -1001,16 +1001,8 @@ public class FileOperationUtil {
                 boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
                 FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
-
-                //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
-                int result = deletePicFromDatebase(fromFile);
                 String resultVa = null;
-                if (result < 1) {
-                    resultVa = HIDE_PIC_COPY_SUCESS;
-                } else {
-                    resultVa = rename;
-                }
-
+                resultVa = rename;
                 //设置隐藏方式
                 setHideTpye(COPY_HIDE);
 
@@ -1114,17 +1106,8 @@ public class FileOperationUtil {
                 if (ret) {
                     FileOperationUtil.saveFileMediaEntry(rename, ctx);
                     FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
-
-                    //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
-                    int result = deletePicFromDatebase(fromFile);
-                    File fileDe = new File(fromFile);
                     String resultVa = null;
-                    if (fileDe.exists() && result < 1) {
-                        resultVa = HIDE_PIC_COPY_SUCESS;
-                    } else {
-                        resultVa = rename;
-                    }
-
+                    resultVa = rename;
                     // 复制取消隐藏成功
                     return resultVa;
                 } else {
