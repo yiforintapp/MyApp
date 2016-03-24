@@ -1495,10 +1495,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            boolean cacheEmpty = ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).isADCacheEmpty(mAdSource);
+                            /*boolean cacheEmpty = ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).isADCacheEmpty(mAdSource);
                             if (cacheEmpty) {
                                 loadAD(true);
-                            }
+                            }*/
+                            loadAD(true);
                         }
                     }, 500);
                     if (mAdapterCycle.getViews() == null) {
