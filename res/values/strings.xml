@@ -988,7 +988,7 @@
     <string name="pri_pro_lost_summary">Enable Anti Theft</string>
     <string name="pri_pro_intruder_summary">Enable Break-in Alert to capture snoopers</string>
     <string name="pri_pro_summary_confirm">All privacy protected!</string>
-    <string name="scan_notify">Privacy status was declined</string>
+    <string name="scan_notify">Privacy status declined</string>
     <string name="scan_notify_label">LEO Privacy is monitoring your privacy status at the background,keeping you informed of changes</string>
     <string name="phone_security_no_add_number_bt_text">Add a number</string>
     <string name="phone_security_number_sim_tip">Tips: SMS will be sent to the Family No. if SIM card is changed</string>
