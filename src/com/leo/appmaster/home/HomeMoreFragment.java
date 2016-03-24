@@ -221,8 +221,8 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
         boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
         boolean intruderReddot = preferenceTable.getBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED, false);
-        if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver ||!intruderReddot) {
-
+//        if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver ||!intruderReddot) {
+        if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver) {
             if (!pulledEver) {
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_rp");
             } else {

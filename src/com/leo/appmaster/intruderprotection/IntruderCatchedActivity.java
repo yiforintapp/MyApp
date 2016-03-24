@@ -228,7 +228,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this)) {
             mISManager.setSystIntruderProtectionSwitch(true);
-            changeToGuideFinishedLayout();
+//            changeToGuideFinishedLayout();
             openAdvanceProtectDialogHandler();
         }
     }
@@ -975,36 +975,36 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLlGuide.setVisibility(View.GONE);
             mLlGuideFinished.setVisibility(View.GONE);
         } else {
-            mLlGuide.setVisibility(View.VISIBLE);
+            mLlGuide.setVisibility(View.GONE);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_cap_scr_sh");
-            mLlChangeTimes.setVisibility(View.GONE);
+            mLlChangeTimes.setVisibility(View.VISIBLE);
             mLlGuideFinished.setVisibility(View.GONE);
         }
     }
 
-    private void changeToGuideFinishedLayout() {
-        SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1, "intruder", "intruder_cap_scr_on");
-        if (mISManager.getIsIntruderSecurityAvailable()) {
-            mISManager.setSystIntruderProtectionSwitch(true);
-            mLlGuide.setVisibility(View.GONE);
-            mLlChangeTimes.setVisibility(View.GONE);
-            mLlGuideFinished.setVisibility(View.VISIBLE);
-            TranslateAnimation tla = new TranslateAnimation(mRlTipContent.getWidth(),0,0,0);
-            mLlGuideFinished.setAnimation(tla);
-            tla.setDuration(500);
-            mLlGuideFinished.startAnimation(tla);
-        } else {
-            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(IntruderCatchedActivity.this, FeedbackActivity.class);
-                    intent.putExtra("isFromIntruderProtectionForbiden", true);
-                    startActivity(intent);
-                    mMultiUsesDialog.dismiss();
-                }
-            });
-        }
-    }
+//    private void changeToGuideFinishedLayout() {
+//        SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1, "intruder", "intruder_cap_scr_on");
+//        if (mISManager.getIsIntruderSecurityAvailable()) {
+//            mISManager.setSystIntruderProtectionSwitch(true);
+//            mLlGuide.setVisibility(View.GONE);
+//            mLlChangeTimes.setVisibility(View.GONE);
+//            mLlGuideFinished.setVisibility(View.VISIBLE);
+//            TranslateAnimation tla = new TranslateAnimation(mRlTipContent.getWidth(),0,0,0);
+//            mLlGuideFinished.setAnimation(tla);
+//            tla.setDuration(500);
+//            mLlGuideFinished.startAnimation(tla);
+//        } else {
+//            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    Intent intent = new Intent(IntruderCatchedActivity.this, FeedbackActivity.class);
+//                    intent.putExtra("isFromIntruderProtectionForbiden", true);
+//                    startActivity(intent);
+//                    mMultiUsesDialog.dismiss();
+//                }
+//            });
+//        }
+//    }
 
 //    protected void showForbitDialog() {
 //        if (mOpenForbinDialog == null) {
@@ -1063,7 +1063,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             case R.id.rv_open:
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,"intruder", "intruder_cap_scr_cli");
                 if (DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this)) {
-                    changeToGuideFinishedLayout();
+//                    changeToGuideFinishedLayout();
                 } else {
                     mMultiUsesDialog = ShowAboutIntruderDialogHelper.showAskOpenDeviceAdminDialog(IntruderCatchedActivity.this, new DialogInterface.OnClickListener() {
                         @Override

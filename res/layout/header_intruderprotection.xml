@@ -58,7 +58,8 @@
         android:id="@+id/rl_intrudercatch_tip"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_below="@id/top_area">
+        android:layout_below="@id/top_area"
+        android:visibility="gone">
         -
 
         <LinearLayout

@@ -691,7 +691,7 @@ public class IntruderprotectionActivity extends BaseActivity {
 
     private void updateTipStatus() {
         if (!mImanager.getSystIntruderProtecionSwitch()) {
-            mRlTipContent.setVisibility(View.VISIBLE);
+            mRlTipContent.setVisibility(View.GONE);
 
             SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_screen_sh");
 
@@ -730,7 +730,7 @@ public class IntruderprotectionActivity extends BaseActivity {
                 }
             });
         } else {
-            if (mRlTipContent.getVisibility() == View.VISIBLE) {
+            if (mRlTipContent.getVisibility() == View.GONE) {
                 mLlGuideFinished.setVisibility(View.VISIBLE);
                 mLlGuide.setVisibility(View.INVISIBLE);
             }
@@ -812,7 +812,7 @@ public class IntruderprotectionActivity extends BaseActivity {
             SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1, "intruder", "intruder_screen_on");
 
             mImanager.setSystIntruderProtectionSwitch(true);
-            mRlTipContent.setVisibility(View.VISIBLE);
+            mRlTipContent.setVisibility(View.GONE);
             mLlGuide.setVisibility(View.INVISIBLE);
             mLlGuideFinished.setVisibility(View.VISIBLE);
             TranslateAnimation tla = new TranslateAnimation(mRlTipContent.getWidth(),0,0,0);

@@ -288,7 +288,8 @@ public class HomeMoreAdapter extends BaseAdapter {
             if (!consumed) {
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "intruder_rp");
             }
-            holder.readTip.setVisibility(consumed ? View.GONE : View.VISIBLE);
+            holder.readTip.setVisibility(consumed ? View.GONE : View.GONE);
+//            holder.readTip.setVisibility(consumed ? View.GONE : View.VISIBLE);
         } else {
             holder.readTip.setVisibility(View.GONE);
         }
