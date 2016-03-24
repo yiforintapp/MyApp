@@ -671,7 +671,27 @@ public class FileOperationUtil {
 
         v.put(MediaStore.Images.Media.DATA, imagePath);
         ContentResolver c = context.getContentResolver();
-        return c.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v);
+
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        Uri result = null;
+        String params[] = new String[]{
+                imagePath
+        };
+
+        try {
+            int rows = c.update(uri, v, Images.Media.DATA + " = ?", params);
+            if (rows > 0) {
+                LeoLog.d(TAG, "saveFileMediaEntry, update successful.");
+                return null;
+            }
+        } catch (Exception e) {
+        }
+        try {
+            result = c.insert(uri, v);
+        } catch (Exception e) {
+        }
+
+        return result;
     }
 
     /*
