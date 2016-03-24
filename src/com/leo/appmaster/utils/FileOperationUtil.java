@@ -1083,25 +1083,33 @@ public class FileOperationUtil {
             }
 //            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
-                String rename = newPath.replace(Constants.CRYPTO_SUFFIX, "");
-//                LeoLog.d("testRename", "rename:" + rename);
-//                File imageFile = new File(newPath);
-//                boolean ret = imageFile.renameTo(new File(rename));
-                FileOperationUtil.saveFileMediaEntry(rename, ctx);
-                FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
 
-                //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
-                int result = deletePicFromDatebase(fromFile);
-                File fileDe = new File(fromFile);
-                String resultVa = null;
-                if (fileDe.exists() && result < 1) {
-                    resultVa = HIDE_PIC_COPY_SUCESS;
+                String rename = newPath.replace(Constants.CRYPTO_SUFFIX, "");
+
+                LeoLog.d("testRename", "rename:" + rename);
+                File imageFile = new File(newPath);
+                boolean ret = imageFile.renameTo(new File(rename));
+
+                if (ret) {
+                    FileOperationUtil.saveFileMediaEntry(rename, ctx);
+                    FileOperationUtil.deleteFileMediaEntry(newPath, ctx);
+
+                    //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
+                    int result = deletePicFromDatebase(fromFile);
+                    File fileDe = new File(fromFile);
+                    String resultVa = null;
+                    if (fileDe.exists() && result < 1) {
+                        resultVa = HIDE_PIC_COPY_SUCESS;
+                    } else {
+                        resultVa = rename;
+                    }
+
+                    // 复制取消隐藏成功
+                    return resultVa;
                 } else {
-                    resultVa = rename;
+                    return HIDE_PIC_COPY_RENAME_FAIL;
                 }
 
-                // 复制取消隐藏成功
-                return resultVa;
             } catch (Exception e) {
                 // 取消隐藏失败
                 return HIDE_PIC_COPY_RENAME_FAIL;
