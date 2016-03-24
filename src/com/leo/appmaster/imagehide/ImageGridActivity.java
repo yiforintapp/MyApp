@@ -1083,7 +1083,10 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                     mImageAdapter.notifyDataSetChanged();
                 }
             } else {
-                finish();
+                int hideType = FileOperationUtil.getHideTpye();
+                if (hideType != FileOperationUtil.COPY_HIDE) {
+                    finish();
+                }
             }
         }
         mIsDeletSucFromDatebase = true;
