@@ -983,7 +983,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (count > 0) {
             mNewAppImg.setImageResource(R.drawable.ic_scan_error);
             String text;
-            if (switchList.size() > 0) {
+            if (switchList != null && switchList.size() > 0) {
                 text = mActivity.getResources().getString(R.string.scan_app_title_switch, count);
             } else {
                 text = mActivity.getResources().getString(R.string.scan_app_title, count);
