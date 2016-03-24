@@ -1004,9 +1004,8 @@ public class FileOperationUtil {
 
                 //PG3.5:通过删除数据库该图片记录，来触发删除本地不能操作的sdk卡里的图片
                 int result = deletePicFromDatebase(fromFile);
-                File fileDe = new File(fromFile);
                 String resultVa = null;
-                if (fileDe.exists() && result < 1) {
+                if (result < 1) {
                     resultVa = HIDE_PIC_COPY_SUCESS;
                 } else {
                     resultVa = rename;
