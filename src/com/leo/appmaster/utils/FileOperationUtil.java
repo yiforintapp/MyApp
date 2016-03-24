@@ -921,13 +921,13 @@ public class FileOperationUtil {
     @SuppressWarnings("deprecation")
     public static String hideImageFileCopy(Context ctx, String fromFile, String newName) {
         String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
-        try {
-            if (str.length() >= str.lastIndexOf("/") + 1) {
-                String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
-            }
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
+//        try {
+//            if (str.length() >= str.lastIndexOf("/") + 1) {
+//                String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
+//            }
+//        } catch (Exception e1) {
+//            e1.printStackTrace();
+//        }
         String fileName = FileOperationUtil.getNameFromFilepath(fromFile);
         File file = new File(fromFile);
         String[] paths = getSdCardPaths(ctx);
