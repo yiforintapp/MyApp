@@ -642,7 +642,7 @@
     <string name="security_guide_tip_content">Bir alarm göndermek, verileri temizlemek, konumu bulmak ve Uygulamalar kilitlemek için başka bir telefonla telefonunuzu uzaktan kontrol edebilirsiniz</string>
     <string name="phone_security_tips">Doğru telefonunuzu bulun</string>
     <string name="security_guide_button_text">Etkinleştir</string>
-    <string name="phone_security_open">Hırsızlık karşıtı korumayı etkinleştir</string>
+    <string name="phone_security_open">hırsızlığa karşı etkinleştir</string>
     <string name="phone_security_add_number_title">Aile No.: </string>
     <string name="phone_security_add_number_button">Değiştir</string>
     <string name="phone_security_number_sim_tip">Not: SIM kart değiştirildiğinde Aile numarasına SMS gönderilecektir </string>
