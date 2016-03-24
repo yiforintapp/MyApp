@@ -287,11 +287,6 @@ public class BatteryManagerImpl extends BatteryManager {
             Message msg = Message.obtain();
             msg.obj = intent;
 
-            long delayTime = 200;
-            if (BuildProperties.isRedMiFourI()) {
-                delayTime = 1200;
-            }
-            LeoLog.e("BuildProperties", delayTime + "");
             if (!AppUtil.hasOtherScreenSaverInstalled(mContext)) {
                 mLockManager.filterPackage(mContext.getPackageName(), 2000);
                 mContext.startActivity(intent);
@@ -301,7 +296,7 @@ public class BatteryManagerImpl extends BatteryManager {
                         mLockManager.filterPackage(mContext.getPackageName(), 2000);
                         mContext.startActivity(intent);
                     }
-                }, delayTime);
+                }, 200);
             }
             TaskDetectService tds = TaskDetectService.getService();
             if (tds != null) {
