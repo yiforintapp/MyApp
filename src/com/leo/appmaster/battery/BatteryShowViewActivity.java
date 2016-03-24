@@ -27,6 +27,7 @@ import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
@@ -121,6 +122,12 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 //            tds.ignoreBatteryPage(true);
 //        }
 
+        if (BuildProperties.isSonyModel()) {
+            try {
+                win.getDecorView().setLayerType(ViewPager.LAYER_TYPE_SOFTWARE, null);
+            } catch (Throwable e) {
+            }
+        }
     }
 
     @Override

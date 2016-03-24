@@ -47,6 +47,7 @@ public class BuildProperties {
     public static final String HUAWEI_P8_API_LEVEL = "8";
     public static final String KEY_SAMSUNG_ROM_NAME = "ro.product.manufacturer";
     public static final String SAMSUNG_NAME = "samsung";
+    public static final String SONY_NAME = "sony";
     public static final String KEY_SAMSUNG_VERSINON_INCREMENTAL = "ro.build.version.incremental";
     public static final String SAMSUNG_INCREMENTAL = "I8552ZCAME1";
     private final Properties properties;
@@ -460,6 +461,16 @@ public class BuildProperties {
         String manufac = getSystemProperty(KEY_SAMSUNG_ROM_NAME);
         if (!TextUtils.isEmpty((CharSequence) (manufac))) {
             if (SAMSUNG_NAME.equals(manufac)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSonyModel() {
+        String manufac = getSystemProperty(KEY_SAMSUNG_ROM_NAME);
+        if (!TextUtils.isEmpty(manufac)) {
+            if (SONY_NAME.equalsIgnoreCase(manufac)) {
                 return true;
             }
         }
