@@ -326,6 +326,8 @@ public class PrefConst {
     public static final String KEY_GRADE_TIME = "grade_time";
     public static final String STORE_GRADE_TIME = "store_time";
 
+    public static final String KEY_GRADE_FB_ANOTHER = "grade_fb"; // 好评弹窗是否使用其他文案，默认否
+
     public static final String KEY_HAS_GRADE = "key_has_grade";
 
     public static final String KEY_PICTURE_GRADE_CONTENT = "key_picture_grade_content";

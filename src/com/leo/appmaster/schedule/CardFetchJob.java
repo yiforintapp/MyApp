@@ -54,6 +54,7 @@ public class CardFetchJob extends FetchScheduleJob {
             setAppGradeEmpty(preferenceTable);
             setPictureGradeEmpty(preferenceTable);
             setVideoGradeEmpty(preferenceTable);
+            setGradeFbAnotherEmpty(preferenceTable);
 
             return;
         }
@@ -300,6 +301,13 @@ public class CardFetchJob extends FetchScheduleJob {
                 setVideoGradeEmpty(preferenceTable);
             }
 
+            boolean isGradeFbAnotherNull = object.isNull(PrefConst.KEY_GRADE_FB_ANOTHER);
+            if (!isGradeFbAnotherNull) {
+                preferenceTable.putBoolean(PrefConst.KEY_GRADE_FB_ANOTHER, true);
+            } else {
+                setGradeFbAnotherEmpty(preferenceTable);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -425,6 +433,11 @@ public class CardFetchJob extends FetchScheduleJob {
     private void setVideoGradeEmpty(PreferenceTable preferenceTable) {
         preferenceTable.putString(PrefConst.KEY_VIDEO_GRADE_CONTENT, "");
         preferenceTable.putString(PrefConst.KEY_VIDEO_GRADE_URL, "");
+    }
+
+    /** 好评弹框反馈是否使用其他文案置空 */
+    private void setGradeFbAnotherEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putBoolean(PrefConst.KEY_GRADE_FB_ANOTHER, false);
     }
 
 }

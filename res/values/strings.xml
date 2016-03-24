@@ -300,6 +300,7 @@
     <!-- version 2.4 start -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty, the most popular tool on Google Play. One touch, shortcuts, favorite apps, messages are at hand.</string>
     <string name="grade_tip_feedback">Unsatisfied</string>
+    <string name="grade_tip_feedback_switch_on">Feedback</string>
     <string name="quick_first_tip_dialog_left_bt">Later</string>
     <!-- version 2.4 end -->
 

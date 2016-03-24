@@ -61,6 +61,11 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         if (!TextUtils.isEmpty(mContent)) {
             mText.setText(mContent);
         }
+        if(mPt.getBoolean(PrefConst.KEY_GRADE_FB_ANOTHER, false)) {
+            mFeedbackSure.setText(getResources().getString(R.string.grade_tip_feedback_switch_on));
+        } else {
+            mFeedbackSure.setText(getResources().getString(R.string.grade_tip_feedback));
+        }
      }
 
     @Override
