@@ -1170,12 +1170,14 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     intent.putExtras(bundle);
                     intent.putExtra("fromIntruderMore", true);
                     intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
+                    mLockManager.filterPackage(getPackageName(),1000);
                     startActivity(intent);
                     // IntruderCatchedActivity.this.finish();
                     LeoLog.i("catch_poha", "cc3 -cc2 :" + (System.currentTimeMillis() - cc2));
                 } catch (Throwable t) {
                     Intent intent = new Intent(IntruderCatchedActivity.this,
                             ImageHideMainActivity.class);
+                    mLockManager.filterPackage(getPackageName(),1000);
                     startActivity(intent);
                 }
                 break;
