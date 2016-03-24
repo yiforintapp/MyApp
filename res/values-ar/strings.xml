@@ -546,7 +546,7 @@
     <string name="feedback_email_guide">ايميل</string>
     <string name="feedback_category_guide">نوع السؤال</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swiftly، الاداة الأكثر شعبية بمتجر جوجل. بنقرة واحدة، تكون الاختصارات، التطبيقات المفضلة، الرسائل بين يديك.</string>
-    <string name="grade_tip_feedback">غير مسرور</string>
+    <string name="grade_tip_feedback">كره</string>
     <string name="quick_first_tip_dialog_left_bt">لاحقا</string>
 
     <!-- quick gesture -->
