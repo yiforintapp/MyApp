@@ -1151,7 +1151,10 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         memeryDialog.setTitle(title);
         memeryDialog.setText(content);
         memeryDialog.setBtnText(rightBtn);
-        memeryDialog.show();
+        if (!this.isFinishing()) {
+            memeryDialog.show();
+        }
     }
+
 
 }

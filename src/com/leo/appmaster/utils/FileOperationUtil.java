@@ -994,13 +994,13 @@ public class FileOperationUtil {
                     fosto.close();
                 }
             }
-            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
+//            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
                 File imageFile = new File(newPath);
                 String rename = newPath + Constants.CRYPTO_SUFFIX;
                 boolean ret = imageFile.renameTo(new File(rename));
                 FileOperationUtil.saveFileMediaEntry(rename, ctx);
-                FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
+//                FileOperationUtil.deleteImageMediaEntry(newPath, ctx);
                 String resultVa = null;
                 resultVa = rename;
                 //设置隐藏方式
