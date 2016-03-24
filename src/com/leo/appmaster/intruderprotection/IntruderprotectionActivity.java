@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -814,6 +815,10 @@ public class IntruderprotectionActivity extends BaseActivity {
             mRlTipContent.setVisibility(View.VISIBLE);
             mLlGuide.setVisibility(View.INVISIBLE);
             mLlGuideFinished.setVisibility(View.VISIBLE);
+            TranslateAnimation tla = new TranslateAnimation(mRlTipContent.getWidth(),0,0,0);
+            mLlGuideFinished.setAnimation(tla);
+            tla.setDuration(500);
+            mLlGuideFinished.startAnimation(tla);
         }
 //        else {
 //            showForbitDialog();

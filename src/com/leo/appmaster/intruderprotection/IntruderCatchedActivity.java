@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewStub;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -91,6 +92,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private ImageLoader mImageLoader;
     private String mPkgName;
     private ListView mLvMain;
+    private RelativeLayout mRlTipContent;
     private ArrayList<IntruderPhotoInfo> mSrcInfos;
     private ArrayList<IntruderPhotoInfo> mInfosSorted;
     private IntrudeSecurityManager mISManager;
@@ -336,6 +338,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
      * create时的初始化(不需要变化的UI)
      */
     private void init() {
+        mRlTipContent = (RelativeLayout) findViewById(R.id.rl_intrudercatch_tip);
         mLlGuide = (LinearLayout) findViewById(R.id.ll_guide_tip);
         mLlGuideFinished = (LinearLayout) findViewById(R.id.ll_guide_finished);
         mLlChangeTimes = (LinearLayout) findViewById(R.id.ll_change_times);
@@ -983,8 +986,12 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mISManager.getIsIntruderSecurityAvailable()) {
             mISManager.setSystIntruderProtectionSwitch(true);
             mLlGuide.setVisibility(View.GONE);
-            mLlGuideFinished.setVisibility(View.VISIBLE);
             mLlChangeTimes.setVisibility(View.GONE);
+            mLlGuideFinished.setVisibility(View.VISIBLE);
+            TranslateAnimation tla = new TranslateAnimation(mRlTipContent.getWidth(),0,0,0);
+            mLlGuideFinished.setAnimation(tla);
+            tla.setDuration(500);
+            mLlGuideFinished.startAnimation(tla);
         } else {
             mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
                 @Override
