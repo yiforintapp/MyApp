@@ -50,6 +50,7 @@ public class DeviceManagerImpl extends DeviceManager {
     private final static int BLUETOOTH_ENABLED = 4;
 
     private final static long DELAY_DISABL = 1000;
+    private final static long SHOW_WIFI_ENABLE = 2500;
 
     private LockManager mLockManager;
     private WifiLockSwitch mWifiSwitch;
@@ -120,6 +121,8 @@ public class DeviceManagerImpl extends DeviceManager {
 
     }
 
+    private long lastEnableTime = 0;
+
     @Override
     public void wifiChangeReceiver(Intent intent) {
         LeoLog.d(TAG, "wifi onReceive");
@@ -130,24 +133,17 @@ public class DeviceManagerImpl extends DeviceManager {
                 case WifiManager.WIFI_STATE_ENABLING:
                     LeoLog.d(TAG, "WIFI_STATE_ENABLING");
 
-                    if (unlockOpenWifiDone) {
-                        Toast.makeText(mContext, "ENABLING + unlockOpenWifiDone", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(mContext, "ENABLING + !!!unlockOpenWifiDone", Toast.LENGTH_SHORT).show();
-                    }
-
                     isEnableIng = true;
                     readyShowLock(WIFI_TURN_ON);
                     break;
                 case WifiManager.WIFI_STATE_ENABLED:
                     LeoLog.d(TAG, "WIFI_STATE_ENABLED");
 
-                    if (unlockOpenWifiDone) {
-                        Toast.makeText(mContext, "ENABLED + unlockOpenWifiDone", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(mContext, "ENABLED + !!!unlockOpenWifiDone", Toast.LENGTH_SHORT).show();
+                    //in case of enter ENABLED twice
+                    long now = System.currentTimeMillis();
+                    if (now - lastEnableTime < SHOW_WIFI_ENABLE) {
+                        return;
                     }
-
 
                     //fix bug , some will not go ENABLING
                     if (!isEnableIng) {
@@ -156,7 +152,7 @@ public class DeviceManagerImpl extends DeviceManager {
 
                     isEnableIng = false;
                     unlockOpenWifiDone = false;
-
+                    lastEnableTime = System.currentTimeMillis();
                     break;
                 case WifiManager.WIFI_STATE_DISABLING:
                     LeoLog.d(TAG, "WIFI_STATE_DISABLING");
