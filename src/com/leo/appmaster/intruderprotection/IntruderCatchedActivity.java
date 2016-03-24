@@ -4,7 +4,6 @@ import android.animation.LayoutTransition;
 import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -202,6 +201,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+            mLockManager.filterPackage(mPkgName, 1000);
             startActivity(intent);
         } else if ("from_systemlock".equals(mPkgName)) {
             finish();
@@ -406,7 +406,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 					SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
 							"ad_cli", "adv_cnts_capture");
 					LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-					lm.filterSelfOneMinites();
+					lm.filterPackage(getPackageName(), 1000);
 				}
 			});
             /*MobvistaEngine.getInstance(this).loadMobvista(INTRUDER_AD_ID, new MobvistaEngine.MobvistaListener() {
@@ -1094,7 +1094,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             case R.id.ll_fivestars_layout:
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_capture_rank");
-                mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(getPackageName(), 1000);
                 mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
                 Utilities.goFiveStar(IntruderCatchedActivity.this, false, false);
                 break;
@@ -1154,7 +1154,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             case R.id.share_layout:  // 分享
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "share_cnts");
-                mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(getPackageName(), 1000);
                 PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
                 boolean isContentEmpty = TextUtils.isEmpty(
                         sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT));
@@ -1184,7 +1184,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
                 break;
             case R.id.item_btn_rv:  // 点击swifty卡片
-                mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(getPackageName(), 1000);
                 PreferenceTable preferenceTable = PreferenceTable.getInstance();
                 Utilities.selectType(preferenceTable, PrefConst.KEY_INTRUDER_SWIFTY_TYPE,
                         PrefConst.KEY_INTRUDER_SWIFTY_GP_URL, PrefConst.KEY_INTRUDER_SWIFTY_URL,

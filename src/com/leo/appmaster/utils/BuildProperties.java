@@ -1,21 +1,6 @@
 
 package com.leo.appmaster.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.sdk.SDKWrapper;
-
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
@@ -26,6 +11,20 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.view.WindowManager;
+
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * 判断小米系统工具类
@@ -509,6 +508,15 @@ public class BuildProperties {
         String phone = Build.DEVICE;
         LeoLog.d(TAG, "brand:" + phone);
         if ("M35c".equals(phone)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isRedMiFourI(){
+        String phone = Build.MODEL;
+        LeoLog.d(TAG, "MODEL:" + phone);
+        if ("Mi 4i".equals(phone)) {
             return true;
         }
         return false;
