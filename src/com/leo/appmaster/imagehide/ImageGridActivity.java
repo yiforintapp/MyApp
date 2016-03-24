@@ -999,7 +999,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     }
 
     private void onPostDo(String isSuccess) {
-        LeoLog.d("testnewLoad", "onPostDo isSuccess:" + isSuccess);
+        LeoLog.d("testnewLoad", "onPostDo isSuccess:" + isSuccess + mActicityMode);
         mClickList.clear();
         if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(isSuccess)
                 && !mIsDeletSucFromDatebase) {
@@ -1037,7 +1037,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
                         width, height);
             }
-        } else if (FileOperationUtil.HIDE_PIC_SUCESS.equals(isSuccess)) {
+        } else if (FileOperationUtil.HIDE_PIC_SUCESS.equals(isSuccess) && mActicityMode == SELECT_HIDE_MODE) {
             if (!ImageHideMainActivity.mIsFromConfirm) {
                 LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_PIC, true));
             }
