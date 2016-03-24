@@ -269,6 +269,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     @Override
     public String onHidePic(String mPicPath, String mSuffix) {
         //mSuffix , 暂时用不上
+
         long totalSize = new File(mPicPath).length();
 
         String newFileName = FileOperationUtil.getNameFromFilepath(mPicPath);

@@ -878,6 +878,10 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         String isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
         try {
+
+            //恢复隐藏方式默认值
+            FileOperationUtil.setHideTpye(FileOperationUtil.DEF_HIDE);
+
             if (mClickList != null && mClickList.size() > 0) {
                 ArrayList<PhotoItem> list = (ArrayList<PhotoItem>) mClickList.clone();
                 Iterator<PhotoItem> iterator = list.iterator();
@@ -891,7 +895,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             break;
                         long cu1 = SystemClock.elapsedRealtime();
                         if (!TextUtils.isEmpty(item.getPath())) {
-                            LeoLog.d("testHidePic", "size:"+new File(item.getPath()).length() + ",path : " + item.getPath());
+                            LeoLog.d("testHidePic", "size:" + new File(item.getPath()).length() + ",path : " + item.getPath());
                         }
                         String newPath = ((PrivacyDataManager) MgrContext.
                                 getManager(MgrContext.MGR_PRIVACY_DATA)).
@@ -933,6 +937,34 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             mAllListPath.remove(photoItem.getPath());
                         }
                     }
+
+                    //pg3.5：对删除数据库触发删除文件的不能成功的系统，弹框处理
+                    final String flag = isSuccess;
+                    final PhotoItem photoItem = list.get(0);
+                    int hideType = FileOperationUtil.getHideTpye();
+                    final boolean isCopyType = (hideType == FileOperationUtil.COPY_HIDE);
+                    ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                        @Override
+                        public void run() {
+                            boolean isNoMemery = (flag != FileOperationUtil.HIDE_PIC_NO_MEMERY);
+                            if (isNoMemery && isCopyType) {
+                                String path = photoItem.getPath();
+                                File file = new File(path);
+                                boolean isExsit = file.exists();
+                                if (isExsit) {
+                                    LeoLog.e("testHidePic", "file exsit.");
+                                    ThreadManager.executeOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            onPostDo(FileOperationUtil.HIDE_PIC_COPY_SUCESS);
+                                        }
+                                    });
+                                } else {
+                                    LeoLog.e("testHidePic", "file is empy");
+                                }
+                            }
+                        }
+                    }, 1000);
 
                 } else {
                     while (iterator.hasNext()) {
@@ -1001,8 +1033,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     private void onPostDo(String isSuccess) {
         LeoLog.d("testnewLoad", "onPostDo isSuccess:" + isSuccess + mActicityMode);
         mClickList.clear();
-        if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(isSuccess)
-                && !mIsDeletSucFromDatebase) {
+        if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(isSuccess)) {
             String title = getString(R.string.no_image_hide_dialog_title);
             String content = getString(R.string.no_image_hide_dialog_content);
             String rightBtn = getString(R.string.no_image_hide_dialog_button);

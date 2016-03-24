@@ -63,6 +63,23 @@ public class FileOperationUtil {
     //需要隐藏的图片uri为空时
     public static final String HIDE_PIC_PATH_EMPTY = "2";
 
+    //默认隐藏方式
+    public static final int DEF_HIDE = -1;
+    //重命名的方式隐藏
+    public static final int RENAME_HIDE = 0;
+    //复制的方式隐藏
+    public static final int COPY_HIDE = 1;
+
+    private static int mHideTpye = -1;
+
+    public static int getHideTpye() {
+        return mHideTpye;
+    }
+
+    public static void setHideTpye(int hideTpye) {
+        FileOperationUtil.mHideTpye = hideTpye;
+    }
+
     public static final String[] STORE_IMAGES = {
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATA,
@@ -341,6 +358,10 @@ public class FileOperationUtil {
                     return returnValue;
                 } else {
                     LeoLog.d("testHidePic", "hide type:rename");
+
+                    //设置隐藏方式
+                    setHideTpye(RENAME_HIDE);
+
                     return newPath;
                 }
 
@@ -991,6 +1012,9 @@ public class FileOperationUtil {
                     resultVa = rename;
                 }
 
+                //设置隐藏方式
+                setHideTpye(COPY_HIDE);
+
                 return resultVa;
             } catch (Exception e) {
                 return HIDE_PIC_COPY_RENAME_FAIL;
@@ -1081,11 +1105,9 @@ public class FileOperationUtil {
                     fosto.close();
                 }
             }
-//            FileOperationUtil.saveFileMediaEntry(newPath, ctx);
             try {
 
                 String rename = newPath.replace(Constants.CRYPTO_SUFFIX, "");
-
                 LeoLog.d("testRename", "rename:" + rename);
                 File imageFile = new File(newPath);
                 boolean ret = imageFile.renameTo(new File(rename));
