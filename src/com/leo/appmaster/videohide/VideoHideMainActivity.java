@@ -167,7 +167,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             });
             mDialogAskCreateShotcut.show();
         } else {
-            if (hideVideos.size() == 0 && !mIsFromConfirm) {
+            if (hideVideos != null && hideVideos.size() == 0 && !mIsFromConfirm) {
                 LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_VID, false));
             }
             super.onBackPressed();

@@ -105,7 +105,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             });
             mDialogAskCreateShotcut.show();
         } else {
-            if(mAlbumList.size() == 0 && !mIsFromConfirm) {
+            if(mAlbumList != null && mAlbumList.size() == 0 && !mIsFromConfirm) {
                 LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_PIC, false));
             }
             super.onBackPressed();
