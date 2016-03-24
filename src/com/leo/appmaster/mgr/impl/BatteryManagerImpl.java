@@ -228,12 +228,6 @@ public class BatteryManagerImpl extends BatteryManager {
                     handlePluginEvent(newState, false);
                 } else {
 
-                    if (AppUtil.isScreenLocked(mContext)) {
-                        LeoLog.d("testforwhile", "done done done");
-                    } else {
-                        LeoLog.d("testforwhile", "fuck fuck fuck");
-                    }
-
                     if ((BatteryShowViewActivity.isActivityAlive && mListenerRef != null)) {
                         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
                                 newState.level, 0);
