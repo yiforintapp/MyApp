@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
@@ -43,7 +44,6 @@ public class PreferenceTable extends BaseTable {
             synchronized (LOCK) {
                 if (sInstance == null) {
                     sInstance = new PreferenceTable();
-                    sInstance.loadPreference();
                 }
             }
         }
@@ -53,21 +53,29 @@ public class PreferenceTable extends BaseTable {
 
     public PreferenceTable() {
         mValues = new HashMap<String, String>();
+        ThreadManager.executeOnFileThread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (PreferenceTable.this) {
+                    loadPreference();
+                }
+            }
+        });
     }
 
-    public void loadPreference() {
+    private void loadPreference() {
         if (mLoaded) return;
 
+        // 确保能读取数据之前，数据库已经ready
+        getHelper().getReadableDatabase();
         if (BuildProperties.isApiLevel14()) {
-            synchronized (LOCK) {
-                try {
-                    SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
-                    Map<String, ?> all = sp.getAll();
-                    for(String key : all.keySet()) {
-                        mValues.put(key, (String) all.get(key));
-                    }
-                } catch (Exception e) {                  
+            try {
+                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
+                Map<String, ?> all = sp.getAll();
+                for (String key : all.keySet()) {
+                    mValues.put(key, (String) all.get(key));
                 }
+            } catch (Exception e) {
             }
         } else {
             SQLiteDatabase db = getHelper().getReadableDatabase();
@@ -118,7 +126,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public int getInt(String key, int def) {
-        String value = mValues.get(key);
+        String value = getString(key);
         if (value == null) {
             return def;
         }
@@ -132,7 +140,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public long getLong(String key, long def) {
-        String value = mValues.get(key);
+        String value = getString(key);
         if (value == null) {
             return def;
         }
@@ -146,7 +154,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public double getDouble(String key, double def) {
-        String value = mValues.get(key);
+        String value = getString(key);
         if (value == null) {
             return def;
         }
@@ -160,7 +168,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public float getFloat(String key, float def) {
-        String value = mValues.get(key);
+        String value = getString(key);
         if (value == null) {
             return def;
         }
@@ -174,12 +182,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public boolean getBoolean(String key, boolean def) {
-        int value = getInt(key, def ? BOOL_TRUE :  BOOL_FALSE);
+        int value = getInt(key, def ? BOOL_TRUE : BOOL_FALSE);
 
-        return value == BOOL_TRUE ? true : false;
+        return value == BOOL_TRUE;
     }
 
-    public String getString(String key) {
+    public synchronized String getString(String key) {
+        awaitLoadedLocked();
         return mValues.get(key);
     }
 
@@ -203,24 +212,22 @@ public class PreferenceTable extends BaseTable {
         putString(key, value + "");
     }
 
-    public void putString(final String key, final String value) {
+    public synchronized void putString(final String key, final String value) {
         if (TextUtils.isEmpty(key) || value == null) return;
         if (BuildProperties.isApiLevel14()) {
-            synchronized (LOCK) {
-                mValues.put(key, value);
-                if(mSerialExecutor == null) {
-                    mSerialExecutor = ThreadManager.newSerialExecutor();
-                }
-                mSerialExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        insertOrUpdate(key, value);
-                    }
-                });
+            mValues.put(key, value);
+            if (mSerialExecutor == null) {
+                mSerialExecutor = ThreadManager.newSerialExecutor();
             }
+            mSerialExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    insertOrUpdate(key, value);
+                }
+            });
         } else {
             mValues.put(key, value);
-            if(mSerialExecutor == null) {
+            if (mSerialExecutor == null) {
                 mSerialExecutor = ThreadManager.newSerialExecutor();
             }
             mSerialExecutor.execute(new Runnable() {
@@ -234,12 +241,10 @@ public class PreferenceTable extends BaseTable {
 
     private void insertOrUpdate(String key, String value) {
         if (BuildProperties.isApiLevel14()) {
-            synchronized (LOCK) {
-                try {
-                    SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
-                    sp.edit().putString(key, value).commit();
-                } catch (Exception e) {                  
-                }
+            try {
+                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
+                sp.edit().putString(key, value).commit();
+            } catch (Exception e) {
             }
         } else {
             SQLiteDatabase db = getHelper().getWritableDatabase();
@@ -262,13 +267,13 @@ public class PreferenceTable extends BaseTable {
 
     private boolean isKeyExist(String key) {
         SQLiteDatabase sd = getHelper().getReadableDatabase();
-       if(sd == null) {
-           return false;
-       }
+        if (sd == null) {
+            return false;
+        }
         Cursor cursor = null;
         try {
-            cursor = sd.query(TABLE_NAME, new String[]{ COL_KEY }, COL_KEY + " = ?",
-                    new String[] { key }, null, null, null);
+            cursor = sd.query(TABLE_NAME, new String[]{COL_KEY}, COL_KEY + " = ?",
+                    new String[]{key}, null, null, null);
             if (cursor != null) {
                 return cursor.getCount() > 0;
             }
@@ -279,6 +284,15 @@ public class PreferenceTable extends BaseTable {
         }
 
         return false;
+    }
+
+    private void awaitLoadedLocked() {
+        while (!mLoaded) {
+            try {
+                wait();
+            } catch (InterruptedException unused) {
+            }
+        }
     }
 
 
