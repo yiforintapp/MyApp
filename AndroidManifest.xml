@@ -213,7 +213,7 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
-        
+
         <activity
             android:name=".callfilter.CallFilterSettingActivity"
             android:excludeFromRecents="true"
@@ -250,11 +250,11 @@
             android:exported="true"
             android:hardwareAccelerated="false"
             android:launchMode="singleTask"
-            android:taskAffinity="com.leo.appmaster.home"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/Theme.PageIndicatorDefaults"></activity>
-<!--           	android:launchMode="singleTask" -->
-            <!-- android:taskAffinity="com.leo.appmaster.home" -->
+        <!--           	android:launchMode="singleTask" -->
+        <!-- android:taskAffinity="com.leo.appmaster.home" -->
         <activity
             android:name=".callfilter.StrangeCallActivity"
             android:excludeFromRecents="true"
@@ -393,7 +393,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
-            android:taskAffinity="com.leo.appmaster.lockview" 
+            android:taskAffinity="com.leo.appmaster.lockview"
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar"/>
 
         <activity
@@ -408,8 +408,8 @@
             android:name=".lockertheme.LockerTheme"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/Theme.PageIndicatorDefaults">
             <meta-data
@@ -602,6 +602,30 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".airsig.AirSigActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.PageIndicatorDefaults"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".airsig.airsigsdk.VerifyActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/airsig_verify_title"
+            android:theme="@style/Theme.AirSig.Verify"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".airsig.airsigsdk.TutorialActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/airsig_verify_title"
+            android:theme="@style/Theme.AirSig.Verify"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".airsig.airsigsdk.TrainingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/airsig_verify_title"
+            android:theme="@style/Theme.AirSig.Verify"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".privacycontact.EditPrivacyContactActivity"
             android:excludeFromRecents="true"
@@ -951,7 +975,7 @@
                 <action android:name="com.leo.appmaster.action.IPC_RECEIVER" />
             </intent-filter>
         </receiver>
-        
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

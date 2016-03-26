@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/reset"
+        android:showAsAction="always"
+        android:icon="@drawable/airsig_ic_reset"
+        android:title="@string/airsig_reset"/>
+    
+    <item
+        android:id="@+id/help"
+        android:showAsAction="always"
+        android:icon="@drawable/airsig_ic_help"
+        android:title="@string/airsig_help" />
+
+</menu>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/airsig_horizontal_margin"
+    android:paddingRight="@dimen/airsig_horizontal_margin"
+    android:paddingTop="@dimen/airsig_vertical_margin" >
+    
+    <com.leo.appmaster.airsig.airsigui.AnimatedGifImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+    
+    <com.leo.appmaster.airsig.airsigsdk.AutoFontSizeTextView
+        android:id="@+id/textView"
+        android:layout_below="@+id/gifImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/airsig_training_step_first_writing_hint"
+        android:gravity="center"
+        android:maxLines="3"
+        android:textColor="@color/airsig_text_blue"
+        android:textSize="@dimen/airsig_textsize_content"
+        android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra" />
+
+</RelativeLayout>
