@@ -123,6 +123,7 @@ public class AppLockListActivity extends BaseActivity implements
     private int mFromSuccessListCount; // 首次进入页面加锁应用个数
 
     private List<AppItemInfo> mAppList;
+    private int mPosition = 1; // 用来定位
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -143,6 +144,18 @@ public class AppLockListActivity extends BaseActivity implements
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
+            if (mAppList != null && mAppList.size() > 0) {
+                List<AppInfo> switchs = mLockAdapter.getSwitchs();
+                if(switchs != null && switchs.size() > 0) {
+                    mPosition = + switchs.size();
+                }
+                ThreadManager.getUiThreadHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLockList.setSelection(mPosition);
+                    }
+                });
+            }
         }
 
         mProgressBar.setVisibility(View.GONE);
@@ -403,29 +416,24 @@ public class AppLockListActivity extends BaseActivity implements
             mResaultList.add(labelInfoDownload);
             mResaultList.addAll(mAppList);
         }
-        if (mUnlockRecommendList != null && mUnlockRecommendList.size() > 0) {
-            AppInfo labelInfoRecommend = new AppInfo();
-            labelInfoRecommend.label = Constants.LABLE_LIST;
-            labelInfoRecommend.titleName = Constants.RECOMMEND_LOCK_LIST;
-            mResaultList.add(labelInfoRecommend);
-            mResaultList.addAll(mUnlockRecommendList);
-        }
-        if (mLockedList != null && mLockedList.size() > 0
-                || mUnlockNormalList != null && mUnlockNormalList.size() > 0) {
+//        if (mUnlockRecommendList != null && mUnlockRecommendList.size() > 0) {
+//            AppInfo labelInfoRecommend = new AppInfo();
+//            labelInfoRecommend.label = Constants.LABLE_LIST;
+//            labelInfoRecommend.titleName = Constants.RECOMMEND_LOCK_LIST;
+//            mResaultList.add(labelInfoRecommend);
+//            mResaultList.addAll(mUnlockRecommendList);
+//        }
+        if ((mUnlockRecommendList != null && mUnlockRecommendList.size() > 0)
+                || (mLockedList != null && mLockedList.size() > 0)
+                || (mUnlockNormalList != null && mUnlockNormalList.size() > 0)) {
             AppInfo labelInfoOthers = new AppInfo();
             labelInfoOthers.label = Constants.LABLE_LIST;
             labelInfoOthers.titleName = Constants.OTHERS_LOCK_LIST;
             mResaultList.add(labelInfoOthers);
             mResaultList.addAll(mLockedList);
+            mResaultList.addAll(mUnlockRecommendList);
             mResaultList.addAll(mUnlockNormalList);
         }
-//
-//
-//        //the final list
-//        mResaultList = new ArrayList<AppInfo>(mLockedList);
-//        mResaultList.addAll(mUnlockList);
-
-
 
         long part3 = SystemClock.elapsedRealtime();
         LeoLog.i("TsCost", "loadData part3: " + (part3 - part2));
@@ -521,25 +529,25 @@ public class AppLockListActivity extends BaseActivity implements
                 }
             }
         }
-        if (mUnlockNormalList.size() > 0 || mLockedList.size() > 0) {
-            if (mAppList.size() > 0 && mUnlockRecommendList.size() > 0) {
-                if (i == 3 + switchs.size() + mAppList.size() + mUnlockRecommendList.size()) {
-                    return;
-                }
-            } else if (mAppList.size() == 0 && mUnlockRecommendList.size() == 0) {
-                if (i == 1 + switchs.size()) {
-                    return;
-                }
-            } else if (mAppList.size() > 0 && mUnlockRecommendList.size() == 0) {
-                if (i == 2 + switchs.size() + mAppList.size()) {
-                    return;
-                }
-            } else if (mAppList.size() == 0 && mUnlockRecommendList.size() > 0) {
-                if (i == 2 + switchs.size() + mUnlockRecommendList.size()) {
-                    return;
-                }
-            }
-        }
+//        if (mUnlockNormalList.size() > 0 || mLockedList.size() > 0) {
+//            if (mAppList.size() > 0 && mUnlockRecommendList.size() > 0) {
+//                if (i == 3 + switchs.size() + mAppList.size() + mUnlockRecommendList.size()) {
+//                    return;
+//                }
+//            } else if (mAppList.size() == 0 && mUnlockRecommendList.size() == 0) {
+//                if (i == 1 + switchs.size()) {
+//                    return;
+//                }
+//            } else if (mAppList.size() > 0 && mUnlockRecommendList.size() == 0) {
+//                if (i == 2 + switchs.size() + mAppList.size()) {
+//                    return;
+//                }
+//            } else if (mAppList.size() == 0 && mUnlockRecommendList.size() > 0) {
+//                if (i == 2 + switchs.size() + mUnlockRecommendList.size()) {
+//                    return;
+//                }
+//            }
+//        }
 
         ListLockItem lockImageView = (ListLockItem) view.findViewById(R.id.content_item_all);
         LockMode curMode = mLockManager.getCurLockMode();
