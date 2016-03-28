@@ -22,25 +22,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.leo.appmaster.ui.RippleView
-                android:id="@+id/rv_home_more_intruder"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="11dp"
-                app:rippleAlpha="1"
-                app:rippleColor="@color/home_tab_pressed"
-                app:rippleDuration="250"
-                app:rippleHover="true"
-                app:rippleOverlay="false">
+                android:background="@color/white">
 
-                <RelativeLayout
-                    android:background="@color/white"
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_intruder"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:minHeight="40dp"
-                    android:paddingTop="8dp"
-                    android:layout_height="wrap_content">
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -70,154 +70,164 @@
                         android:layout_marginRight="20dp"
                         android:src="@drawable/icn_settings_arrow" />
 
-                </RelativeLayout>
 
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
 
-            </com.leo.appmaster.ui.RippleView>
-
-            <com.leo.appmaster.ui.RippleView
-                android:id="@+id/rv_home_more_findlost"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginTop="1px"
-                android:background="@color/white"
-                android:minHeight="40dp"
-                android:paddingTop="8dp"
-                app:rippleAlpha="1"
-                app:rippleColor="@color/home_tab_pressed"
-                app:rippleDuration="250"
-                app:rippleHover="true"
-                app:rippleOverlay="false">
+                android:layout_marginRight="8dp"
+                android:background="@color/white">
 
-                <RelativeLayout
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_findlost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
-                    android:gravity="left">
+                    android:layout_marginTop="1px"
+                    android:minHeight="40dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
 
-                    <TextView
-                        android:id="@+id/tv_findlost_entry"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_findlost_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/home_tab_lost"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
-                        android:maxLines="4"
-                        android:text="@string/home_tab_lost"
-                        android:textColor="@color/c2"
-                        android:textSize="15dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icn_settings_arrow" />
 
-                </RelativeLayout>
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/icn_settings_arrow" />
-
-            </com.leo.appmaster.ui.RippleView>
-
-            <com.leo.appmaster.ui.RippleView
-                android:layout_marginTop="10dp"
-                android:id="@+id/rv_home_more_screenview"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:paddingTop="8dp"
-                android:background="@color/white"
-                android:minHeight="40dp"
-                app:rippleAlpha="1"
-                app:rippleColor="@color/home_tab_pressed"
-                app:rippleDuration="250"
-                app:rippleHover="true"
-                app:rippleOverlay="false">
+                android:layout_marginTop="10dp"
+                android:background="@color/white">
 
-                <RelativeLayout
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_screenview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
-                    android:gravity="left">
+                    android:minHeight="40dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
 
-                    <TextView
-                        android:id="@+id/tv_screenview_entry"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_screenview_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/batterymanage_switch_screen"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
-                        android:maxLines="4"
-                        android:text="@string/batterymanage_switch_screen"
-                        android:textColor="@color/c2"
-                        android:textSize="15dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icn_settings_arrow" />
 
-                </RelativeLayout>
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icn_settings_arrow"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="20dp" />
-
-            </com.leo.appmaster.ui.RippleView>
-
-            <com.leo.appmaster.ui.RippleView
-                android:layout_marginTop="10dp"
-                android:id="@+id/rv_home_more_setting"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:paddingTop="8dp"
-                android:background="@color/white"
-                android:minHeight="40dp"
-                app:rippleAlpha="1"
-                app:rippleColor="@color/home_tab_pressed"
-                app:rippleDuration="250"
-                app:rippleHover="true"
-                app:rippleOverlay="false">
+                android:layout_marginTop="11dp"
+                android:background="@color/white">
 
-                <RelativeLayout
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
-                    android:gravity="left">
+                    android:minHeight="40dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
 
-                    <TextView
-                        android:id="@+id/tv_setting_entry"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_setting_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/setting"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
-                        android:maxLines="4"
-                        android:text="@string/setting"
-                        android:textColor="@color/c2"
-                        android:textSize="15dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icn_settings_arrow" />
 
-                </RelativeLayout>
+                </com.leo.appmaster.ui.RippleView>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icn_settings_arrow"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="20dp" />
-
-            </com.leo.appmaster.ui.RippleView>
-
-
-
+            </RelativeLayout>
 
         </LinearLayout>
 

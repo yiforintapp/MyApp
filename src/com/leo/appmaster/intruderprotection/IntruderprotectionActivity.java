@@ -156,7 +156,6 @@ public class IntruderprotectionActivity extends BaseActivity {
 
 //                Intent intent = new Intent(IntruderprotectionActivity.this, HomeMoreActivity.class);
 //                startActivity(intent);
-
                 Intent intent = new Intent(IntruderprotectionActivity.this, IntruderSettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("isPgInner",true);
