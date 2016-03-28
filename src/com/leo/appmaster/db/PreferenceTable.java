@@ -63,7 +63,7 @@ public class PreferenceTable extends BaseTable {
         });
     }
 
-    private void loadPreference() {
+    public void loadPreference() {
         if (mLoaded) return;
 
         // 确保能读取数据之前，数据库已经ready
