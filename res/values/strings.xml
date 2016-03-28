@@ -1188,5 +1188,8 @@
     <string name="airsig_settings_activity_two_set_title">设置默认解锁方式</string>
     <string name="airsig_settings_activity_two_set">手势/密码解锁</string>
     <string name="airsig_settings_activity_two_set_dialog">当前未开启签字解锁，是否立即开启？</string>
+    <string name="airsig_settings_lock_fragment_normal">切换为手势解锁</string>
+    <string name="airsig_settings_lock_fragment_airsig">切换为Airsig解锁</string>
+
 
 </resources>
