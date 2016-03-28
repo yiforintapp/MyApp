@@ -154,26 +154,13 @@ public class IntruderprotectionActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(IntruderprotectionActivity.this, HomeMoreActivity.class);
-                startActivity(intent);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//                Intent intent = new Intent(IntruderprotectionActivity.this, IntruderSettingActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                intent.putExtra("isPgInner",true);
+//                Intent intent = new Intent(IntruderprotectionActivity.this, HomeMoreActivity.class);
 //                startActivity(intent);
+
+                Intent intent = new Intent(IntruderprotectionActivity.this, IntruderSettingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("isPgInner",true);
+                startActivity(intent);
             }
         });
         mctb.setOptionMenuVisible(true);
