@@ -5,15 +5,19 @@ import android.os.Build;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -23,6 +27,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.CircleArroundView;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
@@ -41,7 +46,7 @@ public class BatteryBoostController extends RelativeLayout {
 
     private static final int BOOST_SIZE = 6;
     private static final int BOOST_ITEM_DURATION = 300;
-    private static final int MIN_BOOST_NUM = 6;
+    private static final int MIN_BOOST_NUM = 5;
     private ImageView mShieldIv;
     private CircleArroundView mShieldCircle;
     private BatteryBoostAnimView mBoostAnimView;
@@ -51,11 +56,6 @@ public class BatteryBoostController extends RelativeLayout {
     public interface OnBoostFinishListener {
         public void onBoostFinish();
     }
-
-    private ImageView mAnimIv1;
-    private ImageView mAnimIv2;
-    private ImageView mAnimIv3;
-    private ImageView mAnimIv4;
 
     private TextView mBoostToastTv;
 
@@ -67,19 +67,38 @@ public class BatteryBoostController extends RelativeLayout {
     private LinearLayout mBoostResultLayout;
     private TextView mBoostResultText;
 
+    private ImageView mAnimCenterImg;
+    private ImageView mAnimImg1;
+    private ImageView mAnimImg2;
+    private ImageView mAnimImg3;
+    private ImageView mAnimImg4;
+    private ImageView mAnimImg5;
+
+    private static final float DEGREE_0 = 1.8f;
+    private static final float DEGREE_1 = -2.0f;
+    private static final float DEGREE_2 = 2.0f;
+    private static final float DEGREE_3 = -1.5f;
+    private static final float DEGREE_4 = 1.5f;
+    private static final int SHAKE_DURATION = 30; //振动频率
+    private int mCount = 0;
+    private AnimatorSet mImageAnim1;
+    private AnimatorSet mImageAnim2;
+    private AnimatorSet mImageAnim3;
+    private AnimatorSet mImageAnim4;
+    private AnimatorSet mImageAnim5;
+
+
+
     public BatteryBoostController(Context context, AttributeSet attrs) {
         super(context, attrs);
 
     }
 
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mAnimIv1 = (ImageView) findViewById(R.id.boost_anim_iv1);
-        mAnimIv2 = (ImageView) findViewById(R.id.boost_anim_iv2);
-        mAnimIv3 = (ImageView) findViewById(R.id.boost_anim_iv3);
-        mAnimIv4 = (ImageView) findViewById(R.id.boost_anim_iv4);
         mBoostRl = findViewById(R.id.boost_anim_rl);
         if (Build.VERSION.SDK_INT < 21) {
             mBoostRl.setBackgroundResource(R.drawable.battery_boost_shape_below21);
@@ -97,6 +116,58 @@ public class BatteryBoostController extends RelativeLayout {
 
         mBoostResultLayout = (LinearLayout) findViewById(R.id.charge_clean_result_layout);
         mBoostResultText = (TextView) findViewById(R.id.charge_clean_result_txt);
+
+        mAnimCenterImg = (ImageView) findViewById(R.id.boost_center_img);
+        mAnimImg1 = (ImageView) findViewById(R.id.boost_anim_img1);
+        mAnimImg2 = (ImageView) findViewById(R.id.boost_anim_img2);
+        mAnimImg3 = (ImageView) findViewById(R.id.boost_anim_img3);
+        mAnimImg4 = (ImageView) findViewById(R.id.boost_anim_img4);
+        mAnimImg5 = (ImageView) findViewById(R.id.boost_anim_img5);
+
+    }
+
+    private void setShakeAnimation(final View v) {
+        float rotate = 0;
+        int c = mCount++ % 5;
+        if (c == 0) {
+            rotate = DEGREE_0;
+        } else if (c == 1) {
+            rotate = DEGREE_1;
+        } else if (c == 2) {
+            rotate = DEGREE_2;
+        } else if (c == 3) {
+            rotate = DEGREE_3;
+        } else {
+            rotate = DEGREE_4;
+        }
+        int centerPoint =  DipPixelUtil.dip2px(AppMasterApplication.getInstance(), 40);
+        final RotateAnimation mra = new RotateAnimation(
+                rotate, -rotate,  centerPoint / 2, centerPoint / 2);
+        final RotateAnimation mrb = new RotateAnimation(
+                -rotate, rotate, centerPoint / 2, centerPoint / 2);
+
+        mra.setDuration(SHAKE_DURATION);
+        mrb.setDuration(SHAKE_DURATION);
+
+        mra.setAnimationListener(new AnimationListenerAdapter() {
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mra.reset();
+                v.startAnimation(mrb);
+            }
+        });
+
+        mrb.setAnimationListener(new AnimationListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mrb.reset();
+                v.startAnimation(mra);
+            }
+
+
+        });
+        v.startAnimation(mra);
     }
 
     @Override
@@ -112,6 +183,102 @@ public class BatteryBoostController extends RelativeLayout {
                 }
             }, 500);
         }
+    }
+
+    private void startBoostAnim(List<AppItemInfo> list) {
+
+        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(mAnimCenterImg, "rotation", 0f, 3600f);
+        rotateAnim.setDuration(2080);
+        rotateAnim.setInterpolator(new AccelerateInterpolator());
+
+        ObjectAnimator scaleXAnim = ObjectAnimator.ofFloat(mAnimCenterImg, "scaleX", 1f, 0f);
+        ObjectAnimator scaleYAnim = ObjectAnimator.ofFloat(mAnimCenterImg, "scaleY", 1f, 0f);
+        AnimatorSet scaleAnimatorSet = new AnimatorSet();
+        scaleAnimatorSet.playTogether(scaleXAnim, scaleYAnim);
+        scaleAnimatorSet.setDuration(520);
+        scaleAnimatorSet.setStartDelay(1540);
+        scaleAnimatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                clearShakeAnimation(mAnimImg1);
+                clearShakeAnimation(mAnimImg2);
+                clearShakeAnimation(mAnimImg3);
+                clearShakeAnimation(mAnimImg4);
+                clearShakeAnimation(mAnimImg5);
+                onBoostFinish();
+            }
+        });
+
+        AppItemInfo appInfo;
+        for (int i = 0; i < list.size() ; i++) {
+            appInfo = list.get(i);
+            if (i == 0) {
+                mImageAnim1 = getIconAnim(mAnimImg1);
+                mAnimImg1.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
+                mAnimImg1.setVisibility(View.VISIBLE);
+            } else if (i == 1) {
+                mImageAnim2 = getIconAnim(mAnimImg2);
+                mAnimImg2.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
+                mAnimImg2.setVisibility(View.VISIBLE);
+            } else if (i == 2) {
+                mImageAnim3 = getIconAnim(mAnimImg3);
+                mAnimImg3.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
+                mAnimImg3.setVisibility(View.VISIBLE);
+            } else if (i == 3) {
+                mImageAnim4 = getIconAnim(mAnimImg4);
+                mAnimImg4.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
+                mAnimImg4.setVisibility(View.VISIBLE);
+            } else if (i == 4) {
+                mImageAnim5 = getIconAnim(mAnimImg5);
+                mAnimImg5.setImageDrawable(AppUtil.getAppIcon(appInfo.packageName));
+                mAnimImg5.setVisibility(View.VISIBLE);
+            }
+        }
+
+        AnimatorSet boostAnimatorSet = new AnimatorSet();
+        boostAnimatorSet.play(rotateAnim).with(scaleAnimatorSet);
+        if (mImageAnim1 != null) {
+            boostAnimatorSet.play(scaleAnimatorSet).with(mImageAnim1);
+        }
+        if (mImageAnim2 != null) {
+            boostAnimatorSet.play(mImageAnim1).with(mImageAnim2);
+        }
+        if (mImageAnim3 != null) {
+            boostAnimatorSet.play(mImageAnim2).with(mImageAnim3);
+        }
+        if (mImageAnim4 != null) {
+            boostAnimatorSet.play(mImageAnim3).with(mImageAnim4);
+        }
+        if (mImageAnim5 != null) {
+            boostAnimatorSet.play(mImageAnim4).with(mImageAnim5);
+        }
+        boostAnimatorSet.start();
+
+    }
+
+    private void clearShakeAnimation(ImageView view) {
+        if (view != null) {
+            view.clearAnimation();
+        }
+    }
+
+    private AnimatorSet getIconAnim(ImageView view) {
+        float centerX = mAnimCenterImg.getLeft() + mAnimCenterImg.getWidth() / 2
+                        - (view.getLeft() + view.getWidth() / 2);
+        float centerY = mAnimCenterImg.getTop() + mAnimCenterImg.getHeight() / 2
+                        - (view.getTop() + view.getHeight() / 2);
+        ObjectAnimator moveXAnim =  ObjectAnimator.ofFloat(view, "translationX", centerX);
+        ObjectAnimator moveYAnim =  ObjectAnimator.ofFloat(view, "translationY", centerY);
+        ObjectAnimator scaleXAnim = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.6f);
+        ObjectAnimator scaleYAnim = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.6f);
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(moveXAnim, moveYAnim, scaleXAnim, scaleYAnim, alphaAnim);
+        animatorSet.setDuration(520);
+        animatorSet.setStartDelay(520);
+        setShakeAnimation(view);
+
+        return  animatorSet;
     }
 
     public void startBoost() {
@@ -145,10 +312,14 @@ public class BatteryBoostController extends RelativeLayout {
         final AppItemInfo itemInfo = iterator.next();
         iterator.remove();
 
-        ImageView target = getNext(null);
-        target.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
-        Animator animatorSet = getTotalAnimator(iterator, target, iterator.hasNext());
-        animatorSet.start();
+
+        startBoostAnim(appItemInfos);
+
+
+//        ImageView target = getNext(null);
+//        target.setImageDrawable(AppUtil.getAppIcon(itemInfo.packageName));
+//        Animator animatorSet = getTotalAnimator(iterator, target, iterator.hasNext());
+//        animatorSet.start();
 
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
@@ -164,6 +335,7 @@ public class BatteryBoostController extends RelativeLayout {
             }
         });
     }
+
 
     public void setBoostFinishListener(OnBoostFinishListener listener) {
         mListener = listener;
@@ -259,16 +431,17 @@ public class BatteryBoostController extends RelativeLayout {
     }
 
     private ImageView getNext(ImageView target) {
-        if (mAnimIv1 == target) {
-            return mAnimIv2;
-        } else if (mAnimIv2 == target) {
-            return mAnimIv3;
-        } else if (mAnimIv3 == target) {
-            return mAnimIv4;
-        } else if (mAnimIv4 == target) {
-            return mAnimIv1;
-        }
-        return mAnimIv1;
+//        if (mAnimIv1 == target) {
+//            return mAnimIv2;
+//        } else if (mAnimIv2 == target) {
+//            return mAnimIv3;
+//        } else if (mAnimIv3 == target) {
+//            return mAnimIv4;
+//        } else if (mAnimIv4 == target) {
+//            return mAnimIv1;
+//        }
+//        return mAnimIv1;
+        return target;
     }
 
     private void onBoostFinish() {
@@ -279,17 +452,15 @@ public class BatteryBoostController extends RelativeLayout {
     }
 
     private void startBoostDismissAnim() {
-        ObjectAnimator shieldAlpha = ObjectAnimator.ofFloat(mShieldRootView, "alpha", 0f, 255f);
+        ObjectAnimator shieldAlpha = ObjectAnimator.ofFloat(mShieldRootView, "alpha", 0f, 1f);
         ObjectAnimator shieldScaleX = ObjectAnimator.ofFloat(mShieldRootView, "scaleX", 0.8f, 1f);
         ObjectAnimator shieldScaleY = ObjectAnimator.ofFloat(mShieldRootView, "scaleY", 0.8f, 1f);
 
-        ObjectAnimator boostAlpha = ObjectAnimator.ofFloat(mBoostAnimView, "alpha", 255f, 0f);
-        ObjectAnimator boostScaleX = ObjectAnimator.ofFloat(mBoostAnimView, "scaleX", 1f, 0.8f);
-        ObjectAnimator boostScaleY = ObjectAnimator.ofFloat(mBoostAnimView, "scaleY", 1f, 0.8f);
+        ObjectAnimator boostAlpha = ObjectAnimator.ofFloat(mBoostAnimView, "alpha", 1f, 0f);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(shieldAlpha, shieldScaleX, shieldScaleY, boostAlpha, boostScaleX, boostScaleY);
-        animatorSet.setDuration(400);
+        animatorSet.setDuration(780);
+        animatorSet.playTogether(shieldAlpha, shieldScaleX, shieldScaleY, boostAlpha);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -306,9 +477,13 @@ public class BatteryBoostController extends RelativeLayout {
         final float centerX = ivShield.getWidth() / 2.0f;
         final float centerY = ivShield.getHeight() / 2.0f;
         if (centerX != 0f && centerY != 0f) {
-            final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,
+            final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(0, -90,
                     centerX, centerY, 0.0f, true);
-            rotation.setDuration(680);
+            final ThreeDimensionalRotationAnimation rotation2 = new ThreeDimensionalRotationAnimation(-270, -360,
+                    centerX, centerY, 0.0f, true);
+            rotation2.setFillAfter(true);
+            rotation2.setDuration(340);
+            rotation.setDuration(340);
             rotation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -337,9 +512,10 @@ public class BatteryBoostController extends RelativeLayout {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     ivShield.setVisibility(View.VISIBLE);
+                    ivShield.startAnimation(rotation2);
                 }
             });
-            rotation.setFillAfter(false);
+            rotation.setFillAfter(true);
             ivShield.startAnimation(rotation);
         }
     }
@@ -348,7 +524,7 @@ public class BatteryBoostController extends RelativeLayout {
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                setVisibility(View.INVISIBLE);
+//                setVisibility(View.INVISIBLE);
                 if (mListener != null) {
                     mListener.onBoostFinish();
                 }

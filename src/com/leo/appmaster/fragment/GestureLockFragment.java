@@ -26,6 +26,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -118,8 +119,9 @@ public class GestureLockFragment extends LockFragment implements
                             mActivity.getPackageManager(), mActivity.getPackageName()));
                 }
             } else if (mPackageName != null) {
-                mAppIcon.setImageDrawable(AppUtil.getAppIcon(
-                        mActivity.getPackageManager(), mPackageName));
+                //wifi && blueTooth lock
+                Drawable bd = getBd(mPackageName);
+                mAppIcon.setImageDrawable(bd);
             }
             if (needChangeTheme()) {
                 mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
@@ -127,8 +129,8 @@ public class GestureLockFragment extends LockFragment implements
                 mAppIconTop.setVisibility(View.VISIBLE);
                 mAppIconBottom.setVisibility(View.VISIBLE);
                 checkApplyTheme();
-            } 
-        } 
+            }
+        }
         LeoEventBus.getDefaultBus().register(this);
     }
 
@@ -209,7 +211,7 @@ public class GestureLockFragment extends LockFragment implements
         if (mAppIcon == null) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
         }
-        if(mAppIcon == null) {
+        if (mAppIcon == null) {
             return;
         }
         if (lsa != null && lsa.mQuickLockMode) {
@@ -233,13 +235,35 @@ public class GestureLockFragment extends LockFragment implements
             }
         } else {
             if (!TextUtils.isEmpty(mPackageName)) {
-                mAppIcon.setImageDrawable(AppUtil.getAppIcon(
-                        mActivity.getPackageManager(), mPackageName));
+
+                //wifi && blueTooth lock
+                Drawable bd = getBd(mPackageName);
+                mAppIcon.setImageDrawable(bd);
+
             } else {
                 mAppIcon.setImageDrawable(AppUtil.getAppIcon(
                         mActivity.getPackageManager(), mActivity.getPackageName()));
             }
         }
+    }
+
+    private Drawable getBd(String mPackageName) {
+        //wifi && blueTooth lock
+        Drawable bd = null;
+        if (mPackageName.equals(SwitchGroup.WIFI_SWITCH)) {
+            bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
+        } else if (mPackageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+            bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
+        } else if(mActivity != null){
+            bd = AppUtil.getAppIcon(
+                    mActivity.getPackageManager(), mPackageName);
+        }
+
+        if (bd == null && mActivity != null) {
+            bd = AppUtil.getAppIcon(
+                    mActivity.getPackageManager(), mActivity.getPackageName());
+        }
+        return bd;
     }
 
     private void checkApplyTheme() {
@@ -387,14 +411,14 @@ public class GestureLockFragment extends LockFragment implements
         if (!TextUtils.equals(lockedPackage, mPackageName) && !TextUtils.isEmpty(lockedPackage)) {
             mPackageName = lockedPackage;
             mInputCount = 0;
-            if(mGestureTip != null) {
+            if (mGestureTip != null) {
                 mGestureTip.setText(R.string.please_input_gesture);
             }
             if (mAppIcon == null) {
                 mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
             }
-            mAppIcon.setImageDrawable(AppUtil.getAppIcon(
-                    mActivity.getPackageManager(), mPackageName));
+            Drawable bd = getBd(mPackageName);
+            mAppIcon.setImageDrawable(bd);
         }
         if (mAppIcon == null) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);

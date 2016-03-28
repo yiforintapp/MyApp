@@ -200,14 +200,14 @@ public class BatteryNotifyHelper {
             view_custom = new RemoteViews(mContext.getPackageName(), R.layout.battery_saver_notify);
             if (hours == 0) {
                 view_custom.setTextViewText(R.id.tv_charge_number_1, String.format("%d", minutes));
-                view_custom.setTextViewText(R.id.tv_charge_mark_1, "m");
+                view_custom.setTextViewText(R.id.tv_charge_mark_1, "min");
                 view_custom.setTextViewText(R.id.tv_charge_number_2, "");
                 view_custom.setTextViewText(R.id.tv_charge_mark_2, "");
             } else {
                 view_custom.setTextViewText(R.id.tv_charge_number_1, String.format("%d", hours));
                 view_custom.setTextViewText(R.id.tv_charge_mark_1, "h");
                 view_custom.setTextViewText(R.id.tv_charge_number_2, String.format("%d", minutes));
-                view_custom.setTextViewText(R.id.tv_charge_mark_2, "m");
+                view_custom.setTextViewText(R.id.tv_charge_mark_2, "min");
             }
         }
 

@@ -51,6 +51,10 @@ public class CardFetchJob extends FetchScheduleJob {
             setIntruderSwiftyEmpty(preferenceTable);
             setChargeExtraEmpty(preferenceTable);
             setCleanSwiftyEmpty(preferenceTable);
+            setAppGradeEmpty(preferenceTable);
+            setPictureGradeEmpty(preferenceTable);
+            setVideoGradeEmpty(preferenceTable);
+            setGradeFbAnotherEmpty(preferenceTable);
 
             return;
         }
@@ -270,6 +274,40 @@ public class CardFetchJob extends FetchScheduleJob {
                 setChargeExtraEmpty(preferenceTable);
             }
 
+            boolean isAppGradeNull = object.isNull(PrefConst.KEY_APP_GRADE);
+            if (!isAppGradeNull) {
+                JSONObject appGrade = object.getJSONObject(PrefConst.KEY_APP_GRADE);
+                setValue(appGrade, "content", PrefConst.KEY_APP_GRADE_CONTENT, preferenceTable);
+                setValue(appGrade, "gp_url", PrefConst.KEY_APP_GRADE_URL, preferenceTable);
+            } else {
+                setAppGradeEmpty(preferenceTable);
+            }
+
+            boolean isPictureGradeNull = object.isNull(PrefConst.KEY_PICTURE_GRADE);
+            if (!isPictureGradeNull) {
+                JSONObject appGrade = object.getJSONObject(PrefConst.KEY_PICTURE_GRADE);
+                setValue(appGrade, "content", PrefConst.KEY_PICTURE_GRADE_CONTENT, preferenceTable);
+                setValue(appGrade, "gp_url", PrefConst.KEY_PICTURE_GRADE_URL, preferenceTable);
+            } else {
+                setPictureGradeEmpty(preferenceTable);
+            }
+
+            boolean isVideoGradeNull = object.isNull(PrefConst.KEY_VIDEO_GRADE);
+            if (!isVideoGradeNull) {
+                JSONObject appGrade = object.getJSONObject(PrefConst.KEY_VIDEO_GRADE);
+                setValue(appGrade, "content", PrefConst.KEY_VIDEO_GRADE_CONTENT, preferenceTable);
+                setValue(appGrade, "gp_url", PrefConst.KEY_VIDEO_GRADE_URL, preferenceTable);
+            } else {
+                setVideoGradeEmpty(preferenceTable);
+            }
+
+            boolean isGradeFbAnotherNull = object.isNull(PrefConst.KEY_GRADE_FB_ANOTHER);
+            if (!isGradeFbAnotherNull) {
+                preferenceTable.putBoolean(PrefConst.KEY_GRADE_FB_ANOTHER, true);
+            } else {
+                setGradeFbAnotherEmpty(preferenceTable);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -378,4 +416,28 @@ public class CardFetchJob extends FetchScheduleJob {
         preferenceTable.putString(PrefConst.KEY_CHARGE_EXTRA_URL, "");
         preferenceTable.putString(PrefConst.KEY_CHARGE_EXTRA_TITLE, "");
     }
+
+    /** 应用锁评分弹窗文案置空 */
+    private void setAppGradeEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putString(PrefConst.KEY_APP_GRADE_CONTENT, "");
+        preferenceTable.putString(PrefConst.KEY_APP_GRADE_URL, "");
+    }
+
+    /** 图片评分弹窗文案置空 */
+    private void setPictureGradeEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putString(PrefConst.KEY_PICTURE_GRADE_CONTENT, "");
+        preferenceTable.putString(PrefConst.KEY_PICTURE_GRADE_URL, "");
+    }
+
+    /** 视频评分弹窗文案置空 */
+    private void setVideoGradeEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putString(PrefConst.KEY_VIDEO_GRADE_CONTENT, "");
+        preferenceTable.putString(PrefConst.KEY_VIDEO_GRADE_URL, "");
+    }
+
+    /** 好评弹框反馈是否使用其他文案置空 */
+    private void setGradeFbAnotherEmpty(PreferenceTable preferenceTable) {
+        preferenceTable.putBoolean(PrefConst.KEY_GRADE_FB_ANOTHER, false);
+    }
+
 }

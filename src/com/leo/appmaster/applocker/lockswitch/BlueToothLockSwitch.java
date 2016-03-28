@@ -2,6 +2,8 @@
 package com.leo.appmaster.applocker.lockswitch;
 
 
+import com.leo.appmaster.applocker.model.LockMode;
+
 /**
  * @author nic
  */
@@ -13,28 +15,40 @@ public class BlueToothLockSwitch extends SwitchGroup {
     }
 
     @Override
-    public void switchOn() {
-
+    public void switchOn(LockMode mode) {
+        if (mode == null) {
+            return;
+        }
+        String modeName = mode.modeName;
+        mPreTable.putBoolean(modeName + "_" + BLUE_TOOTH_SWITCH, true);
     }
 
     @Override
-    public void switchOff() {
-
+    public void switchOff(LockMode mode) {
+        if (mode == null) {
+            return;
+        }
+        String modeName = mode.modeName;
+        mPreTable.putBoolean(modeName + "_" + BLUE_TOOTH_SWITCH, false);
     }
 
     @Override
     public int getLockNum() {
-        return 0;
+        return mPreTable.getInt(BLUE_TOOTH_SWITCH, 4000000);
     }
 
     @Override
-    public int setLockNum() {
-        return 0;
+    public void setLockNum(int num) {
+        mPreTable.putInt(BLUE_TOOTH_SWITCH, num);
     }
 
     @Override
-    public boolean isLockNow() {
-        return true;
+    public boolean isLockNow(LockMode mode) {
+        if (mode == null) {
+            return false;
+        }
+        String modeName = mode.modeName;
+        return mPreTable.getBoolean(modeName + "_" + BLUE_TOOTH_SWITCH, false);
     }
 
 }

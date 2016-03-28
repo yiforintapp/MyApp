@@ -61,10 +61,12 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
+                android:paddingBottom="10dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
                 <ImageView
+                    android:layout_marginTop="@dimen/empty_page_text_m_top"
                     android:id="@+id/iv_nopic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,7 +76,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/empty_page_text_m_top"
                     android:layout_below="@+id/iv_nopic"
                     android:gravity="center"
                     android:text="@string/intruder_nobody_tips"

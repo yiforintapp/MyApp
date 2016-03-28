@@ -21,6 +21,8 @@ import android.graphics.drawable.Drawable;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.utils.AppUtil;
 
 public class WaterMarkUtils {
@@ -80,11 +82,19 @@ public class WaterMarkUtils {
         }
         //获得并画出入侵的应用的水印
         float fitRate = photoBitmap.getWidth() / 240f;
-        try {
-            List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
-            appIcon = pm.getApplicationIcon(packageName);
-        } catch (Exception e) {
-            return photoBitmap;
+        if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
+            appIcon = context.getResources().getDrawable(R.drawable.intruder_system_icon);
+        } else if(SwitchGroup.BLUE_TOOTH_SWITCH.equals(packageName)) {
+            appIcon = context.getResources().getDrawable(R.drawable.lock_bluetooth);
+        } else if(SwitchGroup.WIFI_SWITCH.equals(packageName)) {
+            appIcon = context.getResources().getDrawable(R.drawable.lock_wifi);
+        } else {
+            try {
+                List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
+                appIcon = pm.getApplicationIcon(packageName);
+            } catch (Exception e) {
+                return photoBitmap;
+            }
         }
         if (appIcon != null) {
             iconBitmap = Bitmap.createBitmap((int) (25f * fitRate), (int) (25f * fitRate),

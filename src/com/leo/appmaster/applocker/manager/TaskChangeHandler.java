@@ -32,6 +32,7 @@ public class TaskChangeHandler {
     public static final String WAITNAME = "WaitActivity";
     public static final String WEBVIEW = "WebViewActivity";
     public static final String UPDATE = "UpdateActivity";
+    public static final String INTRUDERCATCH = "IntruderCatchedActivity";
     public static final String BLACK_LIST = "AskAddToBlacklistActivity";
     // public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
@@ -59,6 +60,8 @@ public class TaskChangeHandler {
     // 解锁前检测到的真正有效的pkg
     private String mDetectedPkgBeforeScreeOff;
     // 是否忽略锁屏屏保
+    // 前置条件：1、在电量管理页面，锁屏再解锁，出现屏保，关闭屏保
+    // 问题：但是很久才出发onDestory，导致获取到的一直是屏保Activity，所以电量管理的锁出现的比较慢
     private boolean mIgnoreBattery = true;
 
     public TaskChangeHandler(Context context) {
@@ -154,7 +157,7 @@ public class TaskChangeHandler {
             if (doubleCheck) {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf && (activity.contains(DESKPROXYNAME)
-                        || (activity.contains(BATTERYVIEW) && mIgnoreBattery)
+                        || activity.contains(BATTERYVIEW)/* && mIgnoreBattery)*/
                         || activity.contains(DESKAD)
                         // || activity.contains(APPWALL)
                         || activity.contains(LAUNCHERBOOST)
@@ -162,6 +165,7 @@ public class TaskChangeHandler {
                         || activity.contains(PROXYNAME)
                         || activity.contains(WAITNAME)
                         || activity.contains(UPDATE)
+                        || activity.contains(INTRUDERCATCH)
                         || activity.contains(WEBVIEW)
                         || activity.contains(BLACK_LIST)
                         // 如果锁屏前的pkg是联想的屏保，则不过滤掉webviewActivity
@@ -176,13 +180,14 @@ public class TaskChangeHandler {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
                         && (activity.contains(DESKPROXYNAME)
-                        || (activity.contains(BATTERYVIEW) && mIgnoreBattery)
+                        || activity.contains(BATTERYVIEW)/* && mIgnoreBattery)*/
                         || activity.contains(DESKAD)
                         // || activity.contains(APPWALL)
                         || activity.contains(LAUNCHERBOOST)
                         || activity.contains(SPLASHNAME)
                         || activity.contains(PROXYNAME)
                         || activity.contains(UPDATE)
+                        || activity.contains(INTRUDERCATCH)
                         || activity.contains(WAITNAME)
                         || activity.contains(BLACK_LIST)
                         || (activity.contains(WEBVIEW)

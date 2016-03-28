@@ -173,4 +173,27 @@
     <color name="green_back_normal">#88fd8b</color>
     <color name="blue_back_normal">#91d4ff</color>
     <color name="yellow_back_normal">#ffebaf</color>
+
+    <color name="airsig_background_white">#FFFFFF</color>
+    <color name="airsig_background_gray">#EDEDED</color>
+    <color name="airsig_actionbar_background">#2674F6</color>
+    <color name="airsig_actionbar_title">#FFFFFF</color>
+    <color name="airsig_training_message_box_background">#2674F6</color>
+    <color name="airsig_training_message_box_button">#2674F6</color>
+    <color name="airsig_text_white">#FFFFFF</color>
+    <color name="airsig_text_black">#333333</color>
+    <color name="airsig_text_gray">#999999</color>
+    <color name="airsig_text_blue">#2674F6</color>
+    <color name="airsig_text_red">#D0021B</color>
+    <color name="airsig_text_bright_blue">#4FC3F7</color>
+    <color name="airsig_text_bright_red">#FF5500</color>
+    <color name="airsig_button_blue">#2674F6</color>
+    <color name="airsig_button_black">#333333</color>
+    <color name="airsig_button_white">#FFFFFF</color>
+    <color name="airsig_blue">#3EB8E7</color>
+
+    <color name="airsig_arcprogress_unfinished">#E4E4E4</color>
+    <color name="airsig_arcprogress_finished_start">#38BEEF</color>
+    <color name="airsig_arcprogress_finished_end">#3BFFDA</color>
+    <color name="airsig_arcprogress_text">#09455B</color>
 </resources>

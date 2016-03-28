@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -41,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PrivacyDataManagerImpl extends PrivacyDataManager {
+
+    private static final String E_TAG = "PhotoCryptor";
     private static final int API_LEVEL_19 = 19;
     public final static String CHECK_APART = "check_apart";
     public final static int MAX_NUM = 802;
@@ -236,12 +239,19 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public String cancelHidePic(String mPicPath) {
         long totalSize = new File(mPicPath).length();
         String newPath = FileOperationUtil.unhideImageFile(mContext, mPicPath, totalSize);
-
-        // 解密
-        try {
-            getImageCryptor().decrypt(newPath);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!TextUtils.isEmpty(newPath)
+                && !FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(newPath)) {
+            LeoLog.d("testHidePic", "encrypt,cacel hide result: " + newPath);
+            // 解密
+            try {
+                getImageCryptor().decrypt(newPath);
+                LeoLog.i(E_TAG, "decrypt, path: " + newPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return newPath;
     }
@@ -259,17 +269,25 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     @Override
     public String onHidePic(String mPicPath, String mSuffix) {
         //mSuffix , 暂时用不上
+
         long totalSize = new File(mPicPath).length();
 
         String newFileName = FileOperationUtil.getNameFromFilepath(mPicPath);
         newFileName = newFileName + Constants.CRYPTO_SUFFIX;
         String newPath = FileOperationUtil.hideImageFile(mContext, mPicPath, newFileName, totalSize);
-
-        // 加密
-        try {
-            getImageCryptor().encrypt(newPath);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!TextUtils.isEmpty(newPath)
+                && !FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)
+                && !FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(newPath)) {
+            LeoLog.d("testHidePic", "encrypt, hide result: " + newPath);
+            // 加密
+            try {
+                getImageCryptor().encrypt(newPath);
+                LeoLog.i(E_TAG, "encrypt, path: " + newPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return newPath;
     }
@@ -1092,4 +1110,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public static boolean isFilterVideoType(String path, String videoType) {
         return path.endsWith(videoType);
     }
+
+
 }

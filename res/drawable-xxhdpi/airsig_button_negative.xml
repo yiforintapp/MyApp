@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+
+        <!-- set color -->
+        <solid android:color="@color/airsig_button_white" />
+        
+        <!-- view border color and width -->
+    	<stroke android:width="1dp" android:color="#CBCBCB" />
+        
+        <!-- set radius of corner -->
+        <corners android:radius="2dp" />
+
+        <padding android:left="15dp" android:right="15dp" android:top="10dp" android:bottom="10dp" />
+    </shape>
+

@@ -1,19 +1,15 @@
 package com.leo.appmaster.applocker;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +30,9 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.service.TaskDetectService;
@@ -41,6 +40,7 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.AutoStartGuideList;
@@ -51,11 +51,17 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by qili on 15-10-9.
@@ -78,8 +84,15 @@ public class AppLockListActivity extends BaseActivity implements
     private TextView mSecurityGuideBt, mAutoGuideBt, mBackageGroundBt;
     private RippleView mFinishBtClick;
     private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL;
-    private TextView  mAutoText, mBackGroudText;
+    private TextView mAutoText, mBackGroudText;
     private View mGuideTip;
+
+    @Nullable
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
+    }
+
     private ListView mLockList;
     private CommonToolbar mTtileBar;
     private ListAppLockAdapter mLockAdapter;
@@ -99,6 +112,12 @@ public class AppLockListActivity extends BaseActivity implements
     private ArrayList<AppInfo> mResaultList;
     private ImageView mAutoImage;
     private boolean isFromConfrim = false;
+    private WifiLockSwitch wifiSwitch;
+    private BlueToothLockSwitch blueToothSwitch;
+
+    private int mWifiAndBluetoothLockCount;
+    private int mLockListCount;
+    private int mFromSuccessListCount; // 首次进入页面加锁应用个数
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -117,7 +136,8 @@ public class AppLockListActivity extends BaseActivity implements
         //Flag is Recomment list
         mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
         if (mResaultList != null) {
-            mLockAdapter.setData(mResaultList);
+            mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
+            mLockAdapter.setData(mResaultList, true);
         }
 
         mProgressBar.setVisibility(View.GONE);
@@ -141,6 +161,9 @@ public class AppLockListActivity extends BaseActivity implements
         long start = SystemClock.elapsedRealtime();
         setContentView(R.layout.activity_list_lockapp);
 
+        wifiSwitch = new WifiLockSwitch();
+        blueToothSwitch = new BlueToothLockSwitch();
+
         AppLoadEngine.getInstance(this).registerAppChangeListener(this);
         LeoEventBus.getDefaultBus().register(this);
         handleIntent();
@@ -160,6 +183,7 @@ public class AppLockListActivity extends BaseActivity implements
             }
 
             isFromConfrim = intent.getBooleanExtra(Constants.FROM_CONFIRM_FRAGMENT, false);
+            mFromSuccessListCount = intent.getIntExtra("first_lock_size", 0);
         }
     }
 
@@ -205,6 +229,12 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList = new ArrayList<AppInfo>();
         mUnlockRecommendList = new ArrayList<AppInfo>();
         mUnlockNormalList = new ArrayList<AppInfo>();
+        if(wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            mWifiAndBluetoothLockCount ++;
+        }
+        if(blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            mWifiAndBluetoothLockCount ++;
+        }
 
         mGuideTip = findViewById(R.id.guide_tip_layout);
         mSecurityGuideBt = (TextView) findViewById(R.id.security_guide_button);
@@ -284,6 +314,7 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList.clear();
         mLockedList.clear();
 
+
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(this)
                 .getAllPkgInfo();
         List<String> lockList = mLockManager.getCurLockList();
@@ -327,7 +358,7 @@ public class AppLockListActivity extends BaseActivity implements
             Collections.sort(mUnlockNormalList, new DefalutAppComparator());
         } catch (Exception e) {
         }
-
+        mLockListCount =mLockedList.size();
         ArrayList<AppInfo> resaultUnlock = new ArrayList<AppInfo>(mUnlockRecommendList);
         resaultUnlock.addAll(mUnlockNormalList);
         mUnlockList = resaultUnlock;
@@ -404,9 +435,19 @@ public class AppLockListActivity extends BaseActivity implements
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         long a = System.currentTimeMillis();
 
+        LeoLog.d("testPosition", "position : " + i);
+
+        //head return
         if (i == 0) return;
-        MaterialRippleLayout headView = (MaterialRippleLayout) view;
-        ListLockItem lockImageView = (ListLockItem) headView.findViewById(R.id.content_item_all);
+        //label return
+        List<AppInfo> switchs = mLockAdapter.getSwitchs();
+        if (switchs != null && switchs.size() > 0) {
+            if (i == 1 || i == switchs.size()) {
+                return;
+            }
+        }
+
+        ListLockItem lockImageView = (ListLockItem) view.findViewById(R.id.content_item_all);
         LockMode curMode = mLockManager.getCurLockMode();
         if (curMode == null || curMode.defaultFlag == 0) {
             Toast.makeText(this, R.string.unlock_all_mode_tip, Toast.LENGTH_SHORT).show();
@@ -419,6 +460,13 @@ public class AppLockListActivity extends BaseActivity implements
 
         AppInfo mLastSelectApp = lockImageView.getInfo();
         if (mLastSelectApp == null) {
+            return;
+        }
+
+        //switch
+        if (mLastSelectApp.packageName.equals(SwitchGroup.WIFI_SWITCH) ||
+                mLastSelectApp.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+            switchClick(mLastSelectApp, lockImageView, curMode);
             return;
         }
 
@@ -517,23 +565,45 @@ public class AppLockListActivity extends BaseActivity implements
         }
     }
 
-//    @Override
-//    public void onRippleComplete(RippleView rippleView) {
-//        if (mLockModeView == rippleView) {
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "modes");
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "modes");
-//            enterLockMode();
-//        } else if (mWeiZhuangView == rippleView) {
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "appcover");
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "appcover");
-//            enterWeiZhuang();
-//        } else if (mLockThemeView == rippleView) {
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "theme");
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "theme");
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "theme_enter", "home");
-//            enterLockTheme();
-//        }
-//    }
+    private void switchClick(AppInfo appInfo, ListLockItem lockImageView, LockMode curMode) {
+
+        if (appInfo.isLocked) {
+            appInfo.isLocked = false;
+            if (lockImageView != null) {
+                lockImageView.setLockView(false);
+                lockImageView.setDescEx(appInfo, false);
+            }
+            String toast = this.getString(R.string.unlock_app_action, appInfo.label);
+            showTextToast(toast);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock_" + curMode.modeName + "_"
+                    + appInfo.packageName);
+
+            if (appInfo.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                wifiSwitch.switchOff(curMode);
+            } else {
+                blueToothSwitch.switchOff(curMode);
+            }
+
+        } else {
+            appInfo.isLocked = true;
+            if (lockImageView != null) {
+                lockImageView.setLockView(true);
+                lockImageView.setDescEx(appInfo, true);
+            }
+            String toast = this.getString(R.string.lock_app_action, appInfo.label);
+            showTextToast(toast);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "lock_" + curMode.modeName + "_"
+                    + appInfo.packageName);
+
+            if (appInfo.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                wifiSwitch.switchOn(curMode);
+            } else {
+                blueToothSwitch.switchOn(curMode);
+            }
+        }
+
+
+    }
 
     private class LockedAppComparator implements Comparator<AppInfo> {
         List<String> sortBase;
@@ -856,6 +926,20 @@ public class AppLockListActivity extends BaseActivity implements
             Intent intent = new Intent(this, HomeActivity.class);
             Log.e("lockmore", "settrue");
             startActivity(intent);
+        }
+        LeoLog.e("HomeActivity", mLockedList.size() + "");
+        int count = 0;
+        if (wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            count ++;
+        }
+        if (blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            count ++;
+        }
+        if (((mFromSuccessListCount != 0 && mLockedList.size() >= mFromSuccessListCount)
+                || (mFromSuccessListCount == 0 && mLockedList.size() > mLockListCount)
+                ||  count > mWifiAndBluetoothLockCount)
+                && !isFromConfrim) {
+            LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP, true));
         }
         super.onBackPressed();
     }

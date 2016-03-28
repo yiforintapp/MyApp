@@ -211,36 +211,8 @@ public class ImageLoader {
         displayImage(uri, imageAware, options, listener, null);
     }
 
-    /**
-     * Adds display image task to execution pool. Image will be set to
-     * ImageAware when it's turn.<br />
-     * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
-     * called before this method call
-     *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
-     * @param imageAware {@linkplain com.leo.imageloader.core.ImageAware Image
-     *            aware view} which should display image
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
-     * @param progressListener {@linkplain com.leo.imageloader.core.ImageLoadingProgressListener
-     *            Listener} for image loading progress. Listener fires events on
-     *            UI thread if this method is called on UI thread. Caching on
-     *            disk should be enabled in
-     *            {@linkplain com.leo.imageloader.DisplayImageOptions options}
-     *            to make this listener work.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
-     * @throws IllegalArgumentException if passed <b>imageAware</b> is null
-     */
     public void displayImage(String uri, ImageAware imageAware, DisplayImageOptions options,
-            ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
+                             ImageLoadingListener listener, ImageLoadingProgressListener progressListener, ImageSize targetSize) {
         checkConfiguration();
         if (imageAware == null) {
             throw new IllegalArgumentException(ERROR_WRONG_ARGUMENTS);
@@ -264,8 +236,10 @@ public class ImageLoader {
             return;
         }
 
-        ImageSize targetSize = ImageSizeUtils.defineTargetSizeForView(imageAware,
-                configuration.getMaxImageSize());
+        if (targetSize == null) {
+            targetSize = ImageSizeUtils.defineTargetSizeForView(imageAware,
+                    configuration.getMaxImageSize());
+        }
         String memoryCacheKey = MemoryCacheUtils.generateKey(uri, targetSize);
         engine.prepareDisplayTaskFor(imageAware, memoryCacheKey);
 
@@ -312,6 +286,39 @@ public class ImageLoader {
     }
 
     /**
+     * Adds display image task to execution pool. Image will be set to
+     * ImageAware when it's turn.<br />
+     * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
+     * called before this method call
+     *
+     * @param uri Image URI (i.e. "http://site.com/image.png",
+     *            "file:///mnt/sdcard/image.png")
+     * @param imageAware {@linkplain com.leo.imageloader.core.ImageAware Image
+     *            aware view} which should display image
+     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
+     *            Options} for image decoding and displaying. If <b>null</b> -
+     *            default display image options
+     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *            from configuration} will be used.
+     * @param listener {@linkplain ImageLoadingListener Listener} for image
+     *            loading process. Listener fires events on UI thread if this
+     *            method is called on UI thread.
+     * @param progressListener {@linkplain com.leo.imageloader.core.ImageLoadingProgressListener
+     *            Listener} for image loading progress. Listener fires events on
+     *            UI thread if this method is called on UI thread. Caching on
+     *            disk should be enabled in
+     *            {@linkplain com.leo.imageloader.DisplayImageOptions options}
+     *            to make this listener work.
+     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
+     *             method wasn't called before
+     * @throws IllegalArgumentException if passed <b>imageAware</b> is null
+     */
+    public void displayImage(String uri, ImageAware imageAware, DisplayImageOptions options,
+            ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
+        displayImage(uri, imageAware, options, listener, progressListener, null);
+    }
+
+    /**
      * Adds display image task to execution pool. Image will be set to ImageView
      * when it's turn. <br/>
      * Default {@linkplain DisplayImageOptions display image options} from
@@ -350,6 +357,10 @@ public class ImageLoader {
      */
     public void displayImage(String uri, ImageView imageView, DisplayImageOptions options) {
         displayImage(uri, new ImageViewAware(imageView), options, null, null);
+    }
+
+    public void displayImage(String uri, ImageView imageView, DisplayImageOptions options, ImageSize imageSize) {
+        displayImage(uri, new ImageViewAware(imageView), options, null, null, imageSize);
     }
 
     /**

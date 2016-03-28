@@ -10,34 +10,6 @@
         android:layout_height="193dp"
         android:layout_centerInParent="true"
         android:padding="@dimen/battery_boost_padding">
-
-        <ImageView
-            android:id="@+id/boost_anim_iv1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/boost_anim_iv2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/boost_anim_iv3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/boost_anim_iv4"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
     </RelativeLayout>
 
     <com.leo.appmaster.battery.BatteryBoostAnimView
@@ -45,6 +17,62 @@
         android:layout_width="193dp"
         android:layout_height="193dp"
         android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/boost_center_img"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/boost_center_icon"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_marginLeft="27dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="166dp"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_marginRight="27dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="166dp"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img3"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_marginLeft="88dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="81dp"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img4"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_marginRight="88dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="81dp"/>
+
+    <ImageView
+        android:id="@+id/boost_anim_img5"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="124dp"/>
 
     <RelativeLayout
         android:id="@+id/rl_shield"
@@ -82,7 +110,8 @@
         android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="@string/battery_boosting" />
+        android:text="@string/battery_boosting"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/charge_clean_result_layout"

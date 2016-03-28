@@ -21,6 +21,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -147,6 +148,16 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         }
     }
 
+    private boolean isNewAdminActive() {
+        DevicePolicyManager manager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+        ComponentName mAdminName = new ComponentName(this, DeviceReceiverNewOne.class);
+        if (manager.isAdminActive(mAdminName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
@@ -162,7 +173,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
             @Override
             public void run() {
-                if (isAdminActive()) {
+                if (isAdminActive() || isNewAdminActive()) {
                     mForbidUninstall.setChecked(true);
                     mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
                 } else {
@@ -271,13 +282,16 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         String key = preference.getKey();
         if (AppMasterPreference.PREF_FORBIND_UNINSTALL.equals(key)) {
             Intent intent = null;
-            ComponentName component = new ComponentName(this,
-                    DeviceReceiver.class);
+            ComponentName component = new ComponentName(this,DeviceReceiver.class);
+            ComponentName component2 = new ComponentName(this,DeviceReceiverNewOne.class);
 //            if(false){
             if (isAdminActive()) {
                 DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
                 dpm.removeActiveAdmin(component);
-            } else {
+            } else if (isNewAdminActive()) {
+                DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+                dpm.removeActiveAdmin(component2);
+            }else {
                 mLockManager.filterSelfOneMinites();
                 mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);

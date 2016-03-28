@@ -15,9 +15,14 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.ListAppLockAdapter;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.XHeaderView;
@@ -37,12 +42,14 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
 
     private ListView mAppList;
     private LockManager mLockMgr;
-
     private List<AppItemInfo> mDataList;
-
     private String mAppString;
-
     private HomeActivity mMianActivity;
+    private AppItemInfo wifiInfo;
+    private AppItemInfo blueToothInfo;
+    private List<AppItemInfo> switchList;
+    private WifiLockSwitch wifiSwitch;
+    private BlueToothLockSwitch blueToothLockSwitch;
 
     public static PrivacyNewAppFragment newInstance() {
         PrivacyNewAppFragment fragment = new PrivacyNewAppFragment();
@@ -56,13 +63,39 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         mAppString = text;
         mDataList = new ArrayList<AppItemInfo>();
         for (Object o : list) {
-            mDataList.add((AppItemInfo) o);
+
+            //排完序再加上
+            AppItemInfo info = (AppItemInfo) o;
+            if (info.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                wifiInfo = info;
+            } else if (info.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                blueToothInfo = info;
+            } else {
+                mDataList.add(info);
+            }
+
         }
 
         //change the topPos
         mDataList = changeTopPos(mDataList);
-
         Collections.sort(mDataList, new RecommentAppLockListActivity.DefalutAppComparator());
+
+        //add wifi && bluetooth
+        wifiSwitch = new WifiLockSwitch();
+        blueToothLockSwitch = new BlueToothLockSwitch();
+
+        switchList = new ArrayList<AppItemInfo>();
+        if (wifiInfo != null) {
+            switchList.add(wifiInfo);
+        }
+
+        if (blueToothInfo != null) {
+            switchList.add(blueToothInfo);
+        }
+
+        if (switchList.size() > 0) {
+            mDataList.addAll(0, switchList);
+        }
 
         if (mAdaper != null) {
             mAdaper.setList(list);
@@ -99,8 +132,21 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
             public void run() {
                 List<AppItemInfo> list = mAdaper.getSelectedList();
 
+                //wifi && blueTooth
+                mLockMgr = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                wifiSwitch.setScreenShowed();
+
                 List<String> pkgList = new ArrayList<String>(list.size());
                 for (AppItemInfo info : list) {
+
+                    if (info.packageName.equals(SwitchGroup.WIFI_SWITCH)) {
+                        wifiSwitch.switchOn(mLockMgr.getCurLockMode());
+                    }
+
+                    if (info.packageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                        blueToothLockSwitch.switchOn(mLockMgr.getCurLockMode());
+                    }
+
                     pkgList.add(info.packageName);
                 }
 
@@ -125,6 +171,9 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
 
     @Override
     protected void onIgnoreClick(boolean direct) {
+        //wifi && blueTooth
+        wifiSwitch.setScreenShowed();
+
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         int incScore = lm.ignore();
         mActivity.onIgnoreClick(incScore, MgrContext.MGR_APPLOCKER);
@@ -175,7 +224,11 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
         boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
         int stringId = R.string.pri_pro_new_app;
         if (!processed) {
-            stringId = R.string.scan_find_app;
+            if (switchList.size() > 0) {
+                stringId = R.string.scan_app_title_switch;
+            } else {
+                stringId = R.string.scan_find_app;
+            }
         }
         String content = AppMasterApplication.getInstance().getString(stringId, mDataList == null ? 0 : mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));

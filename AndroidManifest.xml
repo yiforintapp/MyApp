@@ -181,6 +181,9 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+
+       <!-- android:taskAffinity="com.leo.appmaster.intrudercatch"-->
+
         <activity
             android:name=".intruderprotection.IntruderCatchedActivity"
             android:excludeFromRecents="true"
@@ -210,7 +213,7 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
-        
+
         <activity
             android:name=".callfilter.CallFilterSettingActivity"
             android:excludeFromRecents="true"
@@ -247,11 +250,11 @@
             android:exported="true"
             android:hardwareAccelerated="false"
             android:launchMode="singleTask"
-            android:taskAffinity="com.leo.appmaster.home"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/Theme.PageIndicatorDefaults"></activity>
-<!--           	android:launchMode="singleTask" -->
-            <!-- android:taskAffinity="com.leo.appmaster.home" -->
+        <!--           	android:launchMode="singleTask" -->
+        <!-- android:taskAffinity="com.leo.appmaster.home" -->
         <activity
             android:name=".callfilter.StrangeCallActivity"
             android:excludeFromRecents="true"
@@ -390,7 +393,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
-            android:taskAffinity="com.leo.appmaster.lockview" 
+            android:taskAffinity="com.leo.appmaster.lockview"
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar"/>
 
         <activity
@@ -405,8 +408,8 @@
             android:name=".lockertheme.LockerTheme"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/Theme.PageIndicatorDefaults">
             <meta-data
@@ -600,6 +603,30 @@
             android:theme="@style/Theme.PageIndicatorDefaults"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
+            android:name=".airsig.AirSigActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.PageIndicatorDefaults"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".airsig.airsigsdk.VerifyActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/airsig_verify_title"
+            android:theme="@style/Theme.AirSig.Verify"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".airsig.airsigsdk.TutorialActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/airsig_verify_title"
+            android:theme="@style/Theme.AirSig.Verify"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".airsig.airsigsdk.TrainingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/airsig_verify_title"
+            android:theme="@style/Theme.AirSig.Verify"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".privacycontact.EditPrivacyContactActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
@@ -729,12 +756,13 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".applocker.receiver.DeviceReceiver"
+
+        <receiver android:name=".applocker.receiver.DeviceReceiverNewOne"
             android:enabled="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/my_admin" />
+                android:resource="@xml/my_admin_new_1" />
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
@@ -743,32 +771,24 @@
             </intent-filter>
         </receiver>
 
-
- <!--       <receiver
-            android:name=".intruderprotection.SystLockAdminReceiver"
-            android:enabled="true"
-            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+        <receiver android:name=".applocker.receiver.DeviceReceiver">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_permission" />
-            <intent-filter
-                android:priority="2147483647">
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_FAILED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_CHANGED" />
-                <action android:name="android.app.action.ACTION_PASSWORD_SUCCEEDED" />
-            </intent-filter>
-        </receiver>-->
+                android:resource="@xml/my_admin" />
 
-       <!-- <receiver
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+            </intent-filter>
+        </receiver>
+
+       <receiver
             android:name=".intruderprotection.SystLockStatusReceiver"
             android:exported="true">
             <intent-filter android:priority="2147483647">
                 <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.intent.action.SCREEN_OFF"/>
-                <action android:name="android.intent.action.SCREEN_ON"/>
             </intent-filter>
-        </receiver>-->
+        </receiver>
 
         <receiver
             android:name="com.leo.appmaster.privacycontact.SingleContactReceiver"
@@ -831,6 +851,12 @@
         <service
             android:name="com.leo.push.PushService"
             android:exported="true" />
+
+        <!-- 3.5 Android 5.0+ 守护Service -->
+        <service
+            android:name="com.leo.appmaster.applocker.service.TaskProtectService"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+        </service>
 
         <!-- for LEO update sdk -->
         <receiver
@@ -959,7 +985,7 @@
                 <action android:name="com.leo.appmaster.action.IPC_RECEIVER" />
             </intent-filter>
         </receiver>
-        
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

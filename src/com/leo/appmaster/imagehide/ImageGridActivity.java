@@ -1,19 +1,14 @@
 package com.leo.appmaster.imagehide;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -31,11 +26,11 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
-import com.leo.appmaster.home.HomeTabFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -46,17 +41,25 @@ import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-import com.leo.appmaster.videohide.VideoGriActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageSize;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class ImageGridActivity extends BaseFragmentActivity implements OnClickListener, OnItemClickListener {
+
+    public static final String TAG = "ImageGridActivity";
+
     public final static int INIT_UI_DONE = 24;
     public final static int LOAD_DATA_DONE = 25;
     public final static int START_CANCEL_OR_HIDE_PIC = 26;
@@ -94,6 +97,10 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     private GuideFragment mGuideFragment;
     private boolean mPicGuide;
     private boolean isFristIn = true;
+    //通过拷贝方式隐藏图片的方式，删除源文件是否成功
+    private boolean mIsDeletSucFromDatebase = true;
+
+    private ImageSize mImageSize;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -114,7 +121,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                     });
                     break;
                 case HIDE_FINISH:
-                    int isSuccess = (Integer) msg.obj;
+                    String isSuccess = (String) msg.obj;
                     onPostDo(isSuccess);
                     break;
             }
@@ -241,13 +248,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     }
 
     private void initImageLoder() {
-        mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.photo_bg_loding)
-                .showImageForEmptyUri(R.drawable.photo_bg_loding)
-                .showImageOnFail(R.drawable.photo_bg_loding)
-                .displayer(new FadeInBitmapDisplayer(500))
-                .cacheInMemory(true).cacheOnDisk(false).considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565).build();
+        mOptions = ImagePreviewUtil.getPreviewOptions();
+        mImageSize = ImagePreviewUtil.getPreviewSize();
 
         mImageLoader = ImageLoader.getInstance();
     }
@@ -320,6 +322,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 });
             }
         }
+
     }
 
     private void cancelGuide() {
@@ -343,6 +346,11 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 //            isFristIn = false;
 //        }
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
@@ -462,7 +470,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 } else {
                     uri = ImageDownloader.Scheme.FILE.wrap(path);
                 }
-                mImageLoader.displayImage(uri, holder.imageView, mOptions);
+                mImageLoader.displayImage(uri, holder.imageView, mOptions, mImageSize);
             }
             return view;
         }
@@ -868,8 +876,12 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     private void startDoingBack(boolean isHide) {
         LeoLog.d("testnewLoad", "isHide:" + isHide);
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        int isSuccess = 3;
+        String isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
         try {
+
+            //恢复隐藏方式默认值
+            FileOperationUtil.setHideTpye(FileOperationUtil.DEF_HIDE);
+
             if (mClickList != null && mClickList.size() > 0) {
                 ArrayList<PhotoItem> list = (ArrayList<PhotoItem>) mClickList.clone();
                 Iterator<PhotoItem> iterator = list.iterator();
@@ -881,25 +893,29 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                         item = iterator.next();
                         if (!mIsBackgoundRunning)
                             break;
-                        LeoLog.d("testHidePic", "path : " + item.getPath());
+                        long cu1 = SystemClock.elapsedRealtime();
+                        if (!TextUtils.isEmpty(item.getPath())) {
+                            LeoLog.d("testHidePic", "size:" + new File(item.getPath()).length() + ",path : " + item.getPath());
+                        }
                         String newPath = ((PrivacyDataManager) MgrContext.
                                 getManager(MgrContext.MGR_PRIVACY_DATA)).
                                 onHidePic(item.getPath(), "");
                         LeoLog.d("testHidePic", "result : " + newPath);
                         LeoLog.d("testHidePic", "---------------------------------------");
                         if (newPath != null) {
-                            if ("-2".equals(newPath)) {
-                                isSuccess = -2;
-                            } else if ("0".equals(newPath)) {
-                                isSuccess = 0;
+                            if (FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPath)) {
+                                isSuccess = FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL;
+                            } else if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPath)) {
+
+                                isSuccess = FileOperationUtil.HIDE_PIC_COPY_SUCESS;
                                 deleteList.add(item);
-                            } else if ("-1".equals(newPath)) {
-                                isSuccess = -1;
-                            } else if ("4".equals(newPath)) {
-                                isSuccess = 4;
+                            } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)) {
+                                isSuccess = FileOperationUtil.HIDE_PIC_COPY_FAIL;
+                            } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)) {
+                                isSuccess = FileOperationUtil.HIDE_PIC_NO_MEMERY;
                                 break;
                             } else {
-                                isSuccess = 3;
+                                isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
                                 FileOperationUtil.saveFileMediaEntry(newPath,
                                         this);
                                 File file = new File(item.getPath());
@@ -912,7 +928,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             SDKWrapper.addEvent(this, SDKWrapper.P1,
                                     "hide_pic_operation",
                                     "pic_hid_fal");
-                            isSuccess = 2;
+                            isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
                         }
                     }
                     if (deleteList.size() > 0) {
@@ -921,6 +937,35 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             mAllListPath.remove(photoItem.getPath());
                         }
                     }
+
+                    //pg3.5：对删除数据库触发删除文件的不能成功的系统，弹框处理
+                    final String flag = isSuccess;
+                    final PhotoItem photoItem = list.get(0);
+                    int hideType = FileOperationUtil.getHideTpye();
+                    final boolean isCopyType = (hideType == FileOperationUtil.COPY_HIDE);
+                    ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                        @Override
+                        public void run() {
+                            boolean isNoMemery = (flag != FileOperationUtil.HIDE_PIC_NO_MEMERY);
+                            if (isNoMemery && isCopyType) {
+                                String path = photoItem.getPath();
+                                File file = new File(path);
+                                boolean isExsit = file.exists();
+                                if (isExsit) {
+                                    LeoLog.e("testHidePic", "file exsit.");
+                                    ThreadManager.executeOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            onPostDo(FileOperationUtil.HIDE_PIC_COPY_SUCESS);
+                                        }
+                                    });
+                                } else {
+                                    LeoLog.e("testHidePic", "file is empy");
+                                }
+                            }
+                        }
+                    }, 1000);
+
                 } else {
                     while (iterator.hasNext()) {
                         item = iterator.next();
@@ -937,20 +982,21 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             SDKWrapper.addEvent(this, SDKWrapper.P1,
                                     "hide_pic_operation",
                                     "pic_ccl_fal");
-                            isSuccess = 2;
-                        } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
-                            isSuccess = 2;
-                        } else if ("0".equals(newPaht)) {
-                            isSuccess = 3;
+                            isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
+                        } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPaht)
+                                || FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(newPaht)) {
+                            isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
+                        } else if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPaht)) {
+                            isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
                             ContentValues values = new ContentValues();
                             values.put("image_path", filepath);
                             getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
                             deleteList.add(item);
-                        } else if ("4".equals(newPaht)) {
-                            isSuccess = 4;
+                        } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPaht)) {
+                            isSuccess = FileOperationUtil.HIDE_PIC_NO_MEMERY;
                             break;
                         } else {
-                            isSuccess = 3;
+                            isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
                             FileOperationUtil.saveImageMediaEntry(newPaht, this);
                             FileOperationUtil.deleteFileMediaEntry(filepath, this);
                             deleteList.add(item);
@@ -975,7 +1021,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         readyDoingDone(isSuccess);
     }
 
-    private void readyDoingDone(int isSuccess) {
+    private void readyDoingDone(String isSuccess) {
         if (mHandler != null) {
             Message msg = new Message();
             msg.obj = isSuccess;
@@ -984,19 +1030,23 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         }
     }
 
-    private void onPostDo(int isSuccess) {
-        LeoLog.d("testnewLoad", "onPostDo isSuccess:" + isSuccess);
+    private void onPostDo(String isSuccess) {
+        LeoLog.d("testnewLoad", "onPostDo isSuccess:" + isSuccess + mActicityMode);
         mClickList.clear();
-        if (isSuccess == 0) {
+        if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(isSuccess)) {
             String title = getString(R.string.no_image_hide_dialog_title);
             String content = getString(R.string.no_image_hide_dialog_content);
             String rightBtn = getString(R.string.no_image_hide_dialog_button);
             float width = getResources().getDimension(R.dimen.memery_dialog_button_width);
             float height = getResources().getDimension(R.dimen.memery_dialog_button_height);
+            LeoLog.d(TAG, "");
             showMemeryAlarmDialog(title, content, null, rightBtn, false, true, width, height);
-        } else if (isSuccess == -1 || isSuccess == -2) {
-        } else if (isSuccess == 2) {
-        } else if (isSuccess == 4) {
+        } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(isSuccess)
+                || FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(isSuccess)) {
+
+        } else if (FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(isSuccess)) {
+
+        } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(isSuccess)) {
             if (mActicityMode == SELECT_HIDE_MODE) {
                 String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
                 String content = getString(R.string.image_hide_memery_insuficient_dialog_content);
@@ -1018,20 +1068,28 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
                         width, height);
             }
+        } else if (FileOperationUtil.HIDE_PIC_SUCESS.equals(isSuccess) && mActicityMode == SELECT_HIDE_MODE) {
+            if (!ImageHideMainActivity.mIsFromConfirm) {
+                LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_PIC, true));
+            }
         }
         dismissProgressDialog();
         if (mPicturesList.size() > 0) {
             animateReorder();
             updateRightButton();
         } else {
-            if (isSuccess == 0) {
+            if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(isSuccess)) {
                 if (mImageAdapter != null) {
                     mImageAdapter.notifyDataSetChanged();
                 }
             } else {
-                finish();
+                int hideType = FileOperationUtil.getHideTpye();
+                if (hideType != FileOperationUtil.COPY_HIDE) {
+                    finish();
+                }
             }
         }
+        mIsDeletSucFromDatebase = true;
     }
 
     private void doingBackGround(boolean isHidePic) {
@@ -1096,7 +1154,10 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         memeryDialog.setTitle(title);
         memeryDialog.setText(content);
         memeryDialog.setBtnText(rightBtn);
-        memeryDialog.show();
+        if (!this.isFinishing()) {
+            memeryDialog.show();
+        }
     }
+
 
 }

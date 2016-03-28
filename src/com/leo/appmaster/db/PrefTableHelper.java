@@ -3,6 +3,7 @@ package com.leo.appmaster.db;
 import android.content.Context;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
@@ -83,5 +84,14 @@ public class PrefTableHelper {
         }
 
         return false;
+    }
+
+    /**
+     * 获取广告展示的概率 0 ~ 10 对应概率为不显示 ~ 100%
+     * @return
+     */
+    public static int getAdProbability() {
+        return PreferenceTable.getInstance().getInt(
+                ADShowTypeRequestManager.AD_PROBABILITY, ADShowTypeRequestManager.AD_PROBABILITY_MAX);
     }
 }

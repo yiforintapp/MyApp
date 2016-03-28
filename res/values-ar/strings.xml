@@ -110,7 +110,7 @@
 
     <string name="app_setting_update">فحص الترقية</string>
     <string name="feedback">رد المستخدم</string>
-    <string name="grade">خمس نجوم</string>
+    <string name="grade">أحبها</string>
     <string name="app_setting_about">حولنا</string>
 
     <!-- TODO -->
@@ -546,7 +546,8 @@
     <string name="feedback_email_guide">ايميل</string>
     <string name="feedback_category_guide">نوع السؤال</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swiftly، الاداة الأكثر شعبية بمتجر جوجل. بنقرة واحدة، تكون الاختصارات، التطبيقات المفضلة، الرسائل بين يديك.</string>
-    <string name="grade_tip_feedback">كلامي</string>
+    <string name="grade_tip_feedback">كره</string>
+    <string name="grade_tip_feedback_switch_on">غير مسرور</string>
     <string name="quick_first_tip_dialog_left_bt">لاحقا</string>
 
     <!-- quick gesture -->
@@ -855,7 +856,7 @@
     <string name="toast_getscore_text">مبروك! قد زادت النقاط</string>
     <string name="feedback_tell_us_content">إذا لديك أي أسئلة أو احتياجات، لا تردد في الاتصال بنا وتابعنا في Facebook وWhatsapp.</string>
     <string name="feedback_tell_us_contact_type_title">جهات الاتصال</string>
-    <string name="dialog_fivestars_content_text">تتمتع بLEO Privacy؟ تقدير ب5 نجوم منك لمساعدتنا علي توفير أفضل الخدمات! </string>
+    <string name="dialog_fivestars_content_text">تحب حارس الخصوصية ؟</string>
     <string name="elect_empty_content">عذرا، معلومات البطارية غير متاحة مؤقتا</string>
     <string name="swifty_item_btn">تمكين</string>
     <string name="grade_item_title">تحب LEO Privacy؟</string>
@@ -999,8 +1000,8 @@
     <string name="batterymanage_boosted_number">%1$d هي الأمثل البنود</string>
 
     <string name="screen_protect_time"> وقت الباقية</string>
-    <string name="screen_protect_time_right"><Data><![CDATA[<font color=""#0ad931"">%1$s</font>]]></Data> h<Data><![CDATA[<font color=""#0ad931"">%2$s</font>]]></Data>m</string>
-    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>m</string>
+    <string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>h<Data><![CDATA[<font color="#0ad931">%2$s</font>]]>min</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>min</string>
 
     <string name="oppo_rom_tip_txt">،الخصوصية حارس تشغيل بعد عادية الصلاحية تعمل النظام قيد بنسبة  اجازة بعد الخافية التطبيقات تشغيل ، البرنامج اختر اضافة اضافة التشغيل الخصوصية حارس خطوة ، اضافة</string>
 
@@ -1067,4 +1068,21 @@
     <!--3.3.2新增引导文案-->
     <string name="gde_renm_content">اسم جديد، بداية جديدة </string>
     <string name="battery_protect_view_remain_three_title">فيديو</string>
+
+    <!--3.5-->
+    <string name="intruder_setting_title_1">التقاط صور من اقتحم  قفل الشاشة الرئيسية</string>
+    <string name="intruder_setting_summarty_1">التقاط صورعندما دخل كلمة المرور الخاطئة في فتح التلفون</string>
+    <string name="intruder_setting_title_2">التقاط صور من اقتحم  قفل التطبيق</string>
+    <string name="intruder_setting_summarty_2">التقاط صورعندما دخل كلمة المرور الخاطئة في فتح التطبيق</string>
+    <string name="intruder_systemlock_tip">اقتراح تمكين التقاط صور من اقتحم  قفل الشاشة </string>
+    <string name="intruder_systemlock_finished">قد تمكين التقاط صور من اقتحم  قفل الشاشة</string>
+    <string name="intruder_device_admin_guide_content">لا بد منك أن تفتح الحماية المتقدمة قبل تمكين هذه الوظيفة.اذا تريد الغاء التثبيتLEO Privacy ،فيجب عليك اغلاقها.يفتح؟</string>
+    <string name="intruder_systemlock_alarm">لا يمكن التقاط صور المتطفل عندما أغلق هذه  الوظيفة</string>
+    <string name="app_lock_list_switch_wifi">Wi-Fi</string>
+    <string name="app_lock_list_switch_bluetooth">Bluetooth</string>
+    <string name="app_lock_list_switch_title_one">تحول</string>
+    <string name="app_lock_list_switch_title_two">التطبيق</string>
+    <string name="intruder_intruduction">التقاط صور تلقائيا عندما دخل كلمة المرور الخاطئة في فتح التطبيق او التلفول</string>
+    <string name="scan_app_title_switch">توجد %1$s تطبيق و تحول</string>
+    <string name="mobile_phone">التلفون</string>
 </resources>

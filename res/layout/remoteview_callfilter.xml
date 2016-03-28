@@ -63,8 +63,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:background="@drawable/clr_mem_noti_bt"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
             <TextView
                 android:id="@+id/free_bg"

@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.FailReason.FailType;
 import com.leo.imageloader.core.ImageAware;
@@ -139,11 +140,12 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
             checkTaskNotActual();
 
             bmp = configuration.memoryCache.get(memoryCacheKey);
+            LeoLog.d(ImageLoader.TAG, "load mem bmp: " + bmp + " | memoryCacheKey: " + memoryCacheKey);
             if (bmp == null || bmp.isRecycled()) {
                 bmp = tryLoadBitmap();
+                LeoLog.d(ImageLoader.TAG, "try load bmp: " + bmp + " | memoryCacheKey: " + memoryCacheKey);
                 if (bmp == null)
                     return; // listener callback already was fired
-
                 checkTaskNotActual();
                 checkTaskInterrupted();
 
@@ -457,6 +459,7 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
      */
     private boolean isViewCollected() {
         if (imageAware.isCollected()) {
+            LeoLog.d("ImageLoader", "isCollected..key: " + memoryCacheKey);
             L.d(LOG_TASK_CANCELLED_IMAGEAWARE_COLLECTED, memoryCacheKey);
             return true;
         }
@@ -470,6 +473,11 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
         }
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
     /**
      * @return <b>true</b> - if current ImageAware is reused for displaying
      *         another image; <b>false</b> - otherwise
@@ -480,6 +488,9 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
         // actual.
         // If ImageAware is reused for another task then current task should be
         // cancelled.
+        if (currentCacheKey == null || memoryCacheKey == null) {
+            return false;
+        }
         boolean imageAwareWasReused = !memoryCacheKey.equals(currentCacheKey);
         if (imageAwareWasReused) {
             L.d(LOG_TASK_CANCELLED_IMAGEAWARE_REUSED, memoryCacheKey);

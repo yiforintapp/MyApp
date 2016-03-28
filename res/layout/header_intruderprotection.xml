@@ -8,147 +8,24 @@
         android:id="@+id/top_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cb">
+        android:background="@color/cb"
+        android:paddingBottom="5dp">
 
-      <!--  <TextView
-            android:layout_width="25dp"
-            android:layout_height="20dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="55dp"
-            android:layout_toLeftOf="@+id/rl_switch"
-            android:gravity="right"
-            android:text="off"
-            android:textColor="#ffffff"
-            android:textSize="15dp" />
-
-        <TextView
-            android:layout_width="25dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="55dp"
-            android:layout_toRightOf="@+id/rl_switch"
-            android:gravity="left"
-            android:text="on"
-            android:textColor="#ffffff"
-            android:textSize="15dp" />-->
-
-        <!-- 开关跟布局 -->
 
         <RelativeLayout
             android:id="@+id/rl_switch"
-            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp">
+
             <ImageView
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/intruder_pic"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/intruder_pic" />
 
         </RelativeLayout>
 
-
-        <!--RelativeLayout
-            android:id="@+id/rl_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp">
-
-
-            <RelativeLayout
-                android:id="@+id/rl_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/iv_switch_bg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
-                    android:layout_marginRight="7dp"
-                    android:src="@drawable/intruder_catch_switch_bg" />
-
-                <ImageView
-                    android:id="@+id/iv_redlight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/intruder_catch_switch_grey" />
-
-                <ImageView
-                    android:id="@+id/iv_greenlight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="140dp"
-                    android:src="@drawable/intruder_catch_switch_grey" />
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/iv_switch_needle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/intruder_catch_switch_needle" />
-
-            <ImageView
-                android:id="@+id/iv_switch_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/intruder_catch_switch_button" />
-
-
-            &lt;!&ndash;  <RelativeLayout
-                 android:id="@+id/rl_bg"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginLeft="7dp"
-                 android:layout_marginRight="7dp" >
-
-                 <ImageView
-                     android:id="@+id/iv_switch_bg"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:src="@drawable/intruder_catch_switch_bg" />
-             </RelativeLayout>
-
-             <ImageView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:src="@drawable/intruder_catch_switch_red" />
-
-             <ImageView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerVertical="true"
-                 android:layout_alignParentRight="true"
-                 android:src="@drawable/intruder_catch_switch_green" />
-
-             <RelativeLayout
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerInParent="true" >
-
-                 <ImageView
-                     android:id="@+id/iv_switch_needle"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:src="@drawable/intruder_catch_switch_needle" />
-             </RelativeLayout>
-
-             <ImageView
-                 android:id="@+id/iv_switch_button"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerInParent="true"
-                 android:src="@drawable/intruder_catch_switch_button" /> &ndash;&gt;
-        </RelativeLayout>-->
-        <!-- 开关跟布局结束 -->
 
         <TextView
             android:id="@+id/tv_introduction"
@@ -156,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/rl_switch"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="12dp"
             android:gravity="center_horizontal"
             android:text="@string/intruderprotection_desc_title"
             android:textColor="#ffffff"
@@ -164,75 +41,103 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/tv_introduction"
             android:layout_marginTop="4dp"
             android:gravity="center_horizontal"
-            android:maxLines="2"
-            android:text="@string/intruderprotection_desc"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:text="@string/intruder_intruduction"
             android:textColor="#cadeff"
+            android:layout_marginBottom="10dp"
             android:textSize="14dp" />
-
-        <!--
-                     <TextView 
-                    android:id="@+id/tv_fail_times_to_catch"
-                    android:textSize="18dp"
-                     android:layout_marginTop="20dp"
-                    android:layout_below="@id/tv_introduction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/intruder_to_catch_fail_times_tip"
-                    />
-        -->
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/rl_intrudercatch_tip"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_below="@id/top_area"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:visibility="gone">
+        -
 
-        <TextView
-            android:id="@+id/tv_fail_times_to_catch"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:visibility="invisible"
+            android:id="@+id/ll_guide_finished"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/white"
             android:gravity="center_vertical"
-            android:maxLines="2"
-            android:text="@string/intruder_to_catch_fail_times_tip"
-            android:textColor="#333333"
-            android:textSize="15dp" />
+            android:orientation="horizontal">
 
-        <com.leo.appmaster.ui.RippleView
-            android:id="@+id/rv_change_times"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginRight="12dp"
-            android:maxWidth="90dp"
-            android:minWidth="52dp"
-            app:rippleColor="@color/button_blue_stroke_ripple"
-            app:rippleDuration="250"
-            app:rippleHover="true"
-            app:rippleOverlay="true">
-
-            <Button
-                android:id="@+id/bt_change_times"
+            <ImageView
+                android:layout_marginLeft="14dp"
+                android:src="@drawable/icon_intruder_complete"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f4"
+                android:gravity="center_vertical"
+                android:text="@string/intruder_systemlock_finished"
+                android:layout_marginLeft="7dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_guide_tip"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="#ff9000"
+            android:gravity="center_vertical"
+            android:visibility="visible"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_systemlock_antiintruder_tip"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/while_bg_blue_line"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:maxLines="3"
+                android:text="@string/intruder_systemlock_tip"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/f4" />
+
+            <com.leo.appmaster.ui.RippleView
+                android:id="@+id/rv_open"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginRight="12dp"
                 android:maxWidth="90dp"
-                android:minWidth="52dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="@string/change_times_to_catch"
-                android:textColor="#2674f6"
-                android:textSize="14dp" />
-        </com.leo.appmaster.ui.RippleView>
-    </LinearLayout>
+                android:minWidth="71dp"
+                app:rippleColor="@color/button_blue_stroke_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
+                <!--android:background="@drawable/orange_radius_btn_shape"-->
+                <Button
+                    android:id="@+id/bt_change_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/orange_radius_btn_shape"
+                    android:maxWidth="90dp"
+                    android:minWidth="71dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/secur_instr_open_bt"
+                    android:textColor="#ff9000"
+                    android:textSize="14dp" />
+            </com.leo.appmaster.ui.RippleView>
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
     <View
         android:layout_width="match_parent"

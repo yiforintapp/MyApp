@@ -1,22 +1,16 @@
 
 package com.leo.appmaster.home;
 
-import java.util.Locale;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
+
+import java.util.Locale;
 
 public class ProtocolActivity extends BaseActivity implements OnClickListener {
     private CommonToolbar mTtileBar;

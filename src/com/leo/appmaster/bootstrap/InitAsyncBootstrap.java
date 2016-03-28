@@ -17,7 +17,6 @@ import com.leo.appmaster.schedule.FetchScheduleJob;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.CollectVideoUtils;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 
@@ -68,14 +67,7 @@ public class InitAsyncBootstrap extends Bootstrap {
 
         BlacklistTab.getInstance().initEncryptList();
 
-        collectVideosData();
-
         return true;
-    }
-
-    //印度用户视频大小统计
-    private void collectVideosData() {
-        CollectVideoUtils.getAllVideoData();
     }
 
 

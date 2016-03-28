@@ -4,7 +4,6 @@ package com.leo.appmaster.imagehide;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +23,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
@@ -37,8 +38,8 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     public static final int REQUEST_CODE_OPTION = 1001;
 
     private Toast mToast;
+
+    private ImageSize mImageSize;
+
+    public static boolean mIsFromConfirm;
 
     public void onBackPressed() {
         LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
@@ -100,10 +105,13 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             });
             mDialogAskCreateShotcut.show();
         } else {
+            if(mAlbumList != null && mAlbumList.size() == 0 && !mIsFromConfirm) {
+                LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_PIC, false));
+            }
             super.onBackPressed();
         }
     };
-    
+
     private void loadDone() {
         if (mAlbumList != null) {
             if (mAlbumList.size() > 0) {
@@ -115,8 +123,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 loadingBar.setVisibility(View.GONE);
                 mGridView.setVisibility(View.GONE);
             }
-            mHideAlbumAdapt.setDataList(mAlbumList);
-            mHideAlbumAdapt.notifyDataSetChanged();
+            if (mHideAlbumAdapt != null) {
+                mHideAlbumAdapt.setDataList(mAlbumList);
+                mHideAlbumAdapt.notifyDataSetChanged();
+            }
         }
     }
 
@@ -160,6 +170,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             }
             mToast.show();
         }
+        mIsFromConfirm = getIntent().getBooleanExtra(Constants.FROM_CONFIRM_FRAGMENT, false);
     }
 
     private void initUI() {
@@ -189,18 +200,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void initImageLoder() {
-        mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.photo_bg_loding)
-                .showImageForEmptyUri(R.drawable.photo_bg_loding)
-                .showImageOnFail(R.drawable.photo_bg_loding)
-                .cacheInMemory(true)
-                .cacheOnDisk(false)
-                .displayer(new FadeInBitmapDisplayer(500))
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-
+        mOptions = ImagePreviewUtil.getPreviewOptions();
+        mImageSize = ImagePreviewUtil.getPreviewSize();
         mImageLoader = ImageLoader.getInstance();
     }
 
@@ -233,23 +234,16 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     @Override
-    public void finish() {
-        super.finish();
-
-        if (mImageLoader != null) {
-            mImageLoader.stop();
-        }
-
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         Intent intent = new Intent(ImageHideMainActivity.this,
                 ImageGridActivity.class);
         Bundle bundle = new Bundle();
-
-        PhotoAibum photoAibum = mAlbumList.get(position);
-        int size = photoAibum.getBitList().size();
+        int size = 0;
+        PhotoAibum photoAibum = null;
+        if (mAlbumList != null && mAlbumList.size() > 0) {
+            photoAibum = mAlbumList.get(position);
+            size = photoAibum.getBitList().size();
+        }
         if (size < 800) {
             bundle.putSerializable("data", photoAibum);
         }
@@ -313,7 +307,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
-            mImageLoader.displayImage(uri, viewHolder.img, mOptions);
+            mImageLoader.displayImage(uri, viewHolder.img, mOptions, mImageSize);
             return convertView;
         }
     }

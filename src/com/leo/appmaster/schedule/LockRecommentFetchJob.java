@@ -5,6 +5,9 @@ import android.content.Intent;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.utils.LeoLog;
@@ -53,6 +56,33 @@ public class LockRecommentFetchJob extends FetchScheduleJob {
             listNum = data.getJSONArray("list_num");
             if (listName != null && listNum != null) {
                 for (int i = 0; i < listName.length(); i++) {
+
+                    //wifi && blue
+                    if (listName.getString(i).equals(SwitchGroup.WIFI_SWITCH)) {
+                        int num = Integer.valueOf(listNum.getString(i));
+                        LeoLog.d("LockRecomment", "wifi num : " + num);
+
+                        if (num < 5000) {
+                            num = 5000;
+                        }
+
+                        WifiLockSwitch wifiSwithch = new WifiLockSwitch();
+                        wifiSwithch.setLockNum(num);
+                    }
+
+                    if (listName.getString(i).equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                        int num = Integer.valueOf(listNum.getString(i));
+                        LeoLog.d("LockRecomment", "blue num : " + num);
+
+                        if (num < 5000) {
+                            num = 5000;
+                        }
+
+                        BlueToothLockSwitch blueToothLockSwitch = new BlueToothLockSwitch();
+                        blueToothLockSwitch.setLockNum(num);
+                    }
+
+
                     lockRecList.add(listName.getString(i));
                     lockNumList.add(listNum.getString(i));
                 }

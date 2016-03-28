@@ -27,6 +27,7 @@ import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.ImageDownloader;
 
 public class IntruderGalleryActivity extends BaseActivity {
     private ViewPager mVPPhotos;
@@ -115,8 +116,8 @@ public class IntruderGalleryActivity extends BaseActivity {
                 }
             });
             ImageView iv = (ImageView) view.findViewById(R.id.iv_IGitem_main);
-            ImageLoader.getInstance().displayImage(
-                    "file:///" + mInfosSorted.get(position).getFilePath(), iv);
+            String uri = ImageDownloader.Scheme.CRYPTO.wrap(mInfosSorted.get(position).getFilePath());
+            ImageLoader.getInstance().displayImage(uri, iv);
             container.addView(view);
             return view;
         }

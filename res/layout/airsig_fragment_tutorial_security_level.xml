@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="34dp"
+    android:paddingLeft="34dp"
+    android:paddingBottom="36dp" >
+    
+    <com.leo.appmaster.airsig.airsigsdk.AutoFontSizeTextView
+        android:id="@+id/textDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="start|center"
+        android:text="@string/airsig_tutorial_security_level_result_detail"
+        android:textColor="@color/airsig_text_white"
+        android:textSize="@dimen/airsig_textsize_content"
+        android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra" />
+    
+    <RelativeLayout
+        android:layout_above="@+id/textDetail"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:gravity="center">
+        
+        <ImageView
+	        android:id="@+id/imageStars"
+	        android:layout_width="220dp"
+	        android:layout_height="45dp"
+	        android:layout_marginBottom="2dp"
+	        android:layout_centerHorizontal="true" />
+	    
+	    <com.leo.appmaster.airsig.airsigsdk.AutoFontSizeTextView
+	        android:id="@+id/textTitle"
+	        android:layout_below="@+id/imageStars"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:maxLines="1"
+	        android:textColor="@color/airsig_text_white"
+	        android:textSize="@dimen/airsig_textsize_title" />
+    
+    </RelativeLayout>
+    
+</RelativeLayout>

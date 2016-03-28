@@ -1,11 +1,5 @@
 package com.leo.appmaster.mgr.impl;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ProcessAdj;
@@ -34,15 +27,19 @@ import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
-import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-import com.leo.appmaster.utils.AppUtil;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by stone on 16/1/13.
@@ -227,12 +224,6 @@ public class BatteryManagerImpl extends BatteryManager {
                 if (PrefTableHelper.showInsideApp()) {
                     handlePluginEvent(newState, false);
                 } else {
-
-                    if (AppUtil.isScreenLocked(mContext)) {
-                        LeoLog.d("testforwhile", "done done done");
-                    } else {
-                        LeoLog.d("testforwhile", "fuck fuck fuck");
-                    }
 
                     if ((BatteryShowViewActivity.isActivityAlive && mListenerRef != null)) {
                         int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,

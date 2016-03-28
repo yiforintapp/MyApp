@@ -1,21 +1,6 @@
 
 package com.leo.appmaster.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.sdk.SDKWrapper;
-
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
@@ -26,6 +11,20 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.view.WindowManager;
+
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * 判断小米系统工具类
@@ -47,6 +46,7 @@ public class BuildProperties {
     public static final String HUAWEI_P8_API_LEVEL = "8";
     public static final String KEY_SAMSUNG_ROM_NAME = "ro.product.manufacturer";
     public static final String SAMSUNG_NAME = "samsung";
+    public static final String SONY_NAME = "sony";
     public static final String KEY_SAMSUNG_VERSINON_INCREMENTAL = "ro.build.version.incremental";
     public static final String SAMSUNG_INCREMENTAL = "I8552ZCAME1";
     private final Properties properties;
@@ -466,6 +466,16 @@ public class BuildProperties {
         return false;
     }
 
+    public static boolean isSonyModel() {
+        String manufac = getSystemProperty(KEY_SAMSUNG_ROM_NAME);
+        if (!TextUtils.isEmpty(manufac)) {
+            if (SONY_NAME.equalsIgnoreCase(manufac)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 是否为samsung内部版本号incremental为 "I8552ZCAME1"的rom
      */
@@ -498,6 +508,15 @@ public class BuildProperties {
         String phone = Build.DEVICE;
         LeoLog.d(TAG, "brand:" + phone);
         if ("M35c".equals(phone)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isRedMiFourI(){
+        String phone = Build.MODEL;
+        LeoLog.d(TAG, "MODEL:" + phone);
+        if ("Mi 4i".equals(phone)) {
             return true;
         }
         return false;

@@ -24,6 +24,7 @@ import java.util.concurrent.Executor;
 public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // about lock
+    private static final String PREF_AUTO_SWITCH = "auto_switch";
     private static final String PREF_APPLICATION_LIST = "application_list";
     private static final String PREF_LOCK_TYPE = "lock_type";
     private static final String PREF_PASSWORD = "password";
@@ -3159,6 +3160,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getLockAndAutoStartGuide() {
         return mPref.getBoolean(PREF_LOCK_AND_AUTO_START_GUIDE, false);
     }
+
+    public void setHasAutoSwitch(boolean flag) {
+        if (getHasAutoSwitch() != flag) {
+            commitAsync(mPref.edit().putBoolean(PREF_AUTO_SWITCH, flag));
+        }
+    }
+
+    public boolean getHasAutoSwitch() {
+        return mPref.getBoolean(PREF_AUTO_SWITCH, false);
+    }
+
+
+
     /* 超人广告Banner点击安装时间 */
 
     public void setAdSupermanBannerClickTime(long time) {
@@ -3231,7 +3245,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * @return 1外部第三方sdk广告源, 2为max
 	 */
 	public int getLockBannerAdConfig() {
-		return mPref.getInt(AD_IN_LOCK_SCREEN_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
+		return AD_SDK_SOURCE_USE_3TH;//mPref.getInt(AD_IN_LOCK_SCREEN_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 	
 
@@ -3250,7 +3264,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * @return 0 广告关闭，1外部第三方sdk广告源, 2为max
 	 */
 	public int getChargingAdConfig() {
-		return mPref.getInt(AD_CHARGING_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
+		return AD_SDK_SOURCE_USE_3TH;//mPref.getInt(AD_CHARGING_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 
 	/**
@@ -3268,7 +3282,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * @return 0 广告关闭，1外部第三方sdk广告源，2为max
 	 */
 	public int getInvaderAdConfig() {
-		return mPref.getInt(AD_IN_INVADER_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
+		return AD_SDK_SOURCE_USE_3TH;//mPref.getInt(AD_IN_INVADER_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 
 	/**
@@ -3286,6 +3300,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 	 * @return 0 广告关闭，1外部第三方sdk广告源，2为max
 	 */
 	public int getAccelerationAdConfig() {
-		return mPref.getInt(AD_IN_ACCELERATION_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
+		return AD_SDK_SOURCE_USE_3TH;//mPref.getInt(AD_IN_ACCELERATION_SDK_SOURCE,  AD_SDK_SOURCE_USE_3TH);
 	}
 }

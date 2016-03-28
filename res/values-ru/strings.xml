@@ -86,7 +86,7 @@
 
     <string name="app_setting_update">проверить обновление</string>
     <string name="feedback">мнения абонента</string>
-    <string name="grade">оценить маркета Google</string>
+    <string name="grade">Нравится</string>
     <string name="app_setting_about">в отношении</string>
     <string name="forbid_uninstall">предотвращать удаление</string>
     <string name="auto_lock">автоблокировка при блокировании экрана</string>
@@ -428,7 +428,7 @@
 
     <!-- version 2.4 start -->
     <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty наиб.попул. инстр.на Google рынке,касание,ярлык,люб. прил. сообщ. под рукой.</string>
-    <string name="grade_tip_feedback">Проблемы</string>
+    <string name="grade_tip_feedback">Дать совет</string>
     <string name="quick_first_tip_dialog_left_bt">позже</string>
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -753,7 +753,7 @@
     <string name="toast_getscore_text">Поздравляем! Ваши баллы увеличились</string>
     <string name="feedback_tell_us_content">Если у вас есть другие вопросы или потребности, пожалуйста, не стесняйтесь обращаться к нам! Наши группы на facebook , WhatsApp поддерживают он-лайн в любое время!</string>
     <string name="feedback_tell_us_contact_type_title">Контакты</string>
-    <string name="dialog_fivestars_content_text">Наслаждайтесь LEO Privacy?Пожалуйста, дайте нам 5 звезд сейчас!</string>
+    <string name="dialog_fivestars_content_text">Нравится LEO Privacy?Пожалуйста,оцените нас в Google Play магазине,спасибо за вашу поддержку.</string>
     <string name="elect_empty_content">К сожалению, информация о батареи пока не была получена</string>
     <string name="swifty_item_btn">Выполнять запуск</string>
     <string name="grade_item_title">Вам нравится LEO Privacy?</string>
@@ -897,9 +897,8 @@
     <string name="up_list_swifty_title">Повышение эффективности</string>
 
     <string name="screen_protect_time">Оставшееся время </string>
-    <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>H <Data><![CDATA[<font color="#0ad931">%2$s</font>]]></Data>M</string>-->
-    <!--<string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data> M</string>-->
-
+    <!--<string name="screen_protect_time_right"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>ч.<Data><![CDATA[<font color="#0ad931">%2$s</font>]]> м.</Data></string>
+    <string name="screen_protect_time_right_two"><Data><![CDATA[<font color="#0ad931">%1$s</font>]]></Data>м.</string>-->
     <string name="oppo_rom_tip_txt">Из-за ограничений системы для нормальной работы LEO Privacy требуется включить разрешение. Порядок включения «Добавить программу» --> «Добавить приложение с разрешенным фоновым режимом» --> Добавить LEO Privacy</string>
     <string name="batterymanage_boosted_number">%1$d элементы оптимизированы</string>
 
@@ -968,4 +967,20 @@
     <!--3.3.2新增引导页文案-->
     <string name="gde_renm_content">Новое имя,новое начало </string>
     <string name="battery_protect_view_remain_three_title">Bидео</string>
+    <!--3.5-->
+    <string name="intruder_setting_title_1">Авто-фото незнакомцев вломились в  экран блокировки</string>
+    <string name="intruder_setting_summarty_1">Авто-фото при разблокировке телефона с неправильным паролем</string>
+    <string name="intruder_setting_title_2">Авто-фото шпионов взлом App замок</string>
+    <string name="intruder_setting_summarty_2">Авто-фото при разблокировке приложения с неправильным паролем</string>
+    <string name="intruder_systemlock_tip">Рекомендую включить Авто-фото</string>
+    <string name="intruder_systemlock_finished">Уже открыли Авто-фото</string>
+    <string name="intruder_device_admin_guide_content">После открыть Авто-фото,вам нужно открыть вышую защиту во первых . Еслт вы хотите удалить  LEO Privacy,нжно отключить вышую защиту.Открыть эту функцию?</string>
+    <string name="intruder_systemlock_alarm">Когда вы отключите эту функцию,не сможет сфотографировать шпионов подглядывать в телефон</string>
+    <string name="app_lock_list_switch_wifi">Wi-Fi</string>
+    <string name="app_lock_list_switch_bluetooth">Синий зуб</string>
+    <string name="app_lock_list_switch_title_one">Ключ</string>
+    <string name="app_lock_list_switch_title_two">Приложение</string>
+    <string name="intruder_intruduction">Авто-фото при разблокировке телефона или приложения  с неправильным паролем</string>
+    <string name="scan_app_title_switch">Обнаруживать%1$s приложения и ключи</string>
+    <string name="mobile_phone">Мобильник</string>
 </resources>

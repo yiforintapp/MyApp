@@ -320,6 +320,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_CALL_FILTER);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_CALL_FILTER]), mHelperResourceIDs[POSITION_CALL_FILTER], intent, QuickHelperActivity.this);
+                                SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,"assistant", "block_cnts");
                                 table.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, true);
                                 break;
                             // WIFI安全 (免密码)

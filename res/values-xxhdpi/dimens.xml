@@ -364,7 +364,7 @@
     <dimen name="applock_text_title_size">17dp</dimen>
     <dimen name="applock_text_desc_size">13dp</dimen>
 
-    <dimen name="empty_page_text_m_top">10dp</dimen>
+    <dimen name="empty_page_text_m_top">5dp</dimen>
 
 
     <dimen name="question_passwd_width">195dp</dimen>
@@ -375,4 +375,5 @@
     <dimen name="bay_pro_time_m_top">70dp</dimen>
     <dimen name="bay_pro_show_text_m_top">35dp</dimen>
     <dimen name="bay_pro_three_icon_m_top">18dp</dimen>
+    <dimen name="hide_grid_image_width">109dp</dimen>
 </resources>

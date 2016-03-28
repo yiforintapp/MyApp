@@ -33,7 +33,6 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.ProxyActivity;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.push.PushNotification;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -70,7 +69,7 @@ public class CheckNewBootstrap extends Bootstrap {
 
         checkNewTheme();
 //        checkNewAppBusiness();
-        ISwipUpdateRequestManager.getInstance(mApp).loadIswipCheckNew();
+//        ISwipUpdateRequestManager.getInstance(mApp).loadIswipCheckNew();
         return true;
     }
 

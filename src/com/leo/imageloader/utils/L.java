@@ -28,7 +28,7 @@ import com.leo.imageloader.ImageLoader;
 public final class L {
 
 	private static final String LOG_FORMAT = "%1$s\n%2$s";
-	private static volatile boolean writeDebugLogs = false;
+	private static volatile boolean writeDebugLogs = true;
 	private static volatile boolean writeLogs = true;
 
 	private L() {

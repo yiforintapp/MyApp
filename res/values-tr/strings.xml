@@ -641,8 +641,8 @@
     <string name="security_guide_tip_text">Hırsızlık fonksiyonunu etkinleştir</string>
     <string name="security_guide_tip_content">Bir alarm göndermek, verileri temizlemek, konumu bulmak ve Uygulamalar kilitlemek için başka bir telefonla telefonunuzu uzaktan kontrol edebilirsiniz</string>
     <string name="phone_security_tips">Doğru telefonunuzu bulun</string>
-    <string name="security_guide_button_text">Şimdi Etkinleştir</string>
-    <string name="phone_security_open">Hırsızlık karşıtı korumayı etkinleştir</string>
+    <string name="security_guide_button_text">Etkinleştir</string>
+    <string name="phone_security_open">hırsızlığa karşı etkinleştir</string>
     <string name="phone_security_add_number_title">Aile No.: </string>
     <string name="phone_security_add_number_button">Değiştir</string>
     <string name="phone_security_number_sim_tip">Not: SIM kart değiştirildiğinde Aile numarasına SMS gönderilecektir </string>
@@ -981,4 +981,20 @@
     <string name="feedback_tell_us_email_title">Email:</string>
     <string name="feedback_tell_us_email_url">support@leomaster.com</string>
     <string name="battery_protect_view_remain_three_title">Video</string>
+    <!--3.5-->
+    <string name="intruder_setting_title_1">Sistem kilit ekranı fotoğraf çek</string>
+    <string name="intruder_setting_summarty_1">Telefon  açarken yanlış şifre girince  fotoğraf  otomatik çekilecek</string>
+    <string name="intruder_setting_title_2">App kilidini fotoğraf çek</string>
+    <string name="intruder_setting_summarty_2">App açarken yanlış şifre girince  fotoğraf otomatik çekilecek</string>
+    <string name="intruder_systemlock_tip">Sistem kilit ekranı kamera çevirmek önerilir</string>
+    <string name="intruder_systemlock_finished">Sistem kilit ekranı fotoğraf çekmesi açıldı</string>
+    <string name="intruder_device_admin_guide_content">Bu fonksiyon açmak için ilk önce yüksek koruma açılmalı.Eğer LEO Privacy kaldırmanız gerekiyorsa,yüksek düzey koruma kapatılmalı,ister misin?</string>
+    <string name="intruder_systemlock_alarm">Bu fonksiyonu kapattıktan sonra telefonunu gözetleme isteyenlerini fotoğraf çekilemez</string>
+    <string name="app_lock_list_switch_wifi">Wi-Fi</string>
+    <string name="app_lock_list_switch_bluetooth">Bluetooth</string>
+    <string name="app_lock_list_switch_title_one">Açma kapatma tuşu</string>
+    <string name="app_lock_list_switch_title_two">App</string>
+    <string name="intruder_intruduction">Telefon veya App kilidini açmak için yanlış şifre girince otomatik fotoğraf çekilecek</string>
+    <string name="scan_app_title_switch">%1$s tane uygulamayı ve anahtarı bulundu</string>
+    <string name="mobile_phone">Telefonu</string>
 </resources>

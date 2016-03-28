@@ -101,7 +101,7 @@ public class PrivacyContactManager {
 
     public int getPrivacyContactsCount() {
         List<ContactBean> contacts = getPrivateContacts();
-        return contacts.size();
+        return contacts == null ? 0 : contacts.size();
     }
 
     public ArrayList<ContactBean> getPrivateContacts() {
@@ -683,13 +683,15 @@ public class PrivacyContactManager {
         if (!Utilities.isEmpty(number)) {
             List<ContactBean> contacts = PrivacyContactManager.getInstance(context)
                     .getPrivateContacts();
-            formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-            String contactNumber = null;
-            for (ContactBean contactBean : contacts) {
-                contactNumber = contactBean.getContactNumber();
-                if (contactNumber != null && contactNumber.contains(formateNumber)) {
-                    flagContact = contactBean;
-                    break;
+            if(contacts != null) {
+                formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                String contactNumber = null;
+                for (ContactBean contactBean : contacts) {
+                    contactNumber = contactBean.getContactNumber();
+                    if (contactNumber != null && contactNumber.contains(formateNumber)) {
+                        flagContact = contactBean;
+                        break;
+                    }
                 }
             }
         }

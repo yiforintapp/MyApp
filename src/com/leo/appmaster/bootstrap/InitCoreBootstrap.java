@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -20,6 +21,7 @@ import android.text.TextUtils;
 
 import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
@@ -28,7 +30,9 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
+import com.leo.appmaster.applocker.service.TaskProtectService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
@@ -37,8 +41,11 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.WifiSecurityManager;
+import com.leo.appmaster.mgr.impl.WifiSecurityManagerImpl;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -133,8 +140,15 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.d(TAG, "MobvistaEngine init cost: " + (SystemClock.elapsedRealtime() - start));
 
         //init DeviceImp
+        WifiSecurityManager wifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
         deviceManager.init();
+
+        // start a protection JobScheduler service
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            TaskProtectService.scheduleService(mApp);
+        }
+
         return true;
     }
 
@@ -146,16 +160,19 @@ public class InitCoreBootstrap extends Bootstrap {
 
     private void initImageLoader() {
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mApp)
-                .taskExecutor(ThreadManager.getNetworkExecutor())
-                .taskExecutorForCachedImages(ThreadManager.getAsyncExecutor())
-                .threadPoolSize(Constants.MAX_THREAD_POOL_SIZE)
-                .threadPriority(Thread.NORM_PRIORITY)
-                .memoryCacheSizePercentage(8)
-                .defaultDisplayImageOptions(options)
-                .diskCacheSize(Constants.MAX_DISK_CACHE_SIZE) // 100 Mb
-                .denyCacheImageMultipleSizesInMemory().build();
-        ImageLoader.getInstance().init(config);
+        ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(mApp);
+        builder.taskExecutor(ThreadManager.getNetworkExecutor());
+        builder.taskExecutorForCachedImages(ThreadManager.getAsyncExecutor());
+        builder.threadPoolSize(Constants.MAX_THREAD_POOL_SIZE);
+        builder.threadPriority(Thread.NORM_PRIORITY);
+        builder.memoryCacheSizePercentage(8);
+        builder.defaultDisplayImageOptions(options);
+//        if (AppMasterConfig.LOGGABLE) {
+//            builder.writeDebugLogs();
+//        }
+        builder.diskCacheSize(Constants.MAX_DISK_CACHE_SIZE); // 100 Mb
+        builder.denyCacheImageMultipleSizesInMemory();
+        ImageLoader.getInstance().init(builder.build());
     }
 
     private void registerPackageChangedBroadcast() {
@@ -255,6 +272,12 @@ public class InitCoreBootstrap extends Bootstrap {
                     R.integer.guide_page_version);
             pref.setLastGuideVersion(currentGuideVersion);
         } else {
+//            if(DeviceReceiverNewOne.isActive(AppMasterApplication.getInstance()) && (!pref.getHasAutoSwitch()) && (Integer.parseInt(lastVercode) < 70)) {
+//                IntrudeSecurityManager m = (IntrudeSecurityManager)MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+//                m.setSystIntruderProtectionSwitch(true);
+//                pref.setHasAutoSwitch(true);
+//            }
+
             int lastCode = Integer.parseInt(lastVercode);
             if (lastCode < versionCode) {
                 // hit update

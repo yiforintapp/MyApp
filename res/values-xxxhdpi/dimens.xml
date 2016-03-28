@@ -17,4 +17,5 @@
     <dimen name="fragment_lock_large_banner_pading">63.5dp</dimen>
     <!-- 3.3.1 -->
     <dimen name="home_more_empty_height">193dp</dimen>
+    <dimen name="hide_grid_image_width">129dp</dimen>
 </resources>

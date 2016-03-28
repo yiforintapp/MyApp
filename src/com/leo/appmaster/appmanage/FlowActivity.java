@@ -134,7 +134,10 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
                 startActivity(intent);
                 break;
             case R.id.ct_back_rl:
-                onBackPressed();
+                try {
+                    onBackPressed();
+                } catch (Exception e) {
+                }
                 break;
         }
     }

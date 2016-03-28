@@ -1,11 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,6 +26,12 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
+
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by qili on 15-10-11.
@@ -75,7 +75,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         if (mLockAdapter != null) {
             mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
             if (mResaultList != null) {
-                mLockAdapter.setData(mResaultList);
+                mLockAdapter.setData(mResaultList,false);
             }
         }
     }
@@ -353,7 +353,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements
                     } else {
                         intent.putExtra("target", getIntent().getIntExtra("target", 0));
                     }
-
                     startActivity(intent);
                     finish();
                 }

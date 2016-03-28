@@ -215,6 +215,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
             case R.id.grade_content:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "wifi_rst", "GP");
                 lockManager.filterSelfOneMinites();
+                mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
                 Utilities.goFiveStar(mActivity, true, false);
                 break;
         }

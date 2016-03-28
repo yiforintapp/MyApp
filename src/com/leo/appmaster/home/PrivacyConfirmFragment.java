@@ -211,6 +211,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ScrollView mScrollView;
 	
 	private View adView;
+    private PreferenceTable mPt;
 
     // 初始化时的占位View，避免一开始显示空白页面
 //    private View mDisplayProxyView;
@@ -248,6 +249,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mSelectData = new ArrayList<ContactBean>();
         mAddedData = new ArrayList<ContactBean>();
         mDataMap = new HashMap<CheckBox, ContactBean>();
+        mPt = PreferenceTable.getInstance();
 
         Bundle args = getArguments();
         if (args != null) {
@@ -1361,6 +1363,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             Utilities.goFaceBook(mActivity, true);
         } else if (mHighGradeBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
+            mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity, true, true);
         } else if (mLostBtnLt == v) {
@@ -1371,6 +1374,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         } else if (mGradeBtnLt == v) { // 五星好评
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
             lockManager.filterSelfOneMinites();
+            mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
             Utilities.goFiveStar(mActivity, true, true);
         } else if (mSwiftyBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "swifty");
@@ -1382,10 +1386,12 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             Utilities.gotoGpOrBrowser(mActivity, Constants.IS_CLICK_WIFIMASTER, true);
         } else if (mGradeLayout == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
+            mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity, true, true);
         } else if (mHighGradeLayout == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "rate");
+            mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
             lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity, true, true);
         } else if (mBoxOne == v) {
@@ -1413,6 +1419,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
         Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
         intent.putExtra("hidePicFinish", mActivity.getHidePicFinish());
+        intent.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
         mActivity.startActivity(intent);
     }
 
@@ -1421,6 +1428,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
         table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count+1);
         Intent intent = new Intent(mActivity, VideoHideMainActivity.class);
+        intent.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
         mActivity.startActivity(intent);
     }
 

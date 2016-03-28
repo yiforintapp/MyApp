@@ -28,6 +28,8 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageSize;
 
 /**
  * @author linxiongzhou
@@ -57,6 +59,7 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             }
         }
     };
+    private ImageSize mImageSize;
 
     private void loadDone() {
         if (mAlbumList != null) {
@@ -147,17 +150,8 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
     }
 
     private void initImageLoder() {
-        mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.photo_bg_loding)
-                .showImageForEmptyUri(R.drawable.photo_bg_loding)
-                .showImageOnFail(R.drawable.photo_bg_loding)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .displayer(new FadeInBitmapDisplayer(500))
-                .considerExifParams(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-
+        mOptions = ImagePreviewUtil.getPreviewOptions();
+        mImageSize = ImagePreviewUtil.getPreviewSize();
         mImageLoader = ImageLoader.getInstance();
     }
 
@@ -226,7 +220,8 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             path = list.get(position).getBitList().get(0).getPath();
             viewHolder.txt.setText(list.get(position).getName() + "("
                     + list.get(position).getCount() + ")");
-            mImageLoader.displayImage("file://" + path, viewHolder.img, mOptions);
+            mImageLoader.displayImage(ImageDownloader.Scheme.FILE.wrap(path),
+                    viewHolder.img, mOptions, mImageSize);
             return convertView;
         }
     }

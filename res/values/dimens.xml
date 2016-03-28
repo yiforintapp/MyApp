@@ -13,6 +13,7 @@
     <dimen name="lock_pattern_button_width">60dp</dimen>
     <dimen name="hide_album_frame_width">149dp</dimen>
     <dimen name="hide_album_image_frame_width">115dp</dimen>
+    <dimen name="hide_grid_image_width">109dp</dimen>
     <dimen name="hide_album_image_frame_left">16dp</dimen>
     <dimen name="hide_album_image_frame_top">16dp</dimen>
     <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
@@ -351,4 +352,28 @@
     <dimen name="battery_boost_padding">31dp</dimen>
 
     <dimen name="battery_clean_result_margingTop">33dp</dimen>
+    <!--3.5-->
+    <dimen name="lock_tip_margin">20dp</dimen>
+    <dimen name="filter_record_title_margin">60dp</dimen>
+
+    <!-- Action Bar -->
+    <dimen name="airsig_actionbar_height">56dp</dimen>
+    <dimen name="airsig_actionbar_title_textsize">20sp</dimen>
+
+    <!-- Text Size -->
+    <dimen name="airsig_textsize_title">22sp</dimen>
+    <dimen name="airsig_textsize_content">17sp</dimen>
+    <dimen name="airsig_textsize_content_small">14sp</dimen>
+    <dimen name="airsig_textsize_button">14sp</dimen>
+    <dimen name="airsig_text_lineSpacingExtra">2dp</dimen>
+
+    <!-- Margins -->
+    <dimen name="airsig_horizontal_margin">14dp</dimen>
+    <dimen name="airsig_vertical_margin">8dp</dimen>
+
+    <!-- AirSig used -->
+    <dimen name="airsig_small_message_box_height">168dp</dimen>
+    <dimen name="airsig_full_message_box_height">380dp</dimen>
+    <integer name="airsig_message_box_animation_duration">400</integer>
+
 </resources>

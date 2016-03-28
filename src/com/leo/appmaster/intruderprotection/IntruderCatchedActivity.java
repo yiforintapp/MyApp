@@ -1,6 +1,10 @@
 package com.leo.appmaster.intruderprotection;
 
 import android.animation.LayoutTransition;
+import android.app.Dialog;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewStub;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -26,7 +31,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -34,8 +41,16 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
+import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
+import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.UserPresentEvent;
+import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageGridActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -49,6 +64,8 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.ui.ResizableImageView;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -60,8 +77,10 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
+import com.leo.imageloader.utils.IoUtils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,10 +90,13 @@ import java.util.Date;
 import java.util.List;
 
 public class IntruderCatchedActivity extends BaseActivity implements View.OnClickListener {
+    private final int REQUEST_CODE_TO_REQUEST_ADMIN = 1;
+    private LEOAnimationDialog mMessageDialog;
     private List<PhotoAibum> mAlbumList = null;
     private ImageLoader mImageLoader;
     private String mPkgName;
     private ListView mLvMain;
+    private RelativeLayout mRlTipContent;
     private ArrayList<IntruderPhotoInfo> mSrcInfos;
     private ArrayList<IntruderPhotoInfo> mInfosSorted;
     private IntrudeSecurityManager mISManager;
@@ -92,6 +114,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private LEOChoiceDialog mDialog;
     private RelativeLayout mRvHeader;
     private RippleView mRvRating;
+    private LEOAlarmDialog mOpenForbinDialog;
     private int[] mTimes = {
             1, 2, 3, 5
     };
@@ -99,25 +122,30 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private RippleView mRvMore;
     private RelativeLayout mRlNewest;
     private PreferenceTable mPt;
+    private LinearLayout mLlGuide;
+    private LinearLayout mLlGuideFinished;
+    private LinearLayout mLlChangeTimes;
+    private LEOAlarmDialog mAskOpenDeviceAdminDialog;
     private static final int TIMES_TO_CATCH_1 = 1;
     private static final int TIMES_TO_CATCH_2 = 2;
     private static final int TIMES_TO_CATCH_3 = 3;
     private static final int TIMES_TO_CATCH_4 = 5;
     private boolean mNeedIntoHomeWhenFinish = false;
     private FiveStarsLayout mLayout;
-
+    private RippleView mRvSetting;
+    private RippleView mRvOpen;
     private FrameLayout mShareLayout; // 分享layout
     private TextView mShareText;  //分享按钮
-
     private LinearLayout mSwiftylayout; //swifty卡片
     private TextView mSwiftyTitle;
     private ImageView mSwiftyImg;
     private TextView mSwiftyContent;
     private RippleView mSwiftyBtnLt;
     private final String TAG = "IntruderCatchedActivity";
-	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
-
+	private static int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
+    private Dialog mMultiUsesDialog;
     private boolean mShouldLoadAd = false;
+    private boolean mIsUserPresent = false;
 
     private LinearLayout mFiveStarLayout;
     // 3.2 add advertise
@@ -138,7 +166,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         init();
 
 		mAdSource = AppMasterPreference.getInstance(this).getInvaderAdConfig();
-
+        LeoEventBus.getDefaultBus().register(this);
 //        Intent i = new Intent(this, GradeTipActivity.class);
 //        startActivity(i);
     }
@@ -159,11 +187,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mShouldLoadAd) {
             ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID, mAdView);
         }
+//        finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        updateTipStatus();
         SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_capture");
         mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false);
@@ -175,13 +205,30 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        if (getPackageName().equals(mPkgName) && mNeedIntoHomeWhenFinish) {
+        if (mIsUserPresent) {
+            try {
+                Intent intent=new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            } catch (Exception e) {
+                finish();
+            }
+        } else if (getPackageName().equals(mPkgName) && mNeedIntoHomeWhenFinish) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+            mLockManager.filterPackage(mPkgName, 1000);
             startActivity(intent);
-        } else {
-            
+        }
+//        else if (mIsUserPresent) {
+//            Intent intent=new Intent(Intent.ACTION_MAIN);
+//            intent.addCategory(Intent.CATEGORY_HOME);
+//            startActivity(intent);
+//        }
+//        else if ("from_systemlock".equals(mPkgName)) {
+//            finish();
+//        }
+        else {
             mLockManager.filterPackage(mPkgName, 2000);
         }
         finish();
@@ -197,6 +244,45 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         updateTimesToCatch();
     }
 
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE_TO_REQUEST_ADMIN == requestCode && DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this)) {
+            mISManager.setSystIntruderProtectionSwitch(true);
+//            changeToGuideFinishedLayout();
+            openAdvanceProtectDialogHandler();
+        }
+    }
+
+    private void openAdvanceProtectDialogHandler() {
+        boolean isTip = AppMasterPreference.getInstance(this)
+                .getAdvanceProtectOpenSuccessDialogTip();
+        if (isTip) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
+            openAdvanceProtectDialogTip();
+        }
+    }
+
+    private void openAdvanceProtectDialogTip() {
+        if (mMessageDialog == null) {
+            mMessageDialog = new LEOAnimationDialog(this);
+            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mMessageDialog != null) {
+                        mMessageDialog = null;
+                    }
+                    AppMasterPreference.getInstance(IntruderCatchedActivity.this)
+                            .setAdvanceProtectOpenSuccessDialogTip(false);
+                }
+            });
+        }
+        String content = getString(R.string.prot_open_suc_tip_cnt);
+        mMessageDialog.setContent(content);
+        mMessageDialog.show();
+    }
 
     /**
      * 更新总的抓拍次数
@@ -231,36 +317,6 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    // 先别删 如果以后需要广告 直接打开注释就可以了
-    // private void loadAD() {
-    // LeoLog.e("poha", "loading ad...");
-    // mAdEngine = MobvistaEngine.getInstance(this);
-    // mAdEngine.loadMobvista(Constants.UNIT_ID_58, new MobvistaListener() {
-    // @Override
-    // public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-    // if (code == MobvistaEngine.ERR_OK && campaign != null) {
-    // ImageView admain = (ImageView)
-    // mADLayout.findViewById(R.id.iv_ad_mainpic);
-    // mImageLoader.displayImage(campaign.getImageUrl(), admain);
-    // ImageView adicon = (ImageView)
-    // mADLayout.findViewById(R.id.iv_ad_iconpic);
-    // mImageLoader.displayImage(campaign.getIconUrl(), adicon);
-    // TextView appname = (TextView) mADLayout.findViewById(R.id.tv_appname);
-    // appname.setText(campaign.getAppName());
-    // TextView appdesc = (TextView) mADLayout.findViewById(R.id.tv_appdesc);
-    // appdesc.setText(campaign.getAppDesc());
-    // TextView appcall = (TextView) mADLayout.findViewById(R.id.tv_ad_call);
-    // appcall.setText(campaign.getAdCall());
-    // mAdEngine.registerView(Constants.UNIT_ID_58, appcall);
-    // mLlFiveStars.setVisibility(View.GONE);
-    // mADLayout.setVisibility(View.VISIBLE);
-    // }
-    // }
-    // @Override
-    // public void onMobvistaClick(Campaign campaign) {
-    // }
-    // });
-    // }.
     private String timeStampToAMPM(String timeStamp) {
         SimpleDateFormat sdf = new SimpleDateFormat(
                 Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
@@ -305,6 +361,14 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
      * create时的初始化(不需要变化的UI)
      */
     private void init() {
+        mRlTipContent = (RelativeLayout) findViewById(R.id.rl_intrudercatch_tip);
+        mLlGuide = (LinearLayout) findViewById(R.id.ll_guide_tip);
+        mLlGuideFinished = (LinearLayout) findViewById(R.id.ll_guide_finished);
+        mLlChangeTimes = (LinearLayout) findViewById(R.id.ll_change_times);
+        mRvOpen = (RippleView) findViewById(R.id.rv_open);
+        mRvOpen.setOnClickListener(this);
+        mRvSetting = (RippleView) findViewById(R.id.rv_setting);
+        mRvSetting.setOnClickListener(this);
         mRvHeader = (RelativeLayout) findViewById(R.id.rl_header);
         mSvMain = (ScrollView) findViewById(R.id.sv_intrudercatch_main);
         mRlNopic = (RelativeLayout) findViewById(R.id.rl_nopic);
@@ -361,10 +425,11 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 				@Override
 				public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
 					LeoLog.d("IntruderAd", "onMobvistaClick");
+					SDKWrapper.addEvent(IntruderCatchedActivity.this, "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
 					SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
 							"ad_cli", "adv_cnts_capture");
 					LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-					lm.filterSelfOneMinites();
+					lm.filterPackage(getPackageName(), 1000);
 				}
 			});
             /*MobvistaEngine.getInstance(this).loadMobvista(INTRUDER_AD_ID, new MobvistaEngine.MobvistaListener() {
@@ -404,18 +469,19 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + INTRUDER_AD_ID + " prepare for load image", mAdSource,  null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + INTRUDER_AD_ID + " load image failed", mAdSource, null);
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             IntruderCatchedActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
+				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + INTRUDER_AD_ID + " image size: " + loadedImage.getByteCount(), mAdSource, null);
                 LeoLog.d("IntruderAd", "[IntruderCatchedActivity] onLoadingComplete -> " + imageUri);
                 activity.initAdLayout(activity.findViewById(R.id.ad_content),
                         mCampaign, INTRUDER_AD_ID, loadedImage);
@@ -454,6 +520,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         //MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
                 "ad_act", "adv_shws_capture");
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + INTRUDER_AD_ID + " adShow", mAdSource, null);
     }
     /* 3.2 advertise stuff - end */
 
@@ -551,7 +618,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         LeoLog.i("IntruderCatchedActivity", "is lastestValid : preference last one hashCode = "+savedHash);
         LeoLog.i("IntruderCatchedActivity", "is lastestValid : index 0's photoInf hashCode = "+photoInfo.getFilePath().hashCode());
         return savedHash == photoInfo.getFilePath().hashCode();
-        
+
     }
 
     /**
@@ -572,9 +639,22 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 public void run() {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inPreferredConfig = Bitmap.Config.RGB_565;
-                    final Bitmap bitmap = BitmapFactory.decodeFile(mInfosSorted.get(0).getFilePath(), options);
+                    final Bitmap bitmap;
+                    InputStream inputStream = null;
+                    try {
+                        String path = mInfosSorted.get(0).getFilePath();
+//                        String uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+                        inputStream = new ImageEncryptInputStream(path);
+                        bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+//                        bitmap = BitmapFactory.decodeFile(mInfosSorted.get(0).getFilePath(), options);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        return;
+                    } finally {
+                        IoUtils.closeSilently(inputStream);
+                    }
                     runOnUiThread(new Runnable() {
-                        
+
                         @Override
                         public void run() {
                             mIvNewestPhoto.setImageBitmap(bitmap);
@@ -589,8 +669,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                             mLlMainMask.setVisibility(View.VISIBLE);
                             ImageView mainIcon = (ImageView) mLlMainMask
                                     .findViewById(R.id.iv_appicon);
-                            Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
-                                    .get(0).getFromAppPackage());
+                            String pkg = mInfosSorted.get(0).getFromAppPackage();
+                            Drawable applicationIcon = null;
+                            if (IntrudeSecurityManager.ICON_SYSTEM.equals(pkg)) {
+                                applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+                            } else {
+                                applicationIcon = AppUtil.getAppIcon(pm, pkg);
+                            }
                             if (applicationIcon != null) {
                                 mainIcon.setImageDrawable(applicationIcon);
                             }
@@ -603,8 +688,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     });
                 }
             });
-            
-            
+
+
 //            ThreadManager.getUiThreadHandler().post(new Runnable() {
 //                @Override
 //                public void run() {
@@ -697,6 +782,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         mRvHeader.requestFocus();
     }
 
+
+
     /**
      * 显示下方更多照片部分的操作
      */
@@ -720,11 +807,23 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     public void run() {
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
-                        final Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
+
+                        Bitmap bitmap = null;
+                        InputStream inputStream = null;
+                        try {
+                            inputStream = new ImageEncryptInputStream(filePath);
+                            bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                            return;
+                        } finally {
+                            IoUtils.closeSilently(inputStream);
+                        }
+                        final Bitmap imgBitmap = bitmap;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ivv.setImageBitmap(bitmap);
+                                ivv.setImageBitmap(imgBitmap);
                                 ivv.setOnClickListener(new OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -738,8 +837,17 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
                 PackageManager pm = getPackageManager();
                 try {
-                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
-                            .get(position + 1).getFromAppPackage());
+                    String pkg = mInfosSorted.get(position + 1).getFromAppPackage();
+                    Drawable applicationIcon = null;
+                    if (IntrudeSecurityManager.ICON_SYSTEM.equals(pkg)) {
+                        applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+                    } else if (SwitchGroup.WIFI_SWITCH.equals(pkg)) {
+                        applicationIcon = getResources().getDrawable(R.drawable.lock_wifi);
+                    } else if (SwitchGroup.BLUE_TOOTH_SWITCH.equals(pkg)) {
+                        applicationIcon = getResources().getDrawable(R.drawable.lock_bluetooth);
+                    } else {
+                        applicationIcon = AppUtil.getAppIcon(pm, pkg);
+                    }
                     ImageView iv2 = (ImageView) (llMask.findViewById(R.id.iv_appicon));
                     iv2.setImageDrawable(applicationIcon);
                     // TextView tv2 = (TextView)
@@ -771,6 +879,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     }
 
     private void startGallery(int position) {
+        mLockManager.filterPackage(getPackageName(),1000);
         Intent intent = new Intent(IntruderCatchedActivity.this, IntruderGalleryActivity.class);
         intent.putExtra("current_position", position);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
@@ -785,13 +894,33 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         try {
             PackageManager pm = getPackageManager();
             String packageName = mInfosSorted.get(0).getFromAppPackage();
-            Drawable applicationIcon = AppUtil.getAppIcon(pm, packageName);
+            String label;
+            Drawable applicationIcon;
+            if (IntrudeSecurityManager.ICON_SYSTEM.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.intruder_system_icon);
+                label = getString(R.string.mobile_phone);
+            } else if (SwitchGroup.BLUE_TOOTH_SWITCH.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.lock_bluetooth);
+                label = getString(R.string.app_lock_list_switch_bluetooth);
+            } else if (SwitchGroup.WIFI_SWITCH.equals(packageName)) {
+                applicationIcon = getResources().getDrawable(R.drawable.lock_wifi);
+                label = getString(R.string.app_lock_list_switch_wifi);
+            } else {
+                applicationIcon = AppUtil.getAppIcon(pm, packageName);
+                label = AppUtil.getAppLabel(pm, packageName);
+            }
             mIvAppIntruded.setImageDrawable(applicationIcon);
-            String label = AppUtil.getAppLabel(pm, packageName);
             String newestCatchTipsS = getResources().getString(R.string.newest_catch_tip);
+
             String newestCatchTipsD = String.format(newestCatchTipsS, label);
             mTvNewestCatchTip.setText(newestCatchTipsD);
         } catch (Exception e) {
+        }
+    }
+
+    public void onEventMainThread(UserPresentEvent event) {
+        if (event.getEventId() == EventId.EVENT_USER_PRESENT_ID) {
+            mIsUserPresent = true;
         }
     }
 
@@ -801,7 +930,10 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
-
+        if (mMultiUsesDialog != null) {
+            mMultiUsesDialog.dismiss();
+        }
+        LeoEventBus.getDefaultBus().unregister(this);
     }
 
     private void initSwiftyLayout() {
@@ -864,13 +996,127 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         return options;
     }
 
+
+
+    private void updateTipStatus() {
+        boolean isOpen = mISManager.getSystIntruderProtecionSwitch();
+        boolean isDeviceAdmin = DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this);
+        if (isOpen) {
+            mLlChangeTimes.setVisibility(View.VISIBLE);
+            mLlGuide.setVisibility(View.GONE);
+            mLlGuideFinished.setVisibility(View.GONE);
+        } else {
+            mLlGuide.setVisibility(View.GONE);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_cap_scr_sh");
+            mLlChangeTimes.setVisibility(View.VISIBLE);
+            mLlGuideFinished.setVisibility(View.GONE);
+        }
+    }
+
+//    private void changeToGuideFinishedLayout() {
+//        SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1, "intruder", "intruder_cap_scr_on");
+//        if (mISManager.getIsIntruderSecurityAvailable()) {
+//            mISManager.setSystIntruderProtectionSwitch(true);
+//            mLlGuide.setVisibility(View.GONE);
+//            mLlChangeTimes.setVisibility(View.GONE);
+//            mLlGuideFinished.setVisibility(View.VISIBLE);
+//            TranslateAnimation tla = new TranslateAnimation(mRlTipContent.getWidth(),0,0,0);
+//            mLlGuideFinished.setAnimation(tla);
+//            tla.setDuration(500);
+//            mLlGuideFinished.startAnimation(tla);
+//        } else {
+//            mMultiUsesDialog = ShowAboutIntruderDialogHelper.showForbitDialog(this, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    Intent intent = new Intent(IntruderCatchedActivity.this, FeedbackActivity.class);
+//                    intent.putExtra("isFromIntruderProtectionForbiden", true);
+//                    startActivity(intent);
+//                    mMultiUsesDialog.dismiss();
+//                }
+//            });
+//        }
+//    }
+
+//    protected void showForbitDialog() {
+//        if (mOpenForbinDialog == null) {
+//            mOpenForbinDialog = new LEOAlarmDialog(this);
+//        }
+//        mOpenForbinDialog.setContent(getResources().getString(
+//                R.string.intruderprotection_forbit_content));
+//        mOpenForbinDialog.setRightBtnStr(getResources().getString(
+//                R.string.secur_help_feedback_tip_button));
+//        mOpenForbinDialog.setLeftBtnStr(getResources().getString(
+//                R.string.no_image_hide_dialog_button));
+//        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Intent intent = new Intent(IntruderCatchedActivity.this, FeedbackActivity.class);
+//                intent.putExtra("isFromIntruderProtectionForbiden", true);
+//                startActivity(intent);
+//                mOpenForbinDialog.dismiss();
+//            }
+//        });
+//        mOpenForbinDialog.show();
+//    }
+
+//    private void showAskOpenDeviceAdminDialog() {
+//        if (mAskOpenDeviceAdminDialog == null) {
+//            mAskOpenDeviceAdminDialog = new LEOAlarmDialog(IntruderCatchedActivity.this);
+//        }
+//        if (mAskOpenDeviceAdminDialog.isShowing()) {
+//            return;
+//        }
+//        mAskOpenDeviceAdminDialog.setTitle(R.string.intruder_setting_title_1);
+//        mAskOpenDeviceAdminDialog.setContent(getString(R.string.intruder_device_admin_guide_content));
+//        mAskOpenDeviceAdminDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                requestDeviceAdmin();
+//                mAskOpenDeviceAdminDialog.dismiss();
+//            }
+//        });
+//        mAskOpenDeviceAdminDialog.show();
+//    }
+
+    private void requestDeviceAdmin() {
+//        mLockManager.filterSelfOneMinites();
+        mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
+        ComponentName mAdminName = new ComponentName(IntruderCatchedActivity.this, DeviceReceiverNewOne.class);
+        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName);
+        startActivityForResult(intent, REQUEST_CODE_TO_REQUEST_ADMIN);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.rv_open:
+                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,"intruder", "intruder_cap_scr_cli");
+                if (DeviceReceiverNewOne.isActive(IntruderCatchedActivity.this)) {
+//                    changeToGuideFinishedLayout();
+                } else {
+                    mMultiUsesDialog = ShowAboutIntruderDialogHelper.showAskOpenDeviceAdminDialog(IntruderCatchedActivity.this, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestDeviceAdmin();
+                            mMultiUsesDialog.dismiss();
+                        }
+                    });
+                }
+                break;
             case R.id.rv_close:
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_capture_quit");
                 onBackPressed();
+                break;
+            case R.id.rv_setting:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_cap_setting");
+                Intent intent2 = new Intent(IntruderCatchedActivity.this,IntruderSettingActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent2.putExtra("isPgInner",false);
+                mLockManager.filterPackage(getPackageName(),1000);
+                startActivity(intent2);
                 break;
             case R.id.rv_change_times:
                 showChangeTimesDialog();
@@ -879,7 +1125,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             case R.id.ll_fivestars_layout:
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_capture_rank");
-                mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(getPackageName(), 1000);
+                mPt.putBoolean(PrefConst.KEY_HAS_GRADE, true);
                 Utilities.goFiveStar(IntruderCatchedActivity.this, false, false);
                 break;
             case R.id.rv_more:
@@ -926,19 +1173,21 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                     intent.putExtras(bundle);
                     intent.putExtra("fromIntruderMore", true);
                     intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
+                    mLockManager.filterPackage(getPackageName(),1000);
                     startActivity(intent);
                     // IntruderCatchedActivity.this.finish();
                     LeoLog.i("catch_poha", "cc3 -cc2 :" + (System.currentTimeMillis() - cc2));
                 } catch (Throwable t) {
                     Intent intent = new Intent(IntruderCatchedActivity.this,
                             ImageHideMainActivity.class);
+                    mLockManager.filterPackage(getPackageName(),1000);
                     startActivity(intent);
                 }
                 break;
             case R.id.share_layout:  // 分享
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "share_cnts");
-                mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(getPackageName(), 1000);
                 PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
                 boolean isContentEmpty = TextUtils.isEmpty(
                         sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT));
@@ -968,7 +1217,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 
                 break;
             case R.id.item_btn_rv:  // 点击swifty卡片
-                mLockManager.filterSelfOneMinites();
+                mLockManager.filterPackage(getPackageName(), 1000);
                 PreferenceTable preferenceTable = PreferenceTable.getInstance();
                 Utilities.selectType(preferenceTable, PrefConst.KEY_INTRUDER_SWIFTY_TYPE,
                         PrefConst.KEY_INTRUDER_SWIFTY_GP_URL, PrefConst.KEY_INTRUDER_SWIFTY_URL,
@@ -984,4 +1233,5 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLayout.startAnim();
         }
     }
+
 }

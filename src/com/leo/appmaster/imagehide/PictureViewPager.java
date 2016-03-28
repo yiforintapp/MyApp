@@ -84,7 +84,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                     });
                     break;
                 case CANCEL_HIDE_FINISH:
-                    int isSuccess = (Integer) msg.obj;
+                    String isSuccess = (String) msg.obj;
                     onPostDo(isSuccess);
                     break;
             }
@@ -220,38 +220,38 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
             ImageLoader.getInstance().displayImage(uri, zoomImageView, mOptions, new ImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-                            /**
-                             * 显示动画
-                             */
-                            loadingImage.startAnimation(mAnimationRotate);
-                            loadingImage.setVisibility(View.VISIBLE);
-                        }
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    /**
+                     * 显示动画
+                     */
+                    loadingImage.startAnimation(mAnimationRotate);
+                    loadingImage.setVisibility(View.VISIBLE);
+                }
 
-                        @Override
-                        public void onLoadingComplete(String imageUri,
-                                                      View view, Bitmap loadedImage) {
+                @Override
+                public void onLoadingComplete(String imageUri,
+                                              View view, Bitmap loadedImage) {
 
-                            loadingImage.clearAnimation();
-                            loadingImage.setVisibility(View.GONE);
-                        }
+                    loadingImage.clearAnimation();
+                    loadingImage.setVisibility(View.GONE);
+                }
 
-                        @Override
-                        public void onLoadingCancelled(String imageUri,
-                                                       View view) {
-                            loadingImage.clearAnimation();
-                            loadingImage.setVisibility(View.GONE);
-                        }
+                @Override
+                public void onLoadingCancelled(String imageUri,
+                                               View view) {
+                    loadingImage.clearAnimation();
+                    loadingImage.setVisibility(View.GONE);
+                }
 
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view,
-                                                    FailReason failReason) {
-                            // TODO Auto-generated method stub
-                            loadingImage.clearAnimation();
-                            loadingImage.setVisibility(View.GONE);
-                        }
-                    });
+                @Override
+                public void onLoadingFailed(String imageUri, View view,
+                                            FailReason failReason) {
+                    // TODO Auto-generated method stub
+                    loadingImage.clearAnimation();
+                    loadingImage.setVisibility(View.GONE);
+                }
+            });
 
             zoomImageView.setOnClickListener(new OnClickListener() {
 
@@ -342,18 +342,19 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         pdm.unregisterMediaListener();
         String filepath = mPicturesList.get(mListPos);
         long totalSize = new File(filepath).length();
-        int isSuccess = 3;
+        String isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
         String newPaht = ((PrivacyDataManager) MgrContext.getManager
                 (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
         if (newPaht == null) {
             SDKWrapper.addEvent(this, SDKWrapper.P1,
                     "hide_pic_operation",
                     "pic_ccl_fal");
-            isSuccess = 2;
-        } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
-            isSuccess = 2;
-        } else if ("0".equals(newPaht)) {
-            isSuccess = 3;
+            isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
+        } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPaht)
+                || FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(newPaht)) {
+            isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
+        } else if (FileOperationUtil.HIDE_PIC_COPY_SUCESS.equals(newPaht)) {
+            isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
             ContentValues values = new ContentValues();
             String dirPath = FileOperationUtil.getDirPathFromFilepath(filepath);
             values.put("image_dir", dirPath);
@@ -363,10 +364,10 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             } catch (Exception e) {
             }
             mPicturesList.remove(mListPos);
-        } else if ("4".equals(newPaht)) {
-            isSuccess = 4;
+        } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPaht)) {
+            isSuccess = FileOperationUtil.HIDE_PIC_NO_MEMERY;
         } else {
-            isSuccess = 3;
+            isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
             mPicturesList.remove(mListPos);
             FileOperationUtil.saveImageMediaEntry(newPaht, this);
             FileOperationUtil.deleteFileMediaEntry(filepath, this);
@@ -376,8 +377,8 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         readyDoingDone(isSuccess);
     }
 
-    private void onPostDo(int isSuccess) {
-        if (isSuccess == 4) {
+    private void onPostDo(String isSuccess) {
+        if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(isSuccess)) {
             String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
             String content = getString(R.string.image_unhide_memery_insuficient_dialog_content);
             String rightBtn = getString(R.string.image_hide_memery_insuficient_dialog_button);
@@ -387,8 +388,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                     R.dimen.memery_dialog_button_height);
             showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
                     width, height);
-        } else if (isSuccess == -1 || isSuccess == -2) {
-        } else if (isSuccess == 2) {
+        } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(isSuccess)
+                || FileOperationUtil.HIDE_PIC_COPY_RENAME_FAIL.equals(isSuccess)) {
+        } else if (FileOperationUtil.HIDE_PIC_PATH_EMPTY.equals(isSuccess)) {
         }
         if (mPicturesList.size() == 0) {
             if (mIsFromIntruderMore) {
@@ -416,7 +418,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         }
     }
 
-    private void readyDoingDone(int isSuccess) {
+    private void readyDoingDone(String isSuccess) {
         if (mHandler != null) {
             Message msg = new Message();
             msg.obj = isSuccess;

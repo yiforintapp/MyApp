@@ -182,7 +182,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
                 AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
                 removeGuidePage();
                 /** set the help tip action **/
-                mTitleBar.setOptionImage(R.drawable.tips_icon);
+                mTitleBar.setOptionImage(R.drawable.help_icon_n);
                 mTitleBar.setOptionImageVisibility(View.VISIBLE);
                 Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
                 mTitleBar.setOptionAnimation(animation);

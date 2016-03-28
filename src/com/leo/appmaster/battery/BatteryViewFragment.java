@@ -46,6 +46,7 @@ import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.CircleImageViewTwo;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
@@ -92,7 +93,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private final int EXTRA_TYPE_MSG = 3;
 
     private static final int AD_LOAD_TIME = 3000;
-    private final int DELAY_SHOW_AD = 2000;
+    private final int DELAY_SHOW_AD = 3500;
 
     private final String GOOGLE = "Google";
     private final String AMAZON = "Amazon";
@@ -223,12 +224,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private ImageLoader mImageLoader;
 
     //    private boolean mShowBoost = true;
-    private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
+    private static int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 
     private List<PackageInfo> mPackages;
 
     public static String[] days = AppMasterApplication.getInstance().getResources()
             .getStringArray(R.array.days_of_week);
+
 
     //开始首页动画
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -563,7 +565,6 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             midScreen = true;
         }
 
-        mInitTime = System.currentTimeMillis();
 
         mRecommandView = findViewById(R.id.three_show_content);
         mRecommandContentView = findViewById(R.id.show_small_content);
@@ -588,28 +589,40 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void initBoostLayout() {
         BatteryManager btrManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
         boolean isBatteryPowSavOpen = btrManager.getBatteryPowSavStatus();
+        mRemainTimeContent.setVisibility(View.INVISIBLE);
+        mRemainContent.setVisibility(View.INVISIBLE);
         if (PrefTableHelper.shouldBatteryBoost() && isBatteryPowSavOpen) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_save");
             ViewStub viewStub = (ViewStub) findViewById(R.id.boost_stub);
             mBoostView = (BatteryBoostController) viewStub.inflate();
 
-            mRemainTimeContent.setVisibility(View.INVISIBLE);
-            mRemainContent.setVisibility(View.INVISIBLE);
 
             timeTurnBig();
 
             mBoostView.setBoostFinishListener(new BatteryBoostController.OnBoostFinishListener() {
                 @Override
                 public void onBoostFinish() {
+                    mInitTime = System.currentTimeMillis();
                     PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
                     checkingData(true);
-                    showViewAfterBoost(true);
+                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showViewAfterBoost(true);
+                        }
+                    }, 600);
                     timeTurnSmall();
                 }
             });
         } else {
+            mInitTime = System.currentTimeMillis();
             checkingData(false);
-            showViewAfterBoost(false);
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showViewAfterBoost(false);
+                }
+            }, 600);
         }
     }
 
@@ -657,12 +670,31 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            bayIconTurnBig();
+//                            bayIconTurnBig();
+                        }
+                    });
+                    ObjectAnimator animMove = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "x", mBatteryIconView.getLeft(), mBatteryIconView.getLeft() +
+                                    mBatteryIconView.getWidth() / 2 + DipPixelUtil.dip2px(mActivity, 5));
+                    animMove.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            mBatteryIconView.setVisibility(View.VISIBLE);
                         }
                     });
 
-                    animMoveY.setDuration(500);
-                    animMoveY.start();
+                    ObjectAnimator anim20 = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "scaleX", 0f, 1.0f);
+                    ObjectAnimator anim21 = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "scaleY", 0f, 1.0f);
+                    ObjectAnimator anim22 = ObjectAnimator.ofFloat(mBatteryIconView,
+                            "alpha", 0f, 1f);
+
+                    AnimatorSet set = new AnimatorSet();
+                    set.setDuration(500);
+                    set.playTogether(anim20, anim21, anim22, animMove, animMoveY);
+                    set.start();
                 }
             });
         } else {
@@ -695,36 +727,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    private void bayIconTurnBig() {
-        ObjectAnimator animMoveY = ObjectAnimator.ofFloat(mBatteryIconView,
-                "x", mBatteryIconView.getLeft(), mBatteryIconView.getLeft() +
-                        mBatteryIconView.getWidth() / 2 + DipPixelUtil.dip2px(mActivity, 5));
-        animMoveY.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mBatteryIconView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        ObjectAnimator anim20 = ObjectAnimator.ofFloat(mBatteryIconView,
-                "scaleX", 0f, 1.0f);
-        ObjectAnimator anim21 = ObjectAnimator.ofFloat(mBatteryIconView,
-                "scaleY", 0f, 1.0f);
-        ObjectAnimator anim22 = ObjectAnimator.ofFloat(mBatteryIconView,
-                "alpha", 0f, 1f);
-
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(500);
-        set.play(animMoveY).before(anim20);
-        set.play(anim20).with(anim21);
-        set.play(anim21).with(anim22);
-        set.start();
-    }
 
     private void showViewAfterBoost(boolean afterAnimation) {
-        mRemainTimeContent.setVisibility(View.VISIBLE);
-        mRemainContent.setVisibility(View.VISIBLE);
+//        mRemainTimeContent.setVisibility(View.VISIBLE);
+//        mRemainContent.setVisibility(View.VISIBLE);
 
         ViewStub viewStub = (ViewStub) findViewById(R.id.bay_advertise_stub);
         mBossView = viewStub.inflate();
@@ -742,11 +748,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         mMaskView = (GradientMaskView) findViewById(R.id.mask_view);
 
-        if (afterAnimation) {
-            startRemindTimeAppearAnim();
-        } else {
-            expandRecommandContent(RECOMMAND_TYPE_TWO, true);
-        }
+        startRemindTimeAppearAnim(afterAnimation);
+
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -783,24 +786,86 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    private void startRemindTimeAppearAnim() {
+    private void startRemindTimeAppearAnim(boolean isShieldExist) {
+
         ObjectAnimator alpha = ObjectAnimator.ofFloat(mRemainContent, "alpha", 0f, 255f);
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(mRemainContent, "scaleX", 0.8f, 1f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(mRemainContent, "scaleY", 0.8f, 1f);
+        ObjectAnimator remainTimeAlpha = ObjectAnimator.ofFloat(mRemainTimeContent, "alpha", 0f, 255f);
+        ObjectAnimator remainTimeScaleX = ObjectAnimator.ofFloat(mRemainTimeContent, "scaleX", 0.8f, 1f);
+        ObjectAnimator remainTimeScaleY = ObjectAnimator.ofFloat(mRemainTimeContent, "scaleY", 0.8f, 1f);
+        alpha.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if (mRemainTimeContent != null) {
+                    mRemainTimeContent.setVisibility(View.VISIBLE);
+                }
+                if (mRemainContent != null) {
+                    mRemainContent.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(500);
-        animatorSet.playTogether(alpha, scaleX, scaleY);
-        animatorSet.start();
 
+        turnDark(RECOMMAND_TYPE_TWO);
+        isClickable = false;
+        if (mMaskView != null) {
+            mMaskView.hideMask();
+        }
+
+        mRecommandView.setVisibility(View.VISIBLE);
+
+        if (mBossView != null) {
+            boolean isSlideContentShow = mBossView.getVisibility() == View.VISIBLE;
+            if (isSlideContentShow) {
+                adDimissAnima();
+            }
+        }
+
+
+        mRecommandView.clearAnimation();
+        fillShowContentData(RECOMMAND_TYPE_TWO);
+        initThreeContent();
+        mRecommandContentView.setVisibility(View.VISIBLE);
+        setTheIndicatorX(RECOMMAND_TYPE_TWO);
+        isClickable = true;
+
+        if (isShieldExist) {
+            ObjectAnimator shieldAlpha = null;
+            ObjectAnimator shieldScaleX = null;
+            ObjectAnimator shieldScaleY = null;
+            if (mBoostView != null) {
+                shieldAlpha = ObjectAnimator.ofFloat(mBoostView, "alpha", 1f, 0f);
+                shieldScaleX = ObjectAnimator.ofFloat(mBoostView, "scaleX", 1f, 1.2f);
+                shieldScaleY = ObjectAnimator.ofFloat(mBoostView, "scaleY", 1f, 1.2f);
+                shieldAlpha.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (mBoostView != null) {
+                            mBoostView.setVisibility(View.INVISIBLE);
+                            mBoostView.setAlpha(1f);
+                        }
+                    }
+                });
+            }
+
+            animatorSet.playTogether(alpha, scaleX, scaleY, shieldAlpha, shieldScaleX, shieldScaleY,
+                    remainTimeAlpha, remainTimeScaleX, remainTimeScaleY);
+        } else {
+            animatorSet.playTogether(alpha, scaleX, scaleY, remainTimeAlpha, remainTimeScaleX, remainTimeScaleY);
+        }
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                expandRecommandContent(RECOMMAND_TYPE_TWO, true);
+//                expandRecommandContent(RECOMMAND_TYPE_TWO, true);
             }
         });
+        animatorSet.start();
     }
+
 
     private void expandRecommandContent(final int recommandTypeThree, final boolean firInLoad) {
         if (mActivity == null) return;
@@ -849,7 +914,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
     }
 
-    /** 设置指示器位置 */
+    /**
+     * 设置指示器位置
+     */
     private void setTheIndicatorX(int type) {
         float positionX = 0;
         float margeX = DipPixelUtil.dip2px(mActivity, 8);
@@ -865,8 +932,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
     }
 
-    /** 指示器动画 */
-    private void  showIndicatorAnim(int type) {
+    /**
+     * 指示器动画
+     */
+    private void showIndicatorAnim(int type) {
         ObjectAnimator moveAnim;
         float endX = DipPixelUtil.dip2px(mActivity, 8);
         float currentX = mFolderIndicator.getX();
@@ -877,8 +946,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         } else if (RECOMMAND_TYPE_THREE == type) {
             endX = mShowThree.getLeft() + mShowThree.getWidth() / 2 - endX;
         }
-        moveAnim =ObjectAnimator.ofFloat(mFolderIndicator, "x", currentX, endX);
-        final float  finalX = endX;
+        moveAnim = ObjectAnimator.ofFloat(mFolderIndicator, "x", currentX, endX);
+        final float finalX = endX;
         moveAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -924,8 +993,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
 
     private void fillShowContentData(int recommandTypeThree) {
-        if (mActivity == null) return;
+        if (getActivity() == null) return;
         if (recommandTypeThree == RECOMMAND_TYPE_ONE) {
+
+
+            cancelDisplay(mIvShowOne, mIvShowTwo, mIvShowThree, mIvShowFour);
+
             List<BatteryAppItem> phoneList = ScreenRecommentJob.getBatteryCallList();
             LeoLog.d("testGetList", "3G通话 size is : " + phoneList.size());
             for (int i = 0; i < phoneList.size(); i++) {
@@ -936,8 +1009,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
             LeoLog.d("testGetList", "-------------分割线---------------");
             //fill the local ,  size of : 3
-            mIvShowOne.setSelfImageDrawable(getResources().getDrawable(R.drawable.icon_time_contacts), false);
-            mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_contact));
+            mIvShowOne.setSelfImageDrawable(mActivity.getResources().getDrawable(R.drawable.icon_time_contacts), false);
+            mRecommandTvOne.setText(mActivity.getString(R.string.battery_protect_show_num_contact));
             mRecommandNumOne.setVisibility(View.VISIBLE);
             mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -947,6 +1020,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     intent.setData(Contacts.People.CONTENT_URI);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
+                        IntrudeSecurityManager.sEnterBrowser = false;
                         startActivity(intent);
                         mActivity.finish();
                     } catch (Exception e) {
@@ -955,8 +1029,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             });
 
-            mIvShowTwo.setSelfImageDrawable(getResources().getDrawable(R.drawable.icon_time_phone), false);
-            mRecommandTvTwo.setText(getString(R.string.battery_protect_show_num_call));
+            mIvShowTwo.setSelfImageDrawable(mActivity.getResources().getDrawable(R.drawable.icon_time_phone), false);
+            mRecommandTvTwo.setText(mActivity.getString(R.string.battery_protect_show_num_call));
             mRecommandNumTwo.setVisibility(View.VISIBLE);
             mRecommandNumTwo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -964,6 +1038,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
+                        IntrudeSecurityManager.sEnterBrowser = false;
                         startActivity(intent);
                         mActivity.finish();
                     } catch (Exception e) {
@@ -972,134 +1047,14 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 }
             });
 
-            mIvShowThree.setSelfImageDrawable(getResources().getDrawable(R.drawable.icon_time_message), false);
-            mRecommandTvThree.setText(getString(R.string.battery_protect_show_num_msm));
+            mIvShowThree.setSelfImageDrawable(mActivity.getResources().getDrawable(R.drawable.icon_time_message), false);
+            mRecommandTvThree.setText(mActivity.getString(R.string.battery_protect_show_num_msm));
             mRecommandNumThree.setVisibility(View.VISIBLE);
             mRecommandNumThree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    try {
-                        Intent intentM = new Intent(Intent.ACTION_VIEW);
-                        intentM.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnM = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationList");
-                        intentM.setComponent(cnM);
-                        startActivity(intentM);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        //努比亚短信列表
-                        Intent intentN = new Intent(Intent.ACTION_VIEW);
-                        intentN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnN = new ComponentName("com.android.contacts", "com.android.contacts.MmsConversationActivity");
-                        intentN.setComponent(cnN);
-                        startActivity(intentN);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                    //三星
-                    try {
-                        Intent intentS = new Intent(Intent.ACTION_VIEW);
-                        intentS.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnS = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationComposer");
-                        intentS.setComponent(cnS);
-                        startActivity(intentS);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e2) {
-                        e2.printStackTrace();
-                    }
-                    //qiku
-                    try {
-                        Intent intentQiku = new Intent(Intent.ACTION_VIEW);
-                        intentQiku.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnQiku = new ComponentName("com.android.mms", "com.yulong.android.mms.ui.MmsConversationListActivity");
-                        intentQiku.setComponent(cnQiku);
-                        startActivity(intentQiku);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e3) {
-                        e3.printStackTrace();
-                    }
-                    //huawei p8
-                    try {
-                        Intent intentHwP8 = new Intent(Intent.ACTION_MAIN);
-                        intentHwP8.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnHwP8 = new ComponentName("com.android.contacts", "com.android.mms.ui.ConversationList");
-                        intentHwP8.setComponent(cnHwP8);
-                        startActivity(intentHwP8);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e4) {
-                        e4.printStackTrace();
-                    }
-                    //sony
-                    try {
-                        Intent intentSony = new Intent(Intent.ACTION_MAIN);
-                        intentSony.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnSony = new ComponentName("com.sonyericsson.conversations", "com.sonyericsson.conversations.ui.ConversationListActivity");
-                        intentSony.setComponent(cnSony);
-                        startActivity(intentSony);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e5) {
-                        e5.printStackTrace();
-                    }
-                    try {
-                        // ASUS
-                        Intent intentAsus = new Intent(Intent.ACTION_MAIN);
-                        intentAsus.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnAsus = new ComponentName("com.asus.message", "com.android.mms.ui.ConversationList");
-                        intentAsus.setComponent(cnAsus);
-                        startActivity(intentAsus);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e6) {
-                        e6.printStackTrace();
-                    }
-                    try {
-                        //lenovo
-                        Intent intentLenovo = new Intent(Intent.ACTION_MAIN);
-                        intentLenovo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnLenovo = new ComponentName("com.lenovo.ideafriend", "com.lenovo.ideafriend.alias.MmsActivity");
-                        intentLenovo.setComponent(cnLenovo);
-                        startActivity(intentLenovo);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e7) {
-                        e7.printStackTrace();
-                    }
-                    //Nexus 6
-                    try {
-                        Intent intentNexus6 = new Intent(Intent.ACTION_MAIN);
-                        intentNexus6.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ComponentName cnNexus6 = new ComponentName("com.google.android.apps.messaging", "com.google.android.apps.messaging.ui.ConversationListActivity");
-                        intentNexus6.setComponent(cnNexus6);
-                        startActivity(intentNexus6);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e8) {
-                        e8.printStackTrace();
-                    }
-
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_MAIN);
-                    intent.setType("vnd.android-dir/mms-sms");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(intent);
-                        mActivity.finish();
-                        return;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    mActivity.finish();
+                    IntrudeSecurityManager.sEnterBrowser = false;
+                    Utilities.launchMmsAndFinish(mActivity);
                 }
             });
 
@@ -1132,8 +1087,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                             ResolveInfo resolveinfo = resolveinfoList.iterator().next();
                             if (resolveinfo != null) {
                                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                                        "batterypage",
-                                        "call_" + infoCopy.pkg);
+                                        "screen_click",
+                                        "call1_" + infoCopy.pkg);
                                 String className = resolveinfo.activityInfo.name;
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -1141,6 +1096,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 ComponentName cn = new ComponentName(infoCopy.pkg, className);
                                 intent.setComponent(cn);
                                 try {
+                                    IntrudeSecurityManager.sEnterBrowser = false;
                                     startActivity(intent);
                                     mActivity.finish();
                                 } catch (Exception e) {
@@ -1158,17 +1114,30 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             }
 
         } else if (recommandTypeThree == RECOMMAND_TYPE_TWO) {
+            cancelDisplay(mIvShowOne, mIvShowTwo, mIvShowThree, mIvShowFour);
+            if (getActivity() == null || isDetached() || isRemoving()) return;
             twoContentFill();
         } else {
+            cancelDisplay(mIvShowOne, mIvShowTwo, mIvShowThree, mIvShowFour);
             threeContentFill();
         }
     }
 
+    private void cancelDisplay(CircleImageViewTwo mIvShowOne, CircleImageViewTwo mIvShowTwo, CircleImageViewTwo mIvShowThree, CircleImageViewTwo mIvShowFour) {
+        ImageLoader.getInstance().cancelDisplayTask(mIvShowOne);
+        ImageLoader.getInstance().cancelDisplayTask(mIvShowTwo);
+        ImageLoader.getInstance().cancelDisplayTask(mIvShowThree);
+        ImageLoader.getInstance().cancelDisplayTask(mIvShowFour);
+    }
+
     private void twoContentFill() {
+        if (getActivity() == null) {
+            return;
+        }
         List<BatteryAppItem> netList = ScreenRecommentJob.getBatteryNetList();
         LeoLog.d("testGetList", "上网 size is : " + netList.size());
-        mIvShowOne.setSelfImageDrawable(getResources().getDrawable(R.drawable.icon_time_browser), false);
-        mRecommandTvOne.setText(getString(R.string.battery_protect_show_num_browser));
+        mIvShowOne.setSelfImageDrawable(mActivity.getResources().getDrawable(R.drawable.icon_time_browser), false);
+        mRecommandTvOne.setText(mActivity.getString(R.string.battery_protect_show_num_browser));
         mRecommandNumOne.setVisibility(View.VISIBLE);
         mRecommandNumOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1192,9 +1161,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                                 ComponentName cn = new ComponentName(browserPack, className);
                                 intent.setComponent(cn);
                                 try {
+                                    IntrudeSecurityManager.sEnterBrowser = true;
                                     startActivity(intent);
                                     mActivity.finish();
                                 } catch (Exception e) {
+                                    IntrudeSecurityManager.sEnterBrowser = false;
                                     e.printStackTrace();
                                 }
                             }
@@ -1304,9 +1275,11 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         Uri content_url = Uri.parse(url);
         intent.setData(content_url);
         try {
+            IntrudeSecurityManager.sEnterBrowser = true;
             startActivity(intent);
             mActivity.finish();
         } catch (Exception e) {
+            IntrudeSecurityManager.sEnterBrowser = false;
             e.printStackTrace();
         }
     }
@@ -1329,12 +1302,12 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
                         if (type == RECOMMAND_TYPE_TWO) {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                                    "batterypage",
-                                    "inter_" + infoOne.name);
+                                    "screen_click",
+                                    "inter1_" + infoOne.name);
                         } else if (type == RECOMMAND_TYPE_THREE) {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                                    "batterypage",
-                                    "app_" + infoOne.name);
+                                    "screen_click",
+                                    "video1_" + infoOne.name);
                         }
 
                         startBrowser(urlFour);
@@ -1382,8 +1355,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 public void onClick(View view) {
 
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                            "batterypage",
-                            "app_" + infoOne.pkg);
+                            "screen_click",
+                            "video1_" + infoOne.pkg);
 
                     Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
                     resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -1399,6 +1372,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         ComponentName cn = new ComponentName(infoOne.pkg, className);
                         intent.setComponent(cn);
                         try {
+                            IntrudeSecurityManager.sEnterBrowser = false;
                             startActivity(intent);
                             mActivity.finish();
                         } catch (Exception e) {
@@ -2020,9 +1994,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 mShowing = false;
                 mScrollView.setScrollY(0);
                 mScrollView.setScrollEnabled(true);
-                if (mMaskView != null) {
-                    mMaskView.setY(mMaskView.getTop() - DipPixelUtil.dip2px(mActivity, 8));
-                }
+//                if (mMaskView != null) {
+//                    mMaskView.setY(mMaskView.getTop() - DipPixelUtil.dip2px(mActivity, 8));
+//                }
             }
         });
         animMoveY.start();
@@ -2040,9 +2014,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                if (mMaskView != null) {
-                    mMaskView.setY(mMaskView.getTop() + DipPixelUtil.dip2px(mActivity, 8));
-                }
+//                if (mMaskView != null) {
+//                    mMaskView.setY(mMaskView.getTop() + DipPixelUtil.dip2px(mActivity, 8));
+//                }
                 mScrollView.setScrollEnabled(false);
             }
 
@@ -2397,6 +2371,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 @Override
                 public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
+                    SDKWrapper.addEvent(BatteryViewFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
                     LeoLog.d(TAG, "Ad clicked");
                 }
             });
@@ -2438,17 +2413,19 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", mAdSource,  null);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
             LeoLog.e(TAG, "failed to load AD preview!");
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " load image failed", mAdSource, null);
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             LeoLog.d(TAG, "Ad preview image ready");
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " image size: " + loadedImage.getByteCount(), mAdSource, null);
             BatteryViewFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 try {
@@ -2541,6 +2518,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         //MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING);
         mAdWrapper.setOnClickListener(this);
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + Constants.UNIT_ID_CHARGING + " adShow", mAdSource, null);
     }
     /* 广告相关 - 结束 */
 

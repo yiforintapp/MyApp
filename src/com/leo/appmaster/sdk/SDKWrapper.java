@@ -2,14 +2,15 @@
 package com.leo.appmaster.sdk;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
+import android.provider.Settings;
 
 import com.baidu.mobstat.StatService;
 import com.leo.analytics.LeoAgent;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.sdk.update.UIHelper;
@@ -17,6 +18,9 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.push.IPushStatHelper;
 import com.leo.push.PushManager;
 import com.tendcloud.tenddata.TCAgent;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class SDKWrapper {
@@ -236,10 +240,10 @@ public class SDKWrapper {
     /**
      * add an event that we will push to log service
      *
-     * @param ctx              activity context
+     * @param context              activity context
      * @param level            log level for leoSDK, can be LeoStat.P0 ~ LeoStat.P4
-     * @param eventID          event type of this event
-     * @param eventDescription detail of this event
+     * @param id          event type of this event
+     * @param description detail of this event
      */
     public static void addEvent(Context context, int level, String id, String description) {
         // AM-727
@@ -255,6 +259,33 @@ public class SDKWrapper {
         TCAgent.onEvent(ctx, id, description);
     }
 
+	/**
+	 * add an event that we will push to skyfill server
+	 * and use extra channel
+	 * @param context activity context
+	 * @param exName extra name
+	 * @param level log level for leoSDK, can be LeoStat.P0 ~ LeoStat.P4
+	 * @param id event type of this event
+	 * @param description detail of this event
+	 * @param source sdk type   
+	 * @param extra detail of this extra data
+	 */
+	public static void addEvent(Context context, String exName, int level, String id, String description, int source, Map<String, String> extra) {
+		
+		//只是针对max 广告发起的extra 的范畴才要主动加上android_id
+		if (exName != null && exName.startsWith("max_ad")) {
+			if (source != AppMasterPreference.AD_SDK_SOURCE_USE_MAX) {
+				return;
+			}
+			if (extra == null) {
+				extra = new TreeMap<String, String>();
+			}
+			String android_id = Settings.Secure.getString(AppMasterApplication.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);
+			extra.put("android_id", android_id);
+		}
+		com.leo.stat.StatService.onExtraEvent(context, exName, id, description, extra);
+	}
+	
     public static void endSession(Context ctx) {
         // LeoStat.endSession();
     }

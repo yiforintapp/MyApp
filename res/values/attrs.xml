@@ -199,4 +199,9 @@
         <attr name="bubbleColor" format="color" />
     </declare-styleable>
 
+
+    <declare-styleable name="com.airsig.AutoFontSizeTextView">
+        <attr name="min_font_size" format="float"/>
+    </declare-styleable>
+
 </resources>

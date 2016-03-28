@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker.manager;
 
 import android.content.Context;
@@ -14,6 +13,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.schedule.FetchScheduleJob.FetchScheduleListener;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -73,6 +73,11 @@ public class ADShowTypeRequestManager {
     private static final String AD_AFTER_SCAN = "u";
     /* 3.3 充电屏保广告位 */
     private static final String AD_ON_SCREEN_SAVER = "w";
+    /* 3.5 所有广告位展示的概率 数值0 ~ 10对应 展示概率 %0 ~ 100%*/
+    public static final String AD_PROBABILITY = "q_2";
+
+    public static final int AD_PROBABILITY_MIN = 0;
+    public static final int AD_PROBABILITY_MAX = 10;
 
     /* 如果后台配置本地没有的广告形式时，默认广告类型 */
     public static final int DEFAULT_AD_SHOW_TYPE = 3;
@@ -425,7 +430,7 @@ public class ADShowTypeRequestManager {
     
     private void updateGiftBoxNeedJump(JSONObject response, boolean forceClose) {
         try {
-            mSp.setIsGiftBoxNeedUpdate(forceClose?0:(response.getInt(GIFTBOX_UPDATE)));
+            mSp.setIsGiftBoxNeedUpdate(forceClose ? 0 : (response.getInt(GIFTBOX_UPDATE)));
             if (mIsPushRequestADShowType && response.getInt(GIFTBOX_UPDATE) == 1) {
                 AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
                 mIsPushRequestADShowType = false;
@@ -480,7 +485,22 @@ public class ADShowTypeRequestManager {
             e.printStackTrace();
         }
     }
-    
+
+    private void updateAdProbability(JSONObject response, boolean forceClose) {
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        try {
+            int value = forceClose ? 0 : response.getInt(AD_PROBABILITY);
+            if (value < AD_PROBABILITY_MIN || value > AD_PROBABILITY_MAX) {
+                return;
+            }
+            if (value != preferenceTable.getInt(AD_PROBABILITY, AD_PROBABILITY_MAX)) {
+                preferenceTable.putInt(AD_PROBABILITY, value);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void updateADAtThemeListConfig(JSONObject response, boolean forceClose) {
         try {
             int value = forceClose ? 0 : (response.getInt(AD_AT_THEME));
@@ -566,6 +586,8 @@ public class ADShowTypeRequestManager {
                     updateAfterScanAdConfig(response, forceClose);
                     // 3.3 屏保界面广告位
                     updateScreenSaverAdConfig(response, forceClose);
+                    // 3.5 广告展示概率
+                    updateAdProbability(response, forceClose);
                     // 注意：下述3个非广告开关
                     mSp.setVersionUpdateTipsAfterUnlockOpen((response.getInt(VERSION_UPDATE_AFTER_UNLOCK)));
                     LeoLog.d("poha", "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));

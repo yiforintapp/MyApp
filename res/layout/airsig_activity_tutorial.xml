@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_background"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/airsig_background_gray"
+    android:clipChildren="false"
+    android:fitsSystemWindows="true"
+    tools:context="com.airsig.android_sdk.TutorialActivity" >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical" >
+        
+        <RelativeLayout
+            android:id="@+id/viewMessageBox"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/airsig_small_message_box_height"
+	        android:layout_marginLeft="@dimen/airsig_horizontal_margin"
+	        android:layout_marginRight="@dimen/airsig_horizontal_margin"
+	        android:layout_marginTop="@dimen/airsig_vertical_margin"
+	        android:layout_marginBottom="0dp"
+	        android:padding="0dp"
+	        android:background="@drawable/airsig_training_card"
+	        android:clipChildren="true" />
+	    
+	    <RelativeLayout
+	        android:id="@+id/viewTouchBox"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_marginLeft="@dimen/airsig_horizontal_margin"
+	        android:layout_marginRight="@dimen/airsig_horizontal_margin"
+	        android:layout_marginTop="@dimen/airsig_vertical_margin"
+	        android:layout_marginBottom="@dimen/airsig_vertical_margin"
+	        android:padding="0dp"
+	        android:background="@drawable/airsig_training_card" >
+	        
+	        <LinearLayout
+	            android:id="@+id/viewTouchArea"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:orientation="vertical"
+		        android:layout_marginTop="5dp"
+		        android:layout_marginLeft="3dp"
+		        android:layout_marginRight="3dp"
+		        android:layout_marginBottom="0dp"
+		        android:background="@drawable/airsig_training_toucharea" >
+		        
+	            <TextView
+	                android:id="@+id/textTouchAreaMessage" 
+	                android:layout_width="match_parent"
+		        	android:layout_height="match_parent"
+		        	android:gravity="center"
+		        	android:background="@android:color/transparent" 
+		        	android:textColor="@color/airsig_text_white"
+		        	android:textSize="@dimen/airsig_textsize_content"
+		        	android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra"
+		        	android:text="@string/airsig_tutorial_textview_toucharea" />
+		        
+	        </LinearLayout>
+	        
+	    </RelativeLayout>
+        
+    </LinearLayout>
+	
+	<ProgressBar
+        android:id="@+id/progressBarWaiting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
+	
+</RelativeLayout>
