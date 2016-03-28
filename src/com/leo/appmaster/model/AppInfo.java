@@ -49,4 +49,6 @@ public class AppInfo extends BaseInfo {
 
     public long backupTime;
 
+    public String titleName;
+
 }
