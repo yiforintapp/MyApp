@@ -36,18 +36,12 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airsig_activity_select);
-        initAirSig();
+
         initUI();
     }
 
 
-    private void initAirSig() {
-        ASSetting setting = new ASSetting();
-        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
 
-
-        ASGui.getSharedInstance(getApplicationContext(), null, setting, null); // Database is in /data/data/...
-    }
 
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.ctb_main);

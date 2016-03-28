@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cbg">
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/ctb_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cb" />
+
+    <RelativeLayout
+        android:id="@+id/open_airsig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ctb_main"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white">
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/rv_item_open_airsig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="68dp"
+            app:rippleAlpha="1"
+            app:rippleColor="@color/home_tab_pressed"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="false">
+
+            <TextView
+                android:id="@+id/tv_title_airsig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:maxLines="2"
+                android:text="@string/airsig_settings_activity_title"
+                android:textColor="@color/c2"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:id="@+id/iv_bg_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/select_box_done"
+                android:visibility="gone" />
+        </com.leo.appmaster.ui.RippleView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/reset_airsig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/open_airsig"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white">
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/rv_item_reset_airsig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="68dp"
+            app:rippleAlpha="1"
+            app:rippleColor="@color/home_tab_pressed"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="false">
+
+            <TextView
+                android:id="@+id/tv_title_reset_airsig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:maxLines="2"
+                android:text="@string/airsig_settings_activity_two_set"
+                android:textColor="@color/c2"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:id="@+id/iv_bg_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/select_box_done"
+                android:visibility="gone" />
+        </com.leo.appmaster.ui.RippleView>
+    </RelativeLayout>
+
+
+</RelativeLayout>

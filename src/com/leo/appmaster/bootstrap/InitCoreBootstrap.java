@@ -19,6 +19,7 @@ import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import com.airsig.airsigengmulti.ASEngine;
 import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
@@ -27,6 +28,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
+import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
@@ -157,9 +160,19 @@ public class InitCoreBootstrap extends Bootstrap {
             TaskProtectService.scheduleService(mApp);
         }
 
+        //airSig
+        initAirSig();
+
         return true;
     }
 
+    private void initAirSig() {
+        ASSetting setting = new ASSetting();
+        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
+
+
+        ASGui.getSharedInstance(AppMasterApplication.getInstance(), null, setting, null); // Database is in /data/data/...
+    }
 
     @Override
     public String getClassTag() {
