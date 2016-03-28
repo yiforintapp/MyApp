@@ -249,17 +249,17 @@ public class GestureLockFragment extends LockFragment implements
 
     private Drawable getBd(String mPackageName) {
         //wifi && blueTooth lock
-        Drawable bd;
+        Drawable bd = null;
         if (mPackageName.equals(SwitchGroup.WIFI_SWITCH)) {
             bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
         } else if (mPackageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
             bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
-        } else {
+        } else if(mActivity != null){
             bd = AppUtil.getAppIcon(
                     mActivity.getPackageManager(), mPackageName);
         }
 
-        if (bd == null) {
+        if (bd == null && mActivity != null) {
             bd = AppUtil.getAppIcon(
                     mActivity.getPackageManager(), mActivity.getPackageName());
         }
