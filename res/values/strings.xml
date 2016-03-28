@@ -1177,6 +1177,7 @@
     <!--3.6手机防盗-->
     <string name="secur_deta_title_bar">防盗功能详情</string>
     <string name="secur_deta_title">可向被盗手机发送以下指令，执行对应操作</string>
+    <string name="secur_add_numb_tip">防盗指令将会以短信形式发送到预留号码。您可以用预留号码发送防盗指令控制手机。</string>
 
     <string name="airsig_settings_activity_title">签字解锁</string>
     <string name="airsig_settings_activity_set_one_on">开启签字</string>
