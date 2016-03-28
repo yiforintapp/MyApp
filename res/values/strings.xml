@@ -1174,4 +1174,14 @@
     <string name="airsig_settings_generic">一般模式</string>
     <string name="airsig_settings_control">控制模式</string>
 
+    <string name="airsig_settings_activity_title">签字解锁</string>
+    <string name="airsig_settings_activity_set_one_on">开启签字</string>
+    <string name="airsig_settings_activity_set_one_off">关闭签字</string>
+    <string name="airsig_settings_activity_set_two">更改签字手势</string>
+    <string name="airsig_settings_activity_toast">设定成功！将默认使用签字解锁</string>
+    <string name="airsig_settings_activity_dialog">关闭签字解锁后则无法通过手机签字解锁应用，确定关闭？</string>
+    <string name="airsig_settings_activity_two_set_title">设置默认解锁方式</string>
+    <string name="airsig_settings_activity_two_set">手势/密码解锁</string>
+    <string name="airsig_settings_activity_two_set_dialog">当前未开启签字解锁，是否立即开启？</string>
+
 </resources>
