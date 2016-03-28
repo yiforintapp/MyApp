@@ -7,9 +7,14 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.appmanage.FlowActivity;
+import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.battery.BatterySettingActivity;
+import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
+import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
@@ -18,7 +23,9 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
 /**
  * Created by chenfs on 16-3-28.
@@ -41,6 +48,8 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout mRlBatteryManagement;
 
     private PreferenceTable mPt;
+
+    private boolean mIsHasCallFilterRecords = false;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -77,6 +86,21 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    private void checkCallFilterRecordCount() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                CallFilterManager mCallManger = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+                LeoLog.i("tess", "getCallFilterGrCount = " + mCallManger.getCallFilterGrCount());
+                if (mCallManger.getCallFilterGrCount() != 0) {
+                    mIsHasCallFilterRecords = true;
+                } else {
+                    mIsHasCallFilterRecords = false;
+                }
+            }
+        });
     }
 
     private void initUI() {
@@ -140,24 +164,35 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void goToBatteryManagement() {
-
+        Intent dlIntent = new Intent(this, BatteryMainActivity.class);
+        startActivity(dlIntent);
     }
 
     private void goToFlowManagement() {
-
+        Intent intent = new Intent(this, FlowActivity.class);
+        startActivity(intent);
     }
 
     private void goToWifi() {
-
+        int count2 = mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
+        mPt.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2+1);
+        Intent mIntent = new Intent(this, WifiSecurityActivity.class);
+        startActivity(mIntent);
     }
 
     private void goToCallfilter() {
-
+        int count = mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
+        mPt.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
+        Intent callFilter = new Intent(this, CallFilterMainActivity.class);
+        if (mIsHasCallFilterRecords) {
+            callFilter.putExtra("needMoveToTab2", true);
+        }
+        startActivity(callFilter);
     }
 
     private void goToMainSetting() {
-//        Intent intent = new Intent(this, IntruderprotectionActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, MainSettingActivity.class);
+        startActivity(intent);
     }
 
     private void goToBatteryScreen() {
