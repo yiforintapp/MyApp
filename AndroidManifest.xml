@@ -233,6 +233,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"/>
         <activity
+            android:name=".home.HomeMoreActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+        <activity
             android:name=".callfilter.CallFilterRecordActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"

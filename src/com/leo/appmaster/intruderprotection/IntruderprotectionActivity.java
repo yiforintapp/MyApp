@@ -42,6 +42,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.feedback.FeedbackActivity;
+import com.leo.appmaster.home.HomeMoreActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -152,10 +153,27 @@ public class IntruderprotectionActivity extends BaseActivity {
         mctb.setSecOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IntruderprotectionActivity.this, IntruderSettingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.putExtra("isPgInner",true);
+
+                Intent intent = new Intent(IntruderprotectionActivity.this, HomeMoreActivity.class);
                 startActivity(intent);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                Intent intent = new Intent(IntruderprotectionActivity.this, IntruderSettingActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                intent.putExtra("isPgInner",true);
+//                startActivity(intent);
             }
         });
         mctb.setOptionMenuVisible(true);
