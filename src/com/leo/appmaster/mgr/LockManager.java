@@ -195,6 +195,7 @@ public abstract class LockManager extends Manager {
 
         Context ctx = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
+        //TODO 首次启动加载数据
         if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 
