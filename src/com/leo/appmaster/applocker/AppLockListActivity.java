@@ -147,7 +147,7 @@ public class AppLockListActivity extends BaseActivity implements
             if (mAppList != null && mAppList.size() > 0) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if(switchs != null && switchs.size() > 0) {
-                    mPosition = + switchs.size();
+                    mPosition = + (switchs.size() + 1);
                 }
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
