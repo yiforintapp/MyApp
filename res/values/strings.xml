@@ -1174,6 +1174,9 @@
     <string name="airsig_settings_generic">一般模式</string>
     <string name="airsig_settings_control">控制模式</string>
 
+    <!--3.6手机防盗-->
+    <string name="secur_deta_title_bar">防盗功能详情</string>
+    <string name="secur_deta_title">可向被盗手机发送以下指令，执行对应操作</string>
     <string name="airsig_settings_activity_title">签字解锁</string>
     <string name="airsig_settings_activity_set_one_on">开启签字</string>
     <string name="airsig_settings_activity_set_one_off">关闭签字</string>
