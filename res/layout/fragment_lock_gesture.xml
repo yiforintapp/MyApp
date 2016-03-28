@@ -64,6 +64,18 @@
         android:layout_marginTop="@dimen/ges_Pattern_m_top" />
 
     <RelativeLayout
+        android:id="@+id/airsig_lock"
+        android:layout_width="@dimen/lockPatternView_height"
+        android:layout_height="@dimen/lockPatternView_height"
+        android:layout_below="@id/tv_gesture_tip"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/ges_Pattern_m_top"
+        android:visibility="gone">
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/switch_bottom_content"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
@@ -71,10 +83,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
         android:background="@drawable/reset_pass_frame"
+        android:gravity="center_vertical"
         android:paddingBottom="3dp"
         android:paddingLeft="9dp"
         android:paddingRight="9dp"
-        android:gravity="center_vertical"
         android:paddingTop="3dp">
 
         <ImageView

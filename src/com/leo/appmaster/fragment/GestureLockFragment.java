@@ -67,6 +67,7 @@ public class GestureLockFragment extends LockFragment implements
     private View mViewBottom;
     private ImageView mIvBottom;
     private TextView mTvBottom;
+    private View mAirSigTouchView;
     private int mShowType;
 
     private int mBottomIconRes = 0;
@@ -145,6 +146,7 @@ public class GestureLockFragment extends LockFragment implements
         mViewBottom.setOnClickListener(this);
         mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
         mTvBottom = (TextView) findViewById(R.id.switch_bottom);
+        mAirSigTouchView = findViewById(R.id.airsig_lock);
         initAirSig();
 
         LeoEventBus.getDefaultBus().register(this);
@@ -159,11 +161,15 @@ public class GestureLockFragment extends LockFragment implements
             int unlockType = PreferenceTable.getInstance().
                     getInt(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
             if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                mLockPatternView.setVisibility(View.VISIBLE);
+                mAirSigTouchView.setVisibility(View.GONE);
                 mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
                 mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
                 mIvBottom.setBackgroundResource(
                         R.drawable.reset_pass_number);
             } else {
+                mLockPatternView.setVisibility(View.GONE);
+                mAirSigTouchView.setVisibility(View.VISIBLE);
                 mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
                 mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
                 mIvBottom.setBackgroundResource(
@@ -481,11 +487,15 @@ public class GestureLockFragment extends LockFragment implements
 
     private void switchUnlockType() {
         if (mShowType == AirSigSettingActivity.NOMAL_UNLOCK) {
+            mLockPatternView.setVisibility(View.GONE);
+            mAirSigTouchView.setVisibility(View.VISIBLE);
             mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_pass_gesture);
         } else {
+            mLockPatternView.setVisibility(View.VISIBLE);
+            mAirSigTouchView.setVisibility(View.GONE);
             mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
             mIvBottom.setBackgroundResource(
