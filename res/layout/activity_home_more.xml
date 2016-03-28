@@ -178,6 +178,218 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_callfilter_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="1px"
+                android:layout_marginRight="8dp"
+                android:background="@color/white">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_callfilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1px"
+                    android:minHeight="40dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_callfilter_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/quick_helper_callfilter"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icn_settings_arrow" />
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_wifi_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="1px"
+                android:layout_marginRight="8dp"
+                android:background="@color/white">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_wifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1px"
+                    android:minHeight="40dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_wifi_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/home_tab_wifi"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icn_settings_arrow" />
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_flow_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="1px"
+                android:layout_marginRight="8dp"
+                android:background="@color/white">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_flow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1px"
+                    android:minHeight="40dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_flow_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/quick_helper_flow_manage"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icn_settings_arrow" />
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_battery_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="1px"
+                android:layout_marginRight="8dp"
+                android:background="@color/white">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_battery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1px"
+                    android:minHeight="40dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_battery_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/quick_helper_elec_manage"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:src="@drawable/icn_settings_arrow" />
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
