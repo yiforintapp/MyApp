@@ -11,8 +11,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
 import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
@@ -36,8 +40,10 @@ import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+
 
 public class DeskProxyActivity extends Activity {
     private static final String TAG = "DeskProxyActivity";
@@ -73,6 +79,8 @@ public class DeskProxyActivity extends Activity {
     public static final String CALL_FILTER_PUSH = "from"; //是否从骚扰拦截push通知进入key
 
     private LockManager mLockManager;
+  
+    private GoogleApiClient mGooleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +97,10 @@ public class DeskProxyActivity extends Activity {
             String host = uri.getHost();
             String path = uri.getPath();
             LeoLog.d(TAG, "onCreate, uri: " + uri);
+            if(Constants.DP_APP_SCHEMA.equals(schema) && Constants.DP_APP_HOST.equals(host)){
+                gotoHomeActivity();
+                finish();
+            }
             if (!Constants.DP_SCHEMA.equals(schema) || !Constants.DP_HOST.equals(host) || TextUtils.isEmpty(path)) {
                 finish();
                 return;
@@ -110,6 +122,7 @@ public class DeskProxyActivity extends Activity {
         }
 
         handleAction(type, fromWhere);
+        mGooleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void handleAction(int type, String fromWhere) {
@@ -310,6 +323,13 @@ public class DeskProxyActivity extends Activity {
 		MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_61);
     }
 
+    private void gotoHomeActivity(){
+        mLockManager.filterPackage(this.getPackageName(), 1000);
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
     private void gotoHotApp(int type) {
         mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, HotAppActivity.class);
@@ -501,4 +521,31 @@ public class DeskProxyActivity extends Activity {
         mHandler = null;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // APP Indexing API 为了让Google 搜索发现和了解应用，以便在搜索结果中呈现深层链接
+        // 也可以让应用允许 Googlebot 访问而不使用APP Indexing API
+        mGooleApiClient.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW,
+                getResources().getString(R.string.app_name),
+                LeoUrls.DEEPLINK_WEB_URL,
+                LeoUrls.DEEPLINK_APP_URL
+        );
+        AppIndex.AppIndexApi.start(mGooleApiClient, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW,
+                getResources().getString(R.string.app_name),
+                LeoUrls.DEEPLINK_WEB_URL,
+                LeoUrls.DEEPLINK_APP_URL
+        );
+        AppIndex.AppIndexApi.end(mGooleApiClient, viewAction);
+        mGooleApiClient.disconnect();
+    }
 }

@@ -243,7 +243,7 @@ public class WifiTabFragment extends Fragment {
 //        mHandler.sendMessageDelayed(msg, 7500);
 //
 //        String host;
-//        String hosts = PreferenceTable.getInstance().getString(PINGHOST);
+//        String hosts = LeoPreference.getInstance().getString(PINGHOST);
 //        LeoLog.d("testPingHost", "hosts is : " + hosts);
 //        boolean firstPing = false;
 //        if (hosts != null) {
@@ -316,7 +316,7 @@ public class WifiTabFragment extends Fragment {
 //        }
 //        newString = newString + ";" + a1;
 //        LeoLog.d("testPingHost", "newString is : " + newString);
-//        PreferenceTable.getInstance().putString(PINGHOST, newString);
+//        LeoPreference.getInstance().putString(PINGHOST, newString);
 //    }
 
     private void checkIsSafe() {

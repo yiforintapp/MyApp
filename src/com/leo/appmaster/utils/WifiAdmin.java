@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.utils;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -11,8 +9,6 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
-
-import com.leo.appmaster.db.PreferenceTable;
 
 public class WifiAdmin {
     static final int SECURITY_NONE = 0;

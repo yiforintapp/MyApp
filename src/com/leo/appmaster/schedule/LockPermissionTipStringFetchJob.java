@@ -8,8 +8,7 @@ import android.text.TextUtils;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
-import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.schedule.FetchScheduleJob.FetchScheduleListener;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -34,7 +33,7 @@ public class LockPermissionTipStringFetchJob extends FetchScheduleJob {
                 JSONObject object = (JSONObject) response;
                 boolean isNull = object.isNull(KEY);
                 if (!isNull) {
-                    PreferenceTable table = PreferenceTable.getInstance();
+                    LeoPreference table = LeoPreference.getInstance();
                     JSONObject tip = object.getJSONObject(KEY);
                     LeoLog.i(TAG, "guideCopy :" + tip);
                     if(tip != null) {

@@ -6,7 +6,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.db.BlacklistTab;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.ThirdAppManager;
@@ -35,7 +35,7 @@ public class InitAsyncBootstrap extends Bootstrap {
     @Override
     protected boolean doStrap() {
         // 加载所有的首选项
-        PreferenceTable.getInstance().loadPreference();
+        LeoPreference.getInstance().loadPreference();
 
         PrivacyTrickUtil.clearOtherApps(mApp);
         AppLoadEngine.getInstance(mApp).preloadAllBaseInfo();
@@ -85,7 +85,7 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     /*保存sim标识*/
     private void saveSimIMEI() {
-        String simNu=PreferenceTable.getInstance().getString(PrefConst.KEY_SIM_IMEI);
+        String simNu= LeoPreference.getInstance().getString(PrefConst.KEY_SIM_IMEI);
         if (Utilities.isEmpty(simNu)) {
             LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
             manager.setSimIMEI();

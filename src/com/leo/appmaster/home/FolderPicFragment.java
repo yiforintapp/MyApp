@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -94,7 +94,7 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
                 + mAdapter.getSelectData().size());
         mActivity.onProcessClick(this);
-        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
+        LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
         mFinishNotified = false;
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override

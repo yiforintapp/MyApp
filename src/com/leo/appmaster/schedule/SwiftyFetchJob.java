@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -36,15 +36,15 @@ public class SwiftyFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
         if (response == null) {
             LeoLog.i(TAG, "response: " + response);
-            preferenceTable.putString(PrefConst.KEY_SWIFTY_CONTENT, "");
-            preferenceTable.putString(PrefConst.KEY_SWIFTY_GP_URL, "");
-            preferenceTable.putString(PrefConst.KEY_SWIFTY_IMG_URL, "");
-            preferenceTable.putString(PrefConst.KEY_SWIFTY_TITLE, "");
-            preferenceTable.putString(PrefConst.KEY_SWIFTY_TYPE, "");
-            preferenceTable.putString(PrefConst.KEY_SWIFTY_URL, "");
+            leoPreference.putString(PrefConst.KEY_SWIFTY_CONTENT, "");
+            leoPreference.putString(PrefConst.KEY_SWIFTY_GP_URL, "");
+            leoPreference.putString(PrefConst.KEY_SWIFTY_IMG_URL, "");
+            leoPreference.putString(PrefConst.KEY_SWIFTY_TITLE, "");
+            leoPreference.putString(PrefConst.KEY_SWIFTY_TYPE, "");
+            leoPreference.putString(PrefConst.KEY_SWIFTY_URL, "");
 
             return;
         }
@@ -53,12 +53,12 @@ public class SwiftyFetchJob extends FetchScheduleJob {
 
         JSONObject object = (JSONObject) response;
 
-        setValue(object, "content", PrefConst.KEY_SWIFTY_CONTENT, preferenceTable);
-        setValue(object, "gp_url", PrefConst.KEY_SWIFTY_GP_URL, preferenceTable);
-        setValue(object, "img_url", PrefConst.KEY_SWIFTY_IMG_URL, preferenceTable);
-        setValue(object, "title", PrefConst.KEY_SWIFTY_TITLE, preferenceTable);
-        setValue(object, "type", PrefConst.KEY_SWIFTY_TYPE, preferenceTable);
-        setValue(object, "url", PrefConst.KEY_SWIFTY_URL, preferenceTable);
+        setValue(object, "content", PrefConst.KEY_SWIFTY_CONTENT, leoPreference);
+        setValue(object, "gp_url", PrefConst.KEY_SWIFTY_GP_URL, leoPreference);
+        setValue(object, "img_url", PrefConst.KEY_SWIFTY_IMG_URL, leoPreference);
+        setValue(object, "title", PrefConst.KEY_SWIFTY_TITLE, leoPreference);
+        setValue(object, "type", PrefConst.KEY_SWIFTY_TYPE, leoPreference);
+        setValue(object, "url", PrefConst.KEY_SWIFTY_URL, leoPreference);
 
     }
 

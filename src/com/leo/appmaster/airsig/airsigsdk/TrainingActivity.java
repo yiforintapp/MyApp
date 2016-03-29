@@ -24,6 +24,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
@@ -43,6 +44,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -101,7 +103,9 @@ public class TrainingActivity extends Activity {
 	
 	// UI components for setting signature
 	private RelativeLayout mTouchBox;
-	private LinearLayout mToucharea;
+	private View mTouchBoxZone;
+	private RelativeLayout mTouchareaBackground;
+	private View mToucharea;
 	private ImageView mImageThumb;
 	
 	// UI components for messages
@@ -148,12 +152,34 @@ public class TrainingActivity extends Activity {
 		
 		// initialize UI components:
 		mTouchBox = (RelativeLayout) findViewById(R.id.viewTouchBox);
-		mToucharea = (LinearLayout) findViewById(R.id.viewTouchArea);
+		mTouchBoxZone = findViewById(R.id.viewTouchBoxZone);
+		mTouchBoxZone.setOnTouchListener(new View.OnTouchListener() {
+			@SuppressLint("ClickableViewAccessibility")
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				return true;
+			}
+		});
+		mTouchareaBackground = (RelativeLayout) findViewById(R.id.viewTouchAreaBackground);
+		mToucharea = findViewById(R.id.viewTouchArea);
 		mToucharea.setOnTouchListener(new View.OnTouchListener() {
 			@SuppressLint("ClickableViewAccessibility")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				return onTouchPressArea(v, event);
+			}
+		});
+		mTouchareaBackground.post(new Runnable() {
+			@Override
+	        public void run() {
+				Rect rect = new Rect();
+				mToucharea.getHitRect(rect);
+				int extraPadding = (int) Utils.dp2px(getResources(), 50);
+				rect.top -= extraPadding;
+	            rect.left -= extraPadding;
+	            rect.right += extraPadding;
+	            rect.bottom += extraPadding;
+	            mTouchareaBackground.setTouchDelegate(new TouchDelegate(rect, mToucharea));
 			}
 		});
 		mImageThumb = (ImageView) findViewById(R.id.imageThumb);
@@ -434,6 +460,18 @@ public class TrainingActivity extends Activity {
 						},
 						null, null
 					);
+					
+					final String key = "first time show red dot";
+					if (!Utils.getSavedBoolean(getApplicationContext(), key, false)) {
+						new Handler().postDelayed(new Runnable() {
+				    	    public void run() {
+				    	    	if (mCurrentStep == Step.ChooseWord && mMessageBoxFragment != null) {
+				    	    		mMessageBoxFragment.showHintIcon(true);
+				    	    		Utils.saveBoolean(getApplicationContext(), key, true);
+				    	    	}
+				    	    }
+				    	}, 5000);
+					}
 					break;
 				}
 				case HowToSetup: {
@@ -730,6 +768,7 @@ public class TrainingActivity extends Activity {
 			@Override
 			public void run() {
 				mTouchBox.setEnabled(enable);
+				mTouchareaBackground.setEnabled(enable);
 				mToucharea.setEnabled(enable);
 				if (enable) {
 					if (mSignatureInputCount > 0) {
@@ -752,10 +791,10 @@ public class TrainingActivity extends Activity {
 			public void run() {
 				if (pressed) {
 					// Touch Area
-					mToucharea.setBackground(getResources().getDrawable(R.drawable.airsig_training_toucharea_pressed));
-					ViewGroup.MarginLayoutParams mpp = (ViewGroup.MarginLayoutParams) mToucharea.getLayoutParams();
+					mTouchareaBackground.setBackground(getResources().getDrawable(R.drawable.airsig_training_toucharea_pressed));
+					ViewGroup.MarginLayoutParams mpp = (ViewGroup.MarginLayoutParams) mTouchareaBackground.getLayoutParams();
 					mpp.setMargins((int)Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 11));
-					mToucharea.setLayoutParams(mpp);
+					mTouchareaBackground.setLayoutParams(mpp);
 					mTouchareaMessage.setVisibility(View.GONE);
 					
 					// Message Box
@@ -771,10 +810,10 @@ public class TrainingActivity extends Activity {
 					textView.setLayoutParams(lp);
 					mMessageBox.addView(textView);
 				} else {
-					mToucharea.setBackground(getResources().getDrawable(R.drawable.airsig_training_toucharea));
-					ViewGroup.MarginLayoutParams mp = (ViewGroup.MarginLayoutParams) mToucharea.getLayoutParams();
+					mTouchareaBackground.setBackground(getResources().getDrawable(R.drawable.airsig_training_toucharea));
+					ViewGroup.MarginLayoutParams mp = (ViewGroup.MarginLayoutParams) mTouchareaBackground.getLayoutParams();
 					mp.setMargins((int)Utils.dp2px(getResources(), 3), (int)Utils.dp2px(getResources(), 5), (int)Utils.dp2px(getResources(), 3), (int)Utils.dp2px(getResources(), 0));
-					mToucharea.setLayoutParams(mp);
+					mTouchareaBackground.setLayoutParams(mp);
 					mTouchareaMessage.setVisibility(mImageThumb.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 				}
 			}
@@ -1268,6 +1307,7 @@ public class TrainingActivity extends Activity {
 		
 		private FrameLayout mContentContainer;
 		private TextView mPositiveButton, mNegativeButton;
+		private ImageView mHintIcon;
 		
 		private View mContentView;
 		private String mPositiveButtonText = null, mNegativeButtonText = null;
@@ -1284,6 +1324,8 @@ public class TrainingActivity extends Activity {
 	    	privateSetPositiveButton(mPositiveButtonText, mPositiveButtonClickListener);
 	    	mNegativeButton = (TextView) rootView.findViewById(R.id.button_negative);
 	    	privateSetNegativeButton(mNegativeButtonText, mNegativeButtonClickListener);
+	    	
+	    	mHintIcon = (ImageView) rootView.findViewById(R.id.imageHintIcon);
 	    	
 	    	return rootView;
 	    }
@@ -1382,5 +1424,14 @@ public class TrainingActivity extends Activity {
 				}
 			});
 		}
+	    
+	    public void showHintIcon(boolean show) {
+	    	if (show) {
+	    		mHintIcon.setVisibility(View.VISIBLE);
+	    		Utils.blinkView(mHintIcon);
+	    	} else {
+	    		mHintIcon.setVisibility(View.GONE);
+	    	}
+	    }
 	}
 }

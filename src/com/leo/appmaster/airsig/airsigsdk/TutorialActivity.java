@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.ToneGenerator;
 import android.os.Bundle;
@@ -29,11 +30,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,7 +65,9 @@ public class TutorialActivity extends Activity {
 	
 	// UI components for input signature
 	private RelativeLayout mTouchBox;
-	private LinearLayout mToucharea;
+	private View mTouchBoxZone;
+	private RelativeLayout mTouchareaBackground;
+	private View mToucharea;
 	
 	// UI components for messages
 	private RelativeLayout mMessageBox;
@@ -104,20 +109,34 @@ public class TutorialActivity extends Activity {
 		
 		// initialize UI components:
 		mTouchBox = (RelativeLayout) findViewById(R.id.viewTouchBox);
-		mTouchBox.post(new Runnable() {
+		mTouchBoxZone = findViewById(R.id.viewTouchBoxZone);
+		mTouchBoxZone.setOnTouchListener(new View.OnTouchListener() {
+			@SuppressLint("ClickableViewAccessibility")
 			@Override
-			public void run() {
-//				mTouchBox.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//		    	mTouchBox.getLayoutParams().height = (int) (mTouchBox.getMeasuredHeight() + (mStatusBarHeight == 0 ? Utils.getStatusBarHeight(getApplicationContext()) : 0) - Utils.dp2px(getResources(), 4));
-//		    	mTouchBox.requestLayout();
+			public boolean onTouch(View v, MotionEvent event) {
+				return true;
 			}
 		});
-		mToucharea = (LinearLayout) findViewById(R.id.viewTouchArea);
+		mTouchareaBackground = (RelativeLayout) findViewById(R.id.viewTouchAreaBackground);
+		mToucharea = findViewById(R.id.viewTouchArea);
 		mToucharea.setOnTouchListener(new View.OnTouchListener() {
 			@SuppressLint("ClickableViewAccessibility")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				return onTouchPressArea(v, event);
+			}
+		});
+		mTouchareaBackground.post(new Runnable() {
+			@Override
+	        public void run() {
+				Rect rect = new Rect();
+				mToucharea.getHitRect(rect);
+				int extraPadding = (int) Utils.dp2px(getResources(), 50);
+				rect.top -= extraPadding;
+	            rect.left -= extraPadding;
+	            rect.right += extraPadding;
+	            rect.bottom += extraPadding;
+	            mTouchareaBackground.setTouchDelegate(new TouchDelegate(rect, mToucharea));
 			}
 		});
 		
@@ -410,6 +429,7 @@ public class TutorialActivity extends Activity {
 			@Override
 			public void run() {
 				mTouchBox.setEnabled(enable);
+				mTouchareaBackground.setEnabled(enable);
 				mToucharea.setEnabled(enable);
 				if (enable) {
 					mTouchareaMessage.setVisibility(View.VISIBLE);
@@ -426,16 +446,16 @@ public class TutorialActivity extends Activity {
 			public void run() {
 				if (pressed) {
 					// Touch Area
-					mToucharea.setBackground(getResources().getDrawable(R.drawable.airsig_training_toucharea_pressed));
-					ViewGroup.MarginLayoutParams mpp = (ViewGroup.MarginLayoutParams) mToucharea.getLayoutParams();
-					mpp.setMargins((int) Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 11));
-					mToucharea.setLayoutParams(mpp);
+					mTouchareaBackground.setBackground(getResources().getDrawable(R.drawable.airsig_training_toucharea_pressed));
+					ViewGroup.MarginLayoutParams mpp = (ViewGroup.MarginLayoutParams) mTouchareaBackground.getLayoutParams();
+					mpp.setMargins((int)Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 9), (int)Utils.dp2px(getResources(), 11));
+					mTouchareaBackground.setLayoutParams(mpp);
 					mTouchareaMessage.setVisibility(View.GONE);
 				} else {
-					mToucharea.setBackground(getResources().getDrawable(R.drawable.airsig_training_toucharea));
-					ViewGroup.MarginLayoutParams mp = (ViewGroup.MarginLayoutParams) mToucharea.getLayoutParams();
+					mTouchareaBackground.setBackground(getResources().getDrawable(R.drawable.airsig_training_toucharea));
+					ViewGroup.MarginLayoutParams mp = (ViewGroup.MarginLayoutParams) mTouchareaBackground.getLayoutParams();
 					mp.setMargins((int)Utils.dp2px(getResources(), 3), (int)Utils.dp2px(getResources(), 5), (int)Utils.dp2px(getResources(), 3), (int)Utils.dp2px(getResources(), 0));
-					mToucharea.setLayoutParams(mp);
+					mTouchareaBackground.setLayoutParams(mp);
 				}
 			}
     	});

@@ -91,7 +91,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
                 boolean isFilterSelected = cmp.getFilterOpenState();
                 if (!isFilterSelected) {
                     //拦截从关到开
-//                    PreferenceTable.getInstance().
+//                    LeoPreference.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, true);
                     checkBox.setImageResource(R.drawable.switch_on);
                     mFilterTv.setText(R.string.call_filter_setting_one_desc);
@@ -105,7 +105,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
                     }
                 } else {
                     //拦截从开到关
-//                    PreferenceTable.getInstance().
+//                    LeoPreference.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_FILTER_FLAG, false);
                     checkBox.setImageResource(R.drawable.switch_off);
                     mFilterTv.setText(R.string.call_fil_set_close);
@@ -118,13 +118,13 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
                 boolean isNotiSelected = cmpi.getFilterNotiOpState();
                 boolean isFilter = cmpi.getFilterOpenState();
                 if (!isNotiSelected && isFilter) {
-//                    PreferenceTable.getInstance().
+//                    LeoPreference.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, true);
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "settings_notify_on");
                     checkBoxTwo.setImageResource(R.drawable.switch_on);
                     cmpi.setFilterNotiOpState(true);
                 } else {
-//                    PreferenceTable.getInstance().
+//                    LeoPreference.getInstance().
 //                            putBoolean(CallFilterConstants.SETTING_NOTI_FLAG, false);
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "settings_notify_off");
                     checkBoxTwo.setImageResource(R.drawable.switch_off);

@@ -7,9 +7,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.airsig.airsigengmulti.ASEngine;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class ActionIndexConverter {
 	private final static String KEY_SHARED_PREFERENCES_NAME = "ActionIndexConverter";

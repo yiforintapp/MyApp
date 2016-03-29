@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
@@ -63,13 +63,13 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             }
 
             boolean isCallFilterShareTimesNull = resp.isNull("harass_intercept_num"); // 判断key是否存在
-            PreferenceTable preferenceTable = PreferenceTable.getInstance();
+            LeoPreference leoPreference = LeoPreference.getInstance();
             if (!isCallFilterShareTimesNull) {
                 int callFilterTimes = resp.getInt("harass_intercept_num");
                 LeoLog.i(TAG, "骚扰拦截限制次数:" + callFilterTimes);
-                preferenceTable.putInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, callFilterTimes);
+                leoPreference.putInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, callFilterTimes);
             } else {
-                preferenceTable.putInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10); // 获取不到默认10次
+                leoPreference.putInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10); // 获取不到默认10次
             }
 
             // 应用内是否展示充电屏保，默认不显示
@@ -78,7 +78,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
                 LeoLog.i(TAG, "应用内展示充电屏保");
                 int data = resp.getInt(PrefConst.KEY_SHOW_INSIDE_APP);
                 boolean showInsideApp = data == 1;
-                preferenceTable.putBoolean(PrefConst.KEY_SHOW_INSIDE_APP, showInsideApp);
+                leoPreference.putBoolean(PrefConst.KEY_SHOW_INSIDE_APP, showInsideApp);
             } else {
                 LeoLog.i(TAG, "应用内不展示充电屏保");
             }
@@ -89,7 +89,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
                 LeoLog.i(TAG, "显示屏保的忽略按钮");
                 int data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC);
                 boolean showIgnore = data == 1;
-                preferenceTable.putBoolean(PrefConst.KEY_SHOW_IGNORE_COC, showIgnore);
+                leoPreference.putBoolean(PrefConst.KEY_SHOW_IGNORE_COC, showIgnore);
             } else {
                 LeoLog.i(TAG, "不显示屏保的忽略按钮");
             }
@@ -100,7 +100,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
                 int data = 24; // 默认24小时
                 data = resp.getInt(PrefConst.KEY_SHOW_IGNORE_COC_TS);
                 LeoLog.i(TAG, "忽略屏保的忽略按钮后再次显示的时间间隔(hour) : " + data);
-                preferenceTable.putInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, data);
+                leoPreference.putInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, data);
             } else {
                 LeoLog.i(TAG, "没有-忽略屏保的忽略按钮后再次显示的时间间隔");
             }
@@ -110,7 +110,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             if (hasData) {
                 int bootData = resp.getInt(PrefConst.KEY_SHOW_BOOST_TS);
                 LeoLog.i(TAG, "屏保省电动画的时间间隔 : " + bootData);
-                preferenceTable.putInt(PrefConst.KEY_SHOW_BOOST_TS, bootData);
+                leoPreference.putInt(PrefConst.KEY_SHOW_BOOST_TS, bootData);
             } else {
                 LeoLog.i(TAG, "没有-屏保省电动画的时间间隔");
             }
@@ -120,7 +120,7 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             if (hasData) {
                 double bootData = resp.getDouble(PrefConst.KEY_SHOW_BOOST_MEM);
                 LeoLog.i(TAG, "屏保省电动画的内存阀值 : " + bootData);
-                preferenceTable.putDouble(PrefConst.KEY_SHOW_BOOST_MEM, bootData);
+                leoPreference.putDouble(PrefConst.KEY_SHOW_BOOST_MEM, bootData);
             } else {
                 LeoLog.i(TAG, "没有-屏保省电动画的内存阀值");
             }
@@ -129,9 +129,9 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             if (!isCallFilterShareTimesNull) {
                 int gradeTimes = resp.getInt("grade_time");
                 LeoLog.i(TAG, "评分弹窗间隔小时:" + gradeTimes);
-                preferenceTable.putInt(PrefConst.KEY_GRADE_TIME, gradeTimes);
+                leoPreference.putInt(PrefConst.KEY_GRADE_TIME, gradeTimes);
             } else {
-                preferenceTable.putInt(PrefConst.KEY_GRADE_TIME, 72); // 获取不到默认72小时
+                leoPreference.putInt(PrefConst.KEY_GRADE_TIME, 72); // 获取不到默认72小时
             }
 
         } catch (JSONException e) {

@@ -13,7 +13,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.schedule.FetchScheduleJob.FetchScheduleListener;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -487,14 +487,14 @@ public class ADShowTypeRequestManager {
     }
 
     private void updateAdProbability(JSONObject response, boolean forceClose) {
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
         try {
             int value = forceClose ? 0 : response.getInt(AD_PROBABILITY);
             if (value < AD_PROBABILITY_MIN || value > AD_PROBABILITY_MAX) {
                 return;
             }
-            if (value != preferenceTable.getInt(AD_PROBABILITY, AD_PROBABILITY_MAX)) {
-                preferenceTable.putInt(AD_PROBABILITY, value);
+            if (value != leoPreference.getInt(AD_PROBABILITY, AD_PROBABILITY_MAX)) {
+                leoPreference.putInt(AD_PROBABILITY, value);
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -147,7 +147,7 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
     private void setLabelCount(int count) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
 
-        boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_PIC, false);
+        boolean processed = LeoPreference.getInstance().getBoolean(PrefConst.KEY_SCANNED_PIC, false);
         int stringId = R.string.pri_pro_new_pic;
         if (!processed) {
             stringId = R.string.scan_find_pic;
@@ -164,7 +164,7 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
                 + mAdaper.getSelectedList().size());
         mActivity.onProcessClick(this);
-        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
+        LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {

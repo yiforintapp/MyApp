@@ -509,6 +509,9 @@ public class Constants {
     public static final String DP_SCHEMA = "privacyguard";
     public static final String DP_HOST = "com.leo.appmaster";
 
+    public static final String DP_APP_SCHEMA = "http";
+    public static final String DP_APP_HOST = "leomaster.com";
+
     //屏保广告点击忽略时间
     public static final String AD_CLICK_IGNORE = "ad_click_ignore";
 

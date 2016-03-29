@@ -36,7 +36,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
@@ -216,7 +216,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
             });
             mCommonTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
             mBottomBar.setVisibility(View.GONE);
-            PreferenceTable pre = PreferenceTable.getInstance();
+            LeoPreference pre = LeoPreference.getInstance();
             mVideoEditGuide = pre.getBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, false);
             if (!mVideoEditGuide) {
                 mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.video_guide);
@@ -241,7 +241,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
     private void cancelVideoGuide() {
         if (mGuideFragment != null) {
             mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.VIDEO_GUIDE);
-            PreferenceTable pre = PreferenceTable.getInstance();
+            LeoPreference pre = LeoPreference.getInstance();
             pre.putBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, true);
 
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "hidvid_bub_cnts");

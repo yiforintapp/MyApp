@@ -1,5 +1,9 @@
 package com.leo.appmaster.db;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Executor;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,16 +17,13 @@ import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Executor;
-
 /**
- * Created by Jasper on 2016/3/29.
+ * Created by Jasper on 2015/9/29.
  */
-public class PreferenceTable extends BaseTable {
+public class LeoPreference extends BaseTable {
+
     private static final byte[] LOCK = new byte[1];
-    private static PreferenceTable sInstance;
+    private static LeoPreference sInstance;
 
     public static final String TABLE_NAME = "pref_data";
 
@@ -37,11 +38,11 @@ public class PreferenceTable extends BaseTable {
 
     private boolean mLoaded;
 
-    static PreferenceTable getInstance() {
+    public static LeoPreference getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
-                    sInstance = new PreferenceTable();
+                    sInstance = new LeoPreference();
                 }
             }
         }
@@ -49,12 +50,12 @@ public class PreferenceTable extends BaseTable {
         return sInstance;
     }
 
-    PreferenceTable() {
+    public LeoPreference() {
         mValues = new HashMap<String, String>();
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
-                synchronized (PreferenceTable.this) {
+                synchronized (LeoPreference.this) {
                     loadPreference();
                 }
             }
@@ -292,4 +293,6 @@ public class PreferenceTable extends BaseTable {
             }
         }
     }
+
+
 }

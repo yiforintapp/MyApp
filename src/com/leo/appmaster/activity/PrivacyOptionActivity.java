@@ -6,7 +6,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -52,14 +52,14 @@ public class PrivacyOptionActivity extends BasePreferenceActivity implements OnP
     protected void onResume() {
         super.onResume();
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        boolean notifyApp = preferenceTable.getBoolean(PrefConst.KEY_NOTIFY_APP, true);
+        LeoPreference leoPreference = LeoPreference.getInstance();
+        boolean notifyApp = leoPreference.getBoolean(PrefConst.KEY_NOTIFY_APP, true);
         mMonitorAppPref.setChecked(notifyApp);
 
-        boolean notifyPic = preferenceTable.getBoolean(PrefConst.KEY_NOTIFY_PIC, true);
+        boolean notifyPic = leoPreference.getBoolean(PrefConst.KEY_NOTIFY_PIC, true);
         mMonitorPicPref.setChecked(notifyPic);
 
-        boolean notifyVid = preferenceTable.getBoolean(PrefConst.KEY_NOTIFY_VID, true);
+        boolean notifyVid = leoPreference.getBoolean(PrefConst.KEY_NOTIFY_VID, true);
         mMonitorVidPref.setChecked(notifyVid);
     }
 
@@ -71,9 +71,9 @@ public class PrivacyOptionActivity extends BasePreferenceActivity implements OnP
     @Override
     public boolean onPreferenceClick(Preference preference) {
         String key = preference.getKey();
-        boolean value = PreferenceTable.getInstance().getBoolean(key, true);
+        boolean value = LeoPreference.getInstance().getBoolean(key, true);
 
-        PreferenceTable.getInstance().putBoolean(key, !value);
+        LeoPreference.getInstance().putBoolean(key, !value);
 
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) preference;
         checkBoxPreference.setChecked(!value);

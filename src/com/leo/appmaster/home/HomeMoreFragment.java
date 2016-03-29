@@ -23,7 +23,7 @@ import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.battery.BatteryMainActivity;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -121,22 +121,22 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                 mUpArrow.reverse();
                 mUpArrow.cancelUpAnimation();
 
-                PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
+                LeoPreference leoPreference = LeoPreference.getInstance();
+                boolean pulledEver = leoPreference.getBoolean(PrefConst.KEY_MORE_PULLED, false);
                 if (!pulledEver) {
 
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_rp_up");
 
-                    preferenceTable.putBoolean(PrefConst.KEY_MORE_PULLED, true);
+                    leoPreference.putBoolean(PrefConst.KEY_MORE_PULLED, true);
                     updateHideRedTip();
                 }
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_listup");
                 mSlidingLayout.setDragClickEnable(true);
                 mUpClickView.setVisibility(View.VISIBLE);
 
-                boolean pulled = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
-                boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
-                boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+                boolean pulled = leoPreference.getBoolean(PrefConst.KEY_MORE_PULLED, false);
+                boolean picReddot = leoPreference.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+                boolean vidReddot = leoPreference.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
 
                 if (pulled) {
                     if (picReddot || vidReddot) {
@@ -218,11 +218,11 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         }
         int callCount = preference.getCallLogNoReadCount();
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
-        boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
-        boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-        boolean intruderReddot = preferenceTable.getBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED, false);
+        LeoPreference leoPreference = LeoPreference.getInstance();
+        boolean pulledEver = leoPreference.getBoolean(PrefConst.KEY_MORE_PULLED, false);
+        boolean picReddot = leoPreference.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+        boolean vidReddot = leoPreference.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+        boolean intruderReddot = leoPreference.getBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED, false);
 //        if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver ||!intruderReddot) {
         if (msgCount > 0 || callCount > 0 || picReddot || vidReddot || !pulledEver) {
             if (!pulledEver) {
@@ -255,7 +255,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         super.onResume();
         updateHideRedTip();
 
-        boolean pulledEver = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_MORE_PULLED, false);
+        boolean pulledEver = LeoPreference.getInstance().getBoolean(PrefConst.KEY_MORE_PULLED, false);
         if (!pulledEver) {
             mUpArrow.setCancelledFalse();
             mUpArrow.startUpAnimation();
@@ -304,7 +304,7 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         if (activity != null) {
             int itemId = (int) mAdapter.getItemId(position);
             Intent intent = null;
-            PreferenceTable table = PreferenceTable.getInstance();
+            LeoPreference table = LeoPreference.getInstance();
             switch (itemId) {
                 case R.string.hp_hide_img:
                     SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidpic");

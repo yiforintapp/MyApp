@@ -27,7 +27,7 @@ import android.view.WindowManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.VirtualEvent;
 import com.leo.appmaster.ui.VirtualBitmap;
@@ -229,12 +229,12 @@ public class BitmapUtils {
     }
 
     /** 得到屏保需要drawable */
-    public static Drawable getDeskTopBitmap(final Context context, final PreferenceTable preferenceTable) {
+    public static Drawable getDeskTopBitmap(final Context context, final LeoPreference leoPreference) {
         try {
             ThreadManager.getSubThreadHandler().post(new Runnable() {
                 @Override
                 public void run() {
-                    asyncVirtualPic(context, preferenceTable);
+                    asyncVirtualPic(context, leoPreference);
                 }
             });
         } catch (Throwable e) {
@@ -246,14 +246,14 @@ public class BitmapUtils {
     }
 
     /** 异步虚化图片 */
-    public static void asyncVirtualPic(Context context, PreferenceTable preferenceTable) {
+    public static void asyncVirtualPic(Context context, LeoPreference leoPreference) {
         final WallpaperManager wallpaperManager = WallpaperManager
                 .getInstance(context);
         // 获取当前壁纸
         final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
         // 将Drawable转成Bitmap
         final Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
-        long theSaveCode = preferenceTable.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
+        long theSaveCode = leoPreference.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
         LeoLog.e("getDeskTopBitmap", "theSaveCode:" + theSaveCode + "bm.hashCode():" + bm.hashCode());
         boolean sdCardExist = Environment.getExternalStorageState()
                 .equals(android.os.Environment.MEDIA_MOUNTED);
@@ -268,7 +268,7 @@ public class BitmapUtils {
             LeoLog.e("getDeskTopBitmap", "start");
             Drawable drawable = VirtualBitmap.BlurImages(bm, context);
             saveVirtualBitmap(drawable);
-            preferenceTable.putLong(PrefConst.VIRTUAL_IMG_HASH_CODE, bm.hashCode());
+            leoPreference.putLong(PrefConst.VIRTUAL_IMG_HASH_CODE, bm.hashCode());
             ThreadManager.executeOnUiThread(new Runnable() {
                 @Override
                 public void run() {

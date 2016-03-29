@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
@@ -275,16 +275,16 @@ public class HomeMoreAdapter extends BaseAdapter {
                 holder.readTip.setVisibility(View.GONE);
             }
         } else if (drawableId == ID_RES_HIDE_IMG) {
-            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-            boolean picReddotExist = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+            LeoPreference leoPreference = LeoPreference.getInstance();
+            boolean picReddotExist = leoPreference.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
             holder.readTip.setVisibility(picReddotExist ? View.VISIBLE : View.GONE);
         } else if (drawableId == ID_RES_HIDE_VIDEO) {
-            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-            boolean vidReddotExist = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+            LeoPreference leoPreference = LeoPreference.getInstance();
+            boolean vidReddotExist = leoPreference.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
             holder.readTip.setVisibility(vidReddotExist ? View.VISIBLE : View.GONE);
         } else if (drawableId == ID_RES_PHONE_LOST) {
-            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-            boolean consumed = preferenceTable.getBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED, false);
+            LeoPreference leoPreference = LeoPreference.getInstance();
+            boolean consumed = leoPreference.getBoolean(PrefConst.KEY_INTRUDER_REDDOT_CONSUMED, false);
             if (!consumed) {
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "intruder_rp");
             }

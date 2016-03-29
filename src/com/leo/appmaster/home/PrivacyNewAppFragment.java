@@ -18,11 +18,9 @@ import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
-import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.XHeaderView;
@@ -126,7 +124,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
     protected void onProcessClick() {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "app_lock_cnts");
         mActivity.onProcessClick(this);
-        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_APP, true);
+        LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_APP, true);
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
@@ -221,7 +219,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
             mNewLabelContent.setVisibility(View.GONE);
         }
 
-        boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
+        boolean processed = LeoPreference.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
         int stringId = R.string.pri_pro_new_app;
         if (!processed) {
             if (switchList.size() > 0) {
@@ -250,7 +248,7 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment implements Adapter
     private void setLabelCount(int count) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
 
-        boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
+        boolean processed = LeoPreference.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
         int stringId = R.string.pri_pro_new_app;
         if (!processed) {
             stringId = R.string.pri_pro_scan_app;

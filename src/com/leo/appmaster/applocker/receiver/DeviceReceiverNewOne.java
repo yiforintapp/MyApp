@@ -16,7 +16,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -182,7 +182,7 @@ public class DeviceReceiverNewOne extends DeviceAdminReceiver {
 										IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath, IntrudeSecurityManager.ICON_SYSTEM, timeStamp);
 										mISManager.insertInfo(info);
 										mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
-										PreferenceTable.getInstance().putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
+										LeoPreference.getInstance().putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
 										IntrudeSecurityManager.sHasPicSaved = true;
 
 										//这里判断的第二个参数实际不用考虑其意思，因为这个参数只有在经过解开系统锁后才会重置为0,所以可以用来判断是否已经经过系统解锁阶段

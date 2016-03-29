@@ -13,13 +13,11 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.callfilter.CallFilterMainActivity;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -63,7 +61,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private boolean isSafe;
     private int mScanAnimCount = 0;
     private boolean mIsJudgeAsLowMemory = false;
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
     private LEOAlarmDialog mDialogAskCreateShotcut;
     private static final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
     
@@ -89,7 +87,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         LeoEventBus.getDefaultBus().register(this);
         mIsJudgeAsLowMemory = PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this) <= Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY;
         SDKWrapper.addEvent(this, SDKWrapper.P1, "wifi_scan", "wifi_scan_cnts");
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
         handlerIntent();
         initUi();
         isCheckWifiAlready(false);

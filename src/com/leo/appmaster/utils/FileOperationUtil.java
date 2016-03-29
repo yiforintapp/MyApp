@@ -26,18 +26,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import android.os.SystemClock;
 import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
@@ -557,7 +555,7 @@ public class FileOperationUtil {
                     int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
                     LeoLog.d("testVedio", "id is:" + id);
 
-                    int saveId = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
+                    int saveId = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
 
                     PrivacyDataManager manager = (PrivacyDataManager)
                             MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
@@ -565,10 +563,10 @@ public class FileOperationUtil {
                     LeoLog.d("testVedio", "NextToTargetId is:" + hideId);
                     if (hideId == 0) {
                         if (id >= saveId) {
-                            PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, id);
+                            LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, id);
                         }
                     } else {
-                        PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, hideId);
+                        LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, hideId);
                     }
                 }
                 c.update(uri, v, MediaColumns.DATA + " LIKE ?", string);

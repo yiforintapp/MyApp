@@ -18,7 +18,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewStub;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -31,7 +30,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -45,12 +43,10 @@ import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.cloud.crypto.ImageEncryptInputStream;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.UserPresentEvent;
-import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageGridActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -121,7 +117,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private RippleView mRvChange;
     private RippleView mRvMore;
     private RelativeLayout mRlNewest;
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
     private LinearLayout mLlGuide;
     private LinearLayout mLlGuideFinished;
     private LinearLayout mLlChangeTimes;
@@ -158,7 +154,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catch_intruder);
         Intent intent = getIntent();
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
         mISManager = (IntrudeSecurityManager) MgrContext
                 .getManager(MgrContext.MGR_INTRUDE_SECURITY);
         mPkgName = intent.getStringExtra("pkgname");
@@ -942,22 +938,22 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             return;
         }
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
 
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_CONTENT));
+                leoPreference.getString(PrefConst.KEY_INTRUDER_SWIFTY_CONTENT));
 
         boolean isImgUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL));
+                leoPreference.getString(PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL));
 
         boolean isTypeEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_TYPE));
+                leoPreference.getString(PrefConst.KEY_INTRUDER_SWIFTY_TYPE));
 
         boolean isGpUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_GP_URL));
+                leoPreference.getString(PrefConst.KEY_INTRUDER_SWIFTY_GP_URL));
 
         boolean isBrowserUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_URL));
+                leoPreference.getString(PrefConst.KEY_INTRUDER_SWIFTY_URL));
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
@@ -968,13 +964,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
             mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
             mSwiftyBtnLt.setOnClickListener(this);
-            mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_CONTENT));
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL);
+            mSwiftyContent.setText(leoPreference.getString(PrefConst.KEY_INTRUDER_SWIFTY_CONTENT));
+            String imgUrl = leoPreference.getString(PrefConst.KEY_INTRUDER_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
             boolean isTitleEmpty = TextUtils.isEmpty(
-                    preferenceTable.getString(PrefConst.KEY_INTRUDER_SWIFTY_TITLE));
+                    leoPreference.getString(PrefConst.KEY_INTRUDER_SWIFTY_TITLE));
             if (!isTitleEmpty) {
-                mSwiftyTitle.setText(preferenceTable.getString(
+                mSwiftyTitle.setText(leoPreference.getString(
                         PrefConst.KEY_INTRUDER_SWIFTY_TITLE));
             }
         }
@@ -1188,24 +1184,24 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                         "intruder", "share_cnts");
                 mLockManager.filterPackage(getPackageName(), 1000);
-                PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
+                LeoPreference shareLeoPreference = LeoPreference.getInstance();
                 boolean isContentEmpty = TextUtils.isEmpty(
-                        sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT));
+                        shareLeoPreference.getString(PrefConst.KEY_INTRUDER_SHARE_CONTENT));
                 boolean isUrlEmpty = TextUtils.isEmpty(
-                        sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
+                        shareLeoPreference.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
 
                 StringBuilder shareBuilder = new StringBuilder();
                 if (!isContentEmpty && !isUrlEmpty) {
                     try {
-                        shareBuilder.append(String.format(sharePreferenceTable.getString(
+                        shareBuilder.append(String.format(shareLeoPreference.getString(
                                 PrefConst.KEY_INTRUDER_SHARE_CONTENT),  mISManager.getCatchTimes()))
                                 .append(" ")
-                                .append(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
+                                .append(shareLeoPreference.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
                     } catch (Exception e) {
-                        shareBuilder.append(sharePreferenceTable.getString(
+                        shareBuilder.append(shareLeoPreference.getString(
                                 PrefConst.KEY_INTRUDER_SHARE_CONTENT))
                                 .append(" ")
-                                .append(sharePreferenceTable.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
+                                .append(shareLeoPreference.getString(PrefConst.KEY_INTRUDER_SHARE_URL));
                     }
                 } else {
                     shareBuilder.append(getResources().getString(
@@ -1218,8 +1214,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.item_btn_rv:  // 点击swifty卡片
                 mLockManager.filterPackage(getPackageName(), 1000);
-                PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                Utilities.selectType(preferenceTable, PrefConst.KEY_INTRUDER_SWIFTY_TYPE,
+                LeoPreference leoPreference = LeoPreference.getInstance();
+                Utilities.selectType(leoPreference, PrefConst.KEY_INTRUDER_SWIFTY_TYPE,
                         PrefConst.KEY_INTRUDER_SWIFTY_GP_URL, PrefConst.KEY_INTRUDER_SWIFTY_URL,
                         "", IntruderCatchedActivity.this);
                 break;

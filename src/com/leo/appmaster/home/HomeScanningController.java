@@ -3,7 +3,7 @@ package com.leo.appmaster.home;
 import android.widget.LinearLayout;
 
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.Animator;
@@ -179,8 +179,8 @@ public class HomeScanningController {
             mFragment.OnItemAnimationEnd(mNewVidLayout);
             mNewPicAnim = getItemAnimation(mNewPicLayout);
             int currPct = mActivity.getScanningPercent();
-            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-            boolean picConsumed = preferenceTable.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
+            LeoPreference leoPreference = LeoPreference.getInstance();
+            boolean picConsumed = leoPreference.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
             int duration = picConsumed ? NEW_UP_LIMIT_PIC_PROCESSED : NEW_UP_LIMIT_PIC;
             mActivity.scanningFromPercent(duration, currPct, NEW_PER_PIC);
             LeoLog.e(TAG, "mNewVidAnim end");

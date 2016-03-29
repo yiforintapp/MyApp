@@ -12,7 +12,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.push.PushNotification;
@@ -60,53 +60,53 @@ public class Traffic {
     }
 
     public void checkTraffic() {
-        int type = PreferenceTable.getInstance().getInt(TRAFFICNOTIFICATION, 0);
+        int type = LeoPreference.getInstance().getInt(TRAFFICNOTIFICATION, 0);
         int nowDay = getCurrentTime()[2];
 
         if (type == NON_SAVE) {
-            PreferenceTable.getInstance().putInt(TRAFFICNOTIFICATION, DAY_OF_THREE);
+            LeoPreference.getInstance().putInt(TRAFFICNOTIFICATION, DAY_OF_THREE);
             LeoLog.d("testTrafficNoti", "第一次进入 准备计算前三天流量");
         } else if (type == DAY_OF_THREE) {
             //firstday
-            int saveFirstDay = PreferenceTable.getInstance().getInt(FIRSTDAY, 0);
+            int saveFirstDay = LeoPreference.getInstance().getInt(FIRSTDAY, 0);
             if (saveFirstDay == 0) {
-                PreferenceTable.getInstance().putInt(FIRSTDAY, nowDay);
+                LeoPreference.getInstance().putInt(FIRSTDAY, nowDay);
                 LeoLog.d("testTrafficNoti", "saveFirstDay==0 , today is:" + nowDay);
                 return;
             } else {
                 if (nowDay == saveFirstDay) {
                     float firstdayTraffic = mDeviceManager.getTodayUsed() / 1024;//KB
-                    PreferenceTable.getInstance().putFloat(FIRSTDAYTRAFFIC, firstdayTraffic);
+                    LeoPreference.getInstance().putFloat(FIRSTDAYTRAFFIC, firstdayTraffic);
                     LeoLog.d("testTrafficNoti", "saveFirstDay!=0 , today tra is:" + firstdayTraffic);
                     return;
                 }
             }
 
             //secondday
-            int saveSecondDay = PreferenceTable.getInstance().getInt(SECONDDAY, 0);
+            int saveSecondDay = LeoPreference.getInstance().getInt(SECONDDAY, 0);
             if (saveSecondDay == 0) {
-                PreferenceTable.getInstance().putInt(SECONDDAY, nowDay);
+                LeoPreference.getInstance().putInt(SECONDDAY, nowDay);
                 LeoLog.d("testTrafficNoti", "saveSecondDay==0 , today is:" + nowDay);
                 return;
             } else {
                 if (nowDay == saveSecondDay) {
                     float seconddayTraffic = mDeviceManager.getTodayUsed() / 1024;//KB
-                    PreferenceTable.getInstance().putFloat(SECONDDAYTRAFFIC, seconddayTraffic);
+                    LeoPreference.getInstance().putFloat(SECONDDAYTRAFFIC, seconddayTraffic);
                     LeoLog.d("testTrafficNoti", "saveSecondDay!=0 , today tra is:" + seconddayTraffic);
                     return;
                 }
             }
 
             //thridday
-            int saveThridDay = PreferenceTable.getInstance().getInt(THREEDAY, 0);
+            int saveThridDay = LeoPreference.getInstance().getInt(THREEDAY, 0);
             if (saveThridDay == 0) {
-                PreferenceTable.getInstance().putInt(THREEDAY, nowDay);
+                LeoPreference.getInstance().putInt(THREEDAY, nowDay);
                 LeoLog.d("testTrafficNoti", "saveThridDay==0 , today is:" + nowDay);
                 return;
             } else {
                 if (nowDay == saveThridDay) {
                     float thriddayTraffic = mDeviceManager.getTodayUsed() / 1024;//KB
-                    PreferenceTable.getInstance().putFloat(THREEDAYTRAFFIC, thriddayTraffic);
+                    LeoPreference.getInstance().putFloat(THREEDAYTRAFFIC, thriddayTraffic);
                     LeoLog.d("testTrafficNoti", "saveThridDay!=0 , today tra is:" + thriddayTraffic);
                     return;
                 }
@@ -115,20 +115,20 @@ public class Traffic {
             //fourday
             if (nowDay != saveFirstDay && nowDay != saveSecondDay && nowDay != saveThridDay) {
                 LeoLog.d("testTrafficNoti", "完成成就，准备计算平均值");
-                PreferenceTable.getInstance().putInt(TRAFFICNOTIFICATION, FINISH_THREE_DAY_AVG);
+                LeoPreference.getInstance().putInt(TRAFFICNOTIFICATION, FINISH_THREE_DAY_AVG);
             }
 
         } else if (type == FINISH_THREE_DAY_AVG) {
-            float day1Traffic = PreferenceTable.getInstance().getFloat(FIRSTDAYTRAFFIC, 0);
+            float day1Traffic = LeoPreference.getInstance().getFloat(FIRSTDAYTRAFFIC, 0);
             LeoLog.d("testTrafficNoti", "day1Traffic:" + day1Traffic);
-            float day2Traffic = PreferenceTable.getInstance().getFloat(SECONDDAYTRAFFIC, 0);
+            float day2Traffic = LeoPreference.getInstance().getFloat(SECONDDAYTRAFFIC, 0);
             LeoLog.d("testTrafficNoti", "day2Traffic:" + day2Traffic);
-            float day3Traffic = PreferenceTable.getInstance().getFloat(THREEDAYTRAFFIC, 0);
+            float day3Traffic = LeoPreference.getInstance().getFloat(THREEDAYTRAFFIC, 0);
             LeoLog.d("testTrafficNoti", "day3Traffic:" + day3Traffic);
 
             float avg = (day1Traffic + day2Traffic + day3Traffic) / 3;
             LeoLog.d("testTrafficNoti", "avg : " + avg);
-            PreferenceTable.getInstance().putFloat(TRAFFIC_AVG, avg);
+            LeoPreference.getInstance().putFloat(TRAFFIC_AVG, avg);
 
             //morenzhi
             if (avg < 1024) {

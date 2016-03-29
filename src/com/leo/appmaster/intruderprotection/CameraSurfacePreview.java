@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
@@ -18,7 +17,7 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -72,7 +71,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
         Parameters parameters = mCamera.getParameters();
         int finalIndex = 0;
         List<Size> Sizes = parameters.getSupportedPictureSizes();
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         int saveIndex = pt.getInt(PrefConst.KEY_USED_PICSIZE_INDEX, -1);
         if (saveIndex != -1) {
             try {

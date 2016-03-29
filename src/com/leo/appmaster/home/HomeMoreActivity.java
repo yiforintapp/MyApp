@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
@@ -12,6 +13,7 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.battery.BatterySettingActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
@@ -47,29 +49,24 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout mRlFlowManagement;
     private RelativeLayout mRlBatteryManagement;
 
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
+
+    private LinearLayout mLlLayoutToHide;
 
     private boolean mIsHasCallFilterRecords = false;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_more);
         initUI();
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
         tryShowOldEntry();
     }
 
     private void tryShowOldEntry() {
         if (!mPt.getBoolean(PrefConst.KEY_IS_OLD_USER, false)) {
-            mRlCallFilter.setVisibility(View.GONE);
-            mRlWifi.setVisibility(View.GONE);
-            mRlFlowManagement.setVisibility(View.GONE);
-            mRlBatteryManagement.setVisibility(View.GONE);
+            mLlLayoutToHide.setVisibility(View.GONE);
         }
     }
 
@@ -104,6 +101,8 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initUI() {
+        mLlLayoutToHide = (LinearLayout) findViewById(R.id.ll_to_hide);
+
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
         mCtbMain.setToolbarTitle(R.string.lock_more);
 

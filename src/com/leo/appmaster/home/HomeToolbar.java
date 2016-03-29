@@ -1,8 +1,5 @@
 package com.leo.appmaster.home;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,17 +15,20 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.activity.DebugActivity;
 import com.leo.appmaster.activity.PrivacyOptionActivity;
-import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoHomePopMenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jasper on 2015/10/11.
@@ -150,8 +150,11 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
                 break;
             case R.id.hm_tool_title_tv:
                 if (AppMasterConfig.LOGGABLE) {
-                    Intent intent = new Intent(getContext(), DebugActivity.class);
-                    getContext().startActivity(intent);
+//                    Intent intent = new Intent(getContext(), DebugActivity.class);
+//                    getContext().startActivity(intent);
+                    Intent intent1 = new Intent(getContext(), AppLockListActivity.class);
+                    intent1.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
+                    getContext().startActivity(intent1);
                 }
                 break;
         }

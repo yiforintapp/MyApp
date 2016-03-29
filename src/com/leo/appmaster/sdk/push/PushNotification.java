@@ -7,9 +7,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -38,7 +37,7 @@ public class PushNotification {
         if (!AppUtil.notifyAvailable()) {
             return;
         }
-        long lastShowDay = PreferenceTable.getInstance().getLong(NOTIFY_LAST_SHOW_DAY, 0);
+        long lastShowDay = LeoPreference.getInstance().getLong(NOTIFY_LAST_SHOW_DAY, 0);
         long nowDay = System.currentTimeMillis();
         LeoLog.d("testTrafficNoti", "lastShowDay:" + lastShowDay + "--nowDay:" + nowDay);
         if (!TimeUtil.isSameDay(lastShowDay, nowDay)) {
@@ -53,7 +52,7 @@ public class PushNotification {
             } else if (type == NOTI_PRIVACYSTATUS) {
                 showPrivacyStatusNoti(intent, title, content, iconId);
             }
-            PreferenceTable.getInstance().putLong(NOTIFY_LAST_SHOW_DAY, nowDay);
+            LeoPreference.getInstance().putLong(NOTIFY_LAST_SHOW_DAY, nowDay);
         }else{
             LeoLog.d("testTrafficNoti", "same day");
         }

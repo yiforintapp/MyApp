@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cbg">
+    android:background="@color/white">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_main"
@@ -25,16 +25,15 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="11dp"
-                android:background="@color/white">
+                >
 
                 <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_home_more_intruder"
+                    android:id="@+id/rv_setting_change_lock_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -46,48 +45,60 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip1"
                         android:gravity="left">
 
                         <TextView
-                            android:id="@+id/tv_intruder_entry"
+                            android:id="@+id/tv_change_lock_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:maxLines="4"
-                            android:text="@string/home_tab_instruder"
+                            android:text="@string/change_gesture_or_password"
                             android:textColor="@color/c2"
-                            android:textSize="15dp" />
+                            android:textSize="16dp" />
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip1"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+                        <ImageView
+                            android:id="@+id/iv_setting_arrow1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_home_more_findlost"
+                    android:id="@+id/rv_setting_sign_lock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -99,46 +110,71 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip2"
                         android:gravity="left">
 
                         <TextView
-                            android:id="@+id/tv_findlost_entry"
+                            android:id="@+id/tv_sign_lock"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:maxLines="4"
-                            android:text="@string/home_tab_lost"
+                            android:text="@string/airsig_settings_activity_title"
                             android:textColor="@color/c2"
                             android:textSize="15dp" />
 
+                        <TextView
+                            android:id="@+id/tv_sign_lock_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_sign_lock"
+                            android:layout_marginTop="3dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:maxLines="3"
+                            android:text="@string/did_not_open"
+                            android:textColor="@color/c4"
+                            android:textSize="10dp" />
+
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip2"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+                        <ImageView
+                            android:id="@+id/iv_setting_arrow2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_home_more_screenview"
+                    android:id="@+id/rv_setting_default_lock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -150,101 +186,71 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip3"
                         android:gravity="left">
 
                         <TextView
-                            android:id="@+id/tv_screenview_entry"
+                            android:id="@+id/tv_default_lock"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:maxLines="4"
-                            android:text="@string/batterymanage_switch_screen"
+                            android:text="@string/airsig_settings_activity_two_set_title"
                             android:textColor="@color/c2"
                             android:textSize="15dp" />
 
+                        <TextView
+                            android:id="@+id/tv_default_lock_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_default_lock"
+                            android:layout_marginTop="3dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:maxLines="3"
+                            android:text="@string/airsig_settings_activity_title"
+                            android:textColor="@color/c4"
+                            android:textSize="10dp" />
+
                     </RelativeLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
-
-                </com.leo.appmaster.ui.RippleView>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_callfilter_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
-
-                <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_home_more_callfilter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1px"
-                    android:minHeight="40dp"
-                    app:rippleAlpha="1"
-                    app:rippleColor="@color/home_tab_pressed"
-                    app:rippleDuration="250"
-                    app:rippleHover="true"
-                    app:rippleOverlay="false">
 
                     <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
-                        android:gravity="left">
-
-                        <TextView
-                            android:id="@+id/tv_callfilter_entry"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:maxLines="4"
-                            android:text="@string/quick_helper_callfilter"
-                            android:textColor="@color/c2"
-                            android:textSize="15dp" />
-
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/rl_content_tip3"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+                        <ImageView
+                            android:id="@+id/iv_setting_arrow3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
+
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_wifi_content"
+            <View
+                android:background="#f0f3f7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="20dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_home_more_wifi"
+                    android:id="@+id/rv_setting_pswprotect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -256,48 +262,60 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip4"
                         android:gravity="left">
 
                         <TextView
-                            android:id="@+id/tv_wifi_entry"
+                            android:id="@+id/tv_pswprotect"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:maxLines="4"
-                            android:text="@string/home_tab_wifi"
+                            android:text="@string/passwd_protect"
                             android:textColor="@color/c2"
                             android:textSize="15dp" />
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip4"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+                        <ImageView
+                            android:id="@+id/iv_setting_arrow4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
+
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_flow_content"
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="1px"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_home_more_flow"
+                    android:id="@+id/rv_setting_pswtip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -309,48 +327,60 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip5"
                         android:gravity="left">
 
                         <TextView
-                            android:id="@+id/tv_flow_entry"
+                            android:id="@+id/tv_pswtip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:maxLines="4"
-                            android:text="@string/quick_helper_flow_manage"
+                            android:text="@string/passwd_notify"
                             android:textColor="@color/c2"
                             android:textSize="15dp" />
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip5"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+                        <ImageView
+                            android:id="@+id/iv_setting_arrow5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
+
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_battery_content"
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="1px"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_home_more_battery"
+                    android:id="@+id/rv_setting_privacy_listen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -362,46 +392,57 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip6"
                         android:gravity="left">
 
                         <TextView
-                            android:id="@+id/tv_battery_entry"
+                            android:id="@+id/tv_privacy_listen"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:maxLines="4"
-                            android:text="@string/quick_helper_elec_manage"
+                            android:text="@string/home_menu_privacy"
                             android:textColor="@color/c2"
                             android:textSize="15dp" />
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip6"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+                        <ImageView
+                            android:id="@+id/iv_setting_arrow6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
+
+            <View
+                android:background="#f0f3f7"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="11dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/rv_home_more_setting"
+                    android:id="@+id/rv_setting_advanced_protect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"
+                    android:layout_marginTop="1px"
+                    android:minHeight="68dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -413,33 +454,63 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip7"
                         android:gravity="left">
 
                         <TextView
-                            android:id="@+id/tv_setting_entry"
+                            android:id="@+id/tv_advanced_protect"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:maxLines="4"
-                            android:text="@string/setting"
+                            android:text="@string/forbid_uninstall"
                             android:textColor="@color/c2"
                             android:textSize="15dp" />
 
+                        <TextView
+                            android:id="@+id/tv_advanced_protect_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_advanced_protect"
+                            android:layout_marginTop="3dp"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:maxLines="3"
+                            android:text="@string/forbid_uninstall_on"
+                            android:textColor="@color/c4"
+                            android:textSize="10dp" />
+
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip7"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <CheckBox
+                            android:gravity="center"
+                            android:id="@+id/cb_setting_advanced_protect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:button="@drawable/selector_checkbox"
+                            android:clickable="false"
+                            android:focusable="false" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
-
             </RelativeLayout>
+
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
 
         </LinearLayout>
 

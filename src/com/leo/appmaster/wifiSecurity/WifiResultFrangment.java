@@ -25,7 +25,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.appmanage.FlowActivity;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -56,7 +56,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     private boolean  mOneLoadState, mTwoLoadState, mThridLoadState, mFourLoadState;
     private ImageView mOneImg, mTwoImg, mThreeImg, mFourImg;
     private ImageLoader mImageLoader;
-    private PreferenceTable mPt; 
+    private LeoPreference mPt;
     /**
      * Swifty
      */
@@ -114,7 +114,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         mLockManager = mActivity.getLockManager();
         mImageLoader = ImageLoader.getInstance();
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
     }
 
     @Override

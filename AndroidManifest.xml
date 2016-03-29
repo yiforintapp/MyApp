@@ -678,6 +678,12 @@
                     android:host="com.leo.appmaster"
                     android:scheme="privacyguard"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http" android:host="leomaster.com" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".applocker.FamilyModeProxyActivity"
@@ -900,15 +906,8 @@
             android:name="com.mobvista.msdk.shell.MVActivity"
             android:configChanges="keyboard|orientation"
             android:excludeFromRecents="true"
-<<<<<<< HEAD
-            android:screenOrientation="portrait" >
-        </activity>
-        
-        
-=======
             android:screenOrientation="portrait"/>
 
->>>>>>> origin/lishuai_dev_3.6
         <service
             android:name=".applocker.gesture.ISwipeService"
             android:enabled="true"
@@ -984,6 +983,7 @@
             android:name=".phoneSecurity.AddSecurityNumberActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/activity_theme"/>
         <activity
             android:name=".activity.DebugActivity"

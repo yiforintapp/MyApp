@@ -32,7 +32,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -211,7 +211,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     private ScrollView mScrollView;
 	
 	private View adView;
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
 
     // 初始化时的占位View，避免一开始显示空白页面
 //    private View mDisplayProxyView;
@@ -249,7 +249,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         mSelectData = new ArrayList<ContactBean>();
         mAddedData = new ArrayList<ContactBean>();
         mDataMap = new HashMap<CheckBox, ContactBean>();
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
 
         Bundle args = getArguments();
         if (args != null) {
@@ -445,8 +445,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
         mBottomLayout = (RelativeLayout) view.findViewById(R.id.bottom_layout);
         mScrollView = (ScrollView) view.findViewById(R.id.pri_confirm_sv);
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        if (preferenceTable.getBoolean(PrefConst.KEY_IS_OLD_USER, true)) {
+        LeoPreference leoPreference = LeoPreference.getInstance();
+        if (leoPreference.getBoolean(PrefConst.KEY_IS_OLD_USER, true)) {
             mBottomLayout.setVisibility(View.VISIBLE);
         } else {
             mBottomLayout.setVisibility(View.GONE);
@@ -914,22 +914,22 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             return;
         }
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
 
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_CONTENT));
+                leoPreference.getString(PrefConst.KEY_PRI_WIFIMASTER_CONTENT));
 
         boolean isImgUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL));
+                leoPreference.getString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL));
 
         boolean isTypeEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_TYPE));
+                leoPreference.getString(PrefConst.KEY_PRI_WIFIMASTER_TYPE));
 
         boolean isGpUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_GP_URL));
+                leoPreference.getString(PrefConst.KEY_PRI_WIFIMASTER_GP_URL));
 
         boolean isBrowserUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_URL));
+                leoPreference.getString(PrefConst.KEY_PRI_WIFIMASTER_URL));
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
@@ -941,13 +941,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mWifiMasteContent = (TextView) include.findViewById(R.id.wifimaster_content);
             mWifiMasteBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
             mWifiMasteBtnLt.setOnClickListener(this);
-            mWifiMasteContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_CONTENT));
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL);
+            mWifiMasteContent.setText(leoPreference.getString(PrefConst.KEY_PRI_WIFIMASTER_CONTENT));
+            String imgUrl = leoPreference.getString(PrefConst.KEY_PRI_WIFIMASTER_IMG_URL);
             mImageLoader.displayImage(imgUrl, mWifiMasteImg, getOptions(R.drawable.online_theme_loading));
             boolean isTitleEmpty = TextUtils.isEmpty(
-                    preferenceTable.getString(PrefConst.KEY_PRI_WIFIMASTER_TITLE));
+                    leoPreference.getString(PrefConst.KEY_PRI_WIFIMASTER_TITLE));
             if (!isTitleEmpty) {
-                mWifiMasteTitle.setText(preferenceTable.getString(
+                mWifiMasteTitle.setText(leoPreference.getString(
                         PrefConst.KEY_PRI_WIFIMASTER_TITLE));
             }
         }
@@ -959,22 +959,22 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             return;
         }
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
 
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT));
+                leoPreference.getString(PrefConst.KEY_SWIFTY_CONTENT));
 
         boolean isImgUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL));
+                leoPreference.getString(PrefConst.KEY_SWIFTY_IMG_URL));
 
         boolean isTypeEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE));
+                leoPreference.getString(PrefConst.KEY_SWIFTY_TYPE));
 
         boolean isGpUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL));
+                leoPreference.getString(PrefConst.KEY_SWIFTY_GP_URL));
 
         boolean isBrowserUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_SWIFTY_URL));
+                leoPreference.getString(PrefConst.KEY_SWIFTY_URL));
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
@@ -986,13 +986,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
             mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
             mSwiftyBtnLt.setOnClickListener(this);
-            mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT));
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL);
+            mSwiftyContent.setText(leoPreference.getString(PrefConst.KEY_SWIFTY_CONTENT));
+            String imgUrl = leoPreference.getString(PrefConst.KEY_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
             boolean isTitleEmpty = TextUtils.isEmpty(
-                    preferenceTable.getString(PrefConst.KEY_SWIFTY_TITLE));
+                    leoPreference.getString(PrefConst.KEY_SWIFTY_TITLE));
             if (!isTitleEmpty) {
-                mSwiftyTitle.setText(preferenceTable.getString(
+                mSwiftyTitle.setText(leoPreference.getString(
                         PrefConst.KEY_SWIFTY_TITLE));
             }
         }
@@ -1020,16 +1020,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             return;
         }
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
 
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_FB_CONTENT));
+                leoPreference.getString(PrefConst.KEY_PRI_FB_CONTENT));
 
         boolean isImgUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_FB_IMG_URL));
+                leoPreference.getString(PrefConst.KEY_PRI_FB_IMG_URL));
 
         boolean isURLEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_FB_URL));
+                leoPreference.getString(PrefConst.KEY_PRI_FB_URL));
 
         if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
             View include = viewStub.inflate();
@@ -1039,13 +1039,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             mFbContent = (TextView) include.findViewById(R.id.fb_content);
             mFbBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
             mFbBtnLt.setOnClickListener(this);
-            mFbContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_FB_CONTENT));
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_FB_IMG_URL);
+            mFbContent.setText(leoPreference.getString(PrefConst.KEY_PRI_FB_CONTENT));
+            String imgUrl = leoPreference.getString(PrefConst.KEY_PRI_FB_IMG_URL);
             mImageLoader.displayImage(imgUrl, mFbImg, getOptions(R.drawable.fb_banner));
             boolean isTitleEmpty = TextUtils.isEmpty(
-                    preferenceTable.getString(PrefConst.KEY_PRI_FB_TITLE));
+                    leoPreference.getString(PrefConst.KEY_PRI_FB_TITLE));
             if (!isTitleEmpty) {
-                mFbTitle.setText(preferenceTable.getString(
+                mFbTitle.setText(leoPreference.getString(
                         PrefConst.KEY_PRI_FB_TITLE));
             }
         }
@@ -1055,16 +1055,16 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
         int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
         LeoLog.i("loadSwiftySecurity", "score：" + score);
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
 
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
+                leoPreference.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
 
         boolean isImgUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL));
+                leoPreference.getString(PrefConst.KEY_PRI_GRADE_IMG_URL));
 
         boolean isURLEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_PRI_GRADE_URL));
+                leoPreference.getString(PrefConst.KEY_PRI_GRADE_URL));
 
         if (!isContentEmpty && !isImgUrlEmpty && !isURLEmpty) {
 
@@ -1090,13 +1090,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mHighGradeBtnLt.setOnClickListener(this);
                 mHighGradeLayout.setOnClickListener(this);
 
-                mHighGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
-                String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
+                mHighGradeContent.setText(leoPreference.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
+                String imgUrl = leoPreference.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
                 mImageLoader.displayImage(imgUrl, mHighGradeImg, getOptions(R.drawable.grade_bg));
                 boolean isTitleEmpty = TextUtils.isEmpty(
-                        preferenceTable.getString(PrefConst.KEY_PRI_GRADE_TITLE));
+                        leoPreference.getString(PrefConst.KEY_PRI_GRADE_TITLE));
                 if (!isTitleEmpty) {
-                    mHighGradeTitle.setText(preferenceTable.getString(
+                    mHighGradeTitle.setText(leoPreference.getString(
                             PrefConst.KEY_PRI_GRADE_TITLE));
                 }
 
@@ -1125,13 +1125,13 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 mGradeBtnLt.setOnClickListener(this);
                 mGradeLayout.setOnClickListener(this);
 
-                mGradeContent.setText(preferenceTable.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
-                String imgUrl = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
+                mGradeContent.setText(leoPreference.getString(PrefConst.KEY_PRI_GRADE_CONTENT));
+                String imgUrl = leoPreference.getString(PrefConst.KEY_PRI_GRADE_IMG_URL);
                 mImageLoader.displayImage(imgUrl, mGradeImg, getOptions(R.drawable.grade_bg));
                 boolean isTitleEmpty = TextUtils.isEmpty(
-                        preferenceTable.getString(PrefConst.KEY_PRI_GRADE_TITLE));
+                        leoPreference.getString(PrefConst.KEY_PRI_GRADE_TITLE));
                 if (!isTitleEmpty) {
-                    mGradeTitle.setText(preferenceTable.getString(
+                    mGradeTitle.setText(leoPreference.getString(
                             PrefConst.KEY_PRI_GRADE_TITLE));
                 }
 
@@ -1347,7 +1347,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             ChangeContactColor();
         } else if (mWifiBtnLt == v) {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "wifi_scan");
-            PreferenceTable table = PreferenceTable.getInstance();
+            LeoPreference table = LeoPreference.getInstance();
             int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
             table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count+1);
             Intent intent = new Intent(mActivity, WifiSecurityActivity.class);
@@ -1414,7 +1414,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void resultToPic() {
-        PreferenceTable table = PreferenceTable.getInstance();
+        LeoPreference table = LeoPreference.getInstance();
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
         table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
         Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
@@ -1424,7 +1424,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     }
 
     private void resultToVid() {
-        PreferenceTable table = PreferenceTable.getInstance();
+        LeoPreference table = LeoPreference.getInstance();
         int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
         table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count+1);
         Intent intent = new Intent(mActivity, VideoHideMainActivity.class);

@@ -53,8 +53,8 @@ import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.MsgCenterTable;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.GradeEvent;
@@ -76,6 +76,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
@@ -110,7 +111,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     //    private MobvistaAdWall mWallAd;
     private int mMenuTextColorId;
     private Handler mHandler = new Handler();
-    private PreferenceTable mPt = PreferenceTable.getInstance();
+    private LeoPreference mPt = LeoPreference.getInstance();
     public static int mHomeAdSwitchOpen = -1;
 
     private IntrudeSecurityManager mISManger;
@@ -155,6 +156,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 
     private boolean mHidePicFinish = true;
+    private LEOAlarmDialog mUninstallDialog;  // 卸载提示对话框
+    private boolean mClickUninstall; // 是否点击卸载按钮
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
@@ -318,6 +321,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mPicHideSuccess = false;
         mVidHideSuccess = false;
         mNeedDialogShow = true;
+        mClickUninstall = false;
     }
 
     public void onEventMainThread(AppUnlockEvent event) {
@@ -863,6 +867,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             LeoEventBus.getDefaultBus().register(this);
         }
 
+        if (mClickUninstall) {
+            showUninstallDialog(false, getResources().getString(R.string.open_admin_title),
+                                getResources().getString(R.string.open_admin_content));
+            mClickUninstall = false;
+        }
+
     }
 
     private void addUninstallPgTOMenueItem() {
@@ -1256,27 +1266,90 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }
+        showUninstallDialog(true, getResources().getString(R.string.uninstall_dialog_title),
+                            getResources().getString(R.string.uninstall_dialog_content));
+        return false;
+    }
+
+    private void showUninstallDialog(final boolean isUninstall, String title, String content) {
+        if (mUninstallDialog == null) {
+            mUninstallDialog = new LEOAlarmDialog(this);
+            mUninstallDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mUninstallDialog != null) {
+                        mUninstallDialog = null;
+                    }
+                }
+            });
+        }
+        mUninstallDialog.setTitle(title);
+        mUninstallDialog.setContent(content);
+        if (!isUninstall) {
+            mUninstallDialog.setRightBtnStr("开启");
+        }
+        mUninstallDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mUninstallDialog != null && mUninstallDialog.isShowing()) {
+                    mUninstallDialog.dismiss();
+                    mUninstallDialog = null;
+                }
+            }
+        });
+        mUninstallDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mUninstallDialog != null && mUninstallDialog.isShowing()) {
+                    mUninstallDialog.dismiss();
+                    mUninstallDialog = null;
+                }
+                if (isUninstall) {
+                    unRegisterAdmin(true);
+                    mClickUninstall = true;
+                    showSystemUninstall();
+                } else {
+                    unRegisterAdmin(false);
+                }
+            }
+        });
+        mUninstallDialog.show();
+    }
+
+    // 取消注册或者重新注册设备管理器
+    private void unRegisterAdmin(boolean isRegister) {
+        DevicePolicyManager manager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+        ComponentName mAdminName = new ComponentName(this, DeviceReceiver.class);
+        ComponentName mAdminName2 = new ComponentName(this, DeviceReceiverNewOne.class);
+        if (isRegister) {
+            if (manager.isAdminActive(mAdminName)) {
+                manager.removeActiveAdmin(mAdminName);
+            }
+            if (manager.isAdminActive(mAdminName2)) {
+                manager.removeActiveAdmin(mAdminName2);
+            }
+        } else {
+            Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName2);
+            mLockManager.filterSelfOneMinites();
+            startActivity(intent);
+        }
+    }
+
+    private void showSystemUninstall() {
         try {
-//            if (DeviceReceiver.isActive(this)) {
-//                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiver.getComponentName(this));
-//            }
-//            if (DeviceReceiverNewOne .isActive(this)) {
-//                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiverNewOne.getComponentName(this));
-//            }
             Uri uri = Uri.fromParts("package", this.getPackageName(), null);
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_DELETE);
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            // 从卸载入口过去，10秒内不对设置加锁
-            mLockManager.filterPackage("com.android.settings", 10 * 1000);
+//            // 从卸载入口过去，10秒内不对设置加锁
+//            mLockManager.filterPackage("com.android.settings", 10 * 1000);
             mLockManager.filterSelfOneMinites();
             startActivity(intent);
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public void onListScroll(int scrollHeight) {
@@ -1302,33 +1375,33 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         IoUtils.commitSafely(ft);
 //        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
         if (fragment instanceof PrivacyNewAppFragment) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
-            boolean appConsumed = preferenceTable.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
-            boolean appLockHandler = preferenceTable.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+            boolean appConsumed = leoPreference.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+            boolean appLockHandler = leoPreference.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
             if (!appConsumed) {
-                preferenceTable.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
+                leoPreference.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
             }
             if (!appLockHandler) {
-                preferenceTable.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
+                leoPreference.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
             }
         } else if ((fragment instanceof PrivacyNewPicFragment)
                 || (fragment instanceof FolderPicFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_PIC);
-            boolean picConsumed = preferenceTable.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
+            boolean picConsumed = leoPreference.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
             if (!picConsumed) {
-                preferenceTable.putBoolean(PrefConst.KEY_PIC_COMSUMED, true);
-                preferenceTable.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, true);
+                leoPreference.putBoolean(PrefConst.KEY_PIC_COMSUMED, true);
+                leoPreference.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, true);
                 mMoreFragment.updateHideRedTip();
             }
         } else if ((fragment instanceof PrivacyNewVideoFragment)
                 || (fragment instanceof FolderVidFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_VID);
-            boolean vidConsumed = preferenceTable.getBoolean(PrefConst.KEY_VID_COMSUMED, false);
+            boolean vidConsumed = leoPreference.getBoolean(PrefConst.KEY_VID_COMSUMED, false);
             if (!vidConsumed) {
-                preferenceTable.putBoolean(PrefConst.KEY_VID_COMSUMED, true);
-                preferenceTable.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, true);
+                leoPreference.putBoolean(PrefConst.KEY_VID_COMSUMED, true);
+                leoPreference.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, true);
                 mMoreFragment.updateHideRedTip();
             }
         }
@@ -1355,14 +1428,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 //        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(
 //                MgrContext.MGR_INTRUDE_SECURITY);
-//        boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
+//        boolean intruderAdded = LeoPreference.getInstance().getBoolean(
 //                PrefConst.KEY_INTRUDER_ADDED, false);
 //        int intruderScore = 0;
 //        if (!ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && !intruderAdded) {
 //            // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
 //            intruderScore = ism.getMaxScore();
 //            mPrivacyHelper.increaseScore(MgrContext.MGR_INTRUDE_SECURITY, intruderScore);
-//            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
+//            LeoPreference.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
 //        }
 
         if (increaseScore > 0) {
@@ -1534,7 +1607,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     /*高级保护开启首页提示*/
     private void openAdvanceProtectDialogHandler() {
         String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-        boolean isTip = PreferenceTable.getInstance().getBoolean(key, true);
+        boolean isTip = LeoPreference.getInstance().getBoolean(key, true);
 
         if (isAdminActive() && isTip) {
             /**
@@ -1565,7 +1638,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     AppMasterPreference.getInstance(HomeActivity.this)
                             .setAdvanceProtectOpenSuccessDialogTip(false);
                     String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-                    PreferenceTable.getInstance().putBoolean(key, false);
+                    LeoPreference.getInstance().putBoolean(key, false);
                 }
             });
         }
@@ -1581,7 +1654,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //                        mMessageDialog = null;
 //                    }
 //                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-//                    PreferenceTable.getInstance().putBoolean(key, false);
+//                    LeoPreference.getInstance().putBoolean(key, false);
 //                }
 //            });
 //        }
@@ -1594,17 +1667,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     /*首页引导*/
     private void showHomeGuide() {
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
-        boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
-        boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-        boolean homeGuide = preferenceTable.getBoolean(PrefConst.KEY_HOME_GUIDE, false);
+        LeoPreference leoPreference = LeoPreference.getInstance();
+        boolean pulledEver = leoPreference.getBoolean(PrefConst.KEY_MORE_PULLED, false);
+        boolean picReddot = leoPreference.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+        boolean vidReddot = leoPreference.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+        boolean homeGuide = leoPreference.getBoolean(PrefConst.KEY_HOME_GUIDE, false);
         if (!pulledEver && (picReddot || vidReddot) && !homeGuide) {
             if (mMoreFragment != null) {
                 mMoreFragment.cancelUpArrowAnim();
             }
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
-            preferenceTable.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
+            leoPreference.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
             GuideFragment.setHomeGuideShowStatus(true);
         }
     }

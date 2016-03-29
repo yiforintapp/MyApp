@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -82,7 +82,7 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
         if (mWifiBtn == v) {
             if (mActivity != null) {
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_wifi");
-                PreferenceTable table = PreferenceTable.getInstance();
+                LeoPreference table = LeoPreference.getInstance();
                 int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
                 table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2+1);
                 Intent intent = new Intent(mActivity, WifiSecurityActivity.class);
@@ -93,14 +93,14 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_product");
             }
             lockManager.filterSelfOneMinites();
-            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-            Utilities.selectType(preferenceTable, PrefConst.KEY_CLEAN_SWIFTY_TYPE,
+            LeoPreference leoPreference = LeoPreference.getInstance();
+            Utilities.selectType(leoPreference, PrefConst.KEY_CLEAN_SWIFTY_TYPE,
                        PrefConst.KEY_CLEAN_SWIFTY_GP_URL, PrefConst.KEY_CLEAN_SWIFTY_URL,
                        "", mActivity);
         } else if (mCallFilterBtn == v) {
             if (mActivity != null) {
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "promote_block");
-                PreferenceTable table = PreferenceTable.getInstance();
+                LeoPreference table = LeoPreference.getInstance();
                 int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
                 table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
                 Intent intent = new Intent(mActivity, CallFilterMainActivity.class);
@@ -116,22 +116,22 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
             return;
         }
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
 
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CLEAN_SWIFTY_CONTENT));
+                leoPreference.getString(PrefConst.KEY_CLEAN_SWIFTY_CONTENT));
 
         boolean isImgUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CLEAN_SWIFTY_IMG_URL));
+                leoPreference.getString(PrefConst.KEY_CLEAN_SWIFTY_IMG_URL));
 
         boolean isTypeEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CLEAN_SWIFTY_TYPE));
+                leoPreference.getString(PrefConst.KEY_CLEAN_SWIFTY_TYPE));
 
         boolean isGpUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CLEAN_SWIFTY_GP_URL));
+                leoPreference.getString(PrefConst.KEY_CLEAN_SWIFTY_GP_URL));
 
         boolean isBrowserUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CLEAN_SWIFTY_URL));
+                leoPreference.getString(PrefConst.KEY_CLEAN_SWIFTY_URL));
 
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
@@ -142,13 +142,13 @@ public class BatteryBoostResultFragment extends Fragment implements View.OnClick
             mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
             mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
             mSwiftyBtnLt.setOnClickListener(this);
-            mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_CLEAN_SWIFTY_CONTENT));
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_CLEAN_SWIFTY_IMG_URL);
+            mSwiftyContent.setText(leoPreference.getString(PrefConst.KEY_CLEAN_SWIFTY_CONTENT));
+            String imgUrl = leoPreference.getString(PrefConst.KEY_CLEAN_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
             boolean isTitleEmpty = TextUtils.isEmpty(
-                    preferenceTable.getString(PrefConst.KEY_CLEAN_SWIFTY_TITLE));
+                    leoPreference.getString(PrefConst.KEY_CLEAN_SWIFTY_TITLE));
             if (!isTitleEmpty) {
-                mSwiftyTitle.setText(preferenceTable.getString(
+                mSwiftyTitle.setText(leoPreference.getString(
                         PrefConst.KEY_CLEAN_SWIFTY_TITLE));
             }
         }

@@ -1178,6 +1178,21 @@
     <string name="secur_deta_title_bar">防盗功能详情</string>
     <string name="secur_deta_title">可向被盗手机发送以下指令，执行对应操作</string>
     <string name="secur_add_numb_tip">防盗指令将会以短信形式发送到预留号码。您可以用预留号码发送防盗指令控制手机。</string>
+    <string name="secur_add_num">输入手机号</string>
+    <string name="secur_mody_num">更改</string>
+    <string name="secur_close">关闭防盗</string>
+    <string name="secur_normal_function">基本功能</string>
+    <string name="secur_instr_tip">如何防盗？</string>
+    <string name="secur_adv_function">高级功能</string>
+    <string name="secur_fun_open">已开启</string>
+    <string name="secur_fun_close">未开启</string>
+    <string name="secur_mody_num_title">修改预留号码</string>
+    <string name="secur_mody_mum_sure">确认</string>
+    <string name="secur_close_tip_content">关闭防盗，您的手机将失去保护，确认关闭吗？</string>
+    <string name="secur_close_tip_bt_cancel">取消</string>
+    <string name="secur_close_tip_bt_sure">确认</string>
+    <string name="secur_save_num">预留号码:</string>
+    <string name="secur_open_sucess_toast">手机防盗开启成功，已将防盗指令发送给预留号码</string>
 
     <string name="airsig_settings_activity_title">签字解锁</string>
     <string name="airsig_settings_activity_set_one_on">开启签字</string>
@@ -1191,5 +1206,20 @@
     <string name="airsig_settings_lock_fragment_normal">切换为手势解锁</string>
     <string name="airsig_settings_lock_fragment_airsig">切换为Airsig解锁</string>
 
+    <string name="change_gesture_or_password">更改手势/数字密码</string>
+    <string name="gesture_or_password">手势/数字密码</string>
+    <string name="did_not_open">未开启</string>
+    <string name="has_opened">已开启</string>
+
+    <string name="title_close_advanced_protect">关闭高级保护</string>
+    <string name="content_close_advanced_protect">关闭高级保护后，手机防盗，系统锁屏入侵防护等功能不可用，隐私卫士也可以被随意卸载</string>
+
+    <string name="uninstall_dialog_title">卸载隐私卫士</string>
+    <string name="uninstall_dialog_content">卸载隐私卫士前需关闭高级保护权限，可能会导致手机防盗、系统锁屏入侵防护等功能不可用。确认卸载？</string>
+    <string name="open_admin_title">开启高级保护</string>
+    <string name="open_admin_content">当前高级保护未开启,手机防盗-清除数据功能,系统锁屏入侵防护功能不可用，是否立即开启？</string>
+    <string name="lock_app_list_new_app">新增应用</string>
+    <string name="lock_app_list_all_app">全部应用</string>
+    <string name="lock_app_list_other_app">其他应用</string>
 
 </resources>

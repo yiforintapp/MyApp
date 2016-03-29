@@ -75,7 +75,7 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -146,49 +146,49 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
-		OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
+        OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
 
-	public static final String TAG = "LockScreenActivity";
-	//    private HomeWatcherReceiver mReceiver;
-	private static final String mPrivateLockPck = "com.leo.appmaster";
-	public static final String THEME_CHANGE = "lock_theme_change";
-	public static final String EXTRA_LOCK_MODE = "extra_lock_type";
-	public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
-	public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
-	public static final String SHOW_NOW = "mode changed_show_now";
-	public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
-	public static final int SHOW_RED_MAN = 1;
-	public static final int LARGE_BANNER_HIDE = 2;
-	public static final int AD_TYPE_SHAKE = 1;
-	public static final int AD_TYPE_JUMP = 2;
-	public static final int AD_TYPE_STAY = 3;
-	//    private static boolean sHasClickGoGrantPermission = false;
-	private static boolean mHasClickGoGrantPermission = false;
-	public int SHOW_AD_TYPE = 0;
-	private int mLockMode;
-	private String mLockedPackage;
-	private CommonTitleBar mTtileBar;
-	private TextView mLockAppTitleView;
-	private LockFragment mLockFragment;
-	private Bitmap mAppBaseInfoLayoutbg;
-	private LeoHomePopMenu mLeoPopMenu;
-	private LeoDoubleLinesInputDialog mDialog;
-	private LEOAlarmDialog mTipDialog;
-	private EditText mEtQuestion, mEtAnwser;
-	private RippleView mMrlGift;
-	private RelativeLayout mRlNoPermission;
-	private String mLockTitle;
-	// private ImageView mThemeView;
-	private ImageView mAdIcon, mAdIconRedTip;
-	// private View switch_bottom_content;
-	private ImageView mADAnimalEntry;
-	private PreferenceTable mPt;
-	private BaseSelfDurationToast mPermissionGuideToast;
-	private TextView mTvPermissionTip;
-	private View mVPermissionTip;
-	/**
-	 * 大banner
-	 */
+    public static final String TAG = "LockScreenActivity";
+    //    private HomeWatcherReceiver mReceiver;
+    private static final String mPrivateLockPck = "com.leo.appmaster";
+    public static final String THEME_CHANGE = "lock_theme_change";
+    public static final String EXTRA_LOCK_MODE = "extra_lock_type";
+    public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
+    public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
+    public static final String SHOW_NOW = "mode changed_show_now";
+    public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
+    public static final int SHOW_RED_MAN = 1;
+    public static final int LARGE_BANNER_HIDE = 2;
+    public static final int AD_TYPE_SHAKE = 1;
+    public static final int AD_TYPE_JUMP = 2;
+    public static final int AD_TYPE_STAY = 3;
+    //    private static boolean sHasClickGoGrantPermission = false;
+    private static boolean mHasClickGoGrantPermission = false;
+    public int SHOW_AD_TYPE = 0;
+    private int mLockMode;
+    private String mLockedPackage;
+    private CommonTitleBar mTtileBar;
+    private TextView mLockAppTitleView;
+    private LockFragment mLockFragment;
+    private Bitmap mAppBaseInfoLayoutbg;
+    private LeoHomePopMenu mLeoPopMenu;
+    private LeoDoubleLinesInputDialog mDialog;
+    private LEOAlarmDialog mTipDialog;
+    private EditText mEtQuestion, mEtAnwser;
+    private RippleView mMrlGift;
+    private RelativeLayout mRlNoPermission;
+    private String mLockTitle;
+    // private ImageView mThemeView;
+    private ImageView mAdIcon, mAdIconRedTip;
+    // private View switch_bottom_content;
+    private ImageView mADAnimalEntry;
+    private LeoPreference mPt;
+    private BaseSelfDurationToast mPermissionGuideToast;
+    private TextView mTvPermissionTip;
+    private View mVPermissionTip;
+    /**
+     * 大banner
+     */
 //    private FrameLayout mBannerParent;
 	private ViewPager mBannerContainer;
 	private AdBannerAdapter mAdapterCycle;
@@ -270,44 +270,44 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		long start = SystemClock.elapsedRealtime();
 		setContentView(R.layout.activity_lock_layout);
 //        registerHomeKeyReceiver()
-		LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
-		mISManager = (IntrudeSecurityManager) MgrContext
-				.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-		mPt = PreferenceTable.getInstance();
-		mPDManager = (PrivacyDataManager) MgrContext
-				.getManager(MgrContext.MGR_PRIVACY_DATA);
-		mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
-		handleIntent();
-		mLockManager.setPauseScreenonLock(true);
-		// for fix lock mode shortcut bug
-		if (mQuickLockMode) {
-			List<LockMode> modeList = mLockManager.getLockMode();
-			LockMode mode = null;
-			for (LockMode lockMode : modeList) {
-				if (lockMode.modeId == mQuiclModeId) {
-					mode = lockMode;
-					break;
-				}
-			}
-			if (mode != null) {
-				if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-					if (mode.defaultFlag != -1) {
-						Intent intent = new Intent(this, LockSettingActivity.class);
-						intent.putExtra("from_quick_mode", true);
-						intent.putExtra("just_finish", true);
-						intent.putExtra("mode_id", mQuiclModeId);
-						this.startActivity(intent);
-					}
-					finish();
-					return;
-				}
-			} else {
-				showModeMissedTip();
-				return;
-			}
-		}
+        LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
+        mISManager = (IntrudeSecurityManager) MgrContext
+                .getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        mPt = LeoPreference.getInstance();
+        mPDManager = (PrivacyDataManager) MgrContext
+                .getManager(MgrContext.MGR_PRIVACY_DATA);
+        mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
+        handleIntent();
+        mLockManager.setPauseScreenonLock(true);
+        // for fix lock mode shortcut bug
+        if (mQuickLockMode) {
+            List<LockMode> modeList = mLockManager.getLockMode();
+            LockMode mode = null;
+            for (LockMode lockMode : modeList) {
+                if (lockMode.modeId == mQuiclModeId) {
+                    mode = lockMode;
+                    break;
+                }
+            }
+            if (mode != null) {
+                if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+                    if (mode.defaultFlag != -1) {
+                        Intent intent = new Intent(this, LockSettingActivity.class);
+                        intent.putExtra("from_quick_mode", true);
+                        intent.putExtra("just_finish", true);
+                        intent.putExtra("mode_id", mQuiclModeId);
+                        this.startActivity(intent);
+                    }
+                    finish();
+                    return;
+                }
+            } else {
+                showModeMissedTip();
+                return;
+            }
+        }
 
-		initUI();
+        initUI();
 //        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {

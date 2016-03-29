@@ -146,6 +146,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                                 AppLockListActivity.class);
                         intent.putExtra("from_lock_more", true);
                         intent.putExtra("first_lock_size", mLockList.size());
+
                         this.startActivity(intent);
                     } else {
                         intent = new Intent(this,

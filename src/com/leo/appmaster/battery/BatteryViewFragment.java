@@ -42,11 +42,12 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.PrefTableHelper;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.CircleImageViewTwo;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
@@ -80,6 +81,7 @@ import java.util.TimerTask;
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
     private static final String TAG = "BatteryViewFragment";
+    private static final String GPLINK = "play.google.com";
     private final int ANIMATION_TIME = 300;
     private final int MOVE_UP = 1;
     private final int MOVE_DOWN = 2;
@@ -257,7 +259,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                     int type = (Integer) msg.obj;
 
                     //是否满足忽略按钮
-                    long lastIgnore = PreferenceTable.getInstance().getLong(Constants.AD_CLICK_IGNORE, 0);
+                    long lastIgnore = LeoPreference.getInstance().getLong(Constants.AD_CLICK_IGNORE, 0);
                     long now = System.currentTimeMillis();
                     long internal = PrefTableHelper.getIgnoreTs() * 60 * 60 * 1000;//hours change to mmin
                     LeoLog.d("locationP", "now - lastIgnore : " + (now - lastIgnore) + " . internal : " + internal);
@@ -603,7 +605,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 @Override
                 public void onBoostFinish() {
                     mInitTime = System.currentTimeMillis();
-                    PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
+                    LeoPreference.getInstance().putLong(PrefConst.KEY_LAST_BOOST_TS, System.currentTimeMillis());
                     checkingData(true);
                     ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                         @Override
@@ -1273,6 +1275,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
 
         Uri content_url = Uri.parse(url);
+        LeoLog.d("startBrowser", "content_url is : " + content_url);
+        String host = content_url.getHost();
+        LeoLog.d("startBrowser", "host is : " + host);
+
+        if (host.contains(GPLINK)) {
+            boolean hasGp = AppUtil.isInstallPkgName(mActivity, Constants.PKG_GOOLEPLAY);
+            if (hasGp) {
+                intent.setPackage(Constants.PKG_GOOLEPLAY);
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
+            }
+        }
         intent.setData(content_url);
         try {
             IntrudeSecurityManager.sEnterBrowser = true;
@@ -2098,8 +2112,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         @Override
                         public void run() {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote1");
-                            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                            Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_SWIFTY_TYPE,
+                            LeoPreference leoPreference = LeoPreference.getInstance();
+                            Utilities.selectType(leoPreference, PrefConst.KEY_CHARGE_SWIFTY_TYPE,
                                     PrefConst.KEY_CHARGE_SWIFTY_GP_URL, PrefConst.KEY_CHARGE_SWIFTY_URL,
                                     "", mActivity);
                         }
@@ -2110,8 +2124,8 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                         @Override
                         public void run() {
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "batterypage", "screen_promote2");
-                            PreferenceTable preferenceTable = PreferenceTable.getInstance();
-                            Utilities.selectType(preferenceTable, PrefConst.KEY_CHARGE_EXTRA_TYPE,
+                            LeoPreference leoPreference = LeoPreference.getInstance();
+                            Utilities.selectType(leoPreference, PrefConst.KEY_CHARGE_EXTRA_TYPE,
                                     PrefConst.KEY_CHARGE_EXTRA_GP_URL, PrefConst.KEY_CHARGE_EXTRA_URL,
                                     "", mActivity);
                         }
@@ -2121,10 +2135,10 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 break;
             case R.id.slider:
                 BatteryShowViewActivity activity = (BatteryShowViewActivity) mActivity;
-                boolean isClickCancel = PreferenceTable.getInstance().getBoolean(Constants.CANCEL_BAY_FIRST_TIME, false);
+                boolean isClickCancel = LeoPreference.getInstance().getBoolean(Constants.CANCEL_BAY_FIRST_TIME, false);
                 if (!isClickCancel && newState.plugged != 0) {
                     activity.onFinishActivity(true, newState.level);
-                    PreferenceTable.getInstance().putBoolean(Constants.CANCEL_BAY_FIRST_TIME, true);
+                    LeoPreference.getInstance().putBoolean(Constants.CANCEL_BAY_FIRST_TIME, true);
                 } else {
                     activity.onFinishActivity(false, 0);
                 }
@@ -2413,7 +2427,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", mAdSource,  null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", mAdSource, null);
         }
 
         @Override
@@ -2530,18 +2544,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             return;
         }
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
 
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
+                leoPreference.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
         boolean isImgUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL));
+                leoPreference.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL));
         boolean isTypeEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TYPE));
+                leoPreference.getString(PrefConst.KEY_CHARGE_SWIFTY_TYPE));
         boolean isGpUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_GP_URL));
+                leoPreference.getString(PrefConst.KEY_CHARGE_SWIFTY_GP_URL));
         boolean isBrowserUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_URL));
+                leoPreference.getString(PrefConst.KEY_CHARGE_SWIFTY_URL));
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
@@ -2552,16 +2566,16 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mSwiftyContent = (TextView) mSwiftyView.findViewById(R.id.card_content);
             mSwiftyLayout = (RelativeLayout) mSwiftyView.findViewById(R.id.parent_layout);
             mSwiftyLayout.setOnClickListener(this);
-            mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
+            mSwiftyContent.setText(leoPreference.getString(PrefConst.KEY_CHARGE_SWIFTY_CONTENT));
 
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL);
+            String imgUrl = leoPreference.getString(PrefConst.KEY_CHARGE_SWIFTY_IMG_URL);
             mImageLoader.displayImage(imgUrl, mSwiftyImg, getOptions(R.drawable.online_theme_loading));
 
             mSwiftyTitle = (TextView) mSwiftyView.findViewById(R.id.card_title);
             boolean isTitleEmpty = TextUtils.isEmpty(
-                    preferenceTable.getString(PrefConst.KEY_CHARGE_SWIFTY_TITLE));
+                    leoPreference.getString(PrefConst.KEY_CHARGE_SWIFTY_TITLE));
             if (!isTitleEmpty) {
-                mSwiftyTitle.setText(preferenceTable.getString(
+                mSwiftyTitle.setText(leoPreference.getString(
                         PrefConst.KEY_CHARGE_SWIFTY_TITLE));
             }
 
@@ -2593,18 +2607,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             return;
         }
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
 
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
+                leoPreference.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
         boolean isImgUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL));
+                leoPreference.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL));
         boolean isTypeEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_TYPE));
+                leoPreference.getString(PrefConst.KEY_CHARGE_EXTRA_TYPE));
         boolean isGpUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_GP_URL));
+                leoPreference.getString(PrefConst.KEY_CHARGE_EXTRA_GP_URL));
         boolean isBrowserUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_URL));
+                leoPreference.getString(PrefConst.KEY_CHARGE_EXTRA_URL));
         boolean isUrlEmpty = isGpUrlEmpty && isBrowserUrlEmpty; //判断两个地址是否都为空
 
         if (!isContentEmpty && !isImgUrlEmpty && !isTypeEmpty && !isUrlEmpty) {
@@ -2614,13 +2628,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
             mExtraContent = (TextView) mExtraView.findViewById(R.id.card_content);
             mExtraLayout = (RelativeLayout) mExtraView.findViewById(R.id.parent_layout);
             mExtraLayout.setOnClickListener(this);
-            mExtraContent.setText(preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
-            String imgUrl = preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL);
+            mExtraContent.setText(leoPreference.getString(PrefConst.KEY_CHARGE_EXTRA_CONTENT));
+            String imgUrl = leoPreference.getString(PrefConst.KEY_CHARGE_EXTRA_IMG_URL);
             mImageLoader.displayImage(imgUrl, mExtraImg, getOptions(R.drawable.online_theme_loading));
             boolean isTitleEmpty = TextUtils.isEmpty(
-                    preferenceTable.getString(PrefConst.KEY_CHARGE_EXTRA_TITLE));
+                    leoPreference.getString(PrefConst.KEY_CHARGE_EXTRA_TITLE));
             if (!isTitleEmpty) {
-                mExtraTitle.setText(preferenceTable.getString(
+                mExtraTitle.setText(leoPreference.getString(
                         PrefConst.KEY_CHARGE_EXTRA_TITLE));
             }
 
@@ -2684,7 +2698,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
                 popupWindow.dismiss();
 
                 showRecommandContent(RECOMMAND_TYPE_TWO);
-                PreferenceTable.getInstance().putLong(Constants.AD_CLICK_IGNORE, System.currentTimeMillis());
+                LeoPreference.getInstance().putLong(Constants.AD_CLICK_IGNORE, System.currentTimeMillis());
             }
         });
 

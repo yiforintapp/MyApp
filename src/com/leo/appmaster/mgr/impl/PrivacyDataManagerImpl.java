@@ -1,28 +1,20 @@
 package com.leo.appmaster.mgr.impl;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.cloud.crypto.ImageCryptor;
-import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
-import com.leo.appmaster.mgr.Manager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -560,7 +552,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public List<PhotoItem> getAddPic() {
         int picNum = 0;
         int mRecordNum;
-        int lastPic = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
+        int lastPic = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
         LeoLog.d("getAddPic", "lastPic is : " + lastPic);
         List<String> filterVideoTypes = getFilterVideoType();
         List<PhotoItem> aibumList = new ArrayList<PhotoItem>();
@@ -640,7 +632,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 }
                 if (cursor.getCount() != 0) {
                     LeoLog.d("getAddPic", "getAddPic save id is : " + picNum);
-                    PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, picNum);
+                    LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, picNum);
                 }
             }
         } catch (Exception e) {
@@ -659,7 +651,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public int getAddPicNum() {
         int record = 0;
         int picNum = 0;
-        int lastPic = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
+        int lastPic = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
         List<String> filterVideoTypes = getFilterVideoType();
         Cursor cursor = null;
 
@@ -727,7 +719,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 }
                 if (cursor.getCount() != 0) {
                     LeoLog.d("checkPicId", "getAddPicNum save id is : " + record);
-                    PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, record);
+                    LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_PIC, record);
                 }
             }
         } catch (Exception e) {
@@ -746,9 +738,9 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public int haveCheckedPic() {
         int i = getAddPicNum();
         LeoLog.d("testHidePic", "haveCheckedPic : " + i);
-        int lastRecord = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_PIC, 0);
+        int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_PIC, 0);
         LeoLog.d("testHidePic", "lastRecord : " + lastRecord);
-        PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_ADD_PIC, lastRecord);
+        LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_PIC, lastRecord);
 
         if (mScanAddPicNum != 0) {
             if (mScanAddPicNum > 30) {
@@ -772,7 +764,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         LeoLog.d("testhidevid", "come to getAddVid");
         int vidNum = 0;
         int mRecordNum;
-        int lastVid = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
+        int lastVid = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
         LeoLog.d("checkVidId", "lastVid is : " + lastVid);
         List<VideoItemBean> videoBeans = new ArrayList<VideoItemBean>();
 //        Uri uri = MediaStore.Files.getContentUri("external");
@@ -836,7 +828,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 }
                 if (cursor.getCount() != 0) {
                     LeoLog.d("checkVidId", "save id is : " + vidNum);
-                    PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_VID, vidNum);
+                    LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_VID, vidNum);
                 }
             }
 
@@ -856,7 +848,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     public int getAddVidNum() {
         int vidNum = 0;
         int record = 0;
-        int lastVid = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
+        int lastVid = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
         LeoLog.d("checkVidId", "lastVid is : " + lastVid);
 //        Uri uri = MediaStore.Files.getContentUri("external");
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
@@ -909,7 +901,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 }
                 if (cursor.getCount() != 0) {
                     LeoLog.d("checkVidId", "save id is : " + record);
-                    PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_VID, record);
+                    LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_LAST_ADD_VID, record);
                 }
             }
 
@@ -924,7 +916,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
     public int getNextToTargetId(int targetId) {
         int vidNum = 0;
-        int lastVid = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
+        int lastVid = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
         LeoLog.d("checkVidId", "getNextToTargetId lastVid is : " + lastVid);
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = Constants.VIDEO_FORMAT;
@@ -1018,8 +1010,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     @Override
     public int haveCheckedVid() {
         int i = getAddVidNum();
-        int lastRecord = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);
-        PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, lastRecord);
+        int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);
+        LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, lastRecord);
 
         if (mScanAddVidNum != 0) {
             if (mScanAddVidNum > 4) {

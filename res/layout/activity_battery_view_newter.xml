@@ -14,19 +14,26 @@
         app:rippleHover="true"
         app:rippleOverlay="true">
 
+
         <RelativeLayout
             android:id="@+id/ct_option_2_rl"
-            style="@style/ToolbarIcon">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/toolbar_height"
+            android:minWidth="@dimen/ic_toolbar_width"
+            android:background="@drawable/ic_toolbar_selector"
+            android:clickable="true">
 
-            <ImageView
-                android:id="@+id/ct_option_iv2"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:src="@drawable/setup_icon" />
+                android:text="@string/call_filter_setting_title"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
         </RelativeLayout>
     </com.leo.appmaster.ui.MaterialRippleLayout>
+
 
     <!-- 顶部时间，电量模块 -->
     <include layout="@layout/bay_pro_top_time_content" />
@@ -40,10 +47,10 @@
     <!-- 滑动区域 -->
     <ViewStub
         android:id="@+id/bay_advertise_stub"
-        android:layout="@layout/bay_advertise_content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/batteryscreen_bossview_height"
-        android:layout_above="@id/slider" />
+        android:layout_above="@id/slider"
+        android:layout="@layout/bay_advertise_content" />
 
     <ViewStub
         android:id="@+id/boost_stub"

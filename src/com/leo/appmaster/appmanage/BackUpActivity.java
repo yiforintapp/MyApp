@@ -20,7 +20,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.view.BackUpFragment;
 import com.leo.appmaster.appmanage.view.RestoreFragment;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -54,7 +54,7 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
         String isFromNotification = (String) intent.getExtra("from");
         LeoLog.d("testBackupNoti", "isFromNotification  : " + isFromNotification);
         if (isFromNotification != null && isFromNotification.equals("notification")) {
-            PreferenceTable.getInstance().putString(Constants.NEW_APP_NUM, "");
+            LeoPreference.getInstance().putString(Constants.NEW_APP_NUM, "");
             SDKWrapper.addEvent(this, SDKWrapper.P1, "backup", "backup_cnts_notify");
         }
     }

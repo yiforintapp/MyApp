@@ -1,16 +1,22 @@
 package com.leo.appmaster.airsig.airsigutils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
 
 public class Utils {
+	
+	private static SharedPreferences mPref;
+	private static final String AIRSIG_SHARED_PREFERENCE_SAVED_EVENTS = "AIRSIG_SHARED_PREFERENCE_SAVED_EVENTS";
 
 	public static float dp2px(Resources resources, float dp) {
         final float scale = resources.getDisplayMetrics().density;
@@ -65,5 +71,57 @@ public class Utils {
     	};
     	am.setDuration(duration);
     	target.startAnimation(am);
+    }
+    
+    public static void blinkView(final View view) {
+    	int duration = 300;
+    	
+    	new Handler().postDelayed(new Runnable() {
+    	    public void run() {
+    	    	view.setAlpha(0f);
+    	    }
+    	}, duration);
+    	new Handler().postDelayed(new Runnable() {
+    	    public void run() {
+    	    	view.setAlpha(1f);
+    	    }
+    	}, duration * 2);
+    	new Handler().postDelayed(new Runnable() {
+    	    public void run() {
+    	    	view.setAlpha(0f);
+    	    }
+    	}, duration * 3);
+    	new Handler().postDelayed(new Runnable() {
+    	    public void run() {
+    	    	view.setAlpha(1f);
+    	    }
+    	}, duration * 4);
+    	new Handler().postDelayed(new Runnable() {
+    	    public void run() {
+    	    	view.setAlpha(0f);
+    	    }
+    	}, duration * 5);
+    	new Handler().postDelayed(new Runnable() {
+    	    public void run() {
+    	    	view.setAlpha(1f);
+    	    }
+    	}, duration * 6);
+    }
+    
+    public static void saveBoolean(Context context, String key, boolean value) {
+    	if (mPref == null) {
+    		mPref = context.getSharedPreferences(AIRSIG_SHARED_PREFERENCE_SAVED_EVENTS, Context.MODE_PRIVATE);
+    	}
+    	SharedPreferences.Editor editor = mPref.edit();
+		editor.putBoolean(key, value);
+		editor.commit();
+    }
+    
+    public static boolean getSavedBoolean(Context context, String key, boolean defaultValue) {
+    	if (mPref == null) {
+    		mPref = context.getSharedPreferences(AIRSIG_SHARED_PREFERENCE_SAVED_EVENTS, Context.MODE_PRIVATE);
+    	}
+    	
+    	return mPref.getBoolean(key, defaultValue);
     }
 }

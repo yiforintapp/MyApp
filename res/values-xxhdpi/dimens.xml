@@ -19,6 +19,8 @@
     <dimen name="digital_item_marginBottom">6dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
 
+    <dimen name="air_sig_lock_patten_height">280dp</dimen>
+
 
     <dimen name="layout_four_passwd_marginTop">5dp</dimen>
 

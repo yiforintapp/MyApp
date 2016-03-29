@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -32,7 +32,7 @@ public class WifiSettingActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void fillData() {
-        isSelected = PreferenceTable.getInstance().getBoolean(IS_SHOW_WIFI_SAFE, true);
+        isSelected = LeoPreference.getInstance().getBoolean(IS_SHOW_WIFI_SAFE, true);
         if (isSelected) {
             checkBox.setImageResource(R.drawable.switch_on);
         } else {
@@ -73,14 +73,14 @@ public class WifiSettingActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void changeCheckBoxState() {
-        boolean isShow = PreferenceTable.getInstance().getBoolean(IS_SHOW_WIFI_SAFE, true);
+        boolean isShow = LeoPreference.getInstance().getBoolean(IS_SHOW_WIFI_SAFE, true);
         if (isShow) {
-            PreferenceTable.getInstance().putBoolean(IS_SHOW_WIFI_SAFE, false);
+            LeoPreference.getInstance().putBoolean(IS_SHOW_WIFI_SAFE, false);
             checkBox.setImageResource(R.drawable.switch_off);
             SDKWrapper.addEvent(this,
                     SDKWrapper.P1, "wifi_scan", "wifi_autoscan_close");
         } else {
-            PreferenceTable.getInstance().putBoolean(IS_SHOW_WIFI_SAFE, true);
+            LeoPreference.getInstance().putBoolean(IS_SHOW_WIFI_SAFE, true);
             checkBox.setImageResource(R.drawable.switch_on);
             SDKWrapper.addEvent(this,
                     SDKWrapper.P1, "wifi_scan", "wifi_autoscan_open");
