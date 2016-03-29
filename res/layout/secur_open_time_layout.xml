@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--3-1手机防盗'打开'顶部显示保护时间-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cb"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/show_time_anim"
+        android:layout_width="@dimen/secur_open_ui_iv_width"
+        android:layout_height="@dimen/secur_open_ui_iv_width"
+        android:layout_centerInParent="true"
+        android:padding="6dp"
+        android:src="@drawable/theft_circle"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/secur_open_suc_IV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/secur_suc_top_image_content"
+            android:textColor="#aac2fb"
+            android:textSize="12dp"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/secur_open_suc_IV"
+            android:layout_centerHorizontal="true">
+
+            <RelativeLayout
+                android:id="@+id/r1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/secur_day_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="xxxxxxx"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/secur_day_TV"
+                    android:text="@string/secur_suc_day"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/r2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/r1"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/secur_hour_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="xx"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/secur_hour_TV"
+                    android:text="@string/secur_suc_hour"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

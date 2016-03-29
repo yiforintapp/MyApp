@@ -376,4 +376,6 @@
     <dimen name="airsig_full_message_box_height">380dp</dimen>
     <integer name="airsig_message_box_animation_duration">400</integer>
 
+    <dimen name="secur_open_ui_iv_width">126dp</dimen>
+
 </resources>

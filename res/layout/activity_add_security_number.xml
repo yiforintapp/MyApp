@@ -89,17 +89,6 @@
                     android:textSize="16dp"/>
             </com.leo.appmaster.ui.MaterialRippleLayout>
         </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingTop="40dp"
-            android:text="@string/sucri_add_contact"
-            android:textColor="#666666"
-            android:textSize="14dp"
-
-            />
     </LinearLayout>
 
     <RelativeLayout
@@ -107,13 +96,23 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/add_bt"
         android:layout_below="@id/security_input_number_LT">
-
+        <TextView
+            android:id="@+id/lv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingTop="20dp"
+            android:text="@string/sucri_add_contact"
+            android:textColor="#666666"
+            android:textSize="14dp"
+            />
         <FrameLayout
             android:id="@+id/number_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:layout_below="@id/lv_title">
 
             <ListView
                 android:id="@+id/add_contactLV"
