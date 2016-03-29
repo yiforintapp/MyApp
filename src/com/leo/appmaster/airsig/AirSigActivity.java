@@ -34,6 +34,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case SET_DONE:
+                    LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, true);
                     switchOn();
                     showMessage(getString(R.string.airsig_settings_activity_toast));
                     break;

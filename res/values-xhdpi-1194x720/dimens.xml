@@ -176,6 +176,7 @@
     <dimen name="ges_icon_m_top">0dp</dimen>
     <dimen name="testview_below_icon">13dp</dimen>
     <dimen name="ges_Pattern_m_top">58dp</dimen>
+    <dimen name="ges_Pattern_air_sig_m_top">70dp</dimen>
     <!-- 2.8 end -->
 
 
