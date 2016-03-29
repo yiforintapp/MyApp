@@ -868,7 +868,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
 
         if (mClickUninstall) {
-            showUninstallDialog(false, "开启高级保护", "当前高级保护未开启,手机防盗-清除数据功能,系统锁屏入侵防护功能不可用，是否i立即开启？");
+            showUninstallDialog(false, getResources().getString(R.string.open_admin_title),
+                                getResources().getString(R.string.open_admin_content));
             mClickUninstall = false;
         }
 
@@ -1265,7 +1266,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }
-        showUninstallDialog(true, "卸载隐私卫士", "卸载隐私卫士前需关闭高级保护权限，可能会导致手机防盗、系统锁屏入侵防护等功能不可用。确认卸载？");
+        showUninstallDialog(true, getResources().getString(R.string.uninstall_dialog_title),
+                            getResources().getString(R.string.uninstall_dialog_content));
         return false;
     }
 
