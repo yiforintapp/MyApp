@@ -145,7 +145,8 @@ public class AppLockListActivity extends BaseActivity implements
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
-            boolean mIsFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", false);
+            boolean mIsFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", true);
+            LeoLog.e("mIsFirstEnterFromMain", "mIsFirstEnterFromMain: " + mIsFirstEnterFromMain);
             if (isFromConfrim && ((mAppList != null && mAppList.size() > 0) || mIsFirstEnterFromMain)) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if(switchs != null && switchs.size() > 0) {
@@ -392,14 +393,14 @@ public class AppLockListActivity extends BaseActivity implements
 
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
-        boolean isFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", false);
+        boolean isFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", true);
         boolean hasEnterFromTab =  mLeoPreference.getBoolean("HasEnterFromTab", false);
         if (isFromConfrim && isFirstEnterFromMain && !hasEnterFromTab) {
             mAppList.clear();
         }
 
-        boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", false);
-        LeoLog.e("mResaultList", "isFirstEnterFromIcon:" + isFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim );
+        boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
+        LeoLog.e("mResaultList", "isFirstEnterFromIcon:" + isFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim);
         if (!isFromConfrim && isFirstEnterFromIcon) {
             mAppList.clear();
             mLeoPreference.putBoolean("FirstEnterFromTab", false);
