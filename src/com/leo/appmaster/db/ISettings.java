@@ -1,6 +1,14 @@
 package com.leo.appmaster.db;
 
+import android.content.Context;
+import android.util.SparseArray;
+
+import com.leo.appmaster.AppMasterApplication;
+
 import com.leo.appmaster.AppMasterPreference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Jasper on 2016/3/26.
@@ -31,12 +39,24 @@ public abstract class ISettings {
             AppMasterPreference.PREF_SPLASH_DElAY_TIME,
             AppMasterPreference.PREF_UNLOCK_SUCCESS_TIP_RANDOM
     };
+    static Map<String, String> sGroupHigh = null;
+
+    protected Context mContext;
+
+    ISettings() {
+        mContext = AppMasterApplication.getInstance();
+
+        sGroupHigh = new HashMap<String, String>();
+        for (String key : GROUP_HIGH) {
+            sGroupHigh.put(key, key);
+        }
+    }
 
     public abstract void set(String key, String value);
     public abstract String get(String key, String def);
 
     static boolean isHighPriority(String key) {
-        return false;
+        return sGroupHigh.containsKey(key);
     }
 
     static boolean isEncrypto() {

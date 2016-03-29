@@ -34,9 +34,6 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
-        // 加载所有的首选项
-        LeoPreference.getInstance().loadPreference();
-
         PrivacyTrickUtil.clearOtherApps(mApp);
         AppLoadEngine.getInstance(mApp).preloadAllBaseInfo();
         quickGestureTipInit();

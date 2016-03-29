@@ -1,7 +1,5 @@
 package com.leo.appmaster.db;
 
-import com.leo.appmaster.utils.PrefConst;
-
 /**
  * Created by Jasper on 2016/3/26.
  */
@@ -14,11 +12,12 @@ public class DatabaseSettings extends ISettings {
 
     @Override
     public void set(String key, String value) {
-
+        preferenceTable.putString(key, value);
     }
 
     @Override
     public String get(String key, String def) {
-        return null;
+        String value = preferenceTable.getString(key);
+        return value == null ? def : value;
     }
 }
